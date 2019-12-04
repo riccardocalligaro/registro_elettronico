@@ -19,3 +19,12 @@ Tecnologie che useremo:
 - Chopper per le richieste alle API
 - BLoC per la gestione dello stato
 - Flare per le animazioni
+
+--- 
+
+Developers:
+- Riccardo Calligaro, admin riccardocalligaro@gmail.com
+
+- Jacopo Ferian, jacopo893@gmail.com 
+- Filippo Veggo, filippoveggo@gmail.com
+- Samuele Zanella, samuelezanella02@gmail.com
