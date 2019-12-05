@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
   chopper: ^3.0.1
   provider: ^3.2.0
+  injector: ^1.0.8
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

@@ -14,16 +14,10 @@ class _$LoginApiService extends LoginApiService {
 
   final definitionType = LoginApiService;
 
-  Future<Response> postLogin(Map<String, dynamic> body) {
+  Future<Response> postLogin(Map<String, String> body) {
     final $url = '/auth/login';
-    final $headers = {
-      'User-Agent': 'zorro/1.0',
-      'Z-Dev-Apikey': '+zorro+',
-      'Content-Type': 'application/json'
-    };
     final $body = body;
-    final $request =
-        Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
 }

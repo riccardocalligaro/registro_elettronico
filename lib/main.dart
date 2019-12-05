@@ -1,20 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:registro_elettronico/api/login/login_api_service.dart';
-import 'package:registro_elettronico/pages/login_page.dart';
+import 'package:injector/injector.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
+import 'package:registro_elettronico/data/repository/login_repository_impl.dart';
+import 'package:registro_elettronico/domain/repository/login_repository.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  initApp();
+  runApp(MyApp());
+}
+
+void initApp() {
+  AppInjector.init();
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (_) => LoginApiService.create(),
-      dispose: (context, LoginApiService service) => service.dispose(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        home: LoginPage(),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      home: Scaffold(
+        body: Center(
+          child: Column(
+            children: <Widget>[
+              RaisedButton(
+                onPressed: () async {
+                  LoginRepository loginRepo =
+                      LoginRepositoryImpl(Injector.appInstance.getDependency());
+                  final response = await loginRepo.signIn(username: 'rikybraun', password: 'ciao123');
+                  // print(response.statusCode);
+                },
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
