@@ -19,8 +19,10 @@ class SpaggiariClient {
           errorConverter: JsonConverter(),
           interceptors: [
             HeadersInterceptor(_headers)
-            // todo - interceptors for token
+            // TODO: interceptors for token
           ]);
+
+          // TODO: implement json convert factory
     }
     return _chopperClient;
   }
