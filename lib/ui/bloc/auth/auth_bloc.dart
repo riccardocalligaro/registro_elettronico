@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
 import './bloc.dart';
@@ -10,7 +11,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(this._loginRepository);
 
   @override
-  AuthState get initialState => Init();
+  AuthState get initialState => SignInInitial();
 
   @override
   Stream<AuthState> mapEventToState(
@@ -22,7 +23,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           username: event.username, password: event.password);
       switch (res.statusCode) {
         case 200:
-          yield SignInSuccess(res.body['firstName']);
+          final jsonRes = json.decode(res.body);
+          yield SignInSuccess(jsonRes['firstName']);
           break;
         case 422:
           yield SignInError("Wrong user credentials");
