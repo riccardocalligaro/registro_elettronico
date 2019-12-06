@@ -30,7 +30,8 @@ class AppInjector {
   static void injectRepository() {
     // repositoeries
     Injector.appInstance.registerSingleton((i) {
-      LoginRepository loginRepository = LoginRepositoryImpl(i.getDependency());
+      LoginRepository loginRepository =
+          LoginRepositoryImpl(i.getDependency(), i.getDependency());
       return loginRepository;
     });
   }

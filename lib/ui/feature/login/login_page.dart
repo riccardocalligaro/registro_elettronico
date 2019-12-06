@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/login/bloc.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -35,43 +35,15 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                     padding: EdgeInsets.symmetric(vertical: 16.0),
                     child: _buildLoginButton('Log in')),
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    if (state is SignInInitial) {
-                      return Text('Not logged in!');
-                    }
-                    if (state is SignInLoading) {
-                      return CircularProgressIndicator();
-                    }
-                    if (state is SignInSuccess) {
-                      return Text(state.username);
-                    }
-                    if (state is SignInError) {
-                      return Text(state.error);
-                    }
-                  },
-                ),
                 Container(height: 100, child: _buildProfilesList(context)),
 
                 RaisedButton(
                   child: Text('insert'),
                   onPressed: () {
-                    print(Injector.appInstance);
-
-                    ProfileDao profileDao =
-                        ProfileDao(Injector.appInstance.getDependency());
-                    final profile = Profile(
-                        id: 22,
-                        ident: 'sda',
-                        userName: 'ricasdcardo',
-                        expire: DateTime.now(),
-                        token: 'dskjkdsadasdassdksdlk',
-                        name: 'Giaasdsdadnno',
-                        classe: '4iasdsada');
-
-                    profileDao.insertProfile(profile);
+                    BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(
+                        username: 'S6102171X', password: r'P2i75UnU$D'));
                   },
-                )
+                ),
               ],
             ),
           ],
@@ -169,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       color: Colors.blue,
       onPressed: () {
-        BlocProvider.of<AuthBloc>(context).add(SignIn("xx", "xx"));
+        // BlocProvider.of<AuthBloc>(context).add(SignIn("xx", "xx"));
       },
     );
   }
