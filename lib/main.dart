@@ -5,6 +5,7 @@ import 'package:registro_elettronico/component/routes.dart';
 import 'package:registro_elettronico/data/repository/login_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
 import 'package:registro_elettronico/ui/feature/login/login_page.dart';
+import 'package:registro_elettronico/ui/global/themes/theme_data/default_theme.dart';
 
 void main() {
   initApp();
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'School dairy',
       routes: Routes.routes,
+      theme: defaultTheme,
       onUnknownRoute: (settings) {
         return MaterialPageRoute(builder: (ctx) => LoginPage());
       },
