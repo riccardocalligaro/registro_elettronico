@@ -24,11 +24,12 @@ class MyApp extends StatelessWidget {
           child: Column(
             children: <Widget>[
               RaisedButton(
+                child: Text('Log in'),
                 onPressed: () async {
                   LoginRepository loginRepo =
                       LoginRepositoryImpl(Injector.appInstance.getDependency());
-                  final response = await loginRepo.signIn(username: 'rikybraun', password: 'ciao123');
-                  // print(response.statusCode);
+                  final response = await loginRepo.signIn(username: 'xx', password: r'xx');
+                  print(response.statusCode);
                 },
               )
             ],

@@ -13,7 +13,7 @@ part 'login_api_service.chopper.dart';
 @ChopperApi(baseUrl: '/auth')
 abstract class LoginApiService extends ChopperService {
   @Post(path: '/login')
-  Future<Response> postLogin(@Body() Map<String, String> body);
+  Future<Response> postLogin(@Body() String body);
 
   /*
     static LoginApiService create() {

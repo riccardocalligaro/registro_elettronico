@@ -14,7 +14,7 @@ class _$LoginApiService extends LoginApiService {
 
   final definitionType = LoginApiService;
 
-  Future<Response> postLogin(Map<String, String> body) {
+  Future<Response> postLogin(String body) {
     final $url = '/auth/login';
     final $body = body;
     final $request = Request('POST', $url, client.baseUrl, body: $body);

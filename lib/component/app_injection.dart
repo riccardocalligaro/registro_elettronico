@@ -8,6 +8,8 @@ import 'package:registro_elettronico/domain/repository/login_repository.dart';
 class AppInjector {
   static void init() {
     injectService();
+    injectRepository();
+    // todo: inject database
   }
 
   static void injectRepository() {

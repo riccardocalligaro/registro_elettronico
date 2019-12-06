@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:chopper/chopper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:registro_elettronico/data/network/service/api/login_api_service.dart';
@@ -10,13 +12,11 @@ class LoginRepositoryImpl implements LoginRepository {
   @override
   Future<Response> signIn({String username, String password}) async {
     try {
-      final res = await loginApiService.postLogin(
-          {"ident": username, "username": username, "password": password});
-      if (res.isSuccessful) {
-        print(res.body.toString());
-      } else {
-        print(res.statusCode);
-      }
+      final loginData = {"ident": "$username", "pass": "$password", "uid": "$username"};
+      final body = json.encode(loginData);
+      final res = await loginApiService
+          .postLogin(body);
+      return res;
     } catch (ex) {
       print(
           "Login repository implementation, sign in method, ${ex.toString()}");
