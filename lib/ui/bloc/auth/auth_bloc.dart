@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
+import 'package:injector/injector.dart';
+import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
 import './bloc.dart';
 

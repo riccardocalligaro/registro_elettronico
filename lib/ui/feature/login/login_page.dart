@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
+import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 
 class LoginPage extends StatefulWidget {
@@ -47,12 +50,51 @@ class _LoginPageState extends State<LoginPage> {
                       return Text(state.error);
                     }
                   },
+                ),
+                Container(height: 100, child: _buildProfilesList(context)),
+
+                RaisedButton(
+                  child: Text('insert'),
+                  onPressed: () {
+                    print(Injector.appInstance);
+
+                    ProfileDao profileDao =
+                        ProfileDao(Injector.appInstance.getDependency());
+                    final profile = Profile(
+                        id: 22,
+                        ident: 'sda',
+                        userName: 'ricasdcardo',
+                        expire: DateTime.now(),
+                        token: 'dskjkdsadasdassdksdlk',
+                        name: 'Giaasdsdadnno',
+                        classe: '4iasdsada');
+
+                    profileDao.insertProfile(profile);
+                  },
                 )
               ],
             ),
           ],
         ),
       )),
+    );
+  }
+
+  StreamBuilder<List<Profile>> _buildProfilesList(BuildContext context) {
+    final ProfileDao profileDao =
+        ProfileDao(Injector.appInstance.getDependency());
+    return StreamBuilder(
+      stream: profileDao.watchAllprofiles(),
+      builder: (context, AsyncSnapshot<List<Profile>> snapshot) {
+        final profiles = snapshot.data ?? List();
+        return ListView.builder(
+          itemCount: profiles.length,
+          itemBuilder: (_, index) {
+            final profile = profiles[index];
+            return Text(profile.ident);
+          },
+        );
+      },
     );
   }
 
