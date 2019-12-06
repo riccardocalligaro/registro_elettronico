@@ -23,7 +23,7 @@ Developers:
 
 ## Design (Filippo Veggo & Riccardo Calligaro)
 
-<div>
+<div style="text-align: center">
 <img src="https://i.imgur.com/kA3nnBG.png"
      height="400px"
      alt="the home page"
@@ -39,7 +39,7 @@ Developers:
      alt="the home page"
      style="float: left; margin-right: 10px; margin-bottom: 10px;" />
 
-<img src=" https://i.imgur.com/nP5XXON.png"
+<img src="https://i.imgur.com/nP5XXON.png"
     height="400px"
      alt="the home page"
      style="float: left; margin-right: 10px;" />
