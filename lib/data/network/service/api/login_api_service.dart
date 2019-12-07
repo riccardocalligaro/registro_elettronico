@@ -1,7 +1,7 @@
 import 'package:chopper/chopper.dart';
-import 'package:chopper/chopper.dart' as prefix0;
 import 'package:injector/injector.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/domain/entity/profile.dart';
+
 
 part 'login_api_service.chopper.dart';
 

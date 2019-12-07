@@ -2,15 +2,18 @@ import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/login_api_service.dart';
+import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
+import 'package:registro_elettronico/domain/entity/profile.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
 
 class LoginRepositoryImpl implements LoginRepository {
   LoginApiService loginApiService;
   ProfileDao profileDao;
+  ProfileMapper profileMapper;
 
-  LoginRepositoryImpl(this.loginApiService, this.profileDao);
+  LoginRepositoryImpl(
+      this.loginApiService, this.profileDao, this.profileMapper);
 
   @override
   Future<Response<Profile>> signIn({String username, String password}) async {
@@ -38,10 +41,12 @@ class LoginRepositoryImpl implements LoginRepository {
   }
 
   @override
-  Future deleteProfile({Profile profile}) => profileDao.deleteProfile(profile);
+  Future deleteProfile({Profile profile}) => profileDao.deleteProfile(
+      profileMapper.mapProfileEntityToProfileInsertable(profile));
 
   @override
-  Future insertProfile({Profile profile}) => profileDao.insertProfile(profile);
+  Future insertProfile({Profile profile}) => profileDao.insertProfile(
+      profileMapper.mapProfileEntityToProfileInsertable(profile));
 
   @override
   Future deleteAllProfiles() => profileDao.deleteAllProfiles();

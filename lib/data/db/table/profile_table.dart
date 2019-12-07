@@ -2,13 +2,13 @@ import 'package:moor_flutter/moor_flutter.dart';
 
 class Profiles extends Table {
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get userName => text().customConstraint('UNIQUE')();
-  TextColumn get name => text()();
-  TextColumn get classe => text()();
-  TextColumn get token => text()();
-  DateTimeColumn get expire => dateTime()();
   TextColumn get ident => text()();
+  TextColumn get firstName => text()();
+  TextColumn get lastName => text()();
+  TextColumn get token => text()();
+  DateTimeColumn get release => dateTime()();
+  DateTimeColumn get expire => dateTime()();
 
   @override
-  Set<Column> get primaryKey => {id, userName};
+  Set<Column> get primaryKey => {id, ident};
 }

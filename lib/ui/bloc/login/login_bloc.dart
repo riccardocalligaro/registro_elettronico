@@ -24,28 +24,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         final res = await loginRepository.signIn(
             username: event.username, password: event.password);
+        print(res.statusCode);
+        print(res.bodyString);
         switch (res.statusCode) {
           case 200:
             final profile = res.body;
-
-            /**
-             
-            final profileDb = Profile(
-                // TODO: remove same id, make nullable in the database table constructor
-                id: 22,
-                ident: profile.ident,
-                userName: profile.ident,
-                expire: DateTime.now(),
-                token: profile.token,
-                name: profile.firstName,
-                classe: '4IA');
-             */
-            //authenticationBloc.dispatch(LoggedIn(profile: ));
-            // authenticationBloc.
             authenticationBloc.add(LoggedIn(profile: profile));
             break;
           case 422:
-            yield LoginError("Wrong user credentials");
+            print('wrong user credentials');
+            yield LoginWrongCredentials();
             break;
           default:
             yield LoginError(

@@ -1,6 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/domain/entity/profile.dart';
 
 abstract class LoginRepository {
   /// Signs in a user having a username and a password

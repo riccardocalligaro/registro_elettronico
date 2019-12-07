@@ -9,20 +9,20 @@ part of 'moor_database.dart';
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class Profile extends DataClass implements Insertable<Profile> {
   final int id;
-  final String userName;
-  final String name;
-  final String classe;
-  final String token;
-  final DateTime expire;
   final String ident;
+  final String firstName;
+  final String lastName;
+  final String token;
+  final DateTime release;
+  final DateTime expire;
   Profile(
       {@required this.id,
-      @required this.userName,
-      @required this.name,
-      @required this.classe,
+      @required this.ident,
+      @required this.firstName,
+      @required this.lastName,
       @required this.token,
-      @required this.expire,
-      @required this.ident});
+      @required this.release,
+      @required this.expire});
   factory Profile.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -31,29 +31,30 @@ class Profile extends DataClass implements Insertable<Profile> {
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return Profile(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      userName: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}user_name']),
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      classe:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}classe']),
-      token:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}token']),
-      expire: dateTimeType
-          .mapFromDatabaseResponse(data['${effectivePrefix}expire']),
       ident:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}ident']),
+      firstName: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}first_name']),
+      lastName: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}last_name']),
+      token:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}token']),
+      release: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}release']),
+      expire: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}expire']),
     );
   }
   factory Profile.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return Profile(
       id: serializer.fromJson<int>(json['id']),
-      userName: serializer.fromJson<String>(json['userName']),
-      name: serializer.fromJson<String>(json['name']),
-      classe: serializer.fromJson<String>(json['classe']),
-      token: serializer.fromJson<String>(json['token']),
-      expire: serializer.fromJson<DateTime>(json['expire']),
       ident: serializer.fromJson<String>(json['ident']),
+      firstName: serializer.fromJson<String>(json['firstName']),
+      lastName: serializer.fromJson<String>(json['lastName']),
+      token: serializer.fromJson<String>(json['token']),
+      release: serializer.fromJson<DateTime>(json['release']),
+      expire: serializer.fromJson<DateTime>(json['expire']),
     );
   }
   @override
@@ -61,12 +62,12 @@ class Profile extends DataClass implements Insertable<Profile> {
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return {
       'id': serializer.toJson<int>(id),
-      'userName': serializer.toJson<String>(userName),
-      'name': serializer.toJson<String>(name),
-      'classe': serializer.toJson<String>(classe),
-      'token': serializer.toJson<String>(token),
-      'expire': serializer.toJson<DateTime>(expire),
       'ident': serializer.toJson<String>(ident),
+      'firstName': serializer.toJson<String>(firstName),
+      'lastName': serializer.toJson<String>(lastName),
+      'token': serializer.toJson<String>(token),
+      'release': serializer.toJson<DateTime>(release),
+      'expire': serializer.toJson<DateTime>(expire),
     };
   }
 
@@ -74,48 +75,51 @@ class Profile extends DataClass implements Insertable<Profile> {
   ProfilesCompanion createCompanion(bool nullToAbsent) {
     return ProfilesCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      userName: userName == null && nullToAbsent
-          ? const Value.absent()
-          : Value(userName),
-      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
-      classe:
-          classe == null && nullToAbsent ? const Value.absent() : Value(classe),
-      token:
-          token == null && nullToAbsent ? const Value.absent() : Value(token),
-      expire:
-          expire == null && nullToAbsent ? const Value.absent() : Value(expire),
       ident:
           ident == null && nullToAbsent ? const Value.absent() : Value(ident),
+      firstName: firstName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(firstName),
+      lastName: lastName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastName),
+      token:
+          token == null && nullToAbsent ? const Value.absent() : Value(token),
+      release: release == null && nullToAbsent
+          ? const Value.absent()
+          : Value(release),
+      expire:
+          expire == null && nullToAbsent ? const Value.absent() : Value(expire),
     );
   }
 
   Profile copyWith(
           {int id,
-          String userName,
-          String name,
-          String classe,
+          String ident,
+          String firstName,
+          String lastName,
           String token,
-          DateTime expire,
-          String ident}) =>
+          DateTime release,
+          DateTime expire}) =>
       Profile(
         id: id ?? this.id,
-        userName: userName ?? this.userName,
-        name: name ?? this.name,
-        classe: classe ?? this.classe,
-        token: token ?? this.token,
-        expire: expire ?? this.expire,
         ident: ident ?? this.ident,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
+        token: token ?? this.token,
+        release: release ?? this.release,
+        expire: expire ?? this.expire,
       );
   @override
   String toString() {
     return (StringBuffer('Profile(')
           ..write('id: $id, ')
-          ..write('userName: $userName, ')
-          ..write('name: $name, ')
-          ..write('classe: $classe, ')
+          ..write('ident: $ident, ')
+          ..write('firstName: $firstName, ')
+          ..write('lastName: $lastName, ')
           ..write('token: $token, ')
-          ..write('expire: $expire, ')
-          ..write('ident: $ident')
+          ..write('release: $release, ')
+          ..write('expire: $expire')
           ..write(')'))
         .toString();
   }
@@ -124,73 +128,73 @@ class Profile extends DataClass implements Insertable<Profile> {
   int get hashCode => $mrjf($mrjc(
       id.hashCode,
       $mrjc(
-          userName.hashCode,
+          ident.hashCode,
           $mrjc(
-              name.hashCode,
+              firstName.hashCode,
               $mrjc(
-                  classe.hashCode,
+                  lastName.hashCode,
                   $mrjc(token.hashCode,
-                      $mrjc(expire.hashCode, ident.hashCode)))))));
+                      $mrjc(release.hashCode, expire.hashCode)))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
       (other is Profile &&
           other.id == this.id &&
-          other.userName == this.userName &&
-          other.name == this.name &&
-          other.classe == this.classe &&
+          other.ident == this.ident &&
+          other.firstName == this.firstName &&
+          other.lastName == this.lastName &&
           other.token == this.token &&
-          other.expire == this.expire &&
-          other.ident == this.ident);
+          other.release == this.release &&
+          other.expire == this.expire);
 }
 
 class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<int> id;
-  final Value<String> userName;
-  final Value<String> name;
-  final Value<String> classe;
-  final Value<String> token;
-  final Value<DateTime> expire;
   final Value<String> ident;
+  final Value<String> firstName;
+  final Value<String> lastName;
+  final Value<String> token;
+  final Value<DateTime> release;
+  final Value<DateTime> expire;
   const ProfilesCompanion({
     this.id = const Value.absent(),
-    this.userName = const Value.absent(),
-    this.name = const Value.absent(),
-    this.classe = const Value.absent(),
-    this.token = const Value.absent(),
-    this.expire = const Value.absent(),
     this.ident = const Value.absent(),
+    this.firstName = const Value.absent(),
+    this.lastName = const Value.absent(),
+    this.token = const Value.absent(),
+    this.release = const Value.absent(),
+    this.expire = const Value.absent(),
   });
   ProfilesCompanion.insert({
     this.id = const Value.absent(),
-    @required String userName,
-    @required String name,
-    @required String classe,
-    @required String token,
-    @required DateTime expire,
     @required String ident,
-  })  : userName = Value(userName),
-        name = Value(name),
-        classe = Value(classe),
+    @required String firstName,
+    @required String lastName,
+    @required String token,
+    @required DateTime release,
+    @required DateTime expire,
+  })  : ident = Value(ident),
+        firstName = Value(firstName),
+        lastName = Value(lastName),
         token = Value(token),
-        expire = Value(expire),
-        ident = Value(ident);
+        release = Value(release),
+        expire = Value(expire);
   ProfilesCompanion copyWith(
       {Value<int> id,
-      Value<String> userName,
-      Value<String> name,
-      Value<String> classe,
+      Value<String> ident,
+      Value<String> firstName,
+      Value<String> lastName,
       Value<String> token,
-      Value<DateTime> expire,
-      Value<String> ident}) {
+      Value<DateTime> release,
+      Value<DateTime> expire}) {
     return ProfilesCompanion(
       id: id ?? this.id,
-      userName: userName ?? this.userName,
-      name: name ?? this.name,
-      classe: classe ?? this.classe,
-      token: token ?? this.token,
-      expire: expire ?? this.expire,
       ident: ident ?? this.ident,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      token: token ?? this.token,
+      release: release ?? this.release,
+      expire: expire ?? this.expire,
     );
   }
 }
@@ -208,34 +212,37 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
   }
 
-  final VerificationMeta _userNameMeta = const VerificationMeta('userName');
-  GeneratedTextColumn _userName;
+  final VerificationMeta _identMeta = const VerificationMeta('ident');
+  GeneratedTextColumn _ident;
   @override
-  GeneratedTextColumn get userName => _userName ??= _constructUserName();
-  GeneratedTextColumn _constructUserName() {
-    return GeneratedTextColumn('user_name', $tableName, false,
-        $customConstraints: 'UNIQUE');
-  }
-
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedTextColumn _name;
-  @override
-  GeneratedTextColumn get name => _name ??= _constructName();
-  GeneratedTextColumn _constructName() {
+  GeneratedTextColumn get ident => _ident ??= _constructIdent();
+  GeneratedTextColumn _constructIdent() {
     return GeneratedTextColumn(
-      'name',
+      'ident',
       $tableName,
       false,
     );
   }
 
-  final VerificationMeta _classeMeta = const VerificationMeta('classe');
-  GeneratedTextColumn _classe;
+  final VerificationMeta _firstNameMeta = const VerificationMeta('firstName');
+  GeneratedTextColumn _firstName;
   @override
-  GeneratedTextColumn get classe => _classe ??= _constructClasse();
-  GeneratedTextColumn _constructClasse() {
+  GeneratedTextColumn get firstName => _firstName ??= _constructFirstName();
+  GeneratedTextColumn _constructFirstName() {
     return GeneratedTextColumn(
-      'classe',
+      'first_name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _lastNameMeta = const VerificationMeta('lastName');
+  GeneratedTextColumn _lastName;
+  @override
+  GeneratedTextColumn get lastName => _lastName ??= _constructLastName();
+  GeneratedTextColumn _constructLastName() {
+    return GeneratedTextColumn(
+      'last_name',
       $tableName,
       false,
     );
@@ -253,6 +260,18 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     );
   }
 
+  final VerificationMeta _releaseMeta = const VerificationMeta('release');
+  GeneratedDateTimeColumn _release;
+  @override
+  GeneratedDateTimeColumn get release => _release ??= _constructRelease();
+  GeneratedDateTimeColumn _constructRelease() {
+    return GeneratedDateTimeColumn(
+      'release',
+      $tableName,
+      false,
+    );
+  }
+
   final VerificationMeta _expireMeta = const VerificationMeta('expire');
   GeneratedDateTimeColumn _expire;
   @override
@@ -265,21 +284,9 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     );
   }
 
-  final VerificationMeta _identMeta = const VerificationMeta('ident');
-  GeneratedTextColumn _ident;
-  @override
-  GeneratedTextColumn get ident => _ident ??= _constructIdent();
-  GeneratedTextColumn _constructIdent() {
-    return GeneratedTextColumn(
-      'ident',
-      $tableName,
-      false,
-    );
-  }
-
   @override
   List<GeneratedColumn> get $columns =>
-      [id, userName, name, classe, token, expire, ident];
+      [id, ident, firstName, lastName, token, release, expire];
   @override
   $ProfilesTable get asDslTable => this;
   @override
@@ -295,23 +302,23 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     } else if (id.isRequired && isInserting) {
       context.missing(_idMeta);
     }
-    if (d.userName.present) {
-      context.handle(_userNameMeta,
-          userName.isAcceptableValue(d.userName.value, _userNameMeta));
-    } else if (userName.isRequired && isInserting) {
-      context.missing(_userNameMeta);
-    }
-    if (d.name.present) {
+    if (d.ident.present) {
       context.handle(
-          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
-    } else if (name.isRequired && isInserting) {
-      context.missing(_nameMeta);
+          _identMeta, ident.isAcceptableValue(d.ident.value, _identMeta));
+    } else if (ident.isRequired && isInserting) {
+      context.missing(_identMeta);
     }
-    if (d.classe.present) {
-      context.handle(
-          _classeMeta, classe.isAcceptableValue(d.classe.value, _classeMeta));
-    } else if (classe.isRequired && isInserting) {
-      context.missing(_classeMeta);
+    if (d.firstName.present) {
+      context.handle(_firstNameMeta,
+          firstName.isAcceptableValue(d.firstName.value, _firstNameMeta));
+    } else if (firstName.isRequired && isInserting) {
+      context.missing(_firstNameMeta);
+    }
+    if (d.lastName.present) {
+      context.handle(_lastNameMeta,
+          lastName.isAcceptableValue(d.lastName.value, _lastNameMeta));
+    } else if (lastName.isRequired && isInserting) {
+      context.missing(_lastNameMeta);
     }
     if (d.token.present) {
       context.handle(
@@ -319,23 +326,23 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     } else if (token.isRequired && isInserting) {
       context.missing(_tokenMeta);
     }
+    if (d.release.present) {
+      context.handle(_releaseMeta,
+          release.isAcceptableValue(d.release.value, _releaseMeta));
+    } else if (release.isRequired && isInserting) {
+      context.missing(_releaseMeta);
+    }
     if (d.expire.present) {
       context.handle(
           _expireMeta, expire.isAcceptableValue(d.expire.value, _expireMeta));
     } else if (expire.isRequired && isInserting) {
       context.missing(_expireMeta);
     }
-    if (d.ident.present) {
-      context.handle(
-          _identMeta, ident.isAcceptableValue(d.ident.value, _identMeta));
-    } else if (ident.isRequired && isInserting) {
-      context.missing(_identMeta);
-    }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id, userName};
+  Set<GeneratedColumn> get $primaryKey => {id, ident};
   @override
   Profile map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -348,23 +355,23 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     if (d.id.present) {
       map['id'] = Variable<int, IntType>(d.id.value);
     }
-    if (d.userName.present) {
-      map['user_name'] = Variable<String, StringType>(d.userName.value);
+    if (d.ident.present) {
+      map['ident'] = Variable<String, StringType>(d.ident.value);
     }
-    if (d.name.present) {
-      map['name'] = Variable<String, StringType>(d.name.value);
+    if (d.firstName.present) {
+      map['first_name'] = Variable<String, StringType>(d.firstName.value);
     }
-    if (d.classe.present) {
-      map['classe'] = Variable<String, StringType>(d.classe.value);
+    if (d.lastName.present) {
+      map['last_name'] = Variable<String, StringType>(d.lastName.value);
     }
     if (d.token.present) {
       map['token'] = Variable<String, StringType>(d.token.value);
     }
+    if (d.release.present) {
+      map['release'] = Variable<DateTime, DateTimeType>(d.release.value);
+    }
     if (d.expire.present) {
       map['expire'] = Variable<DateTime, DateTimeType>(d.expire.value);
-    }
-    if (d.ident.present) {
-      map['ident'] = Variable<String, StringType>(d.ident.value);
     }
     return map;
   }

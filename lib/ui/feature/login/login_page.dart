@@ -13,60 +13,80 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  //! remove passswords
+  final String username = "xx";
+  final String password = "xxx";
   static const double LEFT_LOGIN_PADDING = 80.0;
   static const double TOP_FIELDS_PADDING = 32.0;
 
+  String _errorMessage = null;
+
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _usernameController = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
+
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
-          child: Padding(
-        padding: EdgeInsets.fromLTRB(LEFT_LOGIN_PADDING, 0, 0, 0),
-        child: Column(
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                // Welcome, login with Classeviva
-                _buildWelcomeText("Welcome, "),
-                _buildLoginMessageText("Classeviva"),
-                _buildLoginForm(),
-                Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    child: _buildLoginButton('Log in')),
-                Container(height: 100, child: _buildProfilesList(context)),
+          child: BlocListener<LoginBloc, LoginState>(
+        listener: (context, state) {
+          if (state is LoginLoading) {
+            Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(_buildLoadingSnackBar());
+          }
 
-                RaisedButton(
-                  child: Text('insert'),
-                  onPressed: () {
-                    BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(
-                        username: 'S6102171X', password: r'P2i75UnU$D'));
-                  },
-                ),
-              ],
-            ),
-          ],
+          if (state is LoginWrongCredentials) {
+            // TODO: add if password are wrong
+          }
+        },
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(LEFT_LOGIN_PADDING, 0, 0, 0),
+          child: Column(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // Welcome, login with Classeviva
+                  _buildWelcomeText("Welcome, "),
+                  _buildLoginMessageText("Classeviva"),
+                  _buildLoginForm(),
+                  Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      child: RaisedButton(
+                        child: Text(
+                          'Log in',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        color: Theme.of(context).accentColor,
+                        onPressed: () {
+                          BlocProvider.of<LoginBloc>(context).add(
+                              LoginButtonPressed(
+                                  username: username,
+                                  password: password));
+                        },
+                      )),
+                  //_buildProfilesList(context)
+                ],
+              ),
+            ],
+          ),
         ),
       )),
     );
   }
 
-  StreamBuilder<List<Profile>> _buildProfilesList(BuildContext context) {
-    final ProfileDao profileDao =
-        ProfileDao(Injector.appInstance.getDependency());
-    return StreamBuilder(
-      stream: profileDao.watchAllprofiles(),
-      builder: (context, AsyncSnapshot<List<Profile>> snapshot) {
-        final profiles = snapshot.data ?? List();
-        return ListView.builder(
-          itemCount: profiles.length,
-          itemBuilder: (_, index) {
-            final profile = profiles[index];
-            return Text(profile.ident);
-          },
-        );
-      },
+  SnackBar _buildLoadingSnackBar() {
+    return SnackBar(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Logging In...'),
+          CircularProgressIndicator(),
+        ],
+      ),
     );
   }
 
@@ -121,6 +141,7 @@ class _LoginPageState extends State<LoginPage> {
             TextFormField(
               obscureText: true,
               decoration: InputDecoration(
+                  errorText: _errorMessage,
                   hintText: 'Password',
                   contentPadding: EdgeInsetsGeometry.lerp(
                       const EdgeInsetsDirectional.only(end: 6.0),
@@ -133,15 +154,20 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  RaisedButton _buildLoginButton(String buttonText) {
-    return RaisedButton(
-      child: Text(
-        'Log in',
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      ),
-      color: Colors.blue,
-      onPressed: () {
-        // BlocProvider.of<AuthBloc>(context).add(SignIn("xx", "xx"));
+  StreamBuilder<List<Profile>> _buildProfilesList(BuildContext context) {
+    final ProfileDao profileDao =
+        ProfileDao(Injector.appInstance.getDependency());
+    return StreamBuilder(
+      stream: profileDao.watchAllprofiles(),
+      builder: (context, AsyncSnapshot<List<Profile>> snapshot) {
+        final profiles = snapshot.data ?? List();
+        return ListView.builder(
+          itemCount: profiles.length,
+          itemBuilder: (_, index) {
+            final profile = profiles[index];
+            return Text(profile.ident);
+          },
+        );
       },
     );
   }

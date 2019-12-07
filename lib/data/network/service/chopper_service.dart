@@ -12,6 +12,12 @@ class SpaggiariClient {
     "content-type": "application/json"
   };
 
+  static Map<String, String> _headers2 = {
+    "User-Agent": "CVVS/std/1.6.1 Android/1.6.1",
+    "Z-Dev-Apikey": "Tg1NWEwNGIgIC0K",
+    "content-type": "application/json"
+  };
+
   // SpaggiariClient._();
 
   static ChopperClient i() {

@@ -5,6 +5,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/chopper_api_services.dart';
 import 'package:registro_elettronico/data/network/service/chopper_service.dart';
 import 'package:registro_elettronico/data/repository/login_repository_impl.dart';
+import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
 import 'package:registro_elettronico/ui/bloc/authentication/authentication_bloc.dart';
 
@@ -14,6 +15,14 @@ class AppInjector {
     injectService();
     injectRepository();
     injectBloc();
+    injectMapper();
+  }
+
+  static void injectMapper() {
+    // mappers to convert the response to db object
+    Injector.appInstance.registerSingleton((injector) {
+      return ProfileMapper();
+    });
   }
 
   static void injectDatabase() {
@@ -30,8 +39,8 @@ class AppInjector {
   static void injectRepository() {
     // repositoeries
     Injector.appInstance.registerSingleton((i) {
-      LoginRepository loginRepository =
-          LoginRepositoryImpl(i.getDependency(), i.getDependency());
+      LoginRepository loginRepository = LoginRepositoryImpl(
+          i.getDependency(), i.getDependency(), i.getDependency());
       return loginRepository;
     });
   }
