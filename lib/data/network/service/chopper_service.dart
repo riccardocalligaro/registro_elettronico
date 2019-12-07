@@ -9,7 +9,7 @@ class SpaggiariClient {
   static Map<String, String> _headers = {
     "User-Agent": "zorro/1.0",
     "Z-Dev-Apikey": "+zorro+",
-    "content-type": "application/json"
+    "Content-Type": "application/json"
   };
 
   static Map<String, String> _headers2 = {
@@ -25,9 +25,11 @@ class SpaggiariClient {
       _chopperClient = ChopperClient(
           baseUrl: '${ApiConfig.BASE_API_URL}',
           errorConverter: JsonConverter(),
-          converter: JsonToTypeConverter(
-              {Profile: (jsonData) => Profile.fromJson(jsonData)}),
+          converter: JsonConverter(),
+          //converter: JsonToTypeConverter(
+          //     {Profile: (jsonData) => Profile.fromJson(jsonData)}),
           interceptors: [
+            HttpLoggingInterceptor(),
             HeadersInterceptor(_headers)
             // TODO: interceptors for token
           ]);

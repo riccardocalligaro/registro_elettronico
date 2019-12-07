@@ -24,6 +24,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         final res = await loginRepository.signIn(
             username: event.username, password: event.password);
+        print("Usernaem sumbitted: " + event.username);
+        print("Password sumbitted: " + event.password);
+
         print(res.statusCode);
         print(res.bodyString);
         switch (res.statusCode) {

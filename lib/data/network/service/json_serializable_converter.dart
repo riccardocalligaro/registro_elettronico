@@ -1,3 +1,4 @@
+/*
 import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
@@ -26,4 +27,4 @@ class JsonToTypeConverter extends JsonConverter {
 
     return jsonParser(jsonMap);
   }
-}
+}*/

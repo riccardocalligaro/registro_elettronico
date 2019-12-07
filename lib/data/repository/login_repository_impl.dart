@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:alice/alice.dart';
 import 'package:chopper/chopper.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/network/service/api/login_api_service.dart';
@@ -16,7 +17,7 @@ class LoginRepositoryImpl implements LoginRepository {
       this.loginApiService, this.profileDao, this.profileMapper);
 
   @override
-  Future<Response<Profile>> signIn({String username, String password}) async {
+  Future<Response> signIn({String username, String password}) async {
     try {
       final loginData = {
         "ident": "$username",
@@ -24,8 +25,10 @@ class LoginRepositoryImpl implements LoginRepository {
         "uid": "$username"
       };
       final body = json.encode(loginData);
-      final res = await loginApiService.postLogin(body);
+      final res = await loginApiService.postLogin(loginData);
 
+  
+      print(body);
       return res;
     } catch (ex) {
       print(
