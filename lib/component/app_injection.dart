@@ -9,22 +9,20 @@ import 'package:registro_elettronico/domain/repository/login_repository.dart';
 
 class AppInjector {
   static void init() {
-    Injector.appInstance.registerSingleton<AppDatabase>((injector) {
-      return AppDatabase();
-    });
-
-    Injector.appInstance.registerSingleton<ProfileDao>((injector) {
-      return ProfileDao(injector.getDependency());
-    });
-
+    injectDatabase();
     injectService();
     injectRepository();
-    // injectDatabase();
-    // TODO: inject database
   }
 
   static void injectDatabase() {
-    // repositoeries
+    // main database
+    Injector.appInstance.registerSingleton<AppDatabase>((injector) {
+      return AppDatabase();
+    });
+    // daos
+    Injector.appInstance.registerSingleton<ProfileDao>((injector) {
+      return ProfileDao(injector.getDependency());
+    });
   }
 
   static void injectRepository() {

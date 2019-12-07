@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
 import 'package:registro_elettronico/ui/bloc/authentication/bloc.dart';
 import './bloc.dart';
@@ -28,22 +26,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             username: event.username, password: event.password);
         switch (res.statusCode) {
           case 200:
-            final profileJson = json.decode(res.body);
-            final ident = profileJson['ident'];
-            final firstName = profileJson['firstName'];
-            final lastName = profileJson['lastName'];
-            final token = profileJson['token'];
-            final release = profileJson['release'];
-            final expire = profileJson['expire'];
-            final profile = Profile(
+            final profile = res.body;
+
+            /**
+             
+            final profileDb = Profile(
                 // TODO: remove same id, make nullable in the database table constructor
                 id: 22,
-                ident: ident,
-                userName: firstName,
+                ident: profile.ident,
+                userName: profile.ident,
                 expire: DateTime.now(),
-                token: token,
-                name: firstName,
+                token: profile.token,
+                name: profile.firstName,
                 classe: '4IA');
+             */
             //authenticationBloc.dispatch(LoggedIn(profile: ));
             // authenticationBloc.
             authenticationBloc.add(LoggedIn(profile: profile));

@@ -14,10 +14,10 @@ class _$LoginApiService extends LoginApiService {
 
   final definitionType = LoginApiService;
 
-  Future<Response> postLogin(String body) {
+  Future<Response<Profile>> postLogin(String body) {
     final $url = '/auth/login';
     final $body = body;
     final $request = Request('POST', $url, client.baseUrl, body: $body);
-    return client.send<dynamic, dynamic>($request);
+    return client.send<Profile, Profile>($request);
   }
 }
