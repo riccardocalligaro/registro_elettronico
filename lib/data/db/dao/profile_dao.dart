@@ -13,5 +13,11 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
 
   Stream<List<Profile>> watchAllprofiles() => select(profiles).watch();
 
-  Future insertProfile(Profile profile) => into(profiles).insert(profile);
+  Future insertProfile(Profile profile) => delete(profiles).delete(profile);
+
+  Future deleteProfile(Profile profile) => delete(profiles).delete(profile);
+
+  Future deleteAllProfiles() =>
+      (delete(profiles)..where((entry) => entry.id.isBiggerOrEqualValue(-1)))
+          .go();
 }

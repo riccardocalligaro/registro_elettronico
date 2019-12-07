@@ -1,4 +1,5 @@
 import 'package:chopper/chopper.dart';
+import 'package:chopper/chopper.dart' as prefix0;
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 

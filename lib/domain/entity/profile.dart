@@ -1,3 +1,4 @@
+/*
 import 'package:json_annotation/json_annotation.dart';
 
 part 'profile.g.dart';
@@ -23,3 +24,5 @@ class Profile {
 
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
 }
+
+*/

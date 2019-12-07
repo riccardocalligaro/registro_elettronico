@@ -6,12 +6,14 @@ import 'package:registro_elettronico/data/network/service/api/chopper_api_servic
 import 'package:registro_elettronico/data/network/service/chopper_service.dart';
 import 'package:registro_elettronico/data/repository/login_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
+import 'package:registro_elettronico/ui/bloc/authentication/authentication_bloc.dart';
 
 class AppInjector {
   static void init() {
     injectDatabase();
     injectService();
     injectRepository();
+    injectBloc();
   }
 
   static void injectDatabase() {
@@ -42,6 +44,12 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton((injector) {
       return LoginApiService.create();
+    });
+  }
+
+  static void injectBloc() {
+    Injector.appInstance.registerSingleton((injector) {
+      return AuthenticationBloc(injector.getDependency());
     });
   }
 }

@@ -16,7 +16,8 @@ class AppBlocDelegate {
 
     _blocProviders = [
       BlocProvider<AuthenticationBloc>(
-        create: (bCtx) => AuthenticationBloc(injector.getDependency()),
+        create: (bCtx) =>
+            AuthenticationBloc(injector.getDependency())..add(AppStarted()),
       ),
       BlocProvider<LoginBloc>(
         create: (bCtx) => LoginBloc(

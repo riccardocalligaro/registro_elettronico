@@ -9,4 +9,10 @@ abstract class LoginRepository {
       {@required String username, @required String password});
 
   Future<bool> isLoggedIn();
+
+  Future insertProfile({@required Profile profile});
+
+  Future deleteProfile({@required Profile profile});
+
+  Future deleteAllProfiles();
 }

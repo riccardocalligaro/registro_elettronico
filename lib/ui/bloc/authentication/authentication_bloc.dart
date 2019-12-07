@@ -5,7 +5,6 @@ import './bloc.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  @override
   final LoginRepository _loginRepository;
 
   AuthenticationBloc(this._loginRepository) : assert(_loginRepository != null);
@@ -27,8 +26,14 @@ class AuthenticationBloc
 
     if (event is LoggedIn) {
       yield AuthenticationLoading();
-      // TODO : persist user
+      await _loginRepository.insertProfile(profile: event.profile);
       yield AuthenticationAuthenticated();
+    }
+
+    if (event is LoggedOut) {
+      yield AuthenticationLoading();
+      _loginRepository.deleteAllProfiles();
+      yield AuthenticationUnauthenticated();
     }
   }
 }
