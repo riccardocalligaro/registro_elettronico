@@ -11,7 +11,7 @@
 - [Design](#design)
 
 
----
+
 
 ## Overview of the project
 
@@ -27,7 +27,6 @@ Technologies and library that we will use:
 - 🐠 Equatable for object comparison
 - 🔥 Flare for animations
 
----
 
 ## Developers:
 
@@ -38,11 +37,9 @@ Technologies and library that we will use:
 | Filippo Veggo      |   filippoveggo@gmail.com    |                                Design & UI |
 | Samuele Zanella    | samuelezanella02@gmail.com  |                            UI & Animations |
 
----
 
 ## Description in italian
 
----
 
 Client Flutter per la gestione dei dati del registro elettronico (ClasseViva).
 
