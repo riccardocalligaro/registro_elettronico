@@ -10,9 +10,6 @@
 - [Description in italian](#description-in-italian)
 - [Design](#design)
 
-
-
-
 ## Overview of the project
 
 Flutter client for eletronic school register management (Classeviva).
@@ -27,7 +24,6 @@ Technologies and library that we will use:
 - 🐠 Equatable for object comparison
 - 🔥 Flare for animations
 
-
 ## Developers:
 
 | Name               |            Email            |                                       Role |
@@ -37,9 +33,7 @@ Technologies and library that we will use:
 | Filippo Veggo      |   filippoveggo@gmail.com    |                                Design & UI |
 | Samuele Zanella    | samuelezanella02@gmail.com  |                            UI & Animations |
 
-
 ## Description in italian
-
 
 Client Flutter per la gestione dei dati del registro elettronico (ClasseViva).
 
