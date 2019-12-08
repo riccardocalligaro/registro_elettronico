@@ -4,9 +4,11 @@ import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
+import 'package:registro_elettronico/data/repository/lessons_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/login_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/data/repository/profile_repository_impl.dart';
+import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
@@ -50,11 +52,17 @@ class AppInjector {
           ProfileRepositoryImpl(i.getDependency(), i.getDependency());
       return profileRepository;
     });
+
+    Injector.appInstance.registerSingleton((i) {
+      LessonsRepository lessonsRepository =
+          LessonsRepositoryImpl(i.getDependency());
+      return lessonsRepository;
+    });
   }
 
   static void injectService() {
-    Injector.appInstance.registerSingleton<Dio>((injector) {
-      return DioClient().createDio();
+    Injector.appInstance.registerSingleton<Dio>((i) {
+      return DioClient(i.getDependency()).createDio();
     });
 
     Injector.appInstance.registerSingleton<SpaggiariClient>((i) {

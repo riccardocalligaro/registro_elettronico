@@ -13,4 +13,7 @@ abstract class ProfileRepository {
 
   /// Deletes all profiles from the database
   Future deleteAllProfiles();
+
+  /// Gets the token
+  Future getToken();
 }

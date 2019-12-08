@@ -26,4 +26,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future deleteAllProfiles() => profileDao.deleteAllProfiles();
+
+  @override
+  Future<String> getToken() async {
+    final profile = await profileDao.getProfile();
+    return profile.token;
+  }
 }
