@@ -1,13 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injector/injector.dart';
-import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
-import 'package:registro_elettronico/data/repository/lessons_repository_impl.dart';
-import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
-import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
-import 'package:registro_elettronico/ui/feature/login/login_page.dart';
+import 'package:registro_elettronico/ui/feature/home/components/lesson_card.dart';
+import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -17,112 +10,101 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      ///Lesson Card
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(32.0, 32.0, 0.0, 0.0),
-        child: Container(
-          width: 275.0,
-          height: 200,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6.0),
-            color: Colors.red,
-          ),
+      key: _drawerKey,
+      drawer: AppDrawer(),
+      body: SafeArea(
           child: Column(
-            children: <Widget>[
-              Container(
-                width: 275,
-                child: Row(
-                  //TODO: Pills
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 30.0, 0, 0),
-                      child: Container(
-                        //TODO: Subject Related Icon
-                        child: Icon(Icons.format_list_bulleted),
-                        padding: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // TODO: change this to button
+                GestureDetector(
+                    onTap: () {
+                      _drawerKey.currentState.openDrawer();
+                    },
+                    child: Icon(Icons.menu)),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Text(
+                    'Last lessons',
+                    style: Theme.of(context).textTheme.headline,
+                  ),
                 ),
-              ),
-              Column(
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
                 children: <Widget>[
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-                      child: Container(
-                        color: Colors.red,
-                        child: Text("Math",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17.0)),
-                      ),
-                    ),
+                  LessonCard(
+                    color: Colors.red,
                   ),
-                  RaisedButton(
-                    child: Text('make request'),
-                    onPressed: () async {
-                      // S6102171X
-                      final dio = Dio();
-
-                      dio.options.headers["Content-Type"] = "application/json";
-                      dio.options.headers["Content-Type"] =
-                          Headers.jsonContentType;
-                      dio.options.headers["User-Agent"] = "zorro/1.0";
-                      dio.options.headers["Z-Dev-Apikey"] = "+zorro+";
-                      dio.options.headers["Z-Auth-Token"] =
-                          "QbtwzyMJirahT3XQPvKoZBM94suiadiF4i3tMcrkt2A9of4J9SI5NbaWmEOPf3MU60awefncdAREaolb+uQkTaLe3HsAUP9b0QbXMyZkpGazfIwwSYnV5valz8E9ldzzW1uQrTSapGvYtiUYSxt8OYJthP1ttaXtar2FW/r9FQb+PKQbcB89JtuLIp8ijaasLYm0oXb3LE9S+mrvf4WyUS7USZ0bFBBU+PFGnIO+Jth/nJH6kQqxa5KZDvbHUVTf";
-                      final lessons =
-                          await SpaggiariClient(dio).getTodayLessons("6102171");
-
-                      print(lessons[0].classDesc);
-                    },
+                  LessonCard(
+                    color: Colors.green,
                   ),
-                  RaisedButton(
-                    child: Text('Logout'),
-                    onPressed: () async {
-                      BlocProvider.of<AuthBloc>(context).add(SignOut());
-                      // print(await ProfileDao(Injector.appInstance.getDependency()).getAllProfiles());
-                    },
+                  LessonCard(
+                    color: Colors.blue,
                   ),
-                  BlocListener<AuthBloc, AuthState>(
-                    listener: (context, state) {
-                      if (state is SignOutSuccess) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
-                        );
-                      }
-                    },
-                  ),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 0.0),
-                      child: Container(
-                        color: Colors.red,
-                        child: Text(
-                            "Lorem  ipsum dolor sit a met txt only a test.",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14.0)),
-                      ),
-                    ),
+                  LessonCard(
+                    color: Colors.indigo,
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+          Divider(
+            color: Colors.grey[400],
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Notice Board',
+                      style: Theme.of(context).textTheme.headline,
+                    ),
+                    Text(
+                      'Discover all notice',
+                      style: TextStyle(color: Colors.grey[500], fontSize: 14),
+                    )
+                  ],
+                ),
+                RaisedButton(
+                  color: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
+                  child: Text(
+                    'View',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(18.0),
+                  ),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+          Divider(
+            color: Colors.grey[400],
+          ),
+        ],
+      )),
     );
   }
 }

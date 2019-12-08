@@ -5,5 +5,6 @@ final mainTextTheme = TextTheme(headline: HeadingSmall, body1: BodyStyle1);
 
 final defaultTheme = ThemeData(
     accentColor: Colors.red,
+    primaryColor: Colors.blue,
     textTheme: mainTextTheme,
     fontFamily: 'Montserrat');
