@@ -5,7 +5,7 @@ import 'package:registro_elettronico/component/simple_bloc_delegate.dart';
 import 'package:registro_elettronico/ui/feature/splash_screen/splash_screen.dart';
 import 'package:registro_elettronico/ui/global/themes/theme_data/default_theme.dart';
 import 'package:bloc/bloc.dart';
-
+import 'package:flutter/services.dart';
 import 'component/bloc_delegate.dart';
 import 'component/routes.dart';
 
@@ -15,6 +15,7 @@ void main() {
 }
 
 void initApp() {
+  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
   AppInjector.init();
   BlocSupervisor.delegate = SimpleBlocDelegate();
 }
