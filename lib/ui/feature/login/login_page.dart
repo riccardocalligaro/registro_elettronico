@@ -1,16 +1,12 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/data/network/service/api/chopper_api_services.dart';
-import 'package:registro_elettronico/data/network/service/chopper_service.dart';
-import 'package:registro_elettronico/data/network/service/retrofit/app_api.service.dart';
-import 'package:registro_elettronico/data/network/service/retrofit/entities/login_request.dart';
-import 'package:registro_elettronico/data/network/service/retrofit/rest_client.dart';
+import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
+import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
+import 'package:registro_elettronico/domain/entity/login_request.dart';
 import 'package:registro_elettronico/ui/bloc/login/bloc.dart';
 
 class LoginPage extends StatefulWidget {
@@ -79,26 +75,33 @@ class _LoginPageState extends State<LoginPage> {
                   RaisedButton(
                     child: Text('Service request'),
                     onPressed: () async {
-                      final rep = LoginApiService.create();
-                      final loginData = {
-                        "ident": "$_myUsername",
-                        "pass": "$_myPassword",
-                        "uid": "$_myUsername"
-                      };
-
-                      final dio = Dio();
-                      dio.options.headers["Content-Type"] = "application/json";
-                      dio.options.headers["User-Agent"] = "zorro/1.0";
-                      dio.options.headers["Z-Dev-Apikey"] = "+zorro+";
-                      final client = RestClient(dio);
                       final loginRequest = LoginRequest(
                           ident: "S6102171X",
-                          pass: "Tf5F7Qd8WxAR23Bh",
+                          pass: "Tf5F7Qd8WxAR23Bh2",
                           uid: "S6102171X");
-                      final res =
-                          await client.loginUser(json.encode(loginData));
+                      final loginRepo =
+                          SpaggiariClient(Injector.appInstance.getDependency());
 
-                      print(res.firstName);
+                      final res = await loginRepo
+                          .loginUser(loginRequest)
+                          .catchError((Object obj) {
+                        // non-200 error goes here.
+                        switch (obj.runtimeType) {
+                          case DioError:
+                            // Here's the sample to get the failed response error code and message
+                            final res = (obj as DioError).response;
+                            print(
+                                "Got error : ${res.statusCode} -> ${res.statusMessage}");
+                            break;
+                          default:
+                        }
+                      });
+                      print(res.expire);
+                      // final SpaggiariClient spaggiariClient = SpaggiariClient.dio;
+
+                      //final res = await spaggiariClient.loginUser(loginRequest);
+                      //print(res.firstName);
+
                       //final body = json.encode(loginData);
                       //print(body);
                       //final res = await rep.postLogin(loginData);

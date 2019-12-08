@@ -1,5 +1,6 @@
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/domain/entity/entities.dart' as entity;
+import 'package:registro_elettronico/domain/entity/login_response.dart';
 
 class ProfileMapper {
   const ProfileMapper();
@@ -14,5 +15,15 @@ class ProfileMapper {
       release: DateTime.parse(e.release) ?? DateTime.now(),
       expire: DateTime.parse(e.expire) ?? DateTime.now(),
     );
+  }
+
+  entity.Profile mapLoginResponseProfileToProfileEntity(
+      LoginResponse resProfile) {
+    return entity.Profile(
+        firstName: resProfile.firstName,
+        lastName: resProfile.lastName,
+        token: resProfile.token,
+        release: resProfile.release,
+        expire: resProfile.expire);
   }
 }

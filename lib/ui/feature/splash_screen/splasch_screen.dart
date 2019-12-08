@@ -8,10 +8,7 @@ class SplashPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.red,
       body: Center(
-        child: Icon(
-          Icons.book,
-          size: 64.0,
-        ),
+        child: Container(child: CircularProgressIndicator()),
       ),
     );
   }

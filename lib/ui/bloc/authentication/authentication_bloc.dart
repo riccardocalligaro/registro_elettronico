@@ -17,6 +17,7 @@ class AuthenticationBloc
   ) async* {
     if (event is AppStarted) {
       final isUserLoggedIn = await _loginRepository.isLoggedIn();
+      print("isUserLoggedIn" + isUserLoggedIn.toString());
       if (isUserLoggedIn) {
         yield AuthenticationAuthenticated();
       } else {
@@ -26,13 +27,14 @@ class AuthenticationBloc
 
     if (event is LoggedIn) {
       yield AuthenticationLoading();
+      print("insert profile!");
       await _loginRepository.insertProfile(profile: event.profile);
       yield AuthenticationAuthenticated();
     }
 
     if (event is LoggedOut) {
       yield AuthenticationLoading();
-      _loginRepository.deleteAllProfiles();
+      //_loginRepository.deleteAllProfiles();
       yield AuthenticationUnauthenticated();
     }
   }

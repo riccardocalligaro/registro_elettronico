@@ -22,7 +22,8 @@ class AppBlocDelegate {
       BlocProvider<LoginBloc>(
         create: (bCtx) => LoginBloc(
             loginRepository: injector.getDependency(),
-            authenticationBloc: injector.getDependency()),
+            authenticationBloc: injector.getDependency(),
+            spaggiariClient: injector.getDependency()),
       )
     ];
   }

@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'rest_client.dart';
+part of 'spaggiari_client.dart';
 
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
 
-class _RestClient implements RestClient {
-  _RestClient(this._dio, {this.baseUrl}) {
+class _SpaggiariClient implements SpaggiariClient {
+  _SpaggiariClient(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
     this.baseUrl ??= 'https://web.spaggiari.eu/rest/v1';
   }
@@ -17,11 +17,12 @@ class _RestClient implements RestClient {
   String baseUrl;
 
   @override
-  loginUser(body) async {
-    ArgumentError.checkNotNull(body, 'body');
+  loginUser(loginRequest) async {
+    ArgumentError.checkNotNull(loginRequest, 'loginRequest');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _data = body;
+    final _data = <String, dynamic>{};
+    _data.addAll(loginRequest.toJson() ?? <String, dynamic>{});
     final Response<Map<String, dynamic>> _result = await _dio.request(
         '/auth/login',
         queryParameters: queryParameters,

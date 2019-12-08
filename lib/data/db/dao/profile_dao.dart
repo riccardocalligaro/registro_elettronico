@@ -15,7 +15,7 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
       select(profiles).watch();
 
   Future insertProfile(Insertable<Profile> profile) =>
-      delete(profiles).delete(profile);
+      into(profiles).insert(profile);
 
   Future deleteProfile(Insertable<Profile> profile) =>
       delete(profiles).delete(profile);
