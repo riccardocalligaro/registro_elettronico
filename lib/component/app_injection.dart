@@ -6,7 +6,9 @@ import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/data/repository/login_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
+import 'package:registro_elettronico/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
+import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 
 class AppInjector {
@@ -37,12 +39,16 @@ class AppInjector {
   }
 
   static void injectRepository() {
-    // repositoeries
-
     Injector.appInstance.registerSingleton((i) {
       LoginRepository loginRepository = LoginRepositoryImpl(
           i.getDependency(), i.getDependency(), i.getDependency());
       return loginRepository;
+    });
+
+    Injector.appInstance.registerSingleton((i) {
+      ProfileRepository profileRepository =
+          ProfileRepositoryImpl(i.getDependency(), i.getDependency());
+      return profileRepository;
     });
   }
 
@@ -60,8 +66,8 @@ class AppInjector {
   }
 
   static void injectBloc() {
-    Injector.appInstance.registerSingleton((injector) {
-      return AuthBloc(injector.getDependency());
+    Injector.appInstance.registerSingleton((i) {
+      return AuthBloc(i.getDependency(), i.getDependency());
     });
   }
 }
