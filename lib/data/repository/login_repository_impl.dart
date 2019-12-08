@@ -34,22 +34,4 @@ class LoginRepositoryImpl implements LoginRepository {
           "Login repository implementation, sign in method, ${ex.toString()}");
     }
   }
-
-  // TODO: divide profile and login
-
-  Future<bool> isLoggedIn() async {
-    final profiles = await profileDao.getAllProfiles();
-    return (profiles.length >= 1);
-  }
-
-  @override
-  Future deleteProfile({Profile profile}) => profileDao.deleteProfile(
-      profileMapper.mapProfileEntityToProfileInsertable(profile));
-
-  @override
-  Future insertProfile({Profile profile}) => profileDao.insertProfile(
-      profileMapper.mapProfileEntityToProfileInsertable(profile));
-
-  @override
-  Future deleteAllProfiles() => profileDao.deleteAllProfiles();
 }
