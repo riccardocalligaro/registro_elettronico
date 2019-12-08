@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
@@ -21,10 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final String _myUsername = "x";
-  final String _myPassword = "x";
-
   bool _valide = false;
+  String _errorMessage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -55,23 +54,6 @@ class _LoginPageState extends State<LoginPage> {
                         _signIn(context);
                       },
                     )),
-                BlocListener<AuthBloc, AuthState>(
-                    listener: (context, state) {
-                      if (state is SignInSuccess) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                        );
-                      }
-                    },
-                    child: Container()),
-
-                RaisedButton(
-                  child: Text('AUto sing in'),
-                  onPressed: () {
-                    _autoSignIn(context);
-                  },
-                ),
               ],
             ),
           ],
@@ -122,66 +104,64 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildLoginForm() {
-    return Padding(
-      padding: EdgeInsets.only(top: TOP_FIELDS_PADDING),
-      child: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextFormField(
-              controller: _usernameController,
-              decoration: InputDecoration(
-                  hintText: 'Username',
-                  errorText: _valide ? "" : null,
-                  contentPadding: EdgeInsetsGeometry.lerp(
-                      const EdgeInsetsDirectional.only(end: 6.0),
-                      EdgeInsets.symmetric(vertical: 5),
-                      2.0)),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            TextFormField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                  hintText: 'Password',
-                  errorText: _valide ? "" : null,
-                  contentPadding: EdgeInsetsGeometry.lerp(
-                      const EdgeInsetsDirectional.only(end: 6.0),
-                      EdgeInsets.symmetric(vertical: 5),
-                      2.0)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+    return BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is SignInSuccess) {
+            /// If the sign in is successful then navigate to the home page
+            AppNavigator.instance.navToHome(context);
+          }
 
-  StreamBuilder<List<Profile>> _buildProfilesList(BuildContext context) {
-    final ProfileDao profileDao =
-        ProfileDao(Injector.appInstance.getDependency());
-    return StreamBuilder(
-      stream: profileDao.watchAllprofiles(),
-      builder: (context, AsyncSnapshot<List<Profile>> snapshot) {
-        final profiles = snapshot.data ?? List();
-        return ListView.builder(
-          itemCount: profiles.length,
-          itemBuilder: (_, index) {
-            final profile = profiles[index];
-            return Text(profile.ident);
-          },
-        );
-      },
-    );
+          /// Sets the valide data to true
+          if (state is SignInError) {
+            setState(() {
+              _valide = true;
+              _errorMessage = state.message;
+            });
+          }
+
+          if (state is SignInLoading) {
+            AppNavigator.instance.showSnackBar(context, "Loading...");
+          }
+        },
+        child: Padding(
+          padding: EdgeInsets.only(top: TOP_FIELDS_PADDING),
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                TextFormField(
+                  controller: _usernameController,
+                  decoration: InputDecoration(
+                      hintText: 'Username',
+                      errorText: _valide ? "" : null,
+                      contentPadding: EdgeInsetsGeometry.lerp(
+                          const EdgeInsetsDirectional.only(end: 6.0),
+                          EdgeInsets.symmetric(vertical: 5),
+                          2.0)),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      hintText: 'Password',
+                      errorText: _valide ? "" : null,
+                      contentPadding: EdgeInsetsGeometry.lerp(
+                          const EdgeInsetsDirectional.only(end: 6.0),
+                          EdgeInsets.symmetric(vertical: 5),
+                          2.0)),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 
   _signIn(BuildContext context) {
-    BlocProvider.of<AuthBloc>(context)
-        .add(SignIn(username: _myUsername, password: _myPassword));
-  }
-
-  void _autoSignIn(BuildContext context) {
-    BlocProvider.of<AuthBloc>(context).add(AutoSignIn());
+    BlocProvider.of<AuthBloc>(context).add(SignIn(
+        username: _usernameController.text,
+        password: _passwordController.text));
   }
 }
