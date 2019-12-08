@@ -8,12 +8,14 @@
 - [Group members](#developers)
 - [Current state of the project](#current-state-of-the-project)
 - [Description in italian](#description-in-italian)
+- [Folders structure](#folders-structure)
+
 - [Design](#design)
 - [API Documentation](#classeviva-api-documentation)
 
 ## Overview of the project
 
-Flutter client for eletronic school register management (Classeviva).
+Flutter client for eletronic school register management using clean architecture(Classeviva).
 
 Technologies and library that we will use:
 
@@ -58,6 +60,70 @@ Tecnologie e librerie che useremo:
 - 💉 Injector per dependency injection
 - 🐠 Equatable per comparazione oggetto
 - 🔥 Flare per animazioni
+
+## Folders structure
+
+📦lib
+┣ 📂component
+┃ ┣ 📜api_config.dart
+┃ ┣ 📜app_injection.dart
+┃ ┣ 📜bloc_delegate.dart
+┃ ┣ 📜navigator.dart
+┃ ┣ 📜routes.dart
+┃ ┗ 📜simple_bloc_delegate.dart
+┣ 📂data
+┃ ┣ 📂db
+┃ ┃ ┣ 📂dao
+┃ ┃ ┃ ┣ 📜profile_dao.dart
+┃ ┃ ┃ ┗ 📜profile_dao.g.dart
+┃ ┃ ┣ 📂table
+┃ ┃ ┃ ┗ 📜profile_table.dart
+┃ ┃ ┣ 📜moor_database.dart
+┃ ┃ ┗ 📜moor_database.g.dart
+┃ ┣ 📂network
+┃ ┃ ┗ 📂service
+┃ ┃ ┃ ┗ 📂api
+┃ ┃ ┃ ┃ ┣ 📜dio_client.dart
+┃ ┃ ┃ ┃ ┣ 📜spaggiari_client.dart
+┃ ┃ ┃ ┃ ┗ 📜spaggiari_client.g.dart
+┃ ┗ 📂repository
+┃ ┃ ┣ 📂mapper
+┃ ┃ ┃ ┗ 📜profile_mapper.dart
+┃ ┃ ┣ 📜login_repository_impl.dart
+┃ ┃ ┗ 📜profile_repository_impl.dart
+┣ 📂domain
+┃ ┣ 📂entity
+┃ ┃ ┣ 📜entities.dart
+┃ ┃ ┣ 📜login_request.dart
+┃ ┃ ┣ 📜login_request.g.dart
+┃ ┃ ┣ 📜login_response.dart
+┃ ┃ ┣ 📜login_response.g.dart
+┃ ┃ ┣ 📜profile.dart
+┃ ┃ ┗ 📜profile.g.dart
+┃ ┗ 📂repository
+┃ ┃ ┣ 📜login_repository.dart
+┃ ┃ ┗ 📜profile_repository.dart
+┣ 📂ui
+┃ ┣ 📂bloc
+┃ ┃ ┗ 📂auth
+┃ ┃ ┃ ┣ 📜auth_bloc.dart
+┃ ┃ ┃ ┣ 📜auth_event.dart
+┃ ┃ ┃ ┣ 📜auth_state.dart
+┃ ┃ ┃ ┗ 📜bloc.dart
+┃ ┣ 📂feature
+┃ ┃ ┣ 📂home
+┃ ┃ ┃ ┗ 📜home_page.dart
+┃ ┃ ┣ 📂login
+┃ ┃ ┃ ┗ 📜login_page.dart
+┃ ┃ ┣ 📂splash_screen
+┃ ┃ ┃ ┗ 📜splash_screen.dart
+┃ ┃ ┗ 📜pages.dart
+┃ ┗ 📂global
+┃ ┃ ┗ 📂themes
+┃ ┃ ┃ ┗ 📂theme_data
+┃ ┃ ┃ ┃ ┣ 📜default_theme.dart
+┃ ┃ ┃ ┃ ┗ 📜text_styles.dart
+┗ 📜main.dart
 
 ## Design
 
