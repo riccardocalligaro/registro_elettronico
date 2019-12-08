@@ -5,13 +5,15 @@ import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart'
 import 'package:registro_elettronico/domain/entity/login_response.dart';
 import 'package:registro_elettronico/domain/entity/profile.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
+import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import './bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Profile _profile;
   LoginRepository loginRepository;
+  ProfileRepository profileRepository;
 
-  AuthBloc(this.loginRepository);
+  AuthBloc(this.loginRepository, this.profileRepository);
 
   @override
   AuthState get initialState => Init();
@@ -22,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async* {
     if (event is AutoSignIn) {
       yield AutoSignInLoading();
-      final isUserLoggedIn = await loginRepository.isLoggedIn();
+      final isUserLoggedIn = await profileRepository.isLoggedIn();
       if (isUserLoggedIn) {
         yield AutoSignInResult();
       } else {
@@ -53,13 +55,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
 
     if (event is SignOut) {
-      await loginRepository.deleteAllProfiles();
+      await profileRepository.deleteAllProfiles();
       yield SignOutSuccess();
     }
   }
 
   _saveProfileInDb(LoginResponse returnedProfile) {
-    loginRepository.insertProfile(
+    profileRepository.insertProfile(
         profile: ProfileMapper()
             .mapLoginResponseProfileToProfileEntity(returnedProfile));
   }

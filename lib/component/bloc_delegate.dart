@@ -15,7 +15,8 @@ class AppBlocDelegate {
 
     _blocProviders = [
       BlocProvider<AuthBloc>(
-        create: (bCtx) => AuthBloc(injector.getDependency()),
+        create: (bCtx) =>
+            AuthBloc(injector.getDependency(), injector.getDependency()),
       ),
     ];
   }
