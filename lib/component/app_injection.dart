@@ -7,7 +7,7 @@ import 'package:registro_elettronico/data/network/service/api/spaggiari_client.d
 import 'package:registro_elettronico/data/repository/login_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
-import 'package:registro_elettronico/ui/bloc/authentication/authentication_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 
 class AppInjector {
   static void init() {
@@ -61,7 +61,7 @@ class AppInjector {
 
   static void injectBloc() {
     Injector.appInstance.registerSingleton((injector) {
-      return AuthenticationBloc(injector.getDependency());
+      return AuthBloc(injector.getDependency());
     });
   }
 }

@@ -1,13 +1,12 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
-import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
-import 'package:registro_elettronico/domain/entity/login_request.dart';
-import 'package:registro_elettronico/ui/bloc/login/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/auth/auth_event.dart';
+import 'package:registro_elettronico/ui/bloc/auth/auth_state.dart';
+import 'package:registro_elettronico/ui/feature/home/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -22,6 +21,9 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  final String _myUsername = "x";
+  final String _myPassword = "x";
+
   bool _valide = false;
 
   @override
@@ -29,54 +31,50 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
-          child: BlocListener<LoginBloc, LoginState>(
-        listener: (context, state) {
-          if (state is LoginLoading) {
-            Scaffold.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(_buildLoadingSnackBar("Logging In..."));
-          }
+          child: Padding(
+        padding: EdgeInsets.fromLTRB(LEFT_LOGIN_PADDING, 0, 0, 0),
+        child: Column(
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // Welcome, login with Classeviva
+                _buildWelcomeText("Welcome, "),
+                _buildLoginMessageText("Classeviva"),
+                _buildLoginForm(),
+                Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: RaisedButton(
+                      child: Text(
+                        'Log in',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      color: Theme.of(context).accentColor,
+                      onPressed: () {
+                        _signIn(context);
+                      },
+                    )),
+                BlocListener<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      if (state is SignInSuccess) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                        );
+                      }
+                    },
+                    child: Container()),
 
-          if (state is LoginWrongCredentials) {
-            Scaffold.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(_buildLoadingSnackBar("Wrong credentials..."));
-            setState(() {
-              _valide = true;
-            });
-          }
-        },
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(LEFT_LOGIN_PADDING, 0, 0, 0),
-          child: Column(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // Welcome, login with Classeviva
-                  _buildWelcomeText("Welcome, "),
-                  _buildLoginMessageText("Classeviva"),
-                  _buildLoginForm(),
-                  Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: RaisedButton(
-                        child: Text(
-                          'Log in',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        color: Theme.of(context).accentColor,
-                        onPressed: () {
-                          BlocProvider.of<LoginBloc>(context).add(
-                              LoginButtonPressed(
-                                  username: _usernameController.text,
-                                  password: _passwordController.text));
-                        },
-                      )),
-                ],
-              ),
-            ],
-          ),
+                RaisedButton(
+                  child: Text('AUto sing in'),
+                  onPressed: () {
+                    _autoSignIn(context);
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       )),
     );
@@ -176,5 +174,14 @@ class _LoginPageState extends State<LoginPage> {
         );
       },
     );
+  }
+
+  _signIn(BuildContext context) {
+    BlocProvider.of<AuthBloc>(context)
+        .add(SignIn(username: _myUsername, password: _myPassword));
+  }
+
+  void _autoSignIn(BuildContext context) {
+    BlocProvider.of<AuthBloc>(context).add(AutoSignIn());
   }
 }

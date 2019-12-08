@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
-import 'package:registro_elettronico/ui/bloc/authentication/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/login/login_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 
 class AppBlocDelegate {
   static AppBlocDelegate _instance;
@@ -15,16 +14,9 @@ class AppBlocDelegate {
     _repositoryProviders = [];
 
     _blocProviders = [
-      BlocProvider<AuthenticationBloc>(
-        create: (bCtx) =>
-            AuthenticationBloc(injector.getDependency())..add(AppStarted()),
+      BlocProvider<AuthBloc>(
+        create: (bCtx) => AuthBloc(injector.getDependency()),
       ),
-      BlocProvider<LoginBloc>(
-        create: (bCtx) => LoginBloc(
-            loginRepository: injector.getDependency(),
-            authenticationBloc: injector.getDependency(),
-            spaggiariClient: injector.getDependency()),
-      )
     ];
   }
 

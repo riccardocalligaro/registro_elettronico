@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
-import 'package:registro_elettronico/ui/bloc/authentication/authentication_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/authentication/authentication_event.dart';
-import 'package:registro_elettronico/ui/bloc/authentication/authentication_state.dart';
-import 'package:registro_elettronico/ui/bloc/login/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
+import 'package:registro_elettronico/ui/feature/login/login_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -68,17 +67,21 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                    builder: (context, state) {
-                      return Text(state.toString());
-                    },
-                  ),
                   RaisedButton(
                     child: Text('Logout'),
                     onPressed: () async {
+                      BlocProvider.of<AuthBloc>(context).add(SignOut());
                       // print(await ProfileDao(Injector.appInstance.getDependency()).getAllProfiles());
-                      BlocProvider.of<AuthenticationBloc>(context)
-                          .add(LoggedOut());
+                    },
+                  ),
+                  BlocListener<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      if (state is SignOutSuccess) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
+                      }
                     },
                   ),
                   Align(
