@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/component/simple_bloc_delegate.dart';
-import 'package:registro_elettronico/ui/feature/login/login_page.dart';
-import 'package:registro_elettronico/ui/feature/splash_screen/splasch_screen.dart';
+import 'package:registro_elettronico/ui/feature/splash_screen/splash_screen.dart';
 import 'package:registro_elettronico/ui/global/themes/theme_data/default_theme.dart';
 import 'package:bloc/bloc.dart';
 
