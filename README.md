@@ -8,6 +8,8 @@
 - [API Documentation](#classeviva-api-documentation)
 - [Group members](#developers)
 - [Description in italian](#description-in-italian)
+- [Design](#design)
+
 
 ---
 
@@ -44,26 +46,19 @@ Technologies and library that we will use:
 
 Client Flutter per la gestione dei dati del registro elettronico (ClasseViva).
 
-Tecnologie che useremo:
+Tecnologie e librerie che useremo:
 
-- Flutter
-- Chopper per le richieste alle API
-- BLoC per la gestione dello stato
-- Flare per le animazioni
+- 🔝 Flutter + Dart
+- 📡 Retrofit + Dio per richieste alle API
+- 🧱 BLoC per la gestione dello stato
+- 📚 Moor per persistenza dati
+- 💉 Injector per dependency injection
+- 🐠 Equatable per comparazione oggetto
+- 🔥 Flare per animazioni
 
----
+## Design
 
-Developers:
-
-- Riccardo Calligaro, admin riccardocalligaro@gmail.com
-
-- Jacopo Ferian, jacopo893@gmail.com
-- Filippo Veggo, filippoveggo@gmail.com
-- Samuele Zanella, samuelezanella02@gmail.com
-
----
-
-## Design (Filippo Veggo & Riccardo Calligaro)
+### Filippo Veggo & Riccardo Calligaro
 
 <div align="center">
 
@@ -99,6 +94,7 @@ Developers:
     height="400px"
      alt="the home page"
      style="margin-right: 10px;" />
+
 </div>
 
 </div>
