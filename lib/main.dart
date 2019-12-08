@@ -29,20 +29,13 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: AppBlocDelegate.instance(context).blocProviders,
         child: MaterialApp(
+          title: 'School register',
           theme: defaultTheme,
           routes: Routes.routes,
           onUnknownRoute: (settings) {
             return MaterialPageRoute(builder: (ctx) => SplashScreen());
           },
         ),
-        /*child: MaterialApp(
-          title: 'School dairy',
-          routes: Routes.routes,
-          theme: defaultTheme,
-          onUnknownRoute: (settings) {
-            return MaterialPageRoute(builder: (ctx) => LoginPage());
-          },
-        ),*/
       ),
     );
   }
