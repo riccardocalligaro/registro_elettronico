@@ -115,12 +115,14 @@ class _LoginPageState extends State<LoginPage> {
           if (state is SignInError) {
             setState(() {
               _valide = true;
-              _errorMessage = state.message;
             });
           }
 
           if (state is SignInLoading) {
-            AppNavigator.instance.showSnackBar(context, "Loading...");
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text('Loading...'),
+              duration: Duration(milliseconds: 2000),
+            ));
           }
         },
         child: Padding(

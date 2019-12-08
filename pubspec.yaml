@@ -19,8 +19,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  chopper: ^3.0.1
-  provider: ^3.2.0
   injector: ^1.0.8
   equatable: ^1.0.1
   flutter_bloc: ^2.1.1
@@ -36,7 +34,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  chopper_generator: ^3.0.2
   build_runner:
   moor_generator: ^2.1.1
   json_serializable: ^3.2.3

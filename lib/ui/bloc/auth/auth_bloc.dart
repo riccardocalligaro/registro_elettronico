@@ -3,13 +3,11 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/domain/entity/login_response.dart';
-import 'package:registro_elettronico/domain/entity/profile.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import './bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  Profile _profile;
   LoginRepository loginRepository;
   ProfileRepository profileRepository;
 
@@ -33,24 +31,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
 
     if (event is SignIn) {
+      yield SignInLoading();
       try {
         final returnedProfile = await loginRepository.signIn(
             username: event.username, password: event.password);
         _saveProfileInDb(returnedProfile);
-        print(returnedProfile.firstName);
         yield SignInSuccess(ProfileMapper()
             .mapLoginResponseProfileToProfileEntity(returnedProfile));
       } catch (e) {
         if (e is DioError) {
           if (e.response.statusCode == 422) {
-            yield SignInError(e.error.toString());
+            yield SignInError(e.response.statusCode.toString());
           } else {
             yield SignInError(e.error.toString());
           }
         } else {
           yield SignInError(e.toString());
         }
-        print(e);
       }
     }
 
