@@ -44,10 +44,11 @@ dev_dependencies:
   retrofit_generator: any
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-uses-material-design: true
+
 # The following section is specific to Flutter.
 
 flutter:
+  uses-material-design: true
   fonts:
     - family: Montserrat
       fonts:
