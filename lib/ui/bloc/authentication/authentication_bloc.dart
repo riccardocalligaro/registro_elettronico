@@ -34,7 +34,7 @@ class AuthenticationBloc
 
     if (event is LoggedOut) {
       yield AuthenticationLoading();
-      //_loginRepository.deleteAllProfiles();
+      _loginRepository.deleteAllProfiles();
       yield AuthenticationUnauthenticated();
     }
   }

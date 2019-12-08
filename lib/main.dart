@@ -6,6 +6,7 @@ import 'package:registro_elettronico/ui/bloc/authentication/authentication_state
 import 'package:registro_elettronico/ui/feature/home/home_page.dart';
 import 'package:registro_elettronico/ui/feature/login/login_page.dart';
 import 'package:registro_elettronico/ui/feature/splash_screen/splasch_screen.dart';
+import 'package:registro_elettronico/ui/global/themes/theme_data/default_theme.dart';
 
 import 'component/bloc_delegate.dart';
 import 'ui/bloc/authentication/authentication_bloc.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: AppBlocDelegate.instance(context).blocProviders,
         child: MaterialApp(
+          theme: defaultTheme,
           home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             builder: (context, state) {
               if (state is AuthenticationUninitialized) {

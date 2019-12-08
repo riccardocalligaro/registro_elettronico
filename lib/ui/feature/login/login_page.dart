@@ -19,17 +19,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   static const double LEFT_LOGIN_PADDING = 80.0;
   static const double TOP_FIELDS_PADDING = 32.0;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  String _errorMessage = null;
+  bool _valide = false;
 
   @override
   Widget build(BuildContext context) {
-    //! remove passswords
-    final String _myUsername = "S6102171X";
-    final String _myPassword = "Tf5F7Qd8WxAR23Bh";
-    final TextEditingController _usernameController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
-
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
@@ -38,11 +34,16 @@ class _LoginPageState extends State<LoginPage> {
           if (state is LoginLoading) {
             Scaffold.of(context)
               ..hideCurrentSnackBar()
-              ..showSnackBar(_buildLoadingSnackBar());
+              ..showSnackBar(_buildLoadingSnackBar("Logging In..."));
           }
 
           if (state is LoginWrongCredentials) {
-            // TODO: add if password are wrong
+            Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(_buildLoadingSnackBar("Wrong credentials..."));
+            setState(() {
+              _valide = true;
+            });
           }
         },
         child: Padding(
@@ -68,49 +69,10 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           BlocProvider.of<LoginBloc>(context).add(
                               LoginButtonPressed(
-                                  username: _myUsername,
-                                  password: _myPassword));
+                                  username: _usernameController.text,
+                                  password: _passwordController.text));
                         },
                       )),
-                  RaisedButton(
-                    child: Text('Service request'),
-                    onPressed: () async {
-                      final loginRequest = LoginRequest(
-                          ident: "S6102171X",
-                          pass: "Tf5F7Qd8WxAR23Bh2",
-                          uid: "S6102171X");
-                      final loginRepo =
-                          SpaggiariClient(Injector.appInstance.getDependency());
-
-                      final res = await loginRepo
-                          .loginUser(loginRequest)
-                          .catchError((Object obj) {
-                        // non-200 error goes here.
-                        switch (obj.runtimeType) {
-                          case DioError:
-                            // Here's the sample to get the failed response error code and message
-                            final res = (obj as DioError).response;
-                            print(
-                                "Got error : ${res.statusCode} -> ${res.statusMessage}");
-                            break;
-                          default:
-                        }
-                      });
-                      print(res.expire);
-                      // final SpaggiariClient spaggiariClient = SpaggiariClient.dio;
-
-                      //final res = await spaggiariClient.loginUser(loginRequest);
-                      //print(res.firstName);
-
-                      //final body = json.encode(loginData);
-                      //print(body);
-                      //final res = await rep.postLogin(loginData);
-                      //print(res.bodyString);
-                      //print(res.statusCode);
-                      ///print(res.headers);
-                    },
-                  )
-                  //_buildProfilesList(context)
                 ],
               ),
             ],
@@ -120,13 +82,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  SnackBar _buildLoadingSnackBar() {
+  SnackBar _buildLoadingSnackBar(String message) {
     return SnackBar(
       content: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Logging In...'),
-          CircularProgressIndicator(),
+          Text(message),
         ],
       ),
     );
@@ -170,8 +131,10 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             TextFormField(
+              controller: _usernameController,
               decoration: InputDecoration(
                   hintText: 'Username',
+                  errorText: _valide ? "" : null,
                   contentPadding: EdgeInsetsGeometry.lerp(
                       const EdgeInsetsDirectional.only(end: 6.0),
                       EdgeInsets.symmetric(vertical: 5),
@@ -181,10 +144,11 @@ class _LoginPageState extends State<LoginPage> {
               height: 20.0,
             ),
             TextFormField(
+              controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
-                  errorText: _errorMessage,
                   hintText: 'Password',
+                  errorText: _valide ? "" : null,
                   contentPadding: EdgeInsetsGeometry.lerp(
                       const EdgeInsetsDirectional.only(end: 6.0),
                       EdgeInsets.symmetric(vertical: 5),
