@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
+import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/ui/feature/home/components/lesson_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 
@@ -98,7 +100,12 @@ class _HomePageState extends State<HomePage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(18.0),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    final client =
+                        SpaggiariClient(Injector.appInstance.getDependency());
+                    final res = await client.getTodayLessons("6102171");
+                    print(res.lessons[0].authorName);
+                  },
                 ),
               ],
             ),

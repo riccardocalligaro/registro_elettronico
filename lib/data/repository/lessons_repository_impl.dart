@@ -9,7 +9,8 @@ class LessonsRepositoryImpl implements LessonsRepository {
   @override
   Future<List<Lesson>> getLessons(String studentId) async {
     final lessons = await spaggiariClient.getTodayLessons(studentId);
-    //print(lessons[0].authorName);
+    //final lessonsList = lesson
+    // return lessons;
     //return lessons;
   }
 }
