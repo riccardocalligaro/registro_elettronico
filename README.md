@@ -15,7 +15,7 @@
 
 Flutter client for eletronic school register management using clean architecture(Classeviva).
 
-Technologies and library that we will use:
+Technologies and libraries that we will use:
 
 - 🔝 Flutter + Dart
 - 📡 Retrofit + Dio for API requests
@@ -113,17 +113,17 @@ Tecnologie e librerie che useremo:
 Body:
 
 ```json
-{"ident":null","pass":"user_pass""uid":"user_id"}
+{ "ident": "null", "pass": "user_pass", "uid": "user_id" }
 ```
 
 **Response**
 
 ```json
 {
-  "ident": "USER_ID",
-  "firstName": "USER_FIRSTNAME",
-  "lastName": "USER_LASTNAME",
-  "token": "USER_TOKEN", //Needed for authentication
+  "ident": "**********",
+  "firstName": "RICCARDO",
+  "lastName": "CALLIGARO",
+  "token": "🤫",
   "release": "2017-09-28T20:29:25+02:00",
   "expire": "2017-09-28T21:59:25+02:00"
 }
@@ -137,7 +137,7 @@ Body:
 
 ## Description
 
-This endpoint provide the timestamp of the relase and expire date of the token, the remaining time in seconds and the user ID.
+This endpoint provides the timestamp of the relase and expire date of the token, the remaining time in seconds and the user ID.
 
 ## Required Header
 
@@ -150,7 +150,7 @@ This endpoint provide the timestamp of the relase and expire date of the token, 
   "status": {
     "expire": "2017-10-20T13:14:23+02:00",
     "release": "2017-10-20T11:44:23+02:00",
-    "ident": "*********",
+    "ident": "**********",
     "remains": 5238
   }
 }
@@ -164,7 +164,7 @@ This endpoint provide the timestamp of the relase and expire date of the token, 
 
 ## Description
 
-This endpoint provide the absences of a student.
+This endpoint provides the absences of a student.
 
 ## Required Header
 
@@ -208,7 +208,7 @@ This endpoint provide the absences of a student.
 
 ## Description
 
-This endpoint provide the subjects of a student.
+This endpoint provides the subjects of a student.
 
 ## Required Header
 
@@ -246,7 +246,7 @@ This endpoint provide the subjects of a student.
 
 ## Description
 
-This endpoint provide the didactic material of a student.
+This endpoint provides the didactic material of a student.
 
 ## Required Header
 
@@ -307,7 +307,7 @@ This endpoint provides information about the user.
       "firstName": "RICCARDO",
       "lastName": "CALLIGARO",
       "birthDate": "2002-05-11",
-      "fiscalCode": "REDACTED",
+      "fiscalCode": "🤫",
       "schCode": "VEIT0007",
       "schName": "ISTITUTO TECNICO INDUSTRIALE STATALE",
       "schDedication": "\" C. ZUCCANTE \"",
