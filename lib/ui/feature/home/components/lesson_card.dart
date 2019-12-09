@@ -11,7 +11,8 @@ class LessonCard extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(right: 8.0),
       child: Container(
-        width: 200.0,
+        width: 220.0,
+        height: 140,
         decoration: BoxDecoration(
             color: color, borderRadius: BorderRadius.circular(5.0)),
         child: Padding(
