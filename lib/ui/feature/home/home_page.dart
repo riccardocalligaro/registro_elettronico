@@ -24,16 +24,19 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+            padding: const EdgeInsets.all(5.0),
+            child: IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                _drawerKey.currentState.openDrawer();
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                // TODO: change this to button
-                GestureDetector(
-                    onTap: () {
-                      _drawerKey.currentState.openDrawer();
-                    },
-                    child: Icon(Icons.menu)),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
