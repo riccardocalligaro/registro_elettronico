@@ -1,5 +1,5 @@
 {
-  "app_name": "Registro Elettronico",
+  "app_name": "School record",
   "last_lessons": "Last lessons",
   "discover_all_notice": "Discover all notices",
   "notice_board": "Notice board",
@@ -13,5 +13,6 @@
   "notes": "Notes",
   "settings": "Settings",
   "share": "Share",
-  "contact_us": "Contact us"
+  "contact_us": "Contact us",
+  "sign_out":"Sign out"
 }
