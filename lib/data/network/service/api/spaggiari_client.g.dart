@@ -42,7 +42,7 @@ class _SpaggiariClient implements SpaggiariClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final Response<List<dynamic>> _result = await _dio.request(
+    final Response<Map<String, dynamic>> _result = await _dio.request(
         '/students/$studentId/lessons/20191108/20191109',
         queryParameters: queryParameters,
         options: RequestOptions(
@@ -51,9 +51,7 @@ class _SpaggiariClient implements SpaggiariClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    var value = _result.data
-        .map((dynamic i) => Lesson.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = LessonsResponse.fromJson(_result.data);
     return Future.value(value);
   }
 }
