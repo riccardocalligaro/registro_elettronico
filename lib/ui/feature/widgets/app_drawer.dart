@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/component/navigator.dart';
+import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -55,6 +58,13 @@ class AppDrawer extends StatelessWidget {
             icon: Icons.send,
             text: trans.translate("contact_us"),
           ),
+          _createDrawerItem(
+              icon: Icons.exit_to_app,
+              text: "Logout",
+              onTap: () {
+                BlocProvider.of<AuthBloc>(context).add(SignOut());
+                AppNavigator.instance.navToLogin(context);
+              })
         ],
       ),
     );
