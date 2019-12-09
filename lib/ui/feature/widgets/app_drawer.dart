@@ -7,32 +7,53 @@ class AppDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-
           _createHeader(context),
           _createDrawerItem(
-            icon: Icons.contacts,
-            text: 'Contacts',
+            icon: Icons.home,
+            text: 'Briefing',
+          ),
+          _createDrawerItem(
+            icon: Icons.library_books,
+            text: 'Lessons',
+          ),
+          _createDrawerItem(
+            icon: Icons.timeline,
+            text: 'Grades',
           ),
           _createDrawerItem(
             icon: Icons.event,
-            text: 'Events',
+            text: 'Agenda',
           ),
           _createDrawerItem(
-            icon: Icons.note,
-            text: 'Notes',
+            icon: Icons.folder,
+            text: 'Materiale didattico',
           ),
-          Divider(),
-          _createDrawerItem(icon: Icons.collections_bookmark, text: 'Steps'),
-          _createDrawerItem(icon: Icons.face, text: 'Authors'),
           _createDrawerItem(
-              icon: Icons.account_box, text: 'Flutter Documentation'),
-          _createDrawerItem(icon: Icons.stars, text: 'Useful Links'),
-          Divider(),
-          _createDrawerItem(icon: Icons.bug_report, text: 'Report an issue'),
-          ListTile(
-            title: Text('0.0.1'),
-            onTap: () {},
+            icon: Icons.assessment,
+            text: 'Assenze',
           ),
+          _createDrawerItem(
+            icon: Icons.warning,
+            text: 'Note',
+          ),
+          _createDrawerItem(
+            icon: Icons.assignment,
+            text: 'Comunicazioni',
+          ),
+          Divider(),
+          _createDrawerItem(
+            icon: Icons.settings,
+            text: 'Impostazioni',
+          ),
+          _createDrawerItem(
+            icon: Icons.share,
+            text: 'Condividi',
+          ),
+           _createDrawerItem(
+            icon: Icons.send,
+            text: 'Contattaci',
+          ),
+         
         ],
       ),
     );

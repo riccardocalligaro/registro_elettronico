@@ -15,6 +15,7 @@ void main() {
 }
 
 void initApp() {
+  /// Hides the status bar
   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
   AppInjector.init();
   BlocSupervisor.delegate = SimpleBlocDelegate();
