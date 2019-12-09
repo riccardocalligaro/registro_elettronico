@@ -1,3 +1,17 @@
 {
-    "app_name":"Registro Elettronico"
+  "app_name": "Registro Elettronico",
+  "last_lessons": "Ultime lezioni",
+  "discover_all_notice": "Mostra tutte le circolari",
+  "notice_board": "Comunicazioni",
+  "view": "Mostra",
+  "briefing": "Briefing",
+  "lessons": "Lezioni",
+  "grades": "Voti",
+  "agenda": "Agenda",
+  "school_material": "Materiale didattico",
+  "absences": "Assenze",
+  "notes": "Note",
+  "settings": "Impostazioni",
+  "share": "Condividi",
+  "contact_us": "Contattaci"
 }

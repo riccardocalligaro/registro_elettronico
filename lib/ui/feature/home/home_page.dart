@@ -17,6 +17,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations trans = AppLocalizations.of(context);
+
     return Scaffold(
       key: _drawerKey,
       drawer: AppDrawer(),
@@ -41,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
-                    AppLocalizations.of(context).translate('app_name'),
+                    trans.translate('last_lessons'),
                     style: Theme.of(context).textTheme.headline,
                   ),
                 ),
@@ -82,11 +84,11 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Notice Board',
+                      trans.translate("notice_board"),
                       style: Theme.of(context).textTheme.headline,
                     ),
                     Text(
-                      'Discover all notice',
+                      trans.translate("discover_all_notice"),
                       style: TextStyle(color: Colors.grey[500], fontSize: 14),
                     )
                   ],
@@ -95,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                   color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                   child: Text(
-                    'View',
+                    trans.translate("view"),
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   shape: RoundedRectangleBorder(

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    AppLocalizations trans = AppLocalizations.of(context);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -10,50 +12,49 @@ class AppDrawer extends StatelessWidget {
           _createHeader(context),
           _createDrawerItem(
             icon: Icons.home,
-            text: 'Briefing',
+            text: trans.translate("briefing"),
           ),
           _createDrawerItem(
             icon: Icons.library_books,
-            text: 'Lessons',
+            text: trans.translate("lessons"),
           ),
           _createDrawerItem(
             icon: Icons.timeline,
-            text: 'Grades',
+            text: trans.translate("grades"),
           ),
           _createDrawerItem(
             icon: Icons.event,
-            text: 'Agenda',
+            text: trans.translate("agenda"),
           ),
           _createDrawerItem(
             icon: Icons.folder,
-            text: 'Materiale didattico',
+            text: trans.translate("school_material"),
           ),
           _createDrawerItem(
             icon: Icons.assessment,
-            text: 'Assenze',
+            text: trans.translate("absences"),
           ),
           _createDrawerItem(
             icon: Icons.warning,
-            text: 'Note',
+            text: trans.translate("notes"),
           ),
           _createDrawerItem(
             icon: Icons.assignment,
-            text: 'Comunicazioni',
+            text: trans.translate("notice_board"),
           ),
           Divider(),
           _createDrawerItem(
             icon: Icons.settings,
-            text: 'Impostazioni',
+            text: trans.translate("settings"),
           ),
           _createDrawerItem(
             icon: Icons.share,
-            text: 'Condividi',
+            text: trans.translate("share"),
           ),
-           _createDrawerItem(
+          _createDrawerItem(
             icon: Icons.send,
-            text: 'Contattaci',
+            text: trans.translate("contact_us"),
           ),
-         
         ],
       ),
     );

@@ -1,3 +1,17 @@
 {
-    "app_name":"Eletronic school record"
+  "app_name": "Registro Elettronico",
+  "last_lessons": "Last lessons",
+  "discover_all_notice": "Discover all notices",
+  "notice_board": "Notice board",
+  "view": "View",
+  "briefing": "Briefing",
+  "lessons": "Lessons",
+  "grades": "Grades",
+  "agenda": "Agenda",
+  "school_material": "School material",
+  "absences": "Absences",
+  "notes": "Notes",
+  "settings": "Settings",
+  "share": "Share",
+  "contact_us": "Contact us"
 }
