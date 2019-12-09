@@ -43,7 +43,7 @@ class _SpaggiariClient implements SpaggiariClient {
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/lessons/20191108/20191109',
+        '/students/$studentId/lessons/today',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',

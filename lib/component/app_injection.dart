@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injector/injector.dart';
+import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/data/repository/lessons_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/login_repository_impl.dart';
+import 'package:registro_elettronico/data/repository/mapper/lesson_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
@@ -20,12 +23,22 @@ class AppInjector {
     injectRepository();
     injectBloc();
     injectMapper();
+    injectMisc();
+  }
+
+  static void injectMisc() {
+    Injector.appInstance.registerSingleton<FlutterSecureStorage>((i) {
+      return FlutterSecureStorage();
+    });
   }
 
   static void injectMapper() {
     // mappers to convert the response to db object
-    Injector.appInstance.registerSingleton((injector) {
+    Injector.appInstance.registerSingleton<ProfileMapper>((injector) {
       return ProfileMapper();
+    });
+    Injector.appInstance.registerSingleton<LessonMapper>((injector) {
+      return LessonMapper();
     });
   }
 
@@ -37,6 +50,10 @@ class AppInjector {
     // daos
     Injector.appInstance.registerSingleton<ProfileDao>((injector) {
       return ProfileDao(injector.getDependency());
+    });
+
+    Injector.appInstance.registerSingleton<LessonDao>((i) {
+      return LessonDao(i.getDependency());
     });
   }
 
@@ -54,15 +71,16 @@ class AppInjector {
     });
 
     Injector.appInstance.registerSingleton((i) {
-      LessonsRepository lessonsRepository =
-          LessonsRepositoryImpl(i.getDependency());
+      LessonsRepository lessonsRepository = LessonsRepositoryImpl(
+          i.getDependency(), i.getDependency(), i.getDependency());
       return lessonsRepository;
     });
   }
 
   static void injectService() {
     Injector.appInstance.registerSingleton<Dio>((i) {
-      return DioClient(i.getDependency()).createDio();
+      return DioClient(i.getDependency(), i.getDependency(), i.getDependency())
+          .createDio();
     });
 
     Injector.appInstance.registerSingleton<SpaggiariClient>((i) {
@@ -75,7 +93,7 @@ class AppInjector {
 
   static void injectBloc() {
     Injector.appInstance.registerSingleton((i) {
-      return AuthBloc(i.getDependency(), i.getDependency());
+      return AuthBloc(i.getDependency(), i.getDependency(), i.getDependency());
     });
   }
 }

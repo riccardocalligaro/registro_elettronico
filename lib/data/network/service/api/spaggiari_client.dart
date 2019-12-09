@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:registro_elettronico/component/api_config.dart';
 import 'package:registro_elettronico/domain/entity/lessons_response.dart';
@@ -9,6 +8,7 @@ import 'package:retrofit/http.dart';
 part 'spaggiari_client.g.dart';
 
 @RestApi(baseUrl: '${ApiConfig.BASE_API_URL}')
+
 abstract class SpaggiariClient {
   // static Dio dio;
   // Dio dioCreated = DioClient().createDio();
@@ -19,6 +19,6 @@ abstract class SpaggiariClient {
   Future<LoginResponse> loginUser(@Body() LoginRequest loginRequest);
 
   // ----------- Lessons -----------
-  @GET("/students/{studentId}/lessons/20191108/20191109")
+  @GET("/students/{studentId}/lessons/today")
   Future<LessonsResponse> getTodayLessons(@Path() String studentId);
 }

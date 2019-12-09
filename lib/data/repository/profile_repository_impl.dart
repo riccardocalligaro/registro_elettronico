@@ -1,12 +1,14 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:moor/src/runtime/data_class.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/domain/entity/entities.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   ProfileDao profileDao;
-
-  /// The profile mapper transforms an entity to the respective database enetity.
+  FlutterSecureStorage flutterSecureStorage;
   ProfileMapper profileMapper;
 
   ProfileRepositoryImpl(this.profileDao, this.profileMapper);
@@ -21,8 +23,12 @@ class ProfileRepositoryImpl implements ProfileRepository {
       profileMapper.mapProfileEntityToProfileInsertable(profile));
 
   @override
-  Future insertProfile({Profile profile}) => profileDao.insertProfile(
-      profileMapper.mapProfileEntityToProfileInsertable(profile));
+  Future insertProfile({Profile profile}) {
+    final convertedProfile =
+        profileMapper.mapProfileEntityToProfileInsertable(profile);
+    profileDao.insertProfile(convertedProfile);
+    // TODO: handle error if can't add user to dabase
+  }
 
   @override
   Future deleteAllProfiles() => profileDao.deleteAllProfiles();
@@ -31,5 +37,17 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<String> getToken() async {
     final profile = await profileDao.getProfile();
     return profile.token;
+  }
+
+  @override
+  Future<db.Profile> getDbProfile() async {
+    final profile = await profileDao.getProfile();
+    return profile;
+  }
+
+  @override
+  Future updateProfile(Profile profile) {
+    profileDao.updateProfile(
+        profileMapper.mapProfileEntityToProfileInsertable(profile));
   }
 }

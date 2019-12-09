@@ -1,14 +1,23 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/domain/entity/entities.dart' as entity;
 import 'package:registro_elettronico/domain/entity/login_response.dart';
+import 'package:registro_elettronico/utils/profile_utils.dart';
 
 class ProfileMapper {
   const ProfileMapper();
 
+  /// Transorms the profile from an entity to an object that can be
+  /// inserted in the database
   db.Profile mapProfileEntityToProfileInsertable(entity.Profile e) {
+    //print("IDENT FROM MASPPER " + e.ident);
     return db.Profile(
       id: -1,
-      ident: e.ident ?? "",
+      ident: e.ident,
+      studentId: ProfileUtils.getIdFromIdent(e.ident),
+      passwordKey: ProfileUtils.createCryptoRandomString(),
       firstName: e.firstName ?? "",
       lastName: e.lastName ?? "",
       token: e.token ?? "",
@@ -17,11 +26,13 @@ class ProfileMapper {
     );
   }
 
+  /// Converts the login response that we get from calsseviva into a profile entity
   entity.Profile mapLoginResponseProfileToProfileEntity(
       LoginResponse resProfile) {
     return entity.Profile(
         firstName: resProfile.firstName,
         lastName: resProfile.lastName,
+        ident: resProfile.ident,
         token: resProfile.token,
         release: resProfile.release,
         expire: resProfile.expire);

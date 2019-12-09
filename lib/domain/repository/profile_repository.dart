@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:moor_flutter/moor_flutter.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/domain/entity/entities.dart';
 
 abstract class ProfileRepository {
@@ -11,9 +13,13 @@ abstract class ProfileRepository {
   /// Deletes a profile from the database
   Future deleteProfile({@required Profile profile});
 
+  Future updateProfile(Profile profile);
+
   /// Deletes all profiles from the database
   Future deleteAllProfiles();
 
   /// Gets the token
   Future getToken();
+
+  Future<db.Profile> getDbProfile();
 }

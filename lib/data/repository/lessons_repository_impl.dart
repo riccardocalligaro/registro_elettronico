@@ -1,16 +1,27 @@
+import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/domain/entity/lesson.dart';
 import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
 
-class LessonsRepositoryImpl implements LessonsRepository {
-  SpaggiariClient spaggiariClient;
+import 'mapper/lesson_mapper.dart';
 
-  LessonsRepositoryImpl(this.spaggiariClient);
+class LessonsRepositoryImpl implements LessonsRepository {
+  LessonMapper lessonMapper;
+  SpaggiariClient spaggiariClient;
+  LessonDao lessonDao;
+
+  LessonsRepositoryImpl(
+      this.spaggiariClient, this.lessonMapper, this.lessonDao);
+
   @override
-  Future<List<Lesson>> getLessons(String studentId) async {
+  Future insertLessons(String studentId) async {
     final lessons = await spaggiariClient.getTodayLessons(studentId);
-    //final lessonsList = lesson
-    // return lessons;
-    //return lessons;
+    print(lessons.lessons[0].authorName);
+
+    lessons.lessons.forEach((lesson) {
+      lessonDao.insertLesson(
+          lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
+      //print("inserted");
+    });
   }
 }

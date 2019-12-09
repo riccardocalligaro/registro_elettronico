@@ -13,6 +13,8 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
 
   Future<Profile> getProfile() => select(profiles).getSingle();
 
+  Future updateProfile(Profile profile) => update(profiles).replace(profile);
+
   Stream<List<Insertable<Profile>>> watchAllprofiles() =>
       select(profiles).watch();
 
