@@ -3,6 +3,7 @@ import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/ui/feature/home/components/lesson_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
-                    'Last lessons',
+                    AppLocalizations.of(context).translate('app_name'),
                     style: Theme.of(context).textTheme.headline,
                   ),
                 ),

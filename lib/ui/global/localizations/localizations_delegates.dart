@@ -2,9 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_map_location_picker/generated/i18n.dart'
-    as location_picker;
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'app_localizations.dart';
 
@@ -28,8 +25,6 @@ class LocalizationsDelegates {
       // Built-in localization for text direction LTR/RTL
       GlobalWidgetsLocalizations.delegate,
       GlobalCupertinoLocalizations.delegate,
-      location_picker.S.delegate,
-      RefreshLocalizations.delegate
     ];
   }
 

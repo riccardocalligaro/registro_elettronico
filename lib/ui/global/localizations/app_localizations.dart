@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:registro_elettronico/ui/global/localizations/localizations_delegates.dart';
 
 class AppLocalizations {
   final Locale locale;

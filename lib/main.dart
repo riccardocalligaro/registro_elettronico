@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/component/simple_bloc_delegate.dart';
 import 'package:registro_elettronico/ui/feature/splash_screen/splash_screen.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/ui/global/localizations/localizations_delegates.dart';
 import 'package:registro_elettronico/ui/global/themes/theme_data/default_theme.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
@@ -30,8 +32,13 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: AppBlocDelegate.instance(context).blocProviders,
         child: MaterialApp(
-          title: 'School register',
+          title: "Registro elettronico",
           theme: defaultTheme,
+          supportedLocales: LocalizationsDelegates.instance.supportedLocales,
+          localeResolutionCallback:
+              LocalizationsDelegates.instance.localeResolutionCallback,
+          localizationsDelegates:
+              LocalizationsDelegates.instance.localizationsDelegates,
           routes: Routes.routes,
           onUnknownRoute: (settings) {
             return MaterialPageRoute(builder: (ctx) => SplashScreen());

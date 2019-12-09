@@ -14,7 +14,9 @@ description: A beautiful and simple school register app.
 version: 1.0.0+1
 
 environment:
-  
+  sdk: ">=2.2.0 <3.0.0"
+
+dependencies:
   flutter:
     sdk: flutter
   injector: ^1.0.8
@@ -26,7 +28,7 @@ environment:
   retrofit: ^1.0.1+1
   flutter_svg: ^0.15.0
   shared_preferences: ^0.5.4+8
-  
+
   flutter_localizations:
     sdk: flutter
 
@@ -53,6 +55,8 @@ flutter_icons:
 flutter:
   assets:
     - assets/icons/
+    - lang/en.json
+    - lang/it.json
   uses-material-design: true
   fonts:
     - family: Montserrat
