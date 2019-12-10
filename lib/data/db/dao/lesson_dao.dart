@@ -8,15 +8,8 @@ part 'lesson_dao.g.dart';
 @UseDao(tables: [Lessons])
 class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   AppDatabase db;
+
   LessonDao(this.db) : super(db);
-
-  /// Inserts a single lesson
-  Future insertLesson(Insertable<Lesson> lesson) =>
-      into(lessons).insert(lesson);
-
-  /// Inserts a list of lessons
-  Future insertLessons(List<Insertable<Lesson>> lessonsToInsert) =>
-      into(lessons).insertAll(lessonsToInsert);
 
   /// Get the lessons for a date
   Future<List<Insertable<Lesson>>> getDateLessons(DateTime date) =>
@@ -26,30 +19,35 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
         ..where((entry) => entry.eventId.isBiggerOrEqualValue(-1)))
       .go();
 
-  /// GET - Stream & Future
-  Future<List<Insertable<Lesson>>> getLessons() => select(lessons).get();
-
-  Stream<List<Lesson>> watchLessons() => select(lessons).watch();
-
   /// Gets only the lessons that are not 'sostegno'
   Stream<List<Lesson>> watchRelevantLessons() => (select(lessons)
         ..where((lesson) =>
             not(lesson.subjectCode.equals(RegistroCostants.SOSTEGNO))))
       .watch();
 
+  /// Gets the lesson ignoring sostegno
   Stream<List<Lesson>> watchRelevantLessonsOfToday(DateTime today) =>
-      (select(lessons)
-            ..where((lesson) =>
-                not(lesson.subjectCode.equals(RegistroCostants.SOSTEGNO))))
-          .watch();
+      (select(lessons)..where((lesson) =>
+          // todo: need to add the date comparing
+          not(lesson.subjectCode.equals(RegistroCostants.SOSTEGNO)))).watch();
 
+  /// Gets the lessons ordering by a date
   Stream<List<Lesson>> watchLessonsByDate() {
     return (select(lessons)..orderBy([(t) => OrderingTerm(expression: t.date)]))
         .watch();
   }
 
-  //SELECT * FROM table WHERE Dates IN (SELECT max(Dates) FROM table);
-  Stream<List<Lesson>> watch() {
-    // return (select(lessons)..where((lesson) => max)).watch();
-  }
+  /// Future of all the lessons
+  Future<List<Lesson>> getLessons() => select(lessons).get();
+
+  // Stream all the lessons
+  Stream<List<Lesson>> watchLessons() => select(lessons).watch();
+
+  /// Inserts a single lesson
+  Future insertLesson(Insertable<Lesson> lesson) =>
+      into(lessons).insert(lesson, orReplace: true);
+
+  /// Inserts a list of lessons
+  Future insertLessons(List<Insertable<Lesson>> lessonsToInsert) =>
+      into(lessons).insertAll(lessonsToInsert);
 }
