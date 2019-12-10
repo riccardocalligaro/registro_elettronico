@@ -1,4 +1,5 @@
 import 'package:moor_flutter/moor_flutter.dart';
+import 'package:registro_elettronico/component/registro_costants.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/table/lesson_table.dart';
 
@@ -27,5 +28,28 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
 
   /// GET - Stream & Future
   Future<List<Insertable<Lesson>>> getLessons() => select(lessons).get();
-  Stream<List<Insertable<Lesson>>> watchLessons() => select(lessons).watch();
+
+  Stream<List<Lesson>> watchLessons() => select(lessons).watch();
+
+  /// Gets only the lessons that are not 'sostegno'
+  Stream<List<Lesson>> watchRelevantLessons() => (select(lessons)
+        ..where((lesson) =>
+            not(lesson.subjectCode.equals(RegistroCostants.SOSTEGNO))))
+      .watch();
+
+  Stream<List<Lesson>> watchRelevantLessonsOfToday(DateTime today) =>
+      (select(lessons)
+            ..where((lesson) =>
+                not(lesson.subjectCode.equals(RegistroCostants.SOSTEGNO))))
+          .watch();
+
+  Stream<List<Lesson>> watchLessonsByDate() {
+    return (select(lessons)..orderBy([(t) => OrderingTerm(expression: t.date)]))
+        .watch();
+  }
+
+  //SELECT * FROM table WHERE Dates IN (SELECT max(Dates) FROM table);
+  Stream<List<Lesson>> watch() {
+    // return (select(lessons)..where((lesson) => max)).watch();
+  }
 }

@@ -1,21 +1,21 @@
 import 'package:moor_flutter/moor_flutter.dart';
 
-/**
-   {
-            "evtId": 4773759,
-            "evtDate": "2019-11-08",
-            "evtCode": "LSS0",
-            "evtHPos": 3,
-            "evtDuration": 1,
-            "classDesc": "4IA INFORMATICA",
-            "authorName": "GIULIANO ANDREINA",
-            "subjectId": 5,
-            "subjectCode": "SOST",
-            "subjectDesc": "SOSTEGNO",
-            "lessonType": "Compresenza",
-            "lessonArg": ""
-        }
-*/
+/// Resposnee from classeviva
+/// {
+///   "evtId": 4773759,
+///   "evtDate": "2019-11-08",
+///   "evtCode": "LSS0",
+///   "evtHPos": 3,
+///   "evtDuration": 1,
+///   "classDesc": "4IA INFORMATICA",
+///   "authorName": "GIULIANO ANDREINA",
+///   "subjectId": 5,
+///   "subjectCode": "SOST",
+///   "subjectDesc": "SOSTEGNO",
+///   "lessonType": "Compresenza",
+///   "lessonArg": ""
+/// }
+
 class Lessons extends Table {
   IntColumn get eventId => integer()();
   DateTimeColumn get date => dateTime()();
