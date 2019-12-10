@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 
 class LessonCard extends StatelessWidget {
+  final Lesson lesson;
   final Color color;
 
-  const LessonCard({Key key, this.color}) : super(key: key);
+  const LessonCard({Key key, this.color, this.lesson}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +17,13 @@ class LessonCard extends StatelessWidget {
         width: 220.0,
         height: 140,
         decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(5.0)),
+            color: GlobalUtils.getColorFromPosition(lesson.position),
+            borderRadius: BorderRadius.circular(5.0)),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,7 +52,7 @@ class LessonCard extends StatelessWidget {
                         child: Opacity(
                           opacity: 0.85,
                           child: Text(
-                            '2H',
+                            '${lesson.duration}H',
                             style: TextStyle(color: Colors.white, fontSize: 10),
                           ),
                         ),
@@ -63,7 +67,10 @@ class LessonCard extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(top: 10.0),
                     child: Text(
-                      'INFORMATICA',
+                      lesson.subjectDescription.length > 20
+                          ? GlobalUtils.reduceSubjectTitle(
+                              lesson.subjectDescription)
+                          : lesson.subjectDescription,
                       style: Theme.of(context)
                           .textTheme
                           .headline
@@ -71,8 +78,10 @@ class LessonCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'lorem ipsum dolor sit a met this is only a tes...',
-                    style: TextStyle(fontSize: 12, color: Colors.white),
+                    lesson.lessonArg.length > 30
+                        ? GlobalUtils.reduceLessonArgument(lesson.lessonArg)
+                        : lesson.lessonArg,
+                    style: TextStyle(fontSize: 11, color: Colors.white),
                   )
                 ],
               )
