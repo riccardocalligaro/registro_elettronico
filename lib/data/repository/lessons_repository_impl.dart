@@ -1,6 +1,5 @@
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
-import 'package:registro_elettronico/domain/entity/lesson.dart';
 import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
 
 import 'mapper/lesson_mapper.dart';
@@ -14,14 +13,11 @@ class LessonsRepositoryImpl implements LessonsRepository {
       this.spaggiariClient, this.lessonMapper, this.lessonDao);
 
   @override
-  Future insertLessons(String studentId) async {
-    final lessons = await spaggiariClient.getTodayLessons(studentId);
-    print(lessons.lessons[0].authorName);
-
+  Future upadateLessons(String studentId) async {
+    final lessons = await spaggiariClient.getTodayLessons("6102171");
     lessons.lessons.forEach((lesson) {
       lessonDao.insertLesson(
           lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
-      //print("inserted");
     });
   }
 }
