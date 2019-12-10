@@ -30,14 +30,12 @@ class LessonCard extends StatelessWidget {
                 children: <Widget>[
                   ClipOval(
                     child: Container(
-                      width: 40.0,
-                      height: 40.0,
-                      padding: EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(color: Colors.white),
-                      child: SvgPicture.asset(
-                        "assets/icons/book.svg",
-                      ),
-                    ),
+                        width: 40.0,
+                        height: 40.0,
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(color: Colors.white),
+                        child: GlobalUtils.getIconFromSubject(
+                            lesson.subjectDescription)),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

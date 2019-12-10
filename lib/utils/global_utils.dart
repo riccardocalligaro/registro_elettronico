@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class GlobalUtils {
   static String reduceSubjectTitle(String name) {
@@ -44,6 +45,21 @@ class GlobalUtils {
         break;
       default:
         return Colors.red;
+    }
+  }
+
+  static SvgPicture getIconFromSubject(String subject) {
+    subject = subject.toLowerCase().replaceAll(" ", "");
+    switch (subject) {
+      case "matematicaecomplementidimatematica":
+        return SvgPicture.asset(
+          "assets/icons/science-symbol.svg",
+        );
+        break;
+      default:
+        return SvgPicture.asset(
+          "assets/icons/book_red_lines.svg",
+        );
     }
   }
 }
