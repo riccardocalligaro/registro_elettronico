@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
+import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
+import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/data/repository/lessons_repository_impl.dart';
+import 'package:registro_elettronico/data/repository/subjects_resposiotry_impl.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_event.dart';
 import 'package:registro_elettronico/ui/feature/home/components/lesson_card.dart';
@@ -28,7 +31,9 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       key: _drawerKey,
-      drawer: AppDrawer(),
+      drawer: AppDrawer(
+        profileDao: Injector.appInstance.getDependency(),
+      ),
       body: BlocListener<LessonsBloc, LessonsState>(
         listener: (context, state) {
           if (state is LessonsLoading) {
@@ -158,28 +163,49 @@ class _HomePageState extends State<HomePage> {
                   lessonDao.deleteLessons();
                 },
               ),
-              RaisedButton(
-                child: Text('Store password'),
-                onPressed: () async {
-                  final storage = new FlutterSecureStorage();
-                  await storage.write(
-                      key: "ciao123", value: "passwordsupersegreta");
-                },
-              ),
-              RaisedButton(
-                child: Text('retrieve password'),
-                onPressed: () async {
-                  final storage = new FlutterSecureStorage();
 
-                  String value = await storage.read(key: "ciao123");
-                  print(value);
+              RaisedButton(
+                child: Text('Get subjects'),
+                onPressed: () async {
+                  final SubjectsRepositoryImpl subjectsRepositoryImpl =
+                      SubjectsRepositoryImpl(
+                          Injector.appInstance.getDependency(),
+                          Injector.appInstance.getDependency(),
+                          Injector.appInstance.getDependency(),
+                          Injector.appInstance.getDependency());
+
+                  subjectsRepositoryImpl.updateSubjects("6102171");
                 },
               ),
+              Container(
+                height: 300,
+                child: _buildSubjects(context),
+              )
+
               // Expanded(child: _buildTaskList(context))
             ],
           ),
         ),
       ),
+    );
+  }
+
+  StreamBuilder<List<Professor>> _buildSubjects(BuildContext context) {
+    return StreamBuilder(
+      stream: ProfessorDao(Injector.appInstance.getDependency())
+          .watchAllProfessors(),
+      initialData: List(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        final List<Professor> professors = snapshot.data ?? List();
+        return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: professors.length,
+          itemBuilder: (_, index) {
+            final profesor = professors[index];
+            return Text(profesor.name);
+          },
+        );
+      },
     );
   }
 

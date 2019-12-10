@@ -1,12 +1,18 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
+import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
+import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/table/lesson_table.dart';
+import 'package:registro_elettronico/data/db/table/professor_table.dart';
 import 'package:registro_elettronico/data/db/table/profile_table.dart';
+import 'package:registro_elettronico/data/db/table/subject_table.dart';
 
 part 'moor_database.g.dart';
 
-@UseMoor(tables: [Profiles, Lessons], daos: [ProfileDao, LessonDao])
+@UseMoor(
+    tables: [Profiles, Lessons, Subjects, Professors],
+    daos: [ProfileDao, LessonDao, SubjectDao, ProfessorDao])
 class AppDatabase extends _$AppDatabase {
   AppDatabase()
       : super((FlutterQueryExecutor.inDatabaseFolder(

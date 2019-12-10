@@ -1090,16 +1090,386 @@ class $LessonsTable extends Lessons with TableInfo<$LessonsTable, Lesson> {
   }
 }
 
+class Subject extends DataClass implements Insertable<Subject> {
+  final int id;
+  final String name;
+  final int orderNumber;
+  Subject({@required this.id, @required this.name, @required this.orderNumber});
+  factory Subject.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return Subject(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      orderNumber: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}order_number']),
+    );
+  }
+  factory Subject.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return Subject(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      orderNumber: serializer.fromJson<int>(json['orderNumber']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'orderNumber': serializer.toJson<int>(orderNumber),
+    };
+  }
+
+  @override
+  SubjectsCompanion createCompanion(bool nullToAbsent) {
+    return SubjectsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      orderNumber: orderNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(orderNumber),
+    );
+  }
+
+  Subject copyWith({int id, String name, int orderNumber}) => Subject(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        orderNumber: orderNumber ?? this.orderNumber,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Subject(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('orderNumber: $orderNumber')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(name.hashCode, orderNumber.hashCode)));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is Subject &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.orderNumber == this.orderNumber);
+}
+
+class SubjectsCompanion extends UpdateCompanion<Subject> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<int> orderNumber;
+  const SubjectsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.orderNumber = const Value.absent(),
+  });
+  SubjectsCompanion.insert({
+    @required int id,
+    @required String name,
+    @required int orderNumber,
+  })  : id = Value(id),
+        name = Value(name),
+        orderNumber = Value(orderNumber);
+  SubjectsCompanion copyWith(
+      {Value<int> id, Value<String> name, Value<int> orderNumber}) {
+    return SubjectsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      orderNumber: orderNumber ?? this.orderNumber,
+    );
+  }
+}
+
+class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $SubjectsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn(
+      'id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  GeneratedTextColumn _name;
+  @override
+  GeneratedTextColumn get name => _name ??= _constructName();
+  GeneratedTextColumn _constructName() {
+    return GeneratedTextColumn(
+      'name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _orderNumberMeta =
+      const VerificationMeta('orderNumber');
+  GeneratedIntColumn _orderNumber;
+  @override
+  GeneratedIntColumn get orderNumber =>
+      _orderNumber ??= _constructOrderNumber();
+  GeneratedIntColumn _constructOrderNumber() {
+    return GeneratedIntColumn(
+      'order_number',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, name, orderNumber];
+  @override
+  $SubjectsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'subjects';
+  @override
+  final String actualTableName = 'subjects';
+  @override
+  VerificationContext validateIntegrity(SubjectsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.name.present) {
+      context.handle(
+          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
+    } else if (name.isRequired && isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (d.orderNumber.present) {
+      context.handle(_orderNumberMeta,
+          orderNumber.isAcceptableValue(d.orderNumber.value, _orderNumberMeta));
+    } else if (orderNumber.isRequired && isInserting) {
+      context.missing(_orderNumberMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Subject map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Subject.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(SubjectsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.name.present) {
+      map['name'] = Variable<String, StringType>(d.name.value);
+    }
+    if (d.orderNumber.present) {
+      map['order_number'] = Variable<int, IntType>(d.orderNumber.value);
+    }
+    return map;
+  }
+
+  @override
+  $SubjectsTable createAlias(String alias) {
+    return $SubjectsTable(_db, alias);
+  }
+}
+
+class Professor extends DataClass implements Insertable<Professor> {
+  final String id;
+  final String name;
+  Professor({@required this.id, @required this.name});
+  factory Professor.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    return Professor(
+      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+    );
+  }
+  factory Professor.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return Professor(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  @override
+  ProfessorsCompanion createCompanion(bool nullToAbsent) {
+    return ProfessorsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+    );
+  }
+
+  Professor copyWith({String id, String name}) => Professor(
+        id: id ?? this.id,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Professor(')
+          ..write('id: $id, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(id.hashCode, name.hashCode));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is Professor && other.id == this.id && other.name == this.name);
+}
+
+class ProfessorsCompanion extends UpdateCompanion<Professor> {
+  final Value<String> id;
+  final Value<String> name;
+  const ProfessorsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+  });
+  ProfessorsCompanion.insert({
+    @required String id,
+    @required String name,
+  })  : id = Value(id),
+        name = Value(name);
+  ProfessorsCompanion copyWith({Value<String> id, Value<String> name}) {
+    return ProfessorsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+    );
+  }
+}
+
+class $ProfessorsTable extends Professors
+    with TableInfo<$ProfessorsTable, Professor> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $ProfessorsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedTextColumn _id;
+  @override
+  GeneratedTextColumn get id => _id ??= _constructId();
+  GeneratedTextColumn _constructId() {
+    return GeneratedTextColumn(
+      'id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  GeneratedTextColumn _name;
+  @override
+  GeneratedTextColumn get name => _name ??= _constructName();
+  GeneratedTextColumn _constructName() {
+    return GeneratedTextColumn(
+      'name',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, name];
+  @override
+  $ProfessorsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'professors';
+  @override
+  final String actualTableName = 'professors';
+  @override
+  VerificationContext validateIntegrity(ProfessorsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.name.present) {
+      context.handle(
+          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
+    } else if (name.isRequired && isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  Professor map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Professor.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(ProfessorsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<String, StringType>(d.id.value);
+    }
+    if (d.name.present) {
+      map['name'] = Variable<String, StringType>(d.name.value);
+    }
+    return map;
+  }
+
+  @override
+  $ProfessorsTable createAlias(String alias) {
+    return $ProfessorsTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProfilesTable _profiles;
   $ProfilesTable get profiles => _profiles ??= $ProfilesTable(this);
   $LessonsTable _lessons;
   $LessonsTable get lessons => _lessons ??= $LessonsTable(this);
+  $SubjectsTable _subjects;
+  $SubjectsTable get subjects => _subjects ??= $SubjectsTable(this);
+  $ProfessorsTable _professors;
+  $ProfessorsTable get professors => _professors ??= $ProfessorsTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   LessonDao _lessonDao;
   LessonDao get lessonDao => _lessonDao ??= LessonDao(this as AppDatabase);
+  SubjectDao _subjectDao;
+  SubjectDao get subjectDao => _subjectDao ??= SubjectDao(this as AppDatabase);
+  ProfessorDao _professorDao;
+  ProfessorDao get professorDao =>
+      _professorDao ??= ProfessorDao(this as AppDatabase);
   @override
-  List<TableInfo> get allTables => [profiles, lessons];
+  List<TableInfo> get allTables => [profiles, lessons, subjects, professors];
 }
