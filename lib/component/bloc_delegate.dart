@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
 
 class AppBlocDelegate {
   static AppBlocDelegate _instance;
@@ -10,14 +11,18 @@ class AppBlocDelegate {
   List<RepositoryProvider> _repositoryProviders;
 
   AppBlocDelegate._(BuildContext context) {
-    Injector injector = Injector.appInstance;
+    Injector i = Injector.appInstance;
     _repositoryProviders = [];
 
     _blocProviders = [
       BlocProvider<AuthBloc>(
-        create: (bCtx) => AuthBloc(injector.getDependency(),
-            injector.getDependency(), injector.getDependency()),
+        create: (bCtx) =>
+            AuthBloc(i.getDependency(), i.getDependency(), i.getDependency()),
       ),
+      BlocProvider<LessonsBloc>(
+        create: (ctx) => LessonsBloc(
+            i.getDependency(), i.getDependency(), i.getDependency()),
+      )
     ];
   }
 
