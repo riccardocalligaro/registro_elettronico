@@ -22,6 +22,7 @@ class GlobalUtils {
 
   static Color getColorFromPosition(int position) {
     // TODO: generate more colors, 10 - 15
+    // TODO: need to set a subject color in the database
     switch (position) {
       case 1:
         return Colors.red;
