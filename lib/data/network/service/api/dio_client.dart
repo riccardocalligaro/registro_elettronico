@@ -24,9 +24,31 @@ class DioClient {
 
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
-      // TODO: add the interceptor to request a new token
-      final profile = await profileRepository.getDbProfile();
-      options.headers["Z-Auth-Token"] = profile.token;
+      if (options.path != "/auth/login") {
+        dio.lock();
+        final profile = await profileRepository.getDbProfile();
+        final password = await flutterSecureStorage.read(key: profile.ident);
+
+        final tokenDio = Dio();
+        tokenDio.options.baseUrl = "https://web.spaggiari.eu/rest/v1";
+        tokenDio.options.headers["Content-Type"] = Headers.jsonContentType;
+        tokenDio.options.headers["User-Agent"] = "zorro/1.0";
+        tokenDio.options.headers["Z-Dev-Apikey"] = "+zorro+";
+
+        final request = await tokenDio.post("/auth/login", data: {
+          "ident": profile.ident,
+          "pass": password,
+          "uid": profile.ident
+        });
+
+        final loginResponse = LoginResponse.fromJson(request.data);
+
+        //profileRepository.updateProfile();
+        print("${request.statusCode} GOT NEW TOKEN! ${loginResponse.token}");
+        options.headers["Z-Auth-Token"] = loginResponse.token;
+        dio.unlock();
+      }
+
       /*
       if (options.path != '/auth/login') {
         if (profile.expire.isAfter(DateTime.now())) {

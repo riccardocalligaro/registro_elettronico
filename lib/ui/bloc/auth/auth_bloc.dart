@@ -13,7 +13,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ProfileRepository profileRepository;
   FlutterSecureStorage flutterSecureStorage;
 
-  AuthBloc(this.loginRepository, this.profileRepository, this.flutterSecureStorage);
+  AuthBloc(
+      this.loginRepository, this.profileRepository, this.flutterSecureStorage);
 
   @override
   AuthState get initialState => Init();
@@ -39,7 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             username: event.username, password: event.password);
         await flutterSecureStorage.write(
             key: event.username, value: event.password);
-        _saveProfileInDb(returnedProfile);
+        _saveProfileInDb(returnedProfile, event.password);
 
         yield SignInSuccess(ProfileMapper()
             .mapLoginResponseProfileToProfileEntity(returnedProfile));
@@ -64,9 +65,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  _saveProfileInDb(LoginResponse returnedProfile) {
-    profileRepository.insertProfile(
-        profile: ProfileMapper()
-            .mapLoginResponseProfileToProfileEntity(returnedProfile));
+  _saveProfileInDb(LoginResponse returnedProfile, String userPassword) {
+    final profileEntity =
+        ProfileMapper().mapLoginResponseProfileToProfileEntity(returnedProfile);
+    profileRepository.insertProfile(profile: profileEntity);
+
+    flutterSecureStorage.write(key: profileEntity.ident, value: userPassword);
   }
 }
