@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
+import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class AppDrawer extends StatelessWidget {
+  ProfileDao profileDao;
+  AppDrawer({@required this.profileDao});
+
   @override
   Widget build(BuildContext context) {
     AppLocalizations trans = AppLocalizations.of(context);
@@ -71,15 +76,25 @@ class AppDrawer extends StatelessWidget {
   }
 
   Widget _createHeader(BuildContext context) {
-    return UserAccountsDrawerHeader(
-      accountEmail: Text("example@example.com"),
-      accountName: Text("John Doe"),
-      decoration: BoxDecoration(color: Theme.of(context).accentColor),
+    return FutureBuilder(
+      // todo: need to fix null
+      future: _getUsername(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return UserAccountsDrawerHeader(
+          accountEmail: Text(snapshot.data.ident ?? "ss"),
+          accountName: Text(
+              "${snapshot.data.firstName ?? ''} ${snapshot.data.lastName ?? ''}"),
+          decoration: BoxDecoration(color: Theme.of(context).accentColor),
+        );
+      },
     );
   }
 
-  Widget _createDrawerItem(
-      {IconData icon, String text, GestureTapCallback onTap}) {
+  Widget _createDrawerItem({
+    IconData icon,
+    String text,
+    GestureTapCallback onTap,
+  }) {
     return ListTile(
       title: Row(
         children: <Widget>[
@@ -92,5 +107,10 @@ class AppDrawer extends StatelessWidget {
       ),
       onTap: onTap,
     );
+  }
+
+  _getUsername() async {
+    final Profile profile = await profileDao.getProfile();
+    return profile;
   }
 }
