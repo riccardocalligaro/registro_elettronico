@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:registro_elettronico/component/api_config.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/domain/entity/login_response.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
@@ -19,71 +20,57 @@ class DioClient {
     final dio = Dio();
 
     dio.options.headers["Content-Type"] = Headers.jsonContentType;
-    dio.options.headers["User-Agent"] = "zorro/1.0";
-    dio.options.headers["Z-Dev-Apikey"] = "+zorro+";
+    dio.options.headers["User-Agent"] = "${ApiConfig.BASE_USER_AGENT}";
+    dio.options.headers["Z-Dev-Apikey"] = "${ApiConfig.API_KEY}";
 
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
+      //? We need to add the token when we are not loggin in
       if (options.path != "/auth/login") {
+        // temporarily lock the requests
         dio.lock();
+        // get the profile from the database
         final profile = await profileRepository.getDbProfile();
-        final password = await flutterSecureStorage.read(key: profile.ident);
 
-        final tokenDio = Dio();
-        tokenDio.options.baseUrl = "https://web.spaggiari.eu/rest/v1";
-        tokenDio.options.headers["Content-Type"] = Headers.jsonContentType;
-        tokenDio.options.headers["User-Agent"] = "zorro/1.0";
-        tokenDio.options.headers["Z-Dev-Apikey"] = "+zorro+";
+        //? This checks if the profile exires before now, so if this  results true the token is expired
+        if (profile.expire.isBefore(DateTime.now())) {
+          print("NEED TO REQUEST NEW TOKEN!");
+          // this gets the password from flutter secure storage which is saved using the ident
+          final password = await flutterSecureStorage.read(key: profile.ident);
+          // we create a dio client for requesting the token to spaggiari
+          final tokenDio = Dio();
+          tokenDio.options.baseUrl = "${ApiConfig.BASE_API_URL}";
+          tokenDio.options.headers["Content-Type"] = Headers.jsonContentType;
+          tokenDio.options.headers["User-Agent"] =
+              "${ApiConfig.BASE_USER_AGENT}";
+          tokenDio.options.headers["Z-Dev-Apikey"] = "${ApiConfig.API_KEY}";
 
-        final request = await tokenDio.post("/auth/login", data: {
-          "ident": profile.ident,
-          "pass": password,
-          "uid": profile.ident
-        });
+          // we make a request to auth login to get the new token
+          final request = await tokenDio.post("/auth/login", data: {
+            "ident": profile.ident,
+            "pass": password,
+            "uid": profile.ident
+          });
 
-        final loginResponse = LoginResponse.fromJson(request.data);
+          // this converts the response data to a login response
+          final loginResponse = LoginResponse.fromJson(request.data);
 
-        //profileRepository.updateProfile();
-        print("${request.statusCode} GOT NEW TOKEN! ${loginResponse.token}");
-        options.headers["Z-Auth-Token"] = loginResponse.token;
+          // finally we update the db with the new token
+          profileRepository.updateProfile(profileMapper
+              .mapLoginResponseProfileToProfileEntity(loginResponse));
+
+          //profileRepository.updateProfile();
+          print("${request.statusCode} GOT NEW TOKEN! ${loginResponse.token}");
+          // this sets the token as the new one we just got from the api
+          options.headers["Z-Auth-Token"] = loginResponse.token;
+        } else {
+          print("NO NEED FOR TOKEN!");
+          // If the token is still vaid we just use the one we got from the database
+          options.headers["Z-Auth-Token"] = profile.token;
+        }
+        // unlock and proceed
         dio.unlock();
       }
-
-      /*
-      if (options.path != '/auth/login') {
-        if (profile.expire.isAfter(DateTime.now())) {
-          print("--- START OF REQUESTING A NEW TOKEN ---");
-          final tokenDio = Dio();
-          tokenDio.options.baseUrl = "https://web.spaggiari.eu/rest/v1";
-          tokenDio.options.headers["Content-Type"] = Headers.jsonContentType;
-          tokenDio.options.headers["User-Agent"] = "zorro/1.0";
-          tokenDio.options.headers["Z-Dev-Apikey"] = "+zorro+";
-
-          tokenDio.post("/auth/login", data: {
-            "ident": profile.ident,
-            "pass": "x9M*G3R03OT!Wv0z",
-            "uid": profile.ident
-          }).then((d) {
-            print("made request");
-            print("DATA RECIEVED: " + d.statusCode.toString());
-            final loginResponse = LoginResponse.fromJson(d.data);
-            final profileEntity = profileMapper
-                .mapLoginResponseProfileToProfileEntity(loginResponse);
-            // set the new token as a header
-            dio.options.headers["Z-Auth-Token"] = profileEntity.token;
-            print("NRE TOKEN+ " + loginResponse.token);
-            // last thing we need to do is to update the database with the new profile
-            profileRepository.updateProfile(profileEntity);
-            dio.options.headers["Z-Auth-Token"] = "££££";
-
-            print("--- END OF REQUESTING A NEW TOKEN ---");
-          });
-          //options.headers["Z-Auth-Token"]
-        } else {
-          options.headers["Z-Auth-Token"] = "%%%";
-        }
-        // need to insert the token
-      }*/
 
       return options;
     }, onResponse: (Response response) {
