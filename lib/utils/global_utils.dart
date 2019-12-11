@@ -3,6 +3,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class GlobalUtils {
+  static String tryToReduceName(String subjectName) {
+    final stringToCompare = subjectName.toUpperCase();
+    // todo: maybe convert this to a int with costants
+    print(stringToCompare);
+    switch (stringToCompare) {
+      case "MATEMATICA E COMPLEMENTI DI MATEMATICA":
+        return "MATEMATICA";
+        break;
+      case "RELIGIONE CATTOLICA / ATTIVITA ALTERNATIVA":
+        return "RELIGIONE";
+        break;
+      case "LINGUA INGLESE":
+        return "INGLESE";
+        break;
+      case "TECNOLOGIE E PROGETTAZIONE DI SISTEMI INFORMATICI E DI TELECOMUNICAZIONI":
+        return "TPSIT";
+        break;
+      case "LINGUA E LETTERATURA ITALIANA":
+        return "ITALIANO";
+        break;
+      case "LINGUA E LETTERATURA ITALIANA":
+        return "ITALIANO";
+        break;
+      case "SCIENZE MOTORIE E SPORTIVE":
+        return "GINNASTICA";
+        break;
+      default:
+        return "";
+    }
+  }
+
+  static String reduceSubjectGridTitle(String subjectName) {
+    String reducedName;
+    reducedName = tryToReduceName(subjectName);
+    if (reducedName != "") {
+      return reducedName;
+    } else {
+      reducedName = subjectName.substring(0, 13);
+      reducedName += "...";
+      return reducedName;
+    }
+  }
+
   static String reduceSubjectTitle(String name) {
     //TODO: try to reduce name by creating a switch with abbreviations
     String reducedName = name.substring(0, 20);
