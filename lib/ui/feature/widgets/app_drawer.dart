@@ -80,13 +80,17 @@ class AppDrawer extends StatelessWidget {
       // todo: need to fix null
       future: _getUsername(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final ident = snapshot.data.ident ?? "Loading...";
-        final firstName = snapshot.data.firstName ?? "";
-        final lastName = snapshot.data.lastName ?? "";
+        String ident = "";
+        String name = "";
+
+        if (snapshot.data != null) {
+          ident = snapshot.data.ident;
+          name = "${snapshot.data.firstName} ${snapshot.data.lastName}";
+        }
 
         return UserAccountsDrawerHeader(
           accountEmail: Text(ident),
-          accountName: Text("$firstName $lastName"),
+          accountName: Text(name),
           decoration: BoxDecoration(color: Theme.of(context).accentColor),
         );
       },
