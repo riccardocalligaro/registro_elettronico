@@ -94,7 +94,7 @@ class AppInjector {
     });
 
     Injector.appInstance.registerSingleton((i) {
-      SubjecsRepository lessonsRepository = SubjectsRepositoryImpl(
+      SubjectsRepository lessonsRepository = SubjectsRepositoryImpl(
           i.getDependency(),
           i.getDependency(),
           i.getDependency(),
@@ -112,9 +112,6 @@ class AppInjector {
     Injector.appInstance.registerSingleton<SpaggiariClient>((i) {
       return SpaggiariClient(i.getDependency());
     });
-    //Injector.appInstance.registerSingleton((injector) {
-    //  return SpaggiariClient(DioClient().createDio());
-    //});
   }
 
   static void injectBloc() {

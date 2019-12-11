@@ -14,7 +14,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
   @override
   Future upadateLessons(String studentId) async {
-    final lessons = await spaggiariClient.getTodayLessons("6102171");
+    final lessons = await spaggiariClient.getTodayLessons(studentId);
     lessons.lessons.forEach((lesson) {
       lessonDao.insertLesson(
           lessonMapper.mapLessonEntityToLessoneInsertable(lesson));

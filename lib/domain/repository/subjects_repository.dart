@@ -1,3 +1,3 @@
-abstract class SubjecsRepository {
+abstract class SubjectsRepository {
   Future updateSubjects(String studentId);
 }

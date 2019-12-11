@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/component/api_config.dart';
+import 'package:registro_elettronico/data/network/exception/server_exception.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/domain/entity/login_response.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
@@ -28,9 +29,9 @@ class DioClient {
         dio.lock();
         // get the profile from the database
         final profile = await profileRepository.getDbProfile();
-
+        //! change this to before
         //? This checks if the profile exires before now, so if this  results true the token is expired
-        if (profile.expire.isBefore(DateTime.now())) {
+        if (profile.expire.isAfter(DateTime.now())) {
           print("NEED TO REQUEST NEW TOKEN!");
           // this gets the password from flutter secure storage which is saved using the ident
           final password = await flutterSecureStorage.read(key: profile.ident);
@@ -43,21 +44,26 @@ class DioClient {
           tokenDio.options.headers["Z-Dev-Apikey"] = "${ApiConfig.API_KEY}";
 
           // we make a request to auth login to get the new token
-          final request = await tokenDio.post("/auth/login", data: {
+          final res = await tokenDio.post("/auth/login", data: {
             "ident": profile.ident,
             "pass": password,
+            //"pass": password,
             "uid": profile.ident
           });
 
+          if (res.statusCode != 200) {
+            throw new ServerException.fromJson(res.data);
+          }
+
           // this converts the response data to a login response
-          final loginResponse = LoginResponse.fromJson(request.data);
+          final loginResponse = LoginResponse.fromJson(res.data);
 
           // finally we update the db with the new token
           profileRepository.updateProfile(profileMapper
               .mapLoginResponseProfileToProfileEntity(loginResponse));
 
           //profileRepository.updateProfile();
-          print("${request.statusCode} GOT NEW TOKEN! ${loginResponse.token}");
+          print("${res.statusCode} GOT NEW TOKEN! ${loginResponse.token}");
           // this sets the token as the new one we just got from the api
           options.headers["Z-Auth-Token"] = loginResponse.token;
         } else {

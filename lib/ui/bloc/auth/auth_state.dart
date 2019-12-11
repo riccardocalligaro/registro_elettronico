@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:registro_elettronico/data/network/exception/server_exception.dart';
 
 import 'package:registro_elettronico/domain/entity/entities.dart';
 
@@ -23,6 +25,12 @@ class SignInError extends AuthState {
   final String message;
 
   SignInError(this.message);
+}
+
+class SignInNetworkError extends AuthState {
+  final ServerException error;
+
+  SignInNetworkError(this.error);
 }
 
 class SignOutSuccess extends AuthState {

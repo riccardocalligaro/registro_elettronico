@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:registro_elettronico/data/network/exception/server_exception.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/domain/entity/login_response.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
@@ -36,25 +37,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is SignIn) {
       yield SignInLoading();
       try {
-        final returnedProfile = await loginRepository.signIn(
+        final responseProfile = await loginRepository.signIn(
             username: event.username, password: event.password);
         await flutterSecureStorage.write(
             key: event.username, value: event.password);
-        _saveProfileInDb(returnedProfile, event.password);
-
+        _saveProfileInDb(responseProfile, event.password);
+//
         yield SignInSuccess(ProfileMapper()
-            .mapLoginResponseProfileToProfileEntity(returnedProfile));
+            .mapLoginResponseProfileToProfileEntity(responseProfile));
+      } on DioError catch (e) {
+        yield SignInNetworkError(ServerException.fromJson(e.response.data));
       } catch (e) {
-        if (e is DioError) {
-          if (e.response.statusCode == 422) {
-            yield SignInError(e.response.statusCode.toString());
-          } else {
-            yield SignInError(e.error.toString());
-          }
-        } else {
-          print(e.toString());
-          yield SignInError(e.toString());
-        }
+        yield SignInError(e.toString());
       }
     }
 

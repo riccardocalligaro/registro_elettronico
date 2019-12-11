@@ -3,13 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:injector/injector.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/data/network/exception/server_exception.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/data/repository/lessons_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/subjects_resposiotry_impl.dart';
+import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_event.dart';
 import 'package:registro_elettronico/ui/feature/home/components/lesson_card.dart';
@@ -44,6 +47,36 @@ class _HomePageState extends State<HomePage> {
               content: Text('Loading new data...'),
               duration: Duration(seconds: 3),
             ));
+          }
+
+          if (state is LessonsError) {
+            if (state.error.response.statusCode == 422) {
+              final exception =
+                  ServerException.fromJson(state.error.response.data);
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(exception.message),
+                duration: Duration(seconds: 3),
+                action: SnackBarAction(
+                  label: 'Log out',
+                  onPressed: () {
+                    AppNavigator.instance.navToLogin(context);
+                    BlocProvider.of<AuthBloc>(context).add(SignOut());
+                  },
+                ),
+              ));
+            } else {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(state.error.error.toString()),
+                duration: Duration(seconds: 3),
+                action: SnackBarAction(
+                  label: 'Log out',
+                  onPressed: () {
+                    AppNavigator.instance.navToLogin(context);
+                    BlocProvider.of<AuthBloc>(context).add(SignOut());
+                  },
+                ),
+              ));
+            }
           }
         },
         child: SingleChildScrollView(
@@ -128,12 +161,7 @@ class _HomePageState extends State<HomePage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(18.0),
                         ),
-                        onPressed: () async {
-                          final client = SpaggiariClient(
-                              Injector.appInstance.getDependency());
-                          final res = await client.getTodayLessons("6102171");
-                          print(res.lessons[0].authorName);
-                        },
+                        onPressed: () {},
                       ),
                     ],
                   ),
@@ -147,32 +175,10 @@ class _HomePageState extends State<HomePage> {
                 RaisedButton(
                   child: Text('Request lessons'),
                   onPressed: () async {
-                    final repo = LessonsRepositoryImpl(
-                        Injector.appInstance.getDependency(),
-                        Injector.appInstance.getDependency(),
-                        Injector.appInstance.getDependency());
-
                     try {
                       BlocProvider.of<LessonsBloc>(context).add(FetchLessons());
-                      //final res = await repo.upadateLessons("6102171");
                     } catch (e) {
                       print("Already inserted!");
-                    }
-                  },
-                ),
-                BlocBuilder<LessonsBloc, LessonsState>(
-                  builder: (context, state) {
-                    if (state is LessonsLoading) {
-                      return CircularProgressIndicator();
-                    }
-                    if (state is LessonsNotLoaded) {
-                      return Text('Not loaded');
-                    }
-                    if (state is LessonsError) {
-                      return Text(state.error);
-                    }
-                    if (state is LessonsLoaded) {
-                      return Text('Lessons loaded');
                     }
                   },
                 ),

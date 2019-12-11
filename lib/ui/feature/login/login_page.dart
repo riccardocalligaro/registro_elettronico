@@ -4,6 +4,7 @@ import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_event.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_state.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -17,12 +18,13 @@ class _LoginPageState extends State<LoginPage> {
   static const double TOP_FIELDS_PADDING = 32.0;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   bool _valide = false;
   String _errorMessage = "";
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations trans = AppLocalizations.of(context);
+
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
@@ -34,14 +36,14 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 // Welcome, login with Classeviva
-                _buildWelcomeText("Welcome, "),
-                _buildLoginMessageText("Classeviva"),
-                _buildLoginForm(),
+                _buildWelcomeText(trans.translate('welcome')),
+                _buildLoginMessageText(trans.translate('login_with')),
+                _buildLoginForm(context),
                 Padding(
                     padding: EdgeInsets.symmetric(vertical: 16.0),
                     child: RaisedButton(
                       child: Text(
-                        'Log in',
+                        trans.translate('log_in'),
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
@@ -75,19 +77,19 @@ class _LoginPageState extends State<LoginPage> {
       child: Align(
         alignment: Alignment.bottomLeft,
         child: Text(
-          "Welcome,",
+          "$welcomeMessage,",
           style: Theme.of(context).textTheme.headline,
         ),
       ),
     );
   }
 
-  Row _buildLoginMessageText(String registerName) {
+  Row _buildLoginMessageText(String loginMessage) {
     return Row(
       children: <Widget>[
         Container(
           child: Text(
-            "Login with ",
+            "$loginMessage ",
             style: Theme.of(context).textTheme.body1,
           ),
         ),
@@ -99,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildLoginForm() {
+  Widget _buildLoginForm(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is SignInSuccess) {
@@ -108,15 +110,24 @@ class _LoginPageState extends State<LoginPage> {
           }
 
           /// Sets the valide data to true
-          if (state is SignInError) {
+          if (state is SignInNetworkError) {
             setState(() {
               _valide = true;
+              _errorMessage = state.error.message;
             });
+          }
+
+          if (state is SignInError) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(
+                  "🤔 ${AppLocalizations.of(context).translate('unexcepted_error')}"),
+            ));
           }
 
           if (state is SignInLoading) {
             Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text('Loading...'),
+              content:
+                  Text(AppLocalizations.of(context).translate('loading_login')),
               duration: Duration(milliseconds: 2000),
             ));
           }
@@ -130,8 +141,8 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   controller: _usernameController,
                   decoration: InputDecoration(
-                      hintText: 'Username',
-                      errorText: _valide ? "" : null,
+                      hintText: AppLocalizations.of(context).translate('username_form_login_placeholder'),
+                      errorText: _valide ? _errorMessage : null,
                       contentPadding: EdgeInsetsGeometry.lerp(
                           const EdgeInsetsDirectional.only(end: 6.0),
                           EdgeInsets.symmetric(vertical: 5),
@@ -145,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: true,
                   decoration: InputDecoration(
                       hintText: 'Password',
-                      errorText: _valide ? "" : null,
+                      errorText: _valide ? _errorMessage : null,
                       contentPadding: EdgeInsetsGeometry.lerp(
                           const EdgeInsetsDirectional.only(end: 6.0),
                           EdgeInsets.symmetric(vertical: 5),

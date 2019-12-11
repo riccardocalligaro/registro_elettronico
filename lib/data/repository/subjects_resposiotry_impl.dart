@@ -4,7 +4,7 @@ import 'package:registro_elettronico/data/network/service/api/spaggiari_client.d
 import 'package:registro_elettronico/data/repository/mapper/subject_mapper.dart';
 import 'package:registro_elettronico/domain/repository/subjects_repository.dart';
 
-class SubjectsRepositoryImpl implements SubjecsRepository {
+class SubjectsRepositoryImpl implements SubjectsRepository {
   SpaggiariClient spaggiariClient;
   ProfessorDao professorDao;
   SubjectDao subjectDao;
@@ -18,7 +18,6 @@ class SubjectsRepositoryImpl implements SubjecsRepository {
     final res = await spaggiariClient.getSubjects(studentId);
 
     res.subjects.forEach((subject) {
-      // print(subject.description);
       subjectDao.insertSubject(
           subjectMapper.convertSubjectEntityToInsertable(subject));
       subject.teachers.forEach((professor) {
@@ -26,8 +25,5 @@ class SubjectsRepositoryImpl implements SubjecsRepository {
             .convertProfessorEntityToInsertable(professor, subject.id));
       });
     });
-
-    print(res.subjects[0].description);
-    print(res.subjects[0].teachers[0].teacherName);
   }
 }

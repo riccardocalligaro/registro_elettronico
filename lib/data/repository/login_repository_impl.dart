@@ -15,18 +15,10 @@ class LoginRepositoryImpl implements LoginRepository {
 
   @override
   Future<LoginResponse> signIn({String username, String password}) async {
-    try {
-      final loginRequest =
-          LoginRequest(ident: username, pass: password, uid: username);
-      try {
-        final res = await spaggiariClient.loginUser(loginRequest);
-        return res;
-      } catch (e) {
-        print(e);
-      }
-    } catch (ex) {
-      print(
-          "Login repository implementation, sign in method, ${ex.toString()}");
-    }
+    final loginRequest =
+        LoginRequest(ident: username, pass: password, uid: username);
+
+    final res = await spaggiariClient.loginUser(loginRequest);
+    return res;
   }
 }

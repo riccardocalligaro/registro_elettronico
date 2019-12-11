@@ -3,8 +3,6 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class SubjectsState {}
 
-class SubjectsInitialState extends SubjectsState {}
-
 class SubjectsNotLoaded extends SubjectsState {}
 
 class SubjectsLoading extends SubjectsState {}
