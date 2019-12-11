@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injector/injector.dart';
+import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
@@ -8,13 +9,16 @@ import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
+import 'package:registro_elettronico/data/repository/grades_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/lessons_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/login_repository_impl.dart';
+import 'package:registro_elettronico/data/repository/mapper/grade_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/lesson_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/subject_mapper.dart';
 import 'package:registro_elettronico/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/subjects_resposiotry_impl.dart';
+import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
@@ -49,6 +53,10 @@ class AppInjector {
     Injector.appInstance.registerSingleton<SubjectMapper>((injector) {
       return SubjectMapper();
     });
+
+    Injector.appInstance.registerSingleton<GradeMapper>((injector) {
+      return GradeMapper();
+    });
   }
 
   static void injectDatabase() {
@@ -71,6 +79,10 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton<SubjectDao>((i) {
       return SubjectDao(i.getDependency());
+    });
+
+    Injector.appInstance.registerSingleton<GradeDao>((i) {
+      return GradeDao(i.getDependency());
     });
   }
 
@@ -99,6 +111,12 @@ class AppInjector {
           i.getDependency(),
           i.getDependency(),
           i.getDependency());
+      return lessonsRepository;
+    });
+
+    Injector.appInstance.registerSingleton((i) {
+      GradesRepository lessonsRepository = GradesRepositoryImpl(
+          i.getDependency(), i.getDependency(), i.getDependency());
       return lessonsRepository;
     });
   }
