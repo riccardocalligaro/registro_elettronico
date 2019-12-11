@@ -13,8 +13,10 @@ import 'package:registro_elettronico/data/repository/subjects_resposiotry_impl.d
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_event.dart';
 import 'package:registro_elettronico/ui/feature/home/components/lesson_card.dart';
+import 'package:registro_elettronico/ui/feature/home/components/subjects_grid.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -60,14 +62,28 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                        child: Text(
-                          trans.translate('last_lessons'),
-                          style: Theme.of(context).textTheme.headline,
+                      Text(
+                        trans.translate('last_lessons'),
+                        style: Theme.of(context).textTheme.headline,
+                      ),
+                      FlatButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(15.0),
+                        ),
+                        onPressed: () {},
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 0.0),
+                          child: Text(
+                            "View all",
+                            style: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .copyWith(fontSize: 12),
+                          ),
                         ),
                       ),
                     ],
@@ -84,8 +100,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.grey[400],
                 ),
                 Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -125,6 +140,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Divider(
                   color: Colors.grey[400],
+                ),
+                Container(
+                  child: _buildSubjectsGrid(context),
                 ),
                 RaisedButton(
                   child: Text('Request lessons'),
@@ -181,11 +199,6 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
 
-                Container(
-                  height: 300,
-                  child: _buildSubjects(context),
-                ),
-
                 // Expanded(child: _buildTaskList(context))
               ],
             ),
@@ -195,23 +208,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  StreamBuilder<List<Subject>> _buildSubjects(BuildContext context) {
+  StreamBuilder<List<Subject>> _buildSubjectsGrid(BuildContext context) {
     return StreamBuilder(
       stream:
           SubjectDao(Injector.appInstance.getDependency()).watchAllSubjects(),
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Subject> subjects = snapshot.data ?? List();
-        return GridView.count(
-            crossAxisSpacing: 5.0,
-            crossAxisCount: 5,
-            children: List.generate(subjects.length, (index) {
-              return GridTile(
-                child: Center(child: Text(subjects[index].name),),
-              );
-            })
-             
-            );
+
+        return SubjectsGrid(
+          subjects: subjects,
+        );
       },
     );
   }
