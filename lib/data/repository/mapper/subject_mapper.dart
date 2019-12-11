@@ -8,7 +8,11 @@ class SubjectMapper {
         id: subject.id, name: subject.description, orderNumber: subject.order);
   }
 
-  db.Professor convertProfessorEntityToInsertable(Teachers professor) {
-    return db.Professor(id: professor.teacherId, name: professor.teacherName);
+  db.Professor convertProfessorEntityToInsertable(
+      Teachers professor, int subjectId) {
+    return db.Professor(
+        id: professor.teacherId,
+        subjectId: subjectId,
+        name: professor.teacherName);
   }
 }

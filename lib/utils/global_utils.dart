@@ -46,11 +46,16 @@ class GlobalUtils {
     }
   }
 
-  static String reduceSubjectTitle(String name) {
-    //TODO: try to reduce name by creating a switch with abbreviations
-    String reducedName = name.substring(0, 20);
-    reducedName += "...";
-    return reducedName;
+  static String reduceSubjectTitle(String subjectTitle) {
+    String reducedName;
+    reducedName = tryToReduceName(subjectTitle);
+    if (reducedName != "") {
+      return reducedName;
+    } else {
+      reducedName = subjectTitle.substring(0, 20);
+      reducedName += "...";
+      return reducedName;
+    }
   }
 
   static String reduceLessonArgument(String argument) {

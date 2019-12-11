@@ -22,8 +22,8 @@ class SubjectsRepositoryImpl implements SubjecsRepository {
       subjectDao.insertSubject(
           subjectMapper.convertSubjectEntityToInsertable(subject));
       subject.teachers.forEach((professor) {
-        professorDao.insertProfessor(
-            subjectMapper.convertProfessorEntityToInsertable(professor));
+        professorDao.insertProfessor(subjectMapper
+            .convertProfessorEntityToInsertable(professor, subject.id));
       });
     });
 
