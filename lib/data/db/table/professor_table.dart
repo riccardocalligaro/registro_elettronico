@@ -5,5 +5,6 @@ import 'package:moor_flutter/moor_flutter.dart';
 
 class Professors extends Table {
   TextColumn get id => text()();
+  IntColumn get subjectId => integer()();
   TextColumn get name => text()();
 }

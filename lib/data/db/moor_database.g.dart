@@ -1294,14 +1294,18 @@ class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
 
 class Professor extends DataClass implements Insertable<Professor> {
   final String id;
+  final int subjectId;
   final String name;
-  Professor({@required this.id, @required this.name});
+  Professor({@required this.id, @required this.subjectId, @required this.name});
   factory Professor.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
+    final intType = db.typeSystem.forDartType<int>();
     return Professor(
       id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      subjectId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
     );
   }
@@ -1309,6 +1313,7 @@ class Professor extends DataClass implements Insertable<Professor> {
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return Professor(
       id: serializer.fromJson<String>(json['id']),
+      subjectId: serializer.fromJson<int>(json['subjectId']),
       name: serializer.fromJson<String>(json['name']),
     );
   }
@@ -1317,6 +1322,7 @@ class Professor extends DataClass implements Insertable<Professor> {
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return {
       'id': serializer.toJson<String>(id),
+      'subjectId': serializer.toJson<int>(subjectId),
       'name': serializer.toJson<String>(name),
     };
   }
@@ -1325,46 +1331,61 @@ class Professor extends DataClass implements Insertable<Professor> {
   ProfessorsCompanion createCompanion(bool nullToAbsent) {
     return ProfessorsCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      subjectId: subjectId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(subjectId),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
     );
   }
 
-  Professor copyWith({String id, String name}) => Professor(
+  Professor copyWith({String id, int subjectId, String name}) => Professor(
         id: id ?? this.id,
+        subjectId: subjectId ?? this.subjectId,
         name: name ?? this.name,
       );
   @override
   String toString() {
     return (StringBuffer('Professor(')
           ..write('id: $id, ')
+          ..write('subjectId: $subjectId, ')
           ..write('name: $name')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode, name.hashCode));
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(subjectId.hashCode, name.hashCode)));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
-      (other is Professor && other.id == this.id && other.name == this.name);
+      (other is Professor &&
+          other.id == this.id &&
+          other.subjectId == this.subjectId &&
+          other.name == this.name);
 }
 
 class ProfessorsCompanion extends UpdateCompanion<Professor> {
   final Value<String> id;
+  final Value<int> subjectId;
   final Value<String> name;
   const ProfessorsCompanion({
     this.id = const Value.absent(),
+    this.subjectId = const Value.absent(),
     this.name = const Value.absent(),
   });
   ProfessorsCompanion.insert({
     @required String id,
+    @required int subjectId,
     @required String name,
   })  : id = Value(id),
+        subjectId = Value(subjectId),
         name = Value(name);
-  ProfessorsCompanion copyWith({Value<String> id, Value<String> name}) {
+  ProfessorsCompanion copyWith(
+      {Value<String> id, Value<int> subjectId, Value<String> name}) {
     return ProfessorsCompanion(
       id: id ?? this.id,
+      subjectId: subjectId ?? this.subjectId,
       name: name ?? this.name,
     );
   }
@@ -1387,6 +1408,18 @@ class $ProfessorsTable extends Professors
     );
   }
 
+  final VerificationMeta _subjectIdMeta = const VerificationMeta('subjectId');
+  GeneratedIntColumn _subjectId;
+  @override
+  GeneratedIntColumn get subjectId => _subjectId ??= _constructSubjectId();
+  GeneratedIntColumn _constructSubjectId() {
+    return GeneratedIntColumn(
+      'subject_id',
+      $tableName,
+      false,
+    );
+  }
+
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   GeneratedTextColumn _name;
   @override
@@ -1400,7 +1433,7 @@ class $ProfessorsTable extends Professors
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, name];
+  List<GeneratedColumn> get $columns => [id, subjectId, name];
   @override
   $ProfessorsTable get asDslTable => this;
   @override
@@ -1415,6 +1448,12 @@ class $ProfessorsTable extends Professors
       context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
     } else if (id.isRequired && isInserting) {
       context.missing(_idMeta);
+    }
+    if (d.subjectId.present) {
+      context.handle(_subjectIdMeta,
+          subjectId.isAcceptableValue(d.subjectId.value, _subjectIdMeta));
+    } else if (subjectId.isRequired && isInserting) {
+      context.missing(_subjectIdMeta);
     }
     if (d.name.present) {
       context.handle(
@@ -1438,6 +1477,9 @@ class $ProfessorsTable extends Professors
     final map = <String, Variable>{};
     if (d.id.present) {
       map['id'] = Variable<String, StringType>(d.id.value);
+    }
+    if (d.subjectId.present) {
+      map['subject_id'] = Variable<int, IntType>(d.subjectId.value);
     }
     if (d.name.present) {
       map['name'] = Variable<String, StringType>(d.name.value);
