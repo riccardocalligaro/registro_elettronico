@@ -18,7 +18,7 @@ class ServerException implements Exception {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    // TODO: add the translation of the message
+    // TODO: add the translation of the message -> spaggiari always returns a error in inglish with some grammar mistakes
     data['statusCode'] = this.statusCode;
     data['error'] = this.error;
     data['info'] = this.info;

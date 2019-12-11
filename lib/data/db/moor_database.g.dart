@@ -1493,6 +1493,911 @@ class $ProfessorsTable extends Professors
   }
 }
 
+class Grade extends DataClass implements Insertable<Grade> {
+  final int subjectId;
+  final String subjectDesc;
+  final int evtId;
+  final String evtCode;
+  final DateTime eventDate;
+  final double decimalValue;
+  final String displayValue;
+  final int displayPos;
+  final String notesForFamily;
+  final bool cancelled;
+  final bool underlined;
+  final int periodPos;
+  final String periodDesc;
+  final int componentPos;
+  final String componentDesc;
+  final int weightFactor;
+  final int skillId;
+  final int gradeMasterId;
+  Grade(
+      {@required this.subjectId,
+      @required this.subjectDesc,
+      @required this.evtId,
+      @required this.evtCode,
+      @required this.eventDate,
+      @required this.decimalValue,
+      @required this.displayValue,
+      @required this.displayPos,
+      @required this.notesForFamily,
+      @required this.cancelled,
+      @required this.underlined,
+      @required this.periodPos,
+      @required this.periodDesc,
+      @required this.componentPos,
+      @required this.componentDesc,
+      @required this.weightFactor,
+      @required this.skillId,
+      @required this.gradeMasterId});
+  factory Grade.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    final doubleType = db.typeSystem.forDartType<double>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    return Grade(
+      subjectId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
+      subjectDesc: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}subject_desc']),
+      evtId: intType.mapFromDatabaseResponse(data['${effectivePrefix}evt_id']),
+      evtCode: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}evt_code']),
+      eventDate: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}event_date']),
+      decimalValue: doubleType
+          .mapFromDatabaseResponse(data['${effectivePrefix}decimal_value']),
+      displayValue: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}display_value']),
+      displayPos: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}display_pos']),
+      notesForFamily: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}notes_for_family']),
+      cancelled:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}cancelled']),
+      underlined: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}underlined']),
+      periodPos:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}period_pos']),
+      periodDesc: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}period_desc']),
+      componentPos: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}component_pos']),
+      componentDesc: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}component_desc']),
+      weightFactor: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}weight_factor']),
+      skillId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}skill_id']),
+      gradeMasterId: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}grade_master_id']),
+    );
+  }
+  factory Grade.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return Grade(
+      subjectId: serializer.fromJson<int>(json['subjectId']),
+      subjectDesc: serializer.fromJson<String>(json['subjectDesc']),
+      evtId: serializer.fromJson<int>(json['evtId']),
+      evtCode: serializer.fromJson<String>(json['evtCode']),
+      eventDate: serializer.fromJson<DateTime>(json['eventDate']),
+      decimalValue: serializer.fromJson<double>(json['decimalValue']),
+      displayValue: serializer.fromJson<String>(json['displayValue']),
+      displayPos: serializer.fromJson<int>(json['displayPos']),
+      notesForFamily: serializer.fromJson<String>(json['notesForFamily']),
+      cancelled: serializer.fromJson<bool>(json['cancelled']),
+      underlined: serializer.fromJson<bool>(json['underlined']),
+      periodPos: serializer.fromJson<int>(json['periodPos']),
+      periodDesc: serializer.fromJson<String>(json['periodDesc']),
+      componentPos: serializer.fromJson<int>(json['componentPos']),
+      componentDesc: serializer.fromJson<String>(json['componentDesc']),
+      weightFactor: serializer.fromJson<int>(json['weightFactor']),
+      skillId: serializer.fromJson<int>(json['skillId']),
+      gradeMasterId: serializer.fromJson<int>(json['gradeMasterId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'subjectId': serializer.toJson<int>(subjectId),
+      'subjectDesc': serializer.toJson<String>(subjectDesc),
+      'evtId': serializer.toJson<int>(evtId),
+      'evtCode': serializer.toJson<String>(evtCode),
+      'eventDate': serializer.toJson<DateTime>(eventDate),
+      'decimalValue': serializer.toJson<double>(decimalValue),
+      'displayValue': serializer.toJson<String>(displayValue),
+      'displayPos': serializer.toJson<int>(displayPos),
+      'notesForFamily': serializer.toJson<String>(notesForFamily),
+      'cancelled': serializer.toJson<bool>(cancelled),
+      'underlined': serializer.toJson<bool>(underlined),
+      'periodPos': serializer.toJson<int>(periodPos),
+      'periodDesc': serializer.toJson<String>(periodDesc),
+      'componentPos': serializer.toJson<int>(componentPos),
+      'componentDesc': serializer.toJson<String>(componentDesc),
+      'weightFactor': serializer.toJson<int>(weightFactor),
+      'skillId': serializer.toJson<int>(skillId),
+      'gradeMasterId': serializer.toJson<int>(gradeMasterId),
+    };
+  }
+
+  @override
+  GradesCompanion createCompanion(bool nullToAbsent) {
+    return GradesCompanion(
+      subjectId: subjectId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(subjectId),
+      subjectDesc: subjectDesc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(subjectDesc),
+      evtId:
+          evtId == null && nullToAbsent ? const Value.absent() : Value(evtId),
+      evtCode: evtCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(evtCode),
+      eventDate: eventDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(eventDate),
+      decimalValue: decimalValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(decimalValue),
+      displayValue: displayValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(displayValue),
+      displayPos: displayPos == null && nullToAbsent
+          ? const Value.absent()
+          : Value(displayPos),
+      notesForFamily: notesForFamily == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notesForFamily),
+      cancelled: cancelled == null && nullToAbsent
+          ? const Value.absent()
+          : Value(cancelled),
+      underlined: underlined == null && nullToAbsent
+          ? const Value.absent()
+          : Value(underlined),
+      periodPos: periodPos == null && nullToAbsent
+          ? const Value.absent()
+          : Value(periodPos),
+      periodDesc: periodDesc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(periodDesc),
+      componentPos: componentPos == null && nullToAbsent
+          ? const Value.absent()
+          : Value(componentPos),
+      componentDesc: componentDesc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(componentDesc),
+      weightFactor: weightFactor == null && nullToAbsent
+          ? const Value.absent()
+          : Value(weightFactor),
+      skillId: skillId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(skillId),
+      gradeMasterId: gradeMasterId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gradeMasterId),
+    );
+  }
+
+  Grade copyWith(
+          {int subjectId,
+          String subjectDesc,
+          int evtId,
+          String evtCode,
+          DateTime eventDate,
+          double decimalValue,
+          String displayValue,
+          int displayPos,
+          String notesForFamily,
+          bool cancelled,
+          bool underlined,
+          int periodPos,
+          String periodDesc,
+          int componentPos,
+          String componentDesc,
+          int weightFactor,
+          int skillId,
+          int gradeMasterId}) =>
+      Grade(
+        subjectId: subjectId ?? this.subjectId,
+        subjectDesc: subjectDesc ?? this.subjectDesc,
+        evtId: evtId ?? this.evtId,
+        evtCode: evtCode ?? this.evtCode,
+        eventDate: eventDate ?? this.eventDate,
+        decimalValue: decimalValue ?? this.decimalValue,
+        displayValue: displayValue ?? this.displayValue,
+        displayPos: displayPos ?? this.displayPos,
+        notesForFamily: notesForFamily ?? this.notesForFamily,
+        cancelled: cancelled ?? this.cancelled,
+        underlined: underlined ?? this.underlined,
+        periodPos: periodPos ?? this.periodPos,
+        periodDesc: periodDesc ?? this.periodDesc,
+        componentPos: componentPos ?? this.componentPos,
+        componentDesc: componentDesc ?? this.componentDesc,
+        weightFactor: weightFactor ?? this.weightFactor,
+        skillId: skillId ?? this.skillId,
+        gradeMasterId: gradeMasterId ?? this.gradeMasterId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Grade(')
+          ..write('subjectId: $subjectId, ')
+          ..write('subjectDesc: $subjectDesc, ')
+          ..write('evtId: $evtId, ')
+          ..write('evtCode: $evtCode, ')
+          ..write('eventDate: $eventDate, ')
+          ..write('decimalValue: $decimalValue, ')
+          ..write('displayValue: $displayValue, ')
+          ..write('displayPos: $displayPos, ')
+          ..write('notesForFamily: $notesForFamily, ')
+          ..write('cancelled: $cancelled, ')
+          ..write('underlined: $underlined, ')
+          ..write('periodPos: $periodPos, ')
+          ..write('periodDesc: $periodDesc, ')
+          ..write('componentPos: $componentPos, ')
+          ..write('componentDesc: $componentDesc, ')
+          ..write('weightFactor: $weightFactor, ')
+          ..write('skillId: $skillId, ')
+          ..write('gradeMasterId: $gradeMasterId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      subjectId.hashCode,
+      $mrjc(
+          subjectDesc.hashCode,
+          $mrjc(
+              evtId.hashCode,
+              $mrjc(
+                  evtCode.hashCode,
+                  $mrjc(
+                      eventDate.hashCode,
+                      $mrjc(
+                          decimalValue.hashCode,
+                          $mrjc(
+                              displayValue.hashCode,
+                              $mrjc(
+                                  displayPos.hashCode,
+                                  $mrjc(
+                                      notesForFamily.hashCode,
+                                      $mrjc(
+                                          cancelled.hashCode,
+                                          $mrjc(
+                                              underlined.hashCode,
+                                              $mrjc(
+                                                  periodPos.hashCode,
+                                                  $mrjc(
+                                                      periodDesc.hashCode,
+                                                      $mrjc(
+                                                          componentPos.hashCode,
+                                                          $mrjc(
+                                                              componentDesc
+                                                                  .hashCode,
+                                                              $mrjc(
+                                                                  weightFactor
+                                                                      .hashCode,
+                                                                  $mrjc(
+                                                                      skillId
+                                                                          .hashCode,
+                                                                      gradeMasterId
+                                                                          .hashCode))))))))))))))))));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is Grade &&
+          other.subjectId == this.subjectId &&
+          other.subjectDesc == this.subjectDesc &&
+          other.evtId == this.evtId &&
+          other.evtCode == this.evtCode &&
+          other.eventDate == this.eventDate &&
+          other.decimalValue == this.decimalValue &&
+          other.displayValue == this.displayValue &&
+          other.displayPos == this.displayPos &&
+          other.notesForFamily == this.notesForFamily &&
+          other.cancelled == this.cancelled &&
+          other.underlined == this.underlined &&
+          other.periodPos == this.periodPos &&
+          other.periodDesc == this.periodDesc &&
+          other.componentPos == this.componentPos &&
+          other.componentDesc == this.componentDesc &&
+          other.weightFactor == this.weightFactor &&
+          other.skillId == this.skillId &&
+          other.gradeMasterId == this.gradeMasterId);
+}
+
+class GradesCompanion extends UpdateCompanion<Grade> {
+  final Value<int> subjectId;
+  final Value<String> subjectDesc;
+  final Value<int> evtId;
+  final Value<String> evtCode;
+  final Value<DateTime> eventDate;
+  final Value<double> decimalValue;
+  final Value<String> displayValue;
+  final Value<int> displayPos;
+  final Value<String> notesForFamily;
+  final Value<bool> cancelled;
+  final Value<bool> underlined;
+  final Value<int> periodPos;
+  final Value<String> periodDesc;
+  final Value<int> componentPos;
+  final Value<String> componentDesc;
+  final Value<int> weightFactor;
+  final Value<int> skillId;
+  final Value<int> gradeMasterId;
+  const GradesCompanion({
+    this.subjectId = const Value.absent(),
+    this.subjectDesc = const Value.absent(),
+    this.evtId = const Value.absent(),
+    this.evtCode = const Value.absent(),
+    this.eventDate = const Value.absent(),
+    this.decimalValue = const Value.absent(),
+    this.displayValue = const Value.absent(),
+    this.displayPos = const Value.absent(),
+    this.notesForFamily = const Value.absent(),
+    this.cancelled = const Value.absent(),
+    this.underlined = const Value.absent(),
+    this.periodPos = const Value.absent(),
+    this.periodDesc = const Value.absent(),
+    this.componentPos = const Value.absent(),
+    this.componentDesc = const Value.absent(),
+    this.weightFactor = const Value.absent(),
+    this.skillId = const Value.absent(),
+    this.gradeMasterId = const Value.absent(),
+  });
+  GradesCompanion.insert({
+    @required int subjectId,
+    @required String subjectDesc,
+    @required int evtId,
+    @required String evtCode,
+    @required DateTime eventDate,
+    @required double decimalValue,
+    @required String displayValue,
+    @required int displayPos,
+    @required String notesForFamily,
+    @required bool cancelled,
+    @required bool underlined,
+    @required int periodPos,
+    @required String periodDesc,
+    @required int componentPos,
+    @required String componentDesc,
+    @required int weightFactor,
+    @required int skillId,
+    @required int gradeMasterId,
+  })  : subjectId = Value(subjectId),
+        subjectDesc = Value(subjectDesc),
+        evtId = Value(evtId),
+        evtCode = Value(evtCode),
+        eventDate = Value(eventDate),
+        decimalValue = Value(decimalValue),
+        displayValue = Value(displayValue),
+        displayPos = Value(displayPos),
+        notesForFamily = Value(notesForFamily),
+        cancelled = Value(cancelled),
+        underlined = Value(underlined),
+        periodPos = Value(periodPos),
+        periodDesc = Value(periodDesc),
+        componentPos = Value(componentPos),
+        componentDesc = Value(componentDesc),
+        weightFactor = Value(weightFactor),
+        skillId = Value(skillId),
+        gradeMasterId = Value(gradeMasterId);
+  GradesCompanion copyWith(
+      {Value<int> subjectId,
+      Value<String> subjectDesc,
+      Value<int> evtId,
+      Value<String> evtCode,
+      Value<DateTime> eventDate,
+      Value<double> decimalValue,
+      Value<String> displayValue,
+      Value<int> displayPos,
+      Value<String> notesForFamily,
+      Value<bool> cancelled,
+      Value<bool> underlined,
+      Value<int> periodPos,
+      Value<String> periodDesc,
+      Value<int> componentPos,
+      Value<String> componentDesc,
+      Value<int> weightFactor,
+      Value<int> skillId,
+      Value<int> gradeMasterId}) {
+    return GradesCompanion(
+      subjectId: subjectId ?? this.subjectId,
+      subjectDesc: subjectDesc ?? this.subjectDesc,
+      evtId: evtId ?? this.evtId,
+      evtCode: evtCode ?? this.evtCode,
+      eventDate: eventDate ?? this.eventDate,
+      decimalValue: decimalValue ?? this.decimalValue,
+      displayValue: displayValue ?? this.displayValue,
+      displayPos: displayPos ?? this.displayPos,
+      notesForFamily: notesForFamily ?? this.notesForFamily,
+      cancelled: cancelled ?? this.cancelled,
+      underlined: underlined ?? this.underlined,
+      periodPos: periodPos ?? this.periodPos,
+      periodDesc: periodDesc ?? this.periodDesc,
+      componentPos: componentPos ?? this.componentPos,
+      componentDesc: componentDesc ?? this.componentDesc,
+      weightFactor: weightFactor ?? this.weightFactor,
+      skillId: skillId ?? this.skillId,
+      gradeMasterId: gradeMasterId ?? this.gradeMasterId,
+    );
+  }
+}
+
+class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $GradesTable(this._db, [this._alias]);
+  final VerificationMeta _subjectIdMeta = const VerificationMeta('subjectId');
+  GeneratedIntColumn _subjectId;
+  @override
+  GeneratedIntColumn get subjectId => _subjectId ??= _constructSubjectId();
+  GeneratedIntColumn _constructSubjectId() {
+    return GeneratedIntColumn(
+      'subject_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _subjectDescMeta =
+      const VerificationMeta('subjectDesc');
+  GeneratedTextColumn _subjectDesc;
+  @override
+  GeneratedTextColumn get subjectDesc =>
+      _subjectDesc ??= _constructSubjectDesc();
+  GeneratedTextColumn _constructSubjectDesc() {
+    return GeneratedTextColumn(
+      'subject_desc',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _evtIdMeta = const VerificationMeta('evtId');
+  GeneratedIntColumn _evtId;
+  @override
+  GeneratedIntColumn get evtId => _evtId ??= _constructEvtId();
+  GeneratedIntColumn _constructEvtId() {
+    return GeneratedIntColumn(
+      'evt_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _evtCodeMeta = const VerificationMeta('evtCode');
+  GeneratedTextColumn _evtCode;
+  @override
+  GeneratedTextColumn get evtCode => _evtCode ??= _constructEvtCode();
+  GeneratedTextColumn _constructEvtCode() {
+    return GeneratedTextColumn(
+      'evt_code',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _eventDateMeta = const VerificationMeta('eventDate');
+  GeneratedDateTimeColumn _eventDate;
+  @override
+  GeneratedDateTimeColumn get eventDate => _eventDate ??= _constructEventDate();
+  GeneratedDateTimeColumn _constructEventDate() {
+    return GeneratedDateTimeColumn(
+      'event_date',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _decimalValueMeta =
+      const VerificationMeta('decimalValue');
+  GeneratedRealColumn _decimalValue;
+  @override
+  GeneratedRealColumn get decimalValue =>
+      _decimalValue ??= _constructDecimalValue();
+  GeneratedRealColumn _constructDecimalValue() {
+    return GeneratedRealColumn(
+      'decimal_value',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _displayValueMeta =
+      const VerificationMeta('displayValue');
+  GeneratedTextColumn _displayValue;
+  @override
+  GeneratedTextColumn get displayValue =>
+      _displayValue ??= _constructDisplayValue();
+  GeneratedTextColumn _constructDisplayValue() {
+    return GeneratedTextColumn(
+      'display_value',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _displayPosMeta = const VerificationMeta('displayPos');
+  GeneratedIntColumn _displayPos;
+  @override
+  GeneratedIntColumn get displayPos => _displayPos ??= _constructDisplayPos();
+  GeneratedIntColumn _constructDisplayPos() {
+    return GeneratedIntColumn(
+      'display_pos',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _notesForFamilyMeta =
+      const VerificationMeta('notesForFamily');
+  GeneratedTextColumn _notesForFamily;
+  @override
+  GeneratedTextColumn get notesForFamily =>
+      _notesForFamily ??= _constructNotesForFamily();
+  GeneratedTextColumn _constructNotesForFamily() {
+    return GeneratedTextColumn(
+      'notes_for_family',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _cancelledMeta = const VerificationMeta('cancelled');
+  GeneratedBoolColumn _cancelled;
+  @override
+  GeneratedBoolColumn get cancelled => _cancelled ??= _constructCancelled();
+  GeneratedBoolColumn _constructCancelled() {
+    return GeneratedBoolColumn(
+      'cancelled',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _underlinedMeta = const VerificationMeta('underlined');
+  GeneratedBoolColumn _underlined;
+  @override
+  GeneratedBoolColumn get underlined => _underlined ??= _constructUnderlined();
+  GeneratedBoolColumn _constructUnderlined() {
+    return GeneratedBoolColumn(
+      'underlined',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _periodPosMeta = const VerificationMeta('periodPos');
+  GeneratedIntColumn _periodPos;
+  @override
+  GeneratedIntColumn get periodPos => _periodPos ??= _constructPeriodPos();
+  GeneratedIntColumn _constructPeriodPos() {
+    return GeneratedIntColumn(
+      'period_pos',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _periodDescMeta = const VerificationMeta('periodDesc');
+  GeneratedTextColumn _periodDesc;
+  @override
+  GeneratedTextColumn get periodDesc => _periodDesc ??= _constructPeriodDesc();
+  GeneratedTextColumn _constructPeriodDesc() {
+    return GeneratedTextColumn(
+      'period_desc',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _componentPosMeta =
+      const VerificationMeta('componentPos');
+  GeneratedIntColumn _componentPos;
+  @override
+  GeneratedIntColumn get componentPos =>
+      _componentPos ??= _constructComponentPos();
+  GeneratedIntColumn _constructComponentPos() {
+    return GeneratedIntColumn(
+      'component_pos',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _componentDescMeta =
+      const VerificationMeta('componentDesc');
+  GeneratedTextColumn _componentDesc;
+  @override
+  GeneratedTextColumn get componentDesc =>
+      _componentDesc ??= _constructComponentDesc();
+  GeneratedTextColumn _constructComponentDesc() {
+    return GeneratedTextColumn(
+      'component_desc',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _weightFactorMeta =
+      const VerificationMeta('weightFactor');
+  GeneratedIntColumn _weightFactor;
+  @override
+  GeneratedIntColumn get weightFactor =>
+      _weightFactor ??= _constructWeightFactor();
+  GeneratedIntColumn _constructWeightFactor() {
+    return GeneratedIntColumn(
+      'weight_factor',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _skillIdMeta = const VerificationMeta('skillId');
+  GeneratedIntColumn _skillId;
+  @override
+  GeneratedIntColumn get skillId => _skillId ??= _constructSkillId();
+  GeneratedIntColumn _constructSkillId() {
+    return GeneratedIntColumn(
+      'skill_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _gradeMasterIdMeta =
+      const VerificationMeta('gradeMasterId');
+  GeneratedIntColumn _gradeMasterId;
+  @override
+  GeneratedIntColumn get gradeMasterId =>
+      _gradeMasterId ??= _constructGradeMasterId();
+  GeneratedIntColumn _constructGradeMasterId() {
+    return GeneratedIntColumn(
+      'grade_master_id',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        subjectId,
+        subjectDesc,
+        evtId,
+        evtCode,
+        eventDate,
+        decimalValue,
+        displayValue,
+        displayPos,
+        notesForFamily,
+        cancelled,
+        underlined,
+        periodPos,
+        periodDesc,
+        componentPos,
+        componentDesc,
+        weightFactor,
+        skillId,
+        gradeMasterId
+      ];
+  @override
+  $GradesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'grades';
+  @override
+  final String actualTableName = 'grades';
+  @override
+  VerificationContext validateIntegrity(GradesCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.subjectId.present) {
+      context.handle(_subjectIdMeta,
+          subjectId.isAcceptableValue(d.subjectId.value, _subjectIdMeta));
+    } else if (subjectId.isRequired && isInserting) {
+      context.missing(_subjectIdMeta);
+    }
+    if (d.subjectDesc.present) {
+      context.handle(_subjectDescMeta,
+          subjectDesc.isAcceptableValue(d.subjectDesc.value, _subjectDescMeta));
+    } else if (subjectDesc.isRequired && isInserting) {
+      context.missing(_subjectDescMeta);
+    }
+    if (d.evtId.present) {
+      context.handle(
+          _evtIdMeta, evtId.isAcceptableValue(d.evtId.value, _evtIdMeta));
+    } else if (evtId.isRequired && isInserting) {
+      context.missing(_evtIdMeta);
+    }
+    if (d.evtCode.present) {
+      context.handle(_evtCodeMeta,
+          evtCode.isAcceptableValue(d.evtCode.value, _evtCodeMeta));
+    } else if (evtCode.isRequired && isInserting) {
+      context.missing(_evtCodeMeta);
+    }
+    if (d.eventDate.present) {
+      context.handle(_eventDateMeta,
+          eventDate.isAcceptableValue(d.eventDate.value, _eventDateMeta));
+    } else if (eventDate.isRequired && isInserting) {
+      context.missing(_eventDateMeta);
+    }
+    if (d.decimalValue.present) {
+      context.handle(
+          _decimalValueMeta,
+          decimalValue.isAcceptableValue(
+              d.decimalValue.value, _decimalValueMeta));
+    } else if (decimalValue.isRequired && isInserting) {
+      context.missing(_decimalValueMeta);
+    }
+    if (d.displayValue.present) {
+      context.handle(
+          _displayValueMeta,
+          displayValue.isAcceptableValue(
+              d.displayValue.value, _displayValueMeta));
+    } else if (displayValue.isRequired && isInserting) {
+      context.missing(_displayValueMeta);
+    }
+    if (d.displayPos.present) {
+      context.handle(_displayPosMeta,
+          displayPos.isAcceptableValue(d.displayPos.value, _displayPosMeta));
+    } else if (displayPos.isRequired && isInserting) {
+      context.missing(_displayPosMeta);
+    }
+    if (d.notesForFamily.present) {
+      context.handle(
+          _notesForFamilyMeta,
+          notesForFamily.isAcceptableValue(
+              d.notesForFamily.value, _notesForFamilyMeta));
+    } else if (notesForFamily.isRequired && isInserting) {
+      context.missing(_notesForFamilyMeta);
+    }
+    if (d.cancelled.present) {
+      context.handle(_cancelledMeta,
+          cancelled.isAcceptableValue(d.cancelled.value, _cancelledMeta));
+    } else if (cancelled.isRequired && isInserting) {
+      context.missing(_cancelledMeta);
+    }
+    if (d.underlined.present) {
+      context.handle(_underlinedMeta,
+          underlined.isAcceptableValue(d.underlined.value, _underlinedMeta));
+    } else if (underlined.isRequired && isInserting) {
+      context.missing(_underlinedMeta);
+    }
+    if (d.periodPos.present) {
+      context.handle(_periodPosMeta,
+          periodPos.isAcceptableValue(d.periodPos.value, _periodPosMeta));
+    } else if (periodPos.isRequired && isInserting) {
+      context.missing(_periodPosMeta);
+    }
+    if (d.periodDesc.present) {
+      context.handle(_periodDescMeta,
+          periodDesc.isAcceptableValue(d.periodDesc.value, _periodDescMeta));
+    } else if (periodDesc.isRequired && isInserting) {
+      context.missing(_periodDescMeta);
+    }
+    if (d.componentPos.present) {
+      context.handle(
+          _componentPosMeta,
+          componentPos.isAcceptableValue(
+              d.componentPos.value, _componentPosMeta));
+    } else if (componentPos.isRequired && isInserting) {
+      context.missing(_componentPosMeta);
+    }
+    if (d.componentDesc.present) {
+      context.handle(
+          _componentDescMeta,
+          componentDesc.isAcceptableValue(
+              d.componentDesc.value, _componentDescMeta));
+    } else if (componentDesc.isRequired && isInserting) {
+      context.missing(_componentDescMeta);
+    }
+    if (d.weightFactor.present) {
+      context.handle(
+          _weightFactorMeta,
+          weightFactor.isAcceptableValue(
+              d.weightFactor.value, _weightFactorMeta));
+    } else if (weightFactor.isRequired && isInserting) {
+      context.missing(_weightFactorMeta);
+    }
+    if (d.skillId.present) {
+      context.handle(_skillIdMeta,
+          skillId.isAcceptableValue(d.skillId.value, _skillIdMeta));
+    } else if (skillId.isRequired && isInserting) {
+      context.missing(_skillIdMeta);
+    }
+    if (d.gradeMasterId.present) {
+      context.handle(
+          _gradeMasterIdMeta,
+          gradeMasterId.isAcceptableValue(
+              d.gradeMasterId.value, _gradeMasterIdMeta));
+    } else if (gradeMasterId.isRequired && isInserting) {
+      context.missing(_gradeMasterIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  Grade map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Grade.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(GradesCompanion d) {
+    final map = <String, Variable>{};
+    if (d.subjectId.present) {
+      map['subject_id'] = Variable<int, IntType>(d.subjectId.value);
+    }
+    if (d.subjectDesc.present) {
+      map['subject_desc'] = Variable<String, StringType>(d.subjectDesc.value);
+    }
+    if (d.evtId.present) {
+      map['evt_id'] = Variable<int, IntType>(d.evtId.value);
+    }
+    if (d.evtCode.present) {
+      map['evt_code'] = Variable<String, StringType>(d.evtCode.value);
+    }
+    if (d.eventDate.present) {
+      map['event_date'] = Variable<DateTime, DateTimeType>(d.eventDate.value);
+    }
+    if (d.decimalValue.present) {
+      map['decimal_value'] = Variable<double, RealType>(d.decimalValue.value);
+    }
+    if (d.displayValue.present) {
+      map['display_value'] = Variable<String, StringType>(d.displayValue.value);
+    }
+    if (d.displayPos.present) {
+      map['display_pos'] = Variable<int, IntType>(d.displayPos.value);
+    }
+    if (d.notesForFamily.present) {
+      map['notes_for_family'] =
+          Variable<String, StringType>(d.notesForFamily.value);
+    }
+    if (d.cancelled.present) {
+      map['cancelled'] = Variable<bool, BoolType>(d.cancelled.value);
+    }
+    if (d.underlined.present) {
+      map['underlined'] = Variable<bool, BoolType>(d.underlined.value);
+    }
+    if (d.periodPos.present) {
+      map['period_pos'] = Variable<int, IntType>(d.periodPos.value);
+    }
+    if (d.periodDesc.present) {
+      map['period_desc'] = Variable<String, StringType>(d.periodDesc.value);
+    }
+    if (d.componentPos.present) {
+      map['component_pos'] = Variable<int, IntType>(d.componentPos.value);
+    }
+    if (d.componentDesc.present) {
+      map['component_desc'] =
+          Variable<String, StringType>(d.componentDesc.value);
+    }
+    if (d.weightFactor.present) {
+      map['weight_factor'] = Variable<int, IntType>(d.weightFactor.value);
+    }
+    if (d.skillId.present) {
+      map['skill_id'] = Variable<int, IntType>(d.skillId.value);
+    }
+    if (d.gradeMasterId.present) {
+      map['grade_master_id'] = Variable<int, IntType>(d.gradeMasterId.value);
+    }
+    return map;
+  }
+
+  @override
+  $GradesTable createAlias(String alias) {
+    return $GradesTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProfilesTable _profiles;
@@ -1503,6 +2408,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $SubjectsTable get subjects => _subjects ??= $SubjectsTable(this);
   $ProfessorsTable _professors;
   $ProfessorsTable get professors => _professors ??= $ProfessorsTable(this);
+  $GradesTable _grades;
+  $GradesTable get grades => _grades ??= $GradesTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   LessonDao _lessonDao;
@@ -1512,6 +2419,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   ProfessorDao _professorDao;
   ProfessorDao get professorDao =>
       _professorDao ??= ProfessorDao(this as AppDatabase);
+  GradeDao _gradeDao;
+  GradeDao get gradeDao => _gradeDao ??= GradeDao(this as AppDatabase);
   @override
-  List<TableInfo> get allTables => [profiles, lessons, subjects, professors];
+  List<TableInfo> get allTables =>
+      [profiles, lessons, subjects, professors, grades];
 }

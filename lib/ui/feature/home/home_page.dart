@@ -13,6 +13,7 @@ import 'package:registro_elettronico/data/network/service/api/spaggiari_client.d
 import 'package:registro_elettronico/data/repository/lessons_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/subjects_resposiotry_impl.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_event.dart';
 import 'package:registro_elettronico/ui/feature/home/components/lesson_card.dart';
@@ -190,6 +191,16 @@ class _HomePageState extends State<HomePage> {
                     lessonDao.deleteLessons();
                   },
                 ),
+                RaisedButton(
+                  child: Text('Grades'),
+                  onPressed: () {
+                    BlocProvider.of<GradesBloc>(context).add(FetchGrades());
+                  },
+                ),
+                Container(
+                  height: 200,
+                  child: _buildGrades(context),
+                ),
 
                 RaisedButton(
                   child: Text('Get subjects'),
@@ -211,6 +222,23 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+    );
+  }
+
+  StreamBuilder<List<Grade>> _buildGrades(BuildContext context) {
+    return StreamBuilder(
+      stream: BlocProvider.of<GradesBloc>(context).watchAllGrades(),
+      initialData: List(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        final List<Grade> grades = snapshot.data ?? List();
+
+        return ListView.builder(
+          itemCount: grades.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Text(grades[index].displayValue);
+          },
+        );
+      },
     );
   }
 

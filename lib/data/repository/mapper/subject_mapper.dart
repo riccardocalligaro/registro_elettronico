@@ -1,5 +1,5 @@
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
-import 'package:registro_elettronico/domain/entity/subjects/subjects_response.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/subjects_response.dart';
 
 class SubjectMapper {
   /// Converts a lesson we got from the api to an insertable in the database
