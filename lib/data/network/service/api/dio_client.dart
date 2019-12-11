@@ -29,9 +29,8 @@ class DioClient {
         dio.lock();
         // get the profile from the database
         final profile = await profileRepository.getDbProfile();
-        //! change this to before
         //? This checks if the profile exires before now, so if this  results true the token is expired
-        if (profile.expire.isAfter(DateTime.now())) {
+        if (profile.expire.isBefore(DateTime.now())) {
           print("NEED TO REQUEST NEW TOKEN!");
           // this gets the password from flutter secure storage which is saved using the ident
           final password = await flutterSecureStorage.read(key: profile.ident);
