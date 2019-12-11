@@ -11,8 +11,12 @@ class LessonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double _paddingLeft = 0;
+    if (lesson.position == 1) {
+      _paddingLeft = 16.0;
+    }
     return Padding(
-      padding: EdgeInsets.only(right: 8.0),
+      padding: EdgeInsets.only(left: _paddingLeft, right: 8.0),
       child: Container(
         width: 220.0,
         height: 140,

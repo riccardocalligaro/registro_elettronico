@@ -80,10 +80,13 @@ class AppDrawer extends StatelessWidget {
       // todo: need to fix null
       future: _getUsername(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
+        final ident = snapshot.data.ident ?? "Loading...";
+        final firstName = snapshot.data.firstName ?? "";
+        final lastName = snapshot.data.lastName ?? "";
+
         return UserAccountsDrawerHeader(
-          accountEmail: Text(snapshot.data.ident ?? "ss"),
-          accountName: Text(
-              "${snapshot.data.firstName ?? ''} ${snapshot.data.lastName ?? ''}"),
+          accountEmail: Text(ident),
+          accountName: Text("$firstName $lastName"),
           decoration: BoxDecoration(color: Theme.of(context).accentColor),
         );
       },
@@ -109,8 +112,7 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  _getUsername() async {
-    final Profile profile = await profileDao.getProfile();
-    return profile;
+  Future<Profile> _getUsername() async {
+    return await profileDao.getProfile();
   }
 }
