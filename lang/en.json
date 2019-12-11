@@ -1,5 +1,8 @@
 {
   "app_name": "School record",
+  "welcome": "Welcome",
+  "log_in": "Log in",
+  "login_with": "Login with",
   "last_lessons": "Last lessons",
   "discover_all_notice": "Discover all notices",
   "notice_board": "Notice board",
@@ -14,5 +17,8 @@
   "settings": "Settings",
   "share": "Share",
   "contact_us": "Contact us",
-  "sign_out":"Sign out"
+  "sign_out": "Sign out",
+  "unexcepted_error": "An unexcepted error accoured. Try restarting the app",
+  "loading_login": "Loading...",
+  "username_form_login_placeholder": "Username"
 }

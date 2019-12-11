@@ -1,5 +1,8 @@
 {
   "app_name": "Registro Elettronico",
+  "welcome": "Benvenuto",
+  "log_in": "Accedi",
+  "login_with": "Accedi con",
   "last_lessons": "Ultime lezioni",
   "discover_all_notice": "Mostra tutte le circolari",
   "notice_board": "Comunicazioni",
@@ -14,5 +17,8 @@
   "settings": "Impostazioni",
   "share": "Condividi",
   "contact_us": "Contattaci",
-  "sign_out": "Esci"
+  "sign_out": "Esci",
+  "unexcepted_error": "Si é verificato un errore non previsto. Prova a riavviare l'app.",
+  "loading_login": "Accesso in corso...",
+  "username_form_login_placeholder": "Ident o email"
 }
