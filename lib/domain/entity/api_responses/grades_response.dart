@@ -82,7 +82,8 @@ class Grades {
     evtId = json['evtId'];
     evtCode = json['evtCode'];
     evtDate = json['evtDate'];
-    decimalValue = json['decimalValue'].toDouble();
+    decimalValue =
+        json['decimalValue'] == null ? 0.0 : json['decimalValue'].toDouble();
     displayValue = json['displayValue'];
     displaPos = json['displaPos'];
     notesForFamily = json['notesForFamily'];
