@@ -1,12 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
+import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
 
 class GlobalUtils {
   static String tryToReduceName(String subjectName) {
     final stringToCompare = subjectName.toUpperCase();
     // todo: maybe convert this to a int with costants
-    print(stringToCompare);
     switch (stringToCompare) {
       case "MATEMATICA E COMPLEMENTI DI MATEMATICA":
         return "MATEMATICA";
@@ -59,7 +60,7 @@ class GlobalUtils {
   }
 
   static String reduceLessonArgument(String argument) {
-    String reducedName = argument.substring(0, 30);
+    String reducedName = argument.substring(0, 25);
     reducedName += "...";
     return reducedName;
   }
@@ -109,5 +110,33 @@ class GlobalUtils {
           "assets/icons/book_red_lines.svg",
         );
     }
+  }
+
+  static String convertDate(DateTime date) {
+    final formatter = DateFormat('yyyyMMdd');
+    return formatter.format(date);
+  }
+
+  /// this returns the max interval to fetch all the lessons / grades
+  /// for example if it is november 2019 it fetches => sep 2019 -> aug 2020
+  static DateTimeInterval getDateInerval() {
+    final now = DateTime.now();
+    int yearBegin = now.year;
+    int yearEnd = now.year;
+
+    // if we are before sempember we need to fetch from the last year
+    if (now.month > DateTime.september) {
+      yearEnd += 1;
+    } else {
+      yearBegin -= 1;
+    }
+
+    final DateTime beginDate = DateTime.utc(yearBegin, DateTime.september, 1);
+    final DateTime endDate = DateTime.utc(yearEnd, DateTime.august, 31);
+
+    final begin = GlobalUtils.convertDate(beginDate);
+    final end = GlobalUtils.convertDate(endDate);
+
+    return DateTimeInterval(begin: begin, end: end);
   }
 }
