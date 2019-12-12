@@ -35,6 +35,29 @@ class GlobalUtils {
     }
   }
 
+  /// case "MATEMATICA E COMPLEMENTI DI MATEMATICA":
+  ///       return "MATEMATICA";
+  ///       break;
+  ///     case "RELIGIONE CATTOLICA / ATTIVITA ALTERNATIVA":
+  ///       return "RELIGIONE";
+  ///       break;
+  ///     case "LINGUA INGLESE":
+  ///       return "INGLESE";
+  ///       break;
+  ///     case "TECNOLOGIE E PROGETTAZIONE DI SISTEMI INFORMATICI E DI TELECOMUNICAZIONI":
+  ///       return "TPSIT";
+  ///       break;
+  ///     case "LINGUA E LETTERATURA ITALIANA":
+  ///       return "ITALIANO";
+  ///       break;
+  ///     case "LINGUA E LETTERATURA ITALIANA":
+  ///       return "ITALIANO";
+  ///       break;
+  ///     case "SCIENZE MOTORIE E SPORTIVE":
+  ///       return "GINNASTICA";
+  ///       break;
+  ///     default:
+  ///       return "";
   static String reduceSubjectGridTitle(String subjectName) {
     String reducedName;
     reducedName = tryToReduceName(subjectName);

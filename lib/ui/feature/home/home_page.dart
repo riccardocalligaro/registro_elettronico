@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
@@ -13,6 +15,8 @@ import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_event.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
+import 'package:registro_elettronico/ui/feature/home/components/event_card.dart';
 import 'package:registro_elettronico/ui/feature/home/components/lesson_card.dart';
 import 'package:registro_elettronico/ui/feature/home/components/subjects_grid.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
@@ -82,7 +86,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(4.0),
                   child: IconButton(
                     icon: Icon(Icons.menu),
                     onPressed: () {
@@ -163,16 +167,13 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                Divider(
-                  color: Colors.grey[400],
-                ),
-                Container(
-                  height: 300,
-                  child: _buildAgenda(context),
-                ),
-                Container(
-                  child: _buildSubjectsGrid(context),
-                ),
+
+                Divider(color: Colors.grey[400]),
+
+                _buildAgenda(context),
+
+                _buildSubjectsGrid(context),
+
                 RaisedButton(
                   child: Text('Request lessons'),
                   onPressed: () async {
@@ -203,35 +204,13 @@ class _HomePageState extends State<HomePage> {
                     BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
                   },
                 ),
-                Container(
-                  height: 200,
-                  child: _buildGrades(context),
-                ),
-                BlocBuilder<AgendaBloc, AgendaState>(
-                  builder: (context, state) {
-                    return Container(
-                      child: Text(state.toString()),
-                    );
-                  },
-                ),
-
                 RaisedButton(
                   child: Text('Get subjects'),
-                  onPressed: () async {
-                    final SubjectsRepositoryImpl subjectsRepositoryImpl =
-                        SubjectsRepositoryImpl(
-                            Injector.appInstance.getDependency(),
-                            Injector.appInstance.getDependency(),
-                            Injector.appInstance.getDependency(),
-                            Injector.appInstance.getDependency());
-
-                    subjectsRepositoryImpl.updateSubjects("6102171");
+                  onPressed: () {
+                    BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
                   },
                 ),
-                Container(
-                  height: 400,
-                  child: _buildAgenda(context),
-                )
+
                 // Expanded(child: _buildTaskList(context))
               ],
             ),
@@ -247,11 +226,17 @@ class _HomePageState extends State<HomePage> {
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<db.AgendaEvent> events = snapshot.data ?? List();
-        return ListView.builder(
-          itemCount: events.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Text(events[index].notes);
-          },
+        return IgnorePointer(
+          child: ListView.builder(
+            padding: EdgeInsets.all(0),
+            shrinkWrap: true,
+            itemCount: events.length,
+            itemBuilder: (BuildContext context, int index) {
+              return AgendaCardEvent(
+                agendaEvent: events[index],
+              );
+            },
+          ),
         );
       },
     );
@@ -263,7 +248,6 @@ class _HomePageState extends State<HomePage> {
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Grade> grades = snapshot.data ?? List();
-
         return ListView.builder(
           itemCount: grades.length,
           itemBuilder: (BuildContext context, int index) {
