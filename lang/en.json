@@ -20,5 +20,6 @@
   "sign_out": "Sign out",
   "unexcepted_error": "An unexcepted error accoured. Try restarting the app",
   "loading_login": "Loading...",
-  "username_form_login_placeholder": "Username"
+  "username_form_login_placeholder": "Username",
+  "nothing_here":"Nothing here"
 }
