@@ -113,4 +113,25 @@ class _SpaggiariClient implements SpaggiariClient {
     final value = GradesResponse.fromJson(_result.data);
     return Future.value(value);
   }
+
+  @override
+  getAgenda(studentId, start, end) async {
+    ArgumentError.checkNotNull(studentId, 'studentId');
+    ArgumentError.checkNotNull(start, 'start');
+    ArgumentError.checkNotNull(end, 'end');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        '/students/$studentId/agenda/all/$start/$end',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AgendaResponse.fromJson(_result.data);
+    return Future.value(value);
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:registro_elettronico/component/api_config.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/agenda_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/grades_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/subjects_response.dart';
 import 'package:registro_elettronico/domain/entity/lessons_response.dart';
@@ -33,4 +34,9 @@ abstract class SpaggiariClient {
   // Subjects
   @GET("/students/{studentId}/grades")
   Future<GradesResponse> getGrades(@Path() String studentId);
+
+  // Subjects
+  @GET("/students/{studentId}/agenda/all/{start}/{end}")
+  Future<AgendaResponse> getAgenda(@Path() String studentId,
+      @Path("start") String start, @Path("end") String end);
 }
