@@ -3,35 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
+import 'package:registro_elettronico/utils/subjects_constants.dart';
 
 class GlobalUtils {
-  static String tryToReduceName(String subjectName) {
+  static int tryToReduceName(String subjectName) {
     final stringToCompare = subjectName.toUpperCase();
     // todo: maybe convert this to a int with costants
     switch (stringToCompare) {
       case "MATEMATICA E COMPLEMENTI DI MATEMATICA":
-        return "MATEMATICA";
+        return SubjectsConstants.MATEMATICA;
         break;
       case "RELIGIONE CATTOLICA / ATTIVITA ALTERNATIVA":
-        return "RELIGIONE";
+        return SubjectsConstants.RELIGIONE;
         break;
       case "LINGUA INGLESE":
-        return "INGLESE";
+        return SubjectsConstants.INGLESE;
         break;
       case "TECNOLOGIE E PROGETTAZIONE DI SISTEMI INFORMATICI E DI TELECOMUNICAZIONI":
-        return "TPSIT";
+        return SubjectsConstants.TPSIT;
         break;
       case "LINGUA E LETTERATURA ITALIANA":
-        return "ITALIANO";
-        break;
-      case "LINGUA E LETTERATURA ITALIANA":
-        return "ITALIANO";
+        return SubjectsConstants.ITALIANO;
         break;
       case "SCIENZE MOTORIE E SPORTIVE":
-        return "GINNASTICA";
+        return SubjectsConstants.GINNASTICA;
         break;
       default:
-        return "";
+        return -1;
     }
   }
 
@@ -120,10 +118,10 @@ class GlobalUtils {
     }
   }
 
-  static SvgPicture getIconFromSubject(String subject) {
-    subject = subject.toLowerCase().replaceAll(" ", "");
+  static SvgPicture getIconFromSubject(int subject) {
+    //subject = subject.toLowerCase().replaceAll(" ", "");
     switch (subject) {
-      case "matematicaecomplementidimatematica":
+      case SubjectsConstants.MATEMATICA:
         return SvgPicture.asset(
           "assets/icons/science-symbol.svg",
         );
