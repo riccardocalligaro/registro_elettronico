@@ -5,6 +5,7 @@ import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 
 class AppBlocDelegate {
   static AppBlocDelegate _instance;
@@ -28,6 +29,10 @@ class AppBlocDelegate {
       BlocProvider<GradesBloc>(
         create: (ctx) =>
             GradesBloc(i.getDependency(), i.getDependency(), i.getDependency()),
+      ),
+      BlocProvider<SubjectsBloc>(
+        create: (ctx) => SubjectsBloc(
+            i.getDependency(), i.getDependency(), i.getDependency()),
       ),
       BlocProvider<AgendaBloc>(
         create: (ctx) => AgendaBloc(i.getDependency(), i.getDependency()),
