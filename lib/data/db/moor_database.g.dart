@@ -2398,6 +2398,526 @@ class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
   }
 }
 
+class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
+  final int evtId;
+  final String evtCode;
+  final DateTime begin;
+  final DateTime end;
+  final bool isFullDay;
+  final String notes;
+  final String authorName;
+  final String classDesc;
+  final int subjectId;
+  final String subjectDesc;
+  AgendaEvent(
+      {@required this.evtId,
+      @required this.evtCode,
+      @required this.begin,
+      @required this.end,
+      @required this.isFullDay,
+      @required this.notes,
+      @required this.authorName,
+      @required this.classDesc,
+      @required this.subjectId,
+      @required this.subjectDesc});
+  factory AgendaEvent.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    return AgendaEvent(
+      evtId: intType.mapFromDatabaseResponse(data['${effectivePrefix}evt_id']),
+      evtCode: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}evt_code']),
+      begin:
+          dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}begin']),
+      end: dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}end']),
+      isFullDay: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}is_full_day']),
+      notes:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}notes']),
+      authorName: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}author_name']),
+      classDesc: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}class_desc']),
+      subjectId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
+      subjectDesc: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}subject_desc']),
+    );
+  }
+  factory AgendaEvent.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return AgendaEvent(
+      evtId: serializer.fromJson<int>(json['evtId']),
+      evtCode: serializer.fromJson<String>(json['evtCode']),
+      begin: serializer.fromJson<DateTime>(json['begin']),
+      end: serializer.fromJson<DateTime>(json['end']),
+      isFullDay: serializer.fromJson<bool>(json['isFullDay']),
+      notes: serializer.fromJson<String>(json['notes']),
+      authorName: serializer.fromJson<String>(json['authorName']),
+      classDesc: serializer.fromJson<String>(json['classDesc']),
+      subjectId: serializer.fromJson<int>(json['subjectId']),
+      subjectDesc: serializer.fromJson<String>(json['subjectDesc']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'evtId': serializer.toJson<int>(evtId),
+      'evtCode': serializer.toJson<String>(evtCode),
+      'begin': serializer.toJson<DateTime>(begin),
+      'end': serializer.toJson<DateTime>(end),
+      'isFullDay': serializer.toJson<bool>(isFullDay),
+      'notes': serializer.toJson<String>(notes),
+      'authorName': serializer.toJson<String>(authorName),
+      'classDesc': serializer.toJson<String>(classDesc),
+      'subjectId': serializer.toJson<int>(subjectId),
+      'subjectDesc': serializer.toJson<String>(subjectDesc),
+    };
+  }
+
+  @override
+  AgendaEventsCompanion createCompanion(bool nullToAbsent) {
+    return AgendaEventsCompanion(
+      evtId:
+          evtId == null && nullToAbsent ? const Value.absent() : Value(evtId),
+      evtCode: evtCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(evtCode),
+      begin:
+          begin == null && nullToAbsent ? const Value.absent() : Value(begin),
+      end: end == null && nullToAbsent ? const Value.absent() : Value(end),
+      isFullDay: isFullDay == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isFullDay),
+      notes:
+          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
+      authorName: authorName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(authorName),
+      classDesc: classDesc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(classDesc),
+      subjectId: subjectId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(subjectId),
+      subjectDesc: subjectDesc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(subjectDesc),
+    );
+  }
+
+  AgendaEvent copyWith(
+          {int evtId,
+          String evtCode,
+          DateTime begin,
+          DateTime end,
+          bool isFullDay,
+          String notes,
+          String authorName,
+          String classDesc,
+          int subjectId,
+          String subjectDesc}) =>
+      AgendaEvent(
+        evtId: evtId ?? this.evtId,
+        evtCode: evtCode ?? this.evtCode,
+        begin: begin ?? this.begin,
+        end: end ?? this.end,
+        isFullDay: isFullDay ?? this.isFullDay,
+        notes: notes ?? this.notes,
+        authorName: authorName ?? this.authorName,
+        classDesc: classDesc ?? this.classDesc,
+        subjectId: subjectId ?? this.subjectId,
+        subjectDesc: subjectDesc ?? this.subjectDesc,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('AgendaEvent(')
+          ..write('evtId: $evtId, ')
+          ..write('evtCode: $evtCode, ')
+          ..write('begin: $begin, ')
+          ..write('end: $end, ')
+          ..write('isFullDay: $isFullDay, ')
+          ..write('notes: $notes, ')
+          ..write('authorName: $authorName, ')
+          ..write('classDesc: $classDesc, ')
+          ..write('subjectId: $subjectId, ')
+          ..write('subjectDesc: $subjectDesc')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      evtId.hashCode,
+      $mrjc(
+          evtCode.hashCode,
+          $mrjc(
+              begin.hashCode,
+              $mrjc(
+                  end.hashCode,
+                  $mrjc(
+                      isFullDay.hashCode,
+                      $mrjc(
+                          notes.hashCode,
+                          $mrjc(
+                              authorName.hashCode,
+                              $mrjc(
+                                  classDesc.hashCode,
+                                  $mrjc(subjectId.hashCode,
+                                      subjectDesc.hashCode))))))))));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is AgendaEvent &&
+          other.evtId == this.evtId &&
+          other.evtCode == this.evtCode &&
+          other.begin == this.begin &&
+          other.end == this.end &&
+          other.isFullDay == this.isFullDay &&
+          other.notes == this.notes &&
+          other.authorName == this.authorName &&
+          other.classDesc == this.classDesc &&
+          other.subjectId == this.subjectId &&
+          other.subjectDesc == this.subjectDesc);
+}
+
+class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
+  final Value<int> evtId;
+  final Value<String> evtCode;
+  final Value<DateTime> begin;
+  final Value<DateTime> end;
+  final Value<bool> isFullDay;
+  final Value<String> notes;
+  final Value<String> authorName;
+  final Value<String> classDesc;
+  final Value<int> subjectId;
+  final Value<String> subjectDesc;
+  const AgendaEventsCompanion({
+    this.evtId = const Value.absent(),
+    this.evtCode = const Value.absent(),
+    this.begin = const Value.absent(),
+    this.end = const Value.absent(),
+    this.isFullDay = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.authorName = const Value.absent(),
+    this.classDesc = const Value.absent(),
+    this.subjectId = const Value.absent(),
+    this.subjectDesc = const Value.absent(),
+  });
+  AgendaEventsCompanion.insert({
+    @required int evtId,
+    @required String evtCode,
+    @required DateTime begin,
+    @required DateTime end,
+    @required bool isFullDay,
+    @required String notes,
+    @required String authorName,
+    @required String classDesc,
+    @required int subjectId,
+    @required String subjectDesc,
+  })  : evtId = Value(evtId),
+        evtCode = Value(evtCode),
+        begin = Value(begin),
+        end = Value(end),
+        isFullDay = Value(isFullDay),
+        notes = Value(notes),
+        authorName = Value(authorName),
+        classDesc = Value(classDesc),
+        subjectId = Value(subjectId),
+        subjectDesc = Value(subjectDesc);
+  AgendaEventsCompanion copyWith(
+      {Value<int> evtId,
+      Value<String> evtCode,
+      Value<DateTime> begin,
+      Value<DateTime> end,
+      Value<bool> isFullDay,
+      Value<String> notes,
+      Value<String> authorName,
+      Value<String> classDesc,
+      Value<int> subjectId,
+      Value<String> subjectDesc}) {
+    return AgendaEventsCompanion(
+      evtId: evtId ?? this.evtId,
+      evtCode: evtCode ?? this.evtCode,
+      begin: begin ?? this.begin,
+      end: end ?? this.end,
+      isFullDay: isFullDay ?? this.isFullDay,
+      notes: notes ?? this.notes,
+      authorName: authorName ?? this.authorName,
+      classDesc: classDesc ?? this.classDesc,
+      subjectId: subjectId ?? this.subjectId,
+      subjectDesc: subjectDesc ?? this.subjectDesc,
+    );
+  }
+}
+
+class $AgendaEventsTable extends AgendaEvents
+    with TableInfo<$AgendaEventsTable, AgendaEvent> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $AgendaEventsTable(this._db, [this._alias]);
+  final VerificationMeta _evtIdMeta = const VerificationMeta('evtId');
+  GeneratedIntColumn _evtId;
+  @override
+  GeneratedIntColumn get evtId => _evtId ??= _constructEvtId();
+  GeneratedIntColumn _constructEvtId() {
+    return GeneratedIntColumn(
+      'evt_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _evtCodeMeta = const VerificationMeta('evtCode');
+  GeneratedTextColumn _evtCode;
+  @override
+  GeneratedTextColumn get evtCode => _evtCode ??= _constructEvtCode();
+  GeneratedTextColumn _constructEvtCode() {
+    return GeneratedTextColumn(
+      'evt_code',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _beginMeta = const VerificationMeta('begin');
+  GeneratedDateTimeColumn _begin;
+  @override
+  GeneratedDateTimeColumn get begin => _begin ??= _constructBegin();
+  GeneratedDateTimeColumn _constructBegin() {
+    return GeneratedDateTimeColumn(
+      'begin',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _endMeta = const VerificationMeta('end');
+  GeneratedDateTimeColumn _end;
+  @override
+  GeneratedDateTimeColumn get end => _end ??= _constructEnd();
+  GeneratedDateTimeColumn _constructEnd() {
+    return GeneratedDateTimeColumn(
+      'end',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _isFullDayMeta = const VerificationMeta('isFullDay');
+  GeneratedBoolColumn _isFullDay;
+  @override
+  GeneratedBoolColumn get isFullDay => _isFullDay ??= _constructIsFullDay();
+  GeneratedBoolColumn _constructIsFullDay() {
+    return GeneratedBoolColumn(
+      'is_full_day',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _notesMeta = const VerificationMeta('notes');
+  GeneratedTextColumn _notes;
+  @override
+  GeneratedTextColumn get notes => _notes ??= _constructNotes();
+  GeneratedTextColumn _constructNotes() {
+    return GeneratedTextColumn(
+      'notes',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _authorNameMeta = const VerificationMeta('authorName');
+  GeneratedTextColumn _authorName;
+  @override
+  GeneratedTextColumn get authorName => _authorName ??= _constructAuthorName();
+  GeneratedTextColumn _constructAuthorName() {
+    return GeneratedTextColumn(
+      'author_name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _classDescMeta = const VerificationMeta('classDesc');
+  GeneratedTextColumn _classDesc;
+  @override
+  GeneratedTextColumn get classDesc => _classDesc ??= _constructClassDesc();
+  GeneratedTextColumn _constructClassDesc() {
+    return GeneratedTextColumn(
+      'class_desc',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _subjectIdMeta = const VerificationMeta('subjectId');
+  GeneratedIntColumn _subjectId;
+  @override
+  GeneratedIntColumn get subjectId => _subjectId ??= _constructSubjectId();
+  GeneratedIntColumn _constructSubjectId() {
+    return GeneratedIntColumn(
+      'subject_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _subjectDescMeta =
+      const VerificationMeta('subjectDesc');
+  GeneratedTextColumn _subjectDesc;
+  @override
+  GeneratedTextColumn get subjectDesc =>
+      _subjectDesc ??= _constructSubjectDesc();
+  GeneratedTextColumn _constructSubjectDesc() {
+    return GeneratedTextColumn(
+      'subject_desc',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        evtId,
+        evtCode,
+        begin,
+        end,
+        isFullDay,
+        notes,
+        authorName,
+        classDesc,
+        subjectId,
+        subjectDesc
+      ];
+  @override
+  $AgendaEventsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'agenda_events';
+  @override
+  final String actualTableName = 'agenda_events';
+  @override
+  VerificationContext validateIntegrity(AgendaEventsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.evtId.present) {
+      context.handle(
+          _evtIdMeta, evtId.isAcceptableValue(d.evtId.value, _evtIdMeta));
+    } else if (evtId.isRequired && isInserting) {
+      context.missing(_evtIdMeta);
+    }
+    if (d.evtCode.present) {
+      context.handle(_evtCodeMeta,
+          evtCode.isAcceptableValue(d.evtCode.value, _evtCodeMeta));
+    } else if (evtCode.isRequired && isInserting) {
+      context.missing(_evtCodeMeta);
+    }
+    if (d.begin.present) {
+      context.handle(
+          _beginMeta, begin.isAcceptableValue(d.begin.value, _beginMeta));
+    } else if (begin.isRequired && isInserting) {
+      context.missing(_beginMeta);
+    }
+    if (d.end.present) {
+      context.handle(_endMeta, end.isAcceptableValue(d.end.value, _endMeta));
+    } else if (end.isRequired && isInserting) {
+      context.missing(_endMeta);
+    }
+    if (d.isFullDay.present) {
+      context.handle(_isFullDayMeta,
+          isFullDay.isAcceptableValue(d.isFullDay.value, _isFullDayMeta));
+    } else if (isFullDay.isRequired && isInserting) {
+      context.missing(_isFullDayMeta);
+    }
+    if (d.notes.present) {
+      context.handle(
+          _notesMeta, notes.isAcceptableValue(d.notes.value, _notesMeta));
+    } else if (notes.isRequired && isInserting) {
+      context.missing(_notesMeta);
+    }
+    if (d.authorName.present) {
+      context.handle(_authorNameMeta,
+          authorName.isAcceptableValue(d.authorName.value, _authorNameMeta));
+    } else if (authorName.isRequired && isInserting) {
+      context.missing(_authorNameMeta);
+    }
+    if (d.classDesc.present) {
+      context.handle(_classDescMeta,
+          classDesc.isAcceptableValue(d.classDesc.value, _classDescMeta));
+    } else if (classDesc.isRequired && isInserting) {
+      context.missing(_classDescMeta);
+    }
+    if (d.subjectId.present) {
+      context.handle(_subjectIdMeta,
+          subjectId.isAcceptableValue(d.subjectId.value, _subjectIdMeta));
+    } else if (subjectId.isRequired && isInserting) {
+      context.missing(_subjectIdMeta);
+    }
+    if (d.subjectDesc.present) {
+      context.handle(_subjectDescMeta,
+          subjectDesc.isAcceptableValue(d.subjectDesc.value, _subjectDescMeta));
+    } else if (subjectDesc.isRequired && isInserting) {
+      context.missing(_subjectDescMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  AgendaEvent map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return AgendaEvent.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(AgendaEventsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.evtId.present) {
+      map['evt_id'] = Variable<int, IntType>(d.evtId.value);
+    }
+    if (d.evtCode.present) {
+      map['evt_code'] = Variable<String, StringType>(d.evtCode.value);
+    }
+    if (d.begin.present) {
+      map['begin'] = Variable<DateTime, DateTimeType>(d.begin.value);
+    }
+    if (d.end.present) {
+      map['end'] = Variable<DateTime, DateTimeType>(d.end.value);
+    }
+    if (d.isFullDay.present) {
+      map['is_full_day'] = Variable<bool, BoolType>(d.isFullDay.value);
+    }
+    if (d.notes.present) {
+      map['notes'] = Variable<String, StringType>(d.notes.value);
+    }
+    if (d.authorName.present) {
+      map['author_name'] = Variable<String, StringType>(d.authorName.value);
+    }
+    if (d.classDesc.present) {
+      map['class_desc'] = Variable<String, StringType>(d.classDesc.value);
+    }
+    if (d.subjectId.present) {
+      map['subject_id'] = Variable<int, IntType>(d.subjectId.value);
+    }
+    if (d.subjectDesc.present) {
+      map['subject_desc'] = Variable<String, StringType>(d.subjectDesc.value);
+    }
+    return map;
+  }
+
+  @override
+  $AgendaEventsTable createAlias(String alias) {
+    return $AgendaEventsTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProfilesTable _profiles;
@@ -2410,6 +2930,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $ProfessorsTable get professors => _professors ??= $ProfessorsTable(this);
   $GradesTable _grades;
   $GradesTable get grades => _grades ??= $GradesTable(this);
+  $AgendaEventsTable _agendaEvents;
+  $AgendaEventsTable get agendaEvents =>
+      _agendaEvents ??= $AgendaEventsTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   LessonDao _lessonDao;
@@ -2421,7 +2944,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       _professorDao ??= ProfessorDao(this as AppDatabase);
   GradeDao _gradeDao;
   GradeDao get gradeDao => _gradeDao ??= GradeDao(this as AppDatabase);
+  AgendaDao _agendaDao;
+  AgendaDao get agendaDao => _agendaDao ??= AgendaDao(this as AppDatabase);
   @override
   List<TableInfo> get allTables =>
-      [profiles, lessons, subjects, professors, grades];
+      [profiles, lessons, subjects, professors, grades, agendaEvents];
 }

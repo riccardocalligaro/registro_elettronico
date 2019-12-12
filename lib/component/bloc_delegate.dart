@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
+import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
@@ -27,6 +28,9 @@ class AppBlocDelegate {
       BlocProvider<GradesBloc>(
         create: (ctx) =>
             GradesBloc(i.getDependency(), i.getDependency(), i.getDependency()),
+      ),
+      BlocProvider<AgendaBloc>(
+        create: (ctx) => AgendaBloc(i.getDependency(), i.getDependency()),
       )
     ];
   }
