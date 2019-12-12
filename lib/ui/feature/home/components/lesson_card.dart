@@ -80,10 +80,10 @@ class LessonCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    lesson.lessonArg.length > 30
+                    lesson.lessonArg.length > 25
                         ? GlobalUtils.reduceLessonArgument(lesson.lessonArg)
                         : lesson.lessonArg,
-                    style: TextStyle(fontSize: 11, color: Colors.white),
+                    style: TextStyle(fontSize: 10, color: Colors.white),
                   )
                 ],
               )
