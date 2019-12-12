@@ -6,9 +6,8 @@ import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
 import 'package:registro_elettronico/utils/subjects_constants.dart';
 
 class GlobalUtils {
-  static int tryToReduceName(String subjectName) {
+  static int getSubjectConstFromName(String subjectName) {
     final stringToCompare = subjectName.toUpperCase();
-    // todo: maybe convert this to a int with costants
     switch (stringToCompare) {
       case "MATEMATICA E COMPLEMENTI DI MATEMATICA":
         return SubjectsConstants.MATEMATICA;
@@ -30,6 +29,16 @@ class GlobalUtils {
         break;
       default:
         return -1;
+    }
+  }
+
+  static String translateSubject(int subjectId) {
+    switch (subjectId) {
+      case SubjectsConstants.MATEMATICA:
+        return "MATEMATICA";
+        break;
+      default:
+        return "";
     }
   }
 
@@ -58,7 +67,8 @@ class GlobalUtils {
   ///       return "";
   static String reduceSubjectGridTitle(String subjectName) {
     String reducedName;
-    reducedName = tryToReduceName(subjectName);
+    final subjId = getSubjectConstFromName(subjectName);
+    reducedName = translateSubject(subjId);
     if (reducedName != "") {
       return reducedName;
     } else {
@@ -70,7 +80,8 @@ class GlobalUtils {
 
   static String reduceSubjectTitle(String subjectTitle) {
     String reducedName;
-    reducedName = tryToReduceName(subjectTitle);
+    final subjId = getSubjectConstFromName(subjectTitle);
+    reducedName = translateSubject(subjId);
     if (reducedName != "") {
       return reducedName;
     } else {
@@ -92,8 +103,6 @@ class GlobalUtils {
   }
 
   static Color getColorFromPosition(int position) {
-    // TODO: generate more colors, 10 - 15
-    // TODO: need to set a subject color in the database
     switch (position) {
       case 1:
         return Colors.red;
@@ -118,12 +127,26 @@ class GlobalUtils {
     }
   }
 
-  static SvgPicture getIconFromSubject(int subject) {
-    //subject = subject.toLowerCase().replaceAll(" ", "");
-    switch (subject) {
+  static SvgPicture getIconFromSubject(String subjectName) {
+    final subjectId = getSubjectConstFromName(subjectName);
+    return getIconFromSubjectId(subjectId);
+  }
+
+  static SvgPicture getIconFromSubjectId(int subjectId) {
+    switch (subjectId) {
       case SubjectsConstants.MATEMATICA:
         return SvgPicture.asset(
           "assets/icons/science-symbol.svg",
+        );
+        break;
+      case SubjectsConstants.ITALIANO:
+        return SvgPicture.asset(
+          "assets/icons/subjects/italiano.svg",
+        );
+        break;
+      case SubjectsConstants.TPSIT:
+        return SvgPicture.asset(
+          "assets/icons/subjects/informatica2.svg",
         );
         break;
       default:

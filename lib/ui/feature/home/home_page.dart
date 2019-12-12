@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Divider(
-                  color: Colors.grey[400],
+                  color: Colors.grey[300],
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -168,10 +168,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-                Divider(color: Colors.grey[400]),
+                Divider(color: Colors.grey[300]),
 
                 _buildAgenda(context),
 
+                Divider(
+                  color: Colors.grey[300],
+                ),
                 _buildSubjectsGrid(context),
 
                 RaisedButton(
@@ -286,7 +289,8 @@ class _HomePageState extends State<HomePage> {
         if (lessons.length == 0) {
           // todo: maybe a better placeholder?
           return Center(
-            child: Text('Nothing here 😶'),
+            child: Text(
+                '${AppLocalizations.of(context).translate('nothing_here')} 😶'),
           );
         } else {
           return ListView.builder(
