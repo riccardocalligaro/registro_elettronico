@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
-import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
-import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
-import 'package:registro_elettronico/data/repository/lessons_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/subjects_resposiotry_impl.dart';
+import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
@@ -20,7 +17,6 @@ import 'package:registro_elettronico/ui/feature/home/components/lesson_card.dart
 import 'package:registro_elettronico/ui/feature/home/components/subjects_grid.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -171,6 +167,10 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.grey[400],
                 ),
                 Container(
+                  height: 300,
+                  child: _buildAgenda(context),
+                ),
+                Container(
                   child: _buildSubjectsGrid(context),
                 ),
                 RaisedButton(
@@ -197,9 +197,22 @@ class _HomePageState extends State<HomePage> {
                     BlocProvider.of<GradesBloc>(context).add(FetchGrades());
                   },
                 ),
+                RaisedButton(
+                  child: Text('Get agenda'),
+                  onPressed: () async {
+                    BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
+                  },
+                ),
                 Container(
                   height: 200,
                   child: _buildGrades(context),
+                ),
+                BlocBuilder<AgendaBloc, AgendaState>(
+                  builder: (context, state) {
+                    return Container(
+                      child: Text(state.toString()),
+                    );
+                  },
                 ),
 
                 RaisedButton(
@@ -215,13 +228,32 @@ class _HomePageState extends State<HomePage> {
                     subjectsRepositoryImpl.updateSubjects("6102171");
                   },
                 ),
-
+                Container(
+                  height: 400,
+                  child: _buildAgenda(context),
+                )
                 // Expanded(child: _buildTaskList(context))
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  StreamBuilder<List<db.AgendaEvent>> _buildAgenda(BuildContext context) {
+    return StreamBuilder(
+      stream: BlocProvider.of<AgendaBloc>(context).watchAllEvents(),
+      initialData: List(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        final List<db.AgendaEvent> events = snapshot.data ?? List();
+        return ListView.builder(
+          itemCount: events.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Text(events[index].notes);
+          },
+        );
+      },
     );
   }
 
@@ -249,7 +281,11 @@ class _HomePageState extends State<HomePage> {
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Subject> subjects = snapshot.data ?? List();
-
+        if (subjects.length == 0) {
+          return Center(
+            child: Text('😕 No subjects'),
+          );
+        }
         return SubjectsGrid(
           subjects: subjects,
         );
@@ -263,17 +299,24 @@ class _HomePageState extends State<HomePage> {
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Lesson> lessons = snapshot.data ?? List();
-        return ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: lessons.length,
-          itemBuilder: (_, index) {
-            final lesson = lessons[index];
-            return LessonCard(
-              color: Colors.red,
-              lesson: lesson,
-            );
-          },
-        );
+        if (lessons.length == 0) {
+          // todo: maybe a better placeholder?
+          return Center(
+            child: Text('Nothing here 😶'),
+          );
+        } else {
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: lessons.length,
+            itemBuilder: (_, index) {
+              final lesson = lessons[index];
+              return LessonCard(
+                color: Colors.red,
+                lesson: lesson,
+              );
+            },
+          );
+        }
       },
     );
   }

@@ -22,7 +22,8 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   /// Gets only the lessons that are not 'sostegno'
   Stream<List<Lesson>> watchRelevantLessons() => (select(lessons)
         ..where((lesson) =>
-            not(lesson.subjectCode.equals(RegistroCostants.SOSTEGNO))))
+            not(lesson.subjectCode.equals(RegistroCostants.SOSTEGNO)))
+        ..orderBy([(lesson) => OrderingTerm(expression: lesson.position)]))
       .watch();
 
   /// Gets the lesson ignoring sostegno

@@ -11,11 +11,12 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
   GradeDao(this.db) : super(db);
 
   // Inserts a single grade into the database
-  Future insertGrade(Grade grade) => into(grades).insert(grade);
+  Future insertGrade(Grade grade) =>
+      into(grades).insert(grade, orReplace: true);
 
   // Given a list it inserts a list of grades
   Future insertGrades(List<Grade> gradesData) =>
-      into(grades).insertAll(gradesData);
+      into(grades).insertAll(gradesData, orReplace: true);
 
   Stream<List<Grade>> watchAllGrades() => select(grades).watch();
 

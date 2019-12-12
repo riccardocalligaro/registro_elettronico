@@ -15,7 +15,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
 
   LessonsBloc(this.lessonDao, this.lessonsRepository, this.profileRepository);
 
-  Stream<List<Lesson>> get lessons => lessonDao.watchLessonsByDate();
+  Stream<List<Lesson>> get lessons => lessonDao.watchRelevantLessons();
 
   @override
   LessonsState get initialState => LessonsNotLoaded();
