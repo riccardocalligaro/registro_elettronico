@@ -12,6 +12,9 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
   ProfileRepository profileRepository;
   SubjectsRepository subjectsRepository;
 
+  SubjectsBloc(
+      this.subjectDao, this.profileRepository, this.subjectsRepository);
+
   @override
   SubjectsState get initialState => SubjectsNotLoaded();
 
