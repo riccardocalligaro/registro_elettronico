@@ -59,6 +59,7 @@ flutter_icons:
 flutter:
   assets:
     - assets/icons/
+    - assets/icons/subjects/
     - lang/en.json
     - lang/it.json
   uses-material-design: true
