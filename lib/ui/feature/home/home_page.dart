@@ -21,6 +21,7 @@ import 'package:registro_elettronico/ui/feature/home/components/lesson_card.dart
 import 'package:registro_elettronico/ui/feature/home/components/subjects_grid.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
+import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
@@ -51,8 +52,34 @@ class _HomePageState extends State<HomePage> {
         leading: IconButton(
           icon: Icon(Icons.menu),
           color: Colors.black,
-          onPressed: () {},
+          onPressed: () {
+            _drawerKey.currentState.openDrawer();
+          },
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.refresh,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              BlocProvider.of<LessonsBloc>(context).add(FetchLessons());
+              BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
+              BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
+              BlocProvider.of<GradesBloc>(context).add(FetchGrades());
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.delete,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              final lessonDao = LessonDao(Injector.appInstance.getDependency());
+              lessonDao.deleteLessons();
+            },
+          ),
+        ],
       ),
       body: BlocListener<LessonsBloc, LessonsState>(
         listener: (context, state) {
@@ -93,145 +120,102 @@ class _HomePageState extends State<HomePage> {
             }
           }
         },
-        child: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        trans.translate('last_lessons'),
-                        style: Theme.of(context).textTheme.headline,
+        child: RefreshIndicator(
+          onRefresh: _test,
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Container(
+              child: RefreshIndicator(
+                onRefresh: _test,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SectionHeader(
+                      headingText: 'Last lessons',
+                      onTap: () {},
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+                      child: Container(
+                        height: 140,
+                        child: _buildLessonsCards(context),
                       ),
-                      FlatButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(15.0),
-                        ),
-                        onPressed: () {},
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 0.0),
-                          child: Text(
-                            "View all",
-                            style: Theme.of(context)
-                                .textTheme
-                                .body1
-                                .copyWith(fontSize: 12),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-                  child: Container(
-                    height: 140,
-                    child: _buildLessonsCards(context),
-                  ),
-                ),
-                Divider(
-                  color: Colors.grey[300],
-                ),
+                    ),
+                    Divider(
+                      color: Colors.grey[300],
+                    ),
 
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                            trans.translate("notice_board"),
-                            style: Theme.of(context).textTheme.headline,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                trans.translate("notice_board"),
+                                style: Theme.of(context).textTheme.headline,
+                              ),
+                              Text(
+                                trans.translate("discover_all_notice"),
+                                style: TextStyle(
+                                    color: Colors.grey[500], fontSize: 14),
+                              )
+                            ],
                           ),
-                          Text(
-                            trans.translate("discover_all_notice"),
-                            style: TextStyle(
-                                color: Colors.grey[500], fontSize: 14),
-                          )
+                          RaisedButton(
+                            color: Theme.of(context).primaryColor,
+                            textColor: Colors.white,
+                            child: Text(
+                              trans.translate("view"),
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                            ),
+                            onPressed: () {},
+                          ),
                         ],
                       ),
-                      RaisedButton(
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white,
-                        child: Text(
-                          trans.translate("view"),
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(18.0),
-                        ),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
 
-                Divider(color: Colors.grey[300]),
+                    Divider(color: Colors.grey[300]),
+                    SectionHeader(
+                      headingText: 'Next events',
+                      onTap: () {},
+                    ),
+                    _buildAgenda(context),
+                    Divider(color: Colors.grey[300]),
 
-                _buildAgenda(context),
+                    SectionHeader(
+                      headingText: 'My subjects',
+                      onTap: () {},
+                    ),
+                    _buildSubjectsGrid(context),
+                    Divider(color: Colors.grey[300]),
+                    SectionHeader(
+                      headingText: 'Last grades',
+                      onTap: () {},
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: _buildLastGrades(context),
+                    ),
 
-                Divider(
-                  color: Colors.grey[300],
+                    // Expanded(child: _buildTaskList(context))
+                  ],
                 ),
-
-                _buildSubjectsGrid(context),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: _buildLastGrades(context),
-                ),
-
-                RaisedButton(
-                  child: Text('Request lessons'),
-                  onPressed: () async {
-                    try {
-                      BlocProvider.of<LessonsBloc>(context).add(FetchLessons());
-                    } catch (e) {
-                      print("Already inserted!");
-                    }
-                  },
-                ),
-                RaisedButton(
-                  child: Text("Delete"),
-                  onPressed: () {
-                    final lessonDao =
-                        LessonDao(Injector.appInstance.getDependency());
-                    lessonDao.deleteLessons();
-                  },
-                ),
-                RaisedButton(
-                  child: Text('Grades'),
-                  onPressed: () {
-                    BlocProvider.of<GradesBloc>(context).add(FetchGrades());
-                  },
-                ),
-                RaisedButton(
-                  child: Text('Get agenda'),
-                  onPressed: () async {
-                    BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
-                  },
-                ),
-                RaisedButton(
-                  child: Text('Get subjects'),
-                  onPressed: () {
-                    BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
-                  },
-                ),
-
-                // Expanded(child: _buildTaskList(context))
-              ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _test() async {
+    await Future.delayed(Duration(seconds: 1));
   }
 
   StreamBuilder<List<Grade>> _buildLastGrades(BuildContext context) {
@@ -295,7 +279,7 @@ class _HomePageState extends State<HomePage> {
           stream: BlocProvider.of<GradesBloc>(context).watchAllGrades(),
           initialData: List(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            final List<Grade> grades = snapshot.data ?? List();
+            final List<dynamic> grades = snapshot.data ?? List();
             if (subjects.length == 0) {
               return Center(
                 child: Text('😕 No subjects'),
