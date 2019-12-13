@@ -36,14 +36,17 @@ Technologies and libraries that we will use:
 
 ## Current state of the project
 
-| Function    | State |
-| ----------- | :---: |
-| Login       |  ✔️   |
-| Home Page   |  ✔️   |
-| Lessons     |  ❌   |
-| Marks       |  ❌   |
-| Noticeboard |  ❌   |
-| Absences    |  ❌   |
+| Function           | State |
+| ------------------ | :---: |
+| Login              |  ✔️   |
+| Home Page          |  ✔️   |
+| Lessons            |  ❌   |
+| Marks              |  ❌   |
+| Noticeboard        |  ❌   |
+| Absences           |  ❌   |
+| Intitial slideshow |  ❌   |
+| Dark theme         |  ✔️   |
+| Settings           |  ❌   |
 
 ## Description in italian
 
