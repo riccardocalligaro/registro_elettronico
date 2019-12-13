@@ -2,6 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:registro_elettronico/component/registro_costants.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
 import 'package:registro_elettronico/utils/subjects_constants.dart';
 
@@ -42,29 +44,16 @@ class GlobalUtils {
     }
   }
 
-  /// case "MATEMATICA E COMPLEMENTI DI MATEMATICA":
-  ///       return "MATEMATICA";
-  ///       break;
-  ///     case "RELIGIONE CATTOLICA / ATTIVITA ALTERNATIVA":
-  ///       return "RELIGIONE";
-  ///       break;
-  ///     case "LINGUA INGLESE":
-  ///       return "INGLESE";
-  ///       break;
-  ///     case "TECNOLOGIE E PROGETTAZIONE DI SISTEMI INFORMATICI E DI TELECOMUNICAZIONI":
-  ///       return "TPSIT";
-  ///       break;
-  ///     case "LINGUA E LETTERATURA ITALIANA":
-  ///       return "ITALIANO";
-  ///       break;
-  ///     case "LINGUA E LETTERATURA ITALIANA":
-  ///       return "ITALIANO";
-  ///       break;
-  ///     case "SCIENZE MOTORIE E SPORTIVE":
-  ///       return "GINNASTICA";
-  ///       break;
-  ///     default:
-  ///       return "";
+  static List<Subject> removeUnwantedSubject(List<Subject> subjects) {
+    subjects.removeWhere((subject) => isUnwanted(subject.name));
+    return subjects;
+  }
+
+  static bool isUnwanted(String name) {
+    if (name == RegistroCostants.SOSTEGNO_FULL) return true;
+    return false;
+  }
+
   static String reduceSubjectGridTitle(String subjectName) {
     String reducedName;
     final subjId = getSubjectConstFromName(subjectName);
@@ -161,6 +150,11 @@ class GlobalUtils {
     return formatter.format(date);
   }
 
+  static String convertDateForDisplay(DateTime date) {
+    final formatter = DateFormat('dd MMMM yy');
+    return formatter.format(date);
+  }
+
   /// this returns the max interval to fetch all the lessons / grades
   /// for example if it is november 2019 it fetches => sep 2019 -> aug 2020
   static DateTimeInterval getDateInerval() {
@@ -182,5 +176,15 @@ class GlobalUtils {
     final end = GlobalUtils.convertDate(endDate);
 
     return DateTimeInterval(begin: begin, end: end);
+  }
+
+  static MaterialColor getColorFromGrade(double average) {
+    if (average >= 6) {
+      return Colors.green;
+    } else if (average >= 5.5 && average < 6) {
+      return Colors.yellow;
+    } else {
+      return Colors.red;
+    }
   }
 }
