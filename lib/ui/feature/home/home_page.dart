@@ -144,7 +144,6 @@ class _HomePageState extends State<HomePage> {
                     Divider(
                       color: Colors.grey[300],
                     ),
-
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.0),
                       child: Row(
@@ -165,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                           RaisedButton(
-                            color: Theme.of(context).primaryColor,
+                            color: Theme.of(context).accentColor,
                             textColor: Colors.white,
                             child: Text(
                               trans.translate("view"),
@@ -179,7 +178,6 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-
                     Divider(color: Colors.grey[300]),
                     SectionHeader(
                       headingText: 'Next events',
@@ -187,7 +185,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                     _buildAgenda(context),
                     Divider(color: Colors.grey[300]),
-
                     SectionHeader(
                       headingText: 'My subjects',
                       onTap: () {},
@@ -202,8 +199,6 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: _buildLastGrades(context),
                     ),
-
-                    // Expanded(child: _buildTaskList(context))
                   ],
                 ),
               ),
@@ -224,7 +219,7 @@ class _HomePageState extends State<HomePage> {
       stream: BlocProvider.of<GradesBloc>(context).watchNumberOfGradesByDate(),
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final List<Grade> grades = snapshot.data ?? List();
+        final List<Grade> grades = snapshot.data.toSet().toList() ?? List();
 
         return IgnorePointer(
           child: ListView.builder(
@@ -232,6 +227,7 @@ class _HomePageState extends State<HomePage> {
             shrinkWrap: true,
             itemCount: grades.length,
             itemBuilder: (BuildContext context, int index) {
+              print(grades[index].notesForFamily);
               return Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: GradeCard(
@@ -250,13 +246,16 @@ class _HomePageState extends State<HomePage> {
       stream: BlocProvider.of<AgendaBloc>(context).watchAllEvents(),
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final List<db.AgendaEvent> events = snapshot.data ?? List();
+        final List<db.AgendaEvent> events =
+            snapshot.data.toSet().toList() ?? List();
         return IgnorePointer(
           child: ListView.builder(
             padding: EdgeInsets.all(0),
             shrinkWrap: true,
             itemCount: events.length,
             itemBuilder: (BuildContext context, int index) {
+              //final db.AgendaEvent event = events[index];
+
               return AgendaCardEvent(
                 agendaEvent: events[index],
               );
@@ -314,7 +313,6 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (_, index) {
               final lesson = lessons[index];
               return LessonCard(
-                color: Colors.red,
                 lesson: lesson,
               );
             },
