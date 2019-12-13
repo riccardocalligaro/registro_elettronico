@@ -22,6 +22,10 @@ class AppNavigator {
     Navigator.pushReplacementNamed(context, Routes.LOGIN);
   }
 
+  void navToLessons(BuildContext context) {
+    Navigator.pushReplacementNamed(context, Routes.LESSONS);
+  }
+
   Future showMessageDialog(
       BuildContext context, String title, String message) async {
     await showDialog(

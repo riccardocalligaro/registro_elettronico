@@ -1,38 +1,34 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/component/navigator.dart';
-import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
-import 'package:registro_elettronico/data/repository/subjects_resposiotry_impl.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/lessons/lessons_event.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
-import 'package:registro_elettronico/ui/feature/home/components/event_card.dart';
-import 'package:registro_elettronico/ui/feature/home/components/lesson_card.dart';
-import 'package:registro_elettronico/ui/feature/home/components/subjects_grid.dart';
+import 'package:registro_elettronico/ui/feature/briefing/components/event_card.dart';
+import 'package:registro_elettronico/ui/feature/briefing/components/lesson_card.dart';
+import 'package:registro_elettronico/ui/feature/briefing/components/subjects_grid.dart';
+
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+class BriefingPage extends StatefulWidget {
+  BriefingPage({Key key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _BriefingPageState createState() => _BriefingPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _BriefingPageState extends State<BriefingPage> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
   @override
@@ -43,43 +39,6 @@ class _HomePageState extends State<HomePage> {
       key: _drawerKey,
       drawer: AppDrawer(
         profileDao: Injector.appInstance.getDependency(),
-      ),
-      appBar: AppBar(
-        title: Text('Registro elettronico'),
-        backgroundColor: Colors.transparent,
-        textTheme: Theme.of(context).textTheme,
-        elevation: 0.0,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          color: Colors.black,
-          onPressed: () {
-            _drawerKey.currentState.openDrawer();
-          },
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.refresh,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              BlocProvider.of<LessonsBloc>(context).add(FetchLessons());
-              BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
-              BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
-              BlocProvider.of<GradesBloc>(context).add(FetchGrades());
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.delete,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              final lessonDao = LessonDao(Injector.appInstance.getDependency());
-              lessonDao.deleteLessons();
-            },
-          ),
-        ],
       ),
       body: BlocListener<LessonsBloc, LessonsState>(
         listener: (context, state) {
@@ -215,27 +174,24 @@ class _HomePageState extends State<HomePage> {
 
   StreamBuilder<List<Grade>> _buildLastGrades(BuildContext context) {
     return StreamBuilder(
-      // todo: change this to date by event
       stream: BlocProvider.of<GradesBloc>(context).watchNumberOfGradesByDate(),
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Grade> grades = snapshot.data.toSet().toList() ?? List();
-
-        return IgnorePointer(
-          child: ListView.builder(
-            padding: EdgeInsets.all(0),
-            shrinkWrap: true,
-            itemCount: grades.length,
-            itemBuilder: (BuildContext context, int index) {
-              print(grades[index].notesForFamily);
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: GradeCard(
-                  grade: grades[index],
-                ),
-              );
-            },
-          ),
+        return ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.all(0),
+          shrinkWrap: true,
+          itemCount: grades.length,
+          itemBuilder: (BuildContext context, int index) {
+            print(grades[index].notesForFamily);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: GradeCard(
+                grade: grades[index],
+              ),
+            );
+          },
         );
       },
     );
@@ -248,9 +204,10 @@ class _HomePageState extends State<HomePage> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<db.AgendaEvent> events =
             snapshot.data.toSet().toList() ?? List();
-        return IgnorePointer(
+        return Container(
           child: ListView.builder(
             padding: EdgeInsets.all(0),
+            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: events.length,
             itemBuilder: (BuildContext context, int index) {
@@ -268,9 +225,7 @@ class _HomePageState extends State<HomePage> {
 
   StreamBuilder<List<Subject>> _buildSubjectsGrid(BuildContext context) {
     return StreamBuilder(
-      stream:
-          // todo: change to stream
-          SubjectDao(Injector.appInstance.getDependency()).watchAllSubjects(),
+      stream: BlocProvider.of<SubjectsBloc>(context).lessons,
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Subject> subjects = snapshot.data ?? List();
@@ -296,7 +251,7 @@ class _HomePageState extends State<HomePage> {
 
   StreamBuilder<List<Lesson>> _buildLessonsCards(BuildContext context) {
     return StreamBuilder(
-      stream: BlocProvider.of<LessonsBloc>(context).lessons,
+      stream: BlocProvider.of<LessonsBloc>(context).relevantLessons,
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Lesson> lessons = snapshot.data ?? List();
@@ -321,4 +276,11 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+}
+
+class DrawerItem {
+  String title;
+  IconData icon;
+
+  DrawerItem(this.title, this.icon);
 }
