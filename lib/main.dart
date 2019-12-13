@@ -19,7 +19,7 @@ void main() {
 void initApp() {
   /// Hides the status bar
   // TODO: fix this bug (check ferian discord)
-  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+  //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
   AppInjector.init();
   BlocSupervisor.delegate = SimpleBlocDelegate();
 }
