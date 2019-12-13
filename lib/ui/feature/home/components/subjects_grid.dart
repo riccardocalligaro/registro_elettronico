@@ -22,7 +22,7 @@ class SubjectsGrid extends StatelessWidget {
             shrinkWrap: true,
             children: List.generate(subjects.length, (index) {
               final subject = subjects[index];
-              final average = _getAverage(subject.id);
+              final average = GlobalUtils.getAverage(subject.id, grades);
               return GridTile(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -91,19 +91,5 @@ class SubjectsGrid extends StatelessWidget {
     } else {
       return Colors.red;
     }
-  }
-
-  double _getAverage(int subjectId) {
-    double sum = 0;
-    int count = 0;
-
-    grades.forEach((grade) {
-      if (grade.subjectId == subjectId && grade.decimalValue != null) {
-        sum += grade.decimalValue;
-
-        count++;
-      }
-    });
-    return sum / count;
   }
 }

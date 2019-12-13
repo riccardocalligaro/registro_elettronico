@@ -8,6 +8,20 @@ import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
 import 'package:registro_elettronico/utils/subjects_constants.dart';
 
 class GlobalUtils {
+  static double getAverage(int subjectId, List<Grade> grades) {
+    double sum = 0;
+    int count = 0;
+
+    grades.forEach((grade) {
+      if (grade.subjectId == subjectId && grade.decimalValue != -1.00) {
+        sum += grade.decimalValue;
+
+        count++;
+      }
+    });
+    return sum / count;
+  }
+
   static int getSubjectConstFromName(String subjectName) {
     final stringToCompare = subjectName.toUpperCase();
     switch (stringToCompare) {
