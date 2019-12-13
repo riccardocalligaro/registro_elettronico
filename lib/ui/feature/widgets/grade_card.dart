@@ -18,16 +18,16 @@ class GradeCard extends StatelessWidget {
           children: <Widget>[
             ClipOval(
               child: Container(
-                height: 50,
-                width: 50,
+                height: 55,
+                width: 55,
                 color: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
                 child: Text(grade.displayValue,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
-                        fontSize: 21)),
+                        fontSize: 20)),
               ),
             ),
             Padding(

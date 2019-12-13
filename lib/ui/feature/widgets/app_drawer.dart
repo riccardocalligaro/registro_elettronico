@@ -8,7 +8,10 @@ import 'package:registro_elettronico/ui/global/localizations/app_localizations.d
 
 class AppDrawer extends StatelessWidget {
   ProfileDao profileDao;
-  AppDrawer({@required this.profileDao});
+  AppDrawer({
+    Key key,
+    this.profileDao,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,17 +83,24 @@ class AppDrawer extends StatelessWidget {
       // todo: need to fix null
       future: _getUsername(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        String ident = "";
-        String name = "";
+        String ident = " ";
+        String firstName = " ";
+        String lastName = " ";
 
         if (snapshot.data != null) {
           ident = snapshot.data.ident;
-          name = "${snapshot.data.firstName} ${snapshot.data.lastName}";
+          firstName = snapshot.data.firstName;
+          lastName = snapshot.data.lastName;
         }
 
         return UserAccountsDrawerHeader(
           accountEmail: Text(ident),
-          accountName: Text(name),
+          accountName: Text("$firstName $lastName"),
+          currentAccountPicture: CircleAvatar(
+            child: Text(firstName[0] + lastName[0]),
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+          ),
           decoration: BoxDecoration(color: Theme.of(context).accentColor),
         );
       },
@@ -105,7 +115,9 @@ class AppDrawer extends StatelessWidget {
     return ListTile(
       title: Row(
         children: <Widget>[
-          Icon(icon),
+          Icon(
+            icon,
+          ),
           Padding(
             padding: EdgeInsets.only(left: 8.0),
             child: Text(text),
@@ -113,6 +125,7 @@ class AppDrawer extends StatelessWidget {
         ],
       ),
       onTap: onTap,
+      selected: true,
     );
   }
 

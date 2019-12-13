@@ -5,9 +5,8 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 
 class LessonCard extends StatelessWidget {
   final Lesson lesson;
-  final Color color;
 
-  const LessonCard({Key key, this.color, this.lesson}) : super(key: key);
+  const LessonCard({Key key, this.lesson}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
