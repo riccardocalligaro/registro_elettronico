@@ -30,16 +30,16 @@ Technologies and libraries that we will use:
 | Name               |            Email            |                                       Role |
 | ------------------ | :-------------------------: | -----------------------------------------: |
 | Riccardo Calligaro | riccardocalligaro@gmail.com | Project manager, app architecture, API, UI |
-| Jacopo Ferian      |     jacopo893@gmail.com     |                                         UI |
+| Jacopo Ferian      |     jacopo893@gmail.com     |                           Learning flutter |
 | Filippo Veggo      |   filippoveggo@gmail.com    |                                Design & UI |
-| Samuele Zanella    | samuelezanella02@gmail.com  |                            UI & Animations |
+| Samuele Zanella    | samuelezanella02@gmail.com  |                                 Animations |
 
 ## Current state of the project
 
 | Function    | State |
 | ----------- | :---: |
 | Login       |  ✔️   |
-| Home Page   |  ❌   |
+| Home Page   |  ✔️   |
 | Lessons     |  ❌   |
 | Marks       |  ❌   |
 | Noticeboard |  ❌   |
