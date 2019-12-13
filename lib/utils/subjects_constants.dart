@@ -23,4 +23,10 @@ abstract class SubjectsConstants {
   static const PSICOLOGIA = 22;
   static const DIRITTO = 23;
   static const ELETTRONICA = 24;
+  static const TELECOMUNICAZIONI = 25;
+  static const INFORMATICA = 26;
+  static const SOSTEGNO = 27;
+  static const RUSSO = 28;
+  static const CINESE = 29;
+  static const TEDESCO = 30;
 }

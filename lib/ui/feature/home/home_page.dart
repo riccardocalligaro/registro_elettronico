@@ -270,7 +270,7 @@ class _HomePageState extends State<HomePage> {
         final List<Subject> subjects = snapshot.data ?? List();
         if (subjects.length == 0) {
           return Center(
-            child: Text('😕 No subjects'),
+            child: Text('😕 ${AppLocalizations.of(context).translate('no_subjects')}'),
           );
         }
         return SubjectsGrid(
