@@ -5,8 +5,9 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 
 class SubjectsGrid extends StatelessWidget {
   final List<Subject> subjects;
+  final List<Grade> grades;
 
-  const SubjectsGrid({Key key, this.subjects}) : super(key: key);
+  const SubjectsGrid({Key key, this.subjects, this.grades}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,7 @@ class SubjectsGrid extends StatelessWidget {
             shrinkWrap: true,
             children: List.generate(subjects.length, (index) {
               final subject = subjects[index];
+              final average = _getAverage(subject.id);
               return GridTile(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -33,9 +35,9 @@ class SubjectsGrid extends StatelessWidget {
                         width: 50.0,
                         child: new CustomPaint(
                           foregroundPainter: GradePainer(
-                              lineColor: Colors.transparent,
-                              completeColor: Colors.blueAccent,
-                              completePercent: 80,
+                              lineColor: Colors.white,
+                              completeColor: _getColorForAverage(average),
+                              completePercent: average.isNaN ? 0 : average * 10,
                               width: 4.0),
                           child: Center(
                             child: ClipOval(
@@ -79,5 +81,30 @@ class SubjectsGrid extends StatelessWidget {
             })),
       ),
     );
+  }
+
+  MaterialColor _getColorForAverage(double average) {
+    if (average >= 6) {
+      return Colors.green;
+    } else if (average >= 5.5 && average < 6) {
+      return Colors.yellow;
+    } else {
+      return Colors.red;
+    }
+  }
+
+  double _getAverage(int subjectId) {
+    double sum = 0;
+    int count = 0;
+
+    grades.forEach((grade) {
+      if (grade.subjectId == subjectId && grade.decimalValue != null) {
+        sum += grade.decimalValue;
+
+        count++;
+      }
+    });
+    print(sum / count);
+    return sum / count;
   }
 }

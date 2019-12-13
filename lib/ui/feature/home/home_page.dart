@@ -20,7 +20,9 @@ import 'package:registro_elettronico/ui/feature/home/components/event_card.dart'
 import 'package:registro_elettronico/ui/feature/home/components/lesson_card.dart';
 import 'package:registro_elettronico/ui/feature/home/components/subjects_grid.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
+import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -40,6 +42,17 @@ class _HomePageState extends State<HomePage> {
       key: _drawerKey,
       drawer: AppDrawer(
         profileDao: Injector.appInstance.getDependency(),
+      ),
+      appBar: AppBar(
+        title: Text('Registro elettronico'),
+        backgroundColor: Colors.transparent,
+        textTheme: Theme.of(context).textTheme,
+        elevation: 0.0,
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          color: Colors.black,
+          onPressed: () {},
+        ),
       ),
       body: BlocListener<LessonsBloc, LessonsState>(
         listener: (context, state) {
@@ -86,15 +99,6 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: IconButton(
-                    icon: Icon(Icons.menu),
-                    onPressed: () {
-                      _drawerKey.currentState.openDrawer();
-                    },
-                  ),
-                ),
-                Padding(
                   padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -133,6 +137,7 @@ class _HomePageState extends State<HomePage> {
                 Divider(
                   color: Colors.grey[300],
                 ),
+
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Row(
@@ -175,7 +180,15 @@ class _HomePageState extends State<HomePage> {
                 Divider(
                   color: Colors.grey[300],
                 ),
+
                 _buildSubjectsGrid(context),
+
+             
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: _buildLastGrades(context),
+                ),
 
                 RaisedButton(
                   child: Text('Request lessons'),
@@ -223,6 +236,33 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  StreamBuilder<List<Grade>> _buildLastGrades(BuildContext context) {
+    return StreamBuilder(
+      // todo: change this to date by event
+      stream: BlocProvider.of<GradesBloc>(context).watchNumberOfGradesByDate(),
+      initialData: List(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        final List<Grade> grades = snapshot.data ?? List();
+
+        return IgnorePointer(
+          child: ListView.builder(
+            padding: EdgeInsets.all(0),
+            shrinkWrap: true,
+            itemCount: grades.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: GradeCard(
+                  grade: grades[index],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
   StreamBuilder<List<db.AgendaEvent>> _buildAgenda(BuildContext context) {
     return StreamBuilder(
       stream: BlocProvider.of<AgendaBloc>(context).watchAllEvents(),
@@ -245,36 +285,29 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  StreamBuilder<List<Grade>> _buildGrades(BuildContext context) {
-    return StreamBuilder(
-      stream: BlocProvider.of<GradesBloc>(context).watchAllGrades(),
-      initialData: List(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final List<Grade> grades = snapshot.data ?? List();
-        return ListView.builder(
-          itemCount: grades.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Text(grades[index].displayValue);
-          },
-        );
-      },
-    );
-  }
-
   StreamBuilder<List<Subject>> _buildSubjectsGrid(BuildContext context) {
     return StreamBuilder(
       stream:
+          // todo: change to stream
           SubjectDao(Injector.appInstance.getDependency()).watchAllSubjects(),
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Subject> subjects = snapshot.data ?? List();
-        if (subjects.length == 0) {
-          return Center(
-            child: Text('😕 No subjects'),
-          );
-        }
-        return SubjectsGrid(
-          subjects: subjects,
+        return StreamBuilder(
+          stream: BlocProvider.of<GradesBloc>(context).watchAllGrades(),
+          initialData: List(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            final List<Grade> grades = snapshot.data ?? List();
+            if (subjects.length == 0) {
+              return Center(
+                child: Text('😕 No subjects'),
+              );
+            }
+            return SubjectsGrid(
+              subjects: GlobalUtils.removeUnwantedSubject(subjects),
+              grades: grades,
+            );
+          },
         );
       },
     );

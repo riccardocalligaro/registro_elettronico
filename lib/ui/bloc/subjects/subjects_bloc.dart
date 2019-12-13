@@ -18,7 +18,7 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
   @override
   SubjectsState get initialState => SubjectsNotLoaded();
 
-  Stream<List<Subject>> get lessons => subjectDao.watchAllSubjects();
+  Stream<List<Subject>> get lessons => subjectDao.watchRelevanantSubjects();
 
   @override
   Stream<SubjectsState> mapEventToState(

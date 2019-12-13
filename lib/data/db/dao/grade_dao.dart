@@ -22,7 +22,20 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
 
   Stream<List<Grade>> watchAllGradesByDate() {
     return (select(grades)
-          ..orderBy([(t) => OrderingTerm(expression: t.eventDate)]))
+          ..orderBy([
+            (t) =>
+                OrderingTerm(expression: t.eventDate, mode: OrderingMode.desc)
+          ]))
+        .watch();
+  }
+
+  Stream<List<Grade>> watchNumberOfGradesByDate(int number) {
+    return (select(grades)
+          ..orderBy([
+            (t) =>
+                OrderingTerm(expression: t.eventDate, mode: OrderingMode.desc)
+          ])
+          ..limit(number))
         .watch();
   }
 }

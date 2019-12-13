@@ -19,6 +19,11 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
 
   Stream<List<Grade>> watchAllGrades() => gradeDao.watchAllGrades();
 
+  Stream<List<Grade>> watchAllGradesByDate() => gradeDao.watchAllGradesByDate();
+
+  Stream<List<Grade>> watchNumberOfGradesByDate() =>
+      gradeDao.watchNumberOfGradesByDate(2);
+
   @override
   Stream<GradesState> mapEventToState(
     GradesEvent event,
