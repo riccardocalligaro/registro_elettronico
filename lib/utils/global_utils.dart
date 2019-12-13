@@ -45,6 +45,13 @@ class GlobalUtils {
       case SubjectsConstants.MATEMATICA:
         return "MATEMATICA";
         break;
+      case SubjectsConstants.GINNASTICA:
+        return "GINNASTICA";
+        break;
+      case SubjectsConstants.TPSIT:
+        return "TPSIT";
+      case SubjectsConstants.ITALIANO:
+        return "ITALIANO";
       default:
         return "";
     }
