@@ -21,6 +21,7 @@
   "unexcepted_error": "An unexcepted error accoured. Try restarting the app",
   "loading_login": "Loading...",
   "username_form_login_placeholder": "Username",
-  "nothing_here":"Nothing here",
-  "no_subjects" : "No subjects"
+  "nothing_here": "Nothing here",
+  "no_subjects": "No subjects",
+  "view_all": "View all"
 }
