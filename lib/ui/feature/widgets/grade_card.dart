@@ -16,18 +16,29 @@ class GradeCard extends StatelessWidget {
         padding: EdgeInsets.all(16.0),
         child: Row(
           children: <Widget>[
-            Text(grade.displayValue,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 21)),
+            ClipOval(
+              child: Container(
+                height: 50,
+                width: 50,
+                color: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+                child: Text(grade.displayValue,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 21)),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    grade.subjectDesc,
+                    grade.subjectDesc.length > 20
+                        ? GlobalUtils.reduceSubjectTitle(grade.subjectDesc)
+                        : grade.subjectDesc,
                     style: TextStyle(color: Colors.white),
                   ),
                   Text(
