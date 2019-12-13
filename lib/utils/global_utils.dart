@@ -27,6 +27,12 @@ class GlobalUtils {
       case "SCIENZE MOTORIE E SPORTIVE":
         return SubjectsConstants.GINNASTICA;
         break;
+      case "INFORMATICA":
+        return SubjectsConstants.INFORMATICA;
+        break;
+      case "TELECOMUNICAZIONI":
+        return SubjectsConstants.TELECOMUNICAZIONI;
+        break;
       default:
         return -1;
     }
@@ -151,77 +157,77 @@ class GlobalUtils {
         break;
       case SubjectsConstants.ARTE:
         return SvgPicture.asset(
-          "assets/icon/subjects/arte.svg",
+          "assets/icons/subjects/arte.svg",
         );
         break;
       case SubjectsConstants.BIOLOGIA:
         return SvgPicture.asset(
-          "assets/icon/subjects/biologia.svg",
+          "assets/icons/subjects/biologia.svg",
         );
         break;
       case SubjectsConstants.CHIMICA:
         return SvgPicture.asset(
-          "assets/icon/subjects/chimica3.svg",
+          "assets/icons/subjects/chimica3.svg",
         );
         break;
       case SubjectsConstants.TELECOMUNICAZIONI:
         return SvgPicture.asset(
-          "assets/icon/subjects/telecomunicazioni.svg",
+          "assets/icons/subjects/telecomunicazioni.svg",
         );
         break;
       case SubjectsConstants.GEOGRAFIA:
         return SvgPicture.asset(
-          "assets/icon/subjects/geografia4.svg",
+          "assets/icons/subjects/geografia4.svg",
         );
         break;
       case SubjectsConstants.ELETTRONICA:
         return SvgPicture.asset(
-          "assets/icon/subjects/elettronica.svg",
+          "assets/icons/subjects/elettronica.svg",
         );
         break;
       case SubjectsConstants.INFORMATICA:
         return SvgPicture.asset(
-          "assets/icon/subjects/informatica.svg",
+          "assets/icons/subjects/informatica.svg",
         );
         break;
       case SubjectsConstants.INGLESE:
         return SvgPicture.asset(
-          "assets/icon/subjects/inglese.svg",
+          "assets/icons/subjects/inglese.svg",
         );
         break;
       case SubjectsConstants.FRANCESE:
         return SvgPicture.asset(
-          "assets/icon/subjects/lingue.svg",
+          "assets/icons/subjects/lingue.svg",
         );
         break;
       case SubjectsConstants.SPAGNOLO:
         return SvgPicture.asset(
-          "assets/icon/subjects/lingue.svg",
+          "assets/icons/subjects/lingue.svg",
         );
         break;
       case SubjectsConstants.RUSSO:
         return SvgPicture.asset(
-          "assets/icon/subjects/lingue.svg",
+          "assets/icons/subjects/lingue.svg",
         );
         break;
       case SubjectsConstants.CINESE:
         return SvgPicture.asset(
-          "assets/icon/subjects/lingue.svg",
+          "assets/icons/subjects/lingue.svg",
         );
         break;
       case SubjectsConstants.TEDESCO:
         return SvgPicture.asset(
-          "assets/icon/subjects/lingue.svg",
+          "assets/icons/subjects/lingue.svg",
         );
         break;
       case SubjectsConstants.DISEGNO_TECNICO:
         return SvgPicture.asset(
-          "assets/icon/subjects/disegno_tecnico.svg",
+          "assets/icons/subjects/disegno_tecnico.svg",
         );
         break;
       case SubjectsConstants.DIRITTO:
         return SvgPicture.asset(
-          "assets/icon/subjects/diritto.svg",
+          "assets/icons/subjects/diritto.svg",
         );
         break;
       default:
