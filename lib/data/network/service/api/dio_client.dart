@@ -85,9 +85,7 @@ class DioClient {
     }, onError: (DioError error) async {
       print(
           "[AppApiService][${DateTime.now().toString().split(' ').last}]-> DioEND\tonError \turl:[${error.request.baseUrl}] type:${error.type} message: ${error.message}");
-      print("HEADERS SENT" + error.request.headers.toString());
 
-      print("DATA RECIEVED" + error.response.statusMessage);
       // handlError(error);
     }));
     return dio;

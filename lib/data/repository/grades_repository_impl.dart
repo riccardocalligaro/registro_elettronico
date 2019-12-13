@@ -14,11 +14,9 @@ class GradesRepositoryImpl implements GradesRepository {
   @override
   Future updateGrades(String studentId) async {
     final gradesResponse = await spaggiariClient.getGrades(studentId);
-    print("GOT RESPOMSE");
     gradesResponse.grades.forEach((grade) {
       gradeDao.insertGrade(gradeMapper.convertGradeEntityToInserttable(grade));
     });
-    print("INSERTED");
   }
 
   @override

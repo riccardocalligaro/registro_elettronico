@@ -9,7 +9,6 @@ class ProfileMapper {
   /// Transorms the profile from an entity to an object that can be
   /// inserted in the database
   db.Profile mapProfileEntityToProfileInsertable(entity.Profile e) {
-    //print("IDENT FROM MASPPER " + e.ident);
     return db.Profile(
       id: -1,
       ident: e.ident,

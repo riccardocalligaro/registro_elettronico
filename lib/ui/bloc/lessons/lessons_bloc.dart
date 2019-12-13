@@ -32,7 +32,6 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
 
         yield LessonsLoaded();
       } on DioError catch (e) {
-        print("exception");
         yield LessonsError(e);
       }
     }

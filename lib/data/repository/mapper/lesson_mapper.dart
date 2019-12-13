@@ -16,7 +16,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 class LessonMapper {
   const LessonMapper();
   db.Lesson mapLessonEntityToLessoneInsertable(e) {
-    print(e.runtimeType);
+  
     return db.Lesson(
         eventId: e.evtId,
         date: DateTime.parse(e.evtDate),

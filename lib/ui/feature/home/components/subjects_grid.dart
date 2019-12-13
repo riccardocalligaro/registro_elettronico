@@ -104,7 +104,6 @@ class SubjectsGrid extends StatelessWidget {
         count++;
       }
     });
-    print(sum / count);
     return sum / count;
   }
 }
