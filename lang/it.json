@@ -21,5 +21,6 @@
   "unexcepted_error": "Si é verificato un errore non previsto. Prova a riavviare l'app.",
   "loading_login": "Accesso in corso...",
   "username_form_login_placeholder": "Ident o email",
-  "nothing_here":"Niente da mostrare"
+  "nothing_here":"Niente da mostrare",
+  "no_subjects" : "Nessuna materia"
 }

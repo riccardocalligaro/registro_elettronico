@@ -293,6 +293,7 @@ class _HomePageState extends State<HomePage> {
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Subject> subjects = snapshot.data ?? List();
+<<<<<<< HEAD
         return StreamBuilder(
           stream: BlocProvider.of<GradesBloc>(context).watchAllGrades(),
           initialData: List(),
@@ -308,6 +309,15 @@ class _HomePageState extends State<HomePage> {
               grades: grades,
             );
           },
+=======
+        if (subjects.length == 0) {
+          return Center(
+            child: Text('😕 ${AppLocalizations.of(context).translate('no_subjects')}'),
+          );
+        }
+        return SubjectsGrid(
+          subjects: subjects,
+>>>>>>> dc3fd085b9b1e76d92003ca21ca310b6cbf95866
         );
       },
     );
