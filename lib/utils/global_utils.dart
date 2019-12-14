@@ -4,10 +4,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:registro_elettronico/component/registro_costants.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
-import 'package:registro_elettronico/utils/subjects_constants.dart';
+
+import 'constants/registro_costants.dart';
 
 class GlobalUtils {
   static double getAverage(int subjectId, List<Grade> grades) {
@@ -68,6 +69,8 @@ class GlobalUtils {
         return "TPSIT";
       case SubjectsConstants.ITALIANO:
         return "ITALIANO";
+      case SubjectsConstants.RELIGIONE:
+        return "RELIGIONE";
       default:
         return "";
     }

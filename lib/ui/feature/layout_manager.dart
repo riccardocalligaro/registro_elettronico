@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
@@ -16,14 +18,14 @@ class DrawerItem {
   DrawerItem(this.title, this.icon);
 }
 
-class HomePage extends StatefulWidget {
+class LayoutManager extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return HomePageState();
+    return LayoutManagerState();
   }
 }
 
-class HomePageState extends State<HomePage> {
+class LayoutManagerState extends State<LayoutManager> {
   int _selectedDrawerIndex = 0;
 
   _getDrawerItemWidget(int pos) {
@@ -100,8 +102,7 @@ class HomePageState extends State<HomePage> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            UserAccountsDrawerHeader(
-                accountName: Text("John Doe"), accountEmail: null),
+            _buildAccountHeader(),
             Column(children: drawerOptions)
           ],
         ),
@@ -126,5 +127,37 @@ class HomePageState extends State<HomePage> {
       DrawerItem(trans.translate('contact_us'), Icons.send),
     ];
     return drawerItems;
+  }
+
+  Widget _buildAccountHeader() {
+    return FutureBuilder(
+      future: _getUsername(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        String ident = " ";
+        String firstName = " ";
+        String lastName = " ";
+
+        if (snapshot.data != null) {
+          ident = snapshot.data.ident;
+          firstName = snapshot.data.firstName;
+          lastName = snapshot.data.lastName;
+        }
+
+        return UserAccountsDrawerHeader(
+          accountEmail: Text(ident),
+          accountName: Text("$firstName $lastName"),
+          currentAccountPicture: CircleAvatar(
+            child: Text(firstName[0] + lastName[0]),
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+          ),
+          decoration: BoxDecoration(color: Theme.of(context).accentColor),
+        );
+      },
+    );
+  }
+
+  Future<Profile> _getUsername() async {
+    return await BlocProvider.of<AuthBloc>(context).profile;
   }
 }

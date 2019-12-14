@@ -17,15 +17,12 @@ void main() {
 }
 
 void initApp() {
-  /// Hides the status bar
-  // TODO: fix this bug (check ferian discord)
-  //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
   AppInjector.init();
   BlocSupervisor.delegate = SimpleBlocDelegate();
 }
 
+/// Registro elettronico by Riccardo Calligaro
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(

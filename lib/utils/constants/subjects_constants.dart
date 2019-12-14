@@ -1,3 +1,7 @@
+/// This constants are used when trying to link a subject name
+/// to an int so we can translate the name and try to reduce it
+/// For example "LINGUA INGLESE" => "INGLESE" a
+/// Also these are  the icons
 abstract class SubjectsConstants {
   static const MATEMATICA = 1;
   static const ITALIANO = 2;

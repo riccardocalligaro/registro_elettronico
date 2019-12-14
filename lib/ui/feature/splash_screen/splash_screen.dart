@@ -13,8 +13,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   bool _alreadyInit = false;
 
-
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -50,7 +48,6 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             )));
   }
-
 
   void _autoSignIn(BuildContext context) {
     BlocProvider.of<AuthBloc>(context).add(AutoSignIn());
