@@ -33,8 +33,20 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
           not(lesson.subjectCode.equals(RegistroCostants.SOSTEGNO)))).watch();
 
   /// Gets the lessons ordering by a date
-  Stream<List<Lesson>> watchLessonsByDate() {
+  Stream<List<Lesson>> watchLessonsOrdered() {
     return (select(lessons)..orderBy([(t) => OrderingTerm(expression: t.date)]))
+        .watch();
+  }
+
+  Stream<List<Lesson>> watchLessonsByDate(DateTime date) {
+    return (select(lessons)
+          ..where((row) {
+            final endDate = row.date;
+            final sameYear = year(endDate).equals(date.year);
+            final sameMonth = month(endDate).equals(date.month);
+            final sameDay = day(endDate).equals(date.day - 1);
+            return and(sameYear, and(sameMonth, sameDay));
+          }))
         .watch();
   }
 

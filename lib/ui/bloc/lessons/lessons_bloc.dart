@@ -16,6 +16,8 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
   LessonsBloc(this.lessonDao, this.lessonsRepository, this.profileRepository);
 
   Stream<List<Lesson>> get relevantLessons => lessonDao.watchRelevantLessons();
+  Stream<List<Lesson>> get relevandLessonsOfToday =>
+      lessonDao.watchLessonsByDate(DateTime.utc(2019, 12, 14));
 
   @override
   LessonsState get initialState => LessonsNotLoaded();
@@ -24,11 +26,24 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
   Stream<LessonsState> mapEventToState(
     LessonsEvent event,
   ) async* {
-    if (event is FetchLessons) {
+    if (event is FetchTodayLessons) {
       yield LessonsLoading();
       try {
         final profile = await profileRepository.getDbProfile();
-        await lessonsRepository.upadateLessons(profile.studentId.toString());
+        await lessonsRepository
+            .upadateTodayLessons(profile.studentId.toString());
+
+        yield LessonsLoaded();
+      } on DioError catch (e) {
+        yield LessonsError(e);
+      }
+    }
+
+    if (event is FetchAllLessons) {
+      yield LessonsLoading();
+      try {
+        final profile = await profileRepository.getDbProfile();
+        await lessonsRepository.updateAllLessons(profile.studentId.toString());
 
         yield LessonsLoaded();
       } on DioError catch (e) {

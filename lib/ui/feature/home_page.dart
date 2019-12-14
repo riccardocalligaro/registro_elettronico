@@ -45,7 +45,6 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     List<Widget> drawerOptions = [];
     List titles = _createList(context);
     for (var i = 0; i < titles.length; i++) {
@@ -70,10 +69,16 @@ class HomePageState extends State<HomePage> {
               color: Colors.black,
             ),
             onPressed: () {
-              BlocProvider.of<LessonsBloc>(context).add(FetchLessons());
+              BlocProvider.of<LessonsBloc>(context).add(FetchTodayLessons());
               BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
               BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
               BlocProvider.of<GradesBloc>(context).add(FetchGrades());
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.present_to_all),
+            onPressed: () {
+              BlocProvider.of<LessonsBloc>(context).add(FetchAllLessons());
             },
           ),
           IconButton(
@@ -97,7 +102,6 @@ class HomePageState extends State<HomePage> {
           children: <Widget>[
             UserAccountsDrawerHeader(
                 accountName: Text("John Doe"), accountEmail: null),
-        
             Column(children: drawerOptions)
           ],
         ),

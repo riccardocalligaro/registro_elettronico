@@ -7,4 +7,6 @@ abstract class LessonsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchLessons extends LessonsEvent {}
+class FetchTodayLessons extends LessonsEvent {}
+
+class FetchAllLessons extends LessonsEvent {}

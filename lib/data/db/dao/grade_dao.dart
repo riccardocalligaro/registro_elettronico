@@ -35,7 +35,7 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
             (t) =>
                 OrderingTerm(expression: t.eventDate, mode: OrderingMode.desc)
           ])
-          ..limit(number))
+          ..limit(2))
         .watch();
   }
 }

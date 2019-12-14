@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
@@ -11,14 +12,17 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
   SubjectDao subjectDao;
   ProfileRepository profileRepository;
   SubjectsRepository subjectsRepository;
+  ProfessorDao professorDao;
 
-  SubjectsBloc(
-      this.subjectDao, this.profileRepository, this.subjectsRepository);
+  SubjectsBloc(this.subjectDao, this.profileRepository, this.subjectsRepository,
+      this.professorDao);
 
   @override
   SubjectsState get initialState => SubjectsNotLoaded();
 
-  Stream<List<Subject>> get lessons => subjectDao.watchRelevanantSubjects();
+  Stream<List<Subject>> get subjects => subjectDao.watchRelevanantSubjects();
+
+  Stream<List<Professor>> get professors => professorDao.watchAllProfessors();
 
   @override
   Stream<SubjectsState> mapEventToState(

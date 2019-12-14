@@ -31,8 +31,8 @@ class AppBlocDelegate {
             GradesBloc(i.getDependency(), i.getDependency(), i.getDependency()),
       ),
       BlocProvider<SubjectsBloc>(
-        create: (ctx) => SubjectsBloc(
-            i.getDependency(), i.getDependency(), i.getDependency()),
+        create: (ctx) => SubjectsBloc(i.getDependency(), i.getDependency(),
+            i.getDependency(), i.getDependency()),
       ),
       BlocProvider<AgendaBloc>(
         create: (ctx) => AgendaBloc(i.getDependency(), i.getDependency()),

@@ -1,4 +1,6 @@
+import 'dart:core';
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -288,5 +290,22 @@ class GlobalUtils {
     } else {
       return Colors.red;
     }
+  }
+
+  static String beautifyString(String str) {
+    return capitalizeEachWord(str);
+  }
+
+  static String capitalizeEachWord(String s) {
+    String capitalized = "";
+    final words = s.split(' ');
+    words.forEach((word) => capitalized += word.substring(0, 1).toUpperCase() +
+        word.substring(1).toLowerCase() +
+        " ");
+    return capitalized.substring(capitalized.length, capitalized.length - 1);
+  }
+
+  static String capitalize(String s) {
+    return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
   }
 }

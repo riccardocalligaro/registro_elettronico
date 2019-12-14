@@ -123,7 +123,7 @@ class _BriefingPageState extends State<BriefingPage> {
                             ],
                           ),
                           RaisedButton(
-                            color: Theme.of(context).accentColor,
+                            color: Colors.blue,
                             textColor: Colors.white,
                             child: Text(
                               trans.translate("view"),
@@ -175,9 +175,10 @@ class _BriefingPageState extends State<BriefingPage> {
   StreamBuilder<List<Grade>> _buildLastGrades(BuildContext context) {
     return StreamBuilder(
       stream: BlocProvider.of<GradesBloc>(context).watchNumberOfGradesByDate(),
-      initialData: List(),
+      initialData: List<Grade>(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final List<Grade> grades = snapshot.data.toSet().toList() ?? List();
+        final List<Grade> grades =
+            snapshot.data.toSet().toList() ?? List<Grade>();
         return ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           padding: EdgeInsets.all(0),
@@ -225,15 +226,15 @@ class _BriefingPageState extends State<BriefingPage> {
 
   StreamBuilder<List<Subject>> _buildSubjectsGrid(BuildContext context) {
     return StreamBuilder(
-      stream: BlocProvider.of<SubjectsBloc>(context).lessons,
+      stream: BlocProvider.of<SubjectsBloc>(context).subjects,
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Subject> subjects = snapshot.data ?? List();
         return StreamBuilder(
           stream: BlocProvider.of<GradesBloc>(context).watchAllGrades(),
-          initialData: List(),
+          initialData: List<Grade>(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            final List<dynamic> grades = snapshot.data ?? List();
+            final List<Grade> grades = snapshot.data ?? List<Grade>();
             if (subjects.length == 0) {
               return Center(
                 child: Text('😕 No subjects'),
@@ -251,7 +252,7 @@ class _BriefingPageState extends State<BriefingPage> {
 
   StreamBuilder<List<Lesson>> _buildLessonsCards(BuildContext context) {
     return StreamBuilder(
-      stream: BlocProvider.of<LessonsBloc>(context).relevantLessons,
+      stream: BlocProvider.of<LessonsBloc>(context).relevandLessonsOfToday,
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Lesson> lessons = snapshot.data ?? List();
