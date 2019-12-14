@@ -1,7 +1,7 @@
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:registro_elettronico/component/registro_costants.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/table/lesson_table.dart';
+import 'package:registro_elettronico/utils/constants/registro_costants.dart';
 
 part 'lesson_dao.g.dart';
 
@@ -23,7 +23,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   Stream<List<Lesson>> watchRelevantLessons() => (select(lessons)
         ..where((lesson) =>
             not(lesson.subjectCode.equals(RegistroCostants.SOSTEGNO)))
-        ..orderBy([(lesson) => OrderingTerm(expression: lesson.position)]))
+        ..orderBy([(lesson) => OrderingTerm(expression: lesson.date, mode: OrderingMode.desc)]))
       .watch();
 
   /// Gets the lesson ignoring sostegno

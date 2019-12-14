@@ -1,7 +1,7 @@
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:registro_elettronico/component/registro_costants.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/table/subject_table.dart';
+import 'package:registro_elettronico/utils/constants/registro_costants.dart';
 
 part 'subject_dao.g.dart';
 

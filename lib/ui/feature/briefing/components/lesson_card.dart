@@ -5,8 +5,9 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 
 class LessonCard extends StatelessWidget {
   final Lesson lesson;
+  final int hours;
 
-  const LessonCard({Key key, this.lesson}) : super(key: key);
+  const LessonCard({Key key, this.lesson, this.hours}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +54,7 @@ class LessonCard extends StatelessWidget {
                         child: Opacity(
                           opacity: 0.85,
                           child: Text(
+                            // todo: need to fix lesson duration
                             '${lesson.duration}H',
                             style: TextStyle(color: Colors.white, fontSize: 10),
                           ),
