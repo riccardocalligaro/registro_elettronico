@@ -285,10 +285,10 @@ class GlobalUtils {
     return DateTimeInterval(begin: begin, end: end);
   }
 
-  static MaterialColor getColorFromGrade(double average) {
-    if (average >= 6) {
+  static MaterialColor getColorFromGrade(double grade) {
+    if (grade >= 6) {
       return Colors.green;
-    } else if (average >= 5.5 && average < 6) {
+    } else if (grade >= 5.5 && grade < 6) {
       return Colors.yellow;
     } else {
       return Colors.red;

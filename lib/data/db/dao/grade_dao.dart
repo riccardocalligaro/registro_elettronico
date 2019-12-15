@@ -30,12 +30,14 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
   }
 
   Stream<List<Grade>> watchNumberOfGradesByDate(int number) {
-    return (select(grades)
-          ..orderBy([
-            (t) =>
-                OrderingTerm(expression: t.eventDate, mode: OrderingMode.desc)
-          ])
-          ..limit(2))
+    return ((select(grades)
+          ..orderBy(
+              [(grade) => OrderingTerm(expression: grade.eventDate, mode: OrderingMode.desc)]))
+          ..limit(number))
         .watch();
   }
+
+  Future deleteAllGrades() =>
+      (delete(grades)..where((entry) => entry.evtId.isBiggerOrEqualValue(-1)))
+          .go();
 }

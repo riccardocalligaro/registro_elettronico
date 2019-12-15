@@ -12,6 +12,7 @@ class GradeCard extends StatelessWidget {
     return Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4.0),
+            // todo: need to consider blue color -> ask veggo for the json
             color: GlobalUtils.getColorFromGrade(grade.decimalValue)),
         padding: EdgeInsets.all(16.0),
         child: Row(

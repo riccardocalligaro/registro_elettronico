@@ -22,13 +22,10 @@ class SubjectsList extends StatelessWidget {
               professors.where((prof) => prof.subjectId == subject.id).toList();
           String professorsText = "";
           professorsForSubject.forEach((prof) {
-            print(GlobalUtils.capitalize(prof.name));
             String name = prof.name.toLowerCase();
             if (!professorsText.contains(name))
               professorsText += "${prof.name.toLowerCase()}, ";
           });
-          professorsText =
-              professorsText.substring(0, professorsText.length - 2);
 
           return InkWell(
             onTap: () {
@@ -41,7 +38,7 @@ class SubjectsList extends StatelessWidget {
                           )));
             },
             child: Container(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.fromLTRB(8.0, 8.0, 16.0, 8.0),
                 child: Column(
                   children: <Widget>[
                     Row(
@@ -61,23 +58,26 @@ class SubjectsList extends StatelessWidget {
                                     subject.name)),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                _getReducedName(subject.name),
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                // todo: fix overflow
-                                professorsText,
-                                style: TextStyle(),
-                              )
-                            ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  _getReducedName(subject.name),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  // todo: fix overflow
+                                  professorsText,
+                                  style: TextStyle(),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ],

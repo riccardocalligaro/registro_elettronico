@@ -28,7 +28,6 @@ class LessonsRepositoryImpl implements LessonsRepository {
     final lessons = await spaggiariClient.getLessonBetweenDates(
         studentId, dateInterval.begin, dateInterval.end);
     lessons.lessons.forEach((lesson) {
-      print(lesson);
       lessonDao.insertLesson(
           lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
     });

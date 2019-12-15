@@ -81,84 +81,87 @@ class _BriefingPageState extends State<BriefingPage> {
         },
         child: RefreshIndicator(
           onRefresh: _test,
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Container(
-              child: RefreshIndicator(
-                onRefresh: _test,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SectionHeader(
-                      headingText: 'Last lessons',
-                      onTap: () {},
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-                      child: Container(
-                        height: 140,
-                        child: _buildLessonsCards(context),
+          child: ScrollConfiguration(
+            behavior: NoGlowBehavior(),
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Container(
+                child: RefreshIndicator(
+                  onRefresh: _test,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SectionHeader(
+                        headingText: 'Last lessons',
+                        onTap: () {},
                       ),
-                    ),
-                    Divider(
-                      color: Colors.grey[300],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                trans.translate("notice_board"),
-                                style: Theme.of(context).textTheme.headline,
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+                        child: Container(
+                          height: 140,
+                          child: _buildLessonsCards(context),
+                        ),
+                      ),
+                      Divider(
+                        color: Colors.grey[300],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  trans.translate("notice_board"),
+                                  style: Theme.of(context).textTheme.headline,
+                                ),
+                                Text(
+                                  trans.translate("discover_all_notice"),
+                                  style: TextStyle(
+                                      color: Colors.grey[500], fontSize: 14),
+                                )
+                              ],
+                            ),
+                            RaisedButton(
+                              color: Colors.blue,
+                              textColor: Colors.white,
+                              child: Text(
+                                trans.translate("view"),
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              Text(
-                                trans.translate("discover_all_notice"),
-                                style: TextStyle(
-                                    color: Colors.grey[500], fontSize: 14),
-                              )
-                            ],
-                          ),
-                          RaisedButton(
-                            color: Colors.blue,
-                            textColor: Colors.white,
-                            child: Text(
-                              trans.translate("view"),
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(18.0),
+                              ),
+                              onPressed: () {},
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(18.0),
-                            ),
-                            onPressed: () {},
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Divider(color: Colors.grey[300]),
-                    SectionHeader(
-                      headingText: 'Next events',
-                      onTap: () {},
-                    ),
-                    _buildAgenda(context),
-                    Divider(color: Colors.grey[300]),
-                    SectionHeader(
-                      headingText: 'My subjects',
-                      onTap: () {},
-                    ),
-                    _buildSubjectsGrid(context),
-                    Divider(color: Colors.grey[300]),
-                    SectionHeader(
-                      headingText: 'Last grades',
-                      onTap: () {},
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: _buildLastGrades(context),
-                    ),
-                  ],
+                      Divider(color: Colors.grey[300]),
+                      SectionHeader(
+                        headingText: 'Next events',
+                        onTap: () {},
+                      ),
+                      _buildAgenda(context),
+                      Divider(color: Colors.grey[300]),
+                      SectionHeader(
+                        headingText: 'My subjects',
+                        onTap: () {},
+                      ),
+                      _buildSubjectsGrid(context),
+                      Divider(color: Colors.grey[300]),
+                      SectionHeader(
+                        headingText: 'Last grades',
+                        onTap: () {},
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: _buildLastGrades(context),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -185,7 +188,6 @@ class _BriefingPageState extends State<BriefingPage> {
           shrinkWrap: true,
           itemCount: grades.length,
           itemBuilder: (BuildContext context, int index) {
-            print(grades[index].notesForFamily);
             return Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: GradeCard(
@@ -269,7 +271,7 @@ class _BriefingPageState extends State<BriefingPage> {
             itemBuilder: (_, index) {
               final lesson = lessons[index];
               if (index != lessons.length - 1 &&
-                  lessons[index].lessonArg == lessons[index+1].lessonArg) {
+                  lessons[index].lessonArg == lessons[index + 1].lessonArg) {
                 return Container();
               } else {
                 return LessonCard(
@@ -284,9 +286,10 @@ class _BriefingPageState extends State<BriefingPage> {
   }
 }
 
-class DrawerItem {
-  String title;
-  IconData icon;
-
-  DrawerItem(this.title, this.icon);
+class NoGlowBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
 }

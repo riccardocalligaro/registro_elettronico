@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
+import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
@@ -8,6 +9,7 @@ import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
+import 'package:registro_elettronico/ui/feature/agenda/agenda_page.dart';
 import 'package:registro_elettronico/ui/feature/briefing/briefing_page.dart';
 import 'package:registro_elettronico/ui/feature/lessons/lessons_page.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
@@ -34,6 +36,8 @@ class LayoutManagerState extends State<LayoutManager> {
         return BriefingPage();
       case 1:
         return LessonsPage();
+      case 3:
+        return AgendaPage();
 
       default:
         return Text("Error");
@@ -114,7 +118,7 @@ class LayoutManagerState extends State<LayoutManager> {
   List _createList(BuildContext context) {
     final trans = AppLocalizations.of(context);
     final drawerItems = [
-      DrawerItem(trans.translate('app_name'), Icons.home),
+      DrawerItem(trans.translate('briefing'), Icons.home),
       DrawerItem(trans.translate('lessons'), Icons.library_books),
       DrawerItem(trans.translate('grades'), Icons.timeline),
       DrawerItem(trans.translate('agenda'), Icons.event),

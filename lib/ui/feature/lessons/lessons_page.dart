@@ -15,6 +15,7 @@ class _LessonsPageState extends State<LessonsPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(vertical: 8.0),
       child: _buildSubjectsList(context),
     );
   }
