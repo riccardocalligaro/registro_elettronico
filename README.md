@@ -7,9 +7,15 @@
 - [Overview of the project](#overview-of-the-project)
 - [Group members](#developers)
 - [Current state of the project](#current-state-of-the-project)
-- [Description in italian](#description-in-italian)
+- [Descrizione in italiano](#descrizione-in-italiano)
 - [Design](#design)
 - [API Documentation](#classeviva-api-documentation)
+
+|                         Home Page 1                         |                         Home Page 2                          |                                                     Lessons |
+| :---------------------------------------------------------: | :----------------------------------------------------------: | ----------------------------------------------------------: |
+| <img src="https://i.imgur.com/7ZeM7zp.png" height="400px" > | <img src="https://i.imgur.com/7ZeM7zp.png"  height="400px" > | <img src="https://i.imgur.com/uufV7zm.png" height="400px" > |
+
+If you want to try the app (still alpha and a lot to do) feel free to contact [me.](mailto:riccardocalligaro@gmail.com)
 
 ## Overview of the project
 
@@ -48,7 +54,7 @@ Technologies and libraries that we will use:
 | Dark theme         |  ✔️   |
 | Settings           |  ❌   |
 
-## Description in italian
+## Descrizione in italiano
 
 Client Flutter per la gestione dei dati del registro elettronico (ClasseViva).
 
