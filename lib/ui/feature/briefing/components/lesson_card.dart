@@ -5,14 +5,14 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 
 class LessonCard extends StatelessWidget {
   final Lesson lesson;
-  final int hours;
+  final int position;
 
-  const LessonCard({Key key, this.lesson, this.hours}) : super(key: key);
+  const LessonCard({Key key, this.lesson, this.position}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double _paddingLeft = 0;
-    if (lesson.position == 1) {
+    if (position == 0) {
       _paddingLeft = 16.0;
     }
     return Padding(
@@ -21,7 +21,7 @@ class LessonCard extends StatelessWidget {
         width: 220.0,
         height: 140,
         decoration: BoxDecoration(
-            color: GlobalUtils.getColorFromPosition(lesson.position),
+            color: GlobalUtils.getColorFromPosition(position),
             borderRadius: BorderRadius.circular(5.0)),
         child: Padding(
           padding: const EdgeInsets.all(16.0),

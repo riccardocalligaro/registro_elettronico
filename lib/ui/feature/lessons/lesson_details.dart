@@ -43,11 +43,11 @@ class LessonDetails extends StatelessWidget {
           itemBuilder: (context, index) {
             final subject = subjects[index];
             return Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
+              padding: const EdgeInsets.only(top: 12.0),
               // todo: add case if there is no lesson argument
               child: Card(
                   child: ListTile(
-                title: Text(subject.lessonArg),
+                title: Text(subject.lessonArg != "" ? subject.lessonArg : "No  description."),
                 subtitle: Text(subject.lessonType),
               )),
             );

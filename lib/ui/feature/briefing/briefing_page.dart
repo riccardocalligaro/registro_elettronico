@@ -270,14 +270,10 @@ class _BriefingPageState extends State<BriefingPage> {
             itemCount: lessons.length,
             itemBuilder: (_, index) {
               final lesson = lessons[index];
-              if (index != lessons.length - 1 &&
-                  lessons[index].lessonArg == lessons[index + 1].lessonArg) {
-                return Container();
-              } else {
-                return LessonCard(
-                  lesson: lesson,
-                );
-              }
+              return LessonCard(
+                position: index,
+                lesson: lesson,
+              );
             },
           );
         }

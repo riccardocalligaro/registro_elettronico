@@ -23,7 +23,10 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   Stream<List<Lesson>> watchRelevantLessons() => (select(lessons)
         ..where((lesson) =>
             not(lesson.subjectCode.equals(RegistroCostants.SOSTEGNO)))
-        ..orderBy([(lesson) => OrderingTerm(expression: lesson.date, mode: OrderingMode.desc)]))
+        ..orderBy([
+          (lesson) =>
+              OrderingTerm(expression: lesson.date, mode: OrderingMode.desc)
+        ]))
       .watch();
 
   /// Gets the lesson ignoring sostegno
@@ -48,6 +51,23 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
             return and(sameYear, and(sameMonth, sameDay));
           }))
         .watch();
+  }
+
+  Stream<List<Lesson>> watchLastLessons(DateTime date) {
+    return customSelectQuery("""
+        SELECT * FROM lessons 
+        WHERE (CAST(strftime("%Y", date, "unixepoch") AS INTEGER) = ?) 
+        AND ((CAST(strftime("%m", date, "unixepoch") AS INTEGER) = ?) 
+        AND (CAST(strftime("%d", date, "unixepoch") AS INTEGER) = ?)) 
+        GROUP BY subject_id ORDER BY position ASC""", readsFrom: {
+      lessons
+    }, variables: [
+      Variable.withInt(date.year),
+      Variable.withInt(date.month),
+      Variable.withInt(date.day - 1)
+    ]).watch().map((rows) {
+      return rows.map((row) => Lesson.fromData(row.data, db)).toList();
+    });
   }
 
   /// Future of all the lessons
