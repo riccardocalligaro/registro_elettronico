@@ -7,6 +7,7 @@
 - [Overview of the project](#overview-of-the-project)
 - [Group members](#developers)
 - [Current state of the project](#current-state-of-the-project)
+- [Project structure](#project-structure)
 - [Descrizione in italiano](#descrizione-in-italiano)
 - [Design](#design)
 - [API Documentation](#classeviva-api-documentation)
@@ -54,6 +55,158 @@ Technologies and libraries that we will use:
 | Dark theme         |  ✔️   |
 | Settings           |  ❌   |
 
+## Project structure
+```
+📦lib
+ ┣ 📂component
+ ┃ ┣ 📜api_config.dart
+ ┃ ┣ 📜app_injection.dart
+ ┃ ┣ 📜bloc_delegate.dart
+ ┃ ┣ 📜navigator.dart
+ ┃ ┣ 📜routes.dart
+ ┃ ┗ 📜simple_bloc_delegate.dart
+ ┣ 📂data
+ ┃ ┣ 📂db
+ ┃ ┃ ┣ 📂dao
+ ┃ ┃ ┃ ┣ 📜agenda_dao.dart
+ ┃ ┃ ┃ ┣ 📜agenda_dao.g.dart
+ ┃ ┃ ┃ ┣ 📜grade_dao.dart
+ ┃ ┃ ┃ ┣ 📜grade_dao.g.dart
+ ┃ ┃ ┃ ┣ 📜lesson_dao.dart
+ ┃ ┃ ┃ ┣ 📜lesson_dao.g.dart
+ ┃ ┃ ┃ ┣ 📜professor_dao.dart
+ ┃ ┃ ┃ ┣ 📜professor_dao.g.dart
+ ┃ ┃ ┃ ┣ 📜profile_dao.dart
+ ┃ ┃ ┃ ┣ 📜profile_dao.g.dart
+ ┃ ┃ ┃ ┣ 📜subject_dao.dart
+ ┃ ┃ ┃ ┗ 📜subject_dao.g.dart
+ ┃ ┃ ┣ 📂table
+ ┃ ┃ ┃ ┣ 📜agenda_event_table.dart
+ ┃ ┃ ┃ ┣ 📜grade_table.dart
+ ┃ ┃ ┃ ┣ 📜lesson_table.dart
+ ┃ ┃ ┃ ┣ 📜professor_table.dart
+ ┃ ┃ ┃ ┣ 📜profile_table.dart
+ ┃ ┃ ┃ ┗ 📜subject_table.dart
+ ┃ ┃ ┣ 📜moor_database.dart
+ ┃ ┃ ┗ 📜moor_database.g.dart
+ ┃ ┣ 📂network
+ ┃ ┃ ┣ 📂exception
+ ┃ ┃ ┃ ┗ 📜server_exception.dart
+ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┗ 📂api
+ ┃ ┃ ┃ ┃ ┣ 📜dio_client.dart
+ ┃ ┃ ┃ ┃ ┣ 📜spaggiari_client.dart
+ ┃ ┃ ┃ ┃ ┗ 📜spaggiari_client.g.dart
+ ┃ ┗ 📂repository
+ ┃ ┃ ┣ 📂mapper
+ ┃ ┃ ┃ ┣ 📜event_mapper.dart
+ ┃ ┃ ┃ ┣ 📜grade_mapper.dart
+ ┃ ┃ ┃ ┣ 📜lesson_mapper.dart
+ ┃ ┃ ┃ ┣ 📜profile_mapper.dart
+ ┃ ┃ ┃ ┗ 📜subject_mapper.dart
+ ┃ ┃ ┣ 📜agenda_repository_impl.dart
+ ┃ ┃ ┣ 📜grades_repository_impl.dart
+ ┃ ┃ ┣ 📜lessons_repository_impl.dart
+ ┃ ┃ ┣ 📜login_repository_impl.dart
+ ┃ ┃ ┣ 📜profile_repository_impl.dart
+ ┃ ┃ ┗ 📜subjects_resposiotry_impl.dart
+ ┣ 📂domain
+ ┃ ┣ 📂entity
+ ┃ ┃ ┣ 📂api_responses
+ ┃ ┃ ┃ ┣ 📜agenda_response.dart
+ ┃ ┃ ┃ ┣ 📜grades_response.dart
+ ┃ ┃ ┃ ┗ 📜subjects_response.dart
+ ┃ ┃ ┣ 📜entities.dart
+ ┃ ┃ ┣ 📜lesson.dart
+ ┃ ┃ ┣ 📜lesson.g.dart
+ ┃ ┃ ┣ 📜lessons_response.dart
+ ┃ ┃ ┣ 📜login_request.dart
+ ┃ ┃ ┣ 📜login_request.g.dart
+ ┃ ┃ ┣ 📜login_response.dart
+ ┃ ┃ ┣ 📜login_response.g.dart
+ ┃ ┃ ┣ 📜profile.dart
+ ┃ ┃ ┗ 📜profile.g.dart
+ ┃ ┗ 📂repository
+ ┃ ┃ ┣ 📜agenda_repository.dart
+ ┃ ┃ ┣ 📜grades_repository.dart
+ ┃ ┃ ┣ 📜lessons_repository.dart
+ ┃ ┃ ┣ 📜login_repository.dart
+ ┃ ┃ ┣ 📜profile_repository.dart
+ ┃ ┃ ┗ 📜subjects_repository.dart
+ ┣ 📂ui
+ ┃ ┣ 📂bloc
+ ┃ ┃ ┣ 📂agenda
+ ┃ ┃ ┃ ┣ 📜agenda_bloc.dart
+ ┃ ┃ ┃ ┣ 📜agenda_event.dart
+ ┃ ┃ ┃ ┣ 📜agenda_state.dart
+ ┃ ┃ ┃ ┗ 📜bloc.dart
+ ┃ ┃ ┣ 📂auth
+ ┃ ┃ ┃ ┣ 📜auth_bloc.dart
+ ┃ ┃ ┃ ┣ 📜auth_event.dart
+ ┃ ┃ ┃ ┣ 📜auth_state.dart
+ ┃ ┃ ┃ ┗ 📜bloc.dart
+ ┃ ┃ ┣ 📂grades
+ ┃ ┃ ┃ ┣ 📜bloc.dart
+ ┃ ┃ ┃ ┣ 📜grades_bloc.dart
+ ┃ ┃ ┃ ┣ 📜grades_event.dart
+ ┃ ┃ ┃ ┗ 📜grades_state.dart
+ ┃ ┃ ┣ 📂lessons
+ ┃ ┃ ┃ ┣ 📜bloc.dart
+ ┃ ┃ ┃ ┣ 📜lessons_bloc.dart
+ ┃ ┃ ┃ ┣ 📜lessons_event.dart
+ ┃ ┃ ┃ ┗ 📜lessons_state.dart
+ ┃ ┃ ┗ 📂subjects
+ ┃ ┃ ┃ ┣ 📜bloc.dart
+ ┃ ┃ ┃ ┣ 📜subjects_bloc.dart
+ ┃ ┃ ┃ ┣ 📜subjects_event.dart
+ ┃ ┃ ┃ ┗ 📜subjects_state.dart
+ ┃ ┣ 📂feature
+ ┃ ┃ ┣ 📂agenda
+ ┃ ┃ ┃ ┗ 📜agenda_page.dart
+ ┃ ┃ ┣ 📂briefing
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜event_card.dart
+ ┃ ┃ ┃ ┃ ┣ 📜lesson_card.dart
+ ┃ ┃ ┃ ┃ ┗ 📜subjects_grid.dart
+ ┃ ┃ ┃ ┗ 📜briefing_page.dart
+ ┃ ┃ ┣ 📂lessons
+ ┃ ┃ ┃ ┣ 📜lessons_page.dart
+ ┃ ┃ ┃ ┣ 📜lesson_details.dart
+ ┃ ┃ ┃ ┗ 📜subjects_list.dart
+ ┃ ┃ ┣ 📂login
+ ┃ ┃ ┃ ┗ 📜login_page.dart
+ ┃ ┃ ┣ 📂splash_screen
+ ┃ ┃ ┃ ┗ 📜splash_screen.dart
+ ┃ ┃ ┣ 📂widgets
+ ┃ ┃ ┃ ┣ 📜app_drawer.dart
+ ┃ ┃ ┃ ┣ 📜grade_card.dart
+ ┃ ┃ ┃ ┣ 📜grade_painter.dart
+ ┃ ┃ ┃ ┗ 📜section_header.dart
+ ┃ ┃ ┣ 📜layout_manager.dart
+ ┃ ┃ ┗ 📜pages.dart
+ ┃ ┗ 📂global
+ ┃ ┃ ┣ 📂localizations
+ ┃ ┃ ┃ ┣ 📂bloc
+ ┃ ┃ ┃ ┃ ┣ 📜bloc.dart
+ ┃ ┃ ┃ ┃ ┣ 📜localizations_bloc.dart
+ ┃ ┃ ┃ ┃ ┣ 📜localizations_event.dart
+ ┃ ┃ ┃ ┃ ┗ 📜localizations_state.dart
+ ┃ ┃ ┃ ┣ 📜app_localizations.dart
+ ┃ ┃ ┃ ┗ 📜localizations_delegates.dart
+ ┃ ┃ ┗ 📂themes
+ ┃ ┃ ┃ ┗ 📂theme_data
+ ┃ ┃ ┃ ┃ ┣ 📜default_theme.dart
+ ┃ ┃ ┃ ┃ ┗ 📜text_styles.dart
+ ┣ 📂utils
+ ┃ ┣ 📂constants
+ ┃ ┃ ┣ 📜registro_costants.dart
+ ┃ ┃ ┗ 📜subjects_constants.dart
+ ┃ ┣ 📂entity
+ ┃ ┃ ┗ 📜datetime_interval.dart
+ ┃ ┣ 📜global_utils.dart
+ ┃ ┗ 📜profile_utils.dart
+ ┗ 📜main.dart
+ ```
 ## Descrizione in italiano
 
 Client Flutter per la gestione dei dati del registro elettronico (ClasseViva).
