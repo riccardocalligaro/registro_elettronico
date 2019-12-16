@@ -125,14 +125,17 @@ class GlobalUtils {
 
   static Color getColorFromPosition(int position) {
     switch (position) {
+      case 0:
+        return Colors.deepPurpleAccent;
+        break;
       case 1:
-        return Colors.red;
+        return Colors.redAccent;
         break;
       case 2:
-        return Colors.indigo;
+        return Colors.deepOrangeAccent;
         break;
       case 3:
-        return Colors.green;
+        return Colors.greenAccent;
         break;
       case 4:
         return Colors.amber;

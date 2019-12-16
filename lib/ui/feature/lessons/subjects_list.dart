@@ -3,6 +3,7 @@ import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/feature/lessons/lesson_details.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:registro_elettronico/utils/string_utils.dart';
 
 class SubjectsList extends StatelessWidget {
   final List<Subject> subjects;
@@ -22,10 +23,11 @@ class SubjectsList extends StatelessWidget {
               professors.where((prof) => prof.subjectId == subject.id).toList();
           String professorsText = "";
           professorsForSubject.forEach((prof) {
-            String name = prof.name.toLowerCase();
+            String name = StringUtils.titleCase(prof.name);
             if (!professorsText.contains(name))
-              professorsText += "${prof.name.toLowerCase()}, ";
+              professorsText += "${StringUtils.titleCase(prof.name)}, ";
           });
+          professorsText = StringUtils.removeLastChar(professorsText);
 
           return InkWell(
             onTap: () {
