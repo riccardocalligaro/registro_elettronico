@@ -64,7 +64,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
     }, variables: [
       Variable.withInt(date.year),
       Variable.withInt(date.month),
-      Variable.withInt(date.day - 1)
+      Variable.withInt(date.day)
     ]).watch().map((rows) {
       return rows.map((row) => Lesson.fromData(row.data, db)).toList();
     });
