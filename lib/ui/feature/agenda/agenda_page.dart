@@ -83,8 +83,10 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         print(events);
         final Map<DateTime, List<dynamic>> eventsMap = Map.fromIterable(events,
             key: (e) => e.begin,
-            value: (e) =>
-                events.where((event) => event.begin == e.begin).toList());
+            value: (e) => events
+                .where((event) => event.begin == e.begin)
+                .toSet()
+                .toList());
         print(eventsMap);
         return TableCalendar(
           rowHeight: 45.0,
