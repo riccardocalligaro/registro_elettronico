@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/component/navigator.dart';
-import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
@@ -14,7 +13,6 @@ import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/feature/briefing/components/event_card.dart';
 import 'package:registro_elettronico/ui/feature/briefing/components/lesson_card.dart';
 import 'package:registro_elettronico/ui/feature/briefing/components/subjects_grid.dart';
-
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
@@ -92,7 +90,7 @@ class _BriefingPageState extends State<BriefingPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       SectionHeader(
-                        headingText: 'Last lessons',
+                        headingText: trans.translate('last_lessons'),
                         onTap: () {},
                       ),
                       Padding(
@@ -207,21 +205,30 @@ class _BriefingPageState extends State<BriefingPage> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<db.AgendaEvent> events =
             snapshot.data.toSet().toList() ?? List();
-        return Container(
-          child: ListView.builder(
-            padding: EdgeInsets.all(0),
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: events.length,
-            itemBuilder: (BuildContext context, int index) {
-              //final db.AgendaEvent event = events[index];
+        if (events.length == 0) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text('Free to go! 👌'),
+            ),
+          );
+        } else {
+          return Container(
+            child: ListView.builder(
+              padding: EdgeInsets.all(0),
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: events.length,
+              itemBuilder: (BuildContext context, int index) {
+                //final db.AgendaEvent event = events[index];
 
-              return AgendaCardEvent(
-                agendaEvent: events[index],
-              );
-            },
-          ),
-        );
+                return AgendaCardEvent(
+                  agendaEvent: events[index],
+                );
+              },
+            ),
+          );
+        }
       },
     );
   }

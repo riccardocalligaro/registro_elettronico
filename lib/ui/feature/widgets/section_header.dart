@@ -24,7 +24,7 @@ class SectionHeader extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(15.0),
             ),
-            onPressed: () {},
+            onPressed: onTap,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 0.0),
               child: Text(

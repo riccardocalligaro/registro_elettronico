@@ -11,6 +11,7 @@ import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/feature/agenda/agenda_page.dart';
 import 'package:registro_elettronico/ui/feature/briefing/briefing_page.dart';
+import 'package:registro_elettronico/ui/feature/grades/grade_page.dart';
 import 'package:registro_elettronico/ui/feature/lessons/lessons_page.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
@@ -38,6 +39,8 @@ class LayoutManagerState extends State<LayoutManager> {
         return LessonsPage();
       case 3:
         return AgendaPage();
+      case 2:
+        return GradesPage();
 
       default:
         return Text("Error");
