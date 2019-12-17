@@ -36,7 +36,7 @@ class AppBlocDelegate {
       ),
       BlocProvider<AgendaBloc>(
         create: (ctx) => AgendaBloc(i.getDependency(), i.getDependency()),
-      )
+      ),
     ];
   }
 

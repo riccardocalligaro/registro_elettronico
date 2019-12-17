@@ -16,6 +16,8 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
   Stream<List<db.AgendaEvent>> watchAllEvents() =>
       agendaDao.watchLastEvents(DateTime.now(), 3);
 
+  Stream<List<db.AgendaEvent>> watchAgenda() => agendaDao.watchAllEvents();
+
   @override
   AgendaState get initialState => AgendaInitial();
 
