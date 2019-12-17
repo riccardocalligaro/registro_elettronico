@@ -1,7 +1,7 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/table/subject_table.dart';
-import 'package:registro_elettronico/utils/constants/registro_costants.dart';
+import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 
 part 'subject_dao.g.dart';
 
@@ -16,6 +16,6 @@ class SubjectDao extends DatabaseAccessor<AppDatabase> with _$SubjectDaoMixin {
 
   Stream<List<Subject>> watchRelevanantSubjects() => (select(subjects)
         ..where((lesson) =>
-            not(lesson.name.equals(RegistroCostants.SOSTEGNO_FULL))))
+            not(lesson.name.equals(RegistroConstants.SOSTEGNO_FULL))))
       .watch();
 }

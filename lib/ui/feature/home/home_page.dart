@@ -10,23 +10,26 @@ import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
-import 'package:registro_elettronico/ui/feature/briefing/components/event_card.dart';
-import 'package:registro_elettronico/ui/feature/briefing/components/lesson_card.dart';
-import 'package:registro_elettronico/ui/feature/briefing/components/subjects_grid.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
+import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
-class BriefingPage extends StatefulWidget {
-  BriefingPage({Key key}) : super(key: key);
+import 'components/event_card.dart';
+import 'components/lesson_card.dart';
+import 'components/subjects_grid.dart';
+
+class HomePage extends StatefulWidget {
+  HomePage({Key key}) : super(key: key);
 
   @override
-  _BriefingPageState createState() => _BriefingPageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _BriefingPageState extends State<BriefingPage> {
+class _HomePageState extends State<HomePage> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
   @override
@@ -35,14 +38,19 @@ class _BriefingPageState extends State<BriefingPage> {
 
     return Scaffold(
       key: _drawerKey,
+      appBar: CustomAppBar(
+        title: 'Home page',
+        scaffoldKey: _drawerKey,
+      ),
       drawer: AppDrawer(
         profileDao: Injector.appInstance.getDependency(),
+        position: DrawerConstants.HOME,
       ),
       body: BlocListener<LessonsBloc, LessonsState>(
         listener: (context, state) {
           if (state is LessonsLoading) {
             Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text('Loading new data...'),
+              content: Text(trans.translate('loading_new_data')),
               duration: Duration(seconds: 3),
             ));
           }
@@ -55,7 +63,7 @@ class _BriefingPageState extends State<BriefingPage> {
                 content: Text(exception.message),
                 duration: Duration(seconds: 3),
                 action: SnackBarAction(
-                  label: 'Log out',
+                  label: trans.translate('log_out'),
                   onPressed: () {
                     AppNavigator.instance.navToLogin(context);
                     BlocProvider.of<AuthBloc>(context).add(SignOut());
@@ -91,7 +99,9 @@ class _BriefingPageState extends State<BriefingPage> {
                     children: <Widget>[
                       SectionHeader(
                         headingText: trans.translate('last_lessons'),
-                        onTap: () {},
+                        onTap: () {
+                          AppNavigator.instance.navToLessons(context);
+                        },
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
@@ -213,7 +223,7 @@ class _BriefingPageState extends State<BriefingPage> {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: Text('Free to go! 👌'),
+              child: Text(AppLocalizations.of(context).translate('free_to_go')),
             ),
           );
         } else {
@@ -250,8 +260,8 @@ class _BriefingPageState extends State<BriefingPage> {
             final List<Grade> grades = snapshot.data ?? List<Grade>();
             if (subjects.length == 0) {
               return Center(
-                child: Text(
-                    AppLocalizations.of(context).translate('no_subjects')),
+                child:
+                    Text(AppLocalizations.of(context).translate('no_subjects')),
               );
             }
             return SubjectsGrid(
@@ -266,7 +276,7 @@ class _BriefingPageState extends State<BriefingPage> {
 
   StreamBuilder<List<Lesson>> _buildLessonsCards(BuildContext context) {
     return StreamBuilder(
-      stream: BlocProvider.of<LessonsBloc>(context).relevandLessonsOfToday,
+      stream: BlocProvider.of<LessonsBloc>(context).relevandLessonsOfToday(),
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Lesson> lessons = snapshot.data ?? List();

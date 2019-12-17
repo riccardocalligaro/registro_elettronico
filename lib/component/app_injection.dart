@@ -10,69 +10,48 @@ import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
-import 'package:registro_elettronico/data/repository/agenda_repository_impl.dart';
-import 'package:registro_elettronico/data/repository/grades_repository_impl.dart';
-import 'package:registro_elettronico/data/repository/lessons_repository_impl.dart';
-import 'package:registro_elettronico/data/repository/login_repository_impl.dart';
-import 'package:registro_elettronico/data/repository/mapper/event_mapper.dart';
-import 'package:registro_elettronico/data/repository/mapper/grade_mapper.dart';
-import 'package:registro_elettronico/data/repository/mapper/lesson_mapper.dart';
-import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
-import 'package:registro_elettronico/data/repository/mapper/subject_mapper.dart';
-import 'package:registro_elettronico/data/repository/profile_repository_impl.dart';
-import 'package:registro_elettronico/data/repository/subjects_resposiotry_impl.dart';
-import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
-import 'package:registro_elettronico/domain/repository/grades_repository.dart';
-import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
-import 'package:registro_elettronico/domain/repository/login_repository.dart';
-import 'package:registro_elettronico/domain/repository/profile_repository.dart';
-import 'package:registro_elettronico/domain/repository/subjects_repository.dart';
+
+// All the mappers to convert an entity to a db entity and vice versa
+import 'package:registro_elettronico/data/repository/mapper/mappers_export.dart';
+
+// All the data level repositories
+import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
+
+// All the domain level repositories
+import 'package:registro_elettronico/domain/repository/repositories_export.dart';
+
+// BLoc
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
+
+// Compile-time dependency injection for Dart and Flutter, similar to Dagger.
 
 class AppInjector {
   static void init() {
+    // Inject the application database
     injectDatabase();
-    injectService();
-    injectRepository();
-    injectBloc();
-    injectMapper();
+    // Inject all the daos
+    injectDaos();
+    // Inject mis services
     injectMisc();
-  }
-
-  static void injectMisc() {
-    Injector.appInstance.registerSingleton<FlutterSecureStorage>((i) {
-      return FlutterSecureStorage();
-    });
-  }
-
-  static void injectMapper() {
-    // mappers to convert the response to db object
-    Injector.appInstance.registerSingleton<ProfileMapper>((injector) {
-      return ProfileMapper();
-    });
-    Injector.appInstance.registerSingleton<LessonMapper>((injector) {
-      return LessonMapper();
-    });
-
-    Injector.appInstance.registerSingleton<SubjectMapper>((injector) {
-      return SubjectMapper();
-    });
-
-    Injector.appInstance.registerSingleton<GradeMapper>((injector) {
-      return GradeMapper();
-    });
-
-    Injector.appInstance.registerSingleton<EventMapper>((injector) {
-      return EventMapper();
-    });
+    // Inject Dio and the api spagggiari client
+    injectService();
+    // Inject all the repositories
+    injectRepository();
+    // Inject all the mappers to convert db objects -> entity and vice versa
+    injectMapper();
+    // Only authbloc for now
+    injectBloc();
   }
 
   static void injectDatabase() {
-    // main database
+    // This is the singleton for the main database of the application
     Injector.appInstance.registerSingleton<AppDatabase>((injector) {
       return AppDatabase();
     });
-    // daos
+  }
+
+  // All the DAOS (Data Access Objects)
+  static void injectDaos() {
     Injector.appInstance.registerSingleton<ProfileDao>((injector) {
       return ProfileDao(injector.getDependency());
     });
@@ -95,6 +74,24 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton<AgendaDao>((i) {
       return AgendaDao(i.getDependency());
+    });
+  }
+
+  static void injectMisc() {
+    // This is for storing the user credentials
+    Injector.appInstance.registerSingleton<FlutterSecureStorage>((i) {
+      return FlutterSecureStorage();
+    });
+  }
+
+  static void injectService() {
+    Injector.appInstance.registerSingleton<Dio>((i) {
+      return DioClient(i.getDependency(), i.getDependency(), i.getDependency())
+          .createDio();
+    });
+
+    Injector.appInstance.registerSingleton<SpaggiariClient>((i) {
+      return SpaggiariClient(i.getDependency());
     });
   }
 
@@ -142,14 +139,25 @@ class AppInjector {
     });
   }
 
-  static void injectService() {
-    Injector.appInstance.registerSingleton<Dio>((i) {
-      return DioClient(i.getDependency(), i.getDependency(), i.getDependency())
-          .createDio();
+  static void injectMapper() {
+    // mappers to convert the response to db object
+    Injector.appInstance.registerSingleton<ProfileMapper>((injector) {
+      return ProfileMapper();
+    });
+    Injector.appInstance.registerSingleton<LessonMapper>((injector) {
+      return LessonMapper();
     });
 
-    Injector.appInstance.registerSingleton<SpaggiariClient>((i) {
-      return SpaggiariClient(i.getDependency());
+    Injector.appInstance.registerSingleton<SubjectMapper>((injector) {
+      return SubjectMapper();
+    });
+
+    Injector.appInstance.registerSingleton<GradeMapper>((injector) {
+      return GradeMapper();
+    });
+
+    Injector.appInstance.registerSingleton<EventMapper>((injector) {
+      return EventMapper();
     });
   }
 

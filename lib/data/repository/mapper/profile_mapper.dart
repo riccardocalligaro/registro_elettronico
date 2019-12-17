@@ -1,6 +1,6 @@
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
+import 'package:registro_elettronico/domain/entity/api_responses/login_response.dart';
 import 'package:registro_elettronico/domain/entity/entities.dart' as entity;
-import 'package:registro_elettronico/domain/entity/login_response.dart';
 import 'package:registro_elettronico/utils/profile_utils.dart';
 
 class ProfileMapper {

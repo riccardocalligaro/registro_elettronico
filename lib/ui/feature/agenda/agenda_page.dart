@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
+import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
+import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -43,25 +46,38 @@ class _AgendaPageState extends State<AgendaPage> {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
     final _selectedDay = DateTime.now();
     print(AppLocalizations.of(context).locale.toLanguageTag());
-    return TableCalendar(
-      rowHeight: 45.0,
-      locale: AppLocalizations.of(context).locale.toLanguageTag(),
-      calendarController: _calendarController,
-      events: _events,
-      onDaySelected: _onDaySelected,
-      startingDayOfWeek: StartingDayOfWeek.monday,
-      calendarStyle: CalendarStyle(
-        selectedColor: Colors.red[400],
-        todayColor: Colors.red[200],
-        markersColor: Colors.red[900],
-        outsideDaysVisible: true,
+    return Scaffold(
+      key: _drawerKey,
+      appBar: CustomAppBar(
+        title: 'Agenda',
+        scaffoldKey: _drawerKey,
       ),
-      headerStyle: HeaderStyle(
-        formatButtonTextStyle:
-            TextStyle().copyWith(color: Colors.white, fontSize: 15.0),
-        formatButtonVisible: false,
+      drawer: AppDrawer(
+        profileDao: Injector.appInstance.getDependency(),
+        position: 3,
+      ),
+      body: TableCalendar(
+        rowHeight: 45.0,
+        locale: AppLocalizations.of(context).locale.toLanguageTag(),
+        calendarController: _calendarController,
+        events: _events,
+        onDaySelected: _onDaySelected,
+        startingDayOfWeek: StartingDayOfWeek.monday,
+        calendarStyle: CalendarStyle(
+          selectedColor: Colors.red[400],
+          todayColor: Colors.red[200],
+          markersColor: Colors.red[900],
+          outsideDaysVisible: true,
+        ),
+        headerStyle: HeaderStyle(
+          formatButtonTextStyle:
+              TextStyle().copyWith(color: Colors.white, fontSize: 15.0),
+          formatButtonVisible: false,
+        ),
       ),
     );
   }

@@ -19,19 +19,30 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Dependency Injection
   injector: ^1.0.8
+  # Object comparison
   equatable: ^1.0.1
+  # BloC
   flutter_bloc: ^2.1.1
+  # Database
   moor_flutter: ^2.0.0
+  # Api
   dio: ^3.0.7
-  flutter_launcher_icons: ^0.7.4
   retrofit: ^1.0.1+1
+  # Use svg icons
   flutter_svg: ^0.15.0
+  # Launcher icon
+  flutter_launcher_icons: ^0.7.4
+
+  # Storing user password
   shared_preferences: ^0.5.4+8
   flutter_secure_storage: ^3.3.1+1
   # random string for flutter secure storage key generator
   random_string: ^1.1.0
-  intl: ^0.15.8
+  # for date time
+  intl: ^0.16.0
+  # calendar in agenda page
   table_calendar: ^2.2.1
 
   flutter_localizations:

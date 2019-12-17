@@ -1,7 +1,7 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/table/lesson_table.dart';
-import 'package:registro_elettronico/utils/constants/registro_costants.dart';
+import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 
 part 'lesson_dao.g.dart';
 
@@ -22,7 +22,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   /// Gets only the lessons that are not 'sostegno'
   Stream<List<Lesson>> watchRelevantLessons() => (select(lessons)
         ..where((lesson) =>
-            not(lesson.subjectCode.equals(RegistroCostants.SOSTEGNO)))
+            not(lesson.subjectCode.equals(RegistroConstants.SOSTEGNO)))
         ..orderBy([
           (lesson) =>
               OrderingTerm(expression: lesson.date, mode: OrderingMode.desc)
@@ -33,7 +33,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   Stream<List<Lesson>> watchRelevantLessonsOfToday(DateTime today) =>
       (select(lessons)..where((lesson) =>
           // todo: need to add the date comparing
-          not(lesson.subjectCode.equals(RegistroCostants.SOSTEGNO)))).watch();
+          not(lesson.subjectCode.equals(RegistroConstants.SOSTEGNO)))).watch();
 
   /// Gets the lessons ordering by a date
   Stream<List<Lesson>> watchLessonsOrdered() {
@@ -64,8 +64,12 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
     }, variables: [
       Variable.withInt(date.year),
       Variable.withInt(date.month),
-      Variable.withInt(date.day)
+      // todo: strange bug that displays only lessons with -1
+      Variable.withInt(date.day - 1)
     ]).watch().map((rows) {
+      rows.forEach((row) {
+        print(row.data);
+      });
       return rows.map((row) => Lesson.fromData(row.data, db)).toList();
     });
   }

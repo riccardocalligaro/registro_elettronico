@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:registro_elettronico/component/api_config.dart';
+import 'package:registro_elettronico/domain/entity/api_requests/login_request.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/agenda_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/grades_response.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/lessons_response.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/login_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/subjects_response.dart';
-import 'package:registro_elettronico/domain/entity/lessons_response.dart';
-import 'package:registro_elettronico/domain/entity/login_request.dart';
-import 'package:registro_elettronico/domain/entity/login_response.dart';
 import 'package:retrofit/http.dart';
 
 part 'spaggiari_client.g.dart';
