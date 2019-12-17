@@ -26,6 +26,10 @@ class AppNavigator {
     Navigator.pushReplacementNamed(context, Routes.LESSONS);
   }
 
+  void navToAgenda(BuildContext context) {
+    Navigator.pushReplacementNamed(context, Routes.AGENDA);
+  }
+
   Future showMessageDialog(
       BuildContext context, String title, String message) async {
     await showDialog(

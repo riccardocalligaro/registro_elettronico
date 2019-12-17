@@ -5,13 +5,16 @@ import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 
 class AppDrawer extends StatefulWidget {
   ProfileDao profileDao;
+  final int position;
 
   AppDrawer({
     Key key,
     this.profileDao,
+    this.position,
   }) : super(key: key);
 
   @override
@@ -24,8 +27,7 @@ class _AppDrawerState extends State<AppDrawer> {
   @override
   Widget build(BuildContext context) {
     AppLocalizations trans = AppLocalizations.of(context);
-    // todo: better handle of app drawer
-    selectedList[0] = true;
+    selectedList[widget.position] = true;
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -33,47 +35,49 @@ class _AppDrawerState extends State<AppDrawer> {
           _createHeader(context),
           _createDrawerItem(
               icon: Icons.home,
-              text: trans.translate("briefing"),
-              pos: 0,
+              text: trans.translate("home"),
+              pos: DrawerConstants.HOME,
               onTap: () {
                 AppNavigator.instance.navToHome(context);
               }),
           _createDrawerItem(
               icon: Icons.library_books,
               text: trans.translate("lessons"),
-              pos: 1,
+              pos: DrawerConstants.LESSONS,
               onTap: () {
                 AppNavigator.instance.navToLessons(context);
               }),
           _createDrawerItem(
             icon: Icons.timeline,
             text: trans.translate("grades"),
-            pos: 2,
+            pos: DrawerConstants.GRADES,
           ),
           _createDrawerItem(
-            icon: Icons.event,
-            text: trans.translate("agenda"),
-            pos: 3,
-          ),
+              icon: Icons.event,
+              text: trans.translate("agenda"),
+              pos: DrawerConstants.AGENDA,
+              onTap: () {
+                AppNavigator.instance.navToAgenda(context);
+              }),
           _createDrawerItem(
             icon: Icons.folder,
             text: trans.translate("school_material"),
-            pos: 4,
+            pos: DrawerConstants.SCHOOL_MATERIAL,
           ),
           _createDrawerItem(
             icon: Icons.assessment,
             text: trans.translate("absences"),
-            pos: 5,
+            pos: DrawerConstants.ABSENCES,
           ),
           _createDrawerItem(
             icon: Icons.warning,
             text: trans.translate("notes"),
-            pos: 6,
+            pos: DrawerConstants.NOTES,
           ),
           _createDrawerItem(
             icon: Icons.assignment,
             text: trans.translate("notice_board"),
-            pos: 7,
+            pos: DrawerConstants.NOTICE_BOARD,
           ),
           Divider(),
           _createDrawerItem(

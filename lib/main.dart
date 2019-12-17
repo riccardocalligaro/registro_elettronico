@@ -11,12 +11,16 @@ import 'component/bloc_delegate.dart';
 import 'component/routes.dart';
 
 void main() {
+  // set up eventual delegates, inits, etc.
   initApp();
+  // finnaly run the app
   runApp(MyApp());
 }
 
 void initApp() {
+  // Init the dependency injection -> compile-time dependency injection for Dart and Flutter, similar to Dagger.
   AppInjector.init();
+  // BloC supervisor delegate to show all the different states of the bloc
   BlocSupervisor.delegate = SimpleBlocDelegate();
 }
 
@@ -31,11 +35,13 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: "Registro elettronico",
           theme: defaultTheme,
+          // All the parameters needed for localization
           supportedLocales: LocalizationsDelegates.instance.supportedLocales,
           localeResolutionCallback:
               LocalizationsDelegates.instance.localeResolutionCallback,
           localizationsDelegates:
               LocalizationsDelegates.instance.localizationsDelegates,
+          // Navigation
           routes: Routes.routes,
           onUnknownRoute: (settings) {
             return MaterialPageRoute(builder: (ctx) => SplashScreen());
