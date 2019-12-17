@@ -22,6 +22,11 @@
   "loading_login": "Accesso in corso...",
   "username_form_login_placeholder": "Ident o email",
   "nothing_here": "Niente da mostrare",
-  "no_subjects": "Nessuna materia",
-  "view_all": "Mostra"
+  "no_subjects": " 😕 Nessuna materia",
+  "view_all": "Mostra",
+  "log_out": "Log out",
+  "next_events": "Prossimi eventi",
+  "my_subjects": "Le mie materie",
+  "last_grades": "Ultimi voti",
+  "error": "Errore"
 }
