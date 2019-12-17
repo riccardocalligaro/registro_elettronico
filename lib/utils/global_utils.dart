@@ -8,7 +8,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
 
-import 'constants/registro_costants.dart';
+import 'constants/registro_constants.dart';
 
 class GlobalUtils {
   static double getAverage(int subjectId, List<Grade> grades) {
@@ -82,7 +82,7 @@ class GlobalUtils {
   }
 
   static bool isUnwanted(String name) {
-    if (name == RegistroCostants.SOSTEGNO_FULL) return true;
+    if (name == RegistroConstants.SOSTEGNO_FULL) return true;
     return false;
   }
 
@@ -296,22 +296,5 @@ class GlobalUtils {
     } else {
       return Colors.red;
     }
-  }
-
-  static String beautifyString(String str) {
-    return capitalizeEachWord(str);
-  }
-
-  static String capitalizeEachWord(String s) {
-    String capitalized = "";
-    final words = s.split(' ');
-    words.forEach((word) => capitalized += word.substring(0, 1).toUpperCase() +
-        word.substring(1).toLowerCase() +
-        " ");
-    return capitalized.substring(capitalized.length, capitalized.length - 1);
-  }
-
-  static String capitalize(String s) {
-    return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
   }
 }

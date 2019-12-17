@@ -1,4 +1,5 @@
 class StringUtils {
+  // john doe => John Doe
   static String titleCase(String words) =>
       _getPascalCase(separator: ' ', input: words.split(' '));
 
@@ -16,5 +17,22 @@ class StringUtils {
 
   static String _upperCaseFirstLetter(String word) {
     return '${word.substring(0, 1).toUpperCase()}${word.substring(1).toLowerCase()}';
+  }
+
+  static String beautifyString(String str) {
+    return capitalizeEachWord(str);
+  }
+
+  static String capitalizeEachWord(String s) {
+    String capitalized = "";
+    final words = s.split(' ');
+    words.forEach((word) => capitalized += word.substring(0, 1).toUpperCase() +
+        word.substring(1).toLowerCase() +
+        " ");
+    return capitalized.substring(capitalized.length, capitalized.length - 1);
+  }
+
+  static String capitalize(String s) {
+    return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
   }
 }
