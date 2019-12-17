@@ -47,8 +47,21 @@ class LessonDetails extends StatelessWidget {
               // todo: add case if there is no lesson argument
               child: Card(
                   child: ListTile(
-                title: Text(subject.lessonArg != "" ? subject.lessonArg : "No  description."),
-                subtitle: Text(subject.lessonType),
+                title: Text(subject.date.toString().substring(0, 10)),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      subject.lessonArg != ""
+                          ? subject.lessonArg
+                          : "No  description.",
+                    ),
+                    Text(
+                      subject.lessonType,
+                    ),
+                  ],
+                ),
+                isThreeLine: true,
               )),
             );
           },
