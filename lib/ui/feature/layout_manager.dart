@@ -40,7 +40,7 @@ class LayoutManagerState extends State<LayoutManager> {
         return AgendaPage();
 
       default:
-        return Text("Error");
+        return Text(AppLocalizations.of(context).translate("error"));
     }
   }
 

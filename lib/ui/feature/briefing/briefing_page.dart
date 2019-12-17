@@ -69,7 +69,7 @@ class _BriefingPageState extends State<BriefingPage> {
                 content: Text(state.error.error.toString()),
                 duration: Duration(seconds: 3),
                 action: SnackBarAction(
-                  label: 'Log out',
+                  label: AppLocalizations.of(context).translate('log_out'),
                   onPressed: () {
                     AppNavigator.instance.navToLogin(context);
                     BlocProvider.of<AuthBloc>(context).add(SignOut());
@@ -92,7 +92,8 @@ class _BriefingPageState extends State<BriefingPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       SectionHeader(
-                        headingText: 'Last lessons',
+                        headingText: AppLocalizations.of(context)
+                            .translate('last_lessons'),
                         onTap: () {},
                       ),
                       Padding(
@@ -114,7 +115,8 @@ class _BriefingPageState extends State<BriefingPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  trans.translate("notice_board"),
+                                  AppLocalizations.of(context)
+                                      .translate('notice_board'),
                                   style: Theme.of(context).textTheme.headline,
                                 ),
                                 Text(
@@ -141,19 +143,22 @@ class _BriefingPageState extends State<BriefingPage> {
                       ),
                       Divider(color: Colors.grey[300]),
                       SectionHeader(
-                        headingText: 'Next events',
+                        headingText: AppLocalizations.of(context)
+                            .translate('next_events'),
                         onTap: () {},
                       ),
                       _buildAgenda(context),
                       Divider(color: Colors.grey[300]),
                       SectionHeader(
-                        headingText: 'My subjects',
+                        headingText: AppLocalizations.of(context)
+                            .translate('my_subjects'),
                         onTap: () {},
                       ),
                       _buildSubjectsGrid(context),
                       Divider(color: Colors.grey[300]),
                       SectionHeader(
-                        headingText: 'Last grades',
+                        headingText: AppLocalizations.of(context)
+                            .translate('last_grades'),
                         onTap: () {},
                       ),
                       Padding(
@@ -239,7 +244,8 @@ class _BriefingPageState extends State<BriefingPage> {
             final List<Grade> grades = snapshot.data ?? List<Grade>();
             if (subjects.length == 0) {
               return Center(
-                child: Text('😕 No subjects'),
+                child: Text(
+                    AppLocalizations.of(context).translate('no_subjects')),
               );
             }
             return SubjectsGrid(
