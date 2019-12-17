@@ -43,9 +43,6 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
         readsFrom: {
           grades,
         }).watch().map((rows) {
-      rows.forEach((grade) {
-        print(grade.data);
-      });
       return rows.map((row) => Grade.fromData(row.data, db)).toList();
     });
   }
