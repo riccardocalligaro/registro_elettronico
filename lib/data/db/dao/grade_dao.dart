@@ -39,9 +39,13 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
 
   Stream<List<Grade>> watchLastGrades() {
     return customSelectQuery("""
-        SELECT * FROM grades ORDER BY event_date DESC LIMIT 3""", readsFrom: {
-      grades,
-    }).watch().map((rows) {
+        SELECT DISTINCT * FROM grades ORDER BY event_date DESC LIMIT 2""",
+        readsFrom: {
+          grades,
+        }).watch().map((rows) {
+      rows.forEach((grade) {
+        print(grade.data);
+      });
       return rows.map((row) => Grade.fromData(row.data, db)).toList();
     });
   }
