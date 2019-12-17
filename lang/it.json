@@ -7,6 +7,7 @@
   "discover_all_notice": "Mostra tutte le circolari",
   "notice_board": "Comunicazioni",
   "view": "Mostra",
+  "home": "Home",
   "briefing": "Briefing",
   "lessons": "Lezioni",
   "grades": "Voti",
@@ -24,9 +25,11 @@
   "nothing_here": "Niente da mostrare",
   "no_subjects": " 😕 Nessuna materia",
   "view_all": "Mostra",
-  "log_out": "Log out",
+  "log_out": "Esci",
   "next_events": "Prossimi eventi",
   "my_subjects": "Le mie materie",
   "last_grades": "Ultimi voti",
-  "error": "Errore"
+  "error": "Errore",
+  "loading_new_data": "Aggiornamento in corso...",
+  "free_to_go": "Niente eventi! 👌"
 }

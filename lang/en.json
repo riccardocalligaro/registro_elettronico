@@ -7,6 +7,7 @@
   "discover_all_notice": "Discover all notices",
   "notice_board": "Notice board",
   "view": "View",
+  "home": "Home",
   "briefing": "Briefing",
   "lessons": "Lessons",
   "grades": "Grades",
@@ -28,5 +29,7 @@
   "next_events": "Next events",
   "my_subjects": "My subjects",
   "last_grades": "Last grades",
-  "error": "Error"
+  "error": "Error",
+  "loading_new_data": "Loading new data...",
+  "free_to_go": "Free to go! 👌"
 }
