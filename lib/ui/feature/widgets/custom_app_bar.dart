@@ -1,4 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
+import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
+import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/agenda/agenda_event.dart';
+import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/grades_event.dart';
+import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/subjects_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/subjects_event.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   // the title in the app bar
@@ -35,6 +45,31 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           scaffoldKey.currentState.openDrawer();
         },
       ),
+
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.refresh,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            BlocProvider.of<LessonsBloc>(context).add(FetchTodayLessons());
+            BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
+            BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
+            BlocProvider.of<GradesBloc>(context).add(FetchGrades());
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.delete,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            final lessonDao = LessonDao(Injector.appInstance.getDependency());
+            lessonDao.deleteLessons();
+          },
+        ),
+      ],
     );
   }
 

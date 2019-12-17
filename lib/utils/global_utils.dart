@@ -288,11 +288,16 @@ class GlobalUtils {
     return DateTimeInterval(begin: begin, end: end);
   }
 
+  /// This function returns the color of a grade, it checks if it is because grades
+  /// that are null are stored in the database with -1 value, so if it is -1 it must be
+  /// canelled or 
   static MaterialColor getColorFromGrade(double grade) {
     if (grade >= 6) {
       return Colors.green;
     } else if (grade >= 5.5 && grade < 6) {
       return Colors.yellow;
+    } else if (grade == -1) {
+      return Colors.blue;
     } else {
       return Colors.red;
     }

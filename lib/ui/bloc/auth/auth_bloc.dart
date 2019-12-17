@@ -57,6 +57,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is SignOut) {
       await flutterSecureStorage.deleteAll();
       await profileRepository.deleteAllProfiles();
+      // todo: delete all data
       yield SignOutSuccess();
     }
   }
