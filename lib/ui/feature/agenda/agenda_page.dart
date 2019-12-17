@@ -4,6 +4,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class AgendaPage extends StatefulWidget {
@@ -64,10 +65,18 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildTableCalendar(),
           const SizedBox(height: 8.0),
           const SizedBox(height: 8.0),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 16.0),
+            child: Text(
+              "Events",
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+          ),
           Expanded(child: _buildEventList()),
         ],
       ),
@@ -170,11 +179,25 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       children: _selectedEvents
           .map(
             (event) => Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
               child: Card(
+                color: Colors.red[400],
                 child: ListTile(
-                  title: Text("Italiano"),
-                  subtitle: Text(event.toString()),
+                  title: Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                    child: Text(
+                      "Italiano",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                    child: Text(
+                      event.toString(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
               ),
             ),
