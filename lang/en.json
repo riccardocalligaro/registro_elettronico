@@ -22,7 +22,7 @@
   "unexcepted_error": "An unexcepted error accoured. Try restarting the app",
   "loading_login": "Loading...",
   "username_form_login_placeholder": "Username",
-  "nothing_here": "Nothing here ",
+  "nothing_here": "Nothing here 😶",
   "no_subjects": "😕 No subjects",
   "view_all": "View all",
   "log_out": "Log out",
@@ -31,5 +31,7 @@
   "last_grades": "Last grades",
   "error": "Error",
   "loading_new_data": "Loading new data...",
-  "free_to_go": "Free to go! 👌"
+  "free_to_go": "Free to go! 👌",
+  "events": "Events"
+  
 }

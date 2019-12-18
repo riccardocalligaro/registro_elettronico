@@ -22,7 +22,7 @@
   "unexcepted_error": "Si é verificato un errore non previsto. Prova a riavviare l'app.",
   "loading_login": "Accesso in corso...",
   "username_form_login_placeholder": "Ident o email",
-  "nothing_here": "Niente da mostrare",
+  "nothing_here": "Niente da mostrare 😶",
   "no_subjects": " 😕 Nessuna materia",
   "view_all": "Mostra",
   "log_out": "Esci",
@@ -31,5 +31,6 @@
   "last_grades": "Ultimi voti",
   "error": "Errore",
   "loading_new_data": "Aggiornamento in corso...",
-  "free_to_go": "Niente eventi! 👌"
+  "free_to_go": "Niente eventi! 👌",
+  "events": "Eventi"
 }
