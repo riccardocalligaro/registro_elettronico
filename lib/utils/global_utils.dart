@@ -255,39 +255,6 @@ class GlobalUtils {
     }
   }
 
-  static String convertDate(DateTime date) {
-    final formatter = DateFormat('yyyyMMdd');
-    return formatter.format(date);
-  }
-
-  static String convertDateForDisplay(DateTime date) {
-    final formatter = DateFormat('dd MMMM yy');
-    return formatter.format(date);
-  }
-
-  /// this returns the max interval to fetch all the lessons / grades
-  /// for example if it is november 2019 it fetches => sep 2019 -> aug 2020
-  static DateTimeInterval getDateInerval() {
-    final now = DateTime.now();
-    int yearBegin = now.year;
-    int yearEnd = now.year;
-
-    // if we are before sempember we need to fetch from the last year
-    if (now.month > DateTime.september) {
-      yearEnd += 1;
-    } else {
-      yearBegin -= 1;
-    }
-
-    final DateTime beginDate = DateTime.utc(yearBegin, DateTime.september, 1);
-    final DateTime endDate = DateTime.utc(yearEnd, DateTime.august, 31);
-
-    final begin = GlobalUtils.convertDate(beginDate);
-    final end = GlobalUtils.convertDate(endDate);
-
-    return DateTimeInterval(begin: begin, end: end);
-  }
-
   /// This function returns the color of a grade, it checks if it is because grades
   /// that are null are stored in the database with -1 value, so if it is -1 it must be
   /// canelled or
