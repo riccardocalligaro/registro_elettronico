@@ -53,7 +53,8 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
         .watch();
   }
 
-  Stream<List<Lesson>> watchLastLessons(DateTime date) {
+  Stream<List<Lesson>> watchLastLessons(DateTime date2) {
+    print(date2.day);
     return customSelectQuery("""
         SELECT * FROM lessons 
         WHERE (CAST(strftime("%Y", date, "unixepoch") AS INTEGER) = ?) 
@@ -62,14 +63,10 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
         GROUP BY subject_id ORDER BY position ASC""", readsFrom: {
       lessons
     }, variables: [
-      Variable.withInt(date.year),
-      Variable.withInt(date.month),
-      // todo: strange bug that displays only lessons with -1
-      Variable.withInt(date.day )
+      Variable.withInt(date2.year),
+      Variable.withInt(date2.month),
+      Variable.withInt(date2.day)
     ]).watch().map((rows) {
-      rows.forEach((row) {
-        print(row.data);
-      });
       return rows.map((row) => Lesson.fromData(row.data, db)).toList();
     });
   }

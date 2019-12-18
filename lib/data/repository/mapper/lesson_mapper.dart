@@ -1,4 +1,5 @@
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
+import 'package:registro_elettronico/utils/date_utils.dart';
 
 ///"evtId": 7096829,
 ///"evtDate": "2019-12-09",
@@ -16,10 +17,10 @@ import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 class LessonMapper {
   const LessonMapper();
   db.Lesson mapLessonEntityToLessoneInsertable(e) {
-  
+    print("parsed date" + DateTime.parse(e.evtDate).toString());
     return db.Lesson(
         eventId: e.evtId,
-        date: DateTime.parse(e.evtDate),
+        date: DateUtils.getDateFromApiString(e.evtDate),
         code: e.evtCode,
         position: e.evtHPos,
         duration: e.evtDuration,

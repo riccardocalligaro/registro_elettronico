@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class GradeCard extends StatelessWidget {
@@ -45,7 +46,7 @@ class GradeCard extends StatelessWidget {
                     style: TextStyle(color: Colors.white),
                   ),
                   Text(
-                    GlobalUtils.convertDateForDisplay(grade.eventDate),
+                    DateUtils.convertDateForDisplay(grade.eventDate),
                     style: TextStyle(color: Colors.white),
                   )
                 ],
