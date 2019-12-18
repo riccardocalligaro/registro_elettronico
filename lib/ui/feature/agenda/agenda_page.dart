@@ -8,7 +8,7 @@ import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -58,8 +58,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   }
 
   void _onVisibleDaysChanged(
-      DateTime first, DateTime last, CalendarFormat format) {
-  }
+      DateTime first, DateTime last, CalendarFormat format) {}
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +117,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
             events,
             key: (e) => e.begin,
             value: (e) => events
-                .where((event) => GlobalUtils.areSameDay(event.begin, e.begin))
+                .where((event) => DateUtils.areSameDay(event.begin, e.begin))
                 .toSet()
                 .toList());
         return TableCalendar(

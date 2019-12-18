@@ -3,10 +3,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
-import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
 
 import 'constants/registro_constants.dart';
 
@@ -268,11 +266,5 @@ class GlobalUtils {
     } else {
       return Colors.red;
     }
-  }
-
-  static bool areSameDay(DateTime date1, DateTime date2) {
-    return date1.day == date2.day &&
-        date1.month == date2.month &&
-        date1.year == date2.year;
   }
 }
