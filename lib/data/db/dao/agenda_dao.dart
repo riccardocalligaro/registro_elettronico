@@ -21,4 +21,8 @@ class AgendaDao extends DatabaseAccessor<AppDatabase> with _$AgendaDaoMixin {
           ..limit(numbersOfEvents))
         .watch();
   }
+
+  Future deleteAllEvents() => (delete(agendaEvents)
+        ..where((entry) => entry.evtId.isBiggerOrEqualValue(-1)))
+      .go();
 }

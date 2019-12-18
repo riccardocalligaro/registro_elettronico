@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
+import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_event.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
@@ -29,6 +31,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         title,
         style: TextStyle(color: Colors.black),
       ),
+
       // We want this AppBar to have no shadow
       elevation: 0.0,
       // White background color
@@ -60,6 +63,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
         ),
         IconButton(
+          icon: Icon(Icons.all_out),
+          onPressed: () {
+            BlocProvider.of<LessonsBloc>(context).add(FetchAllLessons());
+          },
+        ),
+        IconButton(
           icon: Icon(
             Icons.delete,
             color: Colors.black,
@@ -67,6 +76,29 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () {
             final lessonDao = LessonDao(Injector.appInstance.getDependency());
             lessonDao.deleteLessons();
+            final agendaDao = AgendaDao(Injector.appInstance.getDependency());
+            agendaDao.deleteAllEvents();
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.casino,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            final agendaDao = AgendaDao(Injector.appInstance.getDependency());
+            final db.AgendaEvent event = db.AgendaEvent(
+                evtId: 343432434232133121,
+                authorName: "Gidasanno",
+                notes: "Hidas!",
+                classDesc: "4idasa",
+                subjectDesc: "Infodasrmatica",
+                end: DateTime.utc(2019, 9, 30),
+                begin: DateTime.utc(2019, 9, 30),
+                evtCode: "839masdasdds",
+                isFullDay: false,
+                subjectId: 0);
+            agendaDao.insertEvent(event);
           },
         ),
       ],

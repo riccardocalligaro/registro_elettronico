@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
+import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:registro_elettronico/utils/string_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class AgendaPage extends StatefulWidget {
@@ -16,7 +21,9 @@ class AgendaPage extends StatefulWidget {
 
 class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
   Map<DateTime, List> _events;
+  DateTime _currentSelectedDay;
   List _selectedEvents;
   AnimationController _animationController;
   CalendarController _calendarController;
@@ -47,6 +54,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     print('CALLBACK: _onDaySelected');
     setState(() {
       _selectedEvents = events;
+      _currentSelectedDay = day;
     });
   }
 
@@ -63,22 +71,40 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         scaffoldKey: _drawerKey,
         title: AppLocalizations.of(context).translate('agenda'),
       ),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildTableCalendar(),
-          const SizedBox(height: 8.0),
-          const SizedBox(height: 8.0),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 16.0),
-            child: Text(
-              "Events",
-              style: TextStyle(fontWeight: FontWeight.w500),
+      drawer: AppDrawer(
+        profileDao: Injector.appInstance.getDependency(),
+        position: DrawerConstants.AGENDA,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _buildTableCalendar(),
+            const SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
+              child: Text(
+                AppLocalizations.of(context).translate('events'),
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
             ),
-          ),
-          Expanded(child: _buildEventList()),
-        ],
+            Container(
+              child: _buildEventList(),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
+              child: Text(
+                AppLocalizations.of(context).translate('lessons'),
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+            ),
+            SingleChildScrollView(
+              child: _buildLessonsList(),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -89,14 +115,14 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       initialData: List<AgendaEvent>(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<AgendaEvent> events = snapshot.data ?? List<AgendaEvent>();
-        print(events);
-        final Map<DateTime, List<dynamic>> eventsMap = Map.fromIterable(events,
+
+        final Map<DateTime, List<AgendaEvent>> eventsMap = Map.fromIterable(
+            events,
             key: (e) => e.begin,
             value: (e) => events
-                .where((event) => event.begin == e.begin)
+                .where((event) => GlobalUtils.areSameDay(event.begin, e.begin))
                 .toSet()
                 .toList());
-        print(eventsMap);
         return TableCalendar(
           rowHeight: 45.0,
           calendarController: _calendarController,
@@ -123,70 +149,83 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildButtons() {
-    final dateTime = _events.keys.elementAt(_events.length - 2);
-
-    return Column(
-      children: <Widget>[
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            RaisedButton(
-              child: Text('Month'),
-              onPressed: () {
-                setState(() {
-                  _calendarController.setCalendarFormat(CalendarFormat.month);
-                });
+  Widget _buildLessonsList() {
+    return StreamBuilder(
+      stream: BlocProvider.of<LessonsBloc>(context)
+          .watchLessonsByDate(_currentSelectedDay ?? DateTime.now()),
+      initialData: List<Lesson>(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        final List<Lesson> lessons = snapshot.data ?? List<Lesson>();
+        if (lessons.length == 0) {
+          return Center(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Text(AppLocalizations.of(context).translate('nothing_here')),
+          ));
+        }
+        return IgnorePointer(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: lessons.length,
+              itemBuilder: (ctx, index) {
+                final lesson = lessons[index];
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 6.0, 16.0, 0.0),
+                  child: Card(
+                    color: Colors.white,
+                    child: ListTile(
+                      title: Padding(
+                        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                        child: Text(
+                          StringUtils.titleCase(lesson.author),
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                        child: Text(
+                          lesson.lessonArg != ""
+                              ? lesson.lessonArg
+                              : lesson.lessonType,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
               },
             ),
-            RaisedButton(
-              child: Text('2 weeks'),
-              onPressed: () {
-                setState(() {
-                  _calendarController
-                      .setCalendarFormat(CalendarFormat.twoWeeks);
-                });
-              },
-            ),
-            RaisedButton(
-              child: Text('Week'),
-              onPressed: () {
-                setState(() {
-                  _calendarController.setCalendarFormat(CalendarFormat.week);
-                });
-              },
-            ),
-          ],
-        ),
-        const SizedBox(height: 8.0),
-        RaisedButton(
-          child: Text(
-              'Set day ${dateTime.day}-${dateTime.month}-${dateTime.year}'),
-          onPressed: () {
-            _calendarController.setSelectedDay(
-              DateTime(dateTime.year, dateTime.month, dateTime.day),
-              runCallback: true,
-            );
-          },
-        ),
-      ],
+          ),
+        );
+      },
     );
   }
 
   Widget _buildEventList() {
-    return ListView(
-      children: _selectedEvents
-          .map(
-            (event) => Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+    if (_selectedEvents.length == 0) {
+      return Center(
+          child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Text(AppLocalizations.of(context).translate('free_to_go')),
+      ));
+    }
+    return IgnorePointer(
+      child: ListView(
+          shrinkWrap: true,
+          children: _selectedEvents.map((e) {
+            final AgendaEvent event = e;
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
               child: Card(
                 color: Colors.red[400],
                 child: ListTile(
                   title: Padding(
                     padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                     child: Text(
-                      "Italiano",
+                      StringUtils.titleCase(event.authorName),
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w600),
                     ),
@@ -194,15 +233,14 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                   subtitle: Padding(
                     padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
                     child: Text(
-                      event.toString(),
+                      event.notes,
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
               ),
-            ),
-          )
-          .toList(),
+            );
+          }).toList()),
     );
   }
 }

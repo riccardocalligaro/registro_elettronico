@@ -65,7 +65,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
       Variable.withInt(date.year),
       Variable.withInt(date.month),
       // todo: strange bug that displays only lessons with -1
-      Variable.withInt(date.day - 1)
+      Variable.withInt(date.day )
     ]).watch().map((rows) {
       rows.forEach((row) {
         print(row.data);

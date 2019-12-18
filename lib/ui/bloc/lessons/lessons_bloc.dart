@@ -17,6 +17,9 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
 
   Stream<List<Lesson>> get relevantLessons => lessonDao.watchRelevantLessons();
 
+  Stream<List<Lesson>> watchLessonsByDate(DateTime selectedDate) =>
+      lessonDao.watchLastLessons(selectedDate);
+
   Stream<List<Lesson>> relevandLessonsOfToday() =>
       lessonDao.watchLastLessons(DateTime.now());
 
