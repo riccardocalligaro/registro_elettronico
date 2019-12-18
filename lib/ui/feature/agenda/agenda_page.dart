@@ -51,7 +51,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   }
 
   void _onDaySelected(DateTime day, List events) {
-    print('CALLBACK: _onDaySelected');
     setState(() {
       _selectedEvents = events;
       _currentSelectedDay = day;
@@ -60,7 +59,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
 
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
-    print('CALLBACK: _onVisibleDaysChanged');
   }
 
   @override

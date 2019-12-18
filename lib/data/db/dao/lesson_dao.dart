@@ -54,7 +54,6 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   }
 
   Stream<List<Lesson>> watchLastLessons(DateTime date2) {
-    print(date2.day);
     return customSelectQuery("""
         SELECT * FROM lessons 
         WHERE (CAST(strftime("%Y", date, "unixepoch") AS INTEGER) = ?) 
