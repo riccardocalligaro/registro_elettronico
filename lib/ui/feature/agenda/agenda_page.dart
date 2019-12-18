@@ -125,12 +125,15 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
           calendarController: _calendarController,
           events: eventsMap,
           startingDayOfWeek: StartingDayOfWeek.monday,
+          weekendDays: const [DateTime.sunday],
           calendarStyle: CalendarStyle(
-            selectedColor: Colors.red[400],
-            todayColor: Colors.red[200],
-            markersColor: Colors.red[700],
-            outsideDaysVisible: false,
-          ),
+              selectedColor: Colors.red[400],
+              todayColor: Colors.red[200],
+              markersColor: Colors.red[700],
+              outsideDaysVisible: true,
+              outsideStyle: TextStyle(color: Colors.grey[300]),
+              outsideWeekendStyle: TextStyle(color: Colors.red[100]),
+              weekendStyle: TextStyle(color: Colors.red)),
           headerStyle: HeaderStyle(
               formatButtonTextStyle:
                   TextStyle().copyWith(color: Colors.white, fontSize: 15.0),

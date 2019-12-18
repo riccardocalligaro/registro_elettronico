@@ -48,10 +48,12 @@ class _AppDrawerState extends State<AppDrawer> {
                 AppNavigator.instance.navToLessons(context);
               }),
           _createDrawerItem(
-            icon: Icons.timeline,
-            text: trans.translate("grades"),
-            pos: DrawerConstants.GRADES,
-          ),
+              icon: Icons.timeline,
+              text: trans.translate("grades"),
+              pos: DrawerConstants.GRADES,
+              onTap: () {
+                AppNavigator.instance.navToGrades(context);
+              }),
           _createDrawerItem(
               icon: Icons.event,
               text: trans.translate("agenda"),

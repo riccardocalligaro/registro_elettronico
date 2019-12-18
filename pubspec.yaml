@@ -34,6 +34,8 @@ dependencies:
   flutter_svg: ^0.15.0
   # Launcher icon
   flutter_launcher_icons: ^0.7.4
+  # for percentage
+  percent_indicator: ^2.1.1+1
 
   # Storing user password
   shared_preferences: ^0.5.4+8
@@ -44,6 +46,8 @@ dependencies:
   intl: ^0.16.0
   # calendar in agenda page
   table_calendar: ^2.2.1
+
+  fl_chart: ^0.6.0
 
   flutter_localizations:
     sdk: flutter

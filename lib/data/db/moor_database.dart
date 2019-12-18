@@ -1,10 +1,12 @@
 import 'package:moor_flutter/moor_flutter.dart';
+import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
+import 'package:registro_elettronico/data/db/table/absence_table.dart';
 import 'package:registro_elettronico/data/db/table/agenda_event_table.dart';
 import 'package:registro_elettronico/data/db/table/grade_table.dart';
 import 'package:registro_elettronico/data/db/table/lesson_table.dart';
@@ -20,14 +22,16 @@ part 'moor_database.g.dart';
   Subjects,
   Professors,
   Grades,
-  AgendaEvents
+  AgendaEvents,
+  Absences
 ], daos: [
   ProfileDao,
   LessonDao,
   SubjectDao,
   ProfessorDao,
   GradeDao,
-  AgendaDao
+  AgendaDao,
+  AbsenceDao
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase()

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injector/injector.dart';
+import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
@@ -10,12 +11,15 @@ import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
+import 'package:registro_elettronico/data/repository/absences_repository_impl.dart';
+import 'package:registro_elettronico/data/repository/mapper/absence_mapper.dart';
 
 // All the mappers to convert an entity to a db entity and vice versa
 import 'package:registro_elettronico/data/repository/mapper/mappers_export.dart';
 
 // All the data level repositories
 import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
+import 'package:registro_elettronico/domain/repository/absences_repository.dart';
 
 // All the domain level repositories
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
@@ -74,6 +78,10 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton<AgendaDao>((i) {
       return AgendaDao(i.getDependency());
+    });
+
+    Injector.appInstance.registerSingleton<AbsenceDao>((i) {
+      return AbsenceDao(i.getDependency());
     });
   }
 
@@ -137,6 +145,15 @@ class AppInjector {
           i.getDependency());
       return agendaRepository;
     });
+
+    Injector.appInstance.registerSingleton((i) {
+      AbsencesRepository absencesRepository = AbsencesRepositoryImpl(
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency());
+      return absencesRepository;
+    });
   }
 
   static void injectMapper() {
@@ -158,6 +175,10 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton<EventMapper>((injector) {
       return EventMapper();
+    });
+
+    Injector.appInstance.registerSingleton<AbsenceMapper>((injector) {
+      return AbsenceMapper();
     });
   }
 

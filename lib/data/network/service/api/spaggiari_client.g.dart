@@ -134,4 +134,23 @@ class _SpaggiariClient implements SpaggiariClient {
     final value = AgendaResponse.fromJson(_result.data);
     return Future.value(value);
   }
+
+  @override
+  getAbsences(studentId) async {
+    ArgumentError.checkNotNull(studentId, 'studentId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        '/students/$studentId/absences/details',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AbsencesResponse.fromJson(_result.data);
+    return Future.value(value);
+  }
 }

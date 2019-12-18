@@ -26,6 +26,10 @@ class AppNavigator {
     Navigator.pushReplacementNamed(context, Routes.LESSONS);
   }
 
+  void navToGrades(BuildContext context) {
+    Navigator.pushReplacementNamed(context, Routes.GRADES);
+  }
+
   void navToAgenda(BuildContext context) {
     Navigator.pushReplacementNamed(context, Routes.AGENDA);
   }

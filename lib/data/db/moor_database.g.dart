@@ -2918,6 +2918,456 @@ class $AgendaEventsTable extends AgendaEvents
   }
 }
 
+class Absence extends DataClass implements Insertable<Absence> {
+  final int evtId;
+  final String evtCode;
+  final DateTime evtDate;
+  final int evtHPos;
+  final int evtValue;
+  final bool isJustified;
+  final String justifiedReasonCode;
+  final String justifReasonDesc;
+  Absence(
+      {@required this.evtId,
+      @required this.evtCode,
+      @required this.evtDate,
+      @required this.evtHPos,
+      @required this.evtValue,
+      @required this.isJustified,
+      @required this.justifiedReasonCode,
+      @required this.justifReasonDesc});
+  factory Absence.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    return Absence(
+      evtId: intType.mapFromDatabaseResponse(data['${effectivePrefix}evt_id']),
+      evtCode: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}evt_code']),
+      evtDate: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}evt_date']),
+      evtHPos:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}evt_h_pos']),
+      evtValue:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}evt_value']),
+      isJustified: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}is_justified']),
+      justifiedReasonCode: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}justified_reason_code']),
+      justifReasonDesc: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}justif_reason_desc']),
+    );
+  }
+  factory Absence.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return Absence(
+      evtId: serializer.fromJson<int>(json['evtId']),
+      evtCode: serializer.fromJson<String>(json['evtCode']),
+      evtDate: serializer.fromJson<DateTime>(json['evtDate']),
+      evtHPos: serializer.fromJson<int>(json['evtHPos']),
+      evtValue: serializer.fromJson<int>(json['evtValue']),
+      isJustified: serializer.fromJson<bool>(json['isJustified']),
+      justifiedReasonCode:
+          serializer.fromJson<String>(json['justifiedReasonCode']),
+      justifReasonDesc: serializer.fromJson<String>(json['justifReasonDesc']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'evtId': serializer.toJson<int>(evtId),
+      'evtCode': serializer.toJson<String>(evtCode),
+      'evtDate': serializer.toJson<DateTime>(evtDate),
+      'evtHPos': serializer.toJson<int>(evtHPos),
+      'evtValue': serializer.toJson<int>(evtValue),
+      'isJustified': serializer.toJson<bool>(isJustified),
+      'justifiedReasonCode': serializer.toJson<String>(justifiedReasonCode),
+      'justifReasonDesc': serializer.toJson<String>(justifReasonDesc),
+    };
+  }
+
+  @override
+  AbsencesCompanion createCompanion(bool nullToAbsent) {
+    return AbsencesCompanion(
+      evtId:
+          evtId == null && nullToAbsent ? const Value.absent() : Value(evtId),
+      evtCode: evtCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(evtCode),
+      evtDate: evtDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(evtDate),
+      evtHPos: evtHPos == null && nullToAbsent
+          ? const Value.absent()
+          : Value(evtHPos),
+      evtValue: evtValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(evtValue),
+      isJustified: isJustified == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isJustified),
+      justifiedReasonCode: justifiedReasonCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(justifiedReasonCode),
+      justifReasonDesc: justifReasonDesc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(justifReasonDesc),
+    );
+  }
+
+  Absence copyWith(
+          {int evtId,
+          String evtCode,
+          DateTime evtDate,
+          int evtHPos,
+          int evtValue,
+          bool isJustified,
+          String justifiedReasonCode,
+          String justifReasonDesc}) =>
+      Absence(
+        evtId: evtId ?? this.evtId,
+        evtCode: evtCode ?? this.evtCode,
+        evtDate: evtDate ?? this.evtDate,
+        evtHPos: evtHPos ?? this.evtHPos,
+        evtValue: evtValue ?? this.evtValue,
+        isJustified: isJustified ?? this.isJustified,
+        justifiedReasonCode: justifiedReasonCode ?? this.justifiedReasonCode,
+        justifReasonDesc: justifReasonDesc ?? this.justifReasonDesc,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Absence(')
+          ..write('evtId: $evtId, ')
+          ..write('evtCode: $evtCode, ')
+          ..write('evtDate: $evtDate, ')
+          ..write('evtHPos: $evtHPos, ')
+          ..write('evtValue: $evtValue, ')
+          ..write('isJustified: $isJustified, ')
+          ..write('justifiedReasonCode: $justifiedReasonCode, ')
+          ..write('justifReasonDesc: $justifReasonDesc')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      evtId.hashCode,
+      $mrjc(
+          evtCode.hashCode,
+          $mrjc(
+              evtDate.hashCode,
+              $mrjc(
+                  evtHPos.hashCode,
+                  $mrjc(
+                      evtValue.hashCode,
+                      $mrjc(
+                          isJustified.hashCode,
+                          $mrjc(justifiedReasonCode.hashCode,
+                              justifReasonDesc.hashCode))))))));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is Absence &&
+          other.evtId == this.evtId &&
+          other.evtCode == this.evtCode &&
+          other.evtDate == this.evtDate &&
+          other.evtHPos == this.evtHPos &&
+          other.evtValue == this.evtValue &&
+          other.isJustified == this.isJustified &&
+          other.justifiedReasonCode == this.justifiedReasonCode &&
+          other.justifReasonDesc == this.justifReasonDesc);
+}
+
+class AbsencesCompanion extends UpdateCompanion<Absence> {
+  final Value<int> evtId;
+  final Value<String> evtCode;
+  final Value<DateTime> evtDate;
+  final Value<int> evtHPos;
+  final Value<int> evtValue;
+  final Value<bool> isJustified;
+  final Value<String> justifiedReasonCode;
+  final Value<String> justifReasonDesc;
+  const AbsencesCompanion({
+    this.evtId = const Value.absent(),
+    this.evtCode = const Value.absent(),
+    this.evtDate = const Value.absent(),
+    this.evtHPos = const Value.absent(),
+    this.evtValue = const Value.absent(),
+    this.isJustified = const Value.absent(),
+    this.justifiedReasonCode = const Value.absent(),
+    this.justifReasonDesc = const Value.absent(),
+  });
+  AbsencesCompanion.insert({
+    @required int evtId,
+    @required String evtCode,
+    @required DateTime evtDate,
+    @required int evtHPos,
+    @required int evtValue,
+    @required bool isJustified,
+    @required String justifiedReasonCode,
+    @required String justifReasonDesc,
+  })  : evtId = Value(evtId),
+        evtCode = Value(evtCode),
+        evtDate = Value(evtDate),
+        evtHPos = Value(evtHPos),
+        evtValue = Value(evtValue),
+        isJustified = Value(isJustified),
+        justifiedReasonCode = Value(justifiedReasonCode),
+        justifReasonDesc = Value(justifReasonDesc);
+  AbsencesCompanion copyWith(
+      {Value<int> evtId,
+      Value<String> evtCode,
+      Value<DateTime> evtDate,
+      Value<int> evtHPos,
+      Value<int> evtValue,
+      Value<bool> isJustified,
+      Value<String> justifiedReasonCode,
+      Value<String> justifReasonDesc}) {
+    return AbsencesCompanion(
+      evtId: evtId ?? this.evtId,
+      evtCode: evtCode ?? this.evtCode,
+      evtDate: evtDate ?? this.evtDate,
+      evtHPos: evtHPos ?? this.evtHPos,
+      evtValue: evtValue ?? this.evtValue,
+      isJustified: isJustified ?? this.isJustified,
+      justifiedReasonCode: justifiedReasonCode ?? this.justifiedReasonCode,
+      justifReasonDesc: justifReasonDesc ?? this.justifReasonDesc,
+    );
+  }
+}
+
+class $AbsencesTable extends Absences with TableInfo<$AbsencesTable, Absence> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $AbsencesTable(this._db, [this._alias]);
+  final VerificationMeta _evtIdMeta = const VerificationMeta('evtId');
+  GeneratedIntColumn _evtId;
+  @override
+  GeneratedIntColumn get evtId => _evtId ??= _constructEvtId();
+  GeneratedIntColumn _constructEvtId() {
+    return GeneratedIntColumn(
+      'evt_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _evtCodeMeta = const VerificationMeta('evtCode');
+  GeneratedTextColumn _evtCode;
+  @override
+  GeneratedTextColumn get evtCode => _evtCode ??= _constructEvtCode();
+  GeneratedTextColumn _constructEvtCode() {
+    return GeneratedTextColumn(
+      'evt_code',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _evtDateMeta = const VerificationMeta('evtDate');
+  GeneratedDateTimeColumn _evtDate;
+  @override
+  GeneratedDateTimeColumn get evtDate => _evtDate ??= _constructEvtDate();
+  GeneratedDateTimeColumn _constructEvtDate() {
+    return GeneratedDateTimeColumn(
+      'evt_date',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _evtHPosMeta = const VerificationMeta('evtHPos');
+  GeneratedIntColumn _evtHPos;
+  @override
+  GeneratedIntColumn get evtHPos => _evtHPos ??= _constructEvtHPos();
+  GeneratedIntColumn _constructEvtHPos() {
+    return GeneratedIntColumn(
+      'evt_h_pos',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _evtValueMeta = const VerificationMeta('evtValue');
+  GeneratedIntColumn _evtValue;
+  @override
+  GeneratedIntColumn get evtValue => _evtValue ??= _constructEvtValue();
+  GeneratedIntColumn _constructEvtValue() {
+    return GeneratedIntColumn(
+      'evt_value',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _isJustifiedMeta =
+      const VerificationMeta('isJustified');
+  GeneratedBoolColumn _isJustified;
+  @override
+  GeneratedBoolColumn get isJustified =>
+      _isJustified ??= _constructIsJustified();
+  GeneratedBoolColumn _constructIsJustified() {
+    return GeneratedBoolColumn(
+      'is_justified',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _justifiedReasonCodeMeta =
+      const VerificationMeta('justifiedReasonCode');
+  GeneratedTextColumn _justifiedReasonCode;
+  @override
+  GeneratedTextColumn get justifiedReasonCode =>
+      _justifiedReasonCode ??= _constructJustifiedReasonCode();
+  GeneratedTextColumn _constructJustifiedReasonCode() {
+    return GeneratedTextColumn(
+      'justified_reason_code',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _justifReasonDescMeta =
+      const VerificationMeta('justifReasonDesc');
+  GeneratedTextColumn _justifReasonDesc;
+  @override
+  GeneratedTextColumn get justifReasonDesc =>
+      _justifReasonDesc ??= _constructJustifReasonDesc();
+  GeneratedTextColumn _constructJustifReasonDesc() {
+    return GeneratedTextColumn(
+      'justif_reason_desc',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        evtId,
+        evtCode,
+        evtDate,
+        evtHPos,
+        evtValue,
+        isJustified,
+        justifiedReasonCode,
+        justifReasonDesc
+      ];
+  @override
+  $AbsencesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'absences';
+  @override
+  final String actualTableName = 'absences';
+  @override
+  VerificationContext validateIntegrity(AbsencesCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.evtId.present) {
+      context.handle(
+          _evtIdMeta, evtId.isAcceptableValue(d.evtId.value, _evtIdMeta));
+    } else if (evtId.isRequired && isInserting) {
+      context.missing(_evtIdMeta);
+    }
+    if (d.evtCode.present) {
+      context.handle(_evtCodeMeta,
+          evtCode.isAcceptableValue(d.evtCode.value, _evtCodeMeta));
+    } else if (evtCode.isRequired && isInserting) {
+      context.missing(_evtCodeMeta);
+    }
+    if (d.evtDate.present) {
+      context.handle(_evtDateMeta,
+          evtDate.isAcceptableValue(d.evtDate.value, _evtDateMeta));
+    } else if (evtDate.isRequired && isInserting) {
+      context.missing(_evtDateMeta);
+    }
+    if (d.evtHPos.present) {
+      context.handle(_evtHPosMeta,
+          evtHPos.isAcceptableValue(d.evtHPos.value, _evtHPosMeta));
+    } else if (evtHPos.isRequired && isInserting) {
+      context.missing(_evtHPosMeta);
+    }
+    if (d.evtValue.present) {
+      context.handle(_evtValueMeta,
+          evtValue.isAcceptableValue(d.evtValue.value, _evtValueMeta));
+    } else if (evtValue.isRequired && isInserting) {
+      context.missing(_evtValueMeta);
+    }
+    if (d.isJustified.present) {
+      context.handle(_isJustifiedMeta,
+          isJustified.isAcceptableValue(d.isJustified.value, _isJustifiedMeta));
+    } else if (isJustified.isRequired && isInserting) {
+      context.missing(_isJustifiedMeta);
+    }
+    if (d.justifiedReasonCode.present) {
+      context.handle(
+          _justifiedReasonCodeMeta,
+          justifiedReasonCode.isAcceptableValue(
+              d.justifiedReasonCode.value, _justifiedReasonCodeMeta));
+    } else if (justifiedReasonCode.isRequired && isInserting) {
+      context.missing(_justifiedReasonCodeMeta);
+    }
+    if (d.justifReasonDesc.present) {
+      context.handle(
+          _justifReasonDescMeta,
+          justifReasonDesc.isAcceptableValue(
+              d.justifReasonDesc.value, _justifReasonDescMeta));
+    } else if (justifReasonDesc.isRequired && isInserting) {
+      context.missing(_justifReasonDescMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  Absence map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Absence.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(AbsencesCompanion d) {
+    final map = <String, Variable>{};
+    if (d.evtId.present) {
+      map['evt_id'] = Variable<int, IntType>(d.evtId.value);
+    }
+    if (d.evtCode.present) {
+      map['evt_code'] = Variable<String, StringType>(d.evtCode.value);
+    }
+    if (d.evtDate.present) {
+      map['evt_date'] = Variable<DateTime, DateTimeType>(d.evtDate.value);
+    }
+    if (d.evtHPos.present) {
+      map['evt_h_pos'] = Variable<int, IntType>(d.evtHPos.value);
+    }
+    if (d.evtValue.present) {
+      map['evt_value'] = Variable<int, IntType>(d.evtValue.value);
+    }
+    if (d.isJustified.present) {
+      map['is_justified'] = Variable<bool, BoolType>(d.isJustified.value);
+    }
+    if (d.justifiedReasonCode.present) {
+      map['justified_reason_code'] =
+          Variable<String, StringType>(d.justifiedReasonCode.value);
+    }
+    if (d.justifReasonDesc.present) {
+      map['justif_reason_desc'] =
+          Variable<String, StringType>(d.justifReasonDesc.value);
+    }
+    return map;
+  }
+
+  @override
+  $AbsencesTable createAlias(String alias) {
+    return $AbsencesTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProfilesTable _profiles;
@@ -2933,6 +3383,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AgendaEventsTable _agendaEvents;
   $AgendaEventsTable get agendaEvents =>
       _agendaEvents ??= $AgendaEventsTable(this);
+  $AbsencesTable _absences;
+  $AbsencesTable get absences => _absences ??= $AbsencesTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   LessonDao _lessonDao;
@@ -2946,7 +3398,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   GradeDao get gradeDao => _gradeDao ??= GradeDao(this as AppDatabase);
   AgendaDao _agendaDao;
   AgendaDao get agendaDao => _agendaDao ??= AgendaDao(this as AppDatabase);
+  AbsenceDao _absenceDao;
+  AbsenceDao get absenceDao => _absenceDao ??= AbsenceDao(this as AppDatabase);
   @override
   List<TableInfo> get allTables =>
-      [profiles, lessons, subjects, professors, grades, agendaEvents];
+      [profiles, lessons, subjects, professors, grades, agendaEvents, absences];
 }
