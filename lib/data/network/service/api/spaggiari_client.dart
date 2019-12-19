@@ -6,6 +6,7 @@ import 'package:registro_elettronico/domain/entity/api_responses/agenda_response
 import 'package:registro_elettronico/domain/entity/api_responses/grades_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/lessons_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/login_response.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/periods_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/subjects_response.dart';
 import 'package:retrofit/http.dart';
 
@@ -44,4 +45,8 @@ abstract class SpaggiariClient {
   // Absences
   @GET("/students/{studentId}/absences/details")
   Future<AbsencesResponse> getAbsences(@Path() String studentId);
+
+  // Absences
+  @GET("/students/{studentId}/periods")
+  Future<PeriodsResponse> getPeriods(@Path() String studentId);
 }

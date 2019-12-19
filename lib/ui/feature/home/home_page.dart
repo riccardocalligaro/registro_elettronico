@@ -152,7 +152,9 @@ class _HomePageState extends State<HomePage> {
                       SectionHeader(
                         headingText: AppLocalizations.of(context)
                             .translate('next_events'),
-                        onTap: () {},
+                        onTap: () {
+                          AppNavigator.instance.navToAgenda(context);
+                        },
                       ),
                       _buildAgenda(context),
                       Divider(color: Colors.grey[300]),

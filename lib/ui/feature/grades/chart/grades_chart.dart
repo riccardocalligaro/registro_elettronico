@@ -1,8 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class GradesChart extends StatefulWidget {
@@ -26,7 +24,7 @@ class _GradesChartState extends State<GradesChart> {
   }
 
   /// Stream builder that takes data from the bloc stream
-  Stack _buildChart(BuildContext context) {
+  Widget _buildChart(BuildContext context) {
     // we take the grades from the state
     final grades = widget.grades;
     // spots for the graph
@@ -53,47 +51,52 @@ class _GradesChartState extends State<GradesChart> {
         spots.add(FlSpot(i.toDouble(), grades[i].decimalValue));
       }
     }
+
+    if (spots.isEmpty) {
+      return Container();
+    } else {
+      return Stack(
+        children: <Widget>[
+          AspectRatio(
+            aspectRatio: 1.5,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(18),
+                ),
+                color: Colors.transparent,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    right: 18.0, left: 12.0, top: 24, bottom: 12),
+                child: LineChart(
+                  gradesData(grades, spots),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 60,
+            height: 34,
+            child: FlatButton(
+              onPressed: () {
+                setState(() {
+                  showAvg = !showAvg;
+                });
+              },
+              child: Text(
+                AppLocalizations.of(context).translate('avg'),
+                style: TextStyle(
+                    fontSize: 8,
+                    color:
+                        showAvg ? Colors.black.withOpacity(0.5) : Colors.black),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
     // the main widget
-    return Stack(
-      children: <Widget>[
-        AspectRatio(
-          aspectRatio: 2.50,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(18),
-              ),
-              color: Colors.transparent,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  right: 18.0, left: 12.0, top: 24, bottom: 12),
-              child: LineChart(
-                gradesData(grades, spots),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 60,
-          height: 34,
-          child: FlatButton(
-            onPressed: () {
-              setState(() {
-                showAvg = !showAvg;
-              });
-            },
-            child: Text(
-              AppLocalizations.of(context).translate('avg'),
-              style: TextStyle(
-                  fontSize: 8,
-                  color:
-                      showAvg ? Colors.black.withOpacity(0.5) : Colors.black),
-            ),
-          ),
-        ),
-      ],
-    );
   }
 
   LineChartData gradesData(List<Grade> grades, List<FlSpot> spots) {

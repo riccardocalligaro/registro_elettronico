@@ -1,4 +1,5 @@
 import 'package:moor_flutter/moor_flutter.dart';
+
 class Grades extends Table {
   IntColumn get subjectId => integer()();
   TextColumn get subjectDesc => text()();
@@ -18,5 +19,7 @@ class Grades extends Table {
   IntColumn get weightFactor => integer()();
   IntColumn get skillId => integer()();
   IntColumn get gradeMasterId => integer()();
-}
 
+  @override
+  Set<Column> get primaryKey => {evtId};
+}

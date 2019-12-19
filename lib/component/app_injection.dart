@@ -5,6 +5,7 @@ import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
+import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
@@ -16,10 +17,13 @@ import 'package:registro_elettronico/data/repository/mapper/absence_mapper.dart'
 
 // All the mappers to convert an entity to a db entity and vice versa
 import 'package:registro_elettronico/data/repository/mapper/mappers_export.dart';
+import 'package:registro_elettronico/data/repository/mapper/period_mapper.dart';
+import 'package:registro_elettronico/data/repository/periods_repository_impl.dart';
 
 // All the data level repositories
 import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
+import 'package:registro_elettronico/domain/repository/periods_repository.dart';
 
 // All the domain level repositories
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
@@ -82,6 +86,10 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton<AbsenceDao>((i) {
       return AbsenceDao(i.getDependency());
+    });
+
+    Injector.appInstance.registerSingleton<PeriodDao>((i) {
+      return PeriodDao(i.getDependency());
     });
   }
 
@@ -154,6 +162,15 @@ class AppInjector {
           i.getDependency());
       return absencesRepository;
     });
+
+    Injector.appInstance.registerSingleton((i) {
+      PeriodsRepository periodsRepository = PeriodsRepositoryImpl(
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency());
+      return periodsRepository;
+    });
   }
 
   static void injectMapper() {
@@ -179,6 +196,10 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton<AbsenceMapper>((injector) {
       return AbsenceMapper();
+    });
+
+    Injector.appInstance.registerSingleton<PeriodMapper>((injector) {
+      return PeriodMapper();
     });
   }
 

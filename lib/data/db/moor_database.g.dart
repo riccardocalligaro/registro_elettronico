@@ -2323,7 +2323,7 @@ class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {evtId};
   @override
   Grade map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -3368,6 +3368,392 @@ class $AbsencesTable extends Absences with TableInfo<$AbsencesTable, Absence> {
   }
 }
 
+class Period extends DataClass implements Insertable<Period> {
+  final String code;
+  final int position;
+  final String description;
+  final bool isFinal;
+  final DateTime start;
+  final DateTime end;
+  final String miurDivisionCode;
+  Period(
+      {@required this.code,
+      @required this.position,
+      @required this.description,
+      @required this.isFinal,
+      @required this.start,
+      @required this.end,
+      @required this.miurDivisionCode});
+  factory Period.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    final intType = db.typeSystem.forDartType<int>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return Period(
+      code: stringType.mapFromDatabaseResponse(data['${effectivePrefix}code']),
+      position:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}position']),
+      description: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
+      isFinal:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}is_final']),
+      start:
+          dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}start']),
+      end: dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}end']),
+      miurDivisionCode: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}miur_division_code']),
+    );
+  }
+  factory Period.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return Period(
+      code: serializer.fromJson<String>(json['code']),
+      position: serializer.fromJson<int>(json['position']),
+      description: serializer.fromJson<String>(json['description']),
+      isFinal: serializer.fromJson<bool>(json['isFinal']),
+      start: serializer.fromJson<DateTime>(json['start']),
+      end: serializer.fromJson<DateTime>(json['end']),
+      miurDivisionCode: serializer.fromJson<String>(json['miurDivisionCode']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'code': serializer.toJson<String>(code),
+      'position': serializer.toJson<int>(position),
+      'description': serializer.toJson<String>(description),
+      'isFinal': serializer.toJson<bool>(isFinal),
+      'start': serializer.toJson<DateTime>(start),
+      'end': serializer.toJson<DateTime>(end),
+      'miurDivisionCode': serializer.toJson<String>(miurDivisionCode),
+    };
+  }
+
+  @override
+  PeriodsCompanion createCompanion(bool nullToAbsent) {
+    return PeriodsCompanion(
+      code: code == null && nullToAbsent ? const Value.absent() : Value(code),
+      position: position == null && nullToAbsent
+          ? const Value.absent()
+          : Value(position),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      isFinal: isFinal == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isFinal),
+      start:
+          start == null && nullToAbsent ? const Value.absent() : Value(start),
+      end: end == null && nullToAbsent ? const Value.absent() : Value(end),
+      miurDivisionCode: miurDivisionCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(miurDivisionCode),
+    );
+  }
+
+  Period copyWith(
+          {String code,
+          int position,
+          String description,
+          bool isFinal,
+          DateTime start,
+          DateTime end,
+          String miurDivisionCode}) =>
+      Period(
+        code: code ?? this.code,
+        position: position ?? this.position,
+        description: description ?? this.description,
+        isFinal: isFinal ?? this.isFinal,
+        start: start ?? this.start,
+        end: end ?? this.end,
+        miurDivisionCode: miurDivisionCode ?? this.miurDivisionCode,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Period(')
+          ..write('code: $code, ')
+          ..write('position: $position, ')
+          ..write('description: $description, ')
+          ..write('isFinal: $isFinal, ')
+          ..write('start: $start, ')
+          ..write('end: $end, ')
+          ..write('miurDivisionCode: $miurDivisionCode')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      code.hashCode,
+      $mrjc(
+          position.hashCode,
+          $mrjc(
+              description.hashCode,
+              $mrjc(
+                  isFinal.hashCode,
+                  $mrjc(start.hashCode,
+                      $mrjc(end.hashCode, miurDivisionCode.hashCode)))))));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is Period &&
+          other.code == this.code &&
+          other.position == this.position &&
+          other.description == this.description &&
+          other.isFinal == this.isFinal &&
+          other.start == this.start &&
+          other.end == this.end &&
+          other.miurDivisionCode == this.miurDivisionCode);
+}
+
+class PeriodsCompanion extends UpdateCompanion<Period> {
+  final Value<String> code;
+  final Value<int> position;
+  final Value<String> description;
+  final Value<bool> isFinal;
+  final Value<DateTime> start;
+  final Value<DateTime> end;
+  final Value<String> miurDivisionCode;
+  const PeriodsCompanion({
+    this.code = const Value.absent(),
+    this.position = const Value.absent(),
+    this.description = const Value.absent(),
+    this.isFinal = const Value.absent(),
+    this.start = const Value.absent(),
+    this.end = const Value.absent(),
+    this.miurDivisionCode = const Value.absent(),
+  });
+  PeriodsCompanion.insert({
+    @required String code,
+    @required int position,
+    @required String description,
+    @required bool isFinal,
+    @required DateTime start,
+    @required DateTime end,
+    @required String miurDivisionCode,
+  })  : code = Value(code),
+        position = Value(position),
+        description = Value(description),
+        isFinal = Value(isFinal),
+        start = Value(start),
+        end = Value(end),
+        miurDivisionCode = Value(miurDivisionCode);
+  PeriodsCompanion copyWith(
+      {Value<String> code,
+      Value<int> position,
+      Value<String> description,
+      Value<bool> isFinal,
+      Value<DateTime> start,
+      Value<DateTime> end,
+      Value<String> miurDivisionCode}) {
+    return PeriodsCompanion(
+      code: code ?? this.code,
+      position: position ?? this.position,
+      description: description ?? this.description,
+      isFinal: isFinal ?? this.isFinal,
+      start: start ?? this.start,
+      end: end ?? this.end,
+      miurDivisionCode: miurDivisionCode ?? this.miurDivisionCode,
+    );
+  }
+}
+
+class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $PeriodsTable(this._db, [this._alias]);
+  final VerificationMeta _codeMeta = const VerificationMeta('code');
+  GeneratedTextColumn _code;
+  @override
+  GeneratedTextColumn get code => _code ??= _constructCode();
+  GeneratedTextColumn _constructCode() {
+    return GeneratedTextColumn(
+      'code',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _positionMeta = const VerificationMeta('position');
+  GeneratedIntColumn _position;
+  @override
+  GeneratedIntColumn get position => _position ??= _constructPosition();
+  GeneratedIntColumn _constructPosition() {
+    return GeneratedIntColumn(
+      'position',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  GeneratedTextColumn _description;
+  @override
+  GeneratedTextColumn get description =>
+      _description ??= _constructDescription();
+  GeneratedTextColumn _constructDescription() {
+    return GeneratedTextColumn(
+      'description',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _isFinalMeta = const VerificationMeta('isFinal');
+  GeneratedBoolColumn _isFinal;
+  @override
+  GeneratedBoolColumn get isFinal => _isFinal ??= _constructIsFinal();
+  GeneratedBoolColumn _constructIsFinal() {
+    return GeneratedBoolColumn(
+      'is_final',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _startMeta = const VerificationMeta('start');
+  GeneratedDateTimeColumn _start;
+  @override
+  GeneratedDateTimeColumn get start => _start ??= _constructStart();
+  GeneratedDateTimeColumn _constructStart() {
+    return GeneratedDateTimeColumn(
+      'start',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _endMeta = const VerificationMeta('end');
+  GeneratedDateTimeColumn _end;
+  @override
+  GeneratedDateTimeColumn get end => _end ??= _constructEnd();
+  GeneratedDateTimeColumn _constructEnd() {
+    return GeneratedDateTimeColumn(
+      'end',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _miurDivisionCodeMeta =
+      const VerificationMeta('miurDivisionCode');
+  GeneratedTextColumn _miurDivisionCode;
+  @override
+  GeneratedTextColumn get miurDivisionCode =>
+      _miurDivisionCode ??= _constructMiurDivisionCode();
+  GeneratedTextColumn _constructMiurDivisionCode() {
+    return GeneratedTextColumn(
+      'miur_division_code',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [code, position, description, isFinal, start, end, miurDivisionCode];
+  @override
+  $PeriodsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'periods';
+  @override
+  final String actualTableName = 'periods';
+  @override
+  VerificationContext validateIntegrity(PeriodsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.code.present) {
+      context.handle(
+          _codeMeta, code.isAcceptableValue(d.code.value, _codeMeta));
+    } else if (code.isRequired && isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (d.position.present) {
+      context.handle(_positionMeta,
+          position.isAcceptableValue(d.position.value, _positionMeta));
+    } else if (position.isRequired && isInserting) {
+      context.missing(_positionMeta);
+    }
+    if (d.description.present) {
+      context.handle(_descriptionMeta,
+          description.isAcceptableValue(d.description.value, _descriptionMeta));
+    } else if (description.isRequired && isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (d.isFinal.present) {
+      context.handle(_isFinalMeta,
+          isFinal.isAcceptableValue(d.isFinal.value, _isFinalMeta));
+    } else if (isFinal.isRequired && isInserting) {
+      context.missing(_isFinalMeta);
+    }
+    if (d.start.present) {
+      context.handle(
+          _startMeta, start.isAcceptableValue(d.start.value, _startMeta));
+    } else if (start.isRequired && isInserting) {
+      context.missing(_startMeta);
+    }
+    if (d.end.present) {
+      context.handle(_endMeta, end.isAcceptableValue(d.end.value, _endMeta));
+    } else if (end.isRequired && isInserting) {
+      context.missing(_endMeta);
+    }
+    if (d.miurDivisionCode.present) {
+      context.handle(
+          _miurDivisionCodeMeta,
+          miurDivisionCode.isAcceptableValue(
+              d.miurDivisionCode.value, _miurDivisionCodeMeta));
+    } else if (miurDivisionCode.isRequired && isInserting) {
+      context.missing(_miurDivisionCodeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  Period map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Period.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(PeriodsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.code.present) {
+      map['code'] = Variable<String, StringType>(d.code.value);
+    }
+    if (d.position.present) {
+      map['position'] = Variable<int, IntType>(d.position.value);
+    }
+    if (d.description.present) {
+      map['description'] = Variable<String, StringType>(d.description.value);
+    }
+    if (d.isFinal.present) {
+      map['is_final'] = Variable<bool, BoolType>(d.isFinal.value);
+    }
+    if (d.start.present) {
+      map['start'] = Variable<DateTime, DateTimeType>(d.start.value);
+    }
+    if (d.end.present) {
+      map['end'] = Variable<DateTime, DateTimeType>(d.end.value);
+    }
+    if (d.miurDivisionCode.present) {
+      map['miur_division_code'] =
+          Variable<String, StringType>(d.miurDivisionCode.value);
+    }
+    return map;
+  }
+
+  @override
+  $PeriodsTable createAlias(String alias) {
+    return $PeriodsTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProfilesTable _profiles;
@@ -3385,6 +3771,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       _agendaEvents ??= $AgendaEventsTable(this);
   $AbsencesTable _absences;
   $AbsencesTable get absences => _absences ??= $AbsencesTable(this);
+  $PeriodsTable _periods;
+  $PeriodsTable get periods => _periods ??= $PeriodsTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   LessonDao _lessonDao;
@@ -3401,6 +3789,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   AbsenceDao _absenceDao;
   AbsenceDao get absenceDao => _absenceDao ??= AbsenceDao(this as AppDatabase);
   @override
-  List<TableInfo> get allTables =>
-      [profiles, lessons, subjects, professors, grades, agendaEvents, absences];
+  List<TableInfo> get allTables => [
+        profiles,
+        lessons,
+        subjects,
+        professors,
+        grades,
+        agendaEvents,
+        absences,
+        periods
+      ];
 }

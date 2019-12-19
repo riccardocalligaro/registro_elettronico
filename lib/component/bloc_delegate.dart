@@ -5,6 +5,7 @@ import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/periods/periods_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 
 class AppBlocDelegate {
@@ -36,6 +37,9 @@ class AppBlocDelegate {
       ),
       BlocProvider<AgendaBloc>(
         create: (ctx) => AgendaBloc(i.getDependency(), i.getDependency()),
+      ),
+      BlocProvider<PeriodsBloc>(
+        create: (ctx) => PeriodsBloc(i.getDependency()),
       ),
     ];
   }

@@ -17,9 +17,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   // this is the state for opening and closing the drawer
   final GlobalKey<ScaffoldState> scaffoldKey;
+  //  tab bar
+  final TabBar tabBar;
 
   const CustomAppBar(
-      {Key key, @required this.title, @required this.scaffoldKey})
+      {Key key, @required this.title, @required this.scaffoldKey, this.tabBar})
       : super(key: key);
 
   @override
@@ -37,6 +39,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       // White background color
       backgroundColor: Colors.white,
 
+      bottom: tabBar,
       // Open Drawer Button
       leading: IconButton(
         // We want a black Icon
