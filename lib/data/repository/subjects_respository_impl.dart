@@ -1,5 +1,6 @@
 import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/data/repository/mapper/subject_mapper.dart';
 import 'package:registro_elettronico/domain/repository/subjects_repository.dart';
@@ -25,5 +26,20 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
             .convertProfessorEntityToInsertable(professor, subject.id));
       });
     });
+  }
+
+  @override
+  Stream<List<Subject>> watchAllSubjects() {
+    return subjectDao.watchAllSubjects();
+  }
+
+  @override
+  Future insertSubject(Subject subject) {
+    return subjectDao.insertSubject(subject);
+  }
+
+  @override
+  Stream<List<Subject>> watchRelevanantSubjects() {
+    return subjectDao.watchRelevanantSubjects();
   }
 }

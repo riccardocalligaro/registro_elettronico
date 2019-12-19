@@ -7,6 +7,11 @@ class DateUtils {
     return formatter.format(date);
   }
 
+  static String convertDateForLessons(DateTime date) {
+    final formatter = DateFormat("dd MMMM yyyy");
+    return formatter.format(date);
+  }
+
   static String convertDateForDisplay(DateTime date) {
     final formatter = DateFormat('dd MMMM yy');
     return formatter.format(date);
