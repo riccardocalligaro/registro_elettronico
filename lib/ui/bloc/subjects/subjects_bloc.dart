@@ -18,7 +18,7 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
       this.professorDao);
 
   @override
-  SubjectsState get initialState => SubjectsNotLoaded();
+  SubjectsState get initialState => SubjectsInitial();
 
   Stream<List<Subject>> get subjects => subjectDao.watchRelevanantSubjects();
 
@@ -29,15 +29,15 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
     SubjectsEvent event,
   ) async* {
     if (event is FetchSubjects) {
-      yield SubjectsLoading();
+      yield SubjectsUpdateLoading();
       try {
         final profile = await profileRepository.getDbProfile();
         subjectsRepository.updateSubjects(profile.studentId.toString());
-        yield SubjectsLoaded();
+        yield SubjectsUpdateLoaded();
       } on DioError catch (e) {
-        yield SubjectsError(e.response.data.toString());
+        yield SubjectsUpdateError(e.response.data.toString());
       } catch (e) {
-        yield SubjectsError(e.toString());
+        yield SubjectsUpdateError(e.toString());
       }
     }
   }

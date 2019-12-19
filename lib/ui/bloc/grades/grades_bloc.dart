@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
+import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
@@ -12,8 +13,10 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
   GradeDao gradeDao;
   GradesRepository gradesRepository;
   ProfileRepository profileRepository;
+  SubjectDao subjectDao;
 
-  GradesBloc(this.gradeDao, this.gradesRepository, this.profileRepository);
+  GradesBloc(this.gradeDao, this.gradesRepository, this.profileRepository,
+      this.subjectDao);
   @override
   GradesState get initialState => GradesInitial();
 
@@ -22,8 +25,6 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
   Stream<List<Grade>> watchAllGradesOrdered() =>
       gradeDao.watchAllGradesOrdered();
 
-  //Stream<List<Grade>> watchNumberOfGradesByDate() =>
-  //    gradeDao.watchNumberOfGradesByDate(2);
   Stream<List<Grade>> watchNumberOfGradesByDate() => gradeDao.watchLastGrades();
 
   @override
@@ -31,19 +32,28 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
     GradesEvent event,
   ) async* {
     if (event is FetchGrades) {
-      yield GradesLoading();
+      yield GradesUpdateLoading();
       final profile = await profileRepository.getDbProfile();
       await gradesRepository.updateGrades(profile.studentId);
-      yield GradesLoaded();
-      // try {
-      //   final profile = await profileRepository.getDbProfile();
-      //   await gradesRepository.updateGrades(profile.studentId);
-      //   yield GradesLoaded();
-      // } on DioError catch (e) {
-      //   yield GradesError(e.response.data.toString());
-      // } catch (e) {
-      //   yield GradesError(e.toString());
-      // }
+      yield GradesUpdateLoaded();
+    }
+
+    if (event is GetGrades) {
+      yield GradesLoading();
+      final grades = await gradeDao.getAllGradesOrdered();
+      yield GradesLoaded(grades);
+    }
+
+    if (event is GetGradesAndSubjects) {
+      yield GradesAndSubjectsLoading();
+      final grades = await gradeDao.getAllGrades();
+      final subjects = await subjectDao.getAllSubjects();
+
+      final map = Map.fromIterable(subjects,
+          key: (e) => e,
+          value: (e) =>
+              grades.where((grade) => grade.subjectId == e.id).toList());
+      yield GradesAndSubjectsLoaded(map);
     }
   }
 }

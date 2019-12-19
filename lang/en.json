@@ -33,5 +33,7 @@
   "loading_new_data": "Loading new data...",
   "free_to_go": "Free to go! 👌",
   "events": "Events",
-  "avg": "Avg"
+  "avg": "Avg",
+  "term": "term",
+  "overall": "Overall"
 }

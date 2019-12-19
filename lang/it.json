@@ -33,5 +33,7 @@
   "loading_new_data": "Aggiornamento in corso...",
   "free_to_go": "Niente eventi! 👌",
   "events": "Eventi",
-  "avg": "Media"
+  "avg": "Media",
+  "term": "Periodo",
+  "overall": "Generale"
 }

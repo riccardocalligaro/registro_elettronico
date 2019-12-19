@@ -8,3 +8,7 @@ abstract class GradesEvent extends Equatable {
 }
 
 class FetchGrades extends GradesEvent {}
+
+class GetGrades extends GradesEvent {}
+
+class GetGradesAndSubjects extends GradesEvent {}

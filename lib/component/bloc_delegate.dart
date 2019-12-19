@@ -28,8 +28,8 @@ class AppBlocDelegate {
             i.getDependency(), i.getDependency(), i.getDependency()),
       ),
       BlocProvider<GradesBloc>(
-        create: (ctx) =>
-            GradesBloc(i.getDependency(), i.getDependency(), i.getDependency()),
+        create: (ctx) => GradesBloc(i.getDependency(), i.getDependency(),
+            i.getDependency(), i.getDependency()),
       ),
       BlocProvider<SubjectsBloc>(
         create: (ctx) => SubjectsBloc(i.getDependency(), i.getDependency(),

@@ -14,6 +14,8 @@ class SubjectDao extends DatabaseAccessor<AppDatabase> with _$SubjectDaoMixin {
 
   Stream<List<Subject>> watchAllSubjects() => select(subjects).watch();
 
+  Future<List<Subject>> getAllSubjects() => select(subjects).get();
+
   Stream<List<Subject>> watchRelevanantSubjects() => (select(subjects)
         ..where((lesson) =>
             not(lesson.name.equals(RegistroConstants.SOSTEGNO_FULL))))

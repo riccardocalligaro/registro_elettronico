@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
-import 'package:registro_elettronico/ui/feature/grades/chart/grades_chart.dart';
-import 'package:registro_elettronico/ui/feature/grades/grade_tab.dart';
+import 'package:registro_elettronico/ui/feature/grades/components/grade_tab.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
+import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 
 class GradesPage extends StatefulWidget {
   GradesPage({Key key}) : super(key: key);
@@ -18,34 +18,12 @@ class GradesPage extends StatefulWidget {
   _GradesPageState createState() => _GradesPageState();
 }
 
-class _GradesPageState extends State<GradesPage>
-    with AutomaticKeepAliveClientMixin {
+class _GradesPageState extends State<GradesPage> {
   List<Color> gradientColors = [Colors.red[400], Colors.white];
 
   bool showAvg = false;
 
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-
-  @override
-  bool get wantKeepAlive => false;
-
-  @override
-  void initState() {
-    print("init");
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    print("init");
-    super.dispose();
-  }
-
-  @override
-  void setState(fn) {
-    print("state");
-    super.setState(fn);
-  }
 
   @override
   void didChangeDependencies() {
@@ -55,20 +33,19 @@ class _GradesPageState extends State<GradesPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
     return BlocBuilder<PeriodsBloc, PeriodsState>(
       builder: (context, state) {
         if (state is PeriodsLoaded) {
           final periods = state.periods;
           return DefaultTabController(
-            length: 3,
+            length: 4,
             child: Scaffold(
               appBar: AppBar(
                 backgroundColor: Colors.white,
                 elevation: 0.0,
                 textTheme: Theme.of(context).textTheme,
                 bottom: TabBar(
+                  isScrollable: true,
                   indicatorColor: Colors.black,
                   labelColor: Colors.black,
                   tabs: _getTabBar(periods),
@@ -92,52 +69,62 @@ class _GradesPageState extends State<GradesPage>
 
   /// Take the periods from spaggiari and add the general tab
   List<Widget> _getTabBar(List<Period> periods) {
-    if (mounted) {
-      List tabs = periods
-          .map((period) => Tab(
-                child: Text(period.code),
-              ))
-          .toList();
-      tabs.add(Tab(
-        child: Text('Generale'),
-      ));
-      return tabs;
-    }
+    List<Widget> tabs = [];
+
+    tabs.add(
+      Container(
+        width: 140,
+        child: Tab(
+          child: Text(AppLocalizations.of(context)
+              .translate('last_grades')
+              .toUpperCase()),
+        ),
+      ),
+    );
+    tabs.addAll(
+      periods.map(
+        (period) => Container(
+          width: 140,
+          child: Tab(
+            child: Text(
+              GlobalUtils.getPeriodName(period.position, context),
+            ),
+          ),
+        ),
+      ),
+    );
+    tabs.add(Container(
+      width: 140,
+      child: Tab(
+        child: Text(
+          AppLocalizations.of(context).translate('overall').toUpperCase(),
+        ),
+      ),
+    ));
+
+    return tabs;
   }
 
   /// This function is for selecting the respective tab in the tab layout
   List<Widget> _getTabsSections(List<Period> periods) {
-    super.build(context);
-    if (mounted) {
-      return List.generate(periods.length + 1, (index) {
-        if (index >= periods.length) {
+    return List.generate(
+      periods.length + 2,
+      (index) {
+        // If its last marks use the constants for last marks
+        if (index == 0) {
+          return GradeTab(period: TabsConstants.ULTIMI_VOTI);
+        }
+        if (index >= periods.length + 1) {
           return GradeTab(
-            period: -1,
+            period: TabsConstants.GENERALE,
           );
         } else {
           return GradeTab(
-            period: periods[index].position,
+            period: periods[index - 1].position,
           );
         }
-
-        return StreamBuilder(
-          stream: BlocProvider.of<GradesBloc>(context).watchAllGradesOrdered(),
-          initialData: List<Grade>(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            final List<Grade> grades = snapshot.data ?? List<Grade>();
-            // final gradesOfPeriod = grades
-            //     .where((grade) => grade.periodPos == periods[index].position)
-            //     .toList();
-            if (mounted) {
-              return Text('ocp');
-            }
-            // return Text('ocp');
-            //return GradesSection(
-            //    grades: index > periods.length + 1 ? gradesOfPeriod : grades);
-          },
-        );
-      });
-    }
+      },
+    );
   }
 
   /// Loading scaffold while periods are loading
@@ -163,15 +150,15 @@ class _GradesPageState extends State<GradesPage>
   }
 
   /// Stream builder for the average chart
-  StreamBuilder _buildChart() {
-    return StreamBuilder(
-      stream: BlocProvider.of<GradesBloc>(context).watchAllGradesOrdered(),
-      initialData: List<Grade>(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return GradesChart(
-          grades: snapshot.data,
-        );
-      },
-    );
-  }
+  // StreamBuilder _buildChart() {
+  //   return StreamBuilder(
+  //     stream: BlocProvider.of<GradesBloc>(context).watchAllGradesOrdered(),
+  //     initialData: List<Grade>(),
+  //     builder: (BuildContext context, AsyncSnapshot snapshot) {
+  //       return GradesChart(
+  //         grades: snapshot.data,
+  //       );
+  //     },
+  //   );
+  // }
 }

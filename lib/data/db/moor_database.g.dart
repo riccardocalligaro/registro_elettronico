@@ -3713,7 +3713,7 @@ class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {start, end};
   @override
   Period map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -3788,6 +3788,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   AgendaDao get agendaDao => _agendaDao ??= AgendaDao(this as AppDatabase);
   AbsenceDao _absenceDao;
   AbsenceDao get absenceDao => _absenceDao ??= AbsenceDao(this as AppDatabase);
+  PeriodDao _periodDao;
+  PeriodDao get periodDao => _periodDao ??= PeriodDao(this as AppDatabase);
   @override
   List<TableInfo> get allTables => [
         profiles,

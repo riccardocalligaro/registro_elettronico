@@ -4,3 +4,5 @@ import 'package:meta/meta.dart';
 abstract class SubjectsEvent {}
 
 class FetchSubjects extends SubjectsEvent {}
+
+class GetSubjects extends SubjectsEvent {}

@@ -9,6 +9,8 @@ import 'package:registro_elettronico/ui/bloc/agenda/agenda_event.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_event.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/periods/periods_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/periods/periods_event.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/subjects_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/subjects_event.dart';
 
@@ -63,6 +65,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
             BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
             BlocProvider.of<GradesBloc>(context).add(FetchGrades());
+            BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
           },
         ),
         IconButton(

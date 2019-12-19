@@ -20,10 +20,20 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
 
   Stream<List<Grade>> watchAllGrades() => select(grades).watch();
 
+  Future<List<Grade>> getAllGrades() => select(grades).get();
+
+  Future<List<Grade>> getAllGradesOrdered() {
+    return (select(grades)
+          ..orderBy([
+            (t) => OrderingTerm(expression: t.eventDate, mode: OrderingMode.desc)
+          ]))
+        .get();
+  }
+
   Stream<List<Grade>> watchAllGradesOrdered() {
     return (select(grades)
           ..orderBy([
-            (t) => OrderingTerm(expression: t.eventDate, mode: OrderingMode.asc)
+            (t) => OrderingTerm(expression: t.eventDate, mode: OrderingMode.desc)
           ]))
         .watch();
   }
