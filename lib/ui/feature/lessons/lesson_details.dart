@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 
 class LessonDetails extends StatelessWidget {
   final int subjectId;
@@ -34,30 +35,30 @@ class LessonDetails extends StatelessWidget {
       stream: BlocProvider.of<LessonsBloc>(context).relevantLessons,
       initialData: List<Lesson>(),
       builder: (BuildContext context, AsyncSnapshot<List<Lesson>> snapshot) {
-        final List<Lesson> subjects = snapshot.data
+        final List<Lesson> lessons = snapshot.data
                 .where((lesson) => lesson.subjectId == subjectId)
                 .toList() ??
             List<Lesson>();
         return ListView.builder(
-          itemCount: subjects.length,
+          itemCount: lessons.length,
           itemBuilder: (context, index) {
-            final subject = subjects[index];
+            final lesson = lessons[index];
             return Padding(
-              padding: const EdgeInsets.only(top: 12.0),
+              padding: const EdgeInsets.only(top: 4.0),
               // todo: add case if there is no lesson argument
               child: Card(
                   child: ListTile(
-                title: Text(subject.date.toString().substring(0, 10)),
+                title: Text(DateUtils.convertDateForLessons(lesson.date)),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      subject.lessonArg != ""
-                          ? subject.lessonArg
+                      lesson.lessonArg != ""
+                          ? lesson.lessonArg
                           : "No  description.",
                     ),
                     Text(
-                      subject.lessonType,
+                      lesson.lessonType,
                     ),
                   ],
                 ),

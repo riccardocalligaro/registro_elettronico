@@ -1,4 +1,6 @@
+import 'package:moor/src/runtime/data_class.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -31,5 +33,60 @@ class LessonsRepositoryImpl implements LessonsRepository {
       lessonDao.insertLesson(
           lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
     });
+  }
+
+  @override
+  Future<List<Lesson>> getDateLessons(DateTime date) {
+    return lessonDao.getDateLessons(date);
+  }
+
+  @override
+  Future deleteLessons() {
+    return lessonDao.deleteLessons();
+  }
+
+  @override
+  Stream<List<Lesson>> watchRelevantLessons() {
+    return lessonDao.watchRelevantLessons();
+  }
+
+  @override
+  Stream<List<Lesson>> watchRelevantLessonsOfToday(DateTime today) {
+    return lessonDao.watchRelevantLessonsOfToday(today);
+  }
+
+  @override
+  Stream<List<Lesson>> watchLessonsOrdered() {
+    return lessonDao.watchLessonsOrdered();
+  }
+
+  @override
+  Stream<List<Lesson>> watchLessonsByDate(DateTime date) {
+    return lessonDao.watchLessonsByDate(date);
+  }
+
+  @override
+  Stream<List<Lesson>> watchLastLessons(DateTime date2) {
+    return lessonDao.watchLastLessons(date2);
+  }
+
+  @override
+  Future<List<Lesson>> getLessons() {
+    return lessonDao.getLessons();
+  }
+
+  @override
+  Stream<List<Lesson>> watchLessons() {
+    return lessonDao.watchLessons();
+  }
+
+  @override
+  Future insertLesson(Lesson lesson) {
+    return lessonDao.insertLesson(lesson);
+  }
+
+  @override
+  Future insertLessons(List<Lesson> lessonsToInsert) {
+    return lessonDao.insertLessons(lessonsToInsert);
   }
 }

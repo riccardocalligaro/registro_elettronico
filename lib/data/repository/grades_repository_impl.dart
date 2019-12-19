@@ -24,4 +24,39 @@ class GradesRepositoryImpl implements GradesRepository {
     //todo: implement get grades
     return null;
   }
+
+  @override
+  Future insertGrade(Grade grade) {
+    return gradeDao.insertGrade(grade);
+  }
+
+  @override
+  Future insertGrades(List<Grade> gradesData) {
+    return gradeDao.insertGrades(gradesData);
+  }
+
+  @override
+  Stream<List<Grade>> watchAllGrades() {
+    return gradeDao.watchAllGrades();
+  }
+
+  @override
+  Stream<List<Grade>> watchAllGradesOrdered() {
+    return gradeDao.watchAllGradesOrdered();
+  }
+
+  @override
+  Stream<List<Grade>> watchNumberOfGradesByDate(int number) {
+    return gradeDao.watchNumberOfGradesByDate(number);
+  }
+
+  @override
+  Stream<List<Grade>> watchLastGrades() {
+    return gradeDao.watchLastGrades();
+  }
+
+  @override
+  Future deleteAllGrades() {
+    return gradeDao.deleteAllGrades();
+  }
 }

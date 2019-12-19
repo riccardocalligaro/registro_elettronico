@@ -1,5 +1,6 @@
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/data/repository/mapper/event_mapper.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
@@ -52,5 +53,26 @@ class AgendaRepositoryImpl implements AgendaRepository {
     agenda.events.forEach((event) {
       agendaDao.insertEvent(eventMapper.convertEventEntityToInsertable(event));
     });
+  }
+
+  @override
+  Future insertEvent(AgendaEvent event) {
+    return agendaDao.insertEvent(event);
+  }
+
+  @override
+  Stream<List<AgendaEvent>> watchAllEvents() {
+    return agendaDao.watchAllEvents();
+  }
+
+  @override
+  Stream<List<AgendaEvent>> watchLastEvents(
+      DateTime date, int numbersOfEvents) {
+    return agendaDao.watchLastEvents(date, numbersOfEvents);
+  }
+
+  @override
+  Future deleteAllEvents() {
+    return agendaDao.deleteAllEvents();
   }
 }
