@@ -1,5 +1,5 @@
 import 'package:registro_elettronico/ui/feature/agenda/agenda_page.dart';
-import 'package:registro_elettronico/ui/feature/grades/grade_page.dart';
+import 'package:registro_elettronico/ui/feature/grades/grades_page.dart';
 import 'package:registro_elettronico/ui/feature/home/home_page.dart';
 import 'package:registro_elettronico/ui/feature/lessons/lessons_page.dart';
 import 'package:registro_elettronico/ui/feature/login/login_page.dart';
