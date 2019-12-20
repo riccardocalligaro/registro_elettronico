@@ -38,7 +38,7 @@ class _GradesPageState extends State<GradesPage> {
         if (state is PeriodsLoaded) {
           final periods = state.periods;
           return DefaultTabController(
-            length: 4,
+            length: periods.length + 2,
             child: Scaffold(
               appBar: AppBar(
                 backgroundColor: Colors.white,

@@ -8,6 +8,7 @@ import 'package:registro_elettronico/ui/global/localizations/app_localizations.d
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 
 import 'constants/registro_constants.dart';
+import 'entity/subject_averages.dart';
 
 class GlobalUtils {
   static double getAverage(int subjectId, List<Grade> grades) {
@@ -18,6 +19,80 @@ class GlobalUtils {
       if (grade.subjectId == subjectId && grade.decimalValue != -1.00) {
         sum += grade.decimalValue;
 
+        count++;
+      }
+    });
+    return sum / count;
+  }
+
+  static double getAverageWithoutSubjectId(List<Grade> grades) {
+    double sum = 0;
+    int count = 0;
+
+    grades.forEach((grade) {
+      if (grade.decimalValue != -1.00) {
+        sum += grade.decimalValue;
+
+        count++;
+      }
+    });
+    return sum / count;
+  }
+
+  static SubjectAverages getSubjectAveragesFromGrades(List<Grade> grades) {
+    // Declare variables for the different type of averages
+    double sumAverage = 0;
+    double countAverage = 0;
+
+    double sumPratico = 0;
+    double countPratico = 0;
+
+    double sumOrale = 0;
+    double countOrale = 0;
+
+    double sumScritto = 0;
+    double countScritto = 0;
+
+    grades.forEach((grade) {
+      final decimalValue = grade.decimalValue;
+      if (decimalValue != -1.00) {
+        // always check the average for all grades
+        sumAverage += decimalValue;
+        countAverage++;
+        // Orale
+        if (grade.componentDesc == RegistroConstants.ORALE) {
+          sumOrale += decimalValue;
+          countOrale++;
+        }
+        // Scritto
+        if (grade.componentDesc == RegistroConstants.SCRITTO) {
+          sumScritto += decimalValue;
+          countScritto++;
+        }
+        // Pratico
+        if (grade.componentDesc == RegistroConstants.PRATICO) {
+          sumPratico += decimalValue;
+          countPratico++;
+        }
+      }
+    });
+
+    return SubjectAverages(
+      average: sumAverage / countAverage,
+      praticoAverage: sumPratico / countPratico,
+      scrittoAverage: sumScritto / countScritto,
+      oraleAverage: sumOrale / countOrale,
+    );
+  }
+
+  static double getAverageForPratica(List<Grade> grades) {
+    double sum = 0;
+    int count = 0;
+
+    grades.forEach((grade) {
+      if (grade.decimalValue != -1.00 &&
+          grade.componentDesc == RegistroConstants.ORALE) {
+        sum += grade.decimalValue;
         count++;
       }
     });

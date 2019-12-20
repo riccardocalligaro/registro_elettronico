@@ -7,6 +7,7 @@ import 'package:registro_elettronico/ui/feature/grades/components/grade_chart.da
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 
 class GradeTab extends StatefulWidget {
   final int period;
@@ -22,6 +23,8 @@ class _GradeTabState extends State<GradeTab>
   @override
   void initState() {
     BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
+    //blocProvider.of<GradesBloc>(context).add(GetGrades());
+
     super.initState();
   }
 
@@ -35,21 +38,18 @@ class _GradeTabState extends State<GradeTab>
           builder: (context, state) {
             if (state is GradesAndSubjectsLoaded) {
               final period = widget.period;
-
-              if (period == TabsConstants.GENERALE) {
-                //return _buildAverageGradesForSubjectsList(state.data.values.);
-              } else if (period == TabsConstants.ULTIMI_VOTI) {
-                //return _buildGradesList(state.data);
+              print("length" + state.data.values.length.toString());
+              if (state.data.values.length > 0) {
+                if (period == TabsConstants.GENERALE) {
+                  return _buildAverageGradesForSubjectsList(state.data);
+                } else if (period == TabsConstants.ULTIMI_VOTI) {
+                  return _buildGradesList(state.data);
+                } else {
+                  return _buildAverageGradesForSubjectsList(state.data);
+                }
               } else {
-                return _buildAverageGradesForSubjectsList(state.data);
-                //final grades = state.grades
-                //     .where((grade) => grade.periodPos == widget.period)
-                //     .toList();
-                // return grades.length > 0
-                //     ? _buildAverageGradesForSubjectsList(grades)
-                //     : _buildEmpty();
+                return _buildEmpty();
               }
-              return Text('Not defined');
             }
             return Center(
               child: CircularProgressIndicator(),
@@ -60,23 +60,35 @@ class _GradeTabState extends State<GradeTab>
     );
   }
 
-  Widget _buildGradesList(List<Grade> grades) {
-    return Column(
-      children: <Widget>[
-        GradesChart(
-          grades: grades,
-        ),
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: grades.length,
-          itemBuilder: (context, index) {
-            return Column(
-              children: <Widget>[],
-            );
-          },
-        ),
-      ],
+  Widget _buildGradesList(Map<dynamic, List<Grade>> grades) {
+    List<Grade> gradesList = [];
+    grades.forEach(
+        (subject, grades) => grades.forEach((grade) => gradesList.add(grade)));
+    gradesList.sort((b, a) => a.eventDate.compareTo(b.eventDate));
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListView.builder(
+        itemCount: gradesList.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: GradeCard(
+              grade: gradesList[index],
+            ),
+          );
+        },
+      ),
     );
+  }
+
+  Widget _buildStatsCard(Map<dynamic, List<Grade>> grades) {
+    final all_grades = grades.values.toList();
+    all_grades.forEach((grade) {
+      grade.forEach((single) {
+        print(single.displayValue);
+      });
+    });
   }
 
   Widget _buildAverageGradesForSubjectsList(Map<dynamic, List<Grade>> grades) {
@@ -86,31 +98,43 @@ class _GradeTabState extends State<GradeTab>
         itemCount: grades.keys.length,
         itemBuilder: (context, index) {
           Subject key = grades.keys.elementAt(index);
-          print(grades.keys.elementAt(index).id);
+          final period = widget.period;
+          List<Grade> gradesForPeriod;
+          if (period == TabsConstants.GENERALE) {
+            gradesForPeriod = grades[key];
+          } else {
+            gradesForPeriod = grades[key]
+                .where((grade) => grade.periodPos == widget.period)
+                .toList();
+          }
 
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Column(
-              children: <Widget>[
-                Text(key.name),
-                IgnorePointer(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: grades[key].length,
-                    itemBuilder: (ctx, index) {
-                      final Grade grade = grades[key][index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: GradeCard(
-                          grade: grade,
-                        ),
-                      );
-                    },
+          if (gradesForPeriod.length > 0) {
+            final averages =
+                GlobalUtils.getSubjectAveragesFromGrades(gradesForPeriod);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(key.name),
+                  Text(
+                    "Media totale: ${averages.averageValue}",
                   ),
-                ),
-              ],
-            ),
-          );
+                  Text(
+                    "Media pratica: ${averages.praticoAverageValue}",
+                  ),
+                  Text(
+                    "Media scritta: ${averages.scrittoAverageValue}",
+                  ),
+                  Text(
+                    "Media orale: ${averages.oraleAverageValue}",
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return Container();
+          }
         },
       ),
     );
