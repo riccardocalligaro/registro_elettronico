@@ -121,7 +121,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                 .toSet()
                 .toList());
         return TableCalendar(
-          rowHeight: 45.0,
           calendarController: _calendarController,
           events: eventsMap,
           startingDayOfWeek: StartingDayOfWeek.monday,

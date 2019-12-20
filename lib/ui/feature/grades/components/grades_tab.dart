@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
+import 'package:registro_elettronico/ui/feature/grades/components/grade_subject_card.dart';
+import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.dart';
+import 'package:registro_elettronico/ui/feature/grades/components/grades_overall_stats.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
+import 'package:registro_elettronico/utils/entity/overall_stats.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class GradeTab extends StatefulWidget {
@@ -40,11 +45,11 @@ class _GradeTabState extends State<GradeTab>
               print("length" + state.data.values.length.toString());
               if (state.data.values.length > 0) {
                 if (period == TabsConstants.GENERALE) {
-                  return _buildAverageGradesForSubjectsList(state.data);
+                  return _buildStatsAndAverages(state.data);
                 } else if (period == TabsConstants.ULTIMI_VOTI) {
                   return _buildGradesList(state.data);
                 } else {
-                  return _buildAverageGradesForSubjectsList(state.data);
+                  return _buildStatsAndAverages(state.data);
                 }
               } else {
                 return _buildEmpty();
@@ -55,6 +60,42 @@ class _GradeTabState extends State<GradeTab>
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildStatsAndAverages(Map<dynamic, List<Grade>> data) {
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          _buildStatsCard(data),
+          _buildAverageGradesForSubjectsList(data),
+        ],
+      ),
+    );
+  }
+
+  // Card that shows the overall stats of the student
+  Widget _buildStatsCard(Map<dynamic, List<Grade>> grades) {
+    OverallStats stats;
+    if (grades.values.length >= 2) {
+      stats = GlobalUtils.getOverallStatsFromSubjectGradesMap(
+          grades, widget.period);
+    }
+
+    if (stats != null) {
+      return GradesOverallStats(
+        stats: stats,
+      );
+    }
+
+    return Container();
+  }
+
+  Widget _buildGradesChart(Map<dynamic, List<Grade>> grades) {
+    return Container(
+      child: GradesChart(
+        grades: _getGradesListForPeriodFromMap(grades),
       ),
     );
   }
@@ -81,60 +122,37 @@ class _GradeTabState extends State<GradeTab>
     );
   }
 
-  Widget _buildStatsCard(Map<dynamic, List<Grade>> grades) {
-    final all_grades = grades.values.toList();
-    all_grades.forEach((grade) {
-      grade.forEach((single) {
-        print(single.displayValue);
-      });
-    });
-  }
-
   Widget _buildAverageGradesForSubjectsList(Map<dynamic, List<Grade>> grades) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView.builder(
-        itemCount: grades.keys.length,
-        itemBuilder: (context, index) {
-          Subject key = grades.keys.elementAt(index);
-          final period = widget.period;
-          List<Grade> gradesForPeriod;
-          if (period == TabsConstants.GENERALE) {
-            gradesForPeriod = grades[key];
-          } else {
-            gradesForPeriod = grades[key]
-                .where((grade) => grade.periodPos == widget.period)
-                .toList();
-          }
+    return IgnorePointer(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: grades.keys.length,
+          itemBuilder: (context, index) {
+            Subject key = grades.keys.elementAt(index);
+            final period = widget.period;
+            List<Grade> gradesForPeriod;
+            if (period == TabsConstants.GENERALE) {
+              gradesForPeriod = grades[key];
+            } else {
+              gradesForPeriod = grades[key]
+                  .where((grade) => grade.periodPos == widget.period)
+                  .toList();
+            }
+            if (gradesForPeriod.length > 0) {
+              // gradesForPeriod
+              //     .sort((b, a) => a.compareTo(b.eventDate));
 
-          if (gradesForPeriod.length > 0) {
-            final averages =
-                GlobalUtils.getSubjectAveragesFromGrades(gradesForPeriod);
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(key.name),
-                  Text(
-                    "Media totale: ${averages.averageValue}",
-                  ),
-                  Text(
-                    "Media pratica: ${averages.praticoAverageValue}",
-                  ),
-                  Text(
-                    "Media scritta: ${averages.scrittoAverageValue}",
-                  ),
-                  Text(
-                    "Media orale: ${averages.oraleAverageValue}",
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return Container();
-          }
-        },
+              return GradeSubjectCard(
+                subject: key,
+                grades: gradesForPeriod,
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
       ),
     );
   }
@@ -147,10 +165,21 @@ class _GradeTabState extends State<GradeTab>
     );
   }
 
-  Future<void> _test() async {
-    //BlocProvider.of(context).add(FetchGrades());
-  }
+  Future<void> _test() async {}
 
   @override
   bool get wantKeepAlive => true;
+
+  List _getGradesListForPeriodFromMap(Map<dynamic, List<Grade>> grades) {
+    final List<Grade> gradesList = [];
+    grades.forEach((subject, grades) => grades.forEach((grade) {
+          if (grade.periodPos == widget.period ||
+              widget.period == TabsConstants.GENERALE) {
+            gradesList.add(grade);
+          }
+        }));
+    gradesList.sort((b, a) => a.eventDate.compareTo(b.eventDate));
+
+    return gradesList;
+  }
 }

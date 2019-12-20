@@ -6,8 +6,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
+import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 
 import 'constants/registro_constants.dart';
+import 'entity/overall_stats.dart';
 import 'entity/subject_averages.dart';
 
 class GlobalUtils {
@@ -16,7 +18,7 @@ class GlobalUtils {
     int count = 0;
 
     grades.forEach((grade) {
-      if (grade.subjectId == subjectId && grade.decimalValue != -1.00) {
+      if (grade.subjectId == subjectId) {
         sum += grade.decimalValue;
 
         count++;
@@ -83,6 +85,76 @@ class GlobalUtils {
       scrittoAverage: sumScritto / countScritto,
       oraleAverage: sumOrale / countOrale,
     );
+  }
+
+  static OverallStats getOverallStatsFromSubjectGradesMap(
+      Map<dynamic, List<Grade>> data, int period) {
+    // get the number of insufficienze
+    int insufficienze = 0;
+    int sufficienze = 0;
+
+    double average = 0;
+    double worstAverage = 10.0;
+    double bestAverage = 0;
+    Subject worstSubject;
+    Subject bestSubject;
+
+    double maxGrade = -1.0;
+    double minGrade = 10.0;
+
+    int count = 0;
+    double sum = 0;
+
+    data.keys.forEach(
+      (key) {
+        average = getAverageWithoutSubjectId(data[key]);
+        // Check if it is best average
+        if (average > bestAverage) {
+          bestSubject = key;
+          bestAverage = average;
+        }
+        // Check fo worst subject
+        if (average < worstAverage) {
+          worstSubject = key;
+          worstAverage = average;
+        }
+
+        data[key].forEach((grade) {
+          // Ignore the grades in blue
+          if ((grade.decimalValue != -1.00 && grade.periodPos == period) |
+              (grade.decimalValue != -1.00 &&
+                  period == TabsConstants.GENERALE)) {
+            count++;
+            sum += grade.decimalValue;
+
+            // check for insufficienze and sufficienze
+            if (grade.decimalValue >= 6) sufficienze++;
+            if (grade.decimalValue < 6) insufficienze++;
+
+            // check for best grade
+            if (grade.decimalValue > maxGrade) {
+              maxGrade = grade.decimalValue;
+            }
+            // check for min grade
+            if (grade.decimalValue < minGrade) {
+              minGrade = grade.decimalValue;
+            }
+          }
+        });
+      },
+    );
+    if (count > 0) {
+      return OverallStats(
+          insufficienze: insufficienze,
+          sufficienze: sufficienze,
+          votoMin: minGrade,
+          votoMax: maxGrade,
+          bestSubject: bestSubject,
+          worstSubject: worstSubject,
+          average: sum / count);
+    } else {
+      return null;
+    }
   }
 
   static double getAverageForPratica(List<Grade> grades) {
@@ -176,6 +248,10 @@ class GlobalUtils {
   static String reduceSubjectTitle(String subjectTitle) {
     String reducedName;
     final subjId = getSubjectConstFromName(subjectTitle);
+    // int possibleReduce = subjectTitle.length - 20;
+    // possibleReduce > 0
+    //     ? possibleReduce = 20 - possibleReduce
+    //     : possibleReduce *= -1;
     reducedName = translateSubject(subjId);
     if (reducedName != "") {
       return reducedName;
