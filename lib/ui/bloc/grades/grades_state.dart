@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 
 abstract class GradesState extends Equatable {
@@ -41,9 +42,10 @@ class GradesError extends GradesState {
 class GradesAndSubjectsLoading extends GradesState {}
 
 class GradesAndSubjectsLoaded extends GradesState {
-  final Map<dynamic, List<Grade>> data;
+  final List<Subject> subject;
+  final List<Grade> grades;
 
-  GradesAndSubjectsLoaded(this.data);
+  GradesAndSubjectsLoaded({@required this.subject, @required this.grades});
 }
 
 class GradesAndSubjectsError extends GradesState {

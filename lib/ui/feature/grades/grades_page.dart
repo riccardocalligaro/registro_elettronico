@@ -46,7 +46,7 @@ class _GradesPageState extends State<GradesPage> {
                 textTheme: Theme.of(context).textTheme,
                 bottom: TabBar(
                   isScrollable: true,
-                  indicatorColor: Colors.black,
+                  indicatorColor: Colors.red,
                   labelColor: Colors.black,
                   tabs: _getTabBar(periods),
                 ),

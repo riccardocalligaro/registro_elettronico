@@ -13,10 +13,9 @@ class GradeCard extends StatelessWidget {
     return Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4.0),
-            // todo: need to consider blue color -> ask veggo for the json
             color: grade.cancelled
-                ? GlobalUtils.getColorFromGrade(-1)
-                : GlobalUtils.getColorFromGrade(grade.decimalValue)),
+                ? GlobalUtils.getColorFromAverage(-1)
+                : GlobalUtils.getColorFromAverage(grade.decimalValue)),
         padding: EdgeInsets.all(16.0),
         child: Row(
           children: <Widget>[

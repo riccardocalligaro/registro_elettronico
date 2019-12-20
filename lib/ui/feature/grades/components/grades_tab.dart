@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -42,14 +44,15 @@ class _GradeTabState extends State<GradeTab>
           builder: (context, state) {
             if (state is GradesAndSubjectsLoaded) {
               final period = widget.period;
-              print("length" + state.data.values.length.toString());
-              if (state.data.values.length > 0) {
+
+              if (state.grades.length > 0) {
                 if (period == TabsConstants.GENERALE) {
-                  return _buildStatsAndAverages(state.data);
+                  return _buildStatsAndAverages(state.grades, state.subject);
                 } else if (period == TabsConstants.ULTIMI_VOTI) {
-                  return _buildGradesList(state.data);
+                  return _buildGradesList(state.grades);
                 } else {
-                  return _buildStatsAndAverages(state.data);
+                  return _buildStatsAndAverages(state.grades, state.subject);
+                  //return _buildStatsAndAverages(state.data);
                 }
               } else {
                 return _buildEmpty();
@@ -64,31 +67,31 @@ class _GradeTabState extends State<GradeTab>
     );
   }
 
-  Widget _buildStatsAndAverages(Map<dynamic, List<Grade>> data) {
+  Widget _buildStatsAndAverages(List<Grade> grades, List<Subject> subjects) {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          _buildStatsCard(data),
-          _buildAverageGradesForSubjectsList(data),
+          _buildStatsCard(grades, subjects),
+          _buildAverageGradesForSubjectsList(grades, subjects),
         ],
       ),
     );
   }
 
   // Card that shows the overall stats of the student
-  Widget _buildStatsCard(Map<dynamic, List<Grade>> grades) {
+  Widget _buildStatsCard(List<Grade> grades, List<Subject> subjects) {
     OverallStats stats;
-    if (grades.values.length >= 2) {
+    if (grades.length >= 2) {
       stats = GlobalUtils.getOverallStatsFromSubjectGradesMap(
-          grades, widget.period);
+          subjects, grades, widget.period);
     }
 
     if (stats != null) {
       return GradesOverallStats(
+        grades: grades,
         stats: stats,
       );
     }
-
     return Container();
   }
 
@@ -100,21 +103,27 @@ class _GradeTabState extends State<GradeTab>
     );
   }
 
-  Widget _buildGradesList(Map<dynamic, List<Grade>> grades) {
-    List<Grade> gradesList = [];
-    grades.forEach(
-        (subject, grades) => grades.forEach((grade) => gradesList.add(grade)));
-    gradesList.sort((b, a) => a.eventDate.compareTo(b.eventDate));
-
+  /// This is for the [Last grades], it takes the grades
+  /// from the bloc and it sorts them in descending order
+  Widget _buildGradesList(List<Grade> grades) {
+    grades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: ListView.builder(
-        itemCount: gradesList.length,
+        itemCount: grades.length,
         itemBuilder: (context, index) {
+          if (index == 0) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+              child: GradeCard(
+                grade: grades[index],
+              ),
+            );
+          }
           return Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: GradeCard(
-              grade: gradesList[index],
+              grade: grades[index],
             ),
           );
         },
@@ -122,39 +131,66 @@ class _GradeTabState extends State<GradeTab>
     );
   }
 
-  Widget _buildAverageGradesForSubjectsList(Map<dynamic, List<Grade>> grades) {
-    return IgnorePointer(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: grades.keys.length,
-          itemBuilder: (context, index) {
-            Subject key = grades.keys.elementAt(index);
-            final period = widget.period;
-            List<Grade> gradesForPeriod;
-            if (period == TabsConstants.GENERALE) {
-              gradesForPeriod = grades[key];
-            } else {
-              gradesForPeriod = grades[key]
-                  .where((grade) => grade.periodPos == widget.period)
-                  .toList();
-            }
-            if (gradesForPeriod.length > 0) {
-              // gradesForPeriod
-              //     .sort((b, a) => a.compareTo(b.eventDate));
+  Widget _buildAverageGradesForSubjectsList(
+      List<Grade> grades, List<Subject> subjects) {
+    Map<Subject, double> subjectsValues = Map.fromIterable(subjects,
+        key: (e) => e, value: (e) => GlobalUtils.getAverage(e.id, grades));
+    final period = widget.period;
+    // Get the grades in the rigt order
 
-              return GradeSubjectCard(
-                subject: key,
-                grades: gradesForPeriod,
+    List<Grade> gradesForPeriod;
+    if (period == TabsConstants.GENERALE) {
+      gradesForPeriod = grades;
+    } else {
+      gradesForPeriod =
+          grades.where((grade) => grade.periodPos == widget.period).toList();
+    }
+
+    var sortedKeys = subjectsValues.keys.toList()
+      ..removeWhere((subject) {
+        bool contains = true;
+        grades.forEach((grade) {
+          print(subject.id);
+          print(grade.subjectId);
+          if (grade.subjectId == subject.id) {
+            contains = false;
+          }
+        });
+        return contains;
+      })
+      ..sort((k2, k1) => subjectsValues[k1].compareTo(subjectsValues[k2]));
+
+    LinkedHashMap<Subject, double> sortedMap = new LinkedHashMap.fromIterable(
+        sortedKeys,
+        key: (k) => k,
+        value: (k) => subjectsValues[k]);
+
+    if (gradesForPeriod.length > 0) {
+      return IgnorePointer(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: sortedMap.keys.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: GradeSubjectCard(
+                  subject: sortedMap.keys.elementAt(index),
+                  grades: gradesForPeriod,
+                ),
               );
-            } else {
-              return Container();
-            }
-          },
+            },
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Text('No grades!');
+    }
+  }
+
+  List<Grade> getGradesOrderedByAverage(List<Grade> grades) {
+    // todo: add different type of order
   }
 
   Widget _buildEmpty() {

@@ -49,11 +49,7 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
       final grades = await gradeDao.getAllGrades();
       final subjects = await subjectDao.getAllSubjects();
 
-      final map = Map.fromIterable(subjects,
-          key: (e) => e,
-          value: (e) =>
-              grades.where((grade) => grade.subjectId == e.id).toList());
-      yield GradesAndSubjectsLoaded(map);
+      yield GradesAndSubjectsLoaded(grades: grades, subject: subjects);
     }
   }
 }

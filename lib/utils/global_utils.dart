@@ -41,7 +41,8 @@ class GlobalUtils {
     return sum / count;
   }
 
-  static SubjectAverages getSubjectAveragesFromGrades(List<Grade> grades) {
+  static SubjectAverages getSubjectAveragesFromGrades(
+      List<Grade> grades, int subjectId) {
     // Declare variables for the different type of averages
     double sumAverage = 0;
     double countAverage = 0;
@@ -57,7 +58,7 @@ class GlobalUtils {
 
     grades.forEach((grade) {
       final decimalValue = grade.decimalValue;
-      if (decimalValue != -1.00) {
+      if (decimalValue != -1.00 && grade.subjectId == subjectId) {
         // always check the average for all grades
         sumAverage += decimalValue;
         countAverage++;
@@ -88,7 +89,7 @@ class GlobalUtils {
   }
 
   static OverallStats getOverallStatsFromSubjectGradesMap(
-      Map<dynamic, List<Grade>> data, int period) {
+      List<Subject> subjects, List<Grade> grades, int period) {
     // get the number of insufficienze
     int insufficienze = 0;
     int sufficienze = 0;
@@ -105,21 +106,22 @@ class GlobalUtils {
     int count = 0;
     double sum = 0;
 
-    data.keys.forEach(
-      (key) {
-        average = getAverageWithoutSubjectId(data[key]);
+    subjects.forEach(
+      (subject) {
+        average = getAverageWithoutSubjectId(
+            grades.where((grade) => grade.subjectId == subject.id).toList());
         // Check if it is best average
         if (average > bestAverage) {
-          bestSubject = key;
+          bestSubject = subject;
           bestAverage = average;
         }
         // Check fo worst subject
         if (average < worstAverage) {
-          worstSubject = key;
+          worstSubject = subject;
           worstAverage = average;
         }
 
-        data[key].forEach((grade) {
+        grades.forEach((grade) {
           // Ignore the grades in blue
           if ((grade.decimalValue != -1.00 && grade.periodPos == period) |
               (grade.decimalValue != -1.00 &&
@@ -408,13 +410,25 @@ class GlobalUtils {
   /// This function returns the color of a grade, it checks if it is because grades
   /// that are null are stored in the database with -1 value, so if it is -1 it must be
   /// canelled or
-  static Color getColorFromGrade(double grade) {
-    if (grade >= 6) {
-      return Colors.green;
-    } else if (grade >= 5.5 && grade < 6) {
-      return Colors.yellow[700];
-    } else if (grade == -1) {
+  static Color getColorFromGrade(Grade grade) {
+    if (grade.cancelled || grade.decimalValue == -1.00) {
       return Colors.blue;
+    } else if (grade.decimalValue >= 6) {
+      return Colors.green;
+    } else if (grade.decimalValue >= 5.5 && grade.decimalValue < 6) {
+      return Colors.yellow[700];
+    } else {
+      return Colors.red;
+    }
+  }
+
+  static Color getColorFromAverage(double value) {
+    if (value == -1.00 || value.isNaN) {
+      return Colors.blue;
+    } else if (value >= 6) {
+      return Colors.green;
+    } else if (value >= 5.5 && value < 6) {
+      return Colors.yellow[700];
     } else {
       return Colors.red;
     }
