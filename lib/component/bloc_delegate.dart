@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
+import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
@@ -40,6 +41,9 @@ class AppBlocDelegate {
       ),
       BlocProvider<PeriodsBloc>(
         create: (ctx) => PeriodsBloc(i.getDependency()),
+      ),
+      BlocProvider<AbsencesBloc>(
+        create: (ctx) => AbsencesBloc(i.getDependency()),
       ),
     ];
   }
