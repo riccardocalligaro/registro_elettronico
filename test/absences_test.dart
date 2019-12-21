@@ -21,7 +21,6 @@ void main() {
     /// A ---- Health reasons
     /// AC --- Health reasons + medical certificate
     /// B ---- Family reasons
-    ///
     final List<Absence> absences = [];
     final Absence absence1 = Absence(
         evtCode: "ABA0",
@@ -44,7 +43,7 @@ void main() {
 
     final map = AbsencesPage().getAbsencesMap(absences);
     test('show correct number with aba0 code', () {
-      expect(3, map[absence1]);
+      expect(1, map.keys.length);
     });
   });
 }

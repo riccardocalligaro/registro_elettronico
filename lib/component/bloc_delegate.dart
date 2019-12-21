@@ -37,7 +37,7 @@ class AppBlocDelegate {
             i.getDependency(), i.getDependency()),
       ),
       BlocProvider<AgendaBloc>(
-        create: (ctx) => AgendaBloc(i.getDependency(), i.getDependency()),
+        create: (ctx) => AgendaBloc(i.getDependency()),
       ),
       BlocProvider<PeriodsBloc>(
         create: (ctx) => PeriodsBloc(i.getDependency()),

@@ -9,14 +9,14 @@ import './bloc.dart';
 
 class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
   AgendaRepository agendaRepository;
-  AgendaDao agendaDao;
 
-  AgendaBloc(this.agendaDao, this.agendaRepository);
+  AgendaBloc(this.agendaRepository);
 
   Stream<List<db.AgendaEvent>> watchAllEvents() =>
-      agendaDao.watchLastEvents(DateTime.now(), 3);
+      agendaRepository.watchLastEvents(DateTime.now(), 3);
 
-  Stream<List<db.AgendaEvent>> watchAgenda() => agendaDao.watchAllEvents();
+  Stream<List<db.AgendaEvent>> watchAgenda() =>
+      agendaRepository.watchAllEvents();
 
   @override
   AgendaState get initialState => AgendaInitial();
