@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.dart';
 import 'package:registro_elettronico/utils/entity/overall_stats.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
@@ -61,29 +62,37 @@ class GradesOverallStats extends StatelessWidget {
             )
           ],
         ),
-        Wrap(
-          alignment: WrapAlignment.center,
-          crossAxisAlignment: WrapCrossAlignment.start,
-          direction: Axis.vertical,
-          children: <Widget>[
-            Text('Sufficienze: ${stats.sufficienze}',
-                style: TextStyle(fontSize: 15)),
-            Text(
-              'Insufficienze: ${stats.insufficienze}',
-              style: TextStyle(fontSize: 15),
-            ),
-            Text('Voto minimo: ${stats.votoMin}',
-                style: TextStyle(fontSize: 15)),
-            Text('Voto massimo: ${stats.votoMin}',
-                style: TextStyle(fontSize: 15)),
-            Text('Voto max: ${stats.bestSubject.name}',
-                style: TextStyle(fontSize: 15)),
-            Text(
-                'Miglior materia:  ${GlobalUtils.reduceSubjectTitle(stats.worstSubject.name)}',
-                style: TextStyle(fontSize: 15)),
-            Text('Crediti:  ${stats.votoMax}', style: TextStyle(fontSize: 15)),
-          ],
+        Expanded(
+          child: GradesChart(
+              grades: grades
+                  .where((grade) =>
+                      grade.decimalValue != -1.00 || grade.cancelled == true)
+                  .toList()
+                    ..sort((b, a) => b.eventDate.compareTo(a.eventDate))),
         ),
+        // Wrap(
+        //   alignment: WrapAlignment.center,
+        //   crossAxisAlignment: WrapCrossAlignment.start,
+        //   direction: Axis.vertical,
+        //   children: <Widget>[
+        //     Text('Sufficienze: ${stats.sufficienze}',
+        //         style: TextStyle(fontSize: 15)),
+        //     Text(
+        //       'Insufficienze: ${stats.insufficienze}',
+        //       style: TextStyle(fontSize: 15),
+        //     ),
+        //     Text('Voto minimo: ${stats.votoMin}',
+        //         style: TextStyle(fontSize: 15)),
+        //     Text('Voto massimo: ${stats.votoMin}',
+        //         style: TextStyle(fontSize: 15)),
+        //     Text('Voto max: ${stats.bestSubject.name}',
+        //         style: TextStyle(fontSize: 15)),
+        //     Text(
+        //         'Miglior materia:  ${GlobalUtils.reduceSubjectTitle(stats.worstSubject.name)}',
+        //         style: TextStyle(fontSize: 15)),
+        //     Text('Crediti:  ${stats.votoMax}', style: TextStyle(fontSize: 15)),
+        //   ],
+        // ),
       ],
     );
   }

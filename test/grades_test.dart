@@ -156,6 +156,14 @@ void main() {
         expect(8.0, stats.votoMax);
       },
     );
+
+    test(
+      'Show correct insufficienze and sufficienze',
+      () {
+        //expect(1, stats.sufficienze);
+        expect(1, stats.insufficienze);
+      },
+    );
     test('Show correct average', () {
       expect(8.0, GlobalUtils.getSubjectAveragesFromGrades(grades, 1).average);
       expect(2.0, GlobalUtils.getSubjectAveragesFromGrades(grades, 2).average);
@@ -164,7 +172,6 @@ void main() {
     });
 
     test('Show correct color of circular progess bar', () {
-      
       final averageBlue = GlobalUtils.getSubjectAveragesFromGrades(grades, 3);
       expect(Colors.blue, GlobalUtils.getColorFromAverage(averageBlue.average));
       final averageGreeen = GlobalUtils.getSubjectAveragesFromGrades(grades, 1);
@@ -190,8 +197,6 @@ void main() {
         ..removeWhere((subject) {
           bool contains = true;
           gradesForPeriod.forEach((grade) {
-            print(subject.id);
-            print(grade.subjectId);
             if (grade.subjectId == subject.id) {
               contains = false;
             }

@@ -29,8 +29,6 @@ class _GradeTabState extends State<GradeTab>
   @override
   void initState() {
     BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
-    //blocProvider.of<GradesBloc>(context).add(GetGrades());
-
     super.initState();
   }
 
@@ -150,8 +148,6 @@ class _GradeTabState extends State<GradeTab>
       ..removeWhere((subject) {
         bool contains = true;
         grades.forEach((grade) {
-          print(subject.id);
-          print(grade.subjectId);
           if (grade.subjectId == subject.id) {
             contains = false;
           }

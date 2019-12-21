@@ -16,7 +16,7 @@ class _GradesChartState extends State<GradesChart> {
   // color gradient for the graph background
   List<Color> gradientColors = [Colors.red[400], Colors.white];
   // by defualt we want to show the average
-  bool showAvg = true;
+  bool showAvg = false;
 
   @override
   Widget build(BuildContext context) {
