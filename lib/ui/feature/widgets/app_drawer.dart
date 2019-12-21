@@ -34,33 +34,37 @@ class _AppDrawerState extends State<AppDrawer> {
         children: <Widget>[
           _createHeader(context),
           _createDrawerItem(
-              icon: Icons.home,
-              text: trans.translate("home"),
-              pos: DrawerConstants.HOME,
-              onTap: () {
-                AppNavigator.instance.navToHome(context);
-              }),
+            icon: Icons.home,
+            text: trans.translate("home"),
+            pos: DrawerConstants.HOME,
+            onTap: () {
+              AppNavigator.instance.navToHome(context);
+            },
+          ),
           _createDrawerItem(
-              icon: Icons.library_books,
-              text: trans.translate("lessons"),
-              pos: DrawerConstants.LESSONS,
-              onTap: () {
-                AppNavigator.instance.navToLessons(context);
-              }),
+            icon: Icons.library_books,
+            text: trans.translate("lessons"),
+            pos: DrawerConstants.LESSONS,
+            onTap: () {
+              AppNavigator.instance.navToLessons(context);
+            },
+          ),
           _createDrawerItem(
-              icon: Icons.timeline,
-              text: trans.translate("grades"),
-              pos: DrawerConstants.GRADES,
-              onTap: () {
-                AppNavigator.instance.navToGrades(context);
-              }),
+            icon: Icons.timeline,
+            text: trans.translate("grades"),
+            pos: DrawerConstants.GRADES,
+            onTap: () {
+              AppNavigator.instance.navToGrades(context);
+            },
+          ),
           _createDrawerItem(
-              icon: Icons.event,
-              text: trans.translate("agenda"),
-              pos: DrawerConstants.AGENDA,
-              onTap: () {
-                AppNavigator.instance.navToAgenda(context);
-              }),
+            icon: Icons.event,
+            text: trans.translate("agenda"),
+            pos: DrawerConstants.AGENDA,
+            onTap: () {
+              AppNavigator.instance.navToAgenda(context);
+            },
+          ),
           _createDrawerItem(
             icon: Icons.folder,
             text: trans.translate("school_material"),
@@ -70,6 +74,9 @@ class _AppDrawerState extends State<AppDrawer> {
             icon: Icons.assessment,
             text: trans.translate("absences"),
             pos: DrawerConstants.ABSENCES,
+            onTap: () {
+              AppNavigator.instance.navToAbsences(context);
+            },
           ),
           _createDrawerItem(
             icon: Icons.warning,

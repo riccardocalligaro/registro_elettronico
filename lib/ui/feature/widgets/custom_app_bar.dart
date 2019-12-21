@@ -79,11 +79,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             Icons.delete,
             color: Colors.black,
           ),
-          onPressed: () {
-            final lessonDao = LessonDao(Injector.appInstance.getDependency());
-            lessonDao.deleteLessons();
-            final agendaDao = AgendaDao(Injector.appInstance.getDependency());
-            agendaDao.deleteAllEvents();
+          onPressed: () async {
+            await db.AppDatabase().resetDbWithoutProfile();
           },
         ),
         IconButton(

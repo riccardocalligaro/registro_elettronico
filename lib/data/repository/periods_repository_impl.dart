@@ -19,9 +19,6 @@ class PeriodsRepositoryImpl implements PeriodsRepository {
     final profile = await profileDao.getProfile();
     final periods = await spaggiariClient.getPeriods(profile.studentId);
     periods.periods.forEach((period) {
-      print(period.periodCode);
-    });
-    periods.periods.forEach((period) {
       periodDao
           .insertPeriod(periodMapper.convertEventEntityToInsertable(period));
     });
