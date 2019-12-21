@@ -17,7 +17,7 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
   @override
   Future updateAbsences() async {
     final profile = await profileDao.getProfile();
-    final absences = await spaggiariClient.getAbsences(profile.token);
+    final absences = await spaggiariClient.getAbsences(profile.studentId);
     absences.events.forEach((event) {
       absenceDao
           .insertEvent(absenceMapper.convertEventEntityToInsertable(event));
@@ -27,5 +27,10 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
   @override
   Future insertEvent(Absence absence) {
     return absenceDao.insertEvent(absence);
+  }
+
+  @override
+  Stream<List<Absence>> watchAllAbsences() {
+    return absenceDao.watchAllAbsences();
   }
 }

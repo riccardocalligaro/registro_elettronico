@@ -7,10 +7,10 @@ import 'package:registro_elettronico/domain/repository/absences_repository.dart'
 import './bloc.dart';
 
 class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
-  AbsenceDao absenceDao;
   AbsencesRepository absencesRepository;
+  AbsencesBloc(this.absencesRepository);
 
-  Stream<List<Absence>> watchAgenda() => absenceDao.watchAllAbsences();
+  Stream<List<Absence>> watchAgenda() => absencesRepository.watchAllAbsences();
 
   @override
   AbsencesState get initialState => AbsencesInitial();

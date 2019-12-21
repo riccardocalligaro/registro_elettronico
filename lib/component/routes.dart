@@ -1,3 +1,4 @@
+import 'package:registro_elettronico/ui/feature/absences/absences_page.dart';
 import 'package:registro_elettronico/ui/feature/agenda/agenda_page.dart';
 import 'package:registro_elettronico/ui/feature/grades/grades_page.dart';
 import 'package:registro_elettronico/ui/feature/home/home_page.dart';
@@ -11,7 +12,8 @@ class Routes {
   static const HOME = '/home';
   static const LESSONS = '/lessons';
   static const GRADES = '/grades';
-  static const AGENDA = 'agenda';
+  static const AGENDA = '/agenda';
+  static const ABSENCES = '/absences';
 
   static var routes = {
     MAIN: (ctx) => SplashScreen(),
@@ -19,6 +21,7 @@ class Routes {
     HOME: (ctx) => HomePage(),
     LESSONS: (ctx) => LessonsPage(),
     GRADES: (ctx) => GradesPage(),
-    AGENDA: (ctx) => AgendaPage()
+    AGENDA: (ctx) => AgendaPage(),
+    ABSENCES: (ctx) => AbsencesPage()
   };
 }

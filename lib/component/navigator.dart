@@ -34,6 +34,10 @@ class AppNavigator {
     Navigator.pushReplacementNamed(context, Routes.AGENDA);
   }
 
+  void navToAbsences(BuildContext context) {
+    Navigator.pushReplacementNamed(context, Routes.ABSENCES);
+  }
+
   Future showMessageDialog(
       BuildContext context, String title, String message) async {
     await showDialog(

@@ -46,4 +46,21 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   int get schemaVersion => 1;
+
+  /// Deletes all the tables from the db except the profiles, so the user is not logged out
+  Future resetDbWithoutProfile() async {
+    for (var table in allTables) {
+      if (table.actualTableName != "profiles") {
+        await delete(table).go();
+      }
+    }
+  }
+
+  /// This deletes [everything] from the database, the next time the user logs
+  /// log in is [required]
+  Future resetDb() async {
+    for (var table in allTables) {
+      await delete(table).go();
+    }
+  }
 }

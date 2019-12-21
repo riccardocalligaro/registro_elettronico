@@ -6,4 +6,7 @@ abstract class AbsencesRepository {
 
   ///Insert an absence
   Future insertEvent(Absence absence);
+  
+  /// Stream of all absences
+  Stream<List<Absence>> watchAllAbsences();
 }
