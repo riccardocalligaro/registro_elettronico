@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_painter.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -42,14 +43,16 @@ class SubjectsGrid extends StatelessWidget {
                           child: Center(
                             child: ClipOval(
                               child: Container(
-                                  width: 70.0,
-                                  height: 70.0,
-                                  padding: EdgeInsets.all(13.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                  ),
-                                  child: GlobalUtils.getIconFromSubject(
-                                      subject.name)),
+                                width: 70.0,
+                                height: 70.0,
+                                padding: EdgeInsets.all(13.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                ),
+                                child: GlobalUtils.getIconFromSubject(
+                                  subject.name,
+                                ),
+                              ),
                             ),
                           ),
                         ),

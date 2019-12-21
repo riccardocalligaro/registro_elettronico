@@ -196,20 +196,34 @@ class _HomePageState extends State<HomePage> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Grade> grades =
             snapshot.data.toSet().toList() ?? List<Grade>();
-        return ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.all(0),
-          shrinkWrap: true,
-          itemCount: grades.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: GradeCard(
-                grade: grades[index],
+
+        if (grades.length > 0) {
+          return ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.all(0),
+            shrinkWrap: true,
+            itemCount: grades.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: GradeCard(
+                  grade: grades[index],
+                ),
+              );
+            },
+          );
+        } else {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: Icon(
+                Icons.timeline,
+                size: 80,
+                color: Colors.grey,
               ),
-            );
-          },
-        );
+            ),
+          );
+        }
       },
     );
   }
@@ -262,9 +276,11 @@ class _HomePageState extends State<HomePage> {
             final List<Grade> grades = snapshot.data ?? List<Grade>();
             if (subjects.length == 0) {
               return Center(
-                child:
-                    Text(AppLocalizations.of(context).translate('no_subjects')),
-              );
+                  child: Icon(
+                Icons.assessment,
+                size: 80,
+                color: Colors.grey,
+              ));
             }
             return SubjectsGrid(
               subjects: GlobalUtils.removeUnwantedSubject(subjects),
@@ -286,7 +302,7 @@ class _HomePageState extends State<HomePage> {
           // todo: maybe a better placeholder?
           return Center(
             child: Text(
-                '${AppLocalizations.of(context).translate('nothing_here')} 😶'),
+                '${AppLocalizations.of(context).translate('nothing_here')}'),
           );
         } else {
           return ListView.builder(

@@ -17,6 +17,16 @@ class DateUtils {
     return formatter.format(date);
   }
 
+  static String convertMonthLocale(DateTime date, String locale) {
+    final formatter = DateFormat.MMMM(locale);
+    return formatter.format(date);
+  }
+
+  static String convertDateLocale(DateTime date, String locale) {
+    final formatter = DateFormat.yMMMMd(locale);
+    return formatter.format(date);
+  }
+
   static DateTime getDateFromApiString(String date) {
     final parts = date.split('-');
     return DateTime.utc(

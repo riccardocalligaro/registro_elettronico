@@ -4,6 +4,7 @@ import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
+import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
@@ -45,7 +46,8 @@ class _LessonsPageState extends State<LessonsPage> {
       initialData: List<Subject>(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Subject> subjects = snapshot.data ?? List<Subject>();
-        return StreamBuilder(
+        if (subjects.length > 0) {
+          return StreamBuilder(
             stream: BlocProvider.of<SubjectsBloc>(context).professors,
             initialData: List<Professor>(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -55,7 +57,17 @@ class _LessonsPageState extends State<LessonsPage> {
                 professors: professors,
                 subjects: subjects,
               );
-            });
+            },
+          );
+        } else {
+          return CustomPlaceHolder(
+            text: AppLocalizations.of(context).translate('no_subjects_to_show'),
+            icon: Icons.assignment,
+            onTap: () {
+              BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
+            },
+          );
+        }
       },
     );
   }
