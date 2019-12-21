@@ -35,5 +35,19 @@
   "events": "Events",
   "avg": "Avg",
   "term": "term",
-  "overall": "Overall"
+  "overall": "Overall",
+  "absence": "Absence",
+  "late": "Late",
+  "little_bit_late": "Little bit late",
+  "early_exit": "Early exit",
+  "rb_code": "LB",
+  "unricognised_event": "😕 Unricognised event",
+  "absent_all_day": "Absent all day",
+  "you_entered_at": "You entred at the {hour} hour",
+  "from_absences": "From",
+  "to_absences": "to",
+  "exit_at_hour": "Exit at the {hour} hour",
+  "no_subjects_to_show": "No subjects to show",
+  "no_lessons": "No lessons",
+  "sync": "Sync"
 }

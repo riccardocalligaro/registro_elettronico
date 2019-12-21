@@ -35,5 +35,19 @@
   "events": "Eventi",
   "avg": "Media",
   "term": "Periodo",
-  "overall": "Generale"
+  "overall": "Generale",
+  "absence": "Assenza",
+  "late": "Ritardo",
+  "little_bit_late": "Ritardo breve",
+  "early_exit": "Uscita anticipata",
+  "rb_code": "RB",
+  "unricognised_event": "😕 Evento non riconosciuto",
+  "absent_all_day": "Assente tutto il giorno",
+  "you_entered_at": "Sei entrato alla {hour} ora",
+  "from_absences": "Dal",
+  "to_absences": "al",
+  "exit_at_hour": "Uscito alla {hour} ora",
+  "no_subjects_to_show": "Nessuna materia da mostrare",
+  "no_lessons": "Niente lezioni da mostrare",
+  "sync": "Aggiorna"
 }
