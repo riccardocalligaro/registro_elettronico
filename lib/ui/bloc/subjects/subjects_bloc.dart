@@ -1,28 +1,31 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
-import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/domain/repository/subjects_repository.dart';
+
 import './bloc.dart';
 
+/// Bloc for updating subjects
 class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
-  SubjectDao subjectDao;
   ProfileRepository profileRepository;
   SubjectsRepository subjectsRepository;
-  ProfessorDao professorDao;
 
-  SubjectsBloc(this.subjectDao, this.profileRepository, this.subjectsRepository,
-      this.professorDao);
+  SubjectsBloc(
+    this.profileRepository,
+    this.subjectsRepository,
+  );
 
   @override
   SubjectsState get initialState => SubjectsInitial();
 
-  Stream<List<Subject>> get subjects => subjectDao.watchRelevanantSubjects();
+  Stream<List<Subject>> get subjects =>
+      subjectsRepository.watchRelevantSubjects();
 
-  Stream<List<Professor>> get professors => professorDao.watchAllProfessors();
+  Stream<List<Professor>> get professors =>
+      subjectsRepository.watchAllProfessors();
 
   @override
   Stream<SubjectsState> mapEventToState(
@@ -31,8 +34,7 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
     if (event is FetchSubjects) {
       yield SubjectsUpdateLoading();
       try {
-        final profile = await profileRepository.getDbProfile();
-        subjectsRepository.updateSubjects(profile.studentId.toString());
+        subjectsRepository.updateSubjects();
         yield SubjectsUpdateLoaded();
       } on DioError catch (e) {
         yield SubjectsUpdateError(e.response.data.toString());

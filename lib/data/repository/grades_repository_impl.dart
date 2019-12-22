@@ -1,4 +1,5 @@
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
+import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/data/repository/mapper/grade_mapper.dart';
@@ -8,21 +9,18 @@ class GradesRepositoryImpl implements GradesRepository {
   GradeDao gradeDao;
   SpaggiariClient spaggiariClient;
   GradeMapper gradeMapper;
+  ProfileDao profileDao;
 
-  GradesRepositoryImpl(this.gradeDao, this.spaggiariClient, this.gradeMapper);
+  GradesRepositoryImpl(
+      this.gradeDao, this.spaggiariClient, this.gradeMapper, this.profileDao);
 
   @override
-  Future updateGrades(String studentId) async {
-    final gradesResponse = await spaggiariClient.getGrades(studentId);
+  Future updateGrades() async {
+    final profile = await profileDao.getProfile();
+    final gradesResponse = await spaggiariClient.getGrades(profile.studentId);
     gradesResponse.grades.forEach((grade) {
       gradeDao.insertGrade(gradeMapper.convertGradeEntityToInserttable(grade));
     });
-  }
-
-  @override
-  Future<List<Grade>> getGrades(String studentId) {
-    //todo: implement get grades
-    return null;
   }
 
   @override
@@ -58,5 +56,15 @@ class GradesRepositoryImpl implements GradesRepository {
   @override
   Future deleteAllGrades() {
     return gradeDao.deleteAllGrades();
+  }
+
+  @override
+  Future<List<Grade>> getAllGrades() {
+    return gradeDao.getAllGrades();
+  }
+
+  @override
+  Future<List<Grade>> getAllGradesOrdered() {
+    return gradeDao.getAllGradesOrdered();
   }
 }

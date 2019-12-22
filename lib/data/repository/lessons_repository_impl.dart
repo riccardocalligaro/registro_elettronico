@@ -1,5 +1,5 @@
-import 'package:moor/src/runtime/data_class.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
+import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
@@ -11,13 +11,19 @@ class LessonsRepositoryImpl implements LessonsRepository {
   LessonMapper lessonMapper;
   SpaggiariClient spaggiariClient;
   LessonDao lessonDao;
+  ProfileDao profileDao;
 
   LessonsRepositoryImpl(
-      this.spaggiariClient, this.lessonMapper, this.lessonDao);
+    this.spaggiariClient,
+    this.lessonMapper,
+    this.lessonDao,
+    this.profileDao,
+  );
 
   @override
-  Future upadateTodayLessons(String studentId) async {
-    final lessons = await spaggiariClient.getTodayLessons(studentId);
+  Future upadateTodayLessons() async {
+    final profile = await profileDao.getProfile();
+    final lessons = await spaggiariClient.getTodayLessons(profile.studentId);
     lessons.lessons.forEach((lesson) {
       lessonDao.insertLesson(
           lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
@@ -25,13 +31,18 @@ class LessonsRepositoryImpl implements LessonsRepository {
   }
 
   @override
-  Future updateAllLessons(String studentId) async {
+  Future updateAllLessons() async {
+    final profile = await profileDao.getProfile();
     final dateInterval = DateUtils.getDateInerval();
     final lessons = await spaggiariClient.getLessonBetweenDates(
-        studentId, dateInterval.begin, dateInterval.end);
+      profile.studentId,
+      dateInterval.begin,
+      dateInterval.end,
+    );
     lessons.lessons.forEach((lesson) {
       lessonDao.insertLesson(
-          lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
+        lessonMapper.mapLessonEntityToLessoneInsertable(lesson),
+      );
     });
   }
 

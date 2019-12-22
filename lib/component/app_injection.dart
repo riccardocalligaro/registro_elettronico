@@ -126,49 +126,62 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton((i) {
       LessonsRepository lessonsRepository = LessonsRepositoryImpl(
-          i.getDependency(), i.getDependency(), i.getDependency());
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
       return lessonsRepository;
     });
 
     Injector.appInstance.registerSingleton((i) {
       SubjectsRepository subjectsRepository = SubjectsRepositoryImpl(
-          i.getDependency(),
-          i.getDependency(),
-          i.getDependency(),
-          i.getDependency());
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
       return subjectsRepository;
     });
 
     Injector.appInstance.registerSingleton((i) {
       GradesRepository gradesRepository = GradesRepositoryImpl(
-          i.getDependency(), i.getDependency(), i.getDependency());
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
       return gradesRepository;
     });
 
     Injector.appInstance.registerSingleton((i) {
       AgendaRepository agendaRepository = AgendaRepositoryImpl(
-          i.getDependency(),
-          i.getDependency(),
-          i.getDependency(),
-          i.getDependency());
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
       return agendaRepository;
     });
 
     Injector.appInstance.registerSingleton((i) {
       AbsencesRepository absencesRepository = AbsencesRepositoryImpl(
-          i.getDependency(),
-          i.getDependency(),
-          i.getDependency(),
-          i.getDependency());
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
       return absencesRepository;
     });
 
     Injector.appInstance.registerSingleton((i) {
       PeriodsRepository periodsRepository = PeriodsRepositoryImpl(
-          i.getDependency(),
-          i.getDependency(),
-          i.getDependency(),
-          i.getDependency());
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
       return periodsRepository;
     });
   }

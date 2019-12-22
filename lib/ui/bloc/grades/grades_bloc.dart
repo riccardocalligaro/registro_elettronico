@@ -7,16 +7,15 @@ import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/domain/repository/repositories_export.dart';
 import './bloc.dart';
 
 class GradesBloc extends Bloc<GradesEvent, GradesState> {
-  GradeDao gradeDao;
   GradesRepository gradesRepository;
-  ProfileRepository profileRepository;
-  SubjectDao subjectDao;
 
-  GradesBloc(this.gradeDao, this.gradesRepository, this.profileRepository,
-      this.subjectDao);
+  SubjectsRepository subjectsRepository;
+
+  GradesBloc(this.gradesRepository, this.subjectsRepository);
   @override
   GradesState get initialState => GradesInitial();
 
@@ -34,22 +33,20 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
   ) async* {
     if (event is FetchGrades) {
       yield GradesUpdateLoading();
-      final profile = await profileRepository.getDbProfile();
-      await gradesRepository.updateGrades(profile.studentId);
+      await gradesRepository.updateGrades();
       yield GradesUpdateLoaded();
     }
 
     if (event is GetGrades) {
       yield GradesLoading();
-      final grades = await gradeDao.getAllGradesOrdered();
+      final grades = await gradesRepository.getAllGradesOrdered();
       yield GradesLoaded(grades);
     }
 
     if (event is GetGradesAndSubjects) {
       yield GradesAndSubjectsLoading();
-      final grades = await gradeDao.getAllGrades();
-      final subjects = await subjectDao.getAllSubjects();
-
+      final grades = await gradesRepository.getAllGrades();
+      final subjects = await subjectsRepository.getAllSubjects();
       yield GradesAndSubjectsLoaded(grades: grades, subject: subjects);
     }
   }

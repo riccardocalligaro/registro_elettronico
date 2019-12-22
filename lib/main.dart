@@ -11,9 +11,9 @@ import 'component/bloc_delegate.dart';
 import 'component/routes.dart';
 
 void main() {
-  // set up eventual delegates, inits, etc.
+  // Set up eventual delegates, inits, etc.
   initApp();
-  // finnaly run the app
+  // Finnaly run the app
   runApp(MyApp());
 }
 

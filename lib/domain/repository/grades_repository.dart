@@ -2,10 +2,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 
 abstract class GradesRepository {
   /// updates the grades in the database
-  Future updateGrades(String studentId);
-
-  /// gets all the grades
-  Future<List<Grade>> getGrades(String studentId);
+  Future updateGrades();
 
   /// Given a list it inserts a list of grades
   Future insertGrades(List<Grade> gradesData);
@@ -21,6 +18,12 @@ abstract class GradesRepository {
 
   ///Gets last grades
   Stream<List<Grade>> watchLastGrades();
+
+  /// Gets the grades in the descending order
+  Future<List<Grade>> getAllGradesOrdered();
+
+  /// Future of all grades in the table
+  Future<List<Grade>> getAllGrades();
 
   ///Delete all grades
   Future deleteAllGrades();

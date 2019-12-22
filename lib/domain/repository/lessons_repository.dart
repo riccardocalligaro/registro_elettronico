@@ -1,10 +1,15 @@
-import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 
 abstract class LessonsRepository {
   // Future<List<Lesson>> getLessons(String studentId);
   ///Get the lessons for a date
   Future<List<Lesson>> getDateLessons(DateTime date);
+
+  /// Updates the lessons only for the [current] day
+  Future upadateTodayLessons();
+
+  /// Updates [all] the lessons
+  Future updateAllLessons();
 
   ///Delete all lessons
   Future deleteLessons();
@@ -35,7 +40,4 @@ abstract class LessonsRepository {
 
   /// Inserts a list of lessons
   Future insertLessons(List<Lesson> lessonsToInsert);
-
-  Future upadateTodayLessons(String studentId);
-  Future updateAllLessons(String studentId);
 }
