@@ -33,4 +33,9 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
   Stream<List<Absence>> watchAllAbsences() {
     return absenceDao.watchAllAbsences();
   }
+
+  @override
+  Future<List<Absence>> getAllAbsences() {
+    return absenceDao.getAllAbsences();
+  }
 }

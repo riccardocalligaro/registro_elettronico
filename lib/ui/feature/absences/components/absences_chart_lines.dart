@@ -1,0 +1,228 @@
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/registro_constants.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
+
+class AbsencesChartLines extends StatefulWidget {
+  final Map<int, List<Absence>> absences;
+
+  const AbsencesChartLines({
+    Key key,
+    @required this.absences,
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => AbsencesChartLinesState();
+}
+
+class AbsencesChartLinesState extends State<AbsencesChartLines> {
+  bool isShowingMainData;
+
+  @override
+  void initState() {
+    super.initState();
+    isShowingMainData = true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 2,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(18)),
+        ),
+        child: Stack(
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                      padding: const EdgeInsets.only(
+                          right: 28.0, left: 0.0, top: 16.0),
+                      child: LineChart(
+                        absencesData(),
+                      )),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  LineChartData absencesData() {
+    return LineChartData(
+      lineTouchData: LineTouchData(
+        touchTooltipData: LineTouchTooltipData(
+          tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+        ),
+        touchCallback: (LineTouchResponse touchResponse) {},
+        handleBuiltInTouches: true,
+      ),
+      gridData: const FlGridData(
+        show: false,
+      ),
+      titlesData: FlTitlesData(
+        bottomTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 22,
+          textStyle: TextStyle(
+            color: const Color(0xff72719b),
+            fontSize: 12,
+          ),
+          margin: 10,
+          getTitles: (value) {
+            final locale = AppLocalizations.of(context).locale.toString();
+            switch (value.toInt()) {
+              case 1:
+                return DateUtils.convertMonthForDisplay(
+                        DateTime.utc(2019, 9, 1), locale)
+                    .toUpperCase();
+              case 2:
+                return DateUtils.convertMonthForDisplay(
+                        DateTime.utc(2019, 10, 1), locale)
+                    .toUpperCase();
+              case 3:
+                return DateUtils.convertMonthForDisplay(
+                        DateTime.utc(2019, 11, 1), locale)
+                    .toUpperCase();
+              case 4:
+                return DateUtils.convertMonthForDisplay(
+                        DateTime.utc(2019, 12, 1), locale)
+                    .toUpperCase();
+              case 5:
+                return DateUtils.convertMonthForDisplay(
+                        DateTime.utc(2019, 1, 1), locale)
+                    .toUpperCase();
+              case 6:
+                return DateUtils.convertMonthForDisplay(
+                        DateTime.utc(2019, 2, 1), locale)
+                    .toUpperCase();
+              case 7:
+                return DateUtils.convertMonthForDisplay(
+                        DateTime.utc(2019, 3, 1), locale)
+                    .toUpperCase();
+
+              case 8:
+                return DateUtils.convertMonthForDisplay(
+                        DateTime.utc(2019, 4, 1), locale)
+                    .toUpperCase();
+              case 9:
+                return DateUtils.convertMonthForDisplay(
+                        DateTime.utc(2019, 5, 1), locale)
+                    .toUpperCase();
+              case 10:
+                return DateUtils.convertMonthForDisplay(
+                        DateTime.utc(2019, 6, 1), locale)
+                    .toUpperCase();
+            }
+            return '';
+          },
+        ),
+        leftTitles: SideTitles(showTitles: false),
+      ),
+      borderData: FlBorderData(
+        show: false,
+      ),
+      minX: 0,
+      maxX: 10,
+      minY: 0,
+      lineBarsData: linesBarData1(),
+    );
+  }
+
+  List<LineChartBarData> linesBarData1() {
+    LineChartBarData lineChartBarAbsences = LineChartBarData(
+      spots: _getSposts(RegistroConstants.ASSENZA),
+      isCurved: false,
+      colors: [Colors.red],
+      barWidth: 6,
+      dotData: FlDotData(
+        show: false,
+      ),
+      belowBarData: BarAreaData(
+        show: false,
+      ),
+    );
+    final LineChartBarData lineChartBarRitardi = LineChartBarData(
+      spots: _getSposts(RegistroConstants.RITARDO_BREVE),
+      isCurved: false,
+      colors: [Colors.blue],
+      barWidth: 6,
+      isStrokeCapRound: true,
+      dotData: FlDotData(
+        show: false,
+      ),
+      belowBarData: BarAreaData(show: false, colors: [
+        Color(0x00aa4cfc),
+      ]),
+    );
+    LineChartBarData lineChartBarUscite = LineChartBarData(
+      spots: _getSposts(RegistroConstants.USCITA),
+      isCurved: false,
+      colors: [
+        Colors.yellow[600],
+      ],
+      barWidth: 6,
+      isStrokeCapRound: true,
+      dotData: const FlDotData(
+        show: false,
+      ),
+      belowBarData: const BarAreaData(
+        show: false,
+      ),
+    );
+    return [
+      lineChartBarAbsences,
+      lineChartBarRitardi,
+      lineChartBarUscite,
+    ];
+  }
+
+  FlSpot _getSpotForMonth(double month, String code) {
+    final absences = widget.absences[month];
+    double monthGraph;
+    if (month >= 9.0 && month <= 12.0) {
+      monthGraph = month - 8;
+    } else {
+      monthGraph = month + 4;
+    }
+
+    if (absences != null) {
+      final spot = FlSpot(
+        monthGraph,
+        absences
+            .where((absence) =>
+                absence.evtCode == code &&
+                absence.evtDate.month == month.toInt())
+            .length
+            .toDouble(),
+      );
+      return spot;
+    }
+    return FlSpot(monthGraph, 0.0);
+  }
+
+  List<FlSpot> _getSposts(String code) {
+    return [
+      _getSpotForMonth(9, code),
+      _getSpotForMonth(10, code),
+      _getSpotForMonth(11, code),
+      _getSpotForMonth(12, code),
+      _getSpotForMonth(1, code),
+      _getSpotForMonth(2, code),
+      _getSpotForMonth(3, code),
+      _getSpotForMonth(4, code),
+      _getSpotForMonth(5, code),
+      _getSpotForMonth(6, code),
+    ];
+  }
+}

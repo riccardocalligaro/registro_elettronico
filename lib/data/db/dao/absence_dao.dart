@@ -11,6 +11,8 @@ class AbsenceDao extends DatabaseAccessor<AppDatabase> with _$AbsenceDaoMixin {
 
   Stream<List<Absence>> watchAllAbsences() => select(absences).watch();
 
+  Future<List<Absence>> getAllAbsences() => select(absences).get();
+
   Future insertEvent(Absence absence) =>
       into(absences).insert(absence, orReplace: true);
 

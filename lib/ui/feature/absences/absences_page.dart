@@ -1,30 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_event.dart';
-import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/absences/absences_state.dart';
 import 'package:registro_elettronico/ui/feature/absences/components/absence_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
+import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
-import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
-import 'package:registro_elettronico/utils/date_utils.dart';
 
-class AbsencesPage extends StatelessWidget {
+import 'components/absences_chart_lines.dart';
+
+class AbsencesPage extends StatefulWidget {
   const AbsencesPage({Key key}) : super(key: key);
 
-  /// ABA0 assenza
-  /// ABU0 uscita
-  /// ABR0 ritardo
-  /// ABR1 ritardo breve
-  /// ABU0 uscita anticipata
-  /// A ---- Health reasons
-  /// AC --- Health reasons + medical certificate
-  /// B ---- Family reasons
+  @override
+  _AbsencesPageState createState() => _AbsencesPageState();
+}
+
+class _AbsencesPageState extends State<AbsencesPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  void didChangeDependencies() {
+    BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
@@ -39,87 +45,227 @@ class AbsencesPage extends StatelessWidget {
         profileDao: Injector.appInstance.getDependency(),
         position: DrawerConstants.ABSENCES,
       ),
-      body: SingleChildScrollView(
-        child: _buildAbsences(context),
+      body: RefreshIndicator(
+        onRefresh: _updateAbsences,
+        child: SingleChildScrollView(
+          child: _buildAbsences(context),
+        ),
       ),
     );
   }
 
   Widget _buildAbsences(BuildContext context) {
-    return StreamBuilder(
-      stream: BlocProvider.of<AbsencesBloc>(context).watchAgenda(),
-      initialData: List<Absence>(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final List<Absence> absences = snapshot.data ?? List<Absence>();
-        final map = getAbsencesMap(
-            absences..sort((b, a) => a.evtDate.compareTo(b.evtDate)));
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              _buildNotJustifiedAbsences(map),
-              Text('Justified'),
-              _buildJustifiedAbsences(map),
-              RaisedButton(
-                child: Text('update'),
-                onPressed: () {
-                  BlocProvider.of<AbsencesBloc>(context).add(FetchAbsences());
-                },
-              )
-            ],
-          ),
+    return BlocBuilder<AbsencesBloc, AbsencesState>(
+      builder: (context, state) {
+        if (state is AbsencesLoading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (state is AbsencesLoaded) {
+          final List<Absence> absences = state.absences ?? List<Absence>();
+          final map = getAbsencesMap(
+              absences..sort((b, a) => a.evtDate.compareTo(b.evtDate)));
+
+          return Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8.0),
+                  child: _buildOverallStats(absences),
+                ),
+                _buildNotJustifiedAbsences(map),
+                _buildJustifiedAbsences(map, context),
+              ],
+            ),
+          );
+        }
+
+        if (state is AbsencesError) {
+          return CustomPlaceHolder(
+            text: AppLocalizations.of(context)
+                .translate('unexcepted_error_single'),
+            icon: Icons.error,
+            onTap: () {
+              BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
+            },
+          );
+        }
+
+        return Center(
+          child: CircularProgressIndicator(),
         );
       },
     );
   }
 
+  /// Overall stat that contains all the [circles] and the [graph]
+  Widget _buildOverallStats(List<Absence> absences) {
+    final Map<int, List<Absence>> absencesMonthMap = Map.fromIterable(absences,
+        key: (e) => e.evtDate.month,
+        value: (e) => absences
+            .where((event) => e.evtDate.month == event.evtDate.month)
+            .toList());
+
+    int numberOfAbsences = 0;
+    int numberOfUscite = 0;
+    int numberOfRitardi = 0;
+
+    absences.forEach((absence) {
+      if (absence.evtCode == RegistroConstants.ASSENZA) numberOfAbsences++;
+      if (absence.evtCode == RegistroConstants.RITARDO ||
+          absence.evtCode == RegistroConstants.RITARDO_BREVE) numberOfRitardi++;
+      if (absence.evtCode == RegistroConstants.USCITA) numberOfUscite++;
+    });
+
+    final trans = AppLocalizations.of(context);
+    return Card(
+      margin: EdgeInsets.zero,
+      elevation: 1,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      color: Colors.white,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  _buildStatsCircle(
+                    trans.translate('absences'),
+                    numberOfAbsences,
+                    Colors.red,
+                    true,
+                    numberOfUscite / 50,
+                  ),
+                  _buildStatsCircle(trans.translate('early_exits'),
+                      numberOfUscite, Colors.yellow[700], false, 1.0),
+                  _buildStatsCircle(trans.translate('delay'), numberOfRitardi,
+                      Colors.blue, false, 1.0)
+                ],
+              ),
+            ),
+          ),
+          AbsencesChartLines(
+            absences: absencesMonthMap,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatsCircle(String typeOfEvent, int numberOfEvent, Color color,
+      bool withAnimation, double percent) {
+    return Column(
+      children: <Widget>[
+        CircularPercentIndicator(
+          radius: 65.0,
+          lineWidth: 6.0,
+          percent: percent,
+          animation: withAnimation,
+          animationDuration: 300,
+          center: Text(
+            numberOfEvent.toString(),
+            style: TextStyle(
+              fontSize: 18,
+            ),
+          ),
+          progressColor: color,
+        ),
+        Text(typeOfEvent)
+      ],
+    );
+  }
+
+  /// The list of absences that are not justified
   Widget _buildNotJustifiedAbsences(Map<Absence, int> absences) {
     final notJustifiedAbsences = new Map.fromIterable(
         absences.keys.where((absence) => absence.isJustified == false),
         key: (k) => k,
         value: (k) => absences[k]);
-
-    return IgnorePointer(
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: notJustifiedAbsences.keys.length,
-        itemBuilder: (ctx, index) {
-          final absence = notJustifiedAbsences.keys.elementAt(index);
-          final days = notJustifiedAbsences[absence];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: AbsenceCard(
-              absence: absence,
-              days: days,
+    if (notJustifiedAbsences.values.length > 0) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child:
+                Text(AppLocalizations.of(context).translate('not_justified')),
+          ),
+          IgnorePointer(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: notJustifiedAbsences.keys.length,
+              itemBuilder: (ctx, index) {
+                final absence = notJustifiedAbsences.keys.elementAt(index);
+                final days = notJustifiedAbsences[absence];
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 8.0),
+                  child: AbsenceCard(
+                    absence: absence,
+                    days: days,
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
-    );
+          )
+        ],
+      );
+    }
+    return Container();
   }
 
-  Widget _buildJustifiedAbsences(Map<Absence, int> absences) {
+  Widget _buildJustifiedAbsences(
+      Map<Absence, int> absences, BuildContext context) {
     final justifiedAbsences = new Map.fromIterable(
         absences.keys.where((absence) => absence.isJustified == true),
         key: (k) => k,
         value: (k) => absences[k]);
 
-    return IgnorePointer(
-      child: ListView.builder(
-        itemCount: justifiedAbsences.keys.length,
-        shrinkWrap: true,
-        itemBuilder: (ctx, index) {
-          final absence = justifiedAbsences.keys.elementAt(index);
-          final days = justifiedAbsences[absence];
+    if (justifiedAbsences.values.length > 0) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(AppLocalizations.of(context).translate('justified')),
+          ),
+          IgnorePointer(
+            child: ListView.builder(
+              itemCount: justifiedAbsences.keys.length,
+              shrinkWrap: true,
+              itemBuilder: (ctx, index) {
+                final absence = justifiedAbsences.keys.elementAt(index);
+                final days = justifiedAbsences[absence];
 
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: AbsenceCard(
-              absence: absence,
-              days: days,
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: AbsenceCard(
+                    absence: absence,
+                    days: days,
+                  ),
+                );
+              },
             ),
-          );
-        },
+          )
+        ],
+      );
+    }
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 32.0),
+        child: CustomPlaceHolder(
+          text: 'No absences',
+          icon: Icons.assessment,
+          onTap: () {
+            BlocProvider.of<AbsencesBloc>(context).add(FetchAbsences());
+            BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
+          },
+        ),
       ),
     );
   }
@@ -152,7 +298,10 @@ class AbsencesPage extends StatelessWidget {
             3600000;
       }
 
-      if (delta > 72) {
+      if (absences[i].evtCode != RegistroConstants.ASSENZA) {
+        map[start] = days;
+        start = null;
+      } else if (delta > 72) {
         map[start] = days;
         start = null;
       } else if (delta == -72) {
@@ -181,4 +330,12 @@ class AbsencesPage extends StatelessWidget {
 
     return map;
   }
+
+  Future _updateAbsences() async {
+    await BlocProvider.of<AbsencesBloc>(context).add(FetchAbsences());
+    await BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }

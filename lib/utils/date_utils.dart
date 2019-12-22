@@ -17,6 +17,11 @@ class DateUtils {
     return formatter.format(date);
   }
 
+  static String convertMonthForDisplay(DateTime date, String locale) {
+    final formatter = DateFormat.MMM(locale);
+    return formatter.format(date);
+  }
+
   static String convertMonthLocale(DateTime date, String locale) {
     final formatter = DateFormat.MMMM(locale);
     return formatter.format(date);

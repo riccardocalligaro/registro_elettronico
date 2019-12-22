@@ -45,7 +45,7 @@ class AppBlocDelegate {
         create: (ctx) => PeriodsBloc(i.getDependency()),
       ),
       BlocProvider<AbsencesBloc>(
-        create: (ctx) => AbsencesBloc(i.getDependency()),
+        create: (ctx) => AbsencesBloc(i.getDependency(), i.getDependency()),
       ),
     ];
   }

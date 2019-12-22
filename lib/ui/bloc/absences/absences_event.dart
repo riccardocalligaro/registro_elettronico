@@ -8,3 +8,5 @@ abstract class AbsencesEvent extends Equatable {
 }
 
 class FetchAbsences extends AbsencesEvent {}
+
+class GetAbsences extends AbsencesEvent {}

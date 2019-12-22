@@ -4,6 +4,7 @@ import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
+import 'package:registro_elettronico/ui/bloc/absences/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_event.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
@@ -80,7 +81,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             color: Colors.black,
           ),
           onPressed: () async {
-            await db.AppDatabase().resetDbWithoutProfile();
+            db.AppDatabase().resetDbWithoutProfile();
           },
         ),
         IconButton(
@@ -89,19 +90,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             color: Colors.black,
           ),
           onPressed: () {
-            final agendaDao = AgendaDao(Injector.appInstance.getDependency());
-            final db.AgendaEvent event = db.AgendaEvent(
-                evtId: 343432434232133121,
-                authorName: "Gidasanno",
-                notes: "Hidas!",
-                classDesc: "4idasa",
-                subjectDesc: "Infodasrmatica",
-                end: DateTime.utc(2019, 9, 30),
-                begin: DateTime.utc(2019, 9, 30),
-                evtCode: "839masdasdds",
-                isFullDay: false,
-                subjectId: 0);
-            agendaDao.insertEvent(event);
+            BlocProvider.of<AbsencesBloc>(context).add(FetchAbsences());
           },
         ),
       ],

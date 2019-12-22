@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 
@@ -17,7 +18,7 @@ class AbsenceCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4.0),
-          color: _getColorFromCode(absence.evtCode)),
+          color: ColorUtils.getColorFromCode(absence.evtCode)),
       padding: EdgeInsets.all(16.0),
       child: Row(
         children: <Widget>[
@@ -76,7 +77,11 @@ class AbsenceCard extends StatelessWidget {
 
   String _getMessage(BuildContext context, Absence absence) {
     final code = absence.evtCode;
-    if (code == RegistroConstants.ASSENZA) {
+    if (code == RegistroConstants.ASSENZA &&
+        absence.isJustified == true &&
+        absence.justifReasonDesc.length > 0) {
+      return absence.justifReasonDesc;
+    } else if (code == RegistroConstants.ASSENZA) {
       return AppLocalizations.of(context).translate('absent_all_day');
     } else if (code == RegistroConstants.RITARDO) {
       return AppLocalizations.of(context)
@@ -87,7 +92,7 @@ class AbsenceCard extends StatelessWidget {
     } else if (code == RegistroConstants.USCITA) {
       return AppLocalizations.of(context)
           .translate('exit_at_hour')
-          .replaceAll('{hour}', "${absence.evtHPos}");
+          .replaceAll('{hour}', "${absence.evtHPos}°");
     } else {
       return AppLocalizations.of(context).translate('unricognised_event');
     }
@@ -118,20 +123,6 @@ class AbsenceCard extends StatelessWidget {
       return AppLocalizations.of(context).translate('early_exit')[0];
     } else {
       return AppLocalizations.of(context).translate('unricognised_event')[0];
-    }
-  }
-
-  Color _getColorFromCode(String code) {
-    if (code == RegistroConstants.ASSENZA) {
-      return Colors.red;
-    } else if (code == RegistroConstants.RITARDO) {
-      return Colors.blue;
-    } else if (code == RegistroConstants.RITARDO_BREVE) {
-      return Colors.blue;
-    } else if (code == RegistroConstants.USCITA) {
-      return Colors.yellow[600];
-    } else {
-      return Colors.blue;
     }
   }
 }

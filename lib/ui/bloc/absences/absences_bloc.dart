@@ -8,9 +8,10 @@ import './bloc.dart';
 
 class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
   AbsencesRepository absencesRepository;
-  AbsencesBloc(this.absencesRepository);
+  AbsenceDao absenceDao;
+  AbsencesBloc(this.absencesRepository, this.absenceDao);
 
-  Stream<List<Absence>> watchAgenda() => absencesRepository.watchAllAbsences();
+  Stream<List<Absence>> watchAbsences() => absenceDao.watchAllAbsences();
 
   @override
   AbsencesState get initialState => AbsencesInitial();
@@ -20,12 +21,22 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
     AbsencesEvent event,
   ) async* {
     if (event is FetchAbsences) {
-      yield AbsencesLoading();
+      yield AbsencesUpdateLoading();
       try {
         await absencesRepository.updateAbsences();
-        yield AbsencesLoaded();
+        yield AbsencesUpdateLoaded();
       } on DioError catch (e) {
-        yield AbsencesError(e.response.data.toString());
+        yield AbsencesUpdateError(e.response.data.toString());
+      } catch (e) {
+        yield AbsencesUpdateError(e.toString());
+      }
+    }
+
+    if (event is GetAbsences) {
+      yield AbsencesLoading();
+      try {
+        final absences = await absencesRepository.getAllAbsences();
+        yield AbsencesLoaded(absences: absences);
       } catch (e) {
         yield AbsencesError(e.toString());
       }
