@@ -49,5 +49,10 @@
   "exit_at_hour": "Exit at the {hour} hour",
   "no_subjects_to_show": "No subjects to show",
   "no_lessons": "No lessons",
-  "sync": "Sync"
+  "sync": "Sync",
+  "unexcepted_error_single": "Unexcepted error",
+  "early_exits": "Early exits",
+  "delay": "Delay",
+  "justified": "Justified",
+  "not_justified": "Not justified"
 }

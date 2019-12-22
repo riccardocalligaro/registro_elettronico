@@ -49,5 +49,10 @@
   "exit_at_hour": "Uscito alla {hour} ora",
   "no_subjects_to_show": "Nessuna materia da mostrare",
   "no_lessons": "Niente lezioni da mostrare",
-  "sync": "Aggiorna"
+  "sync": "Aggiorna",
+  "unexcepted_error_single": "Errore sconosciuto",
+  "early_exits": "Uscite",
+  "delay": "Ritardi",
+  "justified": "Giustificate",
+  "not_justified": "Non giustificate"
 }
