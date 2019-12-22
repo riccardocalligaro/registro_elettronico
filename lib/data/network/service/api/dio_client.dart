@@ -78,7 +78,6 @@ class DioClient {
     }, onResponse: (Response response) {
       print(
           "[AppApiService][${DateTime.now().toString().split(' ').last}]-> DioEND\tonResponse \t${response.statusCode} [${response.request.path}] ${response.request.method}  ${response.request.responseType}");
-      // print(response.data);
       print(response.request.headers.toString());
 
       return response; // continue

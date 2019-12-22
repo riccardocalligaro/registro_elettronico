@@ -40,7 +40,6 @@ class _LessonDetailsState extends State<LessonDetails> {
           filteredLessons = lessons;
         });
       } else {
-        print("changed");
         setState(() {
           _searchText = _filter.text;
         });

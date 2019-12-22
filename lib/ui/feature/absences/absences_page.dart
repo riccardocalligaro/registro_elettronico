@@ -152,7 +152,6 @@ class AbsencesPage extends StatelessWidget {
             3600000;
       }
 
-      print(days);
       if (delta > 72) {
         map[start] = days;
         start = null;
