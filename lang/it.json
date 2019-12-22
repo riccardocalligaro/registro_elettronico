@@ -54,5 +54,6 @@
   "early_exits": "Uscite",
   "delay": "Ritardi",
   "justified": "Giustificate",
-  "not_justified": "Non giustificate"
+  "not_justified": "Non giustificate",
+  "username_password_doesent_match": "Il nome utente e la password inseriti non sono validi."
 }

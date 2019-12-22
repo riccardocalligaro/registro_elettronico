@@ -15,4 +15,7 @@ abstract class RegistroConstants {
   static const HEALTH_REASON = "A";
   static const HEALTH_CERTIFICATE_REASON = "AC";
   static const FAMILY_REASON = "B";
+
+  // Constants for login
+  static const USERNAME_PASSWORD_NOT_MATCHING = 1;
 }

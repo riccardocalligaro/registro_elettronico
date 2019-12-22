@@ -18,7 +18,7 @@ class GlobalUtils {
     int count = 0;
 
     grades.forEach((grade) {
-      if (grade.subjectId == subjectId  && grade.decimalValue != -1.00) {
+      if (grade.subjectId == subjectId && grade.decimalValue != -1.00) {
         sum += grade.decimalValue;
 
         count++;

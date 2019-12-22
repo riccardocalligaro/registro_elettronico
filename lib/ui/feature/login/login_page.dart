@@ -5,6 +5,7 @@ import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_event.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_state.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -113,7 +114,15 @@ class _LoginPageState extends State<LoginPage> {
           if (state is SignInNetworkError) {
             setState(() {
               _valide = true;
-              _errorMessage = state.error.message;
+              if (state.error.messageCode ==
+                  RegistroConstants.USERNAME_PASSWORD_NOT_MATCHING) {
+                _errorMessage = AppLocalizations.of(context)
+                    .translate('username_password_doesent_match');
+              } else {
+                _errorMessage = state.error.message;
+
+                // _errorMessage = state.error.message;
+              }
             });
           }
 
@@ -141,7 +150,8 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   controller: _usernameController,
                   decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).translate('username_form_login_placeholder'),
+                      hintText: AppLocalizations.of(context)
+                          .translate('username_form_login_placeholder'),
                       errorText: _valide ? _errorMessage : null,
                       contentPadding: EdgeInsetsGeometry.lerp(
                           const EdgeInsetsDirectional.only(end: 6.0),

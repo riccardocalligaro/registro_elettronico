@@ -54,5 +54,6 @@
   "early_exits": "Early exits",
   "delay": "Delay",
   "justified": "Justified",
-  "not_justified": "Not justified"
+  "not_justified": "Not justified",
+  "username_password_doesent_match": "The username and password dosen't match!"
 }
