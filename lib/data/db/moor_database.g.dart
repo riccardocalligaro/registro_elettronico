@@ -3323,7 +3323,7 @@ class $AbsencesTable extends Absences with TableInfo<$AbsencesTable, Absence> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {evtId};
   @override
   Absence map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -3754,6 +3754,1043 @@ class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
   }
 }
 
+class Notice extends DataClass implements Insertable<Notice> {
+  final int pubId;
+  final DateTime pubDate;
+  final bool readStatus;
+  final int contentId;
+  final DateTime contentValidFrom;
+  final DateTime contentValidTo;
+  final bool contentValidInRange;
+  final String contentStatus;
+  final String contentTitle;
+  final String contentCategory;
+  final bool contentHasChanged;
+  final bool contentHasAttach;
+  final bool needJoin;
+  final bool needReply;
+  final bool needFile;
+  final String eventId;
+  Notice(
+      {@required this.pubId,
+      @required this.pubDate,
+      @required this.readStatus,
+      @required this.contentId,
+      @required this.contentValidFrom,
+      @required this.contentValidTo,
+      @required this.contentValidInRange,
+      @required this.contentStatus,
+      @required this.contentTitle,
+      @required this.contentCategory,
+      @required this.contentHasChanged,
+      @required this.contentHasAttach,
+      @required this.needJoin,
+      @required this.needReply,
+      @required this.needFile,
+      @required this.eventId});
+  factory Notice.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return Notice(
+      pubId: intType.mapFromDatabaseResponse(data['${effectivePrefix}pub_id']),
+      pubDate: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}pub_date']),
+      readStatus: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}read_status']),
+      contentId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}content_id']),
+      contentValidFrom: dateTimeType.mapFromDatabaseResponse(
+          data['${effectivePrefix}content_valid_from']),
+      contentValidTo: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}content_valid_to']),
+      contentValidInRange: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}content_valid_in_range']),
+      contentStatus: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}content_status']),
+      contentTitle: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}content_title']),
+      contentCategory: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}content_category']),
+      contentHasChanged: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}content_has_changed']),
+      contentHasAttach: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}content_has_attach']),
+      needJoin:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}need_join']),
+      needReply: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}need_reply']),
+      needFile:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}need_file']),
+      eventId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}event_id']),
+    );
+  }
+  factory Notice.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return Notice(
+      pubId: serializer.fromJson<int>(json['pubId']),
+      pubDate: serializer.fromJson<DateTime>(json['pubDate']),
+      readStatus: serializer.fromJson<bool>(json['readStatus']),
+      contentId: serializer.fromJson<int>(json['contentId']),
+      contentValidFrom: serializer.fromJson<DateTime>(json['contentValidFrom']),
+      contentValidTo: serializer.fromJson<DateTime>(json['contentValidTo']),
+      contentValidInRange:
+          serializer.fromJson<bool>(json['contentValidInRange']),
+      contentStatus: serializer.fromJson<String>(json['contentStatus']),
+      contentTitle: serializer.fromJson<String>(json['contentTitle']),
+      contentCategory: serializer.fromJson<String>(json['contentCategory']),
+      contentHasChanged: serializer.fromJson<bool>(json['contentHasChanged']),
+      contentHasAttach: serializer.fromJson<bool>(json['contentHasAttach']),
+      needJoin: serializer.fromJson<bool>(json['needJoin']),
+      needReply: serializer.fromJson<bool>(json['needReply']),
+      needFile: serializer.fromJson<bool>(json['needFile']),
+      eventId: serializer.fromJson<String>(json['eventId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'pubId': serializer.toJson<int>(pubId),
+      'pubDate': serializer.toJson<DateTime>(pubDate),
+      'readStatus': serializer.toJson<bool>(readStatus),
+      'contentId': serializer.toJson<int>(contentId),
+      'contentValidFrom': serializer.toJson<DateTime>(contentValidFrom),
+      'contentValidTo': serializer.toJson<DateTime>(contentValidTo),
+      'contentValidInRange': serializer.toJson<bool>(contentValidInRange),
+      'contentStatus': serializer.toJson<String>(contentStatus),
+      'contentTitle': serializer.toJson<String>(contentTitle),
+      'contentCategory': serializer.toJson<String>(contentCategory),
+      'contentHasChanged': serializer.toJson<bool>(contentHasChanged),
+      'contentHasAttach': serializer.toJson<bool>(contentHasAttach),
+      'needJoin': serializer.toJson<bool>(needJoin),
+      'needReply': serializer.toJson<bool>(needReply),
+      'needFile': serializer.toJson<bool>(needFile),
+      'eventId': serializer.toJson<String>(eventId),
+    };
+  }
+
+  @override
+  NoticesCompanion createCompanion(bool nullToAbsent) {
+    return NoticesCompanion(
+      pubId:
+          pubId == null && nullToAbsent ? const Value.absent() : Value(pubId),
+      pubDate: pubDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pubDate),
+      readStatus: readStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(readStatus),
+      contentId: contentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentId),
+      contentValidFrom: contentValidFrom == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentValidFrom),
+      contentValidTo: contentValidTo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentValidTo),
+      contentValidInRange: contentValidInRange == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentValidInRange),
+      contentStatus: contentStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentStatus),
+      contentTitle: contentTitle == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentTitle),
+      contentCategory: contentCategory == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentCategory),
+      contentHasChanged: contentHasChanged == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentHasChanged),
+      contentHasAttach: contentHasAttach == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentHasAttach),
+      needJoin: needJoin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(needJoin),
+      needReply: needReply == null && nullToAbsent
+          ? const Value.absent()
+          : Value(needReply),
+      needFile: needFile == null && nullToAbsent
+          ? const Value.absent()
+          : Value(needFile),
+      eventId: eventId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(eventId),
+    );
+  }
+
+  Notice copyWith(
+          {int pubId,
+          DateTime pubDate,
+          bool readStatus,
+          int contentId,
+          DateTime contentValidFrom,
+          DateTime contentValidTo,
+          bool contentValidInRange,
+          String contentStatus,
+          String contentTitle,
+          String contentCategory,
+          bool contentHasChanged,
+          bool contentHasAttach,
+          bool needJoin,
+          bool needReply,
+          bool needFile,
+          String eventId}) =>
+      Notice(
+        pubId: pubId ?? this.pubId,
+        pubDate: pubDate ?? this.pubDate,
+        readStatus: readStatus ?? this.readStatus,
+        contentId: contentId ?? this.contentId,
+        contentValidFrom: contentValidFrom ?? this.contentValidFrom,
+        contentValidTo: contentValidTo ?? this.contentValidTo,
+        contentValidInRange: contentValidInRange ?? this.contentValidInRange,
+        contentStatus: contentStatus ?? this.contentStatus,
+        contentTitle: contentTitle ?? this.contentTitle,
+        contentCategory: contentCategory ?? this.contentCategory,
+        contentHasChanged: contentHasChanged ?? this.contentHasChanged,
+        contentHasAttach: contentHasAttach ?? this.contentHasAttach,
+        needJoin: needJoin ?? this.needJoin,
+        needReply: needReply ?? this.needReply,
+        needFile: needFile ?? this.needFile,
+        eventId: eventId ?? this.eventId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Notice(')
+          ..write('pubId: $pubId, ')
+          ..write('pubDate: $pubDate, ')
+          ..write('readStatus: $readStatus, ')
+          ..write('contentId: $contentId, ')
+          ..write('contentValidFrom: $contentValidFrom, ')
+          ..write('contentValidTo: $contentValidTo, ')
+          ..write('contentValidInRange: $contentValidInRange, ')
+          ..write('contentStatus: $contentStatus, ')
+          ..write('contentTitle: $contentTitle, ')
+          ..write('contentCategory: $contentCategory, ')
+          ..write('contentHasChanged: $contentHasChanged, ')
+          ..write('contentHasAttach: $contentHasAttach, ')
+          ..write('needJoin: $needJoin, ')
+          ..write('needReply: $needReply, ')
+          ..write('needFile: $needFile, ')
+          ..write('eventId: $eventId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      pubId.hashCode,
+      $mrjc(
+          pubDate.hashCode,
+          $mrjc(
+              readStatus.hashCode,
+              $mrjc(
+                  contentId.hashCode,
+                  $mrjc(
+                      contentValidFrom.hashCode,
+                      $mrjc(
+                          contentValidTo.hashCode,
+                          $mrjc(
+                              contentValidInRange.hashCode,
+                              $mrjc(
+                                  contentStatus.hashCode,
+                                  $mrjc(
+                                      contentTitle.hashCode,
+                                      $mrjc(
+                                          contentCategory.hashCode,
+                                          $mrjc(
+                                              contentHasChanged.hashCode,
+                                              $mrjc(
+                                                  contentHasAttach.hashCode,
+                                                  $mrjc(
+                                                      needJoin.hashCode,
+                                                      $mrjc(
+                                                          needReply.hashCode,
+                                                          $mrjc(
+                                                              needFile.hashCode,
+                                                              eventId
+                                                                  .hashCode))))))))))))))));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is Notice &&
+          other.pubId == this.pubId &&
+          other.pubDate == this.pubDate &&
+          other.readStatus == this.readStatus &&
+          other.contentId == this.contentId &&
+          other.contentValidFrom == this.contentValidFrom &&
+          other.contentValidTo == this.contentValidTo &&
+          other.contentValidInRange == this.contentValidInRange &&
+          other.contentStatus == this.contentStatus &&
+          other.contentTitle == this.contentTitle &&
+          other.contentCategory == this.contentCategory &&
+          other.contentHasChanged == this.contentHasChanged &&
+          other.contentHasAttach == this.contentHasAttach &&
+          other.needJoin == this.needJoin &&
+          other.needReply == this.needReply &&
+          other.needFile == this.needFile &&
+          other.eventId == this.eventId);
+}
+
+class NoticesCompanion extends UpdateCompanion<Notice> {
+  final Value<int> pubId;
+  final Value<DateTime> pubDate;
+  final Value<bool> readStatus;
+  final Value<int> contentId;
+  final Value<DateTime> contentValidFrom;
+  final Value<DateTime> contentValidTo;
+  final Value<bool> contentValidInRange;
+  final Value<String> contentStatus;
+  final Value<String> contentTitle;
+  final Value<String> contentCategory;
+  final Value<bool> contentHasChanged;
+  final Value<bool> contentHasAttach;
+  final Value<bool> needJoin;
+  final Value<bool> needReply;
+  final Value<bool> needFile;
+  final Value<String> eventId;
+  const NoticesCompanion({
+    this.pubId = const Value.absent(),
+    this.pubDate = const Value.absent(),
+    this.readStatus = const Value.absent(),
+    this.contentId = const Value.absent(),
+    this.contentValidFrom = const Value.absent(),
+    this.contentValidTo = const Value.absent(),
+    this.contentValidInRange = const Value.absent(),
+    this.contentStatus = const Value.absent(),
+    this.contentTitle = const Value.absent(),
+    this.contentCategory = const Value.absent(),
+    this.contentHasChanged = const Value.absent(),
+    this.contentHasAttach = const Value.absent(),
+    this.needJoin = const Value.absent(),
+    this.needReply = const Value.absent(),
+    this.needFile = const Value.absent(),
+    this.eventId = const Value.absent(),
+  });
+  NoticesCompanion.insert({
+    @required int pubId,
+    @required DateTime pubDate,
+    @required bool readStatus,
+    @required int contentId,
+    @required DateTime contentValidFrom,
+    @required DateTime contentValidTo,
+    @required bool contentValidInRange,
+    @required String contentStatus,
+    @required String contentTitle,
+    @required String contentCategory,
+    @required bool contentHasChanged,
+    @required bool contentHasAttach,
+    @required bool needJoin,
+    @required bool needReply,
+    @required bool needFile,
+    @required String eventId,
+  })  : pubId = Value(pubId),
+        pubDate = Value(pubDate),
+        readStatus = Value(readStatus),
+        contentId = Value(contentId),
+        contentValidFrom = Value(contentValidFrom),
+        contentValidTo = Value(contentValidTo),
+        contentValidInRange = Value(contentValidInRange),
+        contentStatus = Value(contentStatus),
+        contentTitle = Value(contentTitle),
+        contentCategory = Value(contentCategory),
+        contentHasChanged = Value(contentHasChanged),
+        contentHasAttach = Value(contentHasAttach),
+        needJoin = Value(needJoin),
+        needReply = Value(needReply),
+        needFile = Value(needFile),
+        eventId = Value(eventId);
+  NoticesCompanion copyWith(
+      {Value<int> pubId,
+      Value<DateTime> pubDate,
+      Value<bool> readStatus,
+      Value<int> contentId,
+      Value<DateTime> contentValidFrom,
+      Value<DateTime> contentValidTo,
+      Value<bool> contentValidInRange,
+      Value<String> contentStatus,
+      Value<String> contentTitle,
+      Value<String> contentCategory,
+      Value<bool> contentHasChanged,
+      Value<bool> contentHasAttach,
+      Value<bool> needJoin,
+      Value<bool> needReply,
+      Value<bool> needFile,
+      Value<String> eventId}) {
+    return NoticesCompanion(
+      pubId: pubId ?? this.pubId,
+      pubDate: pubDate ?? this.pubDate,
+      readStatus: readStatus ?? this.readStatus,
+      contentId: contentId ?? this.contentId,
+      contentValidFrom: contentValidFrom ?? this.contentValidFrom,
+      contentValidTo: contentValidTo ?? this.contentValidTo,
+      contentValidInRange: contentValidInRange ?? this.contentValidInRange,
+      contentStatus: contentStatus ?? this.contentStatus,
+      contentTitle: contentTitle ?? this.contentTitle,
+      contentCategory: contentCategory ?? this.contentCategory,
+      contentHasChanged: contentHasChanged ?? this.contentHasChanged,
+      contentHasAttach: contentHasAttach ?? this.contentHasAttach,
+      needJoin: needJoin ?? this.needJoin,
+      needReply: needReply ?? this.needReply,
+      needFile: needFile ?? this.needFile,
+      eventId: eventId ?? this.eventId,
+    );
+  }
+}
+
+class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $NoticesTable(this._db, [this._alias]);
+  final VerificationMeta _pubIdMeta = const VerificationMeta('pubId');
+  GeneratedIntColumn _pubId;
+  @override
+  GeneratedIntColumn get pubId => _pubId ??= _constructPubId();
+  GeneratedIntColumn _constructPubId() {
+    return GeneratedIntColumn(
+      'pub_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _pubDateMeta = const VerificationMeta('pubDate');
+  GeneratedDateTimeColumn _pubDate;
+  @override
+  GeneratedDateTimeColumn get pubDate => _pubDate ??= _constructPubDate();
+  GeneratedDateTimeColumn _constructPubDate() {
+    return GeneratedDateTimeColumn(
+      'pub_date',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _readStatusMeta = const VerificationMeta('readStatus');
+  GeneratedBoolColumn _readStatus;
+  @override
+  GeneratedBoolColumn get readStatus => _readStatus ??= _constructReadStatus();
+  GeneratedBoolColumn _constructReadStatus() {
+    return GeneratedBoolColumn(
+      'read_status',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contentIdMeta = const VerificationMeta('contentId');
+  GeneratedIntColumn _contentId;
+  @override
+  GeneratedIntColumn get contentId => _contentId ??= _constructContentId();
+  GeneratedIntColumn _constructContentId() {
+    return GeneratedIntColumn(
+      'content_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contentValidFromMeta =
+      const VerificationMeta('contentValidFrom');
+  GeneratedDateTimeColumn _contentValidFrom;
+  @override
+  GeneratedDateTimeColumn get contentValidFrom =>
+      _contentValidFrom ??= _constructContentValidFrom();
+  GeneratedDateTimeColumn _constructContentValidFrom() {
+    return GeneratedDateTimeColumn(
+      'content_valid_from',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contentValidToMeta =
+      const VerificationMeta('contentValidTo');
+  GeneratedDateTimeColumn _contentValidTo;
+  @override
+  GeneratedDateTimeColumn get contentValidTo =>
+      _contentValidTo ??= _constructContentValidTo();
+  GeneratedDateTimeColumn _constructContentValidTo() {
+    return GeneratedDateTimeColumn(
+      'content_valid_to',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contentValidInRangeMeta =
+      const VerificationMeta('contentValidInRange');
+  GeneratedBoolColumn _contentValidInRange;
+  @override
+  GeneratedBoolColumn get contentValidInRange =>
+      _contentValidInRange ??= _constructContentValidInRange();
+  GeneratedBoolColumn _constructContentValidInRange() {
+    return GeneratedBoolColumn(
+      'content_valid_in_range',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contentStatusMeta =
+      const VerificationMeta('contentStatus');
+  GeneratedTextColumn _contentStatus;
+  @override
+  GeneratedTextColumn get contentStatus =>
+      _contentStatus ??= _constructContentStatus();
+  GeneratedTextColumn _constructContentStatus() {
+    return GeneratedTextColumn(
+      'content_status',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contentTitleMeta =
+      const VerificationMeta('contentTitle');
+  GeneratedTextColumn _contentTitle;
+  @override
+  GeneratedTextColumn get contentTitle =>
+      _contentTitle ??= _constructContentTitle();
+  GeneratedTextColumn _constructContentTitle() {
+    return GeneratedTextColumn(
+      'content_title',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contentCategoryMeta =
+      const VerificationMeta('contentCategory');
+  GeneratedTextColumn _contentCategory;
+  @override
+  GeneratedTextColumn get contentCategory =>
+      _contentCategory ??= _constructContentCategory();
+  GeneratedTextColumn _constructContentCategory() {
+    return GeneratedTextColumn(
+      'content_category',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contentHasChangedMeta =
+      const VerificationMeta('contentHasChanged');
+  GeneratedBoolColumn _contentHasChanged;
+  @override
+  GeneratedBoolColumn get contentHasChanged =>
+      _contentHasChanged ??= _constructContentHasChanged();
+  GeneratedBoolColumn _constructContentHasChanged() {
+    return GeneratedBoolColumn(
+      'content_has_changed',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contentHasAttachMeta =
+      const VerificationMeta('contentHasAttach');
+  GeneratedBoolColumn _contentHasAttach;
+  @override
+  GeneratedBoolColumn get contentHasAttach =>
+      _contentHasAttach ??= _constructContentHasAttach();
+  GeneratedBoolColumn _constructContentHasAttach() {
+    return GeneratedBoolColumn(
+      'content_has_attach',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _needJoinMeta = const VerificationMeta('needJoin');
+  GeneratedBoolColumn _needJoin;
+  @override
+  GeneratedBoolColumn get needJoin => _needJoin ??= _constructNeedJoin();
+  GeneratedBoolColumn _constructNeedJoin() {
+    return GeneratedBoolColumn(
+      'need_join',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _needReplyMeta = const VerificationMeta('needReply');
+  GeneratedBoolColumn _needReply;
+  @override
+  GeneratedBoolColumn get needReply => _needReply ??= _constructNeedReply();
+  GeneratedBoolColumn _constructNeedReply() {
+    return GeneratedBoolColumn(
+      'need_reply',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _needFileMeta = const VerificationMeta('needFile');
+  GeneratedBoolColumn _needFile;
+  @override
+  GeneratedBoolColumn get needFile => _needFile ??= _constructNeedFile();
+  GeneratedBoolColumn _constructNeedFile() {
+    return GeneratedBoolColumn(
+      'need_file',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _eventIdMeta = const VerificationMeta('eventId');
+  GeneratedTextColumn _eventId;
+  @override
+  GeneratedTextColumn get eventId => _eventId ??= _constructEventId();
+  GeneratedTextColumn _constructEventId() {
+    return GeneratedTextColumn(
+      'event_id',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        pubId,
+        pubDate,
+        readStatus,
+        contentId,
+        contentValidFrom,
+        contentValidTo,
+        contentValidInRange,
+        contentStatus,
+        contentTitle,
+        contentCategory,
+        contentHasChanged,
+        contentHasAttach,
+        needJoin,
+        needReply,
+        needFile,
+        eventId
+      ];
+  @override
+  $NoticesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'notices';
+  @override
+  final String actualTableName = 'notices';
+  @override
+  VerificationContext validateIntegrity(NoticesCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.pubId.present) {
+      context.handle(
+          _pubIdMeta, pubId.isAcceptableValue(d.pubId.value, _pubIdMeta));
+    } else if (pubId.isRequired && isInserting) {
+      context.missing(_pubIdMeta);
+    }
+    if (d.pubDate.present) {
+      context.handle(_pubDateMeta,
+          pubDate.isAcceptableValue(d.pubDate.value, _pubDateMeta));
+    } else if (pubDate.isRequired && isInserting) {
+      context.missing(_pubDateMeta);
+    }
+    if (d.readStatus.present) {
+      context.handle(_readStatusMeta,
+          readStatus.isAcceptableValue(d.readStatus.value, _readStatusMeta));
+    } else if (readStatus.isRequired && isInserting) {
+      context.missing(_readStatusMeta);
+    }
+    if (d.contentId.present) {
+      context.handle(_contentIdMeta,
+          contentId.isAcceptableValue(d.contentId.value, _contentIdMeta));
+    } else if (contentId.isRequired && isInserting) {
+      context.missing(_contentIdMeta);
+    }
+    if (d.contentValidFrom.present) {
+      context.handle(
+          _contentValidFromMeta,
+          contentValidFrom.isAcceptableValue(
+              d.contentValidFrom.value, _contentValidFromMeta));
+    } else if (contentValidFrom.isRequired && isInserting) {
+      context.missing(_contentValidFromMeta);
+    }
+    if (d.contentValidTo.present) {
+      context.handle(
+          _contentValidToMeta,
+          contentValidTo.isAcceptableValue(
+              d.contentValidTo.value, _contentValidToMeta));
+    } else if (contentValidTo.isRequired && isInserting) {
+      context.missing(_contentValidToMeta);
+    }
+    if (d.contentValidInRange.present) {
+      context.handle(
+          _contentValidInRangeMeta,
+          contentValidInRange.isAcceptableValue(
+              d.contentValidInRange.value, _contentValidInRangeMeta));
+    } else if (contentValidInRange.isRequired && isInserting) {
+      context.missing(_contentValidInRangeMeta);
+    }
+    if (d.contentStatus.present) {
+      context.handle(
+          _contentStatusMeta,
+          contentStatus.isAcceptableValue(
+              d.contentStatus.value, _contentStatusMeta));
+    } else if (contentStatus.isRequired && isInserting) {
+      context.missing(_contentStatusMeta);
+    }
+    if (d.contentTitle.present) {
+      context.handle(
+          _contentTitleMeta,
+          contentTitle.isAcceptableValue(
+              d.contentTitle.value, _contentTitleMeta));
+    } else if (contentTitle.isRequired && isInserting) {
+      context.missing(_contentTitleMeta);
+    }
+    if (d.contentCategory.present) {
+      context.handle(
+          _contentCategoryMeta,
+          contentCategory.isAcceptableValue(
+              d.contentCategory.value, _contentCategoryMeta));
+    } else if (contentCategory.isRequired && isInserting) {
+      context.missing(_contentCategoryMeta);
+    }
+    if (d.contentHasChanged.present) {
+      context.handle(
+          _contentHasChangedMeta,
+          contentHasChanged.isAcceptableValue(
+              d.contentHasChanged.value, _contentHasChangedMeta));
+    } else if (contentHasChanged.isRequired && isInserting) {
+      context.missing(_contentHasChangedMeta);
+    }
+    if (d.contentHasAttach.present) {
+      context.handle(
+          _contentHasAttachMeta,
+          contentHasAttach.isAcceptableValue(
+              d.contentHasAttach.value, _contentHasAttachMeta));
+    } else if (contentHasAttach.isRequired && isInserting) {
+      context.missing(_contentHasAttachMeta);
+    }
+    if (d.needJoin.present) {
+      context.handle(_needJoinMeta,
+          needJoin.isAcceptableValue(d.needJoin.value, _needJoinMeta));
+    } else if (needJoin.isRequired && isInserting) {
+      context.missing(_needJoinMeta);
+    }
+    if (d.needReply.present) {
+      context.handle(_needReplyMeta,
+          needReply.isAcceptableValue(d.needReply.value, _needReplyMeta));
+    } else if (needReply.isRequired && isInserting) {
+      context.missing(_needReplyMeta);
+    }
+    if (d.needFile.present) {
+      context.handle(_needFileMeta,
+          needFile.isAcceptableValue(d.needFile.value, _needFileMeta));
+    } else if (needFile.isRequired && isInserting) {
+      context.missing(_needFileMeta);
+    }
+    if (d.eventId.present) {
+      context.handle(_eventIdMeta,
+          eventId.isAcceptableValue(d.eventId.value, _eventIdMeta));
+    } else if (eventId.isRequired && isInserting) {
+      context.missing(_eventIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {pubId};
+  @override
+  Notice map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Notice.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(NoticesCompanion d) {
+    final map = <String, Variable>{};
+    if (d.pubId.present) {
+      map['pub_id'] = Variable<int, IntType>(d.pubId.value);
+    }
+    if (d.pubDate.present) {
+      map['pub_date'] = Variable<DateTime, DateTimeType>(d.pubDate.value);
+    }
+    if (d.readStatus.present) {
+      map['read_status'] = Variable<bool, BoolType>(d.readStatus.value);
+    }
+    if (d.contentId.present) {
+      map['content_id'] = Variable<int, IntType>(d.contentId.value);
+    }
+    if (d.contentValidFrom.present) {
+      map['content_valid_from'] =
+          Variable<DateTime, DateTimeType>(d.contentValidFrom.value);
+    }
+    if (d.contentValidTo.present) {
+      map['content_valid_to'] =
+          Variable<DateTime, DateTimeType>(d.contentValidTo.value);
+    }
+    if (d.contentValidInRange.present) {
+      map['content_valid_in_range'] =
+          Variable<bool, BoolType>(d.contentValidInRange.value);
+    }
+    if (d.contentStatus.present) {
+      map['content_status'] =
+          Variable<String, StringType>(d.contentStatus.value);
+    }
+    if (d.contentTitle.present) {
+      map['content_title'] = Variable<String, StringType>(d.contentTitle.value);
+    }
+    if (d.contentCategory.present) {
+      map['content_category'] =
+          Variable<String, StringType>(d.contentCategory.value);
+    }
+    if (d.contentHasChanged.present) {
+      map['content_has_changed'] =
+          Variable<bool, BoolType>(d.contentHasChanged.value);
+    }
+    if (d.contentHasAttach.present) {
+      map['content_has_attach'] =
+          Variable<bool, BoolType>(d.contentHasAttach.value);
+    }
+    if (d.needJoin.present) {
+      map['need_join'] = Variable<bool, BoolType>(d.needJoin.value);
+    }
+    if (d.needReply.present) {
+      map['need_reply'] = Variable<bool, BoolType>(d.needReply.value);
+    }
+    if (d.needFile.present) {
+      map['need_file'] = Variable<bool, BoolType>(d.needFile.value);
+    }
+    if (d.eventId.present) {
+      map['event_id'] = Variable<String, StringType>(d.eventId.value);
+    }
+    return map;
+  }
+
+  @override
+  $NoticesTable createAlias(String alias) {
+    return $NoticesTable(_db, alias);
+  }
+}
+
+class Attachment extends DataClass implements Insertable<Attachment> {
+  final int pubId;
+  final String fileName;
+  final int attachNumber;
+  Attachment(
+      {@required this.pubId,
+      @required this.fileName,
+      @required this.attachNumber});
+  factory Attachment.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return Attachment(
+      pubId: intType.mapFromDatabaseResponse(data['${effectivePrefix}pub_id']),
+      fileName: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}file_name']),
+      attachNumber: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}attach_number']),
+    );
+  }
+  factory Attachment.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return Attachment(
+      pubId: serializer.fromJson<int>(json['pubId']),
+      fileName: serializer.fromJson<String>(json['fileName']),
+      attachNumber: serializer.fromJson<int>(json['attachNumber']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'pubId': serializer.toJson<int>(pubId),
+      'fileName': serializer.toJson<String>(fileName),
+      'attachNumber': serializer.toJson<int>(attachNumber),
+    };
+  }
+
+  @override
+  AttachmentsCompanion createCompanion(bool nullToAbsent) {
+    return AttachmentsCompanion(
+      pubId:
+          pubId == null && nullToAbsent ? const Value.absent() : Value(pubId),
+      fileName: fileName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fileName),
+      attachNumber: attachNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(attachNumber),
+    );
+  }
+
+  Attachment copyWith({int pubId, String fileName, int attachNumber}) =>
+      Attachment(
+        pubId: pubId ?? this.pubId,
+        fileName: fileName ?? this.fileName,
+        attachNumber: attachNumber ?? this.attachNumber,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Attachment(')
+          ..write('pubId: $pubId, ')
+          ..write('fileName: $fileName, ')
+          ..write('attachNumber: $attachNumber')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf(
+      $mrjc(pubId.hashCode, $mrjc(fileName.hashCode, attachNumber.hashCode)));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is Attachment &&
+          other.pubId == this.pubId &&
+          other.fileName == this.fileName &&
+          other.attachNumber == this.attachNumber);
+}
+
+class AttachmentsCompanion extends UpdateCompanion<Attachment> {
+  final Value<int> pubId;
+  final Value<String> fileName;
+  final Value<int> attachNumber;
+  const AttachmentsCompanion({
+    this.pubId = const Value.absent(),
+    this.fileName = const Value.absent(),
+    this.attachNumber = const Value.absent(),
+  });
+  AttachmentsCompanion.insert({
+    @required int pubId,
+    @required String fileName,
+    @required int attachNumber,
+  })  : pubId = Value(pubId),
+        fileName = Value(fileName),
+        attachNumber = Value(attachNumber);
+  AttachmentsCompanion copyWith(
+      {Value<int> pubId, Value<String> fileName, Value<int> attachNumber}) {
+    return AttachmentsCompanion(
+      pubId: pubId ?? this.pubId,
+      fileName: fileName ?? this.fileName,
+      attachNumber: attachNumber ?? this.attachNumber,
+    );
+  }
+}
+
+class $AttachmentsTable extends Attachments
+    with TableInfo<$AttachmentsTable, Attachment> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $AttachmentsTable(this._db, [this._alias]);
+  final VerificationMeta _pubIdMeta = const VerificationMeta('pubId');
+  GeneratedIntColumn _pubId;
+  @override
+  GeneratedIntColumn get pubId => _pubId ??= _constructPubId();
+  GeneratedIntColumn _constructPubId() {
+    return GeneratedIntColumn(
+      'pub_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _fileNameMeta = const VerificationMeta('fileName');
+  GeneratedTextColumn _fileName;
+  @override
+  GeneratedTextColumn get fileName => _fileName ??= _constructFileName();
+  GeneratedTextColumn _constructFileName() {
+    return GeneratedTextColumn(
+      'file_name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _attachNumberMeta =
+      const VerificationMeta('attachNumber');
+  GeneratedIntColumn _attachNumber;
+  @override
+  GeneratedIntColumn get attachNumber =>
+      _attachNumber ??= _constructAttachNumber();
+  GeneratedIntColumn _constructAttachNumber() {
+    return GeneratedIntColumn(
+      'attach_number',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [pubId, fileName, attachNumber];
+  @override
+  $AttachmentsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'attachments';
+  @override
+  final String actualTableName = 'attachments';
+  @override
+  VerificationContext validateIntegrity(AttachmentsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.pubId.present) {
+      context.handle(
+          _pubIdMeta, pubId.isAcceptableValue(d.pubId.value, _pubIdMeta));
+    } else if (pubId.isRequired && isInserting) {
+      context.missing(_pubIdMeta);
+    }
+    if (d.fileName.present) {
+      context.handle(_fileNameMeta,
+          fileName.isAcceptableValue(d.fileName.value, _fileNameMeta));
+    } else if (fileName.isRequired && isInserting) {
+      context.missing(_fileNameMeta);
+    }
+    if (d.attachNumber.present) {
+      context.handle(
+          _attachNumberMeta,
+          attachNumber.isAcceptableValue(
+              d.attachNumber.value, _attachNumberMeta));
+    } else if (attachNumber.isRequired && isInserting) {
+      context.missing(_attachNumberMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {pubId};
+  @override
+  Attachment map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Attachment.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(AttachmentsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.pubId.present) {
+      map['pub_id'] = Variable<int, IntType>(d.pubId.value);
+    }
+    if (d.fileName.present) {
+      map['file_name'] = Variable<String, StringType>(d.fileName.value);
+    }
+    if (d.attachNumber.present) {
+      map['attach_number'] = Variable<int, IntType>(d.attachNumber.value);
+    }
+    return map;
+  }
+
+  @override
+  $AttachmentsTable createAlias(String alias) {
+    return $AttachmentsTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProfilesTable _profiles;
@@ -3773,6 +4810,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AbsencesTable get absences => _absences ??= $AbsencesTable(this);
   $PeriodsTable _periods;
   $PeriodsTable get periods => _periods ??= $PeriodsTable(this);
+  $NoticesTable _notices;
+  $NoticesTable get notices => _notices ??= $NoticesTable(this);
+  $AttachmentsTable _attachments;
+  $AttachmentsTable get attachments => _attachments ??= $AttachmentsTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   LessonDao _lessonDao;
@@ -3790,6 +4831,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   AbsenceDao get absenceDao => _absenceDao ??= AbsenceDao(this as AppDatabase);
   PeriodDao _periodDao;
   PeriodDao get periodDao => _periodDao ??= PeriodDao(this as AppDatabase);
+  NoticeDao _noticeDao;
+  NoticeDao get noticeDao => _noticeDao ??= NoticeDao(this as AppDatabase);
   @override
   List<TableInfo> get allTables => [
         profiles,
@@ -3799,6 +4842,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         grades,
         agendaEvents,
         absences,
-        periods
+        periods,
+        notices,
+        attachments
       ];
 }

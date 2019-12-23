@@ -5,6 +5,7 @@ import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
+import 'package:registro_elettronico/data/db/dao/notice_dao.dart';
 import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
@@ -17,12 +18,15 @@ import 'package:registro_elettronico/data/repository/mapper/absence_mapper.dart'
 
 // All the mappers to convert an entity to a db entity and vice versa
 import 'package:registro_elettronico/data/repository/mapper/mappers_export.dart';
+import 'package:registro_elettronico/data/repository/mapper/notice_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/period_mapper.dart';
+import 'package:registro_elettronico/data/repository/notices_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/periods_repository_impl.dart';
 
 // All the data level repositories
 import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
+import 'package:registro_elettronico/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/domain/repository/periods_repository.dart';
 
 // All the domain level repositories
@@ -90,6 +94,10 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton<PeriodDao>((i) {
       return PeriodDao(i.getDependency());
+    });
+
+    Injector.appInstance.registerSingleton<NoticeDao>((i) {
+      return NoticeDao(i.getDependency());
     });
   }
 
@@ -184,6 +192,16 @@ class AppInjector {
       );
       return periodsRepository;
     });
+
+    Injector.appInstance.registerSingleton((i) {
+      NoticesRepository noticesRepository = NoticesRepositoryImpl(
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
+      return noticesRepository;
+    });
   }
 
   static void injectMapper() {
@@ -213,6 +231,10 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton<PeriodMapper>((injector) {
       return PeriodMapper();
+    });
+
+    Injector.appInstance.registerSingleton<NoticeMapper>((injector) {
+      return NoticeMapper();
     });
   }
 

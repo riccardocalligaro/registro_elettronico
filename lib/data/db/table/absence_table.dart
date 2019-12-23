@@ -18,4 +18,7 @@ class Absences extends Table {
   BoolColumn get isJustified => boolean()();
   TextColumn get justifiedReasonCode => text()();
   TextColumn get justifReasonDesc => text()();
+
+  @override
+  Set<Column> get primaryKey => {evtId};
 }

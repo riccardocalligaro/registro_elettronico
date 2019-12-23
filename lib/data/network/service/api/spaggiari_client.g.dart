@@ -172,4 +172,68 @@ class _SpaggiariClient implements SpaggiariClient {
     final value = PeriodsResponse.fromJson(_result.data);
     return Future.value(value);
   }
+
+  @override
+  getNoticeBoard(studentId) async {
+    ArgumentError.checkNotNull(studentId, 'studentId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        '/students/$studentId/noticeboard',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = NoticeboardResponse.fromJson(_result.data);
+    return Future.value(value);
+  }
+
+  @override
+  readNotice(studentId, eventCode, pubId, attachNum) async {
+    ArgumentError.checkNotNull(studentId, 'studentId');
+    ArgumentError.checkNotNull(eventCode, 'eventCode');
+    ArgumentError.checkNotNull(pubId, 'pubId');
+    ArgumentError.checkNotNull(attachNum, 'attachNum');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        '/students/$studentId/noticeboard/read/$eventCode/$pubId/$attachNum',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = NoticeboardReadResponse.fromJson(_result.data);
+    return Future.value(value);
+  }
+
+  @override
+  getNotice(studentId, eventCode, pubId, attachNum) async {
+    ArgumentError.checkNotNull(studentId, 'studentId');
+    ArgumentError.checkNotNull(eventCode, 'eventCode');
+    ArgumentError.checkNotNull(pubId, 'pubId');
+    ArgumentError.checkNotNull(attachNum, 'attachNum');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<List<dynamic>> _result = await _dio.request(
+        '/students/$studentId/noticeboard/attach/$eventCode/$pubId/$attachNum',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl,
+            responseType: ResponseType.bytes),
+        data: _data);
+    final value = _result.data.cast<int>();
+    return Future.value(value);
+  }
 }

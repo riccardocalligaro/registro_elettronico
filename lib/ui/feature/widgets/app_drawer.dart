@@ -87,6 +87,9 @@ class _AppDrawerState extends State<AppDrawer> {
             icon: Icons.assignment,
             text: trans.translate("notice_board"),
             pos: DrawerConstants.NOTICE_BOARD,
+            onTap: () {
+              AppNavigator.instance.navToNoticeboard(context);
+            },
           ),
           Divider(),
           _createDrawerItem(

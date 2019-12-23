@@ -437,4 +437,10 @@ class GlobalUtils {
   static String getPeriodName(int index, BuildContext context) {
     return "$index° ${AppLocalizations.of(context).translate('term').toUpperCase()}";
   }
+
+  static int getRandomNumber() {
+    Random random = new Random();
+    int randomNumber = random.nextInt(99999);
+    return randomNumber;
+  }
 }
