@@ -172,14 +172,12 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 6.0, 16.0, 0.0),
                   child: Card(
-                    color: Colors.white,
                     child: ListTile(
                       title: Padding(
                         padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                         child: Text(
                           StringUtils.titleCase(lesson.author),
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w600),
+                          style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ),
                       subtitle: Padding(
@@ -188,7 +186,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                           lesson.lessonArg != ""
                               ? lesson.lessonArg
                               : lesson.lessonType,
-                          style: TextStyle(color: Colors.black),
                         ),
                       ),
                     ),

@@ -173,8 +173,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Divider(color: Colors.grey[300]),
                     SectionHeader(
-                      headingText: AppLocalizations.of(context)
-                          .translate('next_events'),
+                      headingText:
+                          AppLocalizations.of(context).translate('next_events'),
                       onTap: () {
                         AppNavigator.instance.navToAgenda(context);
                       },
@@ -182,15 +182,15 @@ class _HomePageState extends State<HomePage> {
                     _buildAgenda(context),
                     Divider(color: Colors.grey[300]),
                     SectionHeader(
-                      headingText: AppLocalizations.of(context)
-                          .translate('my_subjects'),
+                      headingText:
+                          AppLocalizations.of(context).translate('my_subjects'),
                       onTap: () {},
                     ),
                     _buildSubjectsGrid(context),
                     Divider(color: Colors.grey[300]),
                     SectionHeader(
-                      headingText: AppLocalizations.of(context)
-                          .translate('last_grades'),
+                      headingText:
+                          AppLocalizations.of(context).translate('last_grades'),
                       onTap: () {},
                     ),
                     Padding(
@@ -324,6 +324,7 @@ class _HomePageState extends State<HomePage> {
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Lesson> lessons = snapshot.data ?? List();
+        print(lessons.length);
         if (lessons.length == 0) {
           // todo: maybe a better placeholder?
           return Center(

@@ -53,7 +53,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
         .watch();
   }
 
-  Stream<List<Lesson>> watchLastLessons(DateTime date2) {
+  Stream<List<Lesson>> watchLessonsByDateGrouped(DateTime date) {
     return customSelectQuery("""
         SELECT * FROM lessons 
         WHERE (CAST(strftime("%Y", date, "unixepoch") AS INTEGER) = ?) 
@@ -62,10 +62,19 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
         GROUP BY subject_id ORDER BY position ASC""", readsFrom: {
       lessons
     }, variables: [
-      Variable.withInt(date2.year),
-      Variable.withInt(date2.month),
-      Variable.withInt(date2.day)
+      Variable.withInt(date.year),
+      Variable.withInt(date.month),
+      Variable.withInt(date.day)
     ]).watch().map((rows) {
+      return rows.map((row) => Lesson.fromData(row.data, db)).toList();
+    });
+  }
+
+  Stream<List<Lesson>> watchLastLessons() {
+    return customSelectQuery(
+      """ SELECT * FROM lessons WHERE date IN (SELECT max(date) FROM lessons)""",
+      readsFrom: {lessons},
+    ).watch().map((rows) {
       return rows.map((row) => Lesson.fromData(row.data, db)).toList();
     });
   }

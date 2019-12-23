@@ -26,8 +26,10 @@ abstract class LessonsRepository {
   ///Gets the lessons by a date
   Stream<List<Lesson>> watchLessonsByDate(DateTime date);
 
+  Stream<List<Lesson>> watchLessonsByDateGrouped(DateTime date);
+
   ///Gets the last lessons from a date
-  Stream<List<Lesson>> watchLastLessons(DateTime date2);
+  Stream<List<Lesson>> watchLastLessons();
 
   /// Future of all the lessons
   Future<List<Lesson>> getLessons();

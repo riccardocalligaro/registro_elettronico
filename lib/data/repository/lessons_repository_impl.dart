@@ -77,8 +77,13 @@ class LessonsRepositoryImpl implements LessonsRepository {
   }
 
   @override
-  Stream<List<Lesson>> watchLastLessons(DateTime date2) {
-    return lessonDao.watchLastLessons(date2);
+  Stream<List<Lesson>> watchLessonsByDateGrouped(DateTime date) {
+    return lessonDao.watchLessonsByDateGrouped(date);
+  }
+
+  @override
+  Stream<List<Lesson>> watchLastLessons() {
+    return lessonDao.watchLastLessons();
   }
 
   @override

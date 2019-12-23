@@ -139,30 +139,14 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           itemCount: notices.length,
           itemBuilder: (context, index) {
             final notice = notices[index];
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: ListTile(
-                  title: Text(notice.contentTitle),
-                  subtitle: Text(
-                    DateUtils.convertDateLocale(notice.pubDate,
-                        AppLocalizations.of(context).locale.toString()),
-                  ),
-                  trailing: notice.readStatus
-                      ? Icon(
-                          Icons.mail,
-                          color: Colors.green,
-                        )
-                      : Icon(
-                          Icons.mail,
-                          color: Colors.red,
-                        ),
-                  onTap: () async {
-                    _downloadAttachments(context, notice);
-                  },
-                ),
-              ),
-            );
+
+            if (index == 0) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: _buildNoticeCard(notice, context),
+              );
+            }
+            return _buildNoticeCard(notice, context);
           },
         ),
       );
@@ -175,6 +159,33 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         BlocProvider.of<NoticesBloc>(context).add(FetchNoticeboard());
         BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
       },
+    );
+  }
+
+  Widget _buildNoticeCard(Notice notice, BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: ListTile(
+          title: Text(notice.contentTitle),
+          subtitle: Text(
+            DateUtils.convertDateLocale(
+                notice.pubDate, AppLocalizations.of(context).locale.toString()),
+          ),
+          trailing: notice.readStatus
+              ? Icon(
+                  Icons.mail,
+                  color: Colors.green,
+                )
+              : Icon(
+                  Icons.mail,
+                  color: Colors.red,
+                ),
+          onTap: () async {
+            _downloadAttachments(context, notice);
+          },
+        ),
+      ),
     );
   }
 

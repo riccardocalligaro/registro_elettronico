@@ -19,10 +19,14 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
       lessonsRepository.watchRelevantLessons();
 
   Stream<List<Lesson>> watchLessonsByDate(DateTime selectedDate) =>
-      lessonsRepository.watchLastLessons(selectedDate);
+      lessonsRepository.watchLessonsByDate(selectedDate);
+
+  /// With this stream lessosn are grouped so there are no duplicates
+  Stream<List<Lesson>> watchLessonsByDateGrouped(DateTime selectedDate) =>
+      lessonsRepository.watchLessonsByDateGrouped(selectedDate);
 
   Stream<List<Lesson>> relevandLessonsOfToday() =>
-      lessonsRepository.watchLastLessons(DateTime.now());
+      lessonsRepository.watchLastLessons();
 
   @override
   LessonsState get initialState => LessonsNotLoaded();
