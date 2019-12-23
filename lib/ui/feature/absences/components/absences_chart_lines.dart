@@ -62,9 +62,55 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
-          tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
-        ),
-        touchCallback: (LineTouchResponse touchResponse) {},
+            tooltipBgColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.grey[900].withOpacity(0.9),
+            getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
+              return touchedBarSpots.map((barSpot) {
+                final flSpot = barSpot;
+                String text;
+                // This also checks if the event is only one and in case changes the text to singular
+                if (flSpot.barIndex == 0) {
+                  text = AppLocalizations.of(context)
+                      .translate('absences')
+                      .toLowerCase();
+                  if (flSpot.y == 1) {
+                    text = AppLocalizations.of(context)
+                        .translate('absence')
+                        .toLowerCase();
+                  }
+                }
+                if (flSpot.barIndex == 1) {
+                  text = AppLocalizations.of(context)
+                      .translate('delay')
+                      .toLowerCase();
+                  if (flSpot.y == 1) {
+                    text = AppLocalizations.of(context)
+                        .translate('late')
+                        .toLowerCase();
+                  }
+                }
+
+                if (flSpot.barIndex == 2) {
+                  text = AppLocalizations.of(context)
+                      .translate('early_exits')
+                      .toLowerCase();
+                  if (flSpot.y == 1) {
+                    text = AppLocalizations.of(context)
+                        .translate('early_exit')
+                        .toLowerCase();
+                  }
+                }
+
+                return LineTooltipItem(
+                  "${flSpot.y.toStringAsFixed(0)} $text",
+                  TextStyle(
+                    color: flSpot.bar.colors.first,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }).toList();
+            }),
         handleBuiltInTouches: true,
       ),
       gridData: const FlGridData(
