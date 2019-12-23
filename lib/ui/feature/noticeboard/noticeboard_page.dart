@@ -24,10 +24,36 @@ class NoticeboardPage extends StatefulWidget {
 }
 
 class _NoticeboardPageState extends State<NoticeboardPage> {
+  final TextEditingController _filter = TextEditingController();
+  String _searchText = "";
+
+  List<Lesson> lessons = List();
+  List<Lesson> filteredLessons = List();
+  Icon _searchIcon = new Icon(Icons.search);
+  Widget _appBarTitle = Text("Comunicazioni");
+
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
+  _NoticeboardPageState() {
+    _filter.addListener(() {
+      if (_filter.text.isEmpty) {
+        setState(() {
+          _searchText = "";
+          filteredLessons = lessons;
+        });
+      } else {
+        setState(() {
+          _searchText = _filter.text;
+        });
+      }
+    });
+  }
 
   @override
   void didChangeDependencies() {
+    _appBarTitle = Text(
+      AppLocalizations.of(context).translate('notice_board'),
+    );
     BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
     super.didChangeDependencies();
   }
@@ -38,7 +64,16 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
       key: _drawerKey,
       appBar: CustomAppBar(
         scaffoldKey: _drawerKey,
-        title: AppLocalizations.of(context).translate('notice_board'),
+        title: _appBarTitle,
+        actions: <Widget>[
+          IconButton(
+            icon: _searchIcon,
+            onPressed: () {
+              _searchPressed(context);
+              
+            },
+          )
+        ],
       ),
       drawer: AppDrawer(
         profileDao: Injector.appInstance.getDependency(),
@@ -86,6 +121,18 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   }
 
   Widget _buildNoticeBoardList(List<Notice> notices) {
+    /// Search functionality
+    if (_searchText.isNotEmpty) {
+      notices = notices
+          .where((notice) => notice.contentTitle
+              .toLowerCase()
+              .contains(_searchText.toLowerCase()))
+          .toList()
+            ..sort(
+              (b, a) => a.pubDate.compareTo(b.pubDate),
+            );
+    }
+
     if (notices.length > 0) {
       return BlocListener<AttachmentDownloadBloc, AttachmentDownloadState>(
         listener: (context, state) {
@@ -150,6 +197,12 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           },
         ),
       );
+    } else if (_searchText.isNotEmpty) {
+      return CustomPlaceHolder(
+        text: 'No documents!',
+        icon: Icons.assignment,
+        showUpdate: false,
+      );
     }
 
     return CustomPlaceHolder(
@@ -159,6 +212,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         BlocProvider.of<NoticesBloc>(context).add(FetchNoticeboard());
         BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
       },
+      showUpdate: true,
     );
   }
 
@@ -277,5 +331,30 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   Future<void> _refreshNoticeBoard() async {
     BlocProvider.of<NoticesBloc>(context).add(FetchNoticeboard());
     BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
+  }
+
+  void _searchPressed(BuildContext context) {
+    setState(() {
+      if (this._searchIcon.icon == Icons.search) {
+        this._searchIcon = new Icon(Icons.close);
+
+        this._appBarTitle = new TextField(
+          autofocus: true,
+          controller: _filter,
+          decoration: InputDecoration(
+            prefixIcon: Icon(Icons.search),
+            hintText: "${AppLocalizations.of(context).translate('search')}...",
+            border: InputBorder.none,
+          ),
+        );
+      } else {
+        this._searchIcon = new Icon(Icons.search);
+        this._appBarTitle = Text(
+          AppLocalizations.of(context).translate('notice_board'),
+        );
+        //filteredNames = names;
+        _filter.clear();
+      }
+    });
   }
 }

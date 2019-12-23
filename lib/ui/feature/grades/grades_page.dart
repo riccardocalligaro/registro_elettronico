@@ -133,7 +133,7 @@ class _GradesPageState extends State<GradesPage> {
       key: _drawerKey,
       appBar: CustomAppBar(
         scaffoldKey: _drawerKey,
-        title: AppLocalizations.of(context).translate('grades'),
+        title: Text(AppLocalizations.of(context).translate('grades')),
       ),
       drawer: AppDrawer(
         profileDao: Injector.appInstance.getDependency(),

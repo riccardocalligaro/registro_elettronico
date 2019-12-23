@@ -146,6 +146,7 @@ class _LessonDetailsState extends State<LessonDetails> {
             onTap: () {
               BlocProvider.of<LessonsBloc>(context).add(FetchAllLessons());
             },
+            showUpdate: true,
           );
         }
       },

@@ -188,6 +188,7 @@ class _GradeTabState extends State<GradeTab>
           child: CustomPlaceHolder(
             text: 'No grades',
             icon: Icons.timeline,
+            showUpdate: false,
           ),
         ),
       );

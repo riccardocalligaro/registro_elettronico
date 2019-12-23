@@ -30,7 +30,7 @@ class _LessonsPageState extends State<LessonsPage> {
         position: DrawerConstants.LESSONS,
       ),
       appBar: CustomAppBar(
-        title: AppLocalizations.of(context).translate('lessons'),
+        title: Text(AppLocalizations.of(context).translate('lessons')),
         scaffoldKey: _drawerKey,
       ),
       body: Container(
@@ -65,6 +65,7 @@ class _LessonsPageState extends State<LessonsPage> {
             onTap: () {
               BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
             },
+            showUpdate: true,
           );
         }
       },

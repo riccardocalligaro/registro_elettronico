@@ -14,7 +14,10 @@ class GradesChart extends StatefulWidget {
 
 class _GradesChartState extends State<GradesChart> {
   // color gradient for the graph background
-  List<Color> gradientColors = [Colors.red[400], Colors.white];
+  List<Color> gradientColors = [
+    Colors.red[400],
+    Colors.grey[900],
+  ];
   // by defualt we want to show the average
   bool showAvg = false;
 
@@ -71,7 +74,7 @@ class _GradesChartState extends State<GradesChart> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: LineChart(
-                    gradesData(grades, spots),
+                    gradesData(grades, spots, context),
                   ),
                 ),
               ),
@@ -106,7 +109,11 @@ class _GradesChartState extends State<GradesChart> {
     // the main widget
   }
 
-  LineChartData gradesData(List<Grade> grades, List<FlSpot> spots) {
+  LineChartData gradesData(
+    List<Grade> grades,
+    List<FlSpot> spots,
+    BuildContext context,
+  ) {
     // TODO: change this to a constant or in db?
 
     const cutOffYValue = 6.0;
@@ -202,8 +209,9 @@ class _GradesChartState extends State<GradesChart> {
           // Color Below the line of the graph
           belowBarData: BarAreaData(
             show: true,
-            colors:
-                gradientColors.map((color) => color.withOpacity(0.4)).toList(),
+            colors: _getGradients(context)
+                .map((color) => color.withOpacity(0.4))
+                .toList(),
             gradientColorStops: [0.5, 1.0],
             gradientFrom: const Offset(0, 0),
             gradientTo: const Offset(0, 1),
@@ -218,5 +226,14 @@ class _GradesChartState extends State<GradesChart> {
         ),
       ],
     );
+  }
+
+  List<Color> _getGradients(BuildContext context) {
+    return gradientColors = [
+      Colors.red[400],
+      Theme.of(context).brightness == Brightness.dark
+          ? Colors.grey[900]
+          : Colors.white
+    ];
   }
 }

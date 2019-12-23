@@ -65,7 +65,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       key: _drawerKey,
       appBar: CustomAppBar(
         scaffoldKey: _drawerKey,
-        title: AppLocalizations.of(context).translate('agenda'),
+        title: Text(AppLocalizations.of(context).translate('agenda')),
       ),
       drawer: AppDrawer(
         profileDao: Injector.appInstance.getDependency(),

@@ -39,7 +39,7 @@ class _AbsencesPageState extends State<AbsencesPage>
       key: _drawerKey,
       appBar: CustomAppBar(
         scaffoldKey: _drawerKey,
-        title: AppLocalizations.of(context).translate('absences'),
+        title: Text(AppLocalizations.of(context).translate('absences')),
       ),
       drawer: AppDrawer(
         profileDao: Injector.appInstance.getDependency(),
@@ -91,6 +91,7 @@ class _AbsencesPageState extends State<AbsencesPage>
             onTap: () {
               BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
             },
+            showUpdate: true,
           );
         }
 
@@ -125,7 +126,6 @@ class _AbsencesPageState extends State<AbsencesPage>
       margin: EdgeInsets.zero,
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-      
       child: Column(
         children: <Widget>[
           Padding(
@@ -265,6 +265,7 @@ class _AbsencesPageState extends State<AbsencesPage>
             BlocProvider.of<AbsencesBloc>(context).add(FetchAbsences());
             BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
           },
+          showUpdate: true,
         ),
       ),
     );

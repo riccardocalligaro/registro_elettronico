@@ -66,5 +66,6 @@
   "dont_get_less_than": "Don't get less than",
   "objective_unreacheable": "Unreachable objective",
   "get_at_least": "You gotta get at least {grade}",
-  "average": "Average"
+  "average": "Average",
+  "search":"Search"
 }
