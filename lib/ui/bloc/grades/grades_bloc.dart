@@ -1,13 +1,10 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
-import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
-import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
-import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
-import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
+
 import './bloc.dart';
 
 class GradesBloc extends Bloc<GradesEvent, GradesState> {

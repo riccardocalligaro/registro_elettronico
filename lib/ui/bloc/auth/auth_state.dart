@@ -1,7 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
-
 import 'package:registro_elettronico/domain/entity/entities.dart';
 
 abstract class AuthState extends Equatable {

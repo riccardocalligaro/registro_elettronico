@@ -25,7 +25,6 @@ class LessonDetails extends StatefulWidget {
 class _LessonDetailsState extends State<LessonDetails> {
   final TextEditingController _filter = TextEditingController();
   String _searchText = "";
-  String _title = "";
 
   List<Lesson> lessons = List();
   List<Lesson> filteredLessons = List();
@@ -110,7 +109,7 @@ class _LessonDetailsState extends State<LessonDetails> {
                 .toList() ??
             List<Lesson>();
 
-        if (!(_searchText.isEmpty)) {
+        if (_searchText.isNotEmpty) {
           lessons = lessons
               .where((lesson) => lesson.lessonArg
                   .toLowerCase()

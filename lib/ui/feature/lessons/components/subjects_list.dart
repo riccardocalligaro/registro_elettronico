@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/feature/lessons/lesson_details.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';

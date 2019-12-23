@@ -332,8 +332,8 @@ class _AbsencesPageState extends State<AbsencesPage>
   }
 
   Future _updateAbsences() async {
-    await BlocProvider.of<AbsencesBloc>(context).add(FetchAbsences());
-    await BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
+    BlocProvider.of<AbsencesBloc>(context).add(FetchAbsences());
+    BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
   }
 
   @override

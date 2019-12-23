@@ -1,5 +1,4 @@
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
-import 'package:registro_elettronico/domain/entity/api_responses/absences_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/periods_response.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 

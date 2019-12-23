@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/ui/feature/absences/absences_page.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 
 void main() {

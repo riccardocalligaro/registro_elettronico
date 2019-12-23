@@ -61,17 +61,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  SnackBar _buildLoadingSnackBar(String message) {
-    return SnackBar(
-      content: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(message),
-        ],
-      ),
-    );
-  }
-
   Container _buildWelcomeText(String welcomeMessage) {
     return Container(
       padding: EdgeInsets.fromLTRB(0, 100, 0, 0),

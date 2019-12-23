@@ -22,7 +22,6 @@ class AgendaPage extends StatefulWidget {
 class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-  Map<DateTime, List> _events;
   DateTime _currentSelectedDay;
   List _selectedEvents;
   AnimationController _animationController;
