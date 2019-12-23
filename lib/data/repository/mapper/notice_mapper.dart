@@ -10,7 +10,6 @@ class NoticeMapper {
       pubId: notice.pubId ?? GlobalUtils.getRandomNumber(),
       pubDate: DateTime.parse(notice.pubDT) ?? DateTime.now(),
       readStatus: notice.readStatus ?? false,
-      // TODO: check
       eventCode: notice.evtCode ?? "CF",
       contentId: notice.cntId ?? GlobalUtils.getRandomNumber(),
       contentValidFrom: DateUtils.getDateFromApiString(notice.cntValidFrom),

@@ -49,28 +49,38 @@ class _HomePageState extends State<HomePage> {
       body: BlocListener<LessonsBloc, LessonsState>(
         listener: (context, state) {
           if (state is LessonsLoading) {
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(trans.translate('loading_new_data')),
-              duration: Duration(seconds: 3),
-            ));
+            Scaffold.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Text(trans.translate('loading_new_data')),
+                  duration: Duration(seconds: 3),
+                ),
+              );
           }
 
           if (state is LessonsError) {
-            if (state.error.response.statusCode == 422) {
+            if (state.error.response != null &&
+                state.error.response.statusCode == 422) {
               final exception =
                   ServerException.fromJson(state.error.response.data);
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(exception.message),
-                duration: Duration(seconds: 3),
-                action: SnackBarAction(
-                  label: trans.translate('log_out'),
-                  onPressed: () {
-                    AppNavigator.instance.navToLogin(context);
-                    BlocProvider.of<AuthBloc>(context).add(SignOut());
-                  },
-                ),
-              ));
+              Scaffold.of(context)
+                ..removeCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text(exception.message),
+                    duration: Duration(seconds: 3),
+                    action: SnackBarAction(
+                      label: trans.translate('log_out'),
+                      onPressed: () {
+                        AppNavigator.instance.navToLogin(context);
+                        BlocProvider.of<AuthBloc>(context).add(SignOut());
+                      },
+                    ),
+                  ),
+                );
             } else {
+              // TODO: handle if there is no internet
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(state.error.error.toString()),
                 duration: Duration(seconds: 3),
@@ -83,6 +93,10 @@ class _HomePageState extends State<HomePage> {
                 ),
               ));
             }
+          }
+
+          if (state is LessonsLoaded) {
+            Scaffold.of(context)..removeCurrentSnackBar();
           }
         },
         child: RefreshIndicator(

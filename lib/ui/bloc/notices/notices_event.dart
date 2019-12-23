@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 abstract class NoticesEvent extends Equatable {
   const NoticesEvent();
@@ -11,11 +10,3 @@ abstract class NoticesEvent extends Equatable {
 class FetchNoticeboard extends NoticesEvent {}
 
 class GetNoticeboard extends NoticesEvent {}
-
-class GetAttachments extends NoticesEvent {
-  final int pubId;
-
-  GetAttachments({
-    @required this.pubId,
-  });
-}

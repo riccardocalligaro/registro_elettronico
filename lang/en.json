@@ -55,5 +55,11 @@
   "delay": "Delay",
   "justified": "Justified",
   "not_justified": "Not justified",
-  "username_password_doesent_match": "The username and password dosen't match!"
+  "username_password_doesent_match": "The username and password dosen't match!",
+  "download_of_file_completed": "Download completed",
+  "open": "Open",
+  "downloading": "Downloading...",
+  "select_attachment": "Select an attachment",
+  "no_attachments": "No attachments",
+  "error_download":"Couldn't download the file!"
 }

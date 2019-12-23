@@ -5,7 +5,6 @@ import 'package:registro_elettronico/data/network/service/api/spaggiari_client.d
 import 'package:registro_elettronico/data/repository/mapper/event_mapper.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
 
 class AgendaRepositoryImpl implements AgendaRepository {
   SpaggiariClient spaggiariClient;

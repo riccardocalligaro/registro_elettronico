@@ -37,17 +37,5 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
         yield NoticesError(e.toString());
       }
     }
-
-    if (event is GetAttachments) {
-      yield NoticesAttachmentsLoading();
-      try {
-        final attachments =
-            await noticesRepository.getAttachmentsForPubId(event.pubId);
-        yield NoticesAttachmentsLoaded(attachments);
-      } catch (e) {
-        yield NoticesAttachmentsError(e.toString());
-      }
-    }
-
   }
 }

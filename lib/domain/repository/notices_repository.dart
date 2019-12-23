@@ -11,8 +11,7 @@ abstract class NoticesRepository {
   Future<List<Attachment>> getAttachmentsForPubId(int pubId);
 
   Future<List<int>> downloadFile({
-    @required String eventCode,
-    @required int pubId,
+    @required Notice notice,
     @required int attachNumber,
   });
 

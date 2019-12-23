@@ -34,17 +34,3 @@ class NoticesError extends NoticesState {
 
   NoticesError(this.error);
 }
-
-/// Attachments
-
-class NoticesAttachmentsLoading extends NoticesState {}
-
-class NoticesAttachmentsLoaded extends NoticesState {
-  final List<Attachment> attachments;
-  NoticesAttachmentsLoaded(this.attachments);
-}
-
-class NoticesAttachmentsError extends NoticesState {
-  final String error;
-  NoticesAttachmentsError(this.error);
-}

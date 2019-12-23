@@ -23,14 +23,15 @@ class AttachmentDownloadBloc
       yield AttachmentDownloadLoading();
       try {
         final response = await noticesRepository.downloadFile(
-          pubId: event.notice.pubId,
-          eventCode: event.notice.eventCode,
-          attachNumber: 1,
+          notice: event.notice,
+          attachNumber: event.attachment.attachNumber,
         );
         print(response.toString());
         final path = await _localPath;
+        final ext = event.attachment.fileName.split('.').last;
         final filePath =
-            '$path/${event.notice.contentTitle.replaceAll(' ', '_')}';
+            '$path/${event.notice.contentTitle.replaceAll(' ', '_')}.$ext';
+        print(filePath);
         File file = File(filePath);
         var raf = file.openSync(mode: FileMode.write);
         raf.writeFromSync(response);
@@ -41,8 +42,6 @@ class AttachmentDownloadBloc
       } catch (e) {
         yield AttachmentDownloadError(e.toString());
       }
-
-      yield AttachmentDownloadLoaded('');
     }
   }
 

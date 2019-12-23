@@ -1,5 +1,4 @@
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
 
 /// This is the class that is used when the reponse of the
 /// client is a code different thatn 200, it converts the generic

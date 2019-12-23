@@ -55,5 +55,11 @@
   "delay": "Ritardi",
   "justified": "Giustificate",
   "not_justified": "Non giustificate",
-  "username_password_doesent_match": "Il nome utente e la password inseriti non sono validi."
+  "username_password_doesent_match": "Il nome utente e la password inseriti non sono validi.",
+  "download_of_file_completed": "Download completato",
+  "open": "Apri",
+  "downloading": "Scaricamento in corso...",
+  "select_attachment": "Seleziona un allegato",
+  "no_attachments": "Non sono presenti allegati",
+  "error_download": "Errore nello scaricamento del file!"
 }
