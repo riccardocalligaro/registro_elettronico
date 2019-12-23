@@ -57,20 +57,22 @@ class _GradesChartState extends State<GradesChart> {
     } else {
       return Stack(
         children: <Widget>[
-          AspectRatio(
-            aspectRatio: 1.5,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(18),
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: AspectRatio(
+              aspectRatio: 1.7,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(18),
+                  ),
+                  color: Colors.transparent,
                 ),
-                color: Colors.transparent,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    right: 18.0, left: 12.0, top: 24, bottom: 12),
-                child: LineChart(
-                  gradesData(grades, spots),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: LineChart(
+                    gradesData(grades, spots),
+                  ),
                 ),
               ),
             ),
@@ -88,8 +90,13 @@ class _GradesChartState extends State<GradesChart> {
                 AppLocalizations.of(context).translate('avg'),
                 style: TextStyle(
                     fontSize: 8,
-                    color:
-                        showAvg ? Colors.black.withOpacity(0.5) : Colors.black),
+                    color: showAvg
+                        ? Theme.of(context)
+                            .primaryTextTheme
+                            .headline
+                            .color
+                            .withOpacity(0.5)
+                        : Theme.of(context).primaryTextTheme.headline.color),
               ),
             ),
           ),

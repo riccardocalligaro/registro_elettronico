@@ -61,5 +61,10 @@
   "downloading": "Scaricamento in corso...",
   "select_attachment": "Seleziona un allegato",
   "no_attachments": "Non sono presenti allegati",
-  "error_download": "Errore nello scaricamento del file!"
+  "error_download": "Errore nello scaricamento del file!",
+  "dont_worry": "Puoi stare tranquillo!",
+  "dont_get_less_than": "Non prendere meno di",
+  "objective_unreacheable": "Obiettivo non raggiungibile",
+  "get_at_least": "Devi prendere almeno",
+  "average": "Media"
 }

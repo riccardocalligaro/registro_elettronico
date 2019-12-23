@@ -61,5 +61,10 @@
   "downloading": "Downloading...",
   "select_attachment": "Select an attachment",
   "no_attachments": "No attachments",
-  "error_download":"Couldn't download the file!"
+  "error_download": "Couldn't download the file!",
+  "dont_worry": "Don't worry!",
+  "dont_get_less_than": "Don't get less than",
+  "objective_unreacheable": "Unreachable objective",
+  "get_at_least": "You gotta get at least {grade}",
+  "average": "Average"
 }

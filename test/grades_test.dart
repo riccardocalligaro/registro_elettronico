@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:registro_elettronico/utils/grades_utils.dart';
 
 void main() {
   group('Color for different grades', () {
@@ -186,7 +187,7 @@ void main() {
 
     test('Show correct subjects in the grades page', () {
       Map<Subject, double> subjectsValues = Map.fromIterable(subjects,
-          key: (e) => e, value: (e) => GlobalUtils.getAverage(e.id, grades));
+          key: (e) => e, value: (e) => GradesUtils.getAverage(e.id, grades));
       final period = 1;
       // Get the grades in the rigt order
 

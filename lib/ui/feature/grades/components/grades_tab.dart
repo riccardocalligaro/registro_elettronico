@@ -8,11 +8,13 @@ import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grade_subject_card.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grades_overall_stats.dart';
+import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/entity/overall_stats.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:registro_elettronico/utils/grades_utils.dart';
 
 class GradeTab extends StatefulWidget {
   final int period;
@@ -131,7 +133,7 @@ class _GradeTabState extends State<GradeTab>
   Widget _buildAverageGradesForSubjectsList(
       List<Grade> grades, List<Subject> subjects) {
     Map<Subject, double> subjectsValues = Map.fromIterable(subjects,
-        key: (e) => e, value: (e) => GlobalUtils.getAverage(e.id, grades));
+        key: (e) => e, value: (e) => GradesUtils.getAverage(e.id, grades));
     final period = widget.period;
     // Get the grades in the rigt order
 
@@ -180,7 +182,15 @@ class _GradeTabState extends State<GradeTab>
         ),
       );
     } else {
-      return Text('No grades!');
+      return Padding(
+        padding: const EdgeInsets.only(top: 170),
+        child: Center(
+          child: CustomPlaceHolder(
+            text: 'No grades',
+            icon: Icons.timeline,
+          ),
+        ),
+      );
     }
   }
 

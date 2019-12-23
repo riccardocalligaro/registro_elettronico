@@ -13,20 +13,6 @@ import 'entity/overall_stats.dart';
 import 'entity/subject_averages.dart';
 
 class GlobalUtils {
-  static double getAverage(int subjectId, List<Grade> grades) {
-    double sum = 0;
-    int count = 0;
-
-    grades.forEach((grade) {
-      if (grade.subjectId == subjectId && grade.decimalValue != -1.00) {
-        sum += grade.decimalValue;
-
-        count++;
-      }
-    });
-    return sum / count;
-  }
-
   static double getAverageWithoutSubjectId(List<Grade> grades) {
     double sum = 0;
     int count = 0;

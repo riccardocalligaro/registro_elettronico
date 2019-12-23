@@ -9,6 +9,7 @@ import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
@@ -101,102 +102,102 @@ class _HomePageState extends State<HomePage> {
           }
         },
         child: RefreshIndicator(
-          onRefresh: _test,
+          onRefresh: _refreshData,
           child: ScrollConfiguration(
             behavior: NoGlowBehavior(),
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               child: Container(
-                child: RefreshIndicator(
-                  onRefresh: _test,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SectionHeader(
-                        headingText: trans.translate('last_lessons'),
-                        onTap: () {
-                          AppNavigator.instance.navToLessons(context);
-                        },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SectionHeader(
+                      headingText: trans.translate('last_lessons'),
+                      onTap: () {
+                        AppNavigator.instance.navToLessons(context);
+                      },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+                      child: Container(
+                        height: 140,
+                        child: _buildLessonsCards(context),
                       ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-                        child: Container(
-                          height: 140,
-                          child: _buildLessonsCards(context),
-                        ),
-                      ),
-                      Divider(
-                        color: Colors.grey[300],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  AppLocalizations.of(context)
-                                      .translate('notice_board'),
-                                  style: Theme.of(context).textTheme.headline.copyWith(fontSize: 14),
-                                ),
-                                Text(
-                                  trans.translate("discover_all_notice"),
-                                  style: TextStyle(
-                                      color: Colors.grey[500], fontSize: 14),
-                                )
-                              ],
-                            ),
-                            RaisedButton(
-                              color: Colors.blue,
-                              textColor: Colors.white,
-                              child: Text(
-                                trans.translate("view"),
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Divider(
+                      color: Colors.grey[300],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate('notice_board'),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline
+                                    .copyWith(fontSize: 14),
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ThemeSettingPage()),
-                                );
-                              },
+                              Text(
+                                trans.translate("discover_all_notice"),
+                                style: TextStyle(
+                                    color: Colors.grey[500], fontSize: 14),
+                              )
+                            ],
+                          ),
+                          RaisedButton(
+                            color: Colors.blue,
+                            textColor: Colors.white,
+                            child: Text(
+                              trans.translate("view"),
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                          ],
-                        ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(18.0),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ThemeSettingPage()),
+                              );
+                            },
+                          ),
+                        ],
                       ),
-                      Divider(color: Colors.grey[300]),
-                      SectionHeader(
-                        headingText: AppLocalizations.of(context)
-                            .translate('next_events'),
-                        onTap: () {
-                          AppNavigator.instance.navToAgenda(context);
-                        },
-                      ),
-                      _buildAgenda(context),
-                      Divider(color: Colors.grey[300]),
-                      SectionHeader(
-                        headingText: AppLocalizations.of(context)
-                            .translate('my_subjects'),
-                        onTap: () {},
-                      ),
-                      _buildSubjectsGrid(context),
-                      Divider(color: Colors.grey[300]),
-                      SectionHeader(
-                        headingText: AppLocalizations.of(context)
-                            .translate('last_grades'),
-                        onTap: () {},
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: _buildLastGrades(context),
-                      ),
-                    ],
-                  ),
+                    ),
+                    Divider(color: Colors.grey[300]),
+                    SectionHeader(
+                      headingText: AppLocalizations.of(context)
+                          .translate('next_events'),
+                      onTap: () {
+                        AppNavigator.instance.navToAgenda(context);
+                      },
+                    ),
+                    _buildAgenda(context),
+                    Divider(color: Colors.grey[300]),
+                    SectionHeader(
+                      headingText: AppLocalizations.of(context)
+                          .translate('my_subjects'),
+                      onTap: () {},
+                    ),
+                    _buildSubjectsGrid(context),
+                    Divider(color: Colors.grey[300]),
+                    SectionHeader(
+                      headingText: AppLocalizations.of(context)
+                          .translate('last_grades'),
+                      onTap: () {},
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: _buildLastGrades(context),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -206,8 +207,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> _test() async {
-    await Future.delayed(Duration(seconds: 1));
+  Future<void> _refreshData() async {
+    BlocProvider.of<LessonsBloc>(context).add(FetchTodayLessons());
+    BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
+    BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
+    BlocProvider.of<GradesBloc>(context).add(FetchGrades());
+    BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
   }
 
   StreamBuilder<List<Grade>> _buildLastGrades(BuildContext context) {

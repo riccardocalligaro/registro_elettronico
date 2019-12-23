@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_painter.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:registro_elettronico/utils/grades_utils.dart';
 
 class SubjectsGrid extends StatelessWidget {
   final List<Subject> subjects;
@@ -22,7 +23,7 @@ class SubjectsGrid extends StatelessWidget {
             shrinkWrap: true,
             children: List.generate(subjects.length, (index) {
               final subject = subjects[index];
-              final average = GlobalUtils.getAverage(subject.id, grades);
+              final average = GradesUtils.getAverage(subject.id, grades);
               return GridTile(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
