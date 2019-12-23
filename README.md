@@ -54,8 +54,10 @@ Technologies and libraries that we will use:
 | Lessons            |  ✔️   |
 | Agenda             |  ✔️   |
 | Marks              |   ½   |
-| Noticeboard        |  ❌   |
+| Noticeboard        |  ✔️   |
 | Absences           |  ✔️   |
+| School material    |  ❌   |
+| Notes              |  ❌   |
 | Intitial slideshow |  ❌   |
 | Dark theme         |  ✔️   |
 | Settings           |  ❌   |
