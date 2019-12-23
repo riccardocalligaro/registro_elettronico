@@ -67,5 +67,9 @@
   "objective_unreacheable": "Unreachable objective",
   "get_at_least": "You gotta get at least {grade}",
   "average": "Average",
-  "search":"Search"
+  "search":"Search",
+  "no_professors":"No professors",
+  "not_presents":"Not presents",
+  "date":"Date",
+  "weight":"Weight"
 }

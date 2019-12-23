@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
@@ -10,7 +11,42 @@ class GradeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return InkWell(
+      onTap: () {
+        final trans = AppLocalizations.of(context);
+        showDialog(
+          context: context,
+          builder: (context) => SimpleDialog(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                      "${trans.translate('notes')}: ${grade.notesForFamily.length > 0 ? grade.notesForFamily : trans.translate('not_presents').toLowerCase()}", textAlign: TextAlign.center,),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Valore decimale: ${grade.decimalValue.toString()}'),
+                    SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                      '${trans.translate('date')}: ${DateUtils.convertDateLocale(grade.eventDate, trans.locale.toString())}'),
+                    SizedBox(
+                    height: 5,
+                  ),
+                  Text('${trans.translate('term')}: ${grade.periodPos}'),
+                    SizedBox(
+                    height: 5,
+                  ),
+                  Text('${trans.translate('weight')}: ${grade.weightFactor}'),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+      child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4.0),
             color: grade.cancelled
@@ -44,14 +80,30 @@ class GradeCard extends StatelessWidget {
                         : grade.subjectDesc,
                     style: TextStyle(color: Colors.white),
                   ),
+                  _buildLessonArgument(grade),
                   Text(
-                    DateUtils.convertDateForDisplay(grade.eventDate),
+                    DateUtils.convertDateLocale(grade.eventDate,
+                        AppLocalizations.of(context).locale.toString()),
                     style: TextStyle(color: Colors.white),
                   )
                 ],
               ),
             )
           ],
-        ));
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLessonArgument(Grade grade) {
+    String text = grade.notesForFamily;
+    if (text.length > 0) {
+      if (text.length > 40) {
+        text = text.substring(0, 39);
+        text += "...";
+      }
+      return Text(text);
+    }
+    return Container();
   }
 }

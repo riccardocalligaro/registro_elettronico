@@ -3,15 +3,16 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/entity/overall_stats.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class GradesOverallStats extends StatelessWidget {
-  final OverallStats stats;
   final List<Grade> grades;
-  const GradesOverallStats(
-      {Key key, @required this.stats, @required this.grades})
-      : super(key: key);
+  final double average;
+  const GradesOverallStats({
+    Key key,
+    @required this.grades,
+    @required this.average,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +38,11 @@ class GradesOverallStats extends StatelessWidget {
                   CircularPercentIndicator(
                     radius: 80.0,
                     lineWidth: 6.0,
-                    percent:
-                        (stats.average / 10).isNaN ? 0.0 : stats.average / 10,
+                    percent: (average / 10).isNaN ? 0.0 : average / 10,
                     animation: true,
                     animationDuration: 300,
-                    center: new Text(stats.average.toStringAsFixed(2)),
-                    progressColor:
-                        GlobalUtils.getColorFromAverage(stats.average),
+                    center: new Text(average.toStringAsFixed(2)),
+                    progressColor: GlobalUtils.getColorFromAverage(average),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
@@ -58,7 +57,7 @@ class GradesOverallStats extends StatelessWidget {
             child: Container(
               //color: Colors.red,
               child: Padding(
-                padding: const EdgeInsets.only(top: 21.0),
+                padding: const EdgeInsets.only(top: 21.0, right: 16.0),
                 child: GradesChart(
                   grades: grades
                       .where((grade) =>

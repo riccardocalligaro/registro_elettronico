@@ -193,7 +193,7 @@ class _GradesChartState extends State<GradesChart> {
       ),
 
       // Set some max-min values
-      maxX: spots.length.toDouble(),
+      //maxX: spots.length.toDouble(),
       minY: 0,
       maxY: 10,
       // Data of the graph

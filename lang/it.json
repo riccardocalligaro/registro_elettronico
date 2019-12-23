@@ -67,5 +67,9 @@
   "objective_unreacheable": "Obiettivo non raggiungibile",
   "get_at_least": "Devi prendere almeno",
   "average": "Media",
-  "search": "Cerca"
+  "search": "Cerca",
+  "no_professors": "Niente professori",
+  "not_presents":"Non presenti",
+  "date":"Data",
+  "weight":"Peso"
 }

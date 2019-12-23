@@ -70,7 +70,7 @@ class _GradeTabState extends State<GradeTab>
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          _buildStatsCard(grades, subjects),
+          _buildStatsCard(grades),
           _buildAverageGradesForSubjectsList(grades, subjects),
         ],
       ),
@@ -78,19 +78,22 @@ class _GradeTabState extends State<GradeTab>
   }
 
   // Card that shows the overall stats of the student
-  Widget _buildStatsCard(List<Grade> grades, List<Subject> subjects) {
-    OverallStats stats;
-    if (grades.length >= 2) {
-      stats = GlobalUtils.getOverallStatsFromSubjectGradesMap(
-          subjects, grades, widget.period);
+  Widget _buildStatsCard(List<Grade> grades) {
+    double average;
+    if (widget.period != TabsConstants.GENERALE) {
+      average = GradesUtils.getAverageWithoutSubjectId(
+          grades.where((grade) => grade.periodPos == widget.period).toList());
+    } else {
+      average = GradesUtils.getAverageWithoutSubjectId(grades);
     }
 
-    if (stats != null) {
+    if (!average.isNaN) {
       return GradesOverallStats(
         grades: grades,
-        stats: stats,
+        average: average,
       );
     }
+
     return Container();
   }
 
@@ -163,22 +166,22 @@ class _GradeTabState extends State<GradeTab>
         value: (k) => subjectsValues[k]);
 
     if (gradesForPeriod.length > 0) {
-      return IgnorePointer(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: sortedMap.keys.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: GradeSubjectCard(
-                  subject: sortedMap.keys.elementAt(index),
-                  grades: gradesForPeriod,
-                ),
-              );
-            },
-          ),
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: sortedMap.keys.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: GradeSubjectCard(
+                subject: sortedMap.keys.elementAt(index),
+                grades: gradesForPeriod,
+                period: period,
+              ),
+            );
+          },
         ),
       );
     } else {

@@ -140,7 +140,7 @@ void main() {
     );
 
     final stats =
-        GlobalUtils.getOverallStatsFromSubjectGradesMap(subjects, grades, 1);
+        GradesUtils.getOverallStatsFromSubjectGrades(subject1, grades, 1);
 
     test(
       'test best and worst subject',
@@ -166,22 +166,22 @@ void main() {
       },
     );
     test('Show correct average', () {
-      expect(8.0, GlobalUtils.getSubjectAveragesFromGrades(grades, 1).average);
-      expect(2.0, GlobalUtils.getSubjectAveragesFromGrades(grades, 2).average);
+      expect(8.0, GradesUtils.getSubjectAveragesFromGrades(grades, 1).average);
+      expect(2.0, GradesUtils.getSubjectAveragesFromGrades(grades, 2).average);
       expect(true,
-          GlobalUtils.getSubjectAveragesFromGrades(grades, 3).average.isNaN);
+          GradesUtils.getSubjectAveragesFromGrades(grades, 3).average.isNaN);
     });
 
     test('Show correct color of circular progess bar', () {
-      final averageBlue = GlobalUtils.getSubjectAveragesFromGrades(grades, 3);
+      final averageBlue = GradesUtils.getSubjectAveragesFromGrades(grades, 3);
       expect(Colors.blue, GlobalUtils.getColorFromAverage(averageBlue.average));
-      final averageGreeen = GlobalUtils.getSubjectAveragesFromGrades(grades, 1);
+      final averageGreeen = GradesUtils.getSubjectAveragesFromGrades(grades, 1);
       expect(
           Colors.green, GlobalUtils.getColorFromAverage(averageGreeen.average));
     });
 
     test('Show correct percent of circular progess bar', () {
-      final average = GlobalUtils.getSubjectAveragesFromGrades(grades, 3);
+      final average = GradesUtils.getSubjectAveragesFromGrades(grades, 3);
       expect(0.0, (average.average / 10).isNaN ? 0.0 : average.average / 10);
     });
 
