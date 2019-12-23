@@ -48,5 +48,6 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
         yield NoticesAttachmentsError(e.toString());
       }
     }
+
   }
 }

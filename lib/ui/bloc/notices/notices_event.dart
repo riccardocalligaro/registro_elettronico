@@ -19,13 +19,3 @@ class GetAttachments extends NoticesEvent {
     @required this.pubId,
   });
 }
-
-class DownloadAttachment extends NoticesEvent {
-  final int pubId;
-  final int attachmentNumber;
-
-  DownloadAttachment({
-    @required this.pubId,
-    @required this.attachmentNumber,
-  });
-}

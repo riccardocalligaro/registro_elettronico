@@ -48,17 +48,3 @@ class NoticesAttachmentsError extends NoticesState {
   final String error;
   NoticesAttachmentsError(this.error);
 }
-
-/// Download of attachment
-
-class NoticesAttachmentDownloadLoading extends NoticesState {}
-
-class NoticesAttachmentDownloadLoaded extends NoticesState {
-  final String path;
-  NoticesAttachmentDownloadLoaded(this.path);
-}
-
-class NoticesAttachmentDownloadError extends NoticesState {
-  final String error;
-  NoticesAttachmentDownloadError(this.error);
-}

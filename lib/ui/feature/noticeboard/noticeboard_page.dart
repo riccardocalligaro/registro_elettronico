@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/ui/bloc/notices/attachment_download/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notices/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
@@ -38,8 +41,11 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         profileDao: Injector.appInstance.getDependency(),
         position: DrawerConstants.NOTICE_BOARD,
       ),
-      body: Container(
-        child: _buildNoticeBoard(),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+        child: Container(
+          child: _buildNoticeBoard(),
+        ),
       ),
     );
   }
@@ -73,18 +79,58 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
 
   Widget _buildNoticeBoardList(List<Notice> notices) {
     if (notices.length > 0) {
-      return ListView.builder(
-        itemCount: notices.length,
-        itemBuilder: (context, index) {
-          final notice = notices[index];
-          return Card(
-            child: ListTile(
-              title: Text(notice.contentTitle),
-              subtitle: Text(DateUtils.convertDateLocale(notice.pubDate,
-                  AppLocalizations.of(context).locale.toString())),
-            ),
-          );
+      return BlocListener<AttachmentDownloadBloc, AttachmentDownloadState>(
+        listener: (context, state) {
+          if (state is AttachmentDownloadLoading) {
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Loading...'),
+              ),
+            );
+          }
+
+          if (state is AttachmentDownloadLoaded) {
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Downloaded...'),
+              ),
+            );
+          }
         },
+        child: ListView.builder(
+          itemCount: notices.length,
+          itemBuilder: (context, index) {
+            final notice = notices[index];
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: ListTile(
+                  title: Text(notice.contentTitle),
+                  subtitle: Text(
+                    DateUtils.convertDateLocale(notice.pubDate,
+                        AppLocalizations.of(context).locale.toString()),
+                  ),
+                  trailing: notice.readStatus
+                      ? Icon(
+                          Icons.mail,
+                          color: Colors.red,
+                        )
+                      : Icon(
+                          Icons.mail,
+                          color: Colors.red,
+                        ),
+                  onTap: () async {
+                    final file = await _localFile;
+                    print(file.exists());
+                    // BlocProvider.of<AttachmentDownloadBloc>(context).add(
+                    //     DownloadAttachment(
+                    //         pubId: notice.pubId, attachmentNumber: 1));
+                  },
+                ),
+              ),
+            );
+          },
+        ),
       );
     }
 
@@ -96,5 +142,15 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
       },
     );
+  }
+
+  Future<String> get _localPath async {
+    //final directory = await getApplicationDocumentsDirectory();
+    //return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    //final path = await _localPath;
+    //return File('$path/counter.txt');
   }
 }
