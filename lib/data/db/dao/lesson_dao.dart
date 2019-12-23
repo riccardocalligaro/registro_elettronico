@@ -20,14 +20,14 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
       .go();
 
   /// Gets only the lessons that are not 'sostegno'
-  Stream<List<Lesson>> watchRelevantLessons() => (select(lessons)
-        ..where((lesson) =>
-            not(lesson.subjectCode.equals(RegistroConstants.SOSTEGNO)))
-        ..orderBy([
-          (lesson) =>
-              OrderingTerm(expression: lesson.date, mode: OrderingMode.desc)
-        ]))
-      .watch();
+  // Stream<List<Lesson>> watchRelevantLessons() => (select(lessons)
+  //       ..where((lesson) =>
+  //           not(lesson.subjectCode.equals(RegistroConstants.SOSTEGNO)))
+  //       ..orderBy([
+  //         (lesson) =>
+  //             OrderingTerm(expression: lesson.date, mode: OrderingMode.desc)
+  //       ]))
+  //     .watch();
 
   /// Gets the lesson ignoring sostegno
   Stream<List<Lesson>> watchRelevantLessonsOfToday(DateTime today) =>
@@ -73,7 +73,20 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   Stream<List<Lesson>> watchLastLessons() {
     return customSelectQuery(
       """ SELECT * FROM lessons WHERE date IN (SELECT max(date) FROM lessons)""",
-      readsFrom: {lessons},
+      readsFrom: {
+        lessons,
+      },
+    ).watch().map((rows) {
+      return rows.map((row) => Lesson.fromData(row.data, db)).toList();
+    });
+  }
+
+  Stream<List<Lesson>> watchRelevantLessons() {
+    return customSelectQuery(
+      """ SELECT * FROM lessons GROUP BY lesson_arg ORDER BY date DESC""",
+      readsFrom: {
+        lessons,
+      },
     ).watch().map((rows) {
       return rows.map((row) => Lesson.fromData(row.data, db)).toList();
     });

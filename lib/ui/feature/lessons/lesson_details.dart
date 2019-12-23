@@ -81,12 +81,14 @@ class _LessonDetailsState extends State<LessonDetails> {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {
         this._searchIcon = new Icon(Icons.close);
-
+        // todo: group
         this._appBarTitle = new TextField(
           controller: _filter,
+          autofocus: true,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.search),
-            hintText: 'Search...',
+            hintText: "${AppLocalizations.of(context).translate('search')}...",
+            border: InputBorder.none,
           ),
         );
       } else {
@@ -138,6 +140,13 @@ class _LessonDetailsState extends State<LessonDetails> {
                 )),
               );
             },
+          );
+        }
+        if (_searchText.isNotEmpty) {
+          return CustomPlaceHolder(
+            text: AppLocalizations.of(context).translate('no_lessons'),
+            icon: Icons.assignment,
+            showUpdate: false,
           );
         } else {
           return CustomPlaceHolder(

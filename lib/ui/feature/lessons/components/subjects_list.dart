@@ -34,12 +34,14 @@ class SubjectsList extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LessonDetails(
-                                subjectId: subject.id,
-                                subjectName: _getReducedName(subject.name),
-                              )));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LessonDetails(
+                        subjectId: subject.id,
+                        subjectName: _getReducedName(subject.name),
+                      ),
+                    ),
+                  );
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -77,7 +79,6 @@ class SubjectsList extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    // todo: fix overflow
                                     professorsText,
                                     style: TextStyle(),
                                   )
