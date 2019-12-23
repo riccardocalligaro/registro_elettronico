@@ -108,13 +108,14 @@ class _AppDrawerState extends State<AppDrawer> {
             pos: 10,
           ),
           _createDrawerItem(
-              icon: Icons.exit_to_app,
-              text: "Logout",
-              onTap: () {
-                BlocProvider.of<AuthBloc>(context).add(SignOut());
-                AppNavigator.instance.navToLogin(context);
-              },
-              pos: 11)
+            icon: Icons.exit_to_app,
+            text: "Logout",
+            onTap: () {
+              BlocProvider.of<AuthBloc>(context).add(SignOut());
+              AppNavigator.instance.navToLogin(context);
+            },
+            pos: 11,
+          )
         ],
       ),
     );
@@ -136,7 +137,7 @@ class _AppDrawerState extends State<AppDrawer> {
         }
 
         return UserAccountsDrawerHeader(
-          accountEmail: Text(ident),
+          accountEmail: Text(ident, style: Theme.of(context).primaryTextTheme.body1.copyWith(color: Colors.white)),
           accountName: Text("$firstName $lastName"),
           currentAccountPicture: CircleAvatar(
             child: Text(firstName[0] + lastName[0]),
@@ -149,14 +150,18 @@ class _AppDrawerState extends State<AppDrawer> {
     );
   }
 
-  Widget _createDrawerItem(
-      {IconData icon, String text, GestureTapCallback onTap, int pos}) {
+  Widget _createDrawerItem({
+    IconData icon,
+    String text,
+    GestureTapCallback onTap,
+    int pos,
+  }) {
     return ListTile(
       title: Row(
         children: <Widget>[
           Icon(
             icon,
-            color: selectedList[pos] == true ? Colors.red : Colors.black,
+            color: selectedList[pos] == true ? Colors.red : Theme.of(context).primaryIconTheme.color,
           ),
           Padding(
             padding: EdgeInsets.only(left: 8.0),

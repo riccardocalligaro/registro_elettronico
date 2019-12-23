@@ -45,7 +45,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         position: DrawerConstants.NOTICE_BOARD,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
         child: Container(
           child: _buildNoticeBoard(),
         ),
@@ -60,7 +60,10 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           return Text(state.error);
         }
         if (state is NoticesLoaded) {
-          return _buildNoticeBoardList(state.notices);
+          return RefreshIndicator(
+            onRefresh: _refreshNoticeBoard,
+            child: _buildNoticeBoardList(state.notices),
+          );
         }
 
         if (state is NoticesUpdateLoading) {
@@ -75,7 +78,9 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           );
         }
 
-        return Text(state.toString());
+        return Center(
+          child: CircularProgressIndicator(),
+        );
       },
     );
   }
@@ -256,5 +261,10 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
     final ext = attachment.fileName.split('.').last;
 
     return File('$path/${notice.contentTitle.replaceAll(' ', '_')}.$ext');
+  }
+
+  Future<void> _refreshNoticeBoard() async {
+    BlocProvider.of<NoticesBloc>(context).add(FetchNoticeboard());
+    BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
   }
 }

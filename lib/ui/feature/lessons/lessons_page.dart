@@ -34,7 +34,6 @@ class _LessonsPageState extends State<LessonsPage> {
         scaffoldKey: _drawerKey,
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 12.0),
         child: _buildSubjectsList(context),
       ),
     );

@@ -28,20 +28,23 @@ class SubjectsList extends StatelessWidget {
           });
           professorsText = StringUtils.removeLastChar(professorsText);
 
-          return Material(
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LessonDetails(
-                              subjectId: subject.id,
-                              subjectName: _getReducedName(subject.name),
-                            )));
-              },
-              child: Container(
-                  padding: EdgeInsets.fromLTRB(8.0, 8.0, 16.0, 8.0),
-                  child: Column(
+          return Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Material(
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LessonDetails(
+                                subjectId: subject.id,
+                                subjectName: _getReducedName(subject.name),
+                              )));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Container(
+                      child: Column(
                     children: <Widget>[
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,6 +89,8 @@ class SubjectsList extends StatelessWidget {
                       ),
                     ],
                   )),
+                ),
+              ),
             ),
           );
         },

@@ -15,25 +15,7 @@ class GradeSubjectCard extends StatelessWidget {
     final averages =
         GlobalUtils.getSubjectAveragesFromGrades(grades, subject.id);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey[300],
-            blurRadius: 20.0, // has the effect of softening the shadow
-            spreadRadius: 1.0, // has the effect of extending the shadow
-            offset: Offset(
-              1.0, // horizontal, move right 10
-              0.0, // vertical, move down 10
-            ),
-          )
-        ],
-      ),
-
-      //color: Colors.red,
-      padding: EdgeInsets.all(8.0),
+    return Card(
       child: Row(
         children: <Widget>[
           Padding(
@@ -64,7 +46,10 @@ class GradeSubjectCard extends StatelessWidget {
               Container(
                 height: 15,
                 decoration: BoxDecoration(color: Colors.green),
-                child: Text('Devi prendere almeno 10', style: TextStyle(color: Colors.white, fontSize: 9),),
+                child: Text(
+                  'Devi prendere almeno 10',
+                  style: TextStyle(color: Colors.white, fontSize: 9),
+                ),
               )
             ],
           )

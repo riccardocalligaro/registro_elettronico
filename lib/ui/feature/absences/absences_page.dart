@@ -125,7 +125,7 @@ class _AbsencesPageState extends State<AbsencesPage>
       margin: EdgeInsets.zero,
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-      color: Colors.white,
+      
       child: Column(
         children: <Widget>[
           Padding(

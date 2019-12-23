@@ -16,22 +16,7 @@ class GradesOverallStats extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey[300],
-              blurRadius: 20.0,
-              spreadRadius: 1.0,
-              offset: Offset(
-                1.0,
-                0.0,
-              ),
-            )
-          ],
-        ),
+      child: Card(
         child: Container(
           padding: EdgeInsets.all(16.0),
           child: _getStats(),
@@ -70,29 +55,6 @@ class GradesOverallStats extends StatelessWidget {
                   .toList()
                     ..sort((b, a) => b.eventDate.compareTo(a.eventDate))),
         ),
-        // Wrap(
-        //   alignment: WrapAlignment.center,
-        //   crossAxisAlignment: WrapCrossAlignment.start,
-        //   direction: Axis.vertical,
-        //   children: <Widget>[
-        //     Text('Sufficienze: ${stats.sufficienze}',
-        //         style: TextStyle(fontSize: 15)),
-        //     Text(
-        //       'Insufficienze: ${stats.insufficienze}',
-        //       style: TextStyle(fontSize: 15),
-        //     ),
-        //     Text('Voto minimo: ${stats.votoMin}',
-        //         style: TextStyle(fontSize: 15)),
-        //     Text('Voto massimo: ${stats.votoMin}',
-        //         style: TextStyle(fontSize: 15)),
-        //     Text('Voto max: ${stats.bestSubject.name}',
-        //         style: TextStyle(fontSize: 15)),
-        //     Text(
-        //         'Miglior materia:  ${GlobalUtils.reduceSubjectTitle(stats.worstSubject.name)}',
-        //         style: TextStyle(fontSize: 15)),
-        //     Text('Crediti:  ${stats.votoMax}', style: TextStyle(fontSize: 15)),
-        //   ],
-        // ),
       ],
     );
   }

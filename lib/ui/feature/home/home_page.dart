@@ -15,6 +15,7 @@ import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/ui/global/theme/ui/theme_settings_page.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
@@ -138,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                                 Text(
                                   AppLocalizations.of(context)
                                       .translate('notice_board'),
-                                  style: Theme.of(context).textTheme.headline,
+                                  style: Theme.of(context).textTheme.headline.copyWith(fontSize: 14),
                                 ),
                                 Text(
                                   trans.translate("discover_all_notice"),
@@ -157,7 +158,13 @@ class _HomePageState extends State<HomePage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(18.0),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ThemeSettingPage()),
+                                );
+                              },
                             ),
                           ],
                         ),

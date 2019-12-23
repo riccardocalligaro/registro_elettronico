@@ -41,13 +41,13 @@ class _GradesPageState extends State<GradesPage> {
             length: periods.length + 2,
             child: Scaffold(
               appBar: AppBar(
-                backgroundColor: Colors.white,
                 elevation: 0.0,
                 textTheme: Theme.of(context).textTheme,
+                iconTheme: Theme.of(context).primaryIconTheme,
                 bottom: TabBar(
                   isScrollable: true,
                   indicatorColor: Colors.red,
-                  labelColor: Colors.black,
+                  labelColor: Theme.of(context).primaryTextTheme.headline.color,
                   tabs: _getTabBar(periods),
                 ),
                 title: Text(AppLocalizations.of(context).translate('grades')),
@@ -148,17 +148,4 @@ class _GradesPageState extends State<GradesPage> {
       ),
     );
   }
-
-  /// Stream builder for the average chart
-  // StreamBuilder _buildChart() {
-  //   return StreamBuilder(
-  //     stream: BlocProvider.of<GradesBloc>(context).watchAllGradesOrdered(),
-  //     initialData: List<Grade>(),
-  //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-  //       return GradesChart(
-  //         grades: snapshot.data,
-  //       );
-  //     },
-  //   );
-  // }
 }

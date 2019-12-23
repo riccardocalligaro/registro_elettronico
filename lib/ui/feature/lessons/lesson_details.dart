@@ -50,7 +50,6 @@ class _LessonDetailsState extends State<LessonDetails> {
   void initState() {
     _appBarTitle = Text(
       widget.subjectName,
-      style: TextStyle(color: Colors.black),
     );
     super.initState();
   }
@@ -92,7 +91,7 @@ class _LessonDetailsState extends State<LessonDetails> {
         );
       } else {
         this._searchIcon = new Icon(Icons.search);
-        this._appBarTitle = new Text('Search Example');
+        this._appBarTitle = new Text(widget.subjectName);
         //filteredNames = names;
         _filter.clear();
       }
