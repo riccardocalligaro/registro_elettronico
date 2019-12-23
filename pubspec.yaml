@@ -37,6 +37,7 @@ dependencies:
   # for percentage
   percent_indicator: ^2.1.1+1
   # for files
+  path_provider: ^1.5.1
 
   # Storing user password
   shared_preferences: ^0.5.4+8

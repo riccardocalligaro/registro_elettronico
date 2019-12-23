@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/notices/attachment_download/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notices/bloc.dart';
@@ -92,7 +93,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           if (state is AttachmentDownloadLoaded) {
             Scaffold.of(context).showSnackBar(
               SnackBar(
-                content: Text('Downloaded...'),
+                content: Text(state.path),
               ),
             );
           }
@@ -120,11 +121,15 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                           color: Colors.red,
                         ),
                   onTap: () async {
-                    final file = await _localFile;
-                    print(file.exists());
-                    // BlocProvider.of<AttachmentDownloadBloc>(context).add(
-                    //     DownloadAttachment(
-                    //         pubId: notice.pubId, attachmentNumber: 1));
+                    final file = await _localFile(notice);
+                    if (file.existsSync()) {
+                      print("Exists!");
+                    } else {
+                      print('Not exists!');
+                      BlocProvider.of<AttachmentDownloadBloc>(context).add(
+                          DownloadAttachment(
+                              notice: notice, attachmentNumber: 1));
+                    }
                   },
                 ),
               ),
@@ -145,12 +150,12 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   }
 
   Future<String> get _localPath async {
-    //final directory = await getApplicationDocumentsDirectory();
-    //return directory.path;
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
   }
 
-  Future<File> get _localFile async {
-    //final path = await _localPath;
-    //return File('$path/counter.txt');
+  Future<File> _localFile(Notice notice) async {
+    final path = await _localPath;
+    return File('$path/${notice.contentTitle.replaceAll(' ', '_')}');
   }
 }

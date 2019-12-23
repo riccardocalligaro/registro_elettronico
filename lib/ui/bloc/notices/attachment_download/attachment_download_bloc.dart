@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/domain/repository/notices_repository.dart';
 import './bloc.dart';
 
@@ -18,8 +21,30 @@ class AttachmentDownloadBloc
   ) async* {
     if (event is DownloadAttachment) {
       yield AttachmentDownloadLoading();
-      await Future.delayed(Duration(seconds: 1));
+      try {
+        final response = await noticesRepository.downloadFile(
+            pubId: event.notice.pubId, eventCode: event.notice.eventCode, attachNum: 1);
+        print(response.toString());
+        final path = await _localPath;
+        final filePath =
+            '$path/${event.notice.contentTitle.replaceAll(' ', '_')}';
+        File file = File(filePath);
+        var raf = file.openSync(mode: FileMode.write);
+        raf.writeFromSync(response);
+        await raf.close();
+        yield AttachmentDownloadLoaded(filePath);
+      } on DioError catch (e) {
+        yield AttachmentDownloadError(e.toString());
+      } catch (e) {
+        yield AttachmentDownloadError(e.toString());
+      }
+
       yield AttachmentDownloadLoaded('');
     }
+  }
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
   }
 }

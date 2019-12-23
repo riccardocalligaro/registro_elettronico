@@ -52,4 +52,20 @@ class NoticesRepositoryImpl implements NoticesRepository {
   Future updateNotice(Notice notice) {
     return noticeDao.updateNotice(notice);
   }
+
+  @override
+  Future<List<int>> downloadFile(
+      {String eventCode, int pubId, int attachNum}) async {
+    print("REQUEST!!");
+    final profile = await profileDao.getProfile();
+    print("PROFIILE!!");
+
+    final res = await spaggiariClient.readNotice(
+        profile.studentId, eventCode, pubId.toString(), attachNum.toString());
+
+    // final file = spaggiariClient.getNotice(
+    //     profile.studentId, eventCode, pubId.toString(), attachNum.toString());
+    print("FILE!!");
+    return null;
+  }
 }

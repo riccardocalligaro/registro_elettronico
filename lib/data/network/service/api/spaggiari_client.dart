@@ -61,10 +61,10 @@ abstract class SpaggiariClient {
   @POST(
       "/students/{studentId}/noticeboard/read/{eventCode}/{pubId}/{attachNum}")
   Future<NoticeboardReadResponse> readNotice(
-    @Path() String studentId,
+    @Path('studentId') String studentId,
     @Path('eventCode') String eventCode,
-    @Path('pubId') int pubId,
-    @Path('attachNum') int attachNum,
+    @Path('pubId') String pubId,
+    @Path('attachNum') String attachNum,
   );
 
   /// After the post request to read the notice you can get the attachment
@@ -72,9 +72,9 @@ abstract class SpaggiariClient {
       "/students/{studentId}/noticeboard/attach/{eventCode}/{pubId}/{attachNum}")
   @DioResponseType(ResponseType.bytes)
   Future<List<int>> getNotice(
-    @Path() String studentId,
+    @Path('studentId') String studentId,
     @Path('eventCode') String eventCode,
-    @Path('pubId') int pubId,
-    @Path('attachNum') int attachNum,
+    @Path('pubId') String pubId,
+    @Path('attachNum') String attachNum,
   );
 }

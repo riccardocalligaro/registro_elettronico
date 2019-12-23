@@ -22,6 +22,7 @@ class Notices extends Table {
   IntColumn get pubId => integer()();
   DateTimeColumn get pubDate => dateTime()();
   BoolColumn get readStatus => boolean()();
+  TextColumn get eventCode => text()();
   IntColumn get contentId => integer()();
   DateTimeColumn get contentValidFrom => dateTime()();
   DateTimeColumn get contentValidTo => dateTime()();

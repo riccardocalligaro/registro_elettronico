@@ -199,8 +199,14 @@ class _SpaggiariClient implements SpaggiariClient {
     ArgumentError.checkNotNull(pubId, 'pubId');
     ArgumentError.checkNotNull(attachNum, 'attachNum');
     const _extra = <String, dynamic>{};
+    print(_extra);
+
     final queryParameters = <String, dynamic>{};
+    print(queryParameters);
+
     final _data = <String, dynamic>{};
+    print(_data);
+
     final Response<Map<String, dynamic>> _result = await _dio.request(
         '/students/$studentId/noticeboard/read/$eventCode/$pubId/$attachNum',
         queryParameters: queryParameters,
@@ -210,6 +216,8 @@ class _SpaggiariClient implements SpaggiariClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
+
+    print('${this.baseUrl}/students/$studentId/noticeboard/read/$eventCode/$pubId/$attachNum')
     final value = NoticeboardReadResponse.fromJson(_result.data);
     return Future.value(value);
   }

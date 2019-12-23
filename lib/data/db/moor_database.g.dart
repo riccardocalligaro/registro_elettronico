@@ -3758,6 +3758,7 @@ class Notice extends DataClass implements Insertable<Notice> {
   final int pubId;
   final DateTime pubDate;
   final bool readStatus;
+  final String eventCode;
   final int contentId;
   final DateTime contentValidFrom;
   final DateTime contentValidTo;
@@ -3775,6 +3776,7 @@ class Notice extends DataClass implements Insertable<Notice> {
       {@required this.pubId,
       @required this.pubDate,
       @required this.readStatus,
+      @required this.eventCode,
       @required this.contentId,
       @required this.contentValidFrom,
       @required this.contentValidTo,
@@ -3801,6 +3803,8 @@ class Notice extends DataClass implements Insertable<Notice> {
           .mapFromDatabaseResponse(data['${effectivePrefix}pub_date']),
       readStatus: boolType
           .mapFromDatabaseResponse(data['${effectivePrefix}read_status']),
+      eventCode: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}event_code']),
       contentId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}content_id']),
       contentValidFrom: dateTimeType.mapFromDatabaseResponse(
@@ -3835,6 +3839,7 @@ class Notice extends DataClass implements Insertable<Notice> {
       pubId: serializer.fromJson<int>(json['pubId']),
       pubDate: serializer.fromJson<DateTime>(json['pubDate']),
       readStatus: serializer.fromJson<bool>(json['readStatus']),
+      eventCode: serializer.fromJson<String>(json['eventCode']),
       contentId: serializer.fromJson<int>(json['contentId']),
       contentValidFrom: serializer.fromJson<DateTime>(json['contentValidFrom']),
       contentValidTo: serializer.fromJson<DateTime>(json['contentValidTo']),
@@ -3858,6 +3863,7 @@ class Notice extends DataClass implements Insertable<Notice> {
       'pubId': serializer.toJson<int>(pubId),
       'pubDate': serializer.toJson<DateTime>(pubDate),
       'readStatus': serializer.toJson<bool>(readStatus),
+      'eventCode': serializer.toJson<String>(eventCode),
       'contentId': serializer.toJson<int>(contentId),
       'contentValidFrom': serializer.toJson<DateTime>(contentValidFrom),
       'contentValidTo': serializer.toJson<DateTime>(contentValidTo),
@@ -3885,6 +3891,9 @@ class Notice extends DataClass implements Insertable<Notice> {
       readStatus: readStatus == null && nullToAbsent
           ? const Value.absent()
           : Value(readStatus),
+      eventCode: eventCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(eventCode),
       contentId: contentId == null && nullToAbsent
           ? const Value.absent()
           : Value(contentId),
@@ -3931,6 +3940,7 @@ class Notice extends DataClass implements Insertable<Notice> {
           {int pubId,
           DateTime pubDate,
           bool readStatus,
+          String eventCode,
           int contentId,
           DateTime contentValidFrom,
           DateTime contentValidTo,
@@ -3948,6 +3958,7 @@ class Notice extends DataClass implements Insertable<Notice> {
         pubId: pubId ?? this.pubId,
         pubDate: pubDate ?? this.pubDate,
         readStatus: readStatus ?? this.readStatus,
+        eventCode: eventCode ?? this.eventCode,
         contentId: contentId ?? this.contentId,
         contentValidFrom: contentValidFrom ?? this.contentValidFrom,
         contentValidTo: contentValidTo ?? this.contentValidTo,
@@ -3968,6 +3979,7 @@ class Notice extends DataClass implements Insertable<Notice> {
           ..write('pubId: $pubId, ')
           ..write('pubDate: $pubDate, ')
           ..write('readStatus: $readStatus, ')
+          ..write('eventCode: $eventCode, ')
           ..write('contentId: $contentId, ')
           ..write('contentValidFrom: $contentValidFrom, ')
           ..write('contentValidTo: $contentValidTo, ')
@@ -3993,31 +4005,35 @@ class Notice extends DataClass implements Insertable<Notice> {
           $mrjc(
               readStatus.hashCode,
               $mrjc(
-                  contentId.hashCode,
+                  eventCode.hashCode,
                   $mrjc(
-                      contentValidFrom.hashCode,
+                      contentId.hashCode,
                       $mrjc(
-                          contentValidTo.hashCode,
+                          contentValidFrom.hashCode,
                           $mrjc(
-                              contentValidInRange.hashCode,
+                              contentValidTo.hashCode,
                               $mrjc(
-                                  contentStatus.hashCode,
+                                  contentValidInRange.hashCode,
                                   $mrjc(
-                                      contentTitle.hashCode,
+                                      contentStatus.hashCode,
                                       $mrjc(
-                                          contentCategory.hashCode,
+                                          contentTitle.hashCode,
                                           $mrjc(
-                                              contentHasChanged.hashCode,
+                                              contentCategory.hashCode,
                                               $mrjc(
-                                                  contentHasAttach.hashCode,
+                                                  contentHasChanged.hashCode,
                                                   $mrjc(
-                                                      needJoin.hashCode,
+                                                      contentHasAttach.hashCode,
                                                       $mrjc(
-                                                          needReply.hashCode,
+                                                          needJoin.hashCode,
                                                           $mrjc(
-                                                              needFile.hashCode,
-                                                              eventId
-                                                                  .hashCode))))))))))))))));
+                                                              needReply
+                                                                  .hashCode,
+                                                              $mrjc(
+                                                                  needFile
+                                                                      .hashCode,
+                                                                  eventId
+                                                                      .hashCode)))))))))))))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -4025,6 +4041,7 @@ class Notice extends DataClass implements Insertable<Notice> {
           other.pubId == this.pubId &&
           other.pubDate == this.pubDate &&
           other.readStatus == this.readStatus &&
+          other.eventCode == this.eventCode &&
           other.contentId == this.contentId &&
           other.contentValidFrom == this.contentValidFrom &&
           other.contentValidTo == this.contentValidTo &&
@@ -4044,6 +4061,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
   final Value<int> pubId;
   final Value<DateTime> pubDate;
   final Value<bool> readStatus;
+  final Value<String> eventCode;
   final Value<int> contentId;
   final Value<DateTime> contentValidFrom;
   final Value<DateTime> contentValidTo;
@@ -4061,6 +4079,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
     this.pubId = const Value.absent(),
     this.pubDate = const Value.absent(),
     this.readStatus = const Value.absent(),
+    this.eventCode = const Value.absent(),
     this.contentId = const Value.absent(),
     this.contentValidFrom = const Value.absent(),
     this.contentValidTo = const Value.absent(),
@@ -4079,6 +4098,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
     @required int pubId,
     @required DateTime pubDate,
     @required bool readStatus,
+    @required String eventCode,
     @required int contentId,
     @required DateTime contentValidFrom,
     @required DateTime contentValidTo,
@@ -4095,6 +4115,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
   })  : pubId = Value(pubId),
         pubDate = Value(pubDate),
         readStatus = Value(readStatus),
+        eventCode = Value(eventCode),
         contentId = Value(contentId),
         contentValidFrom = Value(contentValidFrom),
         contentValidTo = Value(contentValidTo),
@@ -4112,6 +4133,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
       {Value<int> pubId,
       Value<DateTime> pubDate,
       Value<bool> readStatus,
+      Value<String> eventCode,
       Value<int> contentId,
       Value<DateTime> contentValidFrom,
       Value<DateTime> contentValidTo,
@@ -4129,6 +4151,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
       pubId: pubId ?? this.pubId,
       pubDate: pubDate ?? this.pubDate,
       readStatus: readStatus ?? this.readStatus,
+      eventCode: eventCode ?? this.eventCode,
       contentId: contentId ?? this.contentId,
       contentValidFrom: contentValidFrom ?? this.contentValidFrom,
       contentValidTo: contentValidTo ?? this.contentValidTo,
@@ -4181,6 +4204,18 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
   GeneratedBoolColumn _constructReadStatus() {
     return GeneratedBoolColumn(
       'read_status',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _eventCodeMeta = const VerificationMeta('eventCode');
+  GeneratedTextColumn _eventCode;
+  @override
+  GeneratedTextColumn get eventCode => _eventCode ??= _constructEventCode();
+  GeneratedTextColumn _constructEventCode() {
+    return GeneratedTextColumn(
+      'event_code',
       $tableName,
       false,
     );
@@ -4363,6 +4398,7 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
         pubId,
         pubDate,
         readStatus,
+        eventCode,
         contentId,
         contentValidFrom,
         contentValidTo,
@@ -4404,6 +4440,12 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
           readStatus.isAcceptableValue(d.readStatus.value, _readStatusMeta));
     } else if (readStatus.isRequired && isInserting) {
       context.missing(_readStatusMeta);
+    }
+    if (d.eventCode.present) {
+      context.handle(_eventCodeMeta,
+          eventCode.isAcceptableValue(d.eventCode.value, _eventCodeMeta));
+    } else if (eventCode.isRequired && isInserting) {
+      context.missing(_eventCodeMeta);
     }
     if (d.contentId.present) {
       context.handle(_contentIdMeta,
@@ -4521,6 +4563,9 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
     }
     if (d.readStatus.present) {
       map['read_status'] = Variable<bool, BoolType>(d.readStatus.value);
+    }
+    if (d.eventCode.present) {
+      map['event_code'] = Variable<String, StringType>(d.eventCode.value);
     }
     if (d.contentId.present) {
       map['content_id'] = Variable<int, IntType>(d.contentId.value);
