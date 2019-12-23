@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 
 abstract class NoticesRepository {
@@ -9,7 +10,11 @@ abstract class NoticesRepository {
 
   Future<List<Attachment>> getAttachmentsForPubId(int pubId);
 
-  Future<List<int>> downloadFile({String eventCode, int pubId, int attachNum});
+  Future<List<int>> downloadFile({
+    @required String eventCode,
+    @required int pubId,
+    @required int attachNumber,
+  });
 
   Future insertNotice(Notice notice);
 

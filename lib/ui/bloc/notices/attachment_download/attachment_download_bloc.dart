@@ -23,7 +23,10 @@ class AttachmentDownloadBloc
       yield AttachmentDownloadLoading();
       try {
         final response = await noticesRepository.downloadFile(
-            pubId: event.notice.pubId, eventCode: event.notice.eventCode, attachNum: 1);
+          pubId: event.notice.pubId,
+          eventCode: event.notice.eventCode,
+          attachNumber: 1,
+        );
         print(response.toString());
         final path = await _localPath;
         final filePath =

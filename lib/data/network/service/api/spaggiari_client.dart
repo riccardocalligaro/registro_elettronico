@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
 import 'package:registro_elettronico/component/api_config.dart';
 import 'package:registro_elettronico/domain/entity/api_requests/login_request.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/absences_response.dart';
@@ -58,23 +58,21 @@ abstract class SpaggiariClient {
   Future<NoticeboardResponse> getNoticeBoard(@Path() String studentId);
 
   // Notice board
-  @POST(
-      "/students/{studentId}/noticeboard/read/{eventCode}/{pubId}/{attachNum}")
+  @POST("/students/{studentId}/noticeboard/read/{eventCode}/{pubId}/101")
   Future<NoticeboardReadResponse> readNotice(
-    @Path('studentId') String studentId,
-    @Path('eventCode') String eventCode,
-    @Path('pubId') String pubId,
-    @Path('attachNum') String attachNum,
-  );
+      @Path('studentId') String studentId,
+      @Path('eventCode') String eventCode,
+      @Path('pubId') String pubId,
+      @Body() String body);
 
   /// After the post request to read the notice you can get the attachment
   @GET(
-      "/students/{studentId}/noticeboard/attach/{eventCode}/{pubId}/{attachNum}")
+      "/students/{studentId}/noticeboard/attach/{eventCode}/{pubId}/{attachNumber}")
   @DioResponseType(ResponseType.bytes)
   Future<List<int>> getNotice(
     @Path('studentId') String studentId,
     @Path('eventCode') String eventCode,
     @Path('pubId') String pubId,
-    @Path('attachNum') String attachNum,
+    @Path('attachNumber') String attachNum,
   );
 }

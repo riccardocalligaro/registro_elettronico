@@ -193,22 +193,16 @@ class _SpaggiariClient implements SpaggiariClient {
   }
 
   @override
-  readNotice(studentId, eventCode, pubId, attachNum) async {
+  readNotice(studentId, eventCode, pubId, body) async {
     ArgumentError.checkNotNull(studentId, 'studentId');
     ArgumentError.checkNotNull(eventCode, 'eventCode');
     ArgumentError.checkNotNull(pubId, 'pubId');
-    ArgumentError.checkNotNull(attachNum, 'attachNum');
+    ArgumentError.checkNotNull(body, 'body');
     const _extra = <String, dynamic>{};
-    print(_extra);
-
     final queryParameters = <String, dynamic>{};
-    print(queryParameters);
-
-    final _data = <String, dynamic>{};
-    print(_data);
-
+    final _data = body;
     final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/noticeboard/read/$eventCode/$pubId/$attachNum',
+        '/students/$studentId/noticeboard/read/$eventCode/$pubId/101',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -216,8 +210,6 @@ class _SpaggiariClient implements SpaggiariClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-
-    print('${this.baseUrl}/students/$studentId/noticeboard/read/$eventCode/$pubId/$attachNum')
     final value = NoticeboardReadResponse.fromJson(_result.data);
     return Future.value(value);
   }

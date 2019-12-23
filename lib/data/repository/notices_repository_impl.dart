@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:registro_elettronico/data/db/dao/notice_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -54,18 +55,23 @@ class NoticesRepositoryImpl implements NoticesRepository {
   }
 
   @override
-  Future<List<int>> downloadFile(
-      {String eventCode, int pubId, int attachNum}) async {
-    print("REQUEST!!");
+  Future<List<int>> downloadFile({
+    @required String eventCode,
+    @required int pubId,
+    @required int attachNumber,
+  }) async {
     final profile = await profileDao.getProfile();
-    print("PROFIILE!!");
 
-    final res = await spaggiariClient.readNotice(
-        profile.studentId, eventCode, pubId.toString(), attachNum.toString());
+    await spaggiariClient.readNotice(
+        profile.studentId, eventCode, pubId.toString(), "");
 
-    // final file = spaggiariClient.getNotice(
-    //     profile.studentId, eventCode, pubId.toString(), attachNum.toString());
-    print("FILE!!");
-    return null;
+    final file = spaggiariClient.getNotice(
+      profile.studentId,
+      eventCode,
+      pubId.toString(),
+      attachNumber.toString(),
+    );
+    print("GOT IT!!");
+    return file;
   }
 }
