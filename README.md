@@ -14,11 +14,15 @@
 
 |                         Home Page 1                         |                         Home Page 2                          |                           Lessons                           |
 | :---------------------------------------------------------: | :----------------------------------------------------------: | :---------------------------------------------------------: |
-| <img src="https://i.imgur.com/7ZeM7zp.png" height="400px" > | <img src="https://i.imgur.com/Xdx6Sv0.png"  height="400px" > | <img src="https://i.imgur.com/uufV7zm.png" height="400px" > |
+| <img src="https://i.imgur.com/bVkuG8Y.png" height="400px" > | <img src="https://i.imgur.com/B24gPrs.png"  height="400px" > | <img src="https://i.imgur.com/VzlGctu.png" height="400px" > |
 
-|                           Agenda                            |                          Absences                           |
-| :---------------------------------------------------------: | :---------------------------------------------------------: |
-| <img src="https://i.imgur.com/XBLB2a2.png" height="400px" > | <img src="https://i.imgur.com/3pV7hCB.png" height="400px" > |
+|                       Lessons details                       |                         Last grades                         |                           Grades                            |
+| :---------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: |
+| <img src="https://i.imgur.com/Q4lZGyF.png" height="400px" > | <img src="https://i.imgur.com/Ne1KmZr.png" height="400px" > | <img src="https://i.imgur.com/kYjm6JG.png" height="400px" > |
+
+|                           Agenda                            |                          Absences                           |                         Noticeboard                         |
+| :---------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: |
+| <img src="https://i.imgur.com/SWp4dJ5.png" height="400px" > | <img src="https://i.imgur.com/JkVKOXK.png" height="400px" > | <img src="https://i.imgur.com/61uQrX9.png" height="400px" > |
 
 If you want to try the app (still alpha and a lot to do) feel free to contact [me.](mailto:riccardocalligaro@gmail.com)
 
