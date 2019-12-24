@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/component/navigator.dart';
+import 'package:registro_elettronico/component/notifications/local_notification.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
+
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
+import 'package:registro_elettronico/ui/feature/noticeboard/noticeboard_page.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/ui/global/theme/ui/theme_settings_page.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
@@ -160,12 +162,11 @@ class _HomePageState extends State<HomePage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(18.0),
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ThemeSettingPage()),
-                              );
+                            onPressed: () async {
+                              final LocalNotification localNotification =
+                                  LocalNotification(onSelectNotification);
+                              localNotification.showNotificationWithoutSound(
+                                  'Test!', 'Hey');
                             },
                           ),
                         ],
@@ -345,6 +346,16 @@ class _HomePageState extends State<HomePage> {
           );
         }
       },
+    );
+  }
+
+  Future onSelectNotification(String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
+    await Navigator.push(
+      context,
+      new MaterialPageRoute(builder: (context) => NoticeboardPage()),
     );
   }
 }

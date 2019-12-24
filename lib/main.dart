@@ -1,10 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:injector/injector.dart';
 import 'package:registro_elettronico/component/app_injection.dart';
+import 'package:registro_elettronico/component/notifications/notification_service.dart';
 import 'package:registro_elettronico/component/simple_bloc_delegate.dart';
-import 'package:registro_elettronico/notifications/notification_service.dart';
 import 'package:registro_elettronico/ui/application.dart';
 import 'package:registro_elettronico/ui/feature/splash_screen/splash_screen.dart';
 import 'package:workmanager/workmanager.dart';
@@ -14,34 +13,36 @@ import 'component/routes.dart';
 void callbackDispatcher() {
   Workmanager.executeTask((task, inputData) async {
     await NotificationService().checkForNewContent();
+
     return Future.value(true);
   });
 }
 
 void main() {
-  AppInjector.init();
-
-  WidgetsFlutterBinding.ensureInitialized();
-  Workmanager.initialize(
-    callbackDispatcher,
-    isInDebugMode: true,
-  );
-  Workmanager.registerOneOffTask("checkForNewContent", "checkForNewContent");
-
-  Workmanager.registerPeriodicTask(
-    "checkForNewContent",
-    "checkForNewContent",
-    // minimum is 15 minutes
-    frequency: Duration(hours: 2),
-  );
-
   initApp();
   // Finnaly run the app
   runApp(MyApp());
 }
 
 void initApp() {
+  // This is for the notification service
+  WidgetsFlutterBinding.ensureInitialized();
+  Workmanager.initialize(
+    callbackDispatcher,
+    isInDebugMode: true,
+  );
+  //Workmanager.registerOneOffTask("checkForNewContent", "checkForNewContent", initialDelay: Duration(seconds: 10));
+
+  // Workmanager.registerPeriodicTask(
+  //   "checkForNewContent",
+  //   "checkForNewContent",
+  //   // minimum is 15 minutes
+  //   frequency: Duration(hours: 2),
+  // );
+
   // Init the dependency injection -> compile-time dependency injection for Dart and Flutter, similar to Dagger.
+  AppInjector.init();
+
   // BloC supervisor delegate to show all the different states of the bloc
   BlocSupervisor.delegate = SimpleBlocDelegate();
 }

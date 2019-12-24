@@ -1,5 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:injector/injector.dart';
+import 'package:registro_elettronico/component/notifications/local_notification.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -11,6 +11,8 @@ import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart'
 import 'package:registro_elettronico/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
   //GradesRepository gradesRepository;
@@ -18,7 +20,6 @@ class NotificationService {
   //NotificationService(this.gradesRepository);
 
   Future checkForNewContent() async {
-    // We need to create a lot of objects!
     final GradeDao gradeDao = GradeDao(AppDatabase());
     final ProfileDao profileDao = ProfileDao(AppDatabase());
     final ProfileMapper profileMapper = ProfileMapper();
@@ -33,16 +34,43 @@ class NotificationService {
     final GradesRepository gradesRepository = GradesRepositoryImpl(
         gradeDao, spaggiariClient, gradeMapper, profileDao);
 
-    // final gradesBeforeFetching = await gradeDao.getAllGrades();
-    // await gradesRepository.updateGrades();
-    // final gradesAfterFetching = await gradeDao.getAllGrades();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final LocalNotification localNotification =
+        LocalNotification(onSelectNotification);
+    print("Before if!");
 
-    /// Checks the lenght of the lists, in case there is a difference
-    /// it should notify the user
-    // if (gradesBeforeFetching.length != gradesAfterFetching.length) {
-    //   print("New grades!");
-    // } else {
-    //   print("No new grades");
-    // }
+    //if (prefs.getBool('notify_grades') == false) {
+    final difference = await getGradesDifference(gradesRepository);
+
+    print("Difference " + difference.toString());
+    difference.forEach(
+      (grade) => localNotification.showNotificationWithDefaultSound(
+        grade.evtId,
+        'Nuovi voti!',
+        'Hai preso ${grade.decimalValue.toString()} in ${grade.subjectDesc}',
+      ),
+    );
+  }
+
+  Future<List<Grade>> getGradesDifference(
+      GradesRepository gradesRepository) async {
+    List<Grade> gradesToNotify = [];
+    final gradesBeforeFetching = await gradesRepository.getAllGrades();
+    final res = await gradesRepository.updateGrades();
+    final gradesAfterFetching = await gradesRepository.getAllGrades();
+
+    gradesAfterFetching.forEach(
+      (grade) => {
+        if (!gradesBeforeFetching.contains(grade)) gradesToNotify.add(grade)
+      },
+    );
+
+    return gradesToNotify;
+  }
+
+  Future onSelectNotification(String payload) async {
+    if (payload != null) {
+      print('notification payload: ' + payload);
+    }
   }
 }

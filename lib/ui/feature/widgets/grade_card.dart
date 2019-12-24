@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -12,6 +13,10 @@ class GradeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onDoubleTap: () {
+        GradeDao gradeDao = GradeDao(AppDatabase());
+        gradeDao.deleteGrade(grade);
+      },
       onTap: () {
         final trans = AppLocalizations.of(context);
         showDialog(
@@ -22,21 +27,23 @@ class GradeCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                      "${trans.translate('notes')}: ${grade.notesForFamily.length > 0 ? grade.notesForFamily : trans.translate('not_presents').toLowerCase()}", textAlign: TextAlign.center,),
+                    "${trans.translate('notes')}: ${grade.notesForFamily.length > 0 ? grade.notesForFamily : trans.translate('not_presents').toLowerCase()}",
+                    textAlign: TextAlign.center,
+                  ),
                   SizedBox(
                     height: 10,
                   ),
                   Text('Valore decimale: ${grade.decimalValue.toString()}'),
-                    SizedBox(
+                  SizedBox(
                     height: 5,
                   ),
                   Text(
                       '${trans.translate('date')}: ${DateUtils.convertDateLocale(grade.eventDate, trans.locale.toString())}'),
-                    SizedBox(
+                  SizedBox(
                     height: 5,
                   ),
                   Text('${trans.translate('term')}: ${grade.periodPos}'),
-                    SizedBox(
+                  SizedBox(
                     height: 5,
                   ),
                   Text('${trans.translate('weight')}: ${grade.weightFactor}'),

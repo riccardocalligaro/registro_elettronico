@@ -25,7 +25,8 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
   Future<List<Grade>> getAllGradesOrdered() {
     return (select(grades)
           ..orderBy([
-            (t) => OrderingTerm(expression: t.eventDate, mode: OrderingMode.desc)
+            (t) =>
+                OrderingTerm(expression: t.eventDate, mode: OrderingMode.desc)
           ]))
         .get();
   }
@@ -33,7 +34,8 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
   Stream<List<Grade>> watchAllGradesOrdered() {
     return (select(grades)
           ..orderBy([
-            (t) => OrderingTerm(expression: t.eventDate, mode: OrderingMode.desc)
+            (t) =>
+                OrderingTerm(expression: t.eventDate, mode: OrderingMode.desc)
           ]))
         .watch();
   }
@@ -59,4 +61,6 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
   Future deleteAllGrades() =>
       (delete(grades)..where((entry) => entry.evtId.isBiggerOrEqualValue(-1)))
           .go();
+          
+  Future deleteGrade(Grade grade) => delete(grades).delete(grade);
 }
