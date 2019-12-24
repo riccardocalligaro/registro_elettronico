@@ -8,4 +8,5 @@ abstract class DrawerConstants {
   static const ABSENCES = 5;
   static const NOTES = 6;
   static const NOTICE_BOARD = 7;
+  static const SETTINGS = 8;
 }

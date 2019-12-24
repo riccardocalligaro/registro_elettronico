@@ -42,16 +42,21 @@ class _GradesChartState extends State<GradesChart> {
 
       // good old for, rare these days
       for (int i = 0; i < grades.length; i++) {
-        sum += grades[i].decimalValue;
-        count++;
-        average = sum / count;
-        // with num.parse(average.toStringAsFixed(2)) we cut the decimal digits
-        spots.add(FlSpot(i.toDouble(), num.parse(average.toStringAsFixed(2))));
+        if (grades[i].decimalValue != -1.00) {
+          sum += grades[i].decimalValue;
+          count++;
+          average = sum / count;
+          // with num.parse(average.toStringAsFixed(2)) we cut the decimal digits
+          spots
+              .add(FlSpot(i.toDouble(), num.parse(average.toStringAsFixed(2))));
+        }
       }
     } else {
       // if we don't want to see the average we want to see the single grades during that time
       for (int i = 0; i < grades.length; i++) {
-        spots.add(FlSpot(i.toDouble(), grades[i].decimalValue));
+        if (grades[i].decimalValue != -1.00) {
+          spots.add(FlSpot(i.toDouble(), grades[i].decimalValue));
+        }
       }
     }
 

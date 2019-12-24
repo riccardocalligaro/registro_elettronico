@@ -95,7 +95,10 @@ class _AppDrawerState extends State<AppDrawer> {
           _createDrawerItem(
             icon: Icons.settings,
             text: trans.translate("settings"),
-            pos: 8,
+            pos: DrawerConstants.SETTINGS,
+            onTap: () {
+              AppNavigator.instance.navToSettings(context);
+            },
           ),
           _createDrawerItem(
             icon: Icons.share,
@@ -137,7 +140,11 @@ class _AppDrawerState extends State<AppDrawer> {
         }
 
         return UserAccountsDrawerHeader(
-          accountEmail: Text(ident, style: Theme.of(context).primaryTextTheme.body1.copyWith(color: Colors.white)),
+          accountEmail: Text(ident,
+              style: Theme.of(context)
+                  .primaryTextTheme
+                  .body1
+                  .copyWith(color: Colors.white)),
           accountName: Text("$firstName $lastName"),
           currentAccountPicture: CircleAvatar(
             child: Text(firstName[0] + lastName[0]),
@@ -161,7 +168,9 @@ class _AppDrawerState extends State<AppDrawer> {
         children: <Widget>[
           Icon(
             icon,
-            color: selectedList[pos] == true ? Colors.red : Theme.of(context).primaryIconTheme.color,
+            color: selectedList[pos] == true
+                ? Colors.red
+                : Theme.of(context).primaryIconTheme.color,
           ),
           Padding(
             padding: EdgeInsets.only(left: 8.0),

@@ -43,6 +43,8 @@ dependencies:
   # notifications
   workmanager: ^0.1.5
   flutter_local_notifications: ^0.8.4
+  # logging
+  logger: ^0.8.1
 
   # Storing user password
   shared_preferences: ^0.5.4+8

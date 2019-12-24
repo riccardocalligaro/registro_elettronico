@@ -42,6 +42,10 @@ class AppNavigator {
     Navigator.pushReplacementNamed(context, Routes.NOTICEBOARD);
   }
 
+  void navToSettings(BuildContext context) {
+    Navigator.pushReplacementNamed(context, Routes.SETTINGS);
+  }
+
   Future showMessageDialog(
       BuildContext context, String title, String message) async {
     await showDialog(

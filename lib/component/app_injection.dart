@@ -53,6 +53,8 @@ class AppInjector {
     injectMapper();
     // Only authbloc for now
     injectBloc();
+    // Inject shared preferences
+    injectSharedPreferences();
   }
 
   static void injectDatabase() {
@@ -242,5 +244,9 @@ class AppInjector {
     Injector.appInstance.registerSingleton((i) {
       return AuthBloc(i.getDependency(), i.getDependency(), i.getDependency());
     });
+  }
+
+  static void injectSharedPreferences() async {
+   
   }
 }

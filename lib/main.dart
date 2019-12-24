@@ -8,6 +8,8 @@ import 'package:registro_elettronico/ui/application.dart';
 import 'package:registro_elettronico/ui/feature/splash_screen/splash_screen.dart';
 import 'package:workmanager/workmanager.dart';
 
+import 'package:logging/logging.dart';
+
 import 'component/routes.dart';
 
 void callbackDispatcher() {
@@ -26,6 +28,8 @@ void main() {
 
 void initApp() {
   // This is for the notification service
+  setupLogging();
+
   WidgetsFlutterBinding.ensureInitialized();
   Workmanager.initialize(
     callbackDispatcher,
@@ -45,6 +49,13 @@ void initApp() {
 
   // BloC supervisor delegate to show all the different states of the bloc
   BlocSupervisor.delegate = SimpleBlocDelegate();
+}
+
+void setupLogging() {
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((LogRecord rec) {
+    print('${rec.level.name}: ${rec.time}: ${rec.message}');
+  });
 }
 
 /// Registro elettronico by Riccardo Calligaro
@@ -73,8 +84,6 @@ class MyApp extends StatelessWidget {
   _setSystemUI(Brightness brightness) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-//      statusBarIconBrightness: brightness,
-//      statusBarBrightness: brightness,
     ));
   }
 }

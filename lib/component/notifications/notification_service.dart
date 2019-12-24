@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/component/notifications/local_notification.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
@@ -12,6 +15,7 @@ import 'package:registro_elettronico/data/repository/profile_repository_impl.dar
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
@@ -43,6 +47,12 @@ class NotificationService {
     final difference = await getGradesDifference(gradesRepository);
 
     print("Difference " + difference.toString());
+
+    //final locale = Locale(Platform.localeName);
+    //final localizations = await AppLocalizations.delegate.load(locale);
+    //SharedPreferences preferences = await SharedPreferences.getInstance();
+    //print(preferences.getBool(PrefsConstants.GRADES_NOTIFICATIONS) ?? "false");
+
     difference.forEach(
       (grade) => localNotification.showNotificationWithDefaultSound(
         grade.evtId,
@@ -56,7 +66,7 @@ class NotificationService {
       GradesRepository gradesRepository) async {
     List<Grade> gradesToNotify = [];
     final gradesBeforeFetching = await gradesRepository.getAllGrades();
-    final res = await gradesRepository.updateGrades();
+    //final res = await gradesRepository.updateGrades();
     final gradesAfterFetching = await gradesRepository.getAllGrades();
 
     gradesAfterFetching.forEach(
