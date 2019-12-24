@@ -40,6 +40,8 @@ dependencies:
   path_provider: ^1.5.1
   #open downloaded file
   open_file: ^2.1.1
+  # notifications
+  workmanager: ^0.1.5
 
   # Storing user password
   shared_preferences: ^0.5.4+8
