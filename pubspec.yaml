@@ -42,6 +42,7 @@ dependencies:
   open_file: ^2.1.1
   # notifications
   workmanager: ^0.1.5
+  flutter_local_notifications: ^0.9.1
 
   # Storing user password
   shared_preferences: ^0.5.4+8

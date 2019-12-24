@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   // the title in the app bar
@@ -38,7 +39,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           scaffoldKey.currentState.openDrawer();
         },
       ),
-      actions: actions,
+      // actions: actions,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: () {
+            AppDatabase().resetDbWithoutProfile();
+          },
+        )
+      ],
     );
   }
 
