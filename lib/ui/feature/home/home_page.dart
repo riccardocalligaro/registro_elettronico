@@ -163,13 +163,12 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: new BorderRadius.circular(18.0),
                             ),
                             onPressed: () async {
-                              
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => ThemeSettingPage(),
-                              //   ),
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ThemeSettingPage(),
+                                ),
+                              );
                             },
                           ),
                         ],

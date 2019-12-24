@@ -33,7 +33,7 @@ class GradeCard extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  Text('Valore decimale: ${grade.decimalValue.toString()}'),
+                  Text('Valore decimale: ${grade.decimalValue == -1.0 ? "🤔" : grade.decimalValue.toString()}'),
                   SizedBox(
                     height: 5,
                   ),
@@ -109,7 +109,10 @@ class GradeCard extends StatelessWidget {
         text = text.substring(0, 39);
         text += "...";
       }
-      return Text(text);
+      return Text(
+        text,
+        style: TextStyle(color: Colors.white),
+      );
     }
     return Container();
   }
