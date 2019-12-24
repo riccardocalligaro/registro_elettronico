@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
-import 'package:registro_elettronico/ui/feature/settings/settings_page.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class NotificationsSettingsPage extends StatefulWidget {
-  NotificationsSettingsPage({Key key}) : super(key: key);
+class NotificationsSettingsDialog extends StatefulWidget {
+  NotificationsSettingsDialog({Key key}) : super(key: key);
 
   @override
-  _NotificationsSettingsPageState createState() =>
-      _NotificationsSettingsPageState();
+  _NotificationsSettingsDialogState createState() =>
+      _NotificationsSettingsDialogState();
 }
 
-class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
+class _NotificationsSettingsDialogState
+    extends State<NotificationsSettingsDialog> {
   bool _gradesNotifications = false;
   bool _agendaNotifications = false;
   bool _lessonsNotifications = false;
@@ -43,17 +44,12 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Notifications'),
-      ),
-      body: _buildNotificationsSection(),
-    );
+    return _buildNotificationsSection();
   }
 
   Widget _buildNotificationsSection() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -61,17 +57,19 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
             text: 'Choose what to notify',
           ),
           SwitchListTile(
+            activeColor: Colors.red,
             contentPadding: EdgeInsets.all(0.0),
-            value: _agendaNotifications,
+            value: _gradesNotifications,
             title: Text('Grades'),
             onChanged: (value) {
               setState(() {
-                _agendaNotifications = value;
+                _gradesNotifications = value;
               });
               save(PrefsConstants.GRADES_NOTIFICATIONS, value);
             },
           ),
           SwitchListTile(
+            activeColor: Colors.red,
             contentPadding: EdgeInsets.all(0.0),
             value: _agendaNotifications,
             title: Text('Agenda'),
@@ -83,6 +81,7 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
             },
           ),
           SwitchListTile(
+            activeColor: Colors.red,
             contentPadding: EdgeInsets.all(0.0),
             value: _lessonsNotifications,
             title: Text('Lessons'),
@@ -94,6 +93,7 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
             },
           ),
           SwitchListTile(
+            activeColor: Colors.red,
             contentPadding: EdgeInsets.all(0.0),
             value: _notesNotifications,
             title: Text('Notes'),
@@ -105,6 +105,7 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
             },
           ),
           SwitchListTile(
+            activeColor: Colors.red,
             contentPadding: EdgeInsets.all(0.0),
             value: _absencesNotifications,
             title: Text('Absences'),
@@ -121,6 +122,8 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
   }
 
   save(String key, dynamic value) async {
+    Logger logger = Logger();
+    logger.i('Changed value $key -> $value');
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     if (value is bool) {
       sharedPrefs.setBool(key, value);

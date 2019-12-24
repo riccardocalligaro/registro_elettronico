@@ -40,7 +40,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
           .where((grade) =>
               grade.subjectId == subject.id && grade.periodPos == widget.period)
           .toList()
-            ..sort((a, b) => a.eventDate.compareTo(b.eventDate));
+            ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
     } else {
       grades = widget.grades
           .where((grade) => grade.subjectId == subject.id)
@@ -65,9 +65,10 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
               children: <Widget>[
                 StreamBuilder(
                   stream: BlocProvider.of<SubjectsBloc>(context).professors,
-                  initialData: [],
+                  initialData: List<Professor>(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    List<Professor> professors = snapshot.data ?? [];
+                    List<Professor> professors =
+                        snapshot.data ?? List<Professor>();
                     return Card(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

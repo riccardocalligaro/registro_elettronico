@@ -4,6 +4,7 @@ import 'package:registro_elettronico/ui/global/theme/theme_data/text_styles.dart
 
 final material = ThemeData(
   primarySwatch: Colors.red,
+  accentColor: Colors.red,
   brightness: Brightness.light,
   fontFamily: 'Montserrat',
   //canvasColor: Colors.white,

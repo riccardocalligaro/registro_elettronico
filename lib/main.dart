@@ -8,8 +8,6 @@ import 'package:registro_elettronico/ui/application.dart';
 import 'package:registro_elettronico/ui/feature/splash_screen/splash_screen.dart';
 import 'package:workmanager/workmanager.dart';
 
-import 'package:logging/logging.dart';
-
 import 'component/routes.dart';
 
 void callbackDispatcher() {
@@ -28,7 +26,6 @@ void main() {
 
 void initApp() {
   // This is for the notification service
-  setupLogging();
 
   WidgetsFlutterBinding.ensureInitialized();
   Workmanager.initialize(
@@ -51,12 +48,7 @@ void initApp() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
 }
 
-void setupLogging() {
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen((LogRecord rec) {
-    print('${rec.level.name}: ${rec.time}: ${rec.message}');
-  });
-}
+void setupLogging() {}
 
 /// Registro elettronico by Riccardo Calligaro
 class MyApp extends StatelessWidget {
