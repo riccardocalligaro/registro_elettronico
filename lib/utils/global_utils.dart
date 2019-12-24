@@ -3,6 +3,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:injector/injector.dart';
+import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
@@ -10,6 +12,16 @@ import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 import 'constants/registro_constants.dart';
 
 class GlobalUtils {
+  static Future<Period> getPeriodFromDate(DateTime date) async {
+    final now = DateTime.now();
+    final PeriodDao periodDao = PeriodDao(Injector.appInstance.getDependency());
+    final periods = await periodDao.getAllPeriods();
+    periods.forEach((period) {
+      if (period.start.isAfter(now) && period.end.isBefore(now)) return period;
+    });
+    return null;
+  }
+
   static int getSubjectConstFromName(String subjectName) {
     final stringToCompare = subjectName.toUpperCase();
     switch (stringToCompare) {

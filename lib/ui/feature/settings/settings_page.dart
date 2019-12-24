@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:logger/logger.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/general/general_objective_settings_dialog.dart';
+import 'package:registro_elettronico/ui/feature/settings/components/general/general_settings.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/notifications/notifications_interval_settings_dialog.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
@@ -25,6 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   int _updateInterval = 30;
   int _sliderValue = 6;
+  SharedPreferences sharedPrefs;
 
   @override
   void initState() {
@@ -33,7 +35,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   restore() async {
-    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    sharedPrefs = await SharedPreferences.getInstance();
     setState(() {
       _updateInterval =
           (sharedPrefs.getInt(PrefsConstants.UPDATE_INTERVAL)) ?? 30;
@@ -64,12 +66,55 @@ class _SettingsPageState extends State<SettingsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 _buildNotificationsSettingsSection(),
-                _buildGeneralSettingSection(),
+                GeneralSettings()
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  /// General settings of the application
+  Widget _buildGeneralSettingSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        HeaderText(
+          text: 'General',
+        ),
+        ListTile(
+          contentPadding: EdgeInsets.all(0.0),
+          title: Text('Il tuo obiettivo'),
+          subtitle: Text('$_sliderValue'),
+          onTap: () async {
+            await showDialog(
+              context: context,
+              builder: (ctx) => SimpleDialog(
+                children: <Widget>[
+                  GeneralObjectiveSettingsDialog(
+                    objective: _sliderValue.toInt(),
+                  )
+                ],
+              ),
+            ).then((value) {
+              print(value);
+              if (value != null) {
+                setState(() {
+                  _sliderValue = value;
+                  save(PrefsConstants.OVERALL_OBJECTIVE, value);
+                });
+              }
+            });
+          },
+        ),
+        ListTile(
+          contentPadding: EdgeInsets.all(0.0),
+          title: Text('Medie da mostrare sulla schermata home'),
+          subtitle: Text('$_sliderValue'),
+          onTap: () async {},
+        )
+      ],
     );
   }
 
@@ -123,48 +168,12 @@ class _SettingsPageState extends State<SettingsPage> {
               });
             });
           },
-        )
-      ],
-    );
-  }
-
-  Widget _buildGeneralSettingSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        HeaderText(
-          text: 'General',
         ),
-        ListTile(
-          contentPadding: EdgeInsets.all(0.0),
-          title: Text('Il tuo obiettivo'),
-          subtitle: Text('$_sliderValue'),
-          onTap: () async {
-            await showDialog(
-              context: context,
-              builder: (ctx) => SimpleDialog(
-                children: <Widget>[
-                  GeneralObjectiveSettingsDialog(
-                    objective: _sliderValue.toInt(),
-                  )
-                ],
-              ),
-            ).then((value) {
-              print(value);
-              if (value != null) {
-                setState(() {
-                  _sliderValue = value;
-                  save(PrefsConstants.OVERALL_OBJECTIVE, value);
-                });
-              }
-            });
-          },
-        )
       ],
     );
   }
 
-  save(String key, dynamic value) async {
+  static save(String key, dynamic value) async {
     Logger logger = Logger();
     logger.i('Changed value $key -> $value');
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();

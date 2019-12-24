@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/component/navigator.dart';
-import 'package:registro_elettronico/component/notifications/local_notification_widget.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
@@ -18,9 +17,11 @@ import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/ui/global/theme/ui/theme_settings_page.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/event_card.dart';
 import 'components/lesson_card.dart';
@@ -34,7 +35,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _periodToShow;
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
+  @override
+  void initState() {
+    getPreferences();
+    super.initState();
+  }
+
+  getPreferences() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    _periodToShow = (sharedPreferences.getInt(PrefsConstants.PERIOD_TO_SHOW) ??
+        TabsConstants.GENERALE);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,12 +177,7 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: new BorderRadius.circular(18.0),
                             ),
                             onPressed: () async {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ThemeSettingPage(),
-                                ),
-                              );
+                              AppNavigator.instance.navToNoticeboard(context);
                             },
                           ),
                         ],
@@ -184,17 +193,21 @@ class _HomePageState extends State<HomePage> {
                     ),
                     _buildAgenda(context),
                     Divider(color: Colors.grey[300]),
-                    SectionHeader(
-                      headingText:
-                          AppLocalizations.of(context).translate('my_subjects'),
-                      onTap: () {},
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: SectionHeader(
+                        headingText: AppLocalizations.of(context)
+                            .translate('my_subjects'),
+                      ),
                     ),
                     _buildSubjectsGrid(context),
                     Divider(color: Colors.grey[300]),
                     SectionHeader(
                       headingText:
                           AppLocalizations.of(context).translate('last_grades'),
-                      onTap: () {},
+                      onTap: () {
+                        AppNavigator.instance.navToGrades(context);
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -314,6 +327,7 @@ class _HomePageState extends State<HomePage> {
             return SubjectsGrid(
               subjects: GlobalUtils.removeUnwantedSubject(subjects),
               grades: grades,
+              period: _periodToShow,
             );
           },
         );

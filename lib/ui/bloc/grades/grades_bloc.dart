@@ -35,13 +35,13 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
     }
 
     if (event is GetGrades) {
-      yield GradesLoading();
+      //yield GradesLoading();
       final grades = await gradesRepository.getAllGradesOrdered();
       yield GradesLoaded(grades);
     }
 
     if (event is GetGradesAndSubjects) {
-      yield GradesAndSubjectsLoading();
+      //yield GradesAndSubjectsLoading();
       final grades = await gradesRepository.getAllGrades();
       final subjects = await subjectsRepository.getAllSubjects();
       yield GradesAndSubjectsLoaded(grades: grades, subject: subjects);

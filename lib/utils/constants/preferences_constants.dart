@@ -6,4 +6,5 @@ class PrefsConstants {
   static const ABSENCES_NOTIFICATIONS = 'absences_notifications';
   static const UPDATE_INTERVAL = 'update_interval';
   static const OVERALL_OBJECTIVE = 'overall_objective';
+  static const PERIOD_TO_SHOW = 'period_to_show';
 }

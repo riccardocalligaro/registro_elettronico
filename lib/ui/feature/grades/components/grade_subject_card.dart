@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/feature/grades/subject_grades/subject_grades.dart';
+import 'package:registro_elettronico/ui/feature/settings/components/general/general_objective_settings_dialog.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class GradeSubjectCard extends StatelessWidget {
+class GradeSubjectCard extends StatefulWidget {
   final Subject subject;
   final List<Grade> grades;
   final int period;
@@ -17,20 +21,66 @@ class GradeSubjectCard extends StatelessWidget {
       : super(key: key);
 
   @override
+  _GradeSubjectCardState createState() => _GradeSubjectCardState();
+}
+
+class _GradeSubjectCardState extends State<GradeSubjectCard> {
+  int objective = 6;
+
+  @override
+  void initState() {
+    restore();
+    super.initState();
+  }
+
+  void restore() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    objective = (preferences.getInt('objective_${widget.subject.id}') ??
+        ((preferences.getInt(PrefsConstants.OVERALL_OBJECTIVE) ?? 6)));
+
+    //objective = (preferences.getInt(PrefsConstants.OVERALL_OBJECTIVE));
+    Logger logger = Logger();
+    logger.i("Objective $objective");
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final average = GradesUtils.getAverage(subject.id, grades);
+    final average = GradesUtils.getAverage(widget.subject.id, widget.grades);
     return Card(
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => SubjectGradesPage(
-                subject: subject,
-                grades: grades,
-                period: period,
+                subject: widget.subject,
+                grades: widget.grades,
+                period: widget.period,
               ),
             ),
           );
+        },
+        onLongPress: () async {
+          showDialog(
+            context: context,
+            builder: (ctx) => SimpleDialog(
+              children: <Widget>[
+                GeneralObjectiveSettingsDialog(
+                  objective: objective,
+                )
+              ],
+            ),
+          ).then((value) async {
+            if (value != null) {
+              SharedPreferences pres = await SharedPreferences.getInstance();
+              pres.setInt('objective_${widget.subject.id}', value);
+              setState(() {
+                objective = value;
+              });
+              Logger log = Logger();
+              log.i(
+                  "Set objective for 'objective_${widget.subject.id}' at $value");
+            }
+          });
         },
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -56,16 +106,17 @@ class GradeSubjectCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      subject.name.length < 20
-                          ? subject.name
-                          : GlobalUtils.reduceSubjectTitle(subject.name),
+                      widget.subject.name.length < 20
+                          ? widget.subject.name
+                          : GlobalUtils.reduceSubjectTitle(widget.subject.name),
                     ),
                     Text(
                       GradesUtils.getGradeMessage(
-                          6.0,
+                          objective.toDouble(),
                           average,
-                          grades
-                              .where((grade) => grade.subjectId == subject.id)
+                          widget.grades
+                              .where((grade) =>
+                                  grade.subjectId == widget.subject.id)
                               .toList()
                               .length,
                           context),
@@ -74,17 +125,6 @@ class GradeSubjectCard extends StatelessWidget {
                           .body1
                           .copyWith(fontSize: 12),
                     )
-                    // Text(oraleAverage.toStringAsFixed(2)),
-                    // Text(praticoAverage.toStringAsFixed(2)),
-                    // Text(scrittoAverage.toStringAsFixed(2)),
-                    // Container(
-                    //   height: 15,
-                    //   decoration: BoxDecoration(color: Colors.green),
-                    //   child: Text(
-                    //     'Devi prendere almeno 10',
-                    //     style: TextStyle(color: Colors.white, fontSize: 9),
-                    //   ),
-                    // )
                   ],
                 ),
               )

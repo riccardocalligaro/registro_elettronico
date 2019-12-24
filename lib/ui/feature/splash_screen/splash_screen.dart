@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/main.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
@@ -19,16 +20,20 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void didChangeDependencies() async {
-    Workmanager.initialize(
-      callbackDispatcher,
-      isInDebugMode: true,
-    );
+    // Workmanager.initialize(
+    //   callbackDispatcher,
+    //   isInDebugMode: true,
+    // );
 
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    print(sharedPreferences
-        .getBool(PrefsConstants.GRADES_NOTIFICATIONS ?? "false13"));
-    // Workmanager.registerOneOffTask("checkForNewContent", "checkForNewContent",
-    //     initialDelay: Duration(seconds: 2));
+    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // print(sharedPreferences
+    //     .getBool(PrefsConstants.GRADES_NOTIFICATIONS ?? "false13"));
+
+    ///Workmanager.registerOneOffTask(
+    ///  "checkForNewContent",
+    ///  "checkForNewContent",
+    ///  initialDelay: Duration(seconds: 2),
+    ///);
 
     super.didChangeDependencies();
     if (!_alreadyInit) {

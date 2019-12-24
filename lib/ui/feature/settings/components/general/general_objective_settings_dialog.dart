@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 class GeneralObjectiveSettingsDialog extends StatefulWidget {
-  int objective;
-
+  final int objective;
   GeneralObjectiveSettingsDialog({
     Key key,
-    @required this.objective,
+    this.objective,
   }) : super(key: key);
 
   @override
@@ -15,27 +14,33 @@ class GeneralObjectiveSettingsDialog extends StatefulWidget {
 
 class _GeneralObjectiveSettingsDialogState
     extends State<GeneralObjectiveSettingsDialog> {
+  int _objective;
+  @override
+  void initState() {
+    _objective = widget.objective;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: <Widget>[
-          Text("Objective: ${widget.objective.toString()}"),
+          Text("Objective: ${_objective.toString()}"),
           Slider(
-            value: widget.objective.toDouble(),
+            value: _objective.toDouble(),
             max: 10,
             divisions: 7,
             min: 3,
             onChanged: (value) {
               setState(() {
-                widget.objective = value.toInt();
+                _objective = value.toInt();
               });
             },
           ),
           FlatButton(
             child: Text('OK'),
             onPressed: () {
-              Navigator.pop(context, widget.objective);
+              Navigator.pop(context, _objective);
             },
           )
         ],

@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
@@ -12,8 +13,6 @@ import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart'
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
-import 'package:registro_elettronico/utils/entity/overall_stats.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
 
 class GradeTab extends StatefulWidget {
@@ -28,19 +27,30 @@ class GradeTab extends StatefulWidget {
 class _GradeTabState extends State<GradeTab>
     with AutomaticKeepAliveClientMixin {
   @override
-  void initState() {
+  // void initState() {
+  //   BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
+  //   super.initState();
+  // }
+
+  @override
+  void didChangeDependencies() {
     BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
-    super.initState();
+    Logger logger = Logger();
+    logger.v("Called -> GetGradesAndSubjects");
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return RefreshIndicator(
-      onRefresh: _test,
+      onRefresh: _updateGrades,
       child: Container(
         child: BlocBuilder<GradesBloc, GradesState>(
           builder: (context, state) {
+            Logger logger = Logger();
+            logger.i("Changed to -> ${state.toString()}");
+
             if (state is GradesAndSubjectsLoaded) {
               final period = widget.period;
 
@@ -67,6 +77,7 @@ class _GradeTabState extends State<GradeTab>
   }
 
   Widget _buildStatsAndAverages(List<Grade> grades, List<Subject> subjects) {
+    super.build(context);
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
@@ -79,6 +90,7 @@ class _GradeTabState extends State<GradeTab>
 
   // Card that shows the overall stats of the student
   Widget _buildStatsCard(List<Grade> grades) {
+    super.build(context);
     double average;
     if (widget.period != TabsConstants.GENERALE) {
       average = GradesUtils.getAverageWithoutSubjectId(
@@ -210,10 +222,10 @@ class _GradeTabState extends State<GradeTab>
     );
   }
 
-  Future<void> _test() async {}
-
-  @override
-  bool get wantKeepAlive => true;
+  Future<void> _updateGrades() async {
+    BlocProvider.of<GradesBloc>(context).add(FetchGrades());
+    BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
+  }
 
   List _getGradesListForPeriodFromMap(Map<dynamic, List<Grade>> grades) {
     final List<Grade> gradesList = [];
@@ -227,4 +239,7 @@ class _GradeTabState extends State<GradeTab>
 
     return gradesList;
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

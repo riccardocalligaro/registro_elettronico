@@ -8,6 +8,7 @@ import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart'
 import 'package:registro_elettronico/domain/entity/api_responses/login_response.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -57,6 +58,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is SignOut) {
       await flutterSecureStorage.deleteAll();
       AppDatabase().resetDb();
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      sharedPreferences.clear();
       yield SignOutSuccess();
     }
   }

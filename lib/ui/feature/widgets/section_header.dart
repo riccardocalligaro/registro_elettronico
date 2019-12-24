@@ -11,7 +11,7 @@ class SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+      padding: EdgeInsets.only(left: 16.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -20,7 +20,7 @@ class SectionHeader extends StatelessWidget {
             headingText,
             style: Theme.of(context).textTheme.body1,
           ),
-          FlatButton(
+          onTap != null ? FlatButton(
             shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(15.0),
             ),
@@ -32,7 +32,7 @@ class SectionHeader extends StatelessWidget {
                 style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
               ),
             ),
-          ),
+          ) : Container(),
         ],
       ),
     );
