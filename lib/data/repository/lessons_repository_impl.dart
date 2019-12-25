@@ -39,11 +39,14 @@ class LessonsRepositoryImpl implements LessonsRepository {
       dateInterval.begin,
       dateInterval.end,
     );
+
+    List<Lesson> lessonsInsertable = [];
     lessons.lessons.forEach((lesson) {
-      lessonDao.insertLesson(
-        lessonMapper.mapLessonEntityToLessoneInsertable(lesson),
-      );
+      lessonsInsertable
+          .add(lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
     });
+
+    lessonDao.insertLessons(lessonsInsertable);
   }
 
   @override

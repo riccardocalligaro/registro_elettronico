@@ -31,22 +31,22 @@ class TimetablePage extends StatelessWidget {
               lessonDao.getGeniusTimetable();
             },
           ),
-          FutureBuilder(
-            future: lessonDao.getGeniusTimetable(),
-            initialData: [],
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              final List<GeniusTimetable> geniusTimetable = snapshot.data;
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: geniusTimetable.length,
-                itemBuilder: (ctx, index) {
-                  return Text(geniusTimetable[index].teacher);
-                },
-              );
-            },
-          ),
+          // FutureBuilder(
+          //   future: lessonDao.getGeniusTimetable(),
+          //   initialData: [],
+          //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+          //     final List<GeniusTimetable> geniusTimetable = snapshot.data;
+          //     return ListView.builder(
+          //       shrinkWrap: true,
+          //       itemCount: geniusTimetable.length,
+          //       itemBuilder: (ctx, index) {
+          //         return Text(geniusTimetable[index].teacher);
+          //       },
+          //     );
+          //   },
+          // ),
         ],
       ),
-    ); 
+    );
   }
 }

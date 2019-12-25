@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_event.dart';
+import 'package:registro_elettronico/ui/bloc/lessons/lessons_state.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -71,7 +72,16 @@ class _LessonDetailsState extends State<LessonDetails> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.0),
-        child: _buildLessonsList(context),
+        child: BlocBuilder<LessonsBloc, LessonsState>(
+          builder: (context, state) {
+            if (state is LessonsLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return _buildLessonsList(context);
+          },
+        ),
       ),
     );
   }

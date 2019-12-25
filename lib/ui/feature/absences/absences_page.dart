@@ -45,9 +45,7 @@ class _AbsencesPageState extends State<AbsencesPage>
       ),
       body: RefreshIndicator(
         onRefresh: _updateAbsences,
-        child: SingleChildScrollView(
-          child: _buildAbsences(context),
-        ),
+        child: _buildAbsences(context),
       ),
     );
   }
@@ -66,17 +64,19 @@ class _AbsencesPageState extends State<AbsencesPage>
           final map = getAbsencesMap(
               absences..sort((b, a) => a.evtDate.compareTo(b.evtDate)));
 
-          return Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(bottom: 8.0),
-                  child: _buildOverallStats(absences),
-                ),
-                _buildNotJustifiedAbsences(map),
-                _buildJustifiedAbsences(map, context),
-              ],
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 8.0),
+                    child: _buildOverallStats(absences),
+                  ),
+                  _buildNotJustifiedAbsences(map),
+                  _buildJustifiedAbsences(map, context),
+                ],
+              ),
             ),
           );
         }

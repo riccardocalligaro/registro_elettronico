@@ -89,7 +89,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
 
   Stream<List<Lesson>> watchRelevantLessons() {
     return customSelectQuery(
-      """ SELECT * FROM lessons GROUP BY lesson_arg ORDER BY date DESC""",
+      """ SELECT * FROM lessons GROUP BY lesson_arg, author ORDER BY date DESC""",
       readsFrom: {
         lessons,
       },
@@ -112,6 +112,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   //           "group by `dayOfWeek`, `start`")
 
   Future<List<GeniusTimetable>> getGeniusTimetable() {
+    Logger logger = Logger();
     return customSelectQuery(
       """ SELECT `dayOfWeek`,`teacher`,`subject`,`start`,`end` FROM
       (select strftime('%w', date/1000, 'unixepoch') as `dayOfWeek`,
@@ -121,7 +122,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
       author as `teacher`,
       COUNT(duration) as `totalHours`
       FROM `lessons`
-      WHERE subject_code NOT IN ('SUPZ', 'SOST') AND strftime("%s", date, "unixepoch")>(strftime('%s', 'now', 'localtime') - 45*24*3600)*1000
+      WHERE subject_code NOT IN ('SUPZ', 'SOST') AND date>(strftime('%s', 'now', 'localtime') - 45*24*3600)*1000
       GROUP BY `dayOfWeek`, position, subject_code
       ORDER BY `dayOfWeek`, position ASC) WHERE `totalHours`>1
       GROUP BY `dayOfWeek`, `start`
@@ -131,7 +132,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
         professors,
       },
     ).map((row) {
-      print(row.data);
+      logger.i(row.data);
       return GeniusTimetable.fromData(row.data, db);
     }).get();
   }
