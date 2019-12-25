@@ -7,6 +7,7 @@ import 'package:registro_elettronico/ui/feature/login/login_page.dart';
 import 'package:registro_elettronico/ui/feature/noticeboard/noticeboard_page.dart';
 import 'package:registro_elettronico/ui/feature/settings/settings_page.dart';
 import 'package:registro_elettronico/ui/feature/splash_screen/splash_screen.dart';
+import 'package:registro_elettronico/ui/feature/timetable/timetable_page.dart';
 
 class Routes {
   static const MAIN = '/';
@@ -17,6 +18,7 @@ class Routes {
   static const AGENDA = '/agenda';
   static const ABSENCES = '/absences';
   static const NOTICEBOARD = '/noticeboard';
+  static const TIMETABLE = '/timetable';
   static const SETTINGS = '/settings';
 
   static var routes = {
@@ -28,6 +30,7 @@ class Routes {
     AGENDA: (ctx) => AgendaPage(),
     ABSENCES: (ctx) => AbsencesPage(),
     NOTICEBOARD: (ctx) => NoticeboardPage(),
+    TIMETABLE: (ctx) => TimetablePage(),
     SETTINGS: (ctx) => SettingsPage()
   };
 }

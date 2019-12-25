@@ -53,7 +53,6 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
       drawer: AppDrawer(
-        profileDao: Injector.appInstance.getDependency(),
         position: DrawerConstants.SETTINGS,
       ),
       body: SingleChildScrollView(

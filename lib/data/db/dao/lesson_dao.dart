@@ -1,11 +1,17 @@
+import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/table/lesson_table.dart';
+import 'package:registro_elettronico/data/db/table/professor_table.dart';
+import 'package:registro_elettronico/domain/entity/genius_timetable.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 
 part 'lesson_dao.g.dart';
 
-@UseDao(tables: [Lessons])
+@UseDao(tables: [
+  Lessons,
+  Professors,
+])
 class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   AppDatabase db;
 
@@ -90,6 +96,44 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
     ).watch().map((rows) {
       return rows.map((row) => Lesson.fromData(row.data, db)).toList();
     });
+  }
+
+  // @Query("select `dayOfWeek`,`teacher`,`subject`,`start`,`end` from ( select " +
+  //           "strftime('%w', M_DATE/1000, 'unixepoch') as `dayOfWeek`, " +
+  //           "`TEACHER`.`ID` as `teacher`, " +
+  //           "`M_SUBJECT_ID` as `subject`, " +
+  //           "M_HOUR_POSITION+7 as `start`, " +
+  //           "M_HOUR_POSITION+8 as `end`, " +
+  //           "COUNT(M_DURATION) as `totalHours` " +
+  //           "from `LESSON` LEFT JOIN `TEACHER` ON `M_AUTHOR_NAME`=`TEACHER_NAME` " +
+  //           "where PROFILE = :profile AND M_SUBJECT_CODE!='SUPZ' AND M_DATE>(strftime('%s', 'now', 'localtime') - 45*24*3600)*1000 " +
+  //           "group by `dayOfWeek`,M_HOUR_POSITION, M_SUBJECT_CODE " +
+  //           "order by `dayOfWeek`, M_HOUR_POSITION  asc) where `totalHours`>1 " +
+  //           "group by `dayOfWeek`, `start`")
+
+  Future<List<GeniusTimetable>> getGeniusTimetable() {
+    return customSelectQuery(
+      """ SELECT `dayOfWeek`,`teacher`,`subject`,`start`,`end` FROM
+      (select strftime('%w', date/1000, 'unixepoch') as `dayOfWeek`,
+      `subject_id` as `subject`,
+      (position+8) as `start`,
+      (position+9) as `end`,
+      author as `teacher`,
+      COUNT(duration) as `totalHours`
+      FROM `lessons`
+      WHERE subject_code NOT IN ('SUPZ', 'SOST') AND strftime("%s", date, "unixepoch")>(strftime('%s', 'now', 'localtime') - 45*24*3600)*1000
+      GROUP BY `dayOfWeek`, position, subject_code
+      ORDER BY `dayOfWeek`, position ASC) WHERE `totalHours`>1
+      GROUP BY `dayOfWeek`, `start`
+      """,
+      readsFrom: {
+        lessons,
+        professors,
+      },
+    ).map((row) {
+      print(row.data);
+      return GeniusTimetable.fromData(row.data, db);
+    }).get();
   }
 
   /// Future of all the lessons

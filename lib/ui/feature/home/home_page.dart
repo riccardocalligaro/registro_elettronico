@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injector/injector.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
@@ -61,7 +60,6 @@ class _HomePageState extends State<HomePage> {
         scaffoldKey: _drawerKey,
       ),
       drawer: AppDrawer(
-        profileDao: Injector.appInstance.getDependency(),
         position: DrawerConstants.HOME,
       ),
       body: BlocListener<LessonsBloc, LessonsState>(

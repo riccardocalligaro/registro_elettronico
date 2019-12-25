@@ -26,7 +26,6 @@ class _LessonsPageState extends State<LessonsPage> {
     return Scaffold(
       key: _drawerKey,
       drawer: AppDrawer(
-        profileDao: Injector.appInstance.getDependency(),
         position: DrawerConstants.LESSONS,
       ),
       appBar: CustomAppBar(

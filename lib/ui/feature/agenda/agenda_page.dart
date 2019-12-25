@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
@@ -68,7 +67,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         title: Text(AppLocalizations.of(context).translate('agenda')),
       ),
       drawer: AppDrawer(
-        profileDao: Injector.appInstance.getDependency(),
         position: DrawerConstants.AGENDA,
       ),
       body: SingleChildScrollView(

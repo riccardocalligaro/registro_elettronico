@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injector/injector.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
@@ -34,7 +33,7 @@ class _AbsencesPageState extends State<AbsencesPage>
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-
+    super.build(context);
     return Scaffold(
       key: _drawerKey,
       appBar: CustomAppBar(
@@ -42,7 +41,6 @@ class _AbsencesPageState extends State<AbsencesPage>
         title: Text(AppLocalizations.of(context).translate('absences')),
       ),
       drawer: AppDrawer(
-        profileDao: Injector.appInstance.getDependency(),
         position: DrawerConstants.ABSENCES,
       ),
       body: RefreshIndicator(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grades_tab.dart';
@@ -53,7 +52,6 @@ class _GradesPageState extends State<GradesPage> {
                 title: Text(AppLocalizations.of(context).translate('grades')),
               ),
               drawer: AppDrawer(
-                profileDao: Injector.appInstance.getDependency(),
                 position: DrawerConstants.GRADES,
               ),
               body: TabBarView(
@@ -136,7 +134,6 @@ class _GradesPageState extends State<GradesPage> {
         title: Text(AppLocalizations.of(context).translate('grades')),
       ),
       drawer: AppDrawer(
-        profileDao: Injector.appInstance.getDependency(),
         position: DrawerConstants.GRADES,
       ),
       body: Container(

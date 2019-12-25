@@ -76,7 +76,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         ],
       ),
       drawer: AppDrawer(
-        profileDao: Injector.appInstance.getDependency(),
         position: DrawerConstants.NOTICE_BOARD,
       ),
       body: Padding(

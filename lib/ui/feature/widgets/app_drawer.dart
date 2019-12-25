@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -8,12 +9,10 @@ import 'package:registro_elettronico/ui/global/localizations/app_localizations.d
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 
 class AppDrawer extends StatefulWidget {
-  ProfileDao profileDao;
   final int position;
 
   AppDrawer({
     Key key,
-    this.profileDao,
     this.position,
   }) : super(key: key);
 
@@ -91,6 +90,14 @@ class _AppDrawerState extends State<AppDrawer> {
               AppNavigator.instance.navToNoticeboard(context);
             },
           ),
+          _createDrawerItem(
+            icon: Icons.access_time,
+            text: 'Timetable',
+            pos: DrawerConstants.TIMETABLE,
+            onTap: () {
+              AppNavigator.instance.navToTimetable(context);
+            },
+          ),
           Divider(),
           _createDrawerItem(
             icon: Icons.settings,
@@ -99,11 +106,6 @@ class _AppDrawerState extends State<AppDrawer> {
             onTap: () {
               AppNavigator.instance.navToSettings(context);
             },
-          ),
-          _createDrawerItem(
-            icon: Icons.share,
-            text: trans.translate("share"),
-            pos: 9,
           ),
           _createDrawerItem(
             icon: Icons.send,
@@ -184,6 +186,7 @@ class _AppDrawerState extends State<AppDrawer> {
   }
 
   Future<Profile> _getUsername() async {
-    return await widget.profileDao.getProfile();
+    final profileDao = ProfileDao(Injector.appInstance.getDependency());
+    return await profileDao.getProfile();
   }
 }

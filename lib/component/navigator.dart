@@ -42,6 +42,10 @@ class AppNavigator {
     Navigator.pushReplacementNamed(context, Routes.NOTICEBOARD);
   }
 
+  void navToTimetable(BuildContext context) {
+    Navigator.pushReplacementNamed(context, Routes.TIMETABLE);
+  }
+
   void navToSettings(BuildContext context) {
     Navigator.pushReplacementNamed(context, Routes.SETTINGS);
   }
