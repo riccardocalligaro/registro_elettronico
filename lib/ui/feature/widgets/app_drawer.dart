@@ -78,7 +78,7 @@ class _AppDrawerState extends State<AppDrawer> {
             },
           ),
           _createDrawerItem(
-            icon: Icons.warning,
+            icon: Icons.info,
             text: trans.translate("notes"),
             pos: DrawerConstants.NOTES,
             onTap: () {
