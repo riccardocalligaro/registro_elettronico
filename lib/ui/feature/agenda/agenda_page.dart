@@ -150,7 +150,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   Widget _buildLessonsList() {
     return StreamBuilder(
       stream: BlocProvider.of<LessonsBloc>(context)
-          .watchLessonsByDate(_currentSelectedDay ?? DateTime.now()),
+          .watchLessonsByDateGrouped(_currentSelectedDay ?? DateTime.now()),
       initialData: List<Lesson>(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Lesson> lessons = snapshot.data ?? List<Lesson>();

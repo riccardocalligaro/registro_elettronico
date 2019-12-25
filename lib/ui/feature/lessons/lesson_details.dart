@@ -70,7 +70,7 @@ class _LessonDetailsState extends State<LessonDetails> {
         ],
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: _buildLessonsList(context),
       ),
     );
