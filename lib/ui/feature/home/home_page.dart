@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                           RaisedButton(
-                            color: Colors.blue,
+                            color: Colors.red,
                             textColor: Colors.white,
                             child: Text(
                               trans.translate("view"),

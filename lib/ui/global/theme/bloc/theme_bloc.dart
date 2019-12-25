@@ -24,8 +24,9 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   @override
   ThemeState get initialState => ThemeState(
-      materialThemeData: materialThemeData[AppTheme.Dark],
-      cupertinoThemeData: cupertinoThemeData[AppTheme.Dark]);
+        materialThemeData: materialThemeData[AppTheme.Dark],
+        cupertinoThemeData: cupertinoThemeData[AppTheme.Dark],
+      );
 
   @override
   Stream<ThemeState> mapEventToState(
@@ -42,7 +43,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   _loadSettings() async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
-    bool _darkTheme = prefs.getBool(DARK_THEME) ?? false;
+    bool _darkTheme = prefs.getBool(DARK_THEME) ?? true;
     add(ThemeChanged(theme: _darkTheme ? AppTheme.Dark : AppTheme.Light));
     return _darkTheme;
   }

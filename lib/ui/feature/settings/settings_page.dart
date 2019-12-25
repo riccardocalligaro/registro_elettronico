@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:logger/logger.dart';
+import 'package:registro_elettronico/ui/feature/settings/components/customization/customization_settings.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/general/general_objective_settings_dialog.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/general/general_settings.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
@@ -25,7 +26,6 @@ class _SettingsPageState extends State<SettingsPage> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
   int _updateInterval = 30;
-  int _sliderValue = 6;
   SharedPreferences sharedPrefs;
 
   @override
@@ -39,8 +39,6 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       _updateInterval =
           (sharedPrefs.getInt(PrefsConstants.UPDATE_INTERVAL)) ?? 30;
-      _sliderValue =
-          (sharedPrefs.getInt(PrefsConstants.OVERALL_OBJECTIVE)) ?? 6;
     });
   }
 
@@ -65,8 +63,13 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                /// Notification settins
                 _buildNotificationsSettingsSection(),
-                GeneralSettings()
+
+                /// General settings
+                GeneralSettings(),
+
+                CustomizationSettings()
               ],
             ),
           ),
@@ -75,50 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  /// General settings of the application
-  Widget _buildGeneralSettingSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        HeaderText(
-          text: 'General',
-        ),
-        ListTile(
-          contentPadding: EdgeInsets.all(0.0),
-          title: Text('Il tuo obiettivo'),
-          subtitle: Text('$_sliderValue'),
-          onTap: () async {
-            await showDialog(
-              context: context,
-              builder: (ctx) => SimpleDialog(
-                children: <Widget>[
-                  GeneralObjectiveSettingsDialog(
-                    objective: _sliderValue.toInt(),
-                  )
-                ],
-              ),
-            ).then((value) {
-              print(value);
-              if (value != null) {
-                setState(() {
-                  _sliderValue = value;
-                  save(PrefsConstants.OVERALL_OBJECTIVE, value);
-                });
-              }
-            });
-          },
-        ),
-        ListTile(
-          contentPadding: EdgeInsets.all(0.0),
-          title: Text('Medie da mostrare sulla schermata home'),
-          subtitle: Text('$_sliderValue'),
-          onTap: () async {},
-        )
-      ],
-    );
-  }
-
-  /// Notifcation settings, you can set what to notify, the interval, and chose if wifi and battery options
+  /// Notifcation settings, you can set [what] to notify, the interval, and chose if wifi and battery options
   Widget _buildNotificationsSettingsSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

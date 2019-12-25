@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class AgendaCardEvent extends StatelessWidget {
   final AgendaEvent agendaEvent;
@@ -35,7 +36,7 @@ class AgendaCardEvent extends StatelessWidget {
                               fontWeight: FontWeight.bold, fontSize: 14.0),
                         ),
                         Text(
-                          DateFormat('MMM').format(agendaEvent.begin),
+                          DateFormat.MMM(AppLocalizations.of(context).locale.toString()).format(agendaEvent.begin),
                           style: TextStyle(fontSize: 13.0),
                         )
                       ],
