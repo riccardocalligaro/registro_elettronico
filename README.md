@@ -38,39 +38,49 @@ Technologies and libraries that we will use:
 - 📚 Moor for data persistency
 - 💉 Injector for dependency injection
 - 🐠 Equatable for object comparison
-- 🔥 Flare for animations
 
 ## Developers:
 
 | Name               |            Email            |                                       Role |
 | ------------------ | :-------------------------: | -----------------------------------------: |
 | Riccardo Calligaro | riccardocalligaro@gmail.com | Project manager, app architecture, API, UI |
-| Jacopo Ferian      |     jacopo893@gmail.com     |                           Learning flutter |
 | Filippo Veggo      |   filippoveggo@gmail.com    |                                Design & UI |
-| Samuele Zanella    | samuelezanella02@gmail.com  |              Learning flutter + animations |
+
+## Other group members
+
+These group members haven't developed the app but are learning flutter.
+
+| Name            |           Email            |
+| --------------- | :------------------------: |
+| Jacopo Ferian   |    jacopo893@gmail.com     |
+| Samuele Zanella | samuelezanella02@gmail.com |
 
 ## Current state of the project
 
-| Function           | State |
-| ------------------ | :---: |
-| Login              |  ✔️   |
-| Home Page          |  ✔️   |
-| Lessons            |  ✔️   |
-| Agenda             |  ✔️   |
-| Marks              |   ½   |
-| Noticeboard        |  ✔️   |
-| Absences           |  ✔️   |
-| School material    |  ❌   |
-| Notes              |  ❌   |
-| Intitial slideshow |  ❌   |
-| Dark theme         |  ✔️   |
-| Settings           |  ❌   |
+| Function           | State | Made by |  Design by  |
+| ------------------ | :---: | :-----: | :---------: |
+| Login              |  ✔️   |  R.C.   |    F.V.     |
+| Home Page          |  ✔️   |  R.C.   | F.V + R.C.  |
+| Lessons            |  ✔️   |  R.C.   |    R.C.     |
+| Agenda             |  ✔️   |  R.C.   | F.V. + R.C. |
+| Marks              |  ✔️   |  R.C.   |    R.C.     |
+| Noticeboard        |  ✔️   |  R.C.   |    R.C.     |
+| Absences           |  ✔️   |  R.C.   |    R.C.     |
+| School material    |  ❌   |  R.C.   |      -      |
+| Notes              |  ❌   |  R.C.   |      -      |
+| Intitial slideshow |  ❌   |  R.C.   |      -      |
+| Dark theme         |  ✔️   |  R.C.   |      -      |
+| Settings           |   ¼   |  R.C.   |    R.C.     |
 
 ## Project structure
 
 ```
 📦lib
  ┣ 📂component
+ ┃ ┣ 📂notifications
+ ┃ ┃ ┣ 📜local_notification.dart
+ ┃ ┃ ┣ 📜local_notification_widget.dart
+ ┃ ┃ ┗ 📜notification_service.dart
  ┃ ┣ 📜api_config.dart
  ┃ ┣ 📜app_injection.dart
  ┃ ┣ 📜bloc_delegate.dart
@@ -80,12 +90,18 @@ Technologies and libraries that we will use:
  ┣ 📂data
  ┃ ┣ 📂db
  ┃ ┃ ┣ 📂dao
+ ┃ ┃ ┃ ┣ 📜absence_dao.dart
+ ┃ ┃ ┃ ┣ 📜absence_dao.g.dart
  ┃ ┃ ┃ ┣ 📜agenda_dao.dart
  ┃ ┃ ┃ ┣ 📜agenda_dao.g.dart
  ┃ ┃ ┃ ┣ 📜grade_dao.dart
  ┃ ┃ ┃ ┣ 📜grade_dao.g.dart
  ┃ ┃ ┃ ┣ 📜lesson_dao.dart
  ┃ ┃ ┃ ┣ 📜lesson_dao.g.dart
+ ┃ ┃ ┃ ┣ 📜notice_dao.dart
+ ┃ ┃ ┃ ┣ 📜notice_dao.g.dart
+ ┃ ┃ ┃ ┣ 📜period_dao.dart
+ ┃ ┃ ┃ ┣ 📜period_dao.g.dart
  ┃ ┃ ┃ ┣ 📜professor_dao.dart
  ┃ ┃ ┃ ┣ 📜professor_dao.g.dart
  ┃ ┃ ┃ ┣ 📜profile_dao.dart
@@ -93,9 +109,13 @@ Technologies and libraries that we will use:
  ┃ ┃ ┃ ┣ 📜subject_dao.dart
  ┃ ┃ ┃ ┗ 📜subject_dao.g.dart
  ┃ ┃ ┣ 📂table
+ ┃ ┃ ┃ ┣ 📜absence_table.dart
  ┃ ┃ ┃ ┣ 📜agenda_event_table.dart
+ ┃ ┃ ┃ ┣ 📜attachment_table.dart
  ┃ ┃ ┃ ┣ 📜grade_table.dart
  ┃ ┃ ┃ ┣ 📜lesson_table.dart
+ ┃ ┃ ┃ ┣ 📜notice_table.dart
+ ┃ ┃ ┃ ┣ 📜period_table.dart
  ┃ ┃ ┃ ┣ 📜professor_table.dart
  ┃ ┃ ┃ ┣ 📜profile_table.dart
  ┃ ┃ ┃ ┗ 📜subject_table.dart
@@ -111,42 +131,62 @@ Technologies and libraries that we will use:
  ┃ ┃ ┃ ┃ ┗ 📜spaggiari_client.g.dart
  ┃ ┗ 📂repository
  ┃ ┃ ┣ 📂mapper
+ ┃ ┃ ┃ ┣ 📜absence_mapper.dart
  ┃ ┃ ┃ ┣ 📜event_mapper.dart
  ┃ ┃ ┃ ┣ 📜grade_mapper.dart
  ┃ ┃ ┃ ┣ 📜lesson_mapper.dart
+ ┃ ┃ ┃ ┣ 📜mappers_export.dart
+ ┃ ┃ ┃ ┣ 📜notice_mapper.dart
+ ┃ ┃ ┃ ┣ 📜period_mapper.dart
  ┃ ┃ ┃ ┣ 📜profile_mapper.dart
  ┃ ┃ ┃ ┗ 📜subject_mapper.dart
+ ┃ ┃ ┣ 📜absences_repository_impl.dart
  ┃ ┃ ┣ 📜agenda_repository_impl.dart
  ┃ ┃ ┣ 📜grades_repository_impl.dart
  ┃ ┃ ┣ 📜lessons_repository_impl.dart
  ┃ ┃ ┣ 📜login_repository_impl.dart
+ ┃ ┃ ┣ 📜notices_repository_impl.dart
+ ┃ ┃ ┣ 📜periods_repository_impl.dart
+ ┃ ┃ ┣ 📜professors_repository_impl.dart
  ┃ ┃ ┣ 📜profile_repository_impl.dart
- ┃ ┃ ┗ 📜subjects_resposiotry_impl.dart
+ ┃ ┃ ┣ 📜repository_impl_export.dart
+ ┃ ┃ ┗ 📜subjects_respository_impl.dart
  ┣ 📂domain
  ┃ ┣ 📂entity
+ ┃ ┃ ┣ 📂api_requests
+ ┃ ┃ ┃ ┗ 📜login_request.dart
  ┃ ┃ ┣ 📂api_responses
+ ┃ ┃ ┃ ┣ 📜absences_response.dart
  ┃ ┃ ┃ ┣ 📜agenda_response.dart
  ┃ ┃ ┃ ┣ 📜grades_response.dart
+ ┃ ┃ ┃ ┣ 📜lessons_response.dart
+ ┃ ┃ ┃ ┣ 📜login_response.dart
+ ┃ ┃ ┃ ┣ 📜noticeboard_read_response.dart
+ ┃ ┃ ┃ ┣ 📜noticeboard_response.dart
+ ┃ ┃ ┃ ┣ 📜periods_response.dart
  ┃ ┃ ┃ ┗ 📜subjects_response.dart
  ┃ ┃ ┣ 📜entities.dart
- ┃ ┃ ┣ 📜lesson.dart
- ┃ ┃ ┣ 📜lesson.g.dart
- ┃ ┃ ┣ 📜lessons_response.dart
- ┃ ┃ ┣ 📜login_request.dart
- ┃ ┃ ┣ 📜login_request.g.dart
- ┃ ┃ ┣ 📜login_response.dart
- ┃ ┃ ┣ 📜login_response.g.dart
  ┃ ┃ ┣ 📜profile.dart
  ┃ ┃ ┗ 📜profile.g.dart
  ┃ ┗ 📂repository
+ ┃ ┃ ┣ 📜absences_repository.dart
  ┃ ┃ ┣ 📜agenda_repository.dart
  ┃ ┃ ┣ 📜grades_repository.dart
  ┃ ┃ ┣ 📜lessons_repository.dart
  ┃ ┃ ┣ 📜login_repository.dart
+ ┃ ┃ ┣ 📜notices_repository.dart
+ ┃ ┃ ┣ 📜periods_repository.dart
+ ┃ ┃ ┣ 📜professors_repository.dart
  ┃ ┃ ┣ 📜profile_repository.dart
+ ┃ ┃ ┣ 📜repositories_export.dart
  ┃ ┃ ┗ 📜subjects_repository.dart
  ┣ 📂ui
  ┃ ┣ 📂bloc
+ ┃ ┃ ┣ 📂absences
+ ┃ ┃ ┃ ┣ 📜absences_bloc.dart
+ ┃ ┃ ┃ ┣ 📜absences_event.dart
+ ┃ ┃ ┃ ┣ 📜absences_state.dart
+ ┃ ┃ ┃ ┗ 📜bloc.dart
  ┃ ┃ ┣ 📂agenda
  ┃ ┃ ┃ ┣ 📜agenda_bloc.dart
  ┃ ┃ ┃ ┣ 📜agenda_event.dart
@@ -167,56 +207,132 @@ Technologies and libraries that we will use:
  ┃ ┃ ┃ ┣ 📜lessons_bloc.dart
  ┃ ┃ ┃ ┣ 📜lessons_event.dart
  ┃ ┃ ┃ ┗ 📜lessons_state.dart
+ ┃ ┃ ┣ 📂notices
+ ┃ ┃ ┃ ┣ 📂attachments
+ ┃ ┃ ┃ ┃ ┣ 📜attachments_bloc.dart
+ ┃ ┃ ┃ ┃ ┣ 📜attachments_event.dart
+ ┃ ┃ ┃ ┃ ┣ 📜attachments_state.dart
+ ┃ ┃ ┃ ┃ ┗ 📜bloc.dart
+ ┃ ┃ ┃ ┣ 📂attachment_download
+ ┃ ┃ ┃ ┃ ┣ 📜attachment_download_bloc.dart
+ ┃ ┃ ┃ ┃ ┣ 📜attachment_download_event.dart
+ ┃ ┃ ┃ ┃ ┣ 📜attachment_download_state.dart
+ ┃ ┃ ┃ ┃ ┗ 📜bloc.dart
+ ┃ ┃ ┃ ┣ 📜bloc.dart
+ ┃ ┃ ┃ ┣ 📜notices_bloc.dart
+ ┃ ┃ ┃ ┣ 📜notices_event.dart
+ ┃ ┃ ┃ ┗ 📜notices_state.dart
+ ┃ ┃ ┣ 📂periods
+ ┃ ┃ ┃ ┣ 📜bloc.dart
+ ┃ ┃ ┃ ┣ 📜periods_bloc.dart
+ ┃ ┃ ┃ ┣ 📜periods_event.dart
+ ┃ ┃ ┃ ┗ 📜periods_state.dart
  ┃ ┃ ┗ 📂subjects
  ┃ ┃ ┃ ┣ 📜bloc.dart
  ┃ ┃ ┃ ┣ 📜subjects_bloc.dart
  ┃ ┃ ┃ ┣ 📜subjects_event.dart
  ┃ ┃ ┃ ┗ 📜subjects_state.dart
  ┃ ┣ 📂feature
+ ┃ ┃ ┣ 📂absences
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜absences_chart_bars.dart
+ ┃ ┃ ┃ ┃ ┣ 📜absences_chart_lines.dart
+ ┃ ┃ ┃ ┃ ┗ 📜absence_card.dart
+ ┃ ┃ ┃ ┗ 📜absences_page.dart
  ┃ ┃ ┣ 📂agenda
  ┃ ┃ ┃ ┗ 📜agenda_page.dart
- ┃ ┃ ┣ 📂briefing
+ ┃ ┃ ┣ 📂grades
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜grades_chart.dart
+ ┃ ┃ ┃ ┃ ┣ 📜grades_overall_stats.dart
+ ┃ ┃ ┃ ┃ ┣ 📜grades_tab.dart
+ ┃ ┃ ┃ ┃ ┗ 📜grade_subject_card.dart
+ ┃ ┃ ┃ ┣ 📂subject_grades
+ ┃ ┃ ┃ ┃ ┗ 📜subject_grades.dart
+ ┃ ┃ ┃ ┗ 📜grades_page.dart
+ ┃ ┃ ┣ 📂home
  ┃ ┃ ┃ ┣ 📂components
  ┃ ┃ ┃ ┃ ┣ 📜event_card.dart
  ┃ ┃ ┃ ┃ ┣ 📜lesson_card.dart
  ┃ ┃ ┃ ┃ ┗ 📜subjects_grid.dart
- ┃ ┃ ┃ ┗ 📜briefing_page.dart
+ ┃ ┃ ┃ ┗ 📜home_page.dart
  ┃ ┃ ┣ 📂lessons
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┗ 📜subjects_list.dart
  ┃ ┃ ┃ ┣ 📜lessons_page.dart
- ┃ ┃ ┃ ┣ 📜lesson_details.dart
- ┃ ┃ ┃ ┗ 📜subjects_list.dart
+ ┃ ┃ ┃ ┗ 📜lesson_details.dart
  ┃ ┃ ┣ 📂login
  ┃ ┃ ┃ ┗ 📜login_page.dart
+ ┃ ┃ ┣ 📂noticeboard
+ ┃ ┃ ┃ ┗ 📜noticeboard_page.dart
+ ┃ ┃ ┣ 📂settings
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📂customization
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜customization_settings.dart
+ ┃ ┃ ┃ ┃ ┣ 📂general
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜general_averages_home_settings_dialog.dart
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜general_objective_settings_dialog.dart
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜general_settings.dart
+ ┃ ┃ ┃ ┃ ┣ 📂notifications
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜notifications_interval_settings_dialog.dart
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜notifications_type_settings_dialog.dart
+ ┃ ┃ ┃ ┃ ┗ 📜header_text.dart
+ ┃ ┃ ┃ ┗ 📜settings_page.dart
  ┃ ┃ ┣ 📂splash_screen
  ┃ ┃ ┃ ┗ 📜splash_screen.dart
  ┃ ┃ ┣ 📂widgets
  ┃ ┃ ┃ ┣ 📜app_drawer.dart
+ ┃ ┃ ┃ ┣ 📜cusotm_placeholder.dart
+ ┃ ┃ ┃ ┣ 📜custom_app_bar.dart
  ┃ ┃ ┃ ┣ 📜grade_card.dart
  ┃ ┃ ┃ ┣ 📜grade_painter.dart
  ┃ ┃ ┃ ┗ 📜section_header.dart
- ┃ ┃ ┣ 📜layout_manager.dart
  ┃ ┃ ┗ 📜pages.dart
- ┃ ┗ 📂global
+ ┃ ┣ 📂global
  ┃ ┃ ┣ 📂localizations
  ┃ ┃ ┃ ┣ 📂bloc
  ┃ ┃ ┃ ┃ ┣ 📜bloc.dart
  ┃ ┃ ┃ ┃ ┣ 📜localizations_bloc.dart
  ┃ ┃ ┃ ┃ ┣ 📜localizations_event.dart
  ┃ ┃ ┃ ┃ ┗ 📜localizations_state.dart
+ ┃ ┃ ┃ ┣ 📂ui
+ ┃ ┃ ┃ ┃ ┗ 📜locale_bloc_builder.dart
  ┃ ┃ ┃ ┣ 📜app_localizations.dart
  ┃ ┃ ┃ ┗ 📜localizations_delegates.dart
- ┃ ┃ ┗ 📂themes
- ┃ ┃ ┃ ┗ 📂theme_data
+ ┃ ┃ ┗ 📂theme
+ ┃ ┃ ┃ ┣ 📂bloc
+ ┃ ┃ ┃ ┃ ┣ 📜bloc.dart
+ ┃ ┃ ┃ ┃ ┣ 📜theme_bloc.dart
+ ┃ ┃ ┃ ┃ ┣ 📜theme_event.dart
+ ┃ ┃ ┃ ┃ ┗ 📜theme_state.dart
+ ┃ ┃ ┃ ┣ 📂theme_data
+ ┃ ┃ ┃ ┃ ┣ 📜dark_theme.dart
  ┃ ┃ ┃ ┃ ┣ 📜default_theme.dart
+ ┃ ┃ ┃ ┃ ┣ 📜light_theme.dart
  ┃ ┃ ┃ ┃ ┗ 📜text_styles.dart
+ ┃ ┃ ┃ ┣ 📂ui
+ ┃ ┃ ┃ ┃ ┣ 📜theme_bloc_builder.dart
+ ┃ ┃ ┃ ┃ ┣ 📜theme_item.dart
+ ┃ ┃ ┃ ┃ ┗ 📜theme_settings_page.dart
+ ┃ ┃ ┃ ┗ 📜app_themes.dart
+ ┃ ┗ 📜application.dart
  ┣ 📂utils
  ┃ ┣ 📂constants
- ┃ ┃ ┣ 📜registro_costants.dart
- ┃ ┃ ┗ 📜subjects_constants.dart
+ ┃ ┃ ┣ 📜drawer_constants.dart
+ ┃ ┃ ┣ 📜preferences_constants.dart
+ ┃ ┃ ┣ 📜registro_constants.dart
+ ┃ ┃ ┣ 📜subjects_constants.dart
+ ┃ ┃ ┗ 📜tabs_constants.dart
  ┃ ┣ 📂entity
- ┃ ┃ ┗ 📜datetime_interval.dart
+ ┃ ┃ ┣ 📜datetime_interval.dart
+ ┃ ┃ ┣ 📜overall_stats.dart
+ ┃ ┃ ┗ 📜subject_averages.dart
+ ┃ ┣ 📜color_utils.dart
+ ┃ ┣ 📜date_utils.dart
  ┃ ┣ 📜global_utils.dart
- ┃ ┗ 📜profile_utils.dart
+ ┃ ┣ 📜grades_utils.dart
+ ┃ ┣ 📜profile_utils.dart
+ ┃ ┗ 📜string_utils.dart
  ┗ 📜main.dart
 ```
 
