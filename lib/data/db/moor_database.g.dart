@@ -4836,6 +4836,384 @@ class $AttachmentsTable extends Attachments
   }
 }
 
+class Note extends DataClass implements Insertable<Note> {
+  final String author;
+  final DateTime date;
+  final int id;
+  final bool status;
+  final String description;
+  final String warning;
+  final String type;
+  Note(
+      {@required this.author,
+      @required this.date,
+      @required this.id,
+      @required this.status,
+      @required this.description,
+      @required this.warning,
+      @required this.type});
+  factory Note.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    final intType = db.typeSystem.forDartType<int>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    return Note(
+      author:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}author']),
+      date:
+          dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}date']),
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      status:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}status']),
+      description: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
+      warning:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}warning']),
+      type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
+    );
+  }
+  factory Note.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return Note(
+      author: serializer.fromJson<String>(json['author']),
+      date: serializer.fromJson<DateTime>(json['date']),
+      id: serializer.fromJson<int>(json['id']),
+      status: serializer.fromJson<bool>(json['status']),
+      description: serializer.fromJson<String>(json['description']),
+      warning: serializer.fromJson<String>(json['warning']),
+      type: serializer.fromJson<String>(json['type']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'author': serializer.toJson<String>(author),
+      'date': serializer.toJson<DateTime>(date),
+      'id': serializer.toJson<int>(id),
+      'status': serializer.toJson<bool>(status),
+      'description': serializer.toJson<String>(description),
+      'warning': serializer.toJson<String>(warning),
+      'type': serializer.toJson<String>(type),
+    };
+  }
+
+  @override
+  NotesCompanion createCompanion(bool nullToAbsent) {
+    return NotesCompanion(
+      author:
+          author == null && nullToAbsent ? const Value.absent() : Value(author),
+      date: date == null && nullToAbsent ? const Value.absent() : Value(date),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      status:
+          status == null && nullToAbsent ? const Value.absent() : Value(status),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      warning: warning == null && nullToAbsent
+          ? const Value.absent()
+          : Value(warning),
+      type: type == null && nullToAbsent ? const Value.absent() : Value(type),
+    );
+  }
+
+  Note copyWith(
+          {String author,
+          DateTime date,
+          int id,
+          bool status,
+          String description,
+          String warning,
+          String type}) =>
+      Note(
+        author: author ?? this.author,
+        date: date ?? this.date,
+        id: id ?? this.id,
+        status: status ?? this.status,
+        description: description ?? this.description,
+        warning: warning ?? this.warning,
+        type: type ?? this.type,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Note(')
+          ..write('author: $author, ')
+          ..write('date: $date, ')
+          ..write('id: $id, ')
+          ..write('status: $status, ')
+          ..write('description: $description, ')
+          ..write('warning: $warning, ')
+          ..write('type: $type')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      author.hashCode,
+      $mrjc(
+          date.hashCode,
+          $mrjc(
+              id.hashCode,
+              $mrjc(
+                  status.hashCode,
+                  $mrjc(description.hashCode,
+                      $mrjc(warning.hashCode, type.hashCode)))))));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is Note &&
+          other.author == this.author &&
+          other.date == this.date &&
+          other.id == this.id &&
+          other.status == this.status &&
+          other.description == this.description &&
+          other.warning == this.warning &&
+          other.type == this.type);
+}
+
+class NotesCompanion extends UpdateCompanion<Note> {
+  final Value<String> author;
+  final Value<DateTime> date;
+  final Value<int> id;
+  final Value<bool> status;
+  final Value<String> description;
+  final Value<String> warning;
+  final Value<String> type;
+  const NotesCompanion({
+    this.author = const Value.absent(),
+    this.date = const Value.absent(),
+    this.id = const Value.absent(),
+    this.status = const Value.absent(),
+    this.description = const Value.absent(),
+    this.warning = const Value.absent(),
+    this.type = const Value.absent(),
+  });
+  NotesCompanion.insert({
+    @required String author,
+    @required DateTime date,
+    @required int id,
+    @required bool status,
+    @required String description,
+    @required String warning,
+    @required String type,
+  })  : author = Value(author),
+        date = Value(date),
+        id = Value(id),
+        status = Value(status),
+        description = Value(description),
+        warning = Value(warning),
+        type = Value(type);
+  NotesCompanion copyWith(
+      {Value<String> author,
+      Value<DateTime> date,
+      Value<int> id,
+      Value<bool> status,
+      Value<String> description,
+      Value<String> warning,
+      Value<String> type}) {
+    return NotesCompanion(
+      author: author ?? this.author,
+      date: date ?? this.date,
+      id: id ?? this.id,
+      status: status ?? this.status,
+      description: description ?? this.description,
+      warning: warning ?? this.warning,
+      type: type ?? this.type,
+    );
+  }
+}
+
+class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $NotesTable(this._db, [this._alias]);
+  final VerificationMeta _authorMeta = const VerificationMeta('author');
+  GeneratedTextColumn _author;
+  @override
+  GeneratedTextColumn get author => _author ??= _constructAuthor();
+  GeneratedTextColumn _constructAuthor() {
+    return GeneratedTextColumn(
+      'author',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _dateMeta = const VerificationMeta('date');
+  GeneratedDateTimeColumn _date;
+  @override
+  GeneratedDateTimeColumn get date => _date ??= _constructDate();
+  GeneratedDateTimeColumn _constructDate() {
+    return GeneratedDateTimeColumn(
+      'date',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn(
+      'id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _statusMeta = const VerificationMeta('status');
+  GeneratedBoolColumn _status;
+  @override
+  GeneratedBoolColumn get status => _status ??= _constructStatus();
+  GeneratedBoolColumn _constructStatus() {
+    return GeneratedBoolColumn(
+      'status',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  GeneratedTextColumn _description;
+  @override
+  GeneratedTextColumn get description =>
+      _description ??= _constructDescription();
+  GeneratedTextColumn _constructDescription() {
+    return GeneratedTextColumn(
+      'description',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _warningMeta = const VerificationMeta('warning');
+  GeneratedTextColumn _warning;
+  @override
+  GeneratedTextColumn get warning => _warning ??= _constructWarning();
+  GeneratedTextColumn _constructWarning() {
+    return GeneratedTextColumn(
+      'warning',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  GeneratedTextColumn _type;
+  @override
+  GeneratedTextColumn get type => _type ??= _constructType();
+  GeneratedTextColumn _constructType() {
+    return GeneratedTextColumn(
+      'type',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [author, date, id, status, description, warning, type];
+  @override
+  $NotesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'notes';
+  @override
+  final String actualTableName = 'notes';
+  @override
+  VerificationContext validateIntegrity(NotesCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.author.present) {
+      context.handle(
+          _authorMeta, author.isAcceptableValue(d.author.value, _authorMeta));
+    } else if (author.isRequired && isInserting) {
+      context.missing(_authorMeta);
+    }
+    if (d.date.present) {
+      context.handle(
+          _dateMeta, date.isAcceptableValue(d.date.value, _dateMeta));
+    } else if (date.isRequired && isInserting) {
+      context.missing(_dateMeta);
+    }
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.status.present) {
+      context.handle(
+          _statusMeta, status.isAcceptableValue(d.status.value, _statusMeta));
+    } else if (status.isRequired && isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (d.description.present) {
+      context.handle(_descriptionMeta,
+          description.isAcceptableValue(d.description.value, _descriptionMeta));
+    } else if (description.isRequired && isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (d.warning.present) {
+      context.handle(_warningMeta,
+          warning.isAcceptableValue(d.warning.value, _warningMeta));
+    } else if (warning.isRequired && isInserting) {
+      context.missing(_warningMeta);
+    }
+    if (d.type.present) {
+      context.handle(
+          _typeMeta, type.isAcceptableValue(d.type.value, _typeMeta));
+    } else if (type.isRequired && isInserting) {
+      context.missing(_typeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  Note map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Note.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(NotesCompanion d) {
+    final map = <String, Variable>{};
+    if (d.author.present) {
+      map['author'] = Variable<String, StringType>(d.author.value);
+    }
+    if (d.date.present) {
+      map['date'] = Variable<DateTime, DateTimeType>(d.date.value);
+    }
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.status.present) {
+      map['status'] = Variable<bool, BoolType>(d.status.value);
+    }
+    if (d.description.present) {
+      map['description'] = Variable<String, StringType>(d.description.value);
+    }
+    if (d.warning.present) {
+      map['warning'] = Variable<String, StringType>(d.warning.value);
+    }
+    if (d.type.present) {
+      map['type'] = Variable<String, StringType>(d.type.value);
+    }
+    return map;
+  }
+
+  @override
+  $NotesTable createAlias(String alias) {
+    return $NotesTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProfilesTable _profiles;
@@ -4859,6 +5237,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $NoticesTable get notices => _notices ??= $NoticesTable(this);
   $AttachmentsTable _attachments;
   $AttachmentsTable get attachments => _attachments ??= $AttachmentsTable(this);
+  $NotesTable _notes;
+  $NotesTable get notes => _notes ??= $NotesTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   LessonDao _lessonDao;
@@ -4878,6 +5258,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   PeriodDao get periodDao => _periodDao ??= PeriodDao(this as AppDatabase);
   NoticeDao _noticeDao;
   NoticeDao get noticeDao => _noticeDao ??= NoticeDao(this as AppDatabase);
+  NoteDao _noteDao;
+  NoteDao get noteDao => _noteDao ??= NoteDao(this as AppDatabase);
   @override
   List<TableInfo> get allTables => [
         profiles,
@@ -4889,6 +5271,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         absences,
         periods,
         notices,
-        attachments
+        attachments,
+        notes
       ];
 }

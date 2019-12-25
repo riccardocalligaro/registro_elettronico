@@ -6,6 +6,7 @@ import 'package:registro_elettronico/domain/entity/api_responses/agenda_response
 import 'package:registro_elettronico/domain/entity/api_responses/grades_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/lessons_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/login_response.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/notes_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/noticeboard_read_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/noticeboard_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/periods_response.dart';
@@ -75,4 +76,14 @@ abstract class SpaggiariClient {
     @Path('pubId') String pubId,
     @Path('attachNumber') String attachNum,
   );
+
+  @GET("/students/{studentId}/notes/all/")
+  Future<NotesResponse> getNotes(@Path() String studentId);
+
+  // @POST("/students/{studentId}/notes/{type}/read/{layout_note}")
+  // Future<Response> markNote(
+  //   @Path('studentId') String studentId,
+  //   @Path("type") String type,
+  //   @Path("layout_note") int note,
+  // );
 }

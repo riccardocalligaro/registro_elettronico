@@ -47,6 +47,6 @@ class TimetablePage extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ); 
   }
 }

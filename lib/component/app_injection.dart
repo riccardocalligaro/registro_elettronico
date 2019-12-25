@@ -5,6 +5,7 @@ import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
+import 'package:registro_elettronico/data/db/dao/note_dao.dart';
 import 'package:registro_elettronico/data/db/dao/notice_dao.dart';
 import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
@@ -18,14 +19,17 @@ import 'package:registro_elettronico/data/repository/mapper/absence_mapper.dart'
 
 // All the mappers to convert an entity to a db entity and vice versa
 import 'package:registro_elettronico/data/repository/mapper/mappers_export.dart';
+import 'package:registro_elettronico/data/repository/mapper/note_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/notice_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/period_mapper.dart';
+import 'package:registro_elettronico/data/repository/notes_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/notices_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/periods_repository_impl.dart';
 
 // All the data level repositories
 import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
+import 'package:registro_elettronico/domain/repository/notes_repository.dart';
 import 'package:registro_elettronico/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/domain/repository/periods_repository.dart';
 
@@ -100,6 +104,10 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton<NoticeDao>((i) {
       return NoticeDao(i.getDependency());
+    });
+
+    Injector.appInstance.registerSingleton<NoteDao>((i) {
+      return NoteDao(i.getDependency());
     });
   }
 
@@ -204,6 +212,16 @@ class AppInjector {
       );
       return noticesRepository;
     });
+
+    Injector.appInstance.registerSingleton((i) {
+      NotesRepository notesRepository = NotesRepositoryImpl(
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
+      return notesRepository;
+    });
   }
 
   static void injectMapper() {
@@ -238,6 +256,10 @@ class AppInjector {
     Injector.appInstance.registerSingleton<NoticeMapper>((injector) {
       return NoticeMapper();
     });
+
+    Injector.appInstance.registerSingleton<NoteMapper>((injector) {
+      return NoteMapper();
+    });
   }
 
   static void injectBloc() {
@@ -246,7 +268,5 @@ class AppInjector {
     });
   }
 
-  static void injectSharedPreferences() async {
-   
-  }
+  static void injectSharedPreferences() async {}
 }

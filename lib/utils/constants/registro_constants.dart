@@ -18,4 +18,10 @@ abstract class RegistroConstants {
 
   // Constants for login
   static const USERNAME_PASSWORD_NOT_MATCHING = 1;
+
+  // Notes
+  static const CLASSEVIVA_NOTE = 'NTCL';
+  static const RECALL = 'NTWN';
+  static const TEACHER_NOTE = 'NTTE';
+  static const DISCIPLINARY_NOTE = 'NTST';
 }
