@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/feature/grades/subject_grades/subject_grades.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_painter.dart';
-import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
 

@@ -4,11 +4,15 @@ import 'package:logger/logger.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/ui/bloc/local_grades/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/local_grades/local_grades_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/local_grades/local_grades_state.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/subjects_bloc.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.dart';
+import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
+import 'package:registro_elettronico/ui/feature/widgets/local_grade_card.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/entity/subject_averages.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -37,6 +41,8 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
 
   @override
   void initState() {
+    BlocProvider.of<LocalGradesBloc>(context)
+        .add(GetLocalGrades(period: widget.period));
     restore();
     super.initState();
   }
@@ -69,7 +75,6 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
             ..sort((a, b) => a.eventDate.compareTo(b.eventDate));
     }
 
-    print(grades);
     final averages =
         GradesUtils.getSubjectAveragesFromGrades(grades, subject.id);
     return Scaffold(
@@ -84,30 +89,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
             padding: EdgeInsets.all(8.0),
             child: Column(
               children: <Widget>[
-                StreamBuilder(
-                  stream: BlocProvider.of<SubjectsBloc>(context).professors,
-                  initialData: List<Professor>(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    List<Professor> professors =
-                        snapshot.data ?? List<Professor>();
-                    return Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          leading: Icon(Icons.person),
-                          title: Text(
-                            _getProfessorsText(
-                              professors
-                                  .where((professor) =>
-                                      professor.subjectId == subject.id)
-                                  .toList(),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                _buildProfessorsCard(),
 
                 /// Pratico scritto and orale ciruclar progress widgets
                 _buildAveragesCard(averages),
@@ -118,6 +100,8 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                 // Shots the progress bar of the obj and the avg
                 _buildProgressBarCard(averages),
 
+                _buildLocalGrades(averages),
+
                 // Last grades
                 _buildLastGrades(grades),
               ],
@@ -125,6 +109,149 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildLocalGrades(SubjectAverages averages) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0, left: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    child: Expanded(
+                      child: Text('Your grades'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            BlocBuilder<LocalGradesBloc, LocalGradesState>(
+              builder: (context, state) {
+                if (state is LocalGradesError) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                if (state is LocalGradesLoaded) {
+                  return _buildLocalGradesLoaded(state.localGrades);
+                }
+
+                if (state is LocalGradesError) {}
+
+                return Text(state.toString());
+              },
+            ),
+            ButtonBar(
+              children: <Widget>[
+                FlatButton(
+                  child: const Text('ADD'),
+                  onPressed: () {
+                    final grade = LocalGrade(
+                      periodPos: 211,
+                      subjectId: 1121,
+                      id: 3212,
+                      eventDate: DateTime.now(),
+                      decimalValue: 621.0,
+                      displayValue: '612.0',
+                      underlined: false,
+                      cancelled: false,
+                    );
+
+                    BlocProvider.of<LocalGradesBloc>(context)
+                        .add(AddLocalGrade(localGrade: grade));
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      // child:
+    );
+  }
+
+  Widget _buildLocalGradesLoaded(List<LocalGrade> localGrades) {
+    if (localGrades.length > 0) {
+      return Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Text('8.00'),
+                    Text('Media'),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.arrow_upward),
+                    Text('+8.54%'),
+                  ],
+                )
+              ],
+            ),
+          ),
+          Divider(),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: localGrades.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 8.0, right: 16.0),
+                child: LocalGradeCard(
+                  localGrade: localGrades[index],
+                ),
+              );
+            },
+          )
+        ],
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0, top: 8.0),
+      child: CustomPlaceHolder(
+        icon: Icons.timeline,
+        text: 'No local grades',
+        showUpdate: false,
+      ),
+    );
+  }
+
+  Widget _buildProfessorsCard() {
+    return StreamBuilder(
+      stream: BlocProvider.of<SubjectsBloc>(context).professors,
+      initialData: List<Professor>(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        List<Professor> professors = snapshot.data ?? List<Professor>();
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListTile(
+              leading: Icon(Icons.person),
+              title: Text(
+                _getProfessorsText(
+                  professors
+                      .where((professor) =>
+                          professor.subjectId == widget.subject.id)
+                      .toList(),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 

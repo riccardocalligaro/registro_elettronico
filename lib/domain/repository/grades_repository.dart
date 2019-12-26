@@ -30,4 +30,12 @@ abstract class GradesRepository {
 
   /// Inserts a single grade into the database
   Future insertGrade(Grade grade);
+
+  Future insertLocalGrade(LocalGrade localGrade);
+
+  Future deleteLocalGrade(LocalGrade localGrade);
+
+  Future updateLocalGrade(LocalGrade localGrade);
+
+  Future<List<LocalGrade>> getLocalGrades();
 }

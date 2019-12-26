@@ -166,20 +166,24 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
         final contentsList = contents
             .where((content) => content.folderId == folders[index].id)
             .toList();
-        return ExpandablePanel(
-          header: ListTile(
-            leading: Icon(Icons.folder),
-            title: Text(_getContentText(folders[index].name)),
-            subtitle: Text(
-              DateUtils.convertDateLocale(
-                folders[index].lastShare,
-                AppLocalizations.of(context).locale.toString(),
+        return ExpandableTheme(
+          data:
+              ExpandableThemeData(iconColor: Theme.of(context).iconTheme.color),
+          child: ExpandablePanel(
+            header: ListTile(
+              leading: Icon(Icons.folder),
+              title: Text(_getContentText(folders[index].name)),
+              subtitle: Text(
+                DateUtils.convertDateLocale(
+                  folders[index].lastShare,
+                  AppLocalizations.of(context).locale.toString(),
+                ),
               ),
             ),
+            expanded: _buildContentsList(contentsList),
+            tapHeaderToExpand: true,
+            hasIcon: true,
           ),
-          expanded: _buildContentsList(contentsList),
-          tapHeaderToExpand: true,
-          hasIcon: true,
         );
       },
     );

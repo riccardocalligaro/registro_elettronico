@@ -40,14 +40,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
       ),
       // actions: actions,
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: () {
-            AppDatabase().resetDbWithoutProfile();
-          },
-        )
-      ],
+      // actions: <Widget>[
+      //   IconButton(
+      //     icon: Icon(Icons.delete),
+      //     onPressed: () {
+      //       AppDatabase().resetDbWithoutProfile();
+      //     },
+      //   )
+      // ],
     );
   }
 

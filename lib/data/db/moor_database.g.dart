@@ -6044,6 +6044,445 @@ class $DidacticsContentsTable extends DidacticsContents
   }
 }
 
+class LocalGrade extends DataClass implements Insertable<LocalGrade> {
+  final int id;
+  final int subjectId;
+  final DateTime eventDate;
+  final double decimalValue;
+  final String displayValue;
+  final bool cancelled;
+  final bool underlined;
+  final int periodPos;
+  LocalGrade(
+      {@required this.id,
+      @required this.subjectId,
+      @required this.eventDate,
+      @required this.decimalValue,
+      @required this.displayValue,
+      @required this.cancelled,
+      @required this.underlined,
+      @required this.periodPos});
+  factory LocalGrade.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    final doubleType = db.typeSystem.forDartType<double>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    return LocalGrade(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      subjectId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
+      eventDate: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}event_date']),
+      decimalValue: doubleType
+          .mapFromDatabaseResponse(data['${effectivePrefix}decimal_value']),
+      displayValue: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}display_value']),
+      cancelled:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}cancelled']),
+      underlined: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}underlined']),
+      periodPos:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}period_pos']),
+    );
+  }
+  factory LocalGrade.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return LocalGrade(
+      id: serializer.fromJson<int>(json['id']),
+      subjectId: serializer.fromJson<int>(json['subjectId']),
+      eventDate: serializer.fromJson<DateTime>(json['eventDate']),
+      decimalValue: serializer.fromJson<double>(json['decimalValue']),
+      displayValue: serializer.fromJson<String>(json['displayValue']),
+      cancelled: serializer.fromJson<bool>(json['cancelled']),
+      underlined: serializer.fromJson<bool>(json['underlined']),
+      periodPos: serializer.fromJson<int>(json['periodPos']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'id': serializer.toJson<int>(id),
+      'subjectId': serializer.toJson<int>(subjectId),
+      'eventDate': serializer.toJson<DateTime>(eventDate),
+      'decimalValue': serializer.toJson<double>(decimalValue),
+      'displayValue': serializer.toJson<String>(displayValue),
+      'cancelled': serializer.toJson<bool>(cancelled),
+      'underlined': serializer.toJson<bool>(underlined),
+      'periodPos': serializer.toJson<int>(periodPos),
+    };
+  }
+
+  @override
+  LocalGradesCompanion createCompanion(bool nullToAbsent) {
+    return LocalGradesCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      subjectId: subjectId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(subjectId),
+      eventDate: eventDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(eventDate),
+      decimalValue: decimalValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(decimalValue),
+      displayValue: displayValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(displayValue),
+      cancelled: cancelled == null && nullToAbsent
+          ? const Value.absent()
+          : Value(cancelled),
+      underlined: underlined == null && nullToAbsent
+          ? const Value.absent()
+          : Value(underlined),
+      periodPos: periodPos == null && nullToAbsent
+          ? const Value.absent()
+          : Value(periodPos),
+    );
+  }
+
+  LocalGrade copyWith(
+          {int id,
+          int subjectId,
+          DateTime eventDate,
+          double decimalValue,
+          String displayValue,
+          bool cancelled,
+          bool underlined,
+          int periodPos}) =>
+      LocalGrade(
+        id: id ?? this.id,
+        subjectId: subjectId ?? this.subjectId,
+        eventDate: eventDate ?? this.eventDate,
+        decimalValue: decimalValue ?? this.decimalValue,
+        displayValue: displayValue ?? this.displayValue,
+        cancelled: cancelled ?? this.cancelled,
+        underlined: underlined ?? this.underlined,
+        periodPos: periodPos ?? this.periodPos,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('LocalGrade(')
+          ..write('id: $id, ')
+          ..write('subjectId: $subjectId, ')
+          ..write('eventDate: $eventDate, ')
+          ..write('decimalValue: $decimalValue, ')
+          ..write('displayValue: $displayValue, ')
+          ..write('cancelled: $cancelled, ')
+          ..write('underlined: $underlined, ')
+          ..write('periodPos: $periodPos')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          subjectId.hashCode,
+          $mrjc(
+              eventDate.hashCode,
+              $mrjc(
+                  decimalValue.hashCode,
+                  $mrjc(
+                      displayValue.hashCode,
+                      $mrjc(cancelled.hashCode,
+                          $mrjc(underlined.hashCode, periodPos.hashCode))))))));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is LocalGrade &&
+          other.id == this.id &&
+          other.subjectId == this.subjectId &&
+          other.eventDate == this.eventDate &&
+          other.decimalValue == this.decimalValue &&
+          other.displayValue == this.displayValue &&
+          other.cancelled == this.cancelled &&
+          other.underlined == this.underlined &&
+          other.periodPos == this.periodPos);
+}
+
+class LocalGradesCompanion extends UpdateCompanion<LocalGrade> {
+  final Value<int> id;
+  final Value<int> subjectId;
+  final Value<DateTime> eventDate;
+  final Value<double> decimalValue;
+  final Value<String> displayValue;
+  final Value<bool> cancelled;
+  final Value<bool> underlined;
+  final Value<int> periodPos;
+  const LocalGradesCompanion({
+    this.id = const Value.absent(),
+    this.subjectId = const Value.absent(),
+    this.eventDate = const Value.absent(),
+    this.decimalValue = const Value.absent(),
+    this.displayValue = const Value.absent(),
+    this.cancelled = const Value.absent(),
+    this.underlined = const Value.absent(),
+    this.periodPos = const Value.absent(),
+  });
+  LocalGradesCompanion.insert({
+    this.id = const Value.absent(),
+    @required int subjectId,
+    @required DateTime eventDate,
+    @required double decimalValue,
+    @required String displayValue,
+    @required bool cancelled,
+    @required bool underlined,
+    @required int periodPos,
+  })  : subjectId = Value(subjectId),
+        eventDate = Value(eventDate),
+        decimalValue = Value(decimalValue),
+        displayValue = Value(displayValue),
+        cancelled = Value(cancelled),
+        underlined = Value(underlined),
+        periodPos = Value(periodPos);
+  LocalGradesCompanion copyWith(
+      {Value<int> id,
+      Value<int> subjectId,
+      Value<DateTime> eventDate,
+      Value<double> decimalValue,
+      Value<String> displayValue,
+      Value<bool> cancelled,
+      Value<bool> underlined,
+      Value<int> periodPos}) {
+    return LocalGradesCompanion(
+      id: id ?? this.id,
+      subjectId: subjectId ?? this.subjectId,
+      eventDate: eventDate ?? this.eventDate,
+      decimalValue: decimalValue ?? this.decimalValue,
+      displayValue: displayValue ?? this.displayValue,
+      cancelled: cancelled ?? this.cancelled,
+      underlined: underlined ?? this.underlined,
+      periodPos: periodPos ?? this.periodPos,
+    );
+  }
+}
+
+class $LocalGradesTable extends LocalGrades
+    with TableInfo<$LocalGradesTable, LocalGrade> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $LocalGradesTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _subjectIdMeta = const VerificationMeta('subjectId');
+  GeneratedIntColumn _subjectId;
+  @override
+  GeneratedIntColumn get subjectId => _subjectId ??= _constructSubjectId();
+  GeneratedIntColumn _constructSubjectId() {
+    return GeneratedIntColumn(
+      'subject_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _eventDateMeta = const VerificationMeta('eventDate');
+  GeneratedDateTimeColumn _eventDate;
+  @override
+  GeneratedDateTimeColumn get eventDate => _eventDate ??= _constructEventDate();
+  GeneratedDateTimeColumn _constructEventDate() {
+    return GeneratedDateTimeColumn(
+      'event_date',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _decimalValueMeta =
+      const VerificationMeta('decimalValue');
+  GeneratedRealColumn _decimalValue;
+  @override
+  GeneratedRealColumn get decimalValue =>
+      _decimalValue ??= _constructDecimalValue();
+  GeneratedRealColumn _constructDecimalValue() {
+    return GeneratedRealColumn(
+      'decimal_value',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _displayValueMeta =
+      const VerificationMeta('displayValue');
+  GeneratedTextColumn _displayValue;
+  @override
+  GeneratedTextColumn get displayValue =>
+      _displayValue ??= _constructDisplayValue();
+  GeneratedTextColumn _constructDisplayValue() {
+    return GeneratedTextColumn(
+      'display_value',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _cancelledMeta = const VerificationMeta('cancelled');
+  GeneratedBoolColumn _cancelled;
+  @override
+  GeneratedBoolColumn get cancelled => _cancelled ??= _constructCancelled();
+  GeneratedBoolColumn _constructCancelled() {
+    return GeneratedBoolColumn(
+      'cancelled',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _underlinedMeta = const VerificationMeta('underlined');
+  GeneratedBoolColumn _underlined;
+  @override
+  GeneratedBoolColumn get underlined => _underlined ??= _constructUnderlined();
+  GeneratedBoolColumn _constructUnderlined() {
+    return GeneratedBoolColumn(
+      'underlined',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _periodPosMeta = const VerificationMeta('periodPos');
+  GeneratedIntColumn _periodPos;
+  @override
+  GeneratedIntColumn get periodPos => _periodPos ??= _constructPeriodPos();
+  GeneratedIntColumn _constructPeriodPos() {
+    return GeneratedIntColumn(
+      'period_pos',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        subjectId,
+        eventDate,
+        decimalValue,
+        displayValue,
+        cancelled,
+        underlined,
+        periodPos
+      ];
+  @override
+  $LocalGradesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'local_grades';
+  @override
+  final String actualTableName = 'local_grades';
+  @override
+  VerificationContext validateIntegrity(LocalGradesCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.subjectId.present) {
+      context.handle(_subjectIdMeta,
+          subjectId.isAcceptableValue(d.subjectId.value, _subjectIdMeta));
+    } else if (subjectId.isRequired && isInserting) {
+      context.missing(_subjectIdMeta);
+    }
+    if (d.eventDate.present) {
+      context.handle(_eventDateMeta,
+          eventDate.isAcceptableValue(d.eventDate.value, _eventDateMeta));
+    } else if (eventDate.isRequired && isInserting) {
+      context.missing(_eventDateMeta);
+    }
+    if (d.decimalValue.present) {
+      context.handle(
+          _decimalValueMeta,
+          decimalValue.isAcceptableValue(
+              d.decimalValue.value, _decimalValueMeta));
+    } else if (decimalValue.isRequired && isInserting) {
+      context.missing(_decimalValueMeta);
+    }
+    if (d.displayValue.present) {
+      context.handle(
+          _displayValueMeta,
+          displayValue.isAcceptableValue(
+              d.displayValue.value, _displayValueMeta));
+    } else if (displayValue.isRequired && isInserting) {
+      context.missing(_displayValueMeta);
+    }
+    if (d.cancelled.present) {
+      context.handle(_cancelledMeta,
+          cancelled.isAcceptableValue(d.cancelled.value, _cancelledMeta));
+    } else if (cancelled.isRequired && isInserting) {
+      context.missing(_cancelledMeta);
+    }
+    if (d.underlined.present) {
+      context.handle(_underlinedMeta,
+          underlined.isAcceptableValue(d.underlined.value, _underlinedMeta));
+    } else if (underlined.isRequired && isInserting) {
+      context.missing(_underlinedMeta);
+    }
+    if (d.periodPos.present) {
+      context.handle(_periodPosMeta,
+          periodPos.isAcceptableValue(d.periodPos.value, _periodPosMeta));
+    } else if (periodPos.isRequired && isInserting) {
+      context.missing(_periodPosMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LocalGrade map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return LocalGrade.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(LocalGradesCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.subjectId.present) {
+      map['subject_id'] = Variable<int, IntType>(d.subjectId.value);
+    }
+    if (d.eventDate.present) {
+      map['event_date'] = Variable<DateTime, DateTimeType>(d.eventDate.value);
+    }
+    if (d.decimalValue.present) {
+      map['decimal_value'] = Variable<double, RealType>(d.decimalValue.value);
+    }
+    if (d.displayValue.present) {
+      map['display_value'] = Variable<String, StringType>(d.displayValue.value);
+    }
+    if (d.cancelled.present) {
+      map['cancelled'] = Variable<bool, BoolType>(d.cancelled.value);
+    }
+    if (d.underlined.present) {
+      map['underlined'] = Variable<bool, BoolType>(d.underlined.value);
+    }
+    if (d.periodPos.present) {
+      map['period_pos'] = Variable<int, IntType>(d.periodPos.value);
+    }
+    return map;
+  }
+
+  @override
+  $LocalGradesTable createAlias(String alias) {
+    return $LocalGradesTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProfilesTable _profiles;
@@ -6078,6 +6517,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $DidacticsContentsTable _didacticsContents;
   $DidacticsContentsTable get didacticsContents =>
       _didacticsContents ??= $DidacticsContentsTable(this);
+  $LocalGradesTable _localGrades;
+  $LocalGradesTable get localGrades => _localGrades ??= $LocalGradesTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   LessonDao _lessonDao;
@@ -6117,6 +6558,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         notes,
         didacticsTeachers,
         didacticsFolders,
-        didacticsContents
+        didacticsContents,
+        localGrades
       ];
 }

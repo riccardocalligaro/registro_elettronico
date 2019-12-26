@@ -1,10 +1,14 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/table/grade_table.dart';
+import 'package:registro_elettronico/data/db/table/local_grade_table.dart';
 
 part 'grade_dao.g.dart';
 
-@UseDao(tables: [Grades])
+@UseDao(tables: [
+  Grades,
+  LocalGrades,
+])
 class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
   AppDatabase db;
 
@@ -21,6 +25,8 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
   Stream<List<Grade>> watchAllGrades() => select(grades).watch();
 
   Future<List<Grade>> getAllGrades() => select(grades).get();
+
+  Future<List<LocalGrade>> getLocalGrades() => select(localGrades).get();
 
   Future<List<Grade>> getAllGradesOrdered() {
     return (select(grades)
@@ -61,6 +67,16 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
   Future deleteAllGrades() =>
       (delete(grades)..where((entry) => entry.evtId.isBiggerOrEqualValue(-1)))
           .go();
-          
+
   Future deleteGrade(Grade grade) => delete(grades).delete(grade);
+
+  // Local Grades
+  Future insertLocalGrade(LocalGrade localGrade) =>
+      into(localGrades).insert(localGrade, orReplace: true);
+
+  Future deleteLocalGrade(LocalGrade localGrade) =>
+      delete(localGrades).delete(localGrade);
+
+  Future updateLocalGrade(LocalGrade localGrade) =>
+      update(localGrades).replace(localGrade);
 }

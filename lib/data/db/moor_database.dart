@@ -18,6 +18,7 @@ import 'package:registro_elettronico/data/db/table/didactics/folder_table.dart';
 import 'package:registro_elettronico/data/db/table/didactics/teacher_table.dart';
 import 'package:registro_elettronico/data/db/table/grade_table.dart';
 import 'package:registro_elettronico/data/db/table/lesson_table.dart';
+import 'package:registro_elettronico/data/db/table/local_grade_table.dart';
 import 'package:registro_elettronico/data/db/table/note_table.dart';
 import 'package:registro_elettronico/data/db/table/notice_table.dart';
 import 'package:registro_elettronico/data/db/table/period_table.dart';
@@ -42,6 +43,7 @@ part 'moor_database.g.dart';
   DidacticsTeachers,
   DidacticsFolders,
   DidacticsContents,
+  LocalGrades
 ], daos: [
   ProfileDao,
   LessonDao,

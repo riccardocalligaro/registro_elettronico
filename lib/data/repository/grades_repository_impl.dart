@@ -68,4 +68,24 @@ class GradesRepositoryImpl implements GradesRepository {
   Future<List<Grade>> getAllGradesOrdered() {
     return gradeDao.getAllGradesOrdered();
   }
+
+  @override
+  Future deleteLocalGrade(LocalGrade localGrade) {
+    return gradeDao.deleteLocalGrade(localGrade);
+  }
+
+  @override
+  Future<List<LocalGrade>> getLocalGrades() {
+    return gradeDao.getLocalGrades();
+  }
+
+  @override
+  Future insertLocalGrade(LocalGrade localGrade) {
+    return gradeDao.insertLocalGrade(localGrade);
+  }
+
+  @override
+  Future updateLocalGrade(LocalGrade localGrade) {
+    return gradeDao.updateLocalGrade(localGrade);
+  }
 }
