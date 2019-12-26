@@ -24,6 +24,8 @@
 | :---------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: |
 | <img src="https://i.imgur.com/SWp4dJ5.png" height="400px" > | <img src="https://i.imgur.com/JkVKOXK.png" height="400px" > | <img src="https://i.imgur.com/61uQrX9.png" height="400px" > |
 
+[![Preview](https://i.ibb.co/pbnPKdF/https-i-ytimg-com-vi-LVk-FTSKe-Rl-M-maxresdefault.jpg)](https://youtu.be/LVkFTSKeRlM "Preview")
+
 If you want to try the app (still alpha and a lot to do) feel free to contact [me.](mailto:riccardocalligaro@gmail.com)
 
 ## Overview of the project
