@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       key: _drawerKey,
       appBar: CustomAppBar(
-        title: Text('Home page'),
+        title: Text('Home'),
         scaffoldKey: _drawerKey,
       ),
       drawer: AppDrawer(

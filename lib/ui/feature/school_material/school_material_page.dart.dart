@@ -37,7 +37,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
     return Scaffold(
       key: _drawerKey,
       appBar: CustomAppBar(
-        title: Text('School material'),
+        title: Text(AppLocalizations.of(context).translate('school_material')),
         scaffoldKey: _drawerKey,
       ),
       drawer: AppDrawer(
@@ -48,7 +48,8 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
           if (state is DidacticsAttachmentsLoading) {
             Scaffold.of(context).showSnackBar(
               SnackBar(
-                content: Text('Loading...'),
+                content:
+                    Text(AppLocalizations.of(context).translate('downloading')),
                 duration: Duration(minutes: 10),
               ),
             );
@@ -56,18 +57,19 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
 
           if (state is DidacticsAttachmentsFileLoaded) {
             Scaffold.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Text('Downloaded'),
-                action: SnackBarAction(
-                  label: 'Open',
-                  onPressed: () {
-                    OpenFile.open(state.path);
-                  },
+              ..removeCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)
+                      .translate('download_of_file_completed')),
+                  action: SnackBarAction(
+                    label: AppLocalizations.of(context).translate('open'),
+                    onPressed: () {
+                      OpenFile.open(state.path);
+                    },
+                  ),
                 ),
-              ),
-            );
+              );
           }
           //if(state is DidacticsAttachments)
         },
@@ -98,7 +100,8 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
 
         if (state is DidacticsError || state is DidacticsUpdateError) {
           return CustomPlaceHolder(
-            text: 'Unexcepted error',
+            text: AppLocalizations.of(context)
+                .translate('unexcepted_error_single'),
             icon: Icons.error,
             showUpdate: true,
             onTap: () {
@@ -143,7 +146,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
     }
 
     return CustomPlaceHolder(
-      text: 'No school material',
+      text: AppLocalizations.of(context).translate('no_school_material'),
       icon: Icons.folder,
       showUpdate: true,
       onTap: () {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class GeneralObjectiveSettingsDialog extends StatefulWidget {
   final int objective;
@@ -25,7 +26,7 @@ class _GeneralObjectiveSettingsDialogState
     return Container(
       child: Column(
         children: <Widget>[
-          Text("Objective: ${_objective.toString()}"),
+          Text("${AppLocalizations.of(context).translate('objective')}: ${_objective.toString()}"),
           Slider(
             value: _objective.toDouble(),
             max: 10,

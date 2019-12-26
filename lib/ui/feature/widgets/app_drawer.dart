@@ -65,13 +65,12 @@ class _AppDrawerState extends State<AppDrawer> {
             },
           ),
           _createDrawerItem(
-            icon: Icons.folder,
-            text: trans.translate("school_material"),
-            pos: DrawerConstants.SCHOOL_MATERIAL,
-            onTap: () {
-              AppNavigator.instance.navToSchoolMaterial(context);
-            }
-          ),
+              icon: Icons.folder,
+              text: trans.translate("school_material"),
+              pos: DrawerConstants.SCHOOL_MATERIAL,
+              onTap: () {
+                AppNavigator.instance.navToSchoolMaterial(context);
+              }),
           _createDrawerItem(
             icon: Icons.assessment,
             text: trans.translate("absences"),
@@ -98,7 +97,7 @@ class _AppDrawerState extends State<AppDrawer> {
           ),
           _createDrawerItem(
             icon: Icons.access_time,
-            text: 'Timetable',
+            text: AppLocalizations.of(context).translate('timetable'),
             pos: DrawerConstants.TIMETABLE,
             onTap: () {
               AppNavigator.instance.navToTimetable(context);

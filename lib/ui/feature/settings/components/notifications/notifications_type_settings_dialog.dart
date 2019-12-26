@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,13 +55,13 @@ class _NotificationsSettingsDialogState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           HeaderText(
-            text: 'Choose what to notify',
+            text: AppLocalizations.of(context).translate('choose_what_to_notify'),
           ),
           SwitchListTile(
             activeColor: Colors.red,
             contentPadding: EdgeInsets.all(0.0),
             value: _gradesNotifications,
-            title: Text('Grades'),
+            title: Text(AppLocalizations.of(context).translate('grades')),
             onChanged: (value) {
               setState(() {
                 _gradesNotifications = value;
@@ -72,7 +73,7 @@ class _NotificationsSettingsDialogState
             activeColor: Colors.red,
             contentPadding: EdgeInsets.all(0.0),
             value: _agendaNotifications,
-            title: Text('Agenda'),
+            title: Text(AppLocalizations.of(context).translate('agenda')),
             onChanged: (value) {
               setState(() {
                 _agendaNotifications = value;
@@ -84,7 +85,7 @@ class _NotificationsSettingsDialogState
             activeColor: Colors.red,
             contentPadding: EdgeInsets.all(0.0),
             value: _lessonsNotifications,
-            title: Text('Lessons'),
+            title: Text(AppLocalizations.of(context).translate('lessons')),
             onChanged: (value) {
               setState(() {
                 _lessonsNotifications = value;
@@ -96,7 +97,7 @@ class _NotificationsSettingsDialogState
             activeColor: Colors.red,
             contentPadding: EdgeInsets.all(0.0),
             value: _notesNotifications,
-            title: Text('Notes'),
+            title: Text(AppLocalizations.of(context).translate('notes')),
             onChanged: (value) {
               setState(() {
                 _notesNotifications = value;
@@ -108,7 +109,7 @@ class _NotificationsSettingsDialogState
             activeColor: Colors.red,
             contentPadding: EdgeInsets.all(0.0),
             value: _absencesNotifications,
-            title: Text('Absences'),
+            title: Text(AppLocalizations.of(context).translate('absences')),
             onChanged: (value) {
               setState(() {
                 _absencesNotifications = value;

@@ -257,7 +257,7 @@ class _AbsencesPageState extends State<AbsencesPage>
       child: Padding(
         padding: const EdgeInsets.only(top: 32.0),
         child: CustomPlaceHolder(
-          text: 'No absences',
+          text: AppLocalizations.of(context).translate('no_absences'),
           icon: Icons.assessment,
           onTap: () {
             BlocProvider.of<AbsencesBloc>(context).add(FetchAbsences());

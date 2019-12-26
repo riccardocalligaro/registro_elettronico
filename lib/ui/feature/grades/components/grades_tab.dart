@@ -201,7 +201,7 @@ class _GradeTabState extends State<GradeTab>
         padding: const EdgeInsets.only(top: 170),
         child: Center(
           child: CustomPlaceHolder(
-            text: 'No grades',
+            text: AppLocalizations.of(context).translate('no_grades'),
             icon: Icons.timeline,
             showUpdate: false,
           ),
@@ -215,10 +215,11 @@ class _GradeTabState extends State<GradeTab>
   }
 
   Widget _buildEmpty() {
-    return Center(
-      child: Text(
-        AppLocalizations.of(context).translate('nothing_here'),
-      ),
+    return CustomPlaceHolder(
+      text: AppLocalizations.of(context).translate('no_grades'),
+      icon: Icons.timeline,
+      showUpdate: true,
+      onTap: _updateGrades,
     );
   }
 

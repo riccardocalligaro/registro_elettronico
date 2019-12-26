@@ -4,6 +4,7 @@ import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/domain/entity/genius_timetable.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 
 class TimetablePage extends StatelessWidget {
@@ -18,7 +19,9 @@ class TimetablePage extends StatelessWidget {
       key: _drawerKey,
       appBar: CustomAppBar(
         scaffoldKey: _drawerKey,
-        title: Text('Timetable'),
+        title: Text(
+          AppLocalizations.of(context).translate('timetable'),
+        ),
       ),
       drawer: AppDrawer(
         position: DrawerConstants.TIMETABLE,

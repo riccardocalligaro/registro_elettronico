@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/ui/global/theme/ui/theme_settings_page.dart';
 
 import '../header_text.dart';
@@ -17,12 +18,13 @@ class _CustomizationSettingsState extends State<CustomizationSettings> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         HeaderText(
-          text: 'Customization',
+          text: AppLocalizations.of(context).translate('customization'),
         ),
         ListTile(
             contentPadding: EdgeInsets.all(0.0),
-            title: Text('Theme'),
-            subtitle: Text('Change the theme'),
+            title: Text(AppLocalizations.of(context).translate('theme')),
+            subtitle: Text(
+                AppLocalizations.of(context).translate('change_the_theme')),
             onTap: () {
               Navigator.push(
                 context,

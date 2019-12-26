@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class NotificationsIntervalSettingsDialog extends StatefulWidget {
   int updateInterval;
@@ -22,7 +23,11 @@ class _NotificationsIntervalSettingsDialogState
           child: Column(
         children: <Widget>[
           RadioListTile(
-            title: const Text('Ogni 15 minuti'),
+            title: Text(
+              AppLocalizations.of(context)
+                  .translate('every_minutes')
+                  .replaceAll('{m}', '15'),
+            ),
             value: 15,
             groupValue: widget.updateInterval,
             onChanged: (value) {
@@ -33,7 +38,11 @@ class _NotificationsIntervalSettingsDialogState
             },
           ),
           RadioListTile(
-            title: const Text('Ogni 30 minuti'),
+            title: Text(
+              AppLocalizations.of(context)
+                  .translate('every_minutes')
+                  .replaceAll('{m}', '30'),
+            ),
             value: 30,
             groupValue: widget.updateInterval,
             onChanged: (value) {
@@ -44,7 +53,11 @@ class _NotificationsIntervalSettingsDialogState
             },
           ),
           RadioListTile(
-            title: Text('Ogni 2 ore'),
+            title: Text(
+              AppLocalizations.of(context)
+                  .translate('every_hours')
+                  .replaceAll('{h}', '2'),
+            ),
             value: 120,
             groupValue: widget.updateInterval,
             onChanged: (value) {
@@ -55,7 +68,11 @@ class _NotificationsIntervalSettingsDialogState
             },
           ),
           RadioListTile(
-            title: Text('Ogni 6 ore'),
+            title: Text(
+              AppLocalizations.of(context)
+                  .translate('every_hours')
+                  .replaceAll('{h}', '6'),
+            ),
             value: 360,
             groupValue: widget.updateInterval,
             onChanged: (value) {
@@ -69,6 +86,4 @@ class _NotificationsIntervalSettingsDialogState
       )),
     );
   }
-
-  
 }

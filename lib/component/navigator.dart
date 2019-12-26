@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:registro_elettronico/component/routes.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class AppNavigator {
   static AppNavigator _instance;
@@ -95,7 +96,7 @@ class AppNavigator {
             actions: actions
               ..add(FlatButton(
                 onPressed: () => Navigator.of(bCtx).pop(),
-                child: Text('Close'),
+                child: Text(AppLocalizations.of(context).translate('close')),
               )),
           );
         },

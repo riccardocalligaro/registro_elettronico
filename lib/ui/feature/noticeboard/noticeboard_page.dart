@@ -69,7 +69,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
             icon: _searchIcon,
             onPressed: () {
               _searchPressed(context);
-              
             },
           )
         ],
@@ -197,14 +196,14 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
       );
     } else if (_searchText.isNotEmpty) {
       return CustomPlaceHolder(
-        text: 'No documents!',
+        text: AppLocalizations.of(context).translate('no_documents'),
         icon: Icons.assignment,
         showUpdate: false,
       );
     }
 
     return CustomPlaceHolder(
-      text: 'No documents!',
+      text: AppLocalizations.of(context).translate('no_documents'),
       icon: Icons.assignment,
       onTap: () async {
         BlocProvider.of<NoticesBloc>(context).add(FetchNoticeboard());

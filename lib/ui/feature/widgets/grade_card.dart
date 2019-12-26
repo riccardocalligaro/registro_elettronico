@@ -33,7 +33,8 @@ class GradeCard extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  Text('Valore decimale: ${grade.decimalValue == -1.0 ? "🤔" : grade.decimalValue.toString()}'),
+                  Text(
+                      '${trans.translate('decimal_value')}: ${grade.decimalValue == -1.0 ? "🤔" : grade.decimalValue.toString()}'),
                   SizedBox(
                     height: 5,
                   ),

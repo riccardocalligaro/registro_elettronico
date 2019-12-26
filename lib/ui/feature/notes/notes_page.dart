@@ -32,7 +32,7 @@ class _NotesPageState extends State<NotesPage> {
       key: _drawerKey,
       appBar: CustomAppBar(
         scaffoldKey: _drawerKey,
-        title: Text('Notes'),
+        title: Text(AppLocalizations.of(context).translate('notes')),
       ),
       drawer: AppDrawer(
         position: DrawerConstants.NOTES,
@@ -57,7 +57,8 @@ class _NotesPageState extends State<NotesPage> {
         if (state is NotesError || state is NotesUpdateError) {
           return CustomPlaceHolder(
             icon: Icons.error,
-            text: 'Unexcepted error',
+            text: AppLocalizations.of(context)
+                .translate('unexcepted_error_single'),
             showUpdate: true,
             onTap: () {
               BlocProvider.of<NotesBloc>(context).add(UpdateNotes());
@@ -92,7 +93,7 @@ class _NotesPageState extends State<NotesPage> {
     } else {
       return CustomPlaceHolder(
         icon: Icons.info,
-        text: 'No notes',
+        text: AppLocalizations.of(context).translate('no_notes'),
         showUpdate: true,
         onTap: () {
           BlocProvider.of<NotesBloc>(context).add(UpdateNotes());

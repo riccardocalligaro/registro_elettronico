@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,11 +39,11 @@ class _GeneralSettingsState extends State<GeneralSettings> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         HeaderText(
-          text: 'General',
+          text: AppLocalizations.of(context).translate('general'),
         ),
         ListTile(
           contentPadding: EdgeInsets.all(0.0),
-          title: Text('Il tuo obiettivo'),
+          title: Text(AppLocalizations.of(context).translate('your_objective')),
           subtitle: Text('$_sliderValue'),
           onTap: () async {
             await showDialog(
@@ -68,7 +69,10 @@ class _GeneralSettingsState extends State<GeneralSettings> {
         ),
         ListTile(
           contentPadding: EdgeInsets.all(0.0),
-          title: Text('Medie da mostrare sulla schermata home'),
+          title: Text(
+            AppLocalizations.of(context)
+                .translate('averages_to_show_in_the_home_screen'),
+          ),
           subtitle: Text('$_sliderValue'),
           onTap: () async {},
         )

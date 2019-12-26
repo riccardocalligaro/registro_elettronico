@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
 import 'package:logger/logger.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/customization/customization_settings.dart';
-import 'package:registro_elettronico/ui/feature/settings/components/general/general_objective_settings_dialog.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/general/general_settings.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/notifications/notifications_interval_settings_dialog.dart';
@@ -83,12 +81,16 @@ class _SettingsPageState extends State<SettingsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         HeaderText(
-          text: 'Notifications',
+          text: AppLocalizations.of(context).translate('notifications'),
         ),
         ListTile(
           contentPadding: EdgeInsets.all(0),
-          title: Text('Cosa notificare'),
-          subtitle: Text('Tocca per impostare le notifiche'),
+          title: Text(
+              AppLocalizations.of(context).translate('choose_what_to_notify')),
+          subtitle: Text(
+            AppLocalizations.of(context)
+                .translate('press_to_set_notifications'),
+          ),
           onTap: () {
             showDialog(
               context: context,
@@ -104,8 +106,10 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         ListTile(
           contentPadding: EdgeInsets.all(0),
-          title: Text('Scegli intervallo'),
-          subtitle: Text('Ogni $_updateInterval minuti'),
+          title: Text(
+            AppLocalizations.of(context).translate('choose_interval'),
+          ),
+          subtitle: Text(_getUpdateTimeMessage(_updateInterval)),
           onTap: () async {
             await showDialog(
               context: context,
@@ -130,6 +134,16 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ],
     );
+  }
+
+  String _getUpdateTimeMessage(int interval) {
+    if (interval >= 60)
+      return AppLocalizations.of(context)
+          .translate('every_hours')
+          .replaceAll('{h}', (interval / 60).toString());
+    return AppLocalizations.of(context)
+        .translate('every_minutes')
+        .replaceAll('{m}', interval.toString());
   }
 
   static save(String key, dynamic value) async {

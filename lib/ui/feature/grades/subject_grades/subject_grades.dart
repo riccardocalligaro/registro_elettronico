@@ -170,8 +170,10 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('Il tuo obiettivo: 6.00'),
-                  Text('La tua media: ${averages.averageValue}'),
+                  Text(
+                      '${AppLocalizations.of(context).translate('your_objective')}: 6.00'),
+                  Text(
+                      '${AppLocalizations.of(context).translate('your_average')}: ${averages.averageValue}'),
                 ],
               ),
             ),
@@ -192,19 +194,19 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
               Column(
                 children: <Widget>[
                   _buildStatsCircle(averages.scrittoAverage),
-                  Text('Scritto'),
+                  Text(AppLocalizations.of(context).translate('written')),
                 ],
               ),
               Column(
                 children: <Widget>[
                   _buildStatsCircle(averages.oraleAverage),
-                  Text('Orale'),
+                  Text(AppLocalizations.of(context).translate('oral')),
                 ],
               ),
               Column(
                 children: <Widget>[
                   _buildStatsCircle(averages.praticoAverage),
-                  Text('Pratico'),
+                  Text(AppLocalizations.of(context).translate('pratico')),
                 ],
               ),
             ],
