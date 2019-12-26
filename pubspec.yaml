@@ -45,6 +45,10 @@ dependencies:
   flutter_local_notifications: ^0.8.4
   # logging
   logger: ^0.8.1
+  # expandable school material
+  expandable: ^4.0.1
+  # open urls for school material
+  url_launcher: ^5.4.1
 
   # Storing user password
   shared_preferences: ^0.5.4+8

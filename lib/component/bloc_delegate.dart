@@ -4,6 +4,8 @@ import 'package:injector/injector.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/didactics/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/didactics/didactics_attachments/didactics_attachments_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notes/notes_bloc.dart';
@@ -62,6 +64,12 @@ class AppBlocDelegate {
       ),
       BlocProvider<NotesBloc>(
         create: (ctx) => NotesBloc(i.getDependency()),
+      ),
+      BlocProvider<DidacticsBloc>(
+        create: (ctx) => DidacticsBloc(i.getDependency()),
+      ),
+      BlocProvider<DidacticsAttachmentsBloc>(
+        create: (ctx) => DidacticsAttachmentsBloc(i.getDependency()),
       )
     ];
   }

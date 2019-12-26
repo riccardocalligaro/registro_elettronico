@@ -5214,6 +5214,836 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
   }
 }
 
+class DidacticsTeacher extends DataClass
+    implements Insertable<DidacticsTeacher> {
+  final String id;
+  final String name;
+  final String firstName;
+  final String lastName;
+  DidacticsTeacher(
+      {@required this.id,
+      @required this.name,
+      @required this.firstName,
+      @required this.lastName});
+  factory DidacticsTeacher.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    return DidacticsTeacher(
+      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      firstName: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}first_name']),
+      lastName: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}last_name']),
+    );
+  }
+  factory DidacticsTeacher.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return DidacticsTeacher(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      firstName: serializer.fromJson<String>(json['firstName']),
+      lastName: serializer.fromJson<String>(json['lastName']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'firstName': serializer.toJson<String>(firstName),
+      'lastName': serializer.toJson<String>(lastName),
+    };
+  }
+
+  @override
+  DidacticsTeachersCompanion createCompanion(bool nullToAbsent) {
+    return DidacticsTeachersCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      firstName: firstName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(firstName),
+      lastName: lastName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastName),
+    );
+  }
+
+  DidacticsTeacher copyWith(
+          {String id, String name, String firstName, String lastName}) =>
+      DidacticsTeacher(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DidacticsTeacher(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('firstName: $firstName, ')
+          ..write('lastName: $lastName')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(name.hashCode, $mrjc(firstName.hashCode, lastName.hashCode))));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is DidacticsTeacher &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.firstName == this.firstName &&
+          other.lastName == this.lastName);
+}
+
+class DidacticsTeachersCompanion extends UpdateCompanion<DidacticsTeacher> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String> firstName;
+  final Value<String> lastName;
+  const DidacticsTeachersCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.firstName = const Value.absent(),
+    this.lastName = const Value.absent(),
+  });
+  DidacticsTeachersCompanion.insert({
+    @required String id,
+    @required String name,
+    @required String firstName,
+    @required String lastName,
+  })  : id = Value(id),
+        name = Value(name),
+        firstName = Value(firstName),
+        lastName = Value(lastName);
+  DidacticsTeachersCompanion copyWith(
+      {Value<String> id,
+      Value<String> name,
+      Value<String> firstName,
+      Value<String> lastName}) {
+    return DidacticsTeachersCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+    );
+  }
+}
+
+class $DidacticsTeachersTable extends DidacticsTeachers
+    with TableInfo<$DidacticsTeachersTable, DidacticsTeacher> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DidacticsTeachersTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedTextColumn _id;
+  @override
+  GeneratedTextColumn get id => _id ??= _constructId();
+  GeneratedTextColumn _constructId() {
+    return GeneratedTextColumn(
+      'id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  GeneratedTextColumn _name;
+  @override
+  GeneratedTextColumn get name => _name ??= _constructName();
+  GeneratedTextColumn _constructName() {
+    return GeneratedTextColumn(
+      'name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _firstNameMeta = const VerificationMeta('firstName');
+  GeneratedTextColumn _firstName;
+  @override
+  GeneratedTextColumn get firstName => _firstName ??= _constructFirstName();
+  GeneratedTextColumn _constructFirstName() {
+    return GeneratedTextColumn(
+      'first_name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _lastNameMeta = const VerificationMeta('lastName');
+  GeneratedTextColumn _lastName;
+  @override
+  GeneratedTextColumn get lastName => _lastName ??= _constructLastName();
+  GeneratedTextColumn _constructLastName() {
+    return GeneratedTextColumn(
+      'last_name',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, name, firstName, lastName];
+  @override
+  $DidacticsTeachersTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'didactics_teachers';
+  @override
+  final String actualTableName = 'didactics_teachers';
+  @override
+  VerificationContext validateIntegrity(DidacticsTeachersCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.name.present) {
+      context.handle(
+          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
+    } else if (name.isRequired && isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (d.firstName.present) {
+      context.handle(_firstNameMeta,
+          firstName.isAcceptableValue(d.firstName.value, _firstNameMeta));
+    } else if (firstName.isRequired && isInserting) {
+      context.missing(_firstNameMeta);
+    }
+    if (d.lastName.present) {
+      context.handle(_lastNameMeta,
+          lastName.isAcceptableValue(d.lastName.value, _lastNameMeta));
+    } else if (lastName.isRequired && isInserting) {
+      context.missing(_lastNameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DidacticsTeacher map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DidacticsTeacher.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DidacticsTeachersCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<String, StringType>(d.id.value);
+    }
+    if (d.name.present) {
+      map['name'] = Variable<String, StringType>(d.name.value);
+    }
+    if (d.firstName.present) {
+      map['first_name'] = Variable<String, StringType>(d.firstName.value);
+    }
+    if (d.lastName.present) {
+      map['last_name'] = Variable<String, StringType>(d.lastName.value);
+    }
+    return map;
+  }
+
+  @override
+  $DidacticsTeachersTable createAlias(String alias) {
+    return $DidacticsTeachersTable(_db, alias);
+  }
+}
+
+class DidacticsFolder extends DataClass implements Insertable<DidacticsFolder> {
+  final String teacherId;
+  final int id;
+  final String name;
+  final DateTime lastShare;
+  DidacticsFolder(
+      {@required this.teacherId,
+      @required this.id,
+      @required this.name,
+      @required this.lastShare});
+  factory DidacticsFolder.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    final intType = db.typeSystem.forDartType<int>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return DidacticsFolder(
+      teacherId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}teacher_id']),
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      lastShare: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}last_share']),
+    );
+  }
+  factory DidacticsFolder.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return DidacticsFolder(
+      teacherId: serializer.fromJson<String>(json['teacherId']),
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      lastShare: serializer.fromJson<DateTime>(json['lastShare']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'teacherId': serializer.toJson<String>(teacherId),
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'lastShare': serializer.toJson<DateTime>(lastShare),
+    };
+  }
+
+  @override
+  DidacticsFoldersCompanion createCompanion(bool nullToAbsent) {
+    return DidacticsFoldersCompanion(
+      teacherId: teacherId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(teacherId),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      lastShare: lastShare == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastShare),
+    );
+  }
+
+  DidacticsFolder copyWith(
+          {String teacherId, int id, String name, DateTime lastShare}) =>
+      DidacticsFolder(
+        teacherId: teacherId ?? this.teacherId,
+        id: id ?? this.id,
+        name: name ?? this.name,
+        lastShare: lastShare ?? this.lastShare,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DidacticsFolder(')
+          ..write('teacherId: $teacherId, ')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('lastShare: $lastShare')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(teacherId.hashCode,
+      $mrjc(id.hashCode, $mrjc(name.hashCode, lastShare.hashCode))));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is DidacticsFolder &&
+          other.teacherId == this.teacherId &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.lastShare == this.lastShare);
+}
+
+class DidacticsFoldersCompanion extends UpdateCompanion<DidacticsFolder> {
+  final Value<String> teacherId;
+  final Value<int> id;
+  final Value<String> name;
+  final Value<DateTime> lastShare;
+  const DidacticsFoldersCompanion({
+    this.teacherId = const Value.absent(),
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.lastShare = const Value.absent(),
+  });
+  DidacticsFoldersCompanion.insert({
+    @required String teacherId,
+    @required int id,
+    @required String name,
+    @required DateTime lastShare,
+  })  : teacherId = Value(teacherId),
+        id = Value(id),
+        name = Value(name),
+        lastShare = Value(lastShare);
+  DidacticsFoldersCompanion copyWith(
+      {Value<String> teacherId,
+      Value<int> id,
+      Value<String> name,
+      Value<DateTime> lastShare}) {
+    return DidacticsFoldersCompanion(
+      teacherId: teacherId ?? this.teacherId,
+      id: id ?? this.id,
+      name: name ?? this.name,
+      lastShare: lastShare ?? this.lastShare,
+    );
+  }
+}
+
+class $DidacticsFoldersTable extends DidacticsFolders
+    with TableInfo<$DidacticsFoldersTable, DidacticsFolder> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DidacticsFoldersTable(this._db, [this._alias]);
+  final VerificationMeta _teacherIdMeta = const VerificationMeta('teacherId');
+  GeneratedTextColumn _teacherId;
+  @override
+  GeneratedTextColumn get teacherId => _teacherId ??= _constructTeacherId();
+  GeneratedTextColumn _constructTeacherId() {
+    return GeneratedTextColumn(
+      'teacher_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn(
+      'id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  GeneratedTextColumn _name;
+  @override
+  GeneratedTextColumn get name => _name ??= _constructName();
+  GeneratedTextColumn _constructName() {
+    return GeneratedTextColumn(
+      'name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _lastShareMeta = const VerificationMeta('lastShare');
+  GeneratedDateTimeColumn _lastShare;
+  @override
+  GeneratedDateTimeColumn get lastShare => _lastShare ??= _constructLastShare();
+  GeneratedDateTimeColumn _constructLastShare() {
+    return GeneratedDateTimeColumn(
+      'last_share',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [teacherId, id, name, lastShare];
+  @override
+  $DidacticsFoldersTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'didactics_folders';
+  @override
+  final String actualTableName = 'didactics_folders';
+  @override
+  VerificationContext validateIntegrity(DidacticsFoldersCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.teacherId.present) {
+      context.handle(_teacherIdMeta,
+          teacherId.isAcceptableValue(d.teacherId.value, _teacherIdMeta));
+    } else if (teacherId.isRequired && isInserting) {
+      context.missing(_teacherIdMeta);
+    }
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.name.present) {
+      context.handle(
+          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
+    } else if (name.isRequired && isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (d.lastShare.present) {
+      context.handle(_lastShareMeta,
+          lastShare.isAcceptableValue(d.lastShare.value, _lastShareMeta));
+    } else if (lastShare.isRequired && isInserting) {
+      context.missing(_lastShareMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DidacticsFolder map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DidacticsFolder.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DidacticsFoldersCompanion d) {
+    final map = <String, Variable>{};
+    if (d.teacherId.present) {
+      map['teacher_id'] = Variable<String, StringType>(d.teacherId.value);
+    }
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.name.present) {
+      map['name'] = Variable<String, StringType>(d.name.value);
+    }
+    if (d.lastShare.present) {
+      map['last_share'] = Variable<DateTime, DateTimeType>(d.lastShare.value);
+    }
+    return map;
+  }
+
+  @override
+  $DidacticsFoldersTable createAlias(String alias) {
+    return $DidacticsFoldersTable(_db, alias);
+  }
+}
+
+class DidacticsContent extends DataClass
+    implements Insertable<DidacticsContent> {
+  final int folderId;
+  final int id;
+  final String name;
+  final int objectId;
+  final String type;
+  final DateTime date;
+  DidacticsContent(
+      {@required this.folderId,
+      @required this.id,
+      @required this.name,
+      @required this.objectId,
+      @required this.type,
+      @required this.date});
+  factory DidacticsContent.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return DidacticsContent(
+      folderId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}folder_id']),
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      objectId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}object_id']),
+      type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
+      date:
+          dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}date']),
+    );
+  }
+  factory DidacticsContent.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return DidacticsContent(
+      folderId: serializer.fromJson<int>(json['folderId']),
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      objectId: serializer.fromJson<int>(json['objectId']),
+      type: serializer.fromJson<String>(json['type']),
+      date: serializer.fromJson<DateTime>(json['date']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'folderId': serializer.toJson<int>(folderId),
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'objectId': serializer.toJson<int>(objectId),
+      'type': serializer.toJson<String>(type),
+      'date': serializer.toJson<DateTime>(date),
+    };
+  }
+
+  @override
+  DidacticsContentsCompanion createCompanion(bool nullToAbsent) {
+    return DidacticsContentsCompanion(
+      folderId: folderId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(folderId),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      objectId: objectId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(objectId),
+      type: type == null && nullToAbsent ? const Value.absent() : Value(type),
+      date: date == null && nullToAbsent ? const Value.absent() : Value(date),
+    );
+  }
+
+  DidacticsContent copyWith(
+          {int folderId,
+          int id,
+          String name,
+          int objectId,
+          String type,
+          DateTime date}) =>
+      DidacticsContent(
+        folderId: folderId ?? this.folderId,
+        id: id ?? this.id,
+        name: name ?? this.name,
+        objectId: objectId ?? this.objectId,
+        type: type ?? this.type,
+        date: date ?? this.date,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DidacticsContent(')
+          ..write('folderId: $folderId, ')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('objectId: $objectId, ')
+          ..write('type: $type, ')
+          ..write('date: $date')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      folderId.hashCode,
+      $mrjc(
+          id.hashCode,
+          $mrjc(name.hashCode,
+              $mrjc(objectId.hashCode, $mrjc(type.hashCode, date.hashCode))))));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is DidacticsContent &&
+          other.folderId == this.folderId &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.objectId == this.objectId &&
+          other.type == this.type &&
+          other.date == this.date);
+}
+
+class DidacticsContentsCompanion extends UpdateCompanion<DidacticsContent> {
+  final Value<int> folderId;
+  final Value<int> id;
+  final Value<String> name;
+  final Value<int> objectId;
+  final Value<String> type;
+  final Value<DateTime> date;
+  const DidacticsContentsCompanion({
+    this.folderId = const Value.absent(),
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.objectId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.date = const Value.absent(),
+  });
+  DidacticsContentsCompanion.insert({
+    @required int folderId,
+    @required int id,
+    @required String name,
+    @required int objectId,
+    @required String type,
+    @required DateTime date,
+  })  : folderId = Value(folderId),
+        id = Value(id),
+        name = Value(name),
+        objectId = Value(objectId),
+        type = Value(type),
+        date = Value(date);
+  DidacticsContentsCompanion copyWith(
+      {Value<int> folderId,
+      Value<int> id,
+      Value<String> name,
+      Value<int> objectId,
+      Value<String> type,
+      Value<DateTime> date}) {
+    return DidacticsContentsCompanion(
+      folderId: folderId ?? this.folderId,
+      id: id ?? this.id,
+      name: name ?? this.name,
+      objectId: objectId ?? this.objectId,
+      type: type ?? this.type,
+      date: date ?? this.date,
+    );
+  }
+}
+
+class $DidacticsContentsTable extends DidacticsContents
+    with TableInfo<$DidacticsContentsTable, DidacticsContent> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DidacticsContentsTable(this._db, [this._alias]);
+  final VerificationMeta _folderIdMeta = const VerificationMeta('folderId');
+  GeneratedIntColumn _folderId;
+  @override
+  GeneratedIntColumn get folderId => _folderId ??= _constructFolderId();
+  GeneratedIntColumn _constructFolderId() {
+    return GeneratedIntColumn(
+      'folder_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn(
+      'id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  GeneratedTextColumn _name;
+  @override
+  GeneratedTextColumn get name => _name ??= _constructName();
+  GeneratedTextColumn _constructName() {
+    return GeneratedTextColumn(
+      'name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _objectIdMeta = const VerificationMeta('objectId');
+  GeneratedIntColumn _objectId;
+  @override
+  GeneratedIntColumn get objectId => _objectId ??= _constructObjectId();
+  GeneratedIntColumn _constructObjectId() {
+    return GeneratedIntColumn(
+      'object_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  GeneratedTextColumn _type;
+  @override
+  GeneratedTextColumn get type => _type ??= _constructType();
+  GeneratedTextColumn _constructType() {
+    return GeneratedTextColumn(
+      'type',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _dateMeta = const VerificationMeta('date');
+  GeneratedDateTimeColumn _date;
+  @override
+  GeneratedDateTimeColumn get date => _date ??= _constructDate();
+  GeneratedDateTimeColumn _constructDate() {
+    return GeneratedDateTimeColumn(
+      'date',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [folderId, id, name, objectId, type, date];
+  @override
+  $DidacticsContentsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'didactics_contents';
+  @override
+  final String actualTableName = 'didactics_contents';
+  @override
+  VerificationContext validateIntegrity(DidacticsContentsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.folderId.present) {
+      context.handle(_folderIdMeta,
+          folderId.isAcceptableValue(d.folderId.value, _folderIdMeta));
+    } else if (folderId.isRequired && isInserting) {
+      context.missing(_folderIdMeta);
+    }
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.name.present) {
+      context.handle(
+          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
+    } else if (name.isRequired && isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (d.objectId.present) {
+      context.handle(_objectIdMeta,
+          objectId.isAcceptableValue(d.objectId.value, _objectIdMeta));
+    } else if (objectId.isRequired && isInserting) {
+      context.missing(_objectIdMeta);
+    }
+    if (d.type.present) {
+      context.handle(
+          _typeMeta, type.isAcceptableValue(d.type.value, _typeMeta));
+    } else if (type.isRequired && isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (d.date.present) {
+      context.handle(
+          _dateMeta, date.isAcceptableValue(d.date.value, _dateMeta));
+    } else if (date.isRequired && isInserting) {
+      context.missing(_dateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DidacticsContent map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DidacticsContent.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DidacticsContentsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.folderId.present) {
+      map['folder_id'] = Variable<int, IntType>(d.folderId.value);
+    }
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.name.present) {
+      map['name'] = Variable<String, StringType>(d.name.value);
+    }
+    if (d.objectId.present) {
+      map['object_id'] = Variable<int, IntType>(d.objectId.value);
+    }
+    if (d.type.present) {
+      map['type'] = Variable<String, StringType>(d.type.value);
+    }
+    if (d.date.present) {
+      map['date'] = Variable<DateTime, DateTimeType>(d.date.value);
+    }
+    return map;
+  }
+
+  @override
+  $DidacticsContentsTable createAlias(String alias) {
+    return $DidacticsContentsTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProfilesTable _profiles;
@@ -5239,6 +6069,15 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AttachmentsTable get attachments => _attachments ??= $AttachmentsTable(this);
   $NotesTable _notes;
   $NotesTable get notes => _notes ??= $NotesTable(this);
+  $DidacticsTeachersTable _didacticsTeachers;
+  $DidacticsTeachersTable get didacticsTeachers =>
+      _didacticsTeachers ??= $DidacticsTeachersTable(this);
+  $DidacticsFoldersTable _didacticsFolders;
+  $DidacticsFoldersTable get didacticsFolders =>
+      _didacticsFolders ??= $DidacticsFoldersTable(this);
+  $DidacticsContentsTable _didacticsContents;
+  $DidacticsContentsTable get didacticsContents =>
+      _didacticsContents ??= $DidacticsContentsTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   LessonDao _lessonDao;
@@ -5260,6 +6099,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   NoticeDao get noticeDao => _noticeDao ??= NoticeDao(this as AppDatabase);
   NoteDao _noteDao;
   NoteDao get noteDao => _noteDao ??= NoteDao(this as AppDatabase);
+  DidacticsDao _didacticsDao;
+  DidacticsDao get didacticsDao =>
+      _didacticsDao ??= DidacticsDao(this as AppDatabase);
   @override
   List<TableInfo> get allTables => [
         profiles,
@@ -5272,6 +6114,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         periods,
         notices,
         attachments,
-        notes
+        notes,
+        didacticsTeachers,
+        didacticsFolders,
+        didacticsContents
       ];
 }

@@ -38,6 +38,10 @@ class AppNavigator {
     Navigator.pushReplacementNamed(context, Routes.ABSENCES);
   }
 
+  void navToSchoolMaterial(BuildContext context) {
+    Navigator.pushReplacementNamed(context, Routes.SCHOOL_MATERIAL);
+  }
+
   void navToNotes(BuildContext context) {
     Navigator.pushReplacementNamed(context, Routes.NOTES);
   }

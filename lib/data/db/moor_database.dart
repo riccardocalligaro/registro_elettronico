@@ -1,6 +1,7 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
+import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/dao/note_dao.dart';
@@ -12,6 +13,9 @@ import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/table/absence_table.dart';
 import 'package:registro_elettronico/data/db/table/agenda_event_table.dart';
 import 'package:registro_elettronico/data/db/table/attachment_table.dart';
+import 'package:registro_elettronico/data/db/table/didactics/content_table.dart';
+import 'package:registro_elettronico/data/db/table/didactics/folder_table.dart';
+import 'package:registro_elettronico/data/db/table/didactics/teacher_table.dart';
 import 'package:registro_elettronico/data/db/table/grade_table.dart';
 import 'package:registro_elettronico/data/db/table/lesson_table.dart';
 import 'package:registro_elettronico/data/db/table/note_table.dart';
@@ -35,6 +39,9 @@ part 'moor_database.g.dart';
   Notices,
   Attachments,
   Notes,
+  DidacticsTeachers,
+  DidacticsFolders,
+  DidacticsContents,
 ], daos: [
   ProfileDao,
   LessonDao,
@@ -46,13 +53,16 @@ part 'moor_database.g.dart';
   PeriodDao,
   NoticeDao,
   NoteDao,
+  DidacticsDao,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase()
-      : super((FlutterQueryExecutor.inDatabaseFolder(
-          path: 'db.sqlite',
-          logStatements: true,
-        )));
+      : super(
+          (FlutterQueryExecutor.inDatabaseFolder(
+            path: 'db.sqlite',
+            logStatements: true,
+          )),
+        );
 
   @override
   int get schemaVersion => 1;

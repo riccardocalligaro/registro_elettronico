@@ -255,4 +255,84 @@ class _SpaggiariClient implements SpaggiariClient {
     final value = NotesResponse.fromJson(_result.data);
     return Future.value(value);
   }
+
+  @override
+  getDidactics(studentId) async {
+    ArgumentError.checkNotNull(studentId, 'studentId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        '/students/$studentId/didactics',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = DidacticsResponse.fromJson(_result.data);
+    return Future.value(value);
+  }
+
+  @override
+  getAttachmentFile(studentId, fileId) async {
+    ArgumentError.checkNotNull(studentId, 'studentId');
+    ArgumentError.checkNotNull(fileId, 'fileId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<List<dynamic>> _result = await _dio.request(
+        '/students/$studentId/didactics/item/$fileId',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl,
+            responseType: ResponseType.bytes),
+        data: _data);
+    final value = _result.data.cast<int>();
+    return Future.value(value);
+  }
+
+  @override
+  getAttachmentUrl(studentId, fileId) async {
+    ArgumentError.checkNotNull(studentId, 'studentId');
+    ArgumentError.checkNotNull(fileId, 'fileId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        '/students/$studentId/didactics/item/$fileId',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = DownloadAttachmentURLResponse.fromJson(_result.data);
+    return Future.value(value);
+  }
+
+  @override
+  getAttachmentText(studentId, fileId) async {
+    ArgumentError.checkNotNull(studentId, 'studentId');
+    ArgumentError.checkNotNull(fileId, 'fileId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        '/students/$studentId/didactics/item/$fileId',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = DownloadAttachmentTextResponse.fromJson(_result.data);
+    return Future.value(value);
+  }
 }

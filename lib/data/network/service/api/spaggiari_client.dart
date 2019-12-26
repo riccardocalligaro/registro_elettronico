@@ -3,6 +3,7 @@ import 'package:registro_elettronico/component/api_config.dart';
 import 'package:registro_elettronico/domain/entity/api_requests/login_request.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/absences_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/agenda_response.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/grades_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/lessons_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/login_response.dart';
@@ -61,10 +62,11 @@ abstract class SpaggiariClient {
   // Notice board
   @POST("/students/{studentId}/noticeboard/read/{eventCode}/{pubId}/101")
   Future<NoticeboardReadResponse> readNotice(
-      @Path('studentId') String studentId,
-      @Path('eventCode') String eventCode,
-      @Path('pubId') String pubId,
-      @Body() String body);
+    @Path('studentId') String studentId,
+    @Path('eventCode') String eventCode,
+    @Path('pubId') String pubId,
+    @Body() String body,
+  );
 
   /// After the post request to read the notice you can get the attachment
   @GET(
@@ -86,4 +88,20 @@ abstract class SpaggiariClient {
   //   @Path("type") String type,
   //   @Path("layout_note") int note,
   // );
+
+  @GET("/students/{studentId}/didactics")
+  Future<DidacticsResponse> getDidactics(@Path() String studentId);
+
+  @GET("/students/{studentId}/didactics/item/{fileId}")
+  @DioResponseType(ResponseType.bytes)
+  Future<List<int>> getAttachmentFile(
+      @Path() String studentId, @Path("fileId") int fileId);
+
+  @GET("/students/{studentId}/didactics/item/{fileId}")
+  Future<DownloadAttachmentURLResponse> getAttachmentUrl(
+      @Path() String studentId, @Path("fileId") int fileId);
+
+  @GET("/students/{studentId}/didactics/item/{fileId}")
+  Future<DownloadAttachmentTextResponse> getAttachmentText(
+      @Path() String studentId, @Path("fileId") int fileId);
 }

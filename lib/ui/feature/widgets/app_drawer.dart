@@ -68,6 +68,9 @@ class _AppDrawerState extends State<AppDrawer> {
             icon: Icons.folder,
             text: trans.translate("school_material"),
             pos: DrawerConstants.SCHOOL_MATERIAL,
+            onTap: () {
+              AppNavigator.instance.navToSchoolMaterial(context);
+            }
           ),
           _createDrawerItem(
             icon: Icons.assessment,
