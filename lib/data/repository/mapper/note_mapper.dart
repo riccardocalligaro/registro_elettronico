@@ -9,17 +9,18 @@
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/domain/entity/api_responses/notes_response.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 
 class NoteMapper {
   db.Note convertNotetEntityToInsertable(Note note, String type) {
     return db.Note(
-      author: note.authorName,
-      date: DateUtils.getDateFromApiString(note.evtDate),
-      id: note.evtId,
-      status: note.readStatus,
-      description: note.extText,
-      warning: note.warningType,
-      type: type,
+      author: note.authorName ?? "",
+      date: DateUtils.getDateFromApiString(note.evtDate) ?? DateTime.now(),
+      id: note.evtId ?? GlobalUtils.getRandomNumber(),
+      status: note.readStatus ?? false,
+      description: note.extText ?? "",
+      warning: note.warningType ?? "",
+      type: type ?? "",
     );
   }
 }

@@ -12,7 +12,7 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 // TextColumn get justifReasonDesc => text()();
 
 class AbsenceMapper {
-  db.Absence convertEventEntityToInsertable(AbsenceEvent event) {
+  static db.Absence convertEventEntityToInsertable(AbsenceEvent event) {
     return db.Absence(
         evtId: event.evtId ?? 0,
         evtCode: event.evtCode ?? "",

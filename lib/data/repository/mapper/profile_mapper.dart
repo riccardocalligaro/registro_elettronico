@@ -26,11 +26,12 @@ class ProfileMapper {
   entity.Profile mapLoginResponseProfileToProfileEntity(
       LoginResponse resProfile) {
     return entity.Profile(
-        firstName: resProfile.firstName,
-        lastName: resProfile.lastName,
-        ident: resProfile.ident,
-        token: resProfile.token,
-        release: resProfile.release,
-        expire: resProfile.expire);
+      firstName: resProfile.firstName ?? "",
+      lastName: resProfile.lastName ?? "",
+      ident: resProfile.ident ?? "",
+      token: resProfile.token ?? "",
+      release: resProfile.release ?? DateTime.now(),
+      expire: resProfile.expire ?? DateTime.now(),
+    );
   }
 }

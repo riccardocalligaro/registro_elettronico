@@ -17,15 +17,16 @@ class EventMapper {
 
   db.AgendaEvent convertEventEntityToInsertable(Event event) {
     return db.AgendaEvent(
-        evtId: event.evtId,
-        evtCode: event.evtCode,
-        begin: DateTime.parse(event.evtDatetimeBegin),
-        end: DateTime.parse(event.evtDatetimeEnd),
-        isFullDay: event.isFullDay,
-        notes: event.notes,
-        authorName: event.authorName,
-        classDesc: event.classDesc,
-        subjectId: event.subjectId ?? 0,
-        subjectDesc: event.subjectDesc ?? "");
+      evtId: event.evtId ?? -1,
+      evtCode: event.evtCode ?? "",
+      begin: DateTime.parse(event.evtDatetimeBegin) ?? DateTime.now(),
+      end: DateTime.parse(event.evtDatetimeEnd) ?? DateTime.now(),
+      isFullDay: event.isFullDay ?? false,
+      notes: event.notes ?? "",
+      authorName: event.authorName ?? "",
+      classDesc: event.classDesc ?? "",
+      subjectId: event.subjectId ?? 0,
+      subjectDesc: event.subjectDesc ?? "",
+    );
   }
 }

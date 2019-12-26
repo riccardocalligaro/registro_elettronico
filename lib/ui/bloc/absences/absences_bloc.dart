@@ -1,17 +1,18 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
+
 import './bloc.dart';
 
 class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
   AbsencesRepository absencesRepository;
-  AbsenceDao absenceDao;
-  AbsencesBloc(this.absencesRepository, this.absenceDao);
+  
+  AbsencesBloc(this.absencesRepository);
 
-  Stream<List<Absence>> watchAbsences() => absenceDao.watchAllAbsences();
+  Stream<List<Absence>> watchAbsences() => absencesRepository.watchAllAbsences();
 
   @override
   AbsencesState get initialState => AbsencesInitial();

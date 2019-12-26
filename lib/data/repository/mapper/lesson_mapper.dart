@@ -18,17 +18,18 @@ class LessonMapper {
   const LessonMapper();
   db.Lesson mapLessonEntityToLessoneInsertable(e) {
     return db.Lesson(
-        eventId: e.evtId,
-        date: DateUtils.getDateFromApiString(e.evtDate),
-        code: e.evtCode,
-        position: e.evtHPos,
-        duration: e.evtDuration,
-        classe: e.classDesc,
-        author: e.authorName,
-        subjectId: e.subjectId,
-        subjectCode: e.subjectCode,
-        subjectDescription: e.subjectDesc,
-        lessonType: e.lessonType,
-        lessonArg: e.lessonArg);
+      eventId: e.evtId ?? -1,
+      date: DateUtils.getDateFromApiString(e.evtDate) ?? DateTime.now(),
+      code: e.evtCode ?? "",
+      position: e.evtHPos ?? -1,
+      duration: e.evtDuration ?? -1,
+      classe: e.classDesc ?? "",
+      author: e.authorName ?? "",
+      subjectId: e.subjectId ?? -1,
+      subjectCode: e.subjectCode ?? "",
+      subjectDescription: e.subjectDesc ?? "",
+      lessonType: e.lessonType ?? "",
+      lessonArg: e.lessonArg ?? "",
+    );
   }
 }

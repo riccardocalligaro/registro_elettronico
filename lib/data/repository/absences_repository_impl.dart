@@ -20,7 +20,7 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
     final absences = await spaggiariClient.getAbsences(profile.studentId);
     absences.events.forEach((event) {
       absenceDao
-          .insertEvent(absenceMapper.convertEventEntityToInsertable(event));
+          .insertEvent(AbsenceMapper.convertEventEntityToInsertable(event));
     });
   }
 
