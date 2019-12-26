@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -7,11 +8,13 @@ import 'package:registro_elettronico/ui/bloc/subjects/subjects_bloc.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/entity/subject_averages.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SubjectGradesPage extends StatefulWidget {
   final List<Grade> grades;
@@ -30,6 +33,24 @@ class SubjectGradesPage extends StatefulWidget {
 }
 
 class _SubjectGradesPageState extends State<SubjectGradesPage> {
+  int _objective = 6;
+
+  @override
+  void initState() {
+    restore();
+    super.initState();
+  }
+
+  void restore() async {
+    Logger log = Logger();
+    log.v(_objective);
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      _objective = (preferences.getInt('objective_${widget.subject.id}') ?? 6);
+    });
+    log.i(_objective);
+  }
+
   @override
   Widget build(BuildContext context) {
     final subject = widget.subject;
@@ -158,11 +179,12 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
             Container(
               child: LinearPercentIndicator(
                 lineHeight: 14.0,
-                percent:
-                    (averages.average / 6) > 1.0 ? 1.0 : (averages.average / 6),
+                percent: (averages.average / _objective) > 1.0
+                    ? 1.0
+                    : (averages.average / _objective),
                 backgroundColor: Colors.grey,
-                progressColor:
-                    GlobalUtils.getColorFromAverage(averages.average),
+                progressColor: GlobalUtils.getColorFromAverageAndObjective(
+                    averages.average, _objective),
               ),
             ),
             Padding(
@@ -171,7 +193,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                      '${AppLocalizations.of(context).translate('your_objective')}: 6.00'),
+                      '${AppLocalizations.of(context).translate('your_objective')}: $_objective'),
                   Text(
                       '${AppLocalizations.of(context).translate('your_average')}: ${averages.averageValue}'),
                 ],

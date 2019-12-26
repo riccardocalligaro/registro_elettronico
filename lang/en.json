@@ -94,8 +94,11 @@
   "customization": "Customization",
   "no_absences": "No absences",
   "no_grades": "No grades",
-  "no_notes":"No notes",
-  "no_documents":"No documents",
-  "no_school_material":"No school material",
-  "notifications":"Notifications"
+  "no_notes": "No notes",
+  "no_documents": "No documents",
+  "no_school_material": "No school material",
+  "notifications": "Notifications",
+  "sort_averages_by": "Sort averages by",
+  "average_ascending": "Average ascending",
+  "average_descending": "Average descending"
 }

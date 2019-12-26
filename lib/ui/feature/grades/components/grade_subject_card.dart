@@ -35,12 +35,12 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
 
   void restore() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    objective = (preferences.getInt('objective_${widget.subject.id}') ??
-        ((preferences.getInt(PrefsConstants.OVERALL_OBJECTIVE) ?? 6)));
 
-    //objective = (preferences.getInt(PrefsConstants.OVERALL_OBJECTIVE));
-    Logger logger = Logger();
-    logger.i("Objective $objective");
+    setState(() {
+      objective = (preferences.getInt('objective_${widget.subject.id}') ??
+          ((preferences.getInt(PrefsConstants.OVERALL_OBJECTIVE) ?? 6)));
+    });
+    ////objective = (preferences.getInt(PrefsConstants.OVERALL_OBJECTIVE));
   }
 
   @override

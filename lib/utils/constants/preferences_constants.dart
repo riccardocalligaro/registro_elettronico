@@ -7,4 +7,5 @@ class PrefsConstants {
   static const UPDATE_INTERVAL = 'update_interval';
   static const OVERALL_OBJECTIVE = 'overall_objective';
   static const PERIOD_TO_SHOW = 'period_to_show';
+  static const SORTING_ASCENDING = 'sorting_ascending';
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/ui/feature/settings/components/customization/customization_theme_dialog.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/ui/global/theme/ui/theme_settings_page.dart';
 
@@ -17,22 +18,27 @@ class _CustomizationSettingsState extends State<CustomizationSettings> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        HeaderText(
-          text: AppLocalizations.of(context).translate('customization'),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0, left: 16.0),
+          child: HeaderText(
+            text: AppLocalizations.of(context).translate('customization'),
+          ),
         ),
         ListTile(
-            contentPadding: EdgeInsets.all(0.0),
-            title: Text(AppLocalizations.of(context).translate('theme')),
-            subtitle: Text(
-                AppLocalizations.of(context).translate('change_the_theme')),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ThemeSettingPage(),
-                ),
-              );
-            }),
+          title: Text(AppLocalizations.of(context).translate('theme')),
+          subtitle:
+              Text(AppLocalizations.of(context).translate('change_the_theme')),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (ctx) {
+                return SimpleDialog(
+                  children: <Widget>[CustomizationSettingsThemeDialog()],
+                );
+              },
+            );
+          },
+        ),
       ],
     );
   }

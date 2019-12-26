@@ -69,6 +69,10 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       drawer: AppDrawer(
         position: DrawerConstants.AGENDA,
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.max,

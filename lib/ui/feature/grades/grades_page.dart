@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/scheduler/ticker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
@@ -17,12 +18,18 @@ class GradesPage extends StatefulWidget {
   _GradesPageState createState() => _GradesPageState();
 }
 
-class _GradesPageState extends State<GradesPage> {
+class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
+  TabController _tabController;
   List<Color> gradientColors = [Colors.red[400], Colors.white];
 
   bool showAvg = false;
 
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -36,6 +43,35 @@ class _GradesPageState extends State<GradesPage> {
       builder: (context, state) {
         if (state is PeriodsLoaded) {
           final periods = state.periods;
+          _tabController =
+              TabController(vsync: this, length: periods.length + 2);
+          _tabController.addListener(() {
+            if (_tabController.indexIsChanging) {
+              print("changed");
+            }
+          });
+
+          // return Scaffold(
+
+          //   appBar: AppBar(
+
+          //     elevation: 0.0,
+          //     textTheme: Theme.of(context).textTheme,
+          //     iconTheme: Theme.of(context).primaryIconTheme,
+          //     bottom: TabBar(
+          //       controller: _tabController,
+          //       isScrollable: true,
+          //       indicatorColor: Colors.red,
+          //       labelColor: Theme.of(context).primaryTextTheme.headline.color,
+          //       tabs: _getTabBar(periods),
+          //     ),
+          //   ),
+          //   body: TabBarView(
+          //     controller: _tabController,
+          //     children: _getTabBar(periods),
+          //   ),
+          // );
+
           return DefaultTabController(
             length: periods.length + 2,
             child: Scaffold(

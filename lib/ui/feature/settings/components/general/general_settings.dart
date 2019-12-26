@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/ui/feature/settings/components/general/general_sorting_settings_dialog.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +19,7 @@ class GeneralSettings extends StatefulWidget {
 class _GeneralSettingsState extends State<GeneralSettings> {
   int _updateInterval = 30;
   int _sliderValue = 6;
+  bool _ascending = false;
 
   @override
   void initState() {
@@ -30,6 +32,8 @@ class _GeneralSettingsState extends State<GeneralSettings> {
     setState(() {
       _sliderValue =
           (sharedPrefs.getInt(PrefsConstants.OVERALL_OBJECTIVE)) ?? 6;
+      _ascending =
+          (sharedPrefs.getBool(PrefsConstants.SORTING_ASCENDING)) ?? false;
     });
   }
 
@@ -38,11 +42,13 @@ class _GeneralSettingsState extends State<GeneralSettings> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        HeaderText(
-          text: AppLocalizations.of(context).translate('general'),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0, left: 16.0),
+          child: HeaderText(
+            text: AppLocalizations.of(context).translate('general'),
+          ),
         ),
         ListTile(
-          contentPadding: EdgeInsets.all(0.0),
           title: Text(AppLocalizations.of(context).translate('your_objective')),
           subtitle: Text('$_sliderValue'),
           onTap: () async {
@@ -68,14 +74,44 @@ class _GeneralSettingsState extends State<GeneralSettings> {
           },
         ),
         ListTile(
-          contentPadding: EdgeInsets.all(0.0),
           title: Text(
             AppLocalizations.of(context)
                 .translate('averages_to_show_in_the_home_screen'),
           ),
           subtitle: Text('$_sliderValue'),
           onTap: () async {},
-        )
+        ),
+        ListTile(
+          title: Text(
+            AppLocalizations.of(context).translate('sort_averages_by'),
+          ),
+          subtitle: Text(
+            !_ascending
+                ? AppLocalizations.of(context).translate('average_descending')
+                : AppLocalizations.of(context).translate('average_ascending'),
+          ),
+          onTap: () async {
+            await showDialog(
+              context: context,
+              builder: (ctx) => SimpleDialog(
+                children: <Widget>[
+                  GeneralSortingSettingsDialog(
+                    ascending: _ascending,
+                  )
+                ],
+              ),
+            ).then((value) async {
+              setState(() {
+                _ascending = value;
+              });
+
+              SharedPreferences sharedPreferences =
+                  await SharedPreferences.getInstance();
+              sharedPreferences.setBool(
+                  PrefsConstants.SORTING_ASCENDING, value);
+            });
+          },
+        ),
       ],
     );
   }

@@ -14,6 +14,7 @@ import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GradeTab extends StatefulWidget {
   final int period;
@@ -24,36 +25,38 @@ class GradeTab extends StatefulWidget {
   _GradeTabState createState() => _GradeTabState();
 }
 
-class _GradeTabState extends State<GradeTab>
-    with AutomaticKeepAliveClientMixin {
+class _GradeTabState extends State<GradeTab> {
+  bool _ascending = false;
+
   @override
-  // void initState() {
-  //   BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
-  //   super.initState();
-  // }
+  void initState() {
+    restore();
+    super.initState();
+  }
+
+  restore() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      _ascending = (preferences.getBool('sorting_ascending') ?? false);
+    });
+  }
 
   @override
   void didChangeDependencies() {
     BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
-    Logger logger = Logger();
-    logger.v("Called -> GetGradesAndSubjects");
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return RefreshIndicator(
       onRefresh: _updateGrades,
       child: Container(
         child: BlocBuilder<GradesBloc, GradesState>(
           builder: (context, state) {
-            Logger logger = Logger();
-            logger.i("Changed to -> ${state.toString()}");
-
             if (state is GradesAndSubjectsLoaded) {
               final period = widget.period;
-
               if (state.grades.length > 0) {
                 if (period == TabsConstants.GENERALE) {
                   return _buildStatsAndAverages(state.grades, state.subject);
@@ -77,27 +80,37 @@ class _GradeTabState extends State<GradeTab>
   }
 
   Widget _buildStatsAndAverages(List<Grade> grades, List<Subject> subjects) {
-    super.build(context);
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          _buildStatsCard(grades),
-          _buildAverageGradesForSubjectsList(grades, subjects),
-        ],
+    if (widget.period == TabsConstants.GENERALE) {
+      grades = grades;
+    } else {
+      grades =
+          grades.where((grade) => grade.periodPos == widget.period).toList();
+    }
+
+    if (grades.length > 0) {
+      return SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            _buildStatsCard(grades),
+            _buildAverageGradesForSubjectsList(grades, subjects),
+          ],
+        ),
+      );
+    }
+
+    return Center(
+      child: CustomPlaceHolder(
+        text: AppLocalizations.of(context).translate('no_grades'),
+        icon: Icons.timeline,
+        showUpdate: false,
       ),
     );
   }
 
   // Card that shows the overall stats of the student
   Widget _buildStatsCard(List<Grade> grades) {
-    super.build(context);
     double average;
-    if (widget.period != TabsConstants.GENERALE) {
-      average = GradesUtils.getAverageWithoutSubjectId(
-          grades.where((grade) => grade.periodPos == widget.period).toList());
-    } else {
-      average = GradesUtils.getAverageWithoutSubjectId(grades);
-    }
+    average = GradesUtils.getAverageWithoutSubjectId(grades);
 
     if (!average.isNaN) {
       return GradesOverallStats(
@@ -107,14 +120,6 @@ class _GradeTabState extends State<GradeTab>
     }
 
     return Container();
-  }
-
-  Widget _buildGradesChart(Map<dynamic, List<Grade>> grades) {
-    return Container(
-      child: GradesChart(
-        grades: _getGradesListForPeriodFromMap(grades),
-      ),
-    );
   }
 
   /// This is for the [Last grades], it takes the grades
@@ -147,18 +152,34 @@ class _GradeTabState extends State<GradeTab>
 
   Widget _buildAverageGradesForSubjectsList(
       List<Grade> grades, List<Subject> subjects) {
+    final sortedMap = _getGradesOrderedByAverage(grades, subjects, _ascending);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: sortedMap.keys.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: GradeSubjectCard(
+              subject: sortedMap.keys.elementAt(index),
+              grades: grades,
+              period: widget.period,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  LinkedHashMap<Subject, double> _getGradesOrderedByAverage(
+    List<Grade> grades,
+    List<Subject> subjects,
+    bool ascending,
+  ) {
     Map<Subject, double> subjectsValues = Map.fromIterable(subjects,
         key: (e) => e, value: (e) => GradesUtils.getAverage(e.id, grades));
-    final period = widget.period;
-    // Get the grades in the rigt order
-
-    List<Grade> gradesForPeriod;
-    if (period == TabsConstants.GENERALE) {
-      gradesForPeriod = grades;
-    } else {
-      gradesForPeriod =
-          grades.where((grade) => grade.periodPos == widget.period).toList();
-    }
 
     var sortedKeys = subjectsValues.keys.toList()
       ..removeWhere((subject) {
@@ -169,49 +190,21 @@ class _GradeTabState extends State<GradeTab>
           }
         });
         return contains;
-      })
-      ..sort((k2, k1) => subjectsValues[k1].compareTo(subjectsValues[k2]));
+      });
+
+    if (ascending) {
+      sortedKeys = sortedKeys
+        ..sort((k1, k2) => subjectsValues[k1].compareTo(subjectsValues[k2]));
+    } else {
+      sortedKeys = sortedKeys
+        ..sort((k2, k1) => subjectsValues[k1].compareTo(subjectsValues[k2]));
+    }
 
     LinkedHashMap<Subject, double> sortedMap = new LinkedHashMap.fromIterable(
         sortedKeys,
         key: (k) => k,
         value: (k) => subjectsValues[k]);
-
-    if (gradesForPeriod.length > 0) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: sortedMap.keys.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: GradeSubjectCard(
-                subject: sortedMap.keys.elementAt(index),
-                grades: gradesForPeriod,
-                period: period,
-              ),
-            );
-          },
-        ),
-      );
-    } else {
-      return Padding(
-        padding: const EdgeInsets.only(top: 170),
-        child: Center(
-          child: CustomPlaceHolder(
-            text: AppLocalizations.of(context).translate('no_grades'),
-            icon: Icons.timeline,
-            showUpdate: false,
-          ),
-        ),
-      );
-    }
-  }
-
-  List<Grade> getGradesOrderedByAverage(List<Grade> grades) {
-    // todo: add different type of order
+    return sortedMap;
   }
 
   Widget _buildEmpty() {
@@ -228,19 +221,17 @@ class _GradeTabState extends State<GradeTab>
     BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
   }
 
-  List _getGradesListForPeriodFromMap(Map<dynamic, List<Grade>> grades) {
-    final List<Grade> gradesList = [];
-    grades.forEach((subject, grades) => grades.forEach((grade) {
-          if (grade.periodPos == widget.period ||
-              widget.period == TabsConstants.GENERALE) {
-            gradesList.add(grade);
-          }
-        }));
-    gradesList.sort((b, a) => a.eventDate.compareTo(b.eventDate));
+  //// List _getGradesListForPeriodFromMap(Map<dynamic, List<Grade>> grades) {
+  ////   final List<Grade> gradesList = [];
+  ////   grades.forEach((subject, grades) => grades.forEach((grade) {
+  ////         if (grade.periodPos == widget.period ||
+  ////             widget.period == TabsConstants.GENERALE) {
+  ////           gradesList.add(grade);
+  ////         }
+  ////       }));
+  ////   gradesList.sort((b, a) => a.eventDate.compareTo(b.eventDate));
+  ////
+  ////   return gradesList;
+  //// }
 
-    return gradesList;
-  }
-
-  @override
-  bool get wantKeepAlive => true;
 }

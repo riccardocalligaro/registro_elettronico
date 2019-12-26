@@ -12,25 +12,18 @@ class ThemeItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final appTheme = appThemeData[theme];
-    return Card(
-      color: themeData.backgroundColor,
-      elevation: 4,
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: themeData.accentColor,
-          child: Text(
-            theme
-                .toString()
-                .substring(theme.toString().lastIndexOf('.') + 1)[0],
-            style: themeData.textTheme.title,
-          ),
+
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundColor: themeData.brightness == Brightness.dark ? Colors.grey[800] : Colors.white,
+        child: Text(
+          theme.toString().substring(theme.toString().lastIndexOf('.') + 1)[0],
         ),
-        title: Text(
-          theme.toString(),
-          style: themeData.textTheme.title,
-        ),
-        onTap: onTap,
       ),
+      title: Text(
+        theme.toString().split('.')[1],
+      ),
+      onTap: onTap,
     );
   }
 }

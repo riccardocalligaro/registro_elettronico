@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:registro_elettronico/ui/feature/settings/components/account/account_settings.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/customization/customization_settings.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/general/general_settings.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
@@ -55,20 +56,19 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                /// Notification settins
-                _buildNotificationsSettingsSection(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              /// Notification settins
+              _buildNotificationsSettingsSection(),
 
-                /// General settings
-                GeneralSettings(),
+              /// General settings
+              GeneralSettings(),
 
-                CustomizationSettings()
-              ],
-            ),
+              CustomizationSettings(),
+
+              AccountSettings()
+            ],
           ),
         ),
       ),
@@ -80,11 +80,13 @@ class _SettingsPageState extends State<SettingsPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        HeaderText(
-          text: AppLocalizations.of(context).translate('notifications'),
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0, left: 16.0),
+          child: HeaderText(
+            text: AppLocalizations.of(context).translate('notifications'),
+          ),
         ),
         ListTile(
-          contentPadding: EdgeInsets.all(0),
           title: Text(
               AppLocalizations.of(context).translate('choose_what_to_notify')),
           subtitle: Text(
@@ -97,7 +99,11 @@ class _SettingsPageState extends State<SettingsPage> {
               builder: (ctx) {
                 return SimpleDialog(
                   children: <Widget>[
-                    NotificationsSettingsDialog(),
+                    Container(
+                      height: 200,
+                      width: 100,
+                      child: NotificationsSettingsDialog(),
+                    ),
                   ],
                 );
               },
@@ -105,7 +111,6 @@ class _SettingsPageState extends State<SettingsPage> {
           },
         ),
         ListTile(
-          contentPadding: EdgeInsets.all(0),
           title: Text(
             AppLocalizations.of(context).translate('choose_interval'),
           ),

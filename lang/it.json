@@ -90,12 +90,15 @@
   "decimal_value": "Valore decimale",
   "attention": "Attenzione",
   "general": "Generale",
-  "averages_to_show_in_the_home_screen": "Medie da mostrae sulla schermata home",
+  "averages_to_show_in_the_home_screen": "Medie da mostrare sulla schermata home",
   "customization": "Personalizzazione",
   "no_absences": "Niente assenze",
   "no_grades": "Niente voti",
   "no_notes": "Niente note",
   "no_documents": "Niente comunicazioni",
   "no_school_material": "Niente materiale scolastico",
-  "notifications": "Notifiche"
+  "notifications": "Notifiche",
+  "sort_averages_by": "Orina medie per",
+  "average_ascending": "Valore crescente",
+  "average_descending": "Valore decrescente"
 }
