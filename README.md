@@ -28,9 +28,16 @@ If you want to try the app (still alpha and a lot to do) feel free to contact [m
 
 ## Overview of the project
 
-Flutter client for eletronic school register management using clean architecture(Classeviva).
+Flutter client for eletronic school register (Classeviva) management using clean architecture.
 
-Technologies and libraries that we will use:
+- Simple and beautiful
+- Useful charts and stats about grades, absences, etc...
+- Dark & Light theme (dark is just better)
+- Notifications when there is a new event (new grade, new event, etc..)
+- Data persistency
+- 🌍 Multi language support (Italian & English) and localizaiton
+
+Main technologies and libraries that I will use:
 
 - 🔝 Flutter + Dart
 - 📡 Retrofit + Dio for API requests
@@ -38,6 +45,12 @@ Technologies and libraries that we will use:
 - 📚 Moor for data persistency
 - 💉 Injector for dependency injection
 - 🐠 Equatable for object comparison
+
+Other libraries:
+
+- [Fl_Chart](https://pub.dev/packages/fl_chart)
+- [Table calendar](https://pub.dev/packages/table_calendar)
+- [Work manager for notifications](https://pub.dev/packages/workmanager)
 
 ## Developers:
 
@@ -66,11 +79,20 @@ These group members haven't developed the app but are learning flutter.
 | Marks              |  ✔️   |  R.C.   |    R.C.     |
 | Noticeboard        |  ✔️   |  R.C.   |    R.C.     |
 | Absences           |  ✔️   |  R.C.   |    R.C.     |
-| School material    |  ❌   |  R.C.   |      -      |
-| Notes              |  ❌   |  R.C.   |      -      |
+| School material    |  ✔️   |  R.C.   |    R.C.     |
+| Notes              |  ✔️   |  R.C.   |    R.C.     |
 | Intitial slideshow |  ❌   |  R.C.   |      -      |
 | Dark theme         |  ✔️   |  R.C.   |      -      |
 | Settings           |   ¼   |  R.C.   |    R.C.     |
+
+Additional features that will be implemented
+
+| Function                | State | Made by | Design by |
+| ----------------------- | :---: | :-----: | :-------: |
+| Local grades and agenda |  ❌   |    -    |     -     |
+| Timetable               |   ¼   |    -    |     -     |
+| Notifications           |   ½   |    -    |     -     |
+| Summary page            |  ❌   |    -    |     -     |
 
 ## Project structure
 
