@@ -22,16 +22,99 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer> {
   List<bool> selectedList = new List<bool>.filled(12, false);
+  bool _showUserDetails = false;
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations trans = AppLocalizations.of(context);
     selectedList[widget.position] = true;
     return Drawer(
+      child: Column(
+        children: <Widget>[
+          _createHeader(context),
+          Expanded(
+              child: _showUserDetails
+                  ? _createUserDetailsList()
+                  : _createMenuList()),
+        ],
+      ),
+    );
+  }
+
+  Widget _createHeader(BuildContext context) {
+    return FutureBuilder(
+      // todo: need to fix null
+      future: _getUsername(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        String ident = " ";
+        String firstName = " ";
+        String lastName = " ";
+
+        if (snapshot.data != null) {
+          ident = snapshot.data.ident;
+          firstName = snapshot.data.firstName;
+          lastName = snapshot.data.lastName;
+        }
+
+        return UserAccountsDrawerHeader(
+          accountEmail: Text(ident,
+              style: Theme.of(context)
+                  .primaryTextTheme
+                  .body1
+                  .copyWith(color: Colors.white)),
+          accountName: Text("$firstName $lastName"),
+          currentAccountPicture: CircleAvatar(
+            child: Text(firstName[0] + lastName[0]),
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+          ),
+          onDetailsPressed: () {
+            setState(() {
+              _showUserDetails = !_showUserDetails;
+            });
+          },
+          decoration: BoxDecoration(color: Theme.of(context).accentColor),
+        );
+      },
+    );
+  }
+
+  Widget _createUserDetailsList() {
+    return Container(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          _createHeader(context),
+          _createDrawerItem(
+            icon: Icons.add,
+            text: 'Add account',
+            pos: 0,
+            isAccount: true,
+            onTap: () {},
+          ),
+          _createDrawerItem(
+            icon: Icons.exit_to_app,
+            text: 'Switch account',
+            pos: 0,
+            isAccount: true,
+            onTap: () {},
+          ),
+          _createDrawerItem(
+            icon: Icons.delete,
+            text: 'Log out',
+            pos: 0,
+            isAccount: true,
+            onTap: () {},
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _createMenuList() {
+    final trans = AppLocalizations.of(context);
+    return Container(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
           _createDrawerItem(
             icon: Icons.home,
             text: trans.translate("home"),
@@ -131,57 +214,25 @@ class _AppDrawerState extends State<AppDrawer> {
     );
   }
 
-  Widget _createHeader(BuildContext context) {
-    return FutureBuilder(
-      // todo: need to fix null
-      future: _getUsername(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        String ident = " ";
-        String firstName = " ";
-        String lastName = " ";
-
-        if (snapshot.data != null) {
-          ident = snapshot.data.ident;
-          firstName = snapshot.data.firstName;
-          lastName = snapshot.data.lastName;
-        }
-
-        return UserAccountsDrawerHeader(
-          accountEmail: Text(ident,
-              style: Theme.of(context)
-                  .primaryTextTheme
-                  .body1
-                  .copyWith(color: Colors.white)),
-          accountName: Text("$firstName $lastName"),
-          currentAccountPicture: CircleAvatar(
-            child: Text(firstName[0] + lastName[0]),
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-          ),
-          decoration: BoxDecoration(color: Theme.of(context).accentColor),
-        );
-      },
-    );
-  }
-
   Widget _createDrawerItem({
     IconData icon,
     String text,
     GestureTapCallback onTap,
     int pos,
+    bool isAccount,
   }) {
     return ListTile(
       title: Row(
         children: <Widget>[
           Icon(
             icon,
-            color: selectedList[pos] == true
+            color: selectedList[pos] == true && (isAccount ?? false) == false
                 ? Colors.red
                 : Theme.of(context).primaryIconTheme.color,
           ),
           Padding(
             padding: EdgeInsets.only(left: 8.0),
-            child: Text(text),
+            child: Text(text, style: TextStyle(color: _getColor(isAccount))),
           )
         ],
       ),
@@ -193,5 +244,9 @@ class _AppDrawerState extends State<AppDrawer> {
   Future<Profile> _getUsername() async {
     final profileDao = ProfileDao(Injector.appInstance.getDependency());
     return await profileDao.getProfile();
+  }
+
+  Color _getColor(bool isAccount) {
+    if (isAccount ?? false) return Theme.of(context).textTheme.body1.color;
   }
 }
