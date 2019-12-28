@@ -2,6 +2,14 @@
     <img src="https://i.imgur.com/BCktmzl.png" alt="Registto elettronico"><br>
 </h1>
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Zuccante-Web-App/Registro-elettronico)
+
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/Zuccante-Web-App/Registro-elettronico/master)
+
+[![HitCount](http://hits.dwyl.io/Zuccante-Web-App/Registro-elettronico.svg)](http://hits.dwyl.io/Zuccante-Web-App/Registro-elettronico)
+
 ## Table of contents
 
 - [Overview of the project](#overview-of-the-project)
@@ -91,7 +99,7 @@ Additional features that will be implemented
 
 | Function                | State | Made by | Design by |
 | ----------------------- | :---: | :-----: | :-------: |
-| Local grades and agenda |  ❌   |    -    |     -     |
+| Local grades and agenda |   ½   |    -    |     -     |
 | Timetable               |   ¼   |    -    |     -     |
 | Notifications           |   ½   |    -    |     -     |
 | Summary page            |  ❌   |    -    |     -     |
