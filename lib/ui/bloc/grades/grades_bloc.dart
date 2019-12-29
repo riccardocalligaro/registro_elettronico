@@ -46,5 +46,12 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
       final subjects = await subjectsRepository.getAllSubjects();
       yield GradesAndSubjectsLoaded(grades: grades, subject: subjects);
     }
+
+    if (event is UpdateGrade) {
+      await gradesRepository.updateGrade(event.grade);
+      print("updated");
+      final grades = await gradesRepository.getAllGradesOrdered();
+      yield GradesLoaded(grades);
+    }
   }
 }

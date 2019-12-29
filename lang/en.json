@@ -100,5 +100,15 @@
   "notifications": "Notifications",
   "sort_averages_by": "Sort averages by",
   "average_ascending": "Average ascending",
-  "average_descending": "Average descending"
+  "average_descending": "Average descending",
+  "sure_to_delete_it": "Are you sure to delete it?",
+  "local_grade_will_be_removed": "The grade will be removed from your local grades.",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "add": "Add",
+  "pick_a_grade": "Pick a grade",
+  "reset_data": "Reset account data",
+  "reset_data_message": "Erase all the data and synchroinize again",
+  "account": "Account",
+  "no_local_grades":"No local grades"
 }

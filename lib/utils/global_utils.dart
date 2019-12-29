@@ -6,7 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 
 import 'constants/registro_constants.dart';
@@ -260,7 +259,9 @@ class GlobalUtils {
   /// that are null are stored in the database with -1 value, so if it is -1 it must be
   /// canelled or
   static Color getColorFromGrade(Grade grade) {
-    if (grade.cancelled || grade.decimalValue == -1.00) {
+    if (grade.cancelled ||
+        grade.decimalValue == -1.00 ||
+        grade.localllyCancelled) {
       return Colors.blue;
     } else if (grade.decimalValue >= 6) {
       return Colors.green;

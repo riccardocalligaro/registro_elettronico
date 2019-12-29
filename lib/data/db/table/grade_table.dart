@@ -19,6 +19,7 @@ class Grades extends Table {
   IntColumn get weightFactor => integer()();
   IntColumn get skillId => integer()();
   IntColumn get gradeMasterId => integer()();
+  BoolColumn get localllyCancelled => boolean()();
 
   @override
   Set<Column> get primaryKey => {evtId};

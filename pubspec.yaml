@@ -49,6 +49,8 @@ dependencies:
   expandable: ^4.0.1
   # open urls for school material
   url_launcher: ^5.4.1
+  # pick a grade
+  numberpicker: ^1.1.0
 
   # Storing user password
   shared_preferences: ^0.5.4+8

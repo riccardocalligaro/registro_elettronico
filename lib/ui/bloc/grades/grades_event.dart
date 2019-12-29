@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 
 abstract class GradesEvent extends Equatable {
   const GradesEvent();
@@ -16,3 +18,9 @@ class GetGrades extends GradesEvent {}
 
 ///This gets both [grades] and [subjects]
 class GetGradesAndSubjects extends GradesEvent {}
+
+class UpdateGrade extends GradesEvent {
+  final Grade grade;
+
+  const UpdateGrade({@required this.grade});
+}

@@ -79,4 +79,6 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
 
   Future updateLocalGrade(LocalGrade localGrade) =>
       update(localGrades).replace(localGrade);
+
+  Future updateGrade(Grade grade) => update(grades).replace(grade);
 }

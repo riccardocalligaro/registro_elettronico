@@ -100,5 +100,15 @@
   "notifications": "Notifiche",
   "sort_averages_by": "Orina medie per",
   "average_ascending": "Valore crescente",
-  "average_descending": "Valore decrescente"
+  "average_descending": "Valore decrescente",
+  "sure_to_delete_it": "Sei sicuro di volerlo eliminare?",
+  "local_grade_will_be_removed": "Il voto verrá rimosso dai tuoi voti locali.",
+  "cancel": "Annulla",
+  "delete": "Cancella",
+  "add": "Aggiungi",
+  "pick_a_grade": "Scegli un voto",
+  "reset_data": "Ripristino dati account",
+  "reset_data_message": "Cancella tutti i dati scaricati e sincronizza",
+  "account": "Account",
+  "no_local_grades": "Nessun voto locale"
 }

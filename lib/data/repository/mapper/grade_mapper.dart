@@ -25,6 +25,7 @@ class GradeMapper {
       weightFactor: grade.weightFactor ?? 1,
       skillId: grade.skillId ?? -1,
       gradeMasterId: grade.gradeMasterId ?? -1,
+      localllyCancelled: false
     );
   }
 }

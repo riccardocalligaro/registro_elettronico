@@ -88,4 +88,9 @@ class GradesRepositoryImpl implements GradesRepository {
   Future updateLocalGrade(LocalGrade localGrade) {
     return gradeDao.updateLocalGrade(localGrade);
   }
+
+  @override
+  Future updateGrade(Grade grade) {
+    return gradeDao.updateGrade(grade);
+  }
 }

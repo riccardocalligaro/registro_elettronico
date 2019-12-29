@@ -2,11 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 
-abstract class LocalGradesState extends Equatable {
+abstract class LocalGradesState {
   const LocalGradesState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class LocalGradesInitial extends LocalGradesState {}

@@ -37,5 +37,7 @@ abstract class GradesRepository {
 
   Future updateLocalGrade(LocalGrade localGrade);
 
+  Future updateGrade(Grade grade);
+
   Future<List<LocalGrade>> getLocalGrades();
 }
