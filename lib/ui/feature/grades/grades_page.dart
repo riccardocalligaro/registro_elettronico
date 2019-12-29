@@ -51,27 +51,6 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
             }
           });
 
-          // return Scaffold(
-
-          //   appBar: AppBar(
-
-          //     elevation: 0.0,
-          //     textTheme: Theme.of(context).textTheme,
-          //     iconTheme: Theme.of(context).primaryIconTheme,
-          //     bottom: TabBar(
-          //       controller: _tabController,
-          //       isScrollable: true,
-          //       indicatorColor: Colors.red,
-          //       labelColor: Theme.of(context).primaryTextTheme.headline.color,
-          //       tabs: _getTabBar(periods),
-          //     ),
-          //   ),
-          //   body: TabBarView(
-          //     controller: _tabController,
-          //     children: _getTabBar(periods),
-          //   ),
-          // );
-
           return DefaultTabController(
             length: periods.length + 2,
             child: Scaffold(
@@ -115,18 +94,29 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
         ),
       ),
     );
-    tabs.addAll(
-      periods.map(
-        (period) => Container(
+
+    for (var i = 1; i <= periods.length; i++) {
+      tabs.add(
+        Container(
           width: 140,
           child: Tab(
-            child: Text(
-              GlobalUtils.getPeriodName(period.position, context),
-            ),
+            child: Text( "$i° ${AppLocalizations.of(context).translate('term').toUpperCase()}"),
           ),
         ),
-      ),
-    );
+      );
+    }
+    // tabs.addAll(
+      // periods.map(
+        // (period) => Container(
+          // width: 140,
+          // child: Tab(
+            // child: Text(
+              // GlobalUtils.getPeriodName(period.position, context),
+            // ),
+          // ),
+        // ),
+      // ),
+    // );
     tabs.add(Container(
       width: 140,
       child: Tab(

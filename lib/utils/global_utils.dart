@@ -290,16 +290,16 @@ class GlobalUtils {
       return Colors.green;
     } else if (value >= 5.5 && value < 6) {
       return Colors.yellow[700];
-    } else if(value < 5){
+    } else if (value < 5) {
       return Colors.red;
     } else {
       return Colors.lightGreen;
     }
   }
 
-  static String getPeriodName(int index, BuildContext context) {
-    return "$index° ${AppLocalizations.of(context).translate('term').toUpperCase()}";
-  }
+  //// static String getPeriodName(int index, BuildContext context) {
+  ////   return "$index° ${AppLocalizations.of(context).translate('term').toUpperCase()}";
+  //// }
 
   static int getRandomNumber() {
     Random random = new Random();
