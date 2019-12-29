@@ -100,7 +100,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 return SimpleDialog(
                   children: <Widget>[
                     Container(
-                      height: 200,
                       width: 100,
                       child: NotificationsSettingsDialog(),
                     ),
