@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
@@ -253,13 +254,16 @@ class _HomePageState extends State<HomePage> {
             },
           );
         } else {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: Icon(
-                Icons.timeline,
-                size: 80,
-                color: Colors.grey,
+          return Padding(
+            padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: Icon(
+                  Icons.timeline,
+                  size: 80,
+                  color: Colors.grey,
+                ),
               ),
             ),
           );
@@ -277,11 +281,28 @@ class _HomePageState extends State<HomePage> {
             snapshot.data.toSet().toList() ?? List();
         if (events.length == 0) {
           return Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(vertical: 24.0),
             child: Center(
-              child: Text(AppLocalizations.of(context).translate('free_to_go')),
+              child: Column(
+                children: <Widget>[
+                  Icon(
+                    Icons.calendar_today,
+                    size: 64,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(AppLocalizations.of(context).translate('no_events'))
+                ],
+              ),
             ),
           );
+          ///// return Padding(
+          /////   padding: const EdgeInsets.symmetric(vertical: 16.0),
+          /////   child: Center(
+          /////     child: Text(AppLocalizations.of(context).translate('free_to_go')),
+          /////   ),
+          ///// );s
         } else {
           return Container(
             child: ListView.builder(
@@ -290,8 +311,6 @@ class _HomePageState extends State<HomePage> {
               shrinkWrap: true,
               itemCount: events.length,
               itemBuilder: (BuildContext context, int index) {
-                //final db.AgendaEvent event = events[index];
-
                 return AgendaCardEvent(
                   agendaEvent: events[index],
                 );
@@ -339,6 +358,7 @@ class _HomePageState extends State<HomePage> {
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Lesson> lessons = snapshot.data ?? List();
+        final lessonsGrouped = _getGroupedLessonsList(lessons);
         print(lessons.length);
         if (lessons.length == 0) {
           // todo: maybe a better placeholder?
@@ -349,9 +369,9 @@ class _HomePageState extends State<HomePage> {
         } else {
           return ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: lessons.length,
+            itemCount: lessonsGrouped.length,
             itemBuilder: (_, index) {
-              final lesson = lessons[index];
+              final lesson = lessonsGrouped[index];
               return LessonCard(
                 position: index,
                 lesson: lesson,
@@ -361,6 +381,43 @@ class _HomePageState extends State<HomePage> {
         }
       },
     );
+  }
+
+  List<Lesson> _getGroupedLessonsList(List<Lesson> lessons) {
+    Logger log = Logger();
+    log.i("Lessons lenght ${lessons.length}");
+
+    List<Lesson> lessonsList = [];
+    int count = 1;
+
+    for (var i = 0; i < lessons.length - 1; i++) {
+      if (i == lessons.length - 1) {
+        if (lessons[i - 1].lessonArg == lessons[i].lessonArg) {
+          lessonsList.add(lessons[i].copyWith(duration: ++count));
+        }
+      }
+      if (lessons[i].lessonArg == lessons[i + 1].lessonArg) {
+        count++;
+      } else {
+        lessonsList.add(lessons[i].copyWith(duration: count));
+        count = 1;
+      }
+    }
+    lessonsList.add(lessons[lessons.length - 1]);
+
+    // lessons.forEach((lesson) {
+    //   if (lesson.author != currentAuthor &&
+    //       lesson.lessonArg != currentLessonArg) {
+    //     lessonsList.add(lesson.copyWith(duration: count));
+    //     count = 1;
+    //   } else {
+    //     count++;
+    //   }
+    //   currentAuthor = lesson.author;
+    //   currentLessonArg = lesson.lessonArg;
+    // });
+    log.i(lessonsList.length);
+    return lessonsList;
   }
 
   Future onSelectNotification(String payload) async {
