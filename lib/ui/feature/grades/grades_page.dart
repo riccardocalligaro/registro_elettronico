@@ -100,23 +100,24 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
         Container(
           width: 140,
           child: Tab(
-            child: Text( "$i° ${AppLocalizations.of(context).translate('term').toUpperCase()}"),
+            child: Text(
+                "$i° ${AppLocalizations.of(context).translate('term').toUpperCase()}"),
           ),
         ),
       );
     }
-    // tabs.addAll(
-      // periods.map(
-        // (period) => Container(
-          // width: 140,
-          // child: Tab(
-            // child: Text(
-              // GlobalUtils.getPeriodName(period.position, context),
-            // ),
-          // ),
-        // ),
-      // ),
-    // );
+    //// tabs.addAll(
+    //// periods.map(
+    //// (period) => Container(
+    //// width: 140,
+    //// child: Tab(
+    //// child: Text(
+    //// GlobalUtils.getPeriodName(period.position, context),
+    //// ),
+    //// ),
+    //// ),
+    //// ),
+    //// );
     tabs.add(Container(
       width: 140,
       child: Tab(
