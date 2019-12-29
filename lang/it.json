@@ -111,5 +111,7 @@
   "reset_data_message": "Cancella tutti i dati scaricati e sincronizza",
   "account": "Account",
   "no_local_grades": "Nessun voto locale",
-  "calculation_error": "Errore nel calcolo"
+  "calculation_error": "Errore nel calcolo",
+  "the_file_will_be_deleted": "Il file verrà eliminato",
+  "no_name": "Senza nome"
 }

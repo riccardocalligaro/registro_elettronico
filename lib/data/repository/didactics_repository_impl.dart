@@ -1,6 +1,10 @@
+import 'package:dio/dio.dart';
+import 'package:injector/injector.dart';
+import 'package:logger/logger.dart';
 import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/data/repository/mapper/didactics_mapper.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
@@ -65,9 +69,11 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   }
 
   @override
-  Future<List<int>> getFileAttachment(int fileID) async {
+  Future<Response> getFileAttachment(int fileID) async {
     final profile = await profileDao.getProfile();
-    final res = spaggiariClient.getAttachmentFile(profile.studentId, fileID);
+    Logger log = Logger();
+    final res = await _getAttachmentFile(profile.studentId, fileID);
+    log.i(res.headers);
     return res;
   }
 
@@ -83,5 +89,49 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
     final profile = await profileDao.getProfile();
     final res = spaggiariClient.getAttachmentUrl(profile.studentId, fileID);
     return res;
+  }
+
+  Future<Response> _getAttachmentFile(String studentId, int fileId) async {
+    String baseUrl = 'https://web.spaggiari.eu/rest/v1';
+    final _dio = DioClient(
+        Injector.appInstance.getDependency(),
+        Injector.appInstance.getDependency(),
+        Injector.appInstance.getDependency());
+    ArgumentError.checkNotNull(studentId, 'studentId');
+    ArgumentError.checkNotNull(fileId, 'fileId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    return _dio.createDio().request(
+          '/students/$studentId/didactics/item/$fileId',
+          queryParameters: queryParameters,
+          options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl,
+            responseType: ResponseType.bytes,
+          ),
+          data: _data,
+        );
+
+    // final value = Response<String>.fromJson(_result.data);
+    // return Future.value(value);
+  }
+
+  @override
+  Future<DidacticsDownloadedFile> getDownloadedFileFromContentId(
+      int contentId) {
+    return didacticsDao.getDownloadedFile(contentId);
+  }
+
+  @override
+  Future insertDownloadedFile(DidacticsDownloadedFile downloadedFile) {
+    return didacticsDao.insertDownloadedFile(downloadedFile);
+  }
+
+  @override
+  Future deleteDownloadedFile(DidacticsDownloadedFile downloadedFile) {
+    return didacticsDao.deleteDownloadedFile(downloadedFile);
   }
 }

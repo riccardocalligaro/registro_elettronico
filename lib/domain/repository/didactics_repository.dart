@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
 
@@ -19,5 +20,11 @@ abstract class DidacticsRepository {
 
   Future<DownloadAttachmentURLResponse> getURLAtachment(int fileID);
 
-  Future<List<int>> getFileAttachment(int fileID);
+  Future<Response> getFileAttachment(int fileID);
+
+  Future insertDownloadedFile(DidacticsDownloadedFile downloadedFile);
+
+  Future<DidacticsDownloadedFile> getDownloadedFileFromContentId(int contentId);
+
+  Future deleteDownloadedFile(DidacticsDownloadedFile downloadedFile);
 }

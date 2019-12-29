@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:logger/logger.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/didactics_attachments/bloc.dart';
@@ -46,30 +48,32 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
       body: BlocListener<DidacticsAttachmentsBloc, DidacticsAttachmentsState>(
         listener: (context, state) {
           if (state is DidacticsAttachmentsLoading) {
-            Scaffold.of(context).showSnackBar(
-              SnackBar(
-                content:
-                    Text(AppLocalizations.of(context).translate('downloading')),
-                duration: Duration(minutes: 10),
-              ),
-            );
-          }
-
-          if (state is DidacticsAttachmentsFileLoaded) {
             Scaffold.of(context)
               ..removeCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
-                  content: Text(AppLocalizations.of(context)
-                      .translate('download_of_file_completed')),
-                  action: SnackBarAction(
-                    label: AppLocalizations.of(context).translate('open'),
-                    onPressed: () {
-                      OpenFile.open(state.path);
-                    },
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(AppLocalizations.of(context)
+                          .translate('downloading')),
+                      Container(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.red,
+                        ),
+                      )
+                    ],
                   ),
+                  duration: Duration(minutes: 10),
                 ),
               );
+          }
+
+          if (state is DidacticsAttachmentsFileLoaded) {
+            OpenFile.open(state.path);
+            Scaffold.of(context)..removeCurrentSnackBar();
           }
           //if(state is DidacticsAttachments)
         },
@@ -172,7 +176,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
           child: ExpandablePanel(
             header: ListTile(
               leading: Icon(Icons.folder),
-              title: Text(_getContentText(folders[index].name)),
+              title: Text(_getFolderText(folders[index].name)),
               subtitle: Text(
                 DateUtils.convertDateLocale(
                   folders[index].lastShare,
@@ -189,11 +193,11 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
     );
   }
 
-  String _getContentText(String text) {
+  String _getFolderText(String text) {
     if (text.length > 0)
       return text;
     else
-      return "No description";
+      return AppLocalizations.of(context).translate('no_name');
   }
 
   Widget _buildContentsList(List<DidacticsContent> contents) {
@@ -206,23 +210,54 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
         return ListTile(
           contentPadding: EdgeInsets.symmetric(horizontal: 32.0),
           leading: _getIconFromFileType(content.type),
-          title: Text(_getContentText(content.name)),
-          subtitle: Text(content.objectId.toString()),
+          title: FutureBuilder(
+            future: _getContentText(content),
+            initialData: '',
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              return Text(snapshot.data);
+            },
+          ),
           onTap: () async {
-            Logger log = Logger();
-            if (content.type == 'file') {
-              final file = await _localFile(content);
-              log.i("$file is a file");
-              if (file.existsSync()) {
-                log.i("$file exists");
-                OpenFile.open(file.path);
-                return;
-              } else {
-                log.i("$file does not exist");
-              }
-            }
+            /// Opens the [attachment]
             BlocProvider.of<DidacticsAttachmentsBloc>(context).add(
               GetAttachment(content: content),
+            );
+          },
+          onLongPress: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(AppLocalizations.of(context)
+                      .translate('sure_to_delete_it')),
+                  content: Text(AppLocalizations.of(context)
+                      .translate('the_file_will_be_deleted')),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text(
+                        AppLocalizations.of(context)
+                            .translate('cancel')
+                            .toUpperCase(),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    FlatButton(
+                      child: Text(
+                        AppLocalizations.of(context)
+                            .translate('delete')
+                            .toUpperCase(),
+                      ),
+                      onPressed: () {
+                        BlocProvider.of<DidacticsAttachmentsBloc>(context)
+                            .add(DeleteAttachment(content: content));
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                );
+              },
             );
           },
         );
@@ -230,29 +265,12 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
     );
   }
 
-  // _launchUrl(String url) async {
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-    return directory.path;
-  }
-
-  Future<File> _localFile(DidacticsContent content) async {
-    final path = await _localPath;
+  Future<String> _getContentText(DidacticsContent content) async {
     if (content.name.length > 0) {
-      return File('$path/${content.name.replaceAll(' ', '_')}');
-    } else {
-      final name = content.date.millisecondsSinceEpoch.toString() +
-          content.folderId.toString();
-      return File('$path/${name.replaceAll(' ', '_')}');
+      return content.name;
     }
-    //// final ext = attachment.fileName.split('.').last;
+
+    return AppLocalizations.of(context).translate('no_name');
   }
 
   Future _refreshDidactics() {

@@ -110,5 +110,8 @@
   "reset_data": "Reset account data",
   "reset_data_message": "Erase all the data and synchroinize again",
   "account": "Account",
-  "no_local_grades":"No local grades"
+  "no_local_grades": "No local grades",
+  "calculation_error": "Calculation errror",
+  "the_file_will_be_deleted": "The file will be deleted",
+  "no_name": "No name"
 }

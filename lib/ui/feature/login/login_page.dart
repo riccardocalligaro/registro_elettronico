@@ -93,78 +93,84 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildLoginForm(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is SignInSuccess) {
-            /// If the sign in is successful then navigate to the home page
-            AppNavigator.instance.navToHome(context);
-          }
+      listener: (context, state) {
+        if (state is SignInSuccess) {
+          /// If the sign in is successful then navigate to the home page
+          AppNavigator.instance.navToHome(context);
+        }
 
-          /// Sets the valide data to true
-          if (state is SignInNetworkError) {
-            setState(() {
-              _valide = true;
-              if (state.error.messageCode ==
-                  RegistroConstants.USERNAME_PASSWORD_NOT_MATCHING) {
-                _errorMessage = AppLocalizations.of(context)
-                    .translate('username_password_doesent_match');
-              } else {
-                _errorMessage = state.error.message;
+        /// Sets the valide data to true
+        if (state is SignInNetworkError) {
+          setState(() {
+            _valide = true;
+            if (state.error.messageCode ==
+                RegistroConstants.USERNAME_PASSWORD_NOT_MATCHING) {
+              _errorMessage = AppLocalizations.of(context)
+                  .translate('username_password_doesent_match');
+            } else {
+              _errorMessage = state.error.message;
 
-                // _errorMessage = state.error.message;
-              }
-            });
-          }
+              // _errorMessage = state.error.message;
+            }
+          });
+        }
 
-          if (state is SignInError) {
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(
-                  "🤔 ${AppLocalizations.of(context).translate('unexcepted_error')}"),
-            ));
-          }
+        if (state is SignInError) {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+                "🤔 ${AppLocalizations.of(context).translate('unexcepted_error')}"),
+          ));
+        }
 
-          if (state is SignInLoading) {
-            Scaffold.of(context).showSnackBar(SnackBar(
+        if (state is SignInLoading) {
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
               content:
                   Text(AppLocalizations.of(context).translate('loading_login')),
               duration: Duration(milliseconds: 2000),
-            ));
-          }
-        },
-        child: Padding(
-          padding: EdgeInsets.only(top: TOP_FIELDS_PADDING),
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)
-                          .translate('username_form_login_placeholder'),
-                      errorText: _valide ? _errorMessage : null,
-                      contentPadding: EdgeInsetsGeometry.lerp(
-                          const EdgeInsetsDirectional.only(end: 6.0),
-                          EdgeInsets.symmetric(vertical: 5),
-                          2.0)),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      hintText: 'Password',
-                      errorText: _valide ? _errorMessage : null,
-                      contentPadding: EdgeInsetsGeometry.lerp(
-                          const EdgeInsetsDirectional.only(end: 6.0),
-                          EdgeInsets.symmetric(vertical: 5),
-                          2.0)),
-                ),
-              ],
             ),
+          );
+        }
+      },
+      child: Padding(
+        padding: EdgeInsets.only(top: TOP_FIELDS_PADDING),
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextFormField(
+                controller: _usernameController,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)
+                      .translate('username_form_login_placeholder'),
+                  errorText: _valide ? _errorMessage : null,
+                  contentPadding: EdgeInsetsGeometry.lerp(
+                      const EdgeInsetsDirectional.only(end: 6.0),
+                      EdgeInsets.symmetric(vertical: 5),
+                      2.0),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              TextFormField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  errorText: _valide ? _errorMessage : null,
+                  contentPadding: EdgeInsetsGeometry.lerp(
+                    const EdgeInsetsDirectional.only(end: 6.0),
+                    EdgeInsets.symmetric(vertical: 5),
+                    2.0,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   _signIn(BuildContext context) {

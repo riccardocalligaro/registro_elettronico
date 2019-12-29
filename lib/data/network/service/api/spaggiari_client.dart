@@ -92,10 +92,10 @@ abstract class SpaggiariClient {
   @GET("/students/{studentId}/didactics")
   Future<DidacticsResponse> getDidactics(@Path() String studentId);
 
-  @GET("/students/{studentId}/didactics/item/{fileId}")
-  @DioResponseType(ResponseType.bytes)
-  Future<List<int>> getAttachmentFile(
-      @Path() String studentId, @Path("fileId") int fileId);
+  // @GET("/students/{studentId}/didactics/item/{fileId}")
+  // @DioResponseType(ResponseType.bytes)
+  // Future<Response<String>> getAttachmentFile(
+  //     @Path() String studentId, @Path("fileId") int fileId);
 
   @GET("/students/{studentId}/didactics/item/{fileId}")
   Future<DownloadAttachmentURLResponse> getAttachmentUrl(

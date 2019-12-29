@@ -14,6 +14,7 @@ import 'package:registro_elettronico/data/db/table/absence_table.dart';
 import 'package:registro_elettronico/data/db/table/agenda_event_table.dart';
 import 'package:registro_elettronico/data/db/table/attachment_table.dart';
 import 'package:registro_elettronico/data/db/table/didactics/content_table.dart';
+import 'package:registro_elettronico/data/db/table/didactics/downloaded_files.dart';
 import 'package:registro_elettronico/data/db/table/didactics/folder_table.dart';
 import 'package:registro_elettronico/data/db/table/didactics/teacher_table.dart';
 import 'package:registro_elettronico/data/db/table/grade_table.dart';
@@ -43,6 +44,7 @@ part 'moor_database.g.dart';
   DidacticsTeachers,
   DidacticsFolders,
   DidacticsContents,
+  DidacticsDownloadedFiles,
   LocalGrades
 ], daos: [
   ProfileDao,

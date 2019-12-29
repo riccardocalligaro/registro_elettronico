@@ -6093,6 +6093,213 @@ class $DidacticsContentsTable extends DidacticsContents
   }
 }
 
+class DidacticsDownloadedFile extends DataClass
+    implements Insertable<DidacticsDownloadedFile> {
+  final String name;
+  final String path;
+  final int contentId;
+  DidacticsDownloadedFile(
+      {@required this.name, @required this.path, @required this.contentId});
+  factory DidacticsDownloadedFile.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    final intType = db.typeSystem.forDartType<int>();
+    return DidacticsDownloadedFile(
+      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      path: stringType.mapFromDatabaseResponse(data['${effectivePrefix}path']),
+      contentId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}content_id']),
+    );
+  }
+  factory DidacticsDownloadedFile.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return DidacticsDownloadedFile(
+      name: serializer.fromJson<String>(json['name']),
+      path: serializer.fromJson<String>(json['path']),
+      contentId: serializer.fromJson<int>(json['contentId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'name': serializer.toJson<String>(name),
+      'path': serializer.toJson<String>(path),
+      'contentId': serializer.toJson<int>(contentId),
+    };
+  }
+
+  @override
+  DidacticsDownloadedFilesCompanion createCompanion(bool nullToAbsent) {
+    return DidacticsDownloadedFilesCompanion(
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      path: path == null && nullToAbsent ? const Value.absent() : Value(path),
+      contentId: contentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentId),
+    );
+  }
+
+  DidacticsDownloadedFile copyWith({String name, String path, int contentId}) =>
+      DidacticsDownloadedFile(
+        name: name ?? this.name,
+        path: path ?? this.path,
+        contentId: contentId ?? this.contentId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DidacticsDownloadedFile(')
+          ..write('name: $name, ')
+          ..write('path: $path, ')
+          ..write('contentId: $contentId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(name.hashCode, $mrjc(path.hashCode, contentId.hashCode)));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is DidacticsDownloadedFile &&
+          other.name == this.name &&
+          other.path == this.path &&
+          other.contentId == this.contentId);
+}
+
+class DidacticsDownloadedFilesCompanion
+    extends UpdateCompanion<DidacticsDownloadedFile> {
+  final Value<String> name;
+  final Value<String> path;
+  final Value<int> contentId;
+  const DidacticsDownloadedFilesCompanion({
+    this.name = const Value.absent(),
+    this.path = const Value.absent(),
+    this.contentId = const Value.absent(),
+  });
+  DidacticsDownloadedFilesCompanion.insert({
+    @required String name,
+    @required String path,
+    @required int contentId,
+  })  : name = Value(name),
+        path = Value(path),
+        contentId = Value(contentId);
+  DidacticsDownloadedFilesCompanion copyWith(
+      {Value<String> name, Value<String> path, Value<int> contentId}) {
+    return DidacticsDownloadedFilesCompanion(
+      name: name ?? this.name,
+      path: path ?? this.path,
+      contentId: contentId ?? this.contentId,
+    );
+  }
+}
+
+class $DidacticsDownloadedFilesTable extends DidacticsDownloadedFiles
+    with TableInfo<$DidacticsDownloadedFilesTable, DidacticsDownloadedFile> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DidacticsDownloadedFilesTable(this._db, [this._alias]);
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  GeneratedTextColumn _name;
+  @override
+  GeneratedTextColumn get name => _name ??= _constructName();
+  GeneratedTextColumn _constructName() {
+    return GeneratedTextColumn(
+      'name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _pathMeta = const VerificationMeta('path');
+  GeneratedTextColumn _path;
+  @override
+  GeneratedTextColumn get path => _path ??= _constructPath();
+  GeneratedTextColumn _constructPath() {
+    return GeneratedTextColumn(
+      'path',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contentIdMeta = const VerificationMeta('contentId');
+  GeneratedIntColumn _contentId;
+  @override
+  GeneratedIntColumn get contentId => _contentId ??= _constructContentId();
+  GeneratedIntColumn _constructContentId() {
+    return GeneratedIntColumn(
+      'content_id',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [name, path, contentId];
+  @override
+  $DidacticsDownloadedFilesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'didactics_downloaded_files';
+  @override
+  final String actualTableName = 'didactics_downloaded_files';
+  @override
+  VerificationContext validateIntegrity(DidacticsDownloadedFilesCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.name.present) {
+      context.handle(
+          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
+    } else if (name.isRequired && isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (d.path.present) {
+      context.handle(
+          _pathMeta, path.isAcceptableValue(d.path.value, _pathMeta));
+    } else if (path.isRequired && isInserting) {
+      context.missing(_pathMeta);
+    }
+    if (d.contentId.present) {
+      context.handle(_contentIdMeta,
+          contentId.isAcceptableValue(d.contentId.value, _contentIdMeta));
+    } else if (contentId.isRequired && isInserting) {
+      context.missing(_contentIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {contentId};
+  @override
+  DidacticsDownloadedFile map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DidacticsDownloadedFile.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DidacticsDownloadedFilesCompanion d) {
+    final map = <String, Variable>{};
+    if (d.name.present) {
+      map['name'] = Variable<String, StringType>(d.name.value);
+    }
+    if (d.path.present) {
+      map['path'] = Variable<String, StringType>(d.path.value);
+    }
+    if (d.contentId.present) {
+      map['content_id'] = Variable<int, IntType>(d.contentId.value);
+    }
+    return map;
+  }
+
+  @override
+  $DidacticsDownloadedFilesTable createAlias(String alias) {
+    return $DidacticsDownloadedFilesTable(_db, alias);
+  }
+}
+
 class LocalGrade extends DataClass implements Insertable<LocalGrade> {
   final int id;
   final int subjectId;
@@ -6566,6 +6773,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $DidacticsContentsTable _didacticsContents;
   $DidacticsContentsTable get didacticsContents =>
       _didacticsContents ??= $DidacticsContentsTable(this);
+  $DidacticsDownloadedFilesTable _didacticsDownloadedFiles;
+  $DidacticsDownloadedFilesTable get didacticsDownloadedFiles =>
+      _didacticsDownloadedFiles ??= $DidacticsDownloadedFilesTable(this);
   $LocalGradesTable _localGrades;
   $LocalGradesTable get localGrades => _localGrades ??= $LocalGradesTable(this);
   ProfileDao _profileDao;
@@ -6608,6 +6818,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         didacticsTeachers,
         didacticsFolders,
         didacticsContents,
+        didacticsDownloadedFiles,
         localGrades
       ];
 }

@@ -276,27 +276,6 @@ class _SpaggiariClient implements SpaggiariClient {
   }
 
   @override
-  getAttachmentFile(studentId, fileId) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    ArgumentError.checkNotNull(fileId, 'fileId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<List<dynamic>> _result = await _dio.request(
-        '/students/$studentId/didactics/item/$fileId',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl,
-            responseType: ResponseType.bytes),
-        data: _data);
-    final value = _result.data.cast<int>();
-    return Future.value(value);
-  }
-
-  @override
   getAttachmentUrl(studentId, fileId) async {
     ArgumentError.checkNotNull(studentId, 'studentId');
     ArgumentError.checkNotNull(fileId, 'fileId');

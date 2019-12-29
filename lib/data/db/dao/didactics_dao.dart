@@ -1,7 +1,7 @@
-import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/table/didactics/content_table.dart';
+import 'package:registro_elettronico/data/db/table/didactics/downloaded_files.dart';
 import 'package:registro_elettronico/data/db/table/didactics/folder_table.dart';
 import 'package:registro_elettronico/data/db/table/didactics/teacher_table.dart';
 
@@ -11,6 +11,7 @@ part 'didactics_dao.g.dart';
   DidacticsTeachers,
   DidacticsFolders,
   DidacticsContents,
+  DidacticsDownloadedFiles
 ])
 class DidacticsDao extends DatabaseAccessor<AppDatabase>
     with _$DidacticsDaoMixin {
@@ -31,6 +32,18 @@ class DidacticsDao extends DatabaseAccessor<AppDatabase>
 
   Future insertFolders(List<DidacticsFolder> folders) =>
       into(didacticsFolders).insertAll(folders, orReplace: true);
+
+  Future insertDownloadedFile(DidacticsDownloadedFile file) =>
+      into(didacticsDownloadedFiles).insert(file, orReplace: true);
+
+  Future deleteDownloadedFile(DidacticsDownloadedFile file) =>
+      delete(didacticsDownloadedFiles).delete(file);
+      
+  Future<DidacticsDownloadedFile> getDownloadedFile(int contentId) {
+    return (select(didacticsDownloadedFiles)
+          ..where((g) => g.contentId.equals(contentId)))
+        .getSingle();
+  }
 
   Future insertContents(List<DidacticsContent> contents) => into(
         didacticsContents,

@@ -23,25 +23,27 @@ class GradeTab extends StatefulWidget {
   _GradeTabState createState() => _GradeTabState();
 }
 
-class _GradeTabState extends State<GradeTab> {
+class _GradeTabState extends State<GradeTab>
+    with AutomaticKeepAliveClientMixin {
   bool _ascending = false;
 
   @override
   void initState() {
-    restore();
     super.initState();
   }
 
   restore() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    setState(() {
-      _ascending = (preferences.getBool('sorting_ascending') ?? false);
-    });
+    if (mounted) {
+      setState(() {
+        _ascending = (preferences.getBool('sorting_ascending') ?? false);
+      });
+    }
   }
 
   @override
   void didChangeDependencies() {
+    restore();
     BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
     super.didChangeDependencies();
   }
@@ -218,6 +220,10 @@ class _GradeTabState extends State<GradeTab> {
     BlocProvider.of<GradesBloc>(context).add(FetchGrades());
     BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
   //// List _getGradesListForPeriodFromMap(Map<dynamic, List<Grade>> grades) {
   ////   final List<Grade> gradesList = [];
