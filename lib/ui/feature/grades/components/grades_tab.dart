@@ -2,12 +2,10 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grade_subject_card.dart';
-import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grades_overall_stats.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';

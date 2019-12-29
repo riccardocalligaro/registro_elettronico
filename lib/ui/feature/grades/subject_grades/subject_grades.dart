@@ -53,7 +53,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     log.v(_objective);
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      _objective = (preferences.getInt('objective_${widget.subject.id}') ?? 6);
+      _objective = (preferences.getInt('objective_${widget.subject.id}_${widget.period}') ?? 6);
     });
     log.i(_objective);
   }
@@ -453,7 +453,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     return Card(
       child: Padding(
         padding: const EdgeInsets.only(right: 21.0),
-        child: GradesChart(grades: grades),
+        child: GradesChart(grades: grades, objective: _objective,),
       ),
     );
   }

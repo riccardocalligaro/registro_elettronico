@@ -215,10 +215,10 @@ class GradesUtils {
   static String getGradeMessage(
       double obj, double average, int numberOfGrades, BuildContext context) {
     if (obj > 10 || average > 10) {
-      return "Errore nel calcolo";
+      return AppLocalizations.of(context).translate('calculation_error');
     }
     if (obj >= 10 && average < obj) {
-      return "Obiettivo irragiungibile";
+      return AppLocalizations.of(context).translate('objective_unreacheable');
     }
 
     var array = [0.75, 0.5, 0.25, 0.0];

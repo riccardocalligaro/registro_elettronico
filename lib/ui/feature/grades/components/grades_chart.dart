@@ -5,8 +5,13 @@ import 'package:registro_elettronico/ui/global/localizations/app_localizations.d
 
 class GradesChart extends StatefulWidget {
   final List<Grade> grades;
+  final int objective;
 
-  const GradesChart({Key key, @required this.grades}) : super(key: key);
+  const GradesChart({
+    Key key,
+    @required this.grades,
+    this.objective,
+  }) : super(key: key);
 
   @override
   _GradesChartState createState() => _GradesChartState();
@@ -119,9 +124,8 @@ class _GradesChartState extends State<GradesChart> {
     List<FlSpot> spots,
     BuildContext context,
   ) {
-    // TODO: change this to a constant or in db?
-
-    const cutOffYValue = 6.0;
+    double cutOffYValue =
+        widget.objective != null ? widget.objective.toDouble() : 6.0;
 
     return LineChartData(
       // The grid behind the graph

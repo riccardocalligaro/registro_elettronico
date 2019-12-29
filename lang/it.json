@@ -110,5 +110,6 @@
   "reset_data": "Ripristino dati account",
   "reset_data_message": "Cancella tutti i dati scaricati e sincronizza",
   "account": "Account",
-  "no_local_grades": "Nessun voto locale"
+  "no_local_grades": "Nessun voto locale",
+  "calculation_error": "Errore nel calcolo"
 }

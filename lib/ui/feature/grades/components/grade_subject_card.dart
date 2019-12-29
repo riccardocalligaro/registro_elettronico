@@ -72,13 +72,14 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
           ).then((value) async {
             if (value != null) {
               SharedPreferences pres = await SharedPreferences.getInstance();
-              pres.setInt('objective_${widget.subject.id}', value);
+              pres.setInt(
+                  'objective_${widget.subject.id}_${widget.period}', value);
               setState(() {
                 objective = value;
               });
               Logger log = Logger();
               log.i(
-                  "Set objective for 'objective_${widget.subject.id}' at $value");
+                  "Set objective for 'objective_${widget.subject.id}_${widget.period}' at $value");
             }
           });
         },
