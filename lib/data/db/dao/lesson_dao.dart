@@ -25,15 +25,15 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
         ..where((entry) => entry.eventId.isBiggerOrEqualValue(-1)))
       .go();
 
-  /// Gets only the lessons that are not 'sostegno'
-  // Stream<List<Lesson>> watchRelevantLessons() => (select(lessons)
-  //       ..where((lesson) =>
-  //           not(lesson.subjectCode.equals(RegistroConstants.SOSTEGNO)))
-  //       ..orderBy([
-  //         (lesson) =>
-  //             OrderingTerm(expression: lesson.date, mode: OrderingMode.desc)
-  //       ]))
-  //     .watch();
+  ///// Gets only the lessons that are not 'sostegno'
+  //// Stream<List<Lesson>> watchRelevantLessons() => (select(lessons)
+  ////       ..where((lesson) =>
+  ////           not(lesson.subjectCode.equals(RegistroConstants.SOSTEGNO)))
+  ////       ..orderBy([
+  ////         (lesson) =>
+  ////             OrderingTerm(expression: lesson.date, mode: OrderingMode.desc)
+  ////       ]))
+  ////     .watch();
 
   /// Gets the lesson ignoring sostegno
   Stream<List<Lesson>> watchRelevantLessonsOfToday(DateTime today) =>
@@ -78,7 +78,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
 
   Stream<List<Lesson>> watchLastLessons() {
     return customSelectQuery(
-      """ SELECT * FROM lessons WHERE date IN (SELECT max(date) FROM lessons)""",
+      'SELECT * FROM lessons WHERE date IN (SELECT max(date) FROM lessons)',
       readsFrom: {
         lessons,
       },

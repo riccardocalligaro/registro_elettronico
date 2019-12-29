@@ -136,9 +136,9 @@ class GradesUtils {
     int insufficienze = 0;
     int sufficienze = 0;
 
-    double average = 0;
-    double worstAverage = 10.0;
-    double bestAverage = 0;
+    ///double average = 0;
+    ///double worstAverage = 10.0;
+    ///double bestAverage = 0;
     Subject worstSubject;
     Subject bestSubject;
 
@@ -153,7 +153,7 @@ class GradesUtils {
     // // Check if it is best average
     // if (average > bestAverage) {
     //   bestSubject = subject;
-    //   bestAverage = average;
+    //   bestAverageó = average;
     // }
     // // Check fo worst subject
     // if (average < worstAverage) {

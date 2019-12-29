@@ -55,18 +55,18 @@ class LocalGradeCard extends StatelessWidget {
     );
   }
 
-  Widget _buildLessonArgument(Grade grade) {
-    String text = grade.notesForFamily;
-    if (text.length > 0) {
-      if (text.length > 40) {
-        text = text.substring(0, 39);
-        text += "...";
-      }
-      return Text(
-        text,
-        style: TextStyle(color: Colors.white),
-      );
-    }
-    return Container();
-  }
+  //// Widget _buildLessonArgument(Grade grade) {
+  ////   String text = grade.notesForFamily;
+  ////   if (text.length > 0) {
+  ////     if (text.length > 40) {
+  ////       text = text.substring(0, 39);
+  ////       text += "...";
+  ////     }
+  ////     return Text(
+  ////       text,
+  ////       style: TextStyle(color: Colors.white),
+  ////     );
+  ////   }
+  ////   return Container();
+  //// }
 }

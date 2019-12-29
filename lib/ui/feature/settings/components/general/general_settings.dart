@@ -101,9 +101,11 @@ class _GeneralSettingsState extends State<GeneralSettings> {
                 ],
               ),
             ).then((value) async {
-              setState(() {
-                _ascending = value;
-              });
+              if (value != null) {
+                setState(() {
+                  _ascending = value;
+                });
+              }
 
               SharedPreferences sharedPreferences =
                   await SharedPreferences.getInstance();

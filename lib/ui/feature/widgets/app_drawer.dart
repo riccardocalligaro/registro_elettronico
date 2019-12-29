@@ -83,27 +83,16 @@ class _AppDrawerState extends State<AppDrawer> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          _createDrawerItem(
-            icon: Icons.add,
-            text: 'Add account',
-            pos: 0,
-            isAccount: true,
-            onTap: () {},
-          ),
-          _createDrawerItem(
+           _createDrawerItem(
             icon: Icons.exit_to_app,
-            text: 'Switch account',
+            text: "Logout",
+            onTap: () {
+              BlocProvider.of<AuthBloc>(context).add(SignOut());
+              AppNavigator.instance.navToLogin(context);
+            },
             pos: 0,
-            isAccount: true,
-            onTap: () {},
-          ),
-          _createDrawerItem(
-            icon: Icons.delete,
-            text: 'Log out',
-            pos: 0,
-            isAccount: true,
-            onTap: () {},
           )
+         
         ],
       ),
     );
@@ -200,15 +189,7 @@ class _AppDrawerState extends State<AppDrawer> {
             text: trans.translate("contact_us"),
             pos: 10,
           ),
-          _createDrawerItem(
-            icon: Icons.exit_to_app,
-            text: "Logout",
-            onTap: () {
-              BlocProvider.of<AuthBloc>(context).add(SignOut());
-              AppNavigator.instance.navToLogin(context);
-            },
-            pos: 11,
-          )
+         
         ],
       ),
     );

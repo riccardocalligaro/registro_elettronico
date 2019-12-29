@@ -113,5 +113,8 @@
   "no_local_grades": "No local grades",
   "calculation_error": "Calculation errror",
   "the_file_will_be_deleted": "The file will be deleted",
-  "no_name": "No name"
+  "no_name": "No name",
+  "reset_db_alert":"Are you sure?",
+  "reset_db_alert_message":"All the data will be eliminated and you'll need to synchronize again.",
+  "no_events":"No events"
 }

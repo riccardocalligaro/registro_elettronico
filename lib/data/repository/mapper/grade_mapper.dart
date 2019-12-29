@@ -1,6 +1,5 @@
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/domain/entity/api_responses/grades_response.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
 
 class GradeMapper {
   const GradeMapper();

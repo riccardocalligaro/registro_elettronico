@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
@@ -25,7 +26,38 @@ class _AccountSettingsState extends State<AccountSettings> {
           title: Text(AppLocalizations.of(context).translate('reset_data')),
           subtitle: Text(
               AppLocalizations.of(context).translate('reset_data_message')),
-          onTap: () {},
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(
+                      AppLocalizations.of(context).translate('reset_db_alert')),
+                  content: Text(
+                    AppLocalizations.of(context)
+                        .translate('reset_db_alert_message'),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text(
+                          AppLocalizations.of(context).translate('cancel')),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    FlatButton(
+                      child: Text(
+                          AppLocalizations.of(context).translate('delete')),
+                      onPressed: () {
+                        AppDatabase().resetDbWithoutProfile();
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                );
+              },
+            );
+          },
         )
       ],
     );

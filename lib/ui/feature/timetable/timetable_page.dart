@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
-import 'package:registro_elettronico/domain/entity/genius_timetable.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
