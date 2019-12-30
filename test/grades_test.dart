@@ -9,6 +9,7 @@ import 'package:registro_elettronico/utils/grades_utils.dart';
 void main() {
   group('Color for different grades', () {
     final gradeRed = Grade(
+      localllyCancelled: false,
       subjectId: 1,
       subjectDesc: "Italiano",
       evtId: 1,
@@ -90,6 +91,7 @@ void main() {
         weightFactor: 0,
         skillId: 1,
         gradeMasterId: 1,
+        localllyCancelled: false
       ),
     );
 
@@ -113,6 +115,7 @@ void main() {
         weightFactor: 0,
         skillId: 1,
         gradeMasterId: 1,
+        localllyCancelled: false
       ),
     );
 
@@ -136,6 +139,7 @@ void main() {
         weightFactor: 0,
         skillId: 1,
         gradeMasterId: 1,
+        localllyCancelled: false
       ),
     );
 
