@@ -105,6 +105,11 @@ Additional features that will be implemented
 | Summary page            |  ❌   |    -    |     -     |
 
 ## Project structure
+- Clean architecture structure 
+
+<img src="https://i0.wp.com/resocoder.com/wp-content/uploads/2019/08/Clean-Architecture-Flutter-Diagram.png?resize=556%2C707&ssl=1">
+
+- Project tree
 
 ```
 📦lib
