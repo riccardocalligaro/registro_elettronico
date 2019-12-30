@@ -222,7 +222,6 @@ class _GradeTabState extends State<GradeTab>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 
   //// List _getGradesListForPeriodFromMap(Map<dynamic, List<Grade>> grades) {

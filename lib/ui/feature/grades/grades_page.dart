@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/scheduler/ticker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
@@ -9,7 +8,6 @@ import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
 
 class GradesPage extends StatefulWidget {
   GradesPage({Key key}) : super(key: key);

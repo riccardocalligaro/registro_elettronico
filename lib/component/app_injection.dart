@@ -192,7 +192,6 @@ class AppInjector {
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
-        i.getDependency(),
       );
       return agendaRepository;
     });

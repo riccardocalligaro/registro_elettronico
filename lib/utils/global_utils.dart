@@ -12,18 +12,19 @@ import 'constants/registro_constants.dart';
 
 class GlobalUtils {
 
-  
+  /// This method thakes a list of lessons and returns the lesson [grouped] 
+  /// checking the lesson argument and the subject id just in case
   static List<Lesson> getGroupedLessonsList(List<Lesson> lessons) {
     List<Lesson> lessonsList = [];
     int count = 1;
 
     for (var i = 0; i < lessons.length - 1; i++) {
       if (i == lessons.length - 1) {
-        if (lessons[i - 1].lessonArg == lessons[i].lessonArg) {
+        if (lessons[i - 1].lessonArg == lessons[i].lessonArg && lessons[i-1].subjectId == lessons[i].subjectId) {
           lessonsList.add(lessons[i].copyWith(duration: ++count));
         }
       }
-      if (lessons[i].lessonArg == lessons[i + 1].lessonArg) {
+      if (lessons[i].lessonArg == lessons[i + 1].lessonArg && lessons[i].subjectId == lessons[i+1].subjectId) {
         count++;
       } else {
         lessonsList.add(lessons[i].copyWith(duration: count));

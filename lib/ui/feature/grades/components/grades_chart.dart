@@ -162,9 +162,6 @@ class _GradesChartState extends State<GradesChart> {
               color: const Color(0xff68737d),
               fontWeight: FontWeight.w500,
               fontSize: 12),
-          getTitles: (value) {
-            // TODO: add some reference date
-          },
           margin: 8,
         ),
 

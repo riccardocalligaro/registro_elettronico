@@ -18,4 +18,6 @@ abstract class AgendaRepository {
 
   ///Delete all events
   Future deleteAllEvents();
+
+  Future<List<AgendaEvent>> getAllEvents();
 }

@@ -1,30 +1,27 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/component/notifications/local_notification.dart';
+import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
+import 'package:registro_elettronico/data/repository/agenda_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/grades_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/mapper/grade_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/data/repository/profile_repository_impl.dart';
+import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
-  //GradesRepository gradesRepository;
-
-  //NotificationService(this.gradesRepository);
-
   Future checkForNewContent() async {
-    final GradeDao gradeDao = GradeDao(AppDatabase());
+    final AppDatabase appDatabase = AppDatabase();
+    final GradeDao gradeDao = GradeDao(appDatabase);
     final ProfileDao profileDao = ProfileDao(AppDatabase());
     final ProfileMapper profileMapper = ProfileMapper();
     final ProfileRepository profileRepository =
@@ -41,32 +38,53 @@ class NotificationService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final LocalNotification localNotification =
         LocalNotification(onSelectNotification);
-    print("Before if!");
 
-    //if (prefs.getBool('notify_grades') == false) {
-    final difference = await getGradesDifference(gradesRepository);
+    // We get the shared preferences and we check what to notify
+    final notifyGrades =
+        prefs.getBool(PrefsConstants.GRADES_NOTIFICATIONS) ?? false;
+    final notifyAgenda =
+        prefs.getBool(PrefsConstants.AGENDA_NOTIFICATIONS) ?? false;
+    final notifyAbsenes =
+        prefs.getBool(PrefsConstants.AGENDA_NOTIFICATIONS) ?? false;
+    final notifyNotes =
+        prefs.getBool(PrefsConstants.NOTES_NOTIFICATIONS) ?? false;
 
-    print("Difference " + difference.toString());
+    // Send grades notifications
+    if (notifyGrades) {
+      final gradesToNotify = await _getGradesToNotify(gradesRepository);
+      gradesToNotify.forEach(
+        (grade) => localNotification.showNotificationWithDefaultSound(
+          grade.evtId,
+          'Nuovi voto!',
+          'Hai preso ${grade.decimalValue.toString()} in ${grade.subjectDesc}',
+        ),
+      );
+    }
 
-    //final locale = Locale(Platform.localeName);
-    //final localizations = await AppLocalizations.delegate.load(locale);
-    //SharedPreferences preferences = await SharedPreferences.getInstance();
-    //print(preferences.getBool(PrefsConstants.GRADES_NOTIFICATIONS) ?? "false");
+    // Send agenda notifications
+    if (notifyAgenda) {
+      final AgendaRepository agendaRepository = AgendaRepositoryImpl(
+          spaggiariClient, AgendaDao(appDatabase), profileDao);
+      final eventsToNotify = await _getAgendaEventsToNotify(agendaRepository);
+      eventsToNotify.forEach(
+        (event) => localNotification.showNotificationWithDefaultSound(
+          event.evtId,
+          'Nuovo evento!',
+          '${event.notes} il ${DateUtils.convertDateForDisplay(event.begin)}',
+        ),
+      );
+    }
 
-    difference.forEach(
-      (grade) => localNotification.showNotificationWithDefaultSound(
-        grade.evtId,
-        'Nuovi voti!',
-        'Hai preso ${grade.decimalValue.toString()} in ${grade.subjectDesc}',
-      ),
-    );
+    if (notifyAbsenes) {}
+
+    if (notifyNotes) {}
   }
 
-  Future<List<Grade>> getGradesDifference(
+  Future<List<Grade>> _getGradesToNotify(
       GradesRepository gradesRepository) async {
     List<Grade> gradesToNotify = [];
     final gradesBeforeFetching = await gradesRepository.getAllGrades();
-    //final res = await gradesRepository.updateGrades();
+    await gradesRepository.updateGrades();
     final gradesAfterFetching = await gradesRepository.getAllGrades();
 
     gradesAfterFetching.forEach(
@@ -76,6 +94,19 @@ class NotificationService {
     );
 
     return gradesToNotify;
+  }
+
+  Future<List<AgendaEvent>> _getAgendaEventsToNotify(
+      AgendaRepository agendaRepository) async {
+    List<AgendaEvent> eventsToNotify = [];
+    final before = await agendaRepository.getAllEvents();
+    await agendaRepository.updateAgendaStartingFromDate(DateTime.now());
+    final after = await agendaRepository.getAllEvents();
+
+    after.forEach((event) {
+      if (!before.contains(event)) eventsToNotify.add(event);
+    });
+    return eventsToNotify;
   }
 
   Future onSelectNotification(String payload) async {

@@ -13,9 +13,8 @@ import 'package:registro_elettronico/domain/entity/api_responses/agenda_response
 /// TextColumn get subjectDesc => text()();
 
 class EventMapper {
-  const EventMapper();
 
-  db.AgendaEvent convertEventEntityToInsertable(Event event) {
+  static db.AgendaEvent convertEventEntityToInsertable(Event event) {
     return db.AgendaEvent(
       evtId: event.evtId ?? -1,
       evtCode: event.evtCode ?? "",

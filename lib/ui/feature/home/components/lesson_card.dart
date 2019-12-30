@@ -53,7 +53,6 @@ class LessonCard extends StatelessWidget {
                         child: Opacity(
                           opacity: 0.85,
                           child: Text(
-                            // TODO: need to fix lesson duration
                             '${lesson.duration}H',
                             style: TextStyle(color: Colors.white, fontSize: 10),
                           ),

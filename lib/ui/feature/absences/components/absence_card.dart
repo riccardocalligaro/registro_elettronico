@@ -98,19 +98,19 @@ class AbsenceCard extends StatelessWidget {
     }
   }
 
-  String _getAbsenceNameFromCode(BuildContext context, String code) {
-    if (code == RegistroConstants.ASSENZA) {
-      return AppLocalizations.of(context).translate('absence');
-    } else if (code == RegistroConstants.RITARDO) {
-      return AppLocalizations.of(context).translate('late');
-    } else if (code == RegistroConstants.RITARDO_BREVE) {
-      return AppLocalizations.of(context).translate('little_bit_late');
-    } else if (code == RegistroConstants.USCITA) {
-      return AppLocalizations.of(context).translate('early_exit');
-    } else {
-      return AppLocalizations.of(context).translate('unricognised_event');
-    }
-  }
+  ////String _getAbsenceNameFromCode(BuildContext context, String code) {
+  ////  if (code == RegistroConstants.ASSENZA) {
+  ////    return AppLocalizations.of(context).translate('absence');
+  ////  } else if (code == RegistroConstants.RITARDO) {
+  ////    return AppLocalizations.of(context).translate('late');
+  ////  } else if (code == RegistroConstants.RITARDO_BREVE) {
+  ////    return AppLocalizations.of(context).translate('little_bit_late');
+  ////  } else if (code == RegistroConstants.USCITA) {
+  ////    return AppLocalizations.of(context).translate('early_exit');
+  ////  } else {
+  ////    return AppLocalizations.of(context).translate('unricognised_event');
+  ////  }
+  ////}
 
   String _getLetterFromCode(BuildContext context, String code) {
     if (code == RegistroConstants.ASSENZA) {

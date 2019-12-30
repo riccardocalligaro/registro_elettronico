@@ -487,5 +487,6 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
         Icons.trending_down,
         color: Colors.red,
       );
+      return Icon(Icons.trending_flat);
   }
 }
