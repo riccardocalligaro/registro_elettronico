@@ -6739,6 +6739,349 @@ class $LocalGradesTable extends LocalGrades
   }
 }
 
+class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
+  final int eventId;
+  final DateTime date;
+  final int position;
+  final int duration;
+  final String subject;
+  final String author;
+  TimetableEntry(
+      {@required this.eventId,
+      @required this.date,
+      @required this.position,
+      @required this.duration,
+      @required this.subject,
+      @required this.author});
+  factory TimetableEntry.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return TimetableEntry(
+      eventId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}event_id']),
+      date:
+          dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}date']),
+      position:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}position']),
+      duration:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}duration']),
+      subject:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}subject']),
+      author:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}author']),
+    );
+  }
+  factory TimetableEntry.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return TimetableEntry(
+      eventId: serializer.fromJson<int>(json['eventId']),
+      date: serializer.fromJson<DateTime>(json['date']),
+      position: serializer.fromJson<int>(json['position']),
+      duration: serializer.fromJson<int>(json['duration']),
+      subject: serializer.fromJson<String>(json['subject']),
+      author: serializer.fromJson<String>(json['author']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'eventId': serializer.toJson<int>(eventId),
+      'date': serializer.toJson<DateTime>(date),
+      'position': serializer.toJson<int>(position),
+      'duration': serializer.toJson<int>(duration),
+      'subject': serializer.toJson<String>(subject),
+      'author': serializer.toJson<String>(author),
+    };
+  }
+
+  @override
+  TimetableEntriesCompanion createCompanion(bool nullToAbsent) {
+    return TimetableEntriesCompanion(
+      eventId: eventId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(eventId),
+      date: date == null && nullToAbsent ? const Value.absent() : Value(date),
+      position: position == null && nullToAbsent
+          ? const Value.absent()
+          : Value(position),
+      duration: duration == null && nullToAbsent
+          ? const Value.absent()
+          : Value(duration),
+      subject: subject == null && nullToAbsent
+          ? const Value.absent()
+          : Value(subject),
+      author:
+          author == null && nullToAbsent ? const Value.absent() : Value(author),
+    );
+  }
+
+  TimetableEntry copyWith(
+          {int eventId,
+          DateTime date,
+          int position,
+          int duration,
+          String subject,
+          String author}) =>
+      TimetableEntry(
+        eventId: eventId ?? this.eventId,
+        date: date ?? this.date,
+        position: position ?? this.position,
+        duration: duration ?? this.duration,
+        subject: subject ?? this.subject,
+        author: author ?? this.author,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TimetableEntry(')
+          ..write('eventId: $eventId, ')
+          ..write('date: $date, ')
+          ..write('position: $position, ')
+          ..write('duration: $duration, ')
+          ..write('subject: $subject, ')
+          ..write('author: $author')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      eventId.hashCode,
+      $mrjc(
+          date.hashCode,
+          $mrjc(
+              position.hashCode,
+              $mrjc(duration.hashCode,
+                  $mrjc(subject.hashCode, author.hashCode))))));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is TimetableEntry &&
+          other.eventId == this.eventId &&
+          other.date == this.date &&
+          other.position == this.position &&
+          other.duration == this.duration &&
+          other.subject == this.subject &&
+          other.author == this.author);
+}
+
+class TimetableEntriesCompanion extends UpdateCompanion<TimetableEntry> {
+  final Value<int> eventId;
+  final Value<DateTime> date;
+  final Value<int> position;
+  final Value<int> duration;
+  final Value<String> subject;
+  final Value<String> author;
+  const TimetableEntriesCompanion({
+    this.eventId = const Value.absent(),
+    this.date = const Value.absent(),
+    this.position = const Value.absent(),
+    this.duration = const Value.absent(),
+    this.subject = const Value.absent(),
+    this.author = const Value.absent(),
+  });
+  TimetableEntriesCompanion.insert({
+    @required int eventId,
+    @required DateTime date,
+    @required int position,
+    @required int duration,
+    @required String subject,
+    @required String author,
+  })  : eventId = Value(eventId),
+        date = Value(date),
+        position = Value(position),
+        duration = Value(duration),
+        subject = Value(subject),
+        author = Value(author);
+  TimetableEntriesCompanion copyWith(
+      {Value<int> eventId,
+      Value<DateTime> date,
+      Value<int> position,
+      Value<int> duration,
+      Value<String> subject,
+      Value<String> author}) {
+    return TimetableEntriesCompanion(
+      eventId: eventId ?? this.eventId,
+      date: date ?? this.date,
+      position: position ?? this.position,
+      duration: duration ?? this.duration,
+      subject: subject ?? this.subject,
+      author: author ?? this.author,
+    );
+  }
+}
+
+class $TimetableEntriesTable extends TimetableEntries
+    with TableInfo<$TimetableEntriesTable, TimetableEntry> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $TimetableEntriesTable(this._db, [this._alias]);
+  final VerificationMeta _eventIdMeta = const VerificationMeta('eventId');
+  GeneratedIntColumn _eventId;
+  @override
+  GeneratedIntColumn get eventId => _eventId ??= _constructEventId();
+  GeneratedIntColumn _constructEventId() {
+    return GeneratedIntColumn(
+      'event_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _dateMeta = const VerificationMeta('date');
+  GeneratedDateTimeColumn _date;
+  @override
+  GeneratedDateTimeColumn get date => _date ??= _constructDate();
+  GeneratedDateTimeColumn _constructDate() {
+    return GeneratedDateTimeColumn(
+      'date',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _positionMeta = const VerificationMeta('position');
+  GeneratedIntColumn _position;
+  @override
+  GeneratedIntColumn get position => _position ??= _constructPosition();
+  GeneratedIntColumn _constructPosition() {
+    return GeneratedIntColumn(
+      'position',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _durationMeta = const VerificationMeta('duration');
+  GeneratedIntColumn _duration;
+  @override
+  GeneratedIntColumn get duration => _duration ??= _constructDuration();
+  GeneratedIntColumn _constructDuration() {
+    return GeneratedIntColumn(
+      'duration',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _subjectMeta = const VerificationMeta('subject');
+  GeneratedTextColumn _subject;
+  @override
+  GeneratedTextColumn get subject => _subject ??= _constructSubject();
+  GeneratedTextColumn _constructSubject() {
+    return GeneratedTextColumn(
+      'subject',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _authorMeta = const VerificationMeta('author');
+  GeneratedTextColumn _author;
+  @override
+  GeneratedTextColumn get author => _author ??= _constructAuthor();
+  GeneratedTextColumn _constructAuthor() {
+    return GeneratedTextColumn(
+      'author',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [eventId, date, position, duration, subject, author];
+  @override
+  $TimetableEntriesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'timetable_entries';
+  @override
+  final String actualTableName = 'timetable_entries';
+  @override
+  VerificationContext validateIntegrity(TimetableEntriesCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.eventId.present) {
+      context.handle(_eventIdMeta,
+          eventId.isAcceptableValue(d.eventId.value, _eventIdMeta));
+    } else if (eventId.isRequired && isInserting) {
+      context.missing(_eventIdMeta);
+    }
+    if (d.date.present) {
+      context.handle(
+          _dateMeta, date.isAcceptableValue(d.date.value, _dateMeta));
+    } else if (date.isRequired && isInserting) {
+      context.missing(_dateMeta);
+    }
+    if (d.position.present) {
+      context.handle(_positionMeta,
+          position.isAcceptableValue(d.position.value, _positionMeta));
+    } else if (position.isRequired && isInserting) {
+      context.missing(_positionMeta);
+    }
+    if (d.duration.present) {
+      context.handle(_durationMeta,
+          duration.isAcceptableValue(d.duration.value, _durationMeta));
+    } else if (duration.isRequired && isInserting) {
+      context.missing(_durationMeta);
+    }
+    if (d.subject.present) {
+      context.handle(_subjectMeta,
+          subject.isAcceptableValue(d.subject.value, _subjectMeta));
+    } else if (subject.isRequired && isInserting) {
+      context.missing(_subjectMeta);
+    }
+    if (d.author.present) {
+      context.handle(
+          _authorMeta, author.isAcceptableValue(d.author.value, _authorMeta));
+    } else if (author.isRequired && isInserting) {
+      context.missing(_authorMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {eventId};
+  @override
+  TimetableEntry map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return TimetableEntry.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(TimetableEntriesCompanion d) {
+    final map = <String, Variable>{};
+    if (d.eventId.present) {
+      map['event_id'] = Variable<int, IntType>(d.eventId.value);
+    }
+    if (d.date.present) {
+      map['date'] = Variable<DateTime, DateTimeType>(d.date.value);
+    }
+    if (d.position.present) {
+      map['position'] = Variable<int, IntType>(d.position.value);
+    }
+    if (d.duration.present) {
+      map['duration'] = Variable<int, IntType>(d.duration.value);
+    }
+    if (d.subject.present) {
+      map['subject'] = Variable<String, StringType>(d.subject.value);
+    }
+    if (d.author.present) {
+      map['author'] = Variable<String, StringType>(d.author.value);
+    }
+    return map;
+  }
+
+  @override
+  $TimetableEntriesTable createAlias(String alias) {
+    return $TimetableEntriesTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProfilesTable _profiles;
@@ -6778,6 +7121,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       _didacticsDownloadedFiles ??= $DidacticsDownloadedFilesTable(this);
   $LocalGradesTable _localGrades;
   $LocalGradesTable get localGrades => _localGrades ??= $LocalGradesTable(this);
+  $TimetableEntriesTable _timetableEntries;
+  $TimetableEntriesTable get timetableEntries =>
+      _timetableEntries ??= $TimetableEntriesTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   LessonDao _lessonDao;
@@ -6802,6 +7148,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   DidacticsDao _didacticsDao;
   DidacticsDao get didacticsDao =>
       _didacticsDao ??= DidacticsDao(this as AppDatabase);
+  TimetableDao _timetableDao;
+  TimetableDao get timetableDao =>
+      _timetableDao ??= TimetableDao(this as AppDatabase);
   @override
   List<TableInfo> get allTables => [
         profiles,
@@ -6819,6 +7168,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         didacticsFolders,
         didacticsContents,
         didacticsDownloadedFiles,
-        localGrades
+        localGrades,
+        timetableEntries
       ];
 }

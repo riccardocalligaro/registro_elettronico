@@ -12,6 +12,7 @@ import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
+import 'package:registro_elettronico/data/db/dao/timetable_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
@@ -30,6 +31,7 @@ import 'package:registro_elettronico/data/repository/periods_repository_impl.dar
 
 // All the data level repositories
 import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
+import 'package:registro_elettronico/data/repository/timetable_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/domain/repository/notes_repository.dart';
@@ -38,6 +40,7 @@ import 'package:registro_elettronico/domain/repository/periods_repository.dart';
 
 // All the domain level repositories
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
+import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
 
 // BLoc
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
@@ -115,6 +118,10 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton<DidacticsDao>((i) {
       return DidacticsDao(i.getDependency());
+    });
+
+    Injector.appInstance.registerSingleton<TimetableDao>((i) {
+      return TimetableDao(i.getDependency());
     });
   }
 
@@ -237,6 +244,14 @@ class AppInjector {
         i.getDependency(),
       );
       return didacticsRepository;
+    });
+
+    Injector.appInstance.registerSingleton((i) {
+      TimetableRepository timetableRepository = TimetableRepositoryImpl(
+        i.getDependency(),
+        i.getDependency(),
+      );
+      return timetableRepository;
     });
   }
 

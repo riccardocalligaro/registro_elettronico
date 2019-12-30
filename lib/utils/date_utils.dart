@@ -22,6 +22,11 @@ class DateUtils {
     return formatter.format(date);
   }
 
+  static String convertSingleDayForDisplay(DateTime date, String locale) {
+    final formatter = DateFormat.EEEE(locale);
+    return formatter.format(date);
+  }
+
   static String convertMonthLocale(DateTime date, String locale) {
     final formatter = DateFormat.MMMM(locale);
     return formatter.format(date);

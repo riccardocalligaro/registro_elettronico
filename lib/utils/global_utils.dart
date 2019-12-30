@@ -11,6 +11,29 @@ import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 import 'constants/registro_constants.dart';
 
 class GlobalUtils {
+
+  
+  static List<Lesson> getGroupedLessonsList(List<Lesson> lessons) {
+    List<Lesson> lessonsList = [];
+    int count = 1;
+
+    for (var i = 0; i < lessons.length - 1; i++) {
+      if (i == lessons.length - 1) {
+        if (lessons[i - 1].lessonArg == lessons[i].lessonArg) {
+          lessonsList.add(lessons[i].copyWith(duration: ++count));
+        }
+      }
+      if (lessons[i].lessonArg == lessons[i + 1].lessonArg) {
+        count++;
+      } else {
+        lessonsList.add(lessons[i].copyWith(duration: count));
+        count = 1;
+      }
+    }
+    lessonsList.add(lessons[lessons.length - 1]);
+    return lessonsList;
+  }
+
   static Future<Period> getPeriodFromDate(DateTime date) async {
     final now = DateTime.now();
     final PeriodDao periodDao = PeriodDao(Injector.appInstance.getDependency());
@@ -135,10 +158,10 @@ class GlobalUtils {
         return Colors.deepOrangeAccent;
         break;
       case 3:
-        return Colors.greenAccent;
+        return Colors.green;
         break;
       case 4:
-        return Colors.amber;
+        return Colors.teal;
         break;
       case 5:
         return Colors.deepOrange;

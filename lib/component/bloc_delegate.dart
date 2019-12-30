@@ -15,6 +15,7 @@ import 'package:registro_elettronico/ui/bloc/notices/attachments/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notices/notices_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/periods/periods_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/timetable/timetable_bloc.dart';
 
 class AppBlocDelegate {
   static AppBlocDelegate _instance;
@@ -32,18 +33,13 @@ class AppBlocDelegate {
             AuthBloc(i.getDependency(), i.getDependency(), i.getDependency()),
       ),
       BlocProvider<LessonsBloc>(
-        create: (ctx) => LessonsBloc(
-          i.getDependency(),
-        ),
+        create: (ctx) => LessonsBloc(i.getDependency()),
       ),
       BlocProvider<GradesBloc>(
         create: (ctx) => GradesBloc(i.getDependency(), i.getDependency()),
       ),
       BlocProvider<SubjectsBloc>(
-        create: (ctx) => SubjectsBloc(
-          i.getDependency(),
-          i.getDependency(),
-        ),
+        create: (ctx) => SubjectsBloc(i.getDependency(), i.getDependency()),
       ),
       BlocProvider<AgendaBloc>(
         create: (ctx) => AgendaBloc(i.getDependency()),
@@ -74,6 +70,9 @@ class AppBlocDelegate {
       ),
       BlocProvider<LocalGradesBloc>(
         create: (ctx) => LocalGradesBloc(i.getDependency()),
+      ),
+      BlocProvider<TimetableBloc>(
+        create: (ctx) => TimetableBloc(i.getDependency()),
       )
     ];
   }

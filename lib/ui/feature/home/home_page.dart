@@ -358,7 +358,7 @@ class _HomePageState extends State<HomePage> {
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Lesson> lessons = snapshot.data ?? List();
-        final lessonsGrouped = _getGroupedLessonsList(lessons);
+        final lessonsGrouped = GlobalUtils.getGroupedLessonsList(lessons);
         print(lessons.length);
         if (lessons.length == 0) {
           // todo: maybe a better placeholder?
@@ -383,42 +383,42 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<Lesson> _getGroupedLessonsList(List<Lesson> lessons) {
-    Logger log = Logger();
-    log.i("Lessons lenght ${lessons.length}");
+  // List<Lesson> _getGroupedLessonsList(List<Lesson> lessons) {
+  //   Logger log = Logger();
+  //   log.i("Lessons lenght ${lessons.length}");
 
-    List<Lesson> lessonsList = [];
-    int count = 1;
+  //   List<Lesson> lessonsList = [];
+  //   int count = 1;
 
-    for (var i = 0; i < lessons.length - 1; i++) {
-      if (i == lessons.length - 1) {
-        if (lessons[i - 1].lessonArg == lessons[i].lessonArg) {
-          lessonsList.add(lessons[i].copyWith(duration: ++count));
-        }
-      }
-      if (lessons[i].lessonArg == lessons[i + 1].lessonArg) {
-        count++;
-      } else {
-        lessonsList.add(lessons[i].copyWith(duration: count));
-        count = 1;
-      }
-    }
-    lessonsList.add(lessons[lessons.length - 1]);
+  //   for (var i = 0; i < lessons.length - 1; i++) {
+  //     if (i == lessons.length - 1) {
+  //       if (lessons[i - 1].lessonArg == lessons[i].lessonArg) {
+  //         lessonsList.add(lessons[i].copyWith(duration: ++count));
+  //       }
+  //     }
+  //     if (lessons[i].lessonArg == lessons[i + 1].lessonArg) {
+  //       count++;
+  //     } else {
+  //       lessonsList.add(lessons[i].copyWith(duration: count));
+  //       count = 1;
+  //     }
+  //   }
+  //   lessonsList.add(lessons[lessons.length - 1]);
 
-    // lessons.forEach((lesson) {
-    //   if (lesson.author != currentAuthor &&
-    //       lesson.lessonArg != currentLessonArg) {
-    //     lessonsList.add(lesson.copyWith(duration: count));
-    //     count = 1;
-    //   } else {
-    //     count++;
-    //   }
-    //   currentAuthor = lesson.author;
-    //   currentLessonArg = lesson.lessonArg;
-    // });
-    log.i(lessonsList.length);
-    return lessonsList;
-  }
+  //   // lessons.forEach((lesson) {
+  //   //   if (lesson.author != currentAuthor &&
+  //   //       lesson.lessonArg != currentLessonArg) {
+  //   //     lessonsList.add(lesson.copyWith(duration: count));
+  //   //     count = 1;
+  //   //   } else {
+  //   //     count++;
+  //   //   }
+  //   //   currentAuthor = lesson.author;
+  //   //   currentLessonArg = lesson.lessonArg;
+  //   // });
+  //   log.i(lessonsList.length);
+  //   return lessonsList;
+  // }
 
   Future onSelectNotification(String payload) async {
     if (payload != null) {

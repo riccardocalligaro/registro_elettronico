@@ -38,6 +38,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           scaffoldKey.currentState.openDrawer();
         },
       ),
+
+      actions: actions,
     );
   }
 
