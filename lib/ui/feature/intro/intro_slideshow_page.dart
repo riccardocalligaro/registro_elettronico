@@ -22,36 +22,46 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
     slides.add(
       new Slide(
         title: "REGISTRO ELETTRONICO",
+        maxLineTitle: 2,
+        centerWidget: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 81),
+          child: Icon(
+            Icons.school,
+            size: 80,
+            color: Colors.red,
+          ),
+        ),
         description:
             "This is a quick intro of the application while we are downloading data from Spaggiari",
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.grey[900],
       ),
     );
     slides.add(
       new Slide(
-        title: "PENCIL",
+        title: "GRADES",
+        centerWidget: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 100),
+          child: Icon(
+            Icons.timeline,
+            size: 80,
+            color: Colors.red,
+          ),
+        ),
         description:
-            "Ye indulgence unreserved connection alteration appearance",
-        backgroundColor: Color(0xff203152),
+            "The app provides amazing graphs and stats about your school grades",
+        backgroundColor: Colors.grey[900],
       ),
     );
     slides.add(
       new Slide(
-        title: "RULER",
-        description:
-            "Much evil soon high in hope do view. Out may few northward believing attempted. Yet timed being songs marry one defer men our. Although finished blessing do of",
-        backgroundColor: Color(0xff9932CC),
-      ),
-    );
-    slides.add(
-      new Slide(
-        title: "DOWNLOADING...",
+        title: "DOWNLOAD",
         centerWidget: BlocBuilder<IntroBloc, IntroState>(
           builder: (context, state) {
             if (state is IntroLoading) {
               return CircularPercentIndicator(
                 radius: 240,
                 lineWidth: 10,
+                center: Text('${state.progress}%'),
                 percent: state.progress / 100,
               );
             }
@@ -79,7 +89,7 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
             return Container();
           },
         ),
-        backgroundColor: Color(0xff9932CC),
+        backgroundColor: Colors.grey[900],
       ),
     );
   }
