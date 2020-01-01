@@ -11,8 +11,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
   AgendaDao agendaDao;
   ProfileDao profileDao;
 
-  AgendaRepositoryImpl(
-      this.spaggiariClient, this.agendaDao, this.profileDao);
+  AgendaRepositoryImpl(this.spaggiariClient, this.agendaDao, this.profileDao);
 
   @override
   Future updateAgendaBetweenDates(DateTime begin, DateTime end) async {
@@ -20,12 +19,14 @@ class AgendaRepositoryImpl implements AgendaRepository {
 
     final beginDate = DateUtils.convertDate(begin);
     final endDate = DateUtils.convertDate(end);
+    List<AgendaEvent> events = [];
 
     final agenda =
         await spaggiariClient.getAgenda(profile.studentId, beginDate, endDate);
     agenda.events.forEach((event) {
-      agendaDao.insertEvent(EventMapper.convertEventEntityToInsertable(event));
+      events.add(EventMapper.convertEventEntityToInsertable(event));
     });
+    agendaDao.insertEvents(events);
   }
 
   @override
@@ -36,9 +37,12 @@ class AgendaRepositoryImpl implements AgendaRepository {
     final interval = DateUtils.getDateInerval();
     final agenda =
         await spaggiariClient.getAgenda(profile.studentId, now, interval.end);
+    List<AgendaEvent> events = [];
+
     agenda.events.forEach((event) {
-      agendaDao.insertEvent(EventMapper.convertEventEntityToInsertable(event));
+      events.add(EventMapper.convertEventEntityToInsertable(event));
     });
+    agendaDao.insertEvents(events);
   }
 
   @override
@@ -48,9 +52,11 @@ class AgendaRepositoryImpl implements AgendaRepository {
     final interval = DateUtils.getDateInerval();
     final agenda = await spaggiariClient.getAgenda(
         profile.studentId, interval.begin, interval.end);
+    List<AgendaEvent> events = [];
     agenda.events.forEach((event) {
-      agendaDao.insertEvent(EventMapper.convertEventEntityToInsertable(event));
+      events.add(EventMapper.convertEventEntityToInsertable(event));
     });
+    agendaDao.insertEvents(events);
   }
 
   @override

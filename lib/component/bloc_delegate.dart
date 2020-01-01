@@ -7,6 +7,7 @@ import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/didactics_attachments/didactics_attachments_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/local_grades/local_grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notes/notes_bloc.dart';
@@ -31,6 +32,19 @@ class AppBlocDelegate {
       BlocProvider<AuthBloc>(
         create: (bCtx) =>
             AuthBloc(i.getDependency(), i.getDependency(), i.getDependency()),
+      ),
+      BlocProvider<IntroBloc>(
+        create: (ctx) => IntroBloc(
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+        ),
       ),
       BlocProvider<LessonsBloc>(
         create: (ctx) => LessonsBloc(i.getDependency()),
@@ -86,5 +100,5 @@ class AppBlocDelegate {
 
   List<BlocProvider> get blocProviders => _blocProviders;
 
-  List<RepositoryProvider> get repositoryProviders => _repositoryProviders;
+  //List<RepositoryProvider> get repositoryProviders => _repositoryProviders;
 }

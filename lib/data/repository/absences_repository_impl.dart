@@ -18,10 +18,12 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
   Future updateAbsences() async {
     final profile = await profileDao.getProfile();
     final absences = await spaggiariClient.getAbsences(profile.studentId);
+    List<Absence> absencesList = [];
     absences.events.forEach((event) {
-      absenceDao
-          .insertEvent(AbsenceMapper.convertEventEntityToInsertable(event));
+      absencesList.add(AbsenceMapper.convertEventEntityToInsertable(event));
     });
+
+    absenceDao.insertEvents(absencesList);
   }
 
   @override

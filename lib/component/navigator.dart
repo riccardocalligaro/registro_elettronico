@@ -19,6 +19,10 @@ class AppNavigator {
     Navigator.pushReplacementNamed(context, Routes.HOME);
   }
 
+  void navToIntro(BuildContext context) {
+    Navigator.pushReplacementNamed(context, Routes.INTRO);
+  }
+
   void navToLogin(BuildContext context) {
     Navigator.pushReplacementNamed(context, Routes.LOGIN);
   }

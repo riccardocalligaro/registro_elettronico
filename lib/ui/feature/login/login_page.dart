@@ -5,7 +5,9 @@ import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_event.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_state.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -21,6 +23,15 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _valide = false;
   String _errorMessage = "";
+  bool _firstLogin = false;
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    //! change to false
+    _firstLogin = sharedPreferences.getBool(PrefsConstants.FIRST_LOGIN) ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +106,7 @@ class _LoginPageState extends State<LoginPage> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is SignInSuccess) {
+          ///AppNavigator.instance.navToIntro(context);
           /// If the sign in is successful then navigate to the home page
           AppNavigator.instance.navToHome(context);
         }
@@ -109,8 +121,6 @@ class _LoginPageState extends State<LoginPage> {
                   .translate('username_password_doesent_match');
             } else {
               _errorMessage = state.error.message;
-
-              // _errorMessage = state.error.message;
             }
           });
         }

@@ -8,4 +8,5 @@ class PrefsConstants {
   static const OVERALL_OBJECTIVE = 'overall_objective';
   static const PERIOD_TO_SHOW = 'period_to_show';
   static const SORTING_ASCENDING = 'sorting_ascending';
+  static const FIRST_LOGIN = 'first_login';
 }

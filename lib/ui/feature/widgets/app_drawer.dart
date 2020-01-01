@@ -5,6 +5,7 @@ import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
+import 'package:registro_elettronico/ui/feature/home/home_page.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 
@@ -32,9 +33,9 @@ class _AppDrawerState extends State<AppDrawer> {
         children: <Widget>[
           _createHeader(context),
           Expanded(
-              child: _showUserDetails
-                  ? _createUserDetailsList()
-                  : _createMenuList()),
+            child:
+                _showUserDetails ? _createUserDetailsList() : _createMenuList(),
+          ),
         ],
       ),
     );
@@ -80,20 +81,22 @@ class _AppDrawerState extends State<AppDrawer> {
 
   Widget _createUserDetailsList() {
     return Container(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-           _createDrawerItem(
-            icon: Icons.exit_to_app,
-            text: "Logout",
-            onTap: () {
-              BlocProvider.of<AuthBloc>(context).add(SignOut());
-              AppNavigator.instance.navToLogin(context);
-            },
-            pos: 0,
-          )
-         
-        ],
+      child: ScrollConfiguration(
+        behavior: NoGlowBehavior(),
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            _createDrawerItem(
+                icon: Icons.exit_to_app,
+                text: "Logout",
+                onTap: () {
+                  BlocProvider.of<AuthBloc>(context).add(SignOut());
+                  AppNavigator.instance.navToLogin(context);
+                },
+                pos: 0,
+                isAccount: true)
+          ],
+        ),
       ),
     );
   }
@@ -101,96 +104,98 @@ class _AppDrawerState extends State<AppDrawer> {
   Widget _createMenuList() {
     final trans = AppLocalizations.of(context);
     return Container(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          _createDrawerItem(
-            icon: Icons.home,
-            text: trans.translate("home"),
-            pos: DrawerConstants.HOME,
-            onTap: () {
-              AppNavigator.instance.navToHome(context);
-            },
-          ),
-          _createDrawerItem(
-            icon: Icons.library_books,
-            text: trans.translate("lessons"),
-            pos: DrawerConstants.LESSONS,
-            onTap: () {
-              AppNavigator.instance.navToLessons(context);
-            },
-          ),
-          _createDrawerItem(
-            icon: Icons.timeline,
-            text: trans.translate("grades"),
-            pos: DrawerConstants.GRADES,
-            onTap: () {
-              AppNavigator.instance.navToGrades(context);
-            },
-          ),
-          _createDrawerItem(
-            icon: Icons.event,
-            text: trans.translate("agenda"),
-            pos: DrawerConstants.AGENDA,
-            onTap: () {
-              AppNavigator.instance.navToAgenda(context);
-            },
-          ),
-          _createDrawerItem(
-              icon: Icons.folder,
-              text: trans.translate("school_material"),
-              pos: DrawerConstants.SCHOOL_MATERIAL,
+      child: ScrollConfiguration(
+        behavior: NoGlowBehavior(),
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            _createDrawerItem(
+              icon: Icons.home,
+              text: trans.translate("home"),
+              pos: DrawerConstants.HOME,
               onTap: () {
-                AppNavigator.instance.navToSchoolMaterial(context);
-              }),
-          _createDrawerItem(
-            icon: Icons.assessment,
-            text: trans.translate("absences"),
-            pos: DrawerConstants.ABSENCES,
-            onTap: () {
-              AppNavigator.instance.navToAbsences(context);
-            },
-          ),
-          _createDrawerItem(
-            icon: Icons.info,
-            text: trans.translate("notes"),
-            pos: DrawerConstants.NOTES,
-            onTap: () {
-              AppNavigator.instance.navToNotes(context);
-            },
-          ),
-          _createDrawerItem(
-            icon: Icons.assignment,
-            text: trans.translate("notice_board"),
-            pos: DrawerConstants.NOTICE_BOARD,
-            onTap: () {
-              AppNavigator.instance.navToNoticeboard(context);
-            },
-          ),
-          _createDrawerItem(
-            icon: Icons.access_time,
-            text: AppLocalizations.of(context).translate('timetable'),
-            pos: DrawerConstants.TIMETABLE,
-            onTap: () {
-              AppNavigator.instance.navToTimetable(context);
-            },
-          ),
-          Divider(),
-          _createDrawerItem(
-            icon: Icons.settings,
-            text: trans.translate("settings"),
-            pos: DrawerConstants.SETTINGS,
-            onTap: () {
-              AppNavigator.instance.navToSettings(context);
-            },
-          ),
-          _createDrawerItem(
-            icon: Icons.send,
-            text: trans.translate("contact_us"),
-            pos: 10,
-          ),
-         
-        ],
+                AppNavigator.instance.navToHome(context);
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.library_books,
+              text: trans.translate("lessons"),
+              pos: DrawerConstants.LESSONS,
+              onTap: () {
+                AppNavigator.instance.navToLessons(context);
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.timeline,
+              text: trans.translate("grades"),
+              pos: DrawerConstants.GRADES,
+              onTap: () {
+                AppNavigator.instance.navToGrades(context);
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.event,
+              text: trans.translate("agenda"),
+              pos: DrawerConstants.AGENDA,
+              onTap: () {
+                AppNavigator.instance.navToAgenda(context);
+              },
+            ),
+            _createDrawerItem(
+                icon: Icons.folder,
+                text: trans.translate("school_material"),
+                pos: DrawerConstants.SCHOOL_MATERIAL,
+                onTap: () {
+                  AppNavigator.instance.navToSchoolMaterial(context);
+                }),
+            _createDrawerItem(
+              icon: Icons.assessment,
+              text: trans.translate("absences"),
+              pos: DrawerConstants.ABSENCES,
+              onTap: () {
+                AppNavigator.instance.navToAbsences(context);
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.info,
+              text: trans.translate("notes"),
+              pos: DrawerConstants.NOTES,
+              onTap: () {
+                AppNavigator.instance.navToNotes(context);
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.assignment,
+              text: trans.translate("notice_board"),
+              pos: DrawerConstants.NOTICE_BOARD,
+              onTap: () {
+                AppNavigator.instance.navToNoticeboard(context);
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.access_time,
+              text: AppLocalizations.of(context).translate('timetable'),
+              pos: DrawerConstants.TIMETABLE,
+              onTap: () {
+                AppNavigator.instance.navToTimetable(context);
+              },
+            ),
+            Divider(),
+            _createDrawerItem(
+              icon: Icons.settings,
+              text: trans.translate("settings"),
+              pos: DrawerConstants.SETTINGS,
+              onTap: () {
+                AppNavigator.instance.navToSettings(context);
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.send,
+              text: trans.translate("contact_us"),
+              pos: 10,
+            ),
+          ],
+        ),
       ),
     );
   }

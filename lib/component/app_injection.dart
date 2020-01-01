@@ -44,6 +44,7 @@ import 'package:registro_elettronico/domain/repository/timetable_repository.dart
 
 // BLoc
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/intro/intro_bloc.dart';
 
 // Compile-time dependency injection for Dart and Flutter, similar to Dagger.
 
@@ -295,6 +296,20 @@ class AppInjector {
   static void injectBloc() {
     Injector.appInstance.registerSingleton((i) {
       return AuthBloc(i.getDependency(), i.getDependency(), i.getDependency());
+    });
+
+    Injector.appInstance.registerSingleton<IntroBloc>((i) {
+      return IntroBloc(
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
     });
   }
 

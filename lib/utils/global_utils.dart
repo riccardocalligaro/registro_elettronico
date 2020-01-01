@@ -2,17 +2,22 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 
 import 'constants/registro_constants.dart';
 
 class GlobalUtils {
-
-  /// This method thakes a list of lessons and returns the lesson [grouped] 
+  /// This method thakes a list of lessons and returns the lesson [grouped]
   /// checking the lesson argument and the subject id just in case
   static List<Lesson> getGroupedLessonsList(List<Lesson> lessons) {
     List<Lesson> lessonsList = [];
@@ -20,11 +25,13 @@ class GlobalUtils {
 
     for (var i = 0; i < lessons.length - 1; i++) {
       if (i == lessons.length - 1) {
-        if (lessons[i - 1].lessonArg == lessons[i].lessonArg && lessons[i-1].subjectId == lessons[i].subjectId) {
+        if (lessons[i - 1].lessonArg == lessons[i].lessonArg &&
+            lessons[i - 1].subjectId == lessons[i].subjectId) {
           lessonsList.add(lessons[i].copyWith(duration: ++count));
         }
       }
-      if (lessons[i].lessonArg == lessons[i + 1].lessonArg && lessons[i].subjectId == lessons[i+1].subjectId) {
+      if (lessons[i].lessonArg == lessons[i + 1].lessonArg &&
+          lessons[i].subjectId == lessons[i + 1].subjectId) {
         count++;
       } else {
         lessonsList.add(lessons[i].copyWith(duration: count));
@@ -330,5 +337,13 @@ class GlobalUtils {
     Random random = new Random();
     int randomNumber = random.nextInt(99999);
     return randomNumber;
+  }
+
+  static void initialFetch(BuildContext context) {
+    BlocProvider.of<LessonsBloc>(context).add(FetchTodayLessons());
+    BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
+    BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
+    BlocProvider.of<GradesBloc>(context).add(FetchGrades());
+    BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
   }
 }

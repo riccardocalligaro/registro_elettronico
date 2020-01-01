@@ -14,27 +14,24 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-      providers: AppBlocDelegate.instance(context).repositoryProviders,
-      child: MultiBlocProvider(
-        providers: AppBlocDelegate.instance(context).blocProviders,
-        child: LocaleBlocBuilder(
-          builder: (lBBContext, locale, supportedLocales,
-              localizationsDelegates, localeResolutionCallback) {
-            return ThemeBlocBuilder(
-              builder: (tBBContext, materialThemeData, cupertinoThemeData) {
-                InitData initData = InitData(
-                    materialThemeData,
-                    cupertinoThemeData,
-                    locale,
-                    supportedLocales,
-                    localizationsDelegates,
-                    localeResolutionCallback);
-                return builder(tBBContext, initData);
-              },
-            );
-          },
-        ),
+    return MultiBlocProvider(
+      providers: AppBlocDelegate.instance(context).blocProviders,
+      child: LocaleBlocBuilder(
+        builder: (lBBContext, locale, supportedLocales,
+            localizationsDelegates, localeResolutionCallback) {
+          return ThemeBlocBuilder(
+            builder: (tBBContext, materialThemeData, cupertinoThemeData) {
+              InitData initData = InitData(
+                  materialThemeData,
+                  cupertinoThemeData,
+                  locale,
+                  supportedLocales,
+                  localizationsDelegates,
+                  localeResolutionCallback);
+              return builder(tBBContext, initData);
+            },
+          );
+        },
       ),
     );
   }

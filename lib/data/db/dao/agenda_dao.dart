@@ -12,6 +12,9 @@ class AgendaDao extends DatabaseAccessor<AppDatabase> with _$AgendaDaoMixin {
   Future insertEvent(AgendaEvent event) =>
       into(agendaEvents).insert(event, orReplace: true);
 
+  Future insertEvents(List<AgendaEvent> events) =>
+      into(agendaEvents).insertAll(events, orReplace: true);
+
   Stream<List<AgendaEvent>> watchAllEvents() => select(agendaEvents).watch();
 
   Stream<List<AgendaEvent>> watchLastEvents(
@@ -23,7 +26,7 @@ class AgendaDao extends DatabaseAccessor<AppDatabase> with _$AgendaDaoMixin {
   }
 
   Future<List<AgendaEvent>> getAllEvents() => select(agendaEvents).get();
-  
+
   Future deleteAllEvents() => (delete(agendaEvents)
         ..where((entry) => entry.evtId.isBiggerOrEqualValue(-1)))
       .go();

@@ -156,5 +156,5 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
 
   /// Inserts a list of lessons
   Future insertLessons(List<Insertable<Lesson>> lessonsToInsert) =>
-      into(lessons).insertAll(lessonsToInsert);
+      into(lessons).insertAll(lessonsToInsert, orReplace: true);
 }

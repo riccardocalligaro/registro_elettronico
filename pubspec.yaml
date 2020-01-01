@@ -24,7 +24,7 @@ dependencies:
   # Object comparison
   equatable: ^1.0.1
   # BloC
-  flutter_bloc: ^2.1.1
+  flutter_bloc: ^3.0.0
   # Database
   moor_flutter: ^2.0.0
   # Api
@@ -53,6 +53,8 @@ dependencies:
   numberpicker: ^1.1.0
   # random colors for timetable
   random_color: ^1.0.3
+  # initial slideshow
+  intro_slider: ^2.2.8
 
   # Storing user password
   shared_preferences: ^0.5.4+8

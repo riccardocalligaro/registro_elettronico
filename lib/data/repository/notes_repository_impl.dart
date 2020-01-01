@@ -44,8 +44,6 @@ class NotesRepositoryImpl implements NotesRepository {
         (note) => noteMapper.convertNotetEntityToInsertable(note, 'NTTE'));
     notesResponse.notesNTST.forEach(
         (note) => noteMapper.convertNotetEntityToInsertable(note, 'NTST'));
-
-    return null;
   }
 
   @override

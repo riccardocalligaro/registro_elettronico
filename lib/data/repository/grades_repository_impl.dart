@@ -18,10 +18,11 @@ class GradesRepositoryImpl implements GradesRepository {
   Future updateGrades() async {
     final profile = await profileDao.getProfile();
     final gradesResponse = await spaggiariClient.getGrades(profile.studentId);
-    print("got response");
+    List<Grade> grades = [];
     gradesResponse.grades.forEach((grade) {
-      gradeDao.insertGrade(gradeMapper.convertGradeEntityToInserttable(grade));
+      grades.add(gradeMapper.convertGradeEntityToInserttable(grade));
     });
+    gradeDao.insertGrades(grades);
   }
 
   @override

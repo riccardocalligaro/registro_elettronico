@@ -254,15 +254,19 @@ class _HomePageState extends State<HomePage> {
           );
         } else {
           return Padding(
-            padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+            padding: const EdgeInsets.symmetric(vertical: 24.0),
             child: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: Icon(
-                  Icons.timeline,
-                  size: 80,
-                  color: Colors.grey,
-                ),
+              child: Column(
+                children: <Widget>[
+                  Icon(
+                    Icons.timeline,
+                    size: 64,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(AppLocalizations.of(context).translate('no_grades'))
+                ],
               ),
             ),
           );
@@ -333,12 +337,23 @@ class _HomePageState extends State<HomePage> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             final List<Grade> grades = snapshot.data ?? List<Grade>();
             if (subjects.length == 0) {
-              return Center(
-                  child: Icon(
-                Icons.assessment,
-                size: 80,
-                color: Colors.grey,
-              ));
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24.0),
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      Icon(
+                        Icons.assessment,
+                        size: 64,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(AppLocalizations.of(context).translate('no_subjects'))
+                    ],
+                  ),
+                ),
+              );
             }
             return SubjectsGrid(
               subjects: GlobalUtils.removeUnwantedSubject(subjects),
@@ -356,21 +371,24 @@ class _HomePageState extends State<HomePage> {
       stream: BlocProvider.of<LessonsBloc>(context).relevandLessonsOfToday(),
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final List<Lesson> lessons = snapshot.data ?? List();
-        final lessonsGrouped = GlobalUtils.getGroupedLessonsList(lessons);
+        List<Lesson> lessons = snapshot.data ?? List();
+        if (lessons.length >= 2) {
+          lessons = GlobalUtils.getGroupedLessonsList(lessons);
+        }
         print(lessons.length);
         if (lessons.length == 0) {
-          // todo: maybe a better placeholder?
           return Center(
-            child: Text(
-                '${AppLocalizations.of(context).translate('nothing_here')}'),
+            child: Icon(
+              Icons.subject,
+              size: 80,
+            ),
           );
         } else {
           return ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: lessonsGrouped.length,
+            itemCount: lessons.length,
             itemBuilder: (_, index) {
-              final lesson = lessonsGrouped[index];
+              final lesson = lessons[index];
               return LessonCard(
                 position: index,
                 lesson: lesson,
@@ -381,43 +399,6 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-
-  // List<Lesson> _getGroupedLessonsList(List<Lesson> lessons) {
-  //   Logger log = Logger();
-  //   log.i("Lessons lenght ${lessons.length}");
-
-  //   List<Lesson> lessonsList = [];
-  //   int count = 1;
-
-  //   for (var i = 0; i < lessons.length - 1; i++) {
-  //     if (i == lessons.length - 1) {
-  //       if (lessons[i - 1].lessonArg == lessons[i].lessonArg) {
-  //         lessonsList.add(lessons[i].copyWith(duration: ++count));
-  //       }
-  //     }
-  //     if (lessons[i].lessonArg == lessons[i + 1].lessonArg) {
-  //       count++;
-  //     } else {
-  //       lessonsList.add(lessons[i].copyWith(duration: count));
-  //       count = 1;
-  //     }
-  //   }
-  //   lessonsList.add(lessons[lessons.length - 1]);
-
-  //   // lessons.forEach((lesson) {
-  //   //   if (lesson.author != currentAuthor &&
-  //   //       lesson.lessonArg != currentLessonArg) {
-  //   //     lessonsList.add(lesson.copyWith(duration: count));
-  //   //     count = 1;
-  //   //   } else {
-  //   //     count++;
-  //   //   }
-  //   //   currentAuthor = lesson.author;
-  //   //   currentLessonArg = lesson.lessonArg;
-  //   // });
-  //   log.i(lessonsList.length);
-  //   return lessonsList;
-  // }
 
   Future onSelectNotification(String payload) async {
     if (payload != null) {
