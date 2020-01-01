@@ -15,4 +15,7 @@ class PeriodDao extends DatabaseAccessor<AppDatabase> with _$PeriodDaoMixin {
 
   Future insertPeriod(Period period) =>
       into(periods).insert(period, orReplace: true);
+
+  Future insertPeriods(List<Period> periodsList) =>
+      into(periods).insertAll(periodsList, orReplace: true);
 }

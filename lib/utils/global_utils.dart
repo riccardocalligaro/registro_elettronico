@@ -12,7 +12,9 @@ import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
+import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 
 import 'constants/registro_constants.dart';
 
@@ -332,6 +334,14 @@ class GlobalUtils {
   //// static String getPeriodName(int index, BuildContext context) {
   ////   return "$index° ${AppLocalizations.of(context).translate('term').toUpperCase()}";
   //// }
+
+  static String getPeriodName(int index, BuildContext context) {
+    final trans = AppLocalizations.of(context);
+    if (index == TabsConstants.GENERALE)
+      return trans.translate('general');
+    else
+      return '$index ${AppLocalizations.of(context).translate('term')}';
+  }
 
   static int getRandomNumber() {
     Random random = new Random();

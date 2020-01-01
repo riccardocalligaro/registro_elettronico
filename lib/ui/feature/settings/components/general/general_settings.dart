@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/ui/feature/settings/components/general/general_averages_home_settings_dialog.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/general/general_sorting_settings_dialog.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../header_text.dart';
@@ -17,8 +19,8 @@ class GeneralSettings extends StatefulWidget {
 }
 
 class _GeneralSettingsState extends State<GeneralSettings> {
-  int _updateInterval = 30;
   int _sliderValue = 6;
+  int _periodAveragesHomeScreen;
   bool _ascending = false;
 
   @override
@@ -32,6 +34,11 @@ class _GeneralSettingsState extends State<GeneralSettings> {
     setState(() {
       _sliderValue =
           (sharedPrefs.getInt(PrefsConstants.OVERALL_OBJECTIVE)) ?? 6;
+
+      _periodAveragesHomeScreen =
+          (sharedPrefs.getInt(PrefsConstants.PERIOD_TO_SHOW)) ??
+              TabsConstants.GENERALE;
+
       _ascending =
           (sharedPrefs.getBool(PrefsConstants.SORTING_ASCENDING)) ?? false;
     });
@@ -78,8 +85,25 @@ class _GeneralSettingsState extends State<GeneralSettings> {
             AppLocalizations.of(context)
                 .translate('averages_to_show_in_the_home_screen'),
           ),
-          subtitle: Text('$_sliderValue'),
-          onTap: () async {},
+          subtitle: Text(
+            _periodAveragesHomeScreen != TabsConstants.GENERALE
+                ? ""
+                : AppLocalizations.of(context).translate('general'),
+          ),
+          onTap: () async {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return SimpleDialog(
+                  children: <Widget>[
+                    GeneralAveragesHomeSettings(
+                      period: _periodAveragesHomeScreen,
+                    )
+                  ],
+                );
+              },
+            );
+          },
         ),
         ListTile(
           title: Text(

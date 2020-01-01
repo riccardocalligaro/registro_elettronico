@@ -3425,6 +3425,7 @@ class Period extends DataClass implements Insertable<Period> {
   final DateTime start;
   final DateTime end;
   final String miurDivisionCode;
+  final int periodIndex;
   Period(
       {@required this.code,
       @required this.position,
@@ -3432,7 +3433,8 @@ class Period extends DataClass implements Insertable<Period> {
       @required this.isFinal,
       @required this.start,
       @required this.end,
-      @required this.miurDivisionCode});
+      @required this.miurDivisionCode,
+      @required this.periodIndex});
   factory Period.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -3453,6 +3455,8 @@ class Period extends DataClass implements Insertable<Period> {
       end: dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}end']),
       miurDivisionCode: stringType.mapFromDatabaseResponse(
           data['${effectivePrefix}miur_division_code']),
+      periodIndex: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}period_index']),
     );
   }
   factory Period.fromJson(Map<String, dynamic> json,
@@ -3465,6 +3469,7 @@ class Period extends DataClass implements Insertable<Period> {
       start: serializer.fromJson<DateTime>(json['start']),
       end: serializer.fromJson<DateTime>(json['end']),
       miurDivisionCode: serializer.fromJson<String>(json['miurDivisionCode']),
+      periodIndex: serializer.fromJson<int>(json['periodIndex']),
     );
   }
   @override
@@ -3478,6 +3483,7 @@ class Period extends DataClass implements Insertable<Period> {
       'start': serializer.toJson<DateTime>(start),
       'end': serializer.toJson<DateTime>(end),
       'miurDivisionCode': serializer.toJson<String>(miurDivisionCode),
+      'periodIndex': serializer.toJson<int>(periodIndex),
     };
   }
 
@@ -3500,6 +3506,9 @@ class Period extends DataClass implements Insertable<Period> {
       miurDivisionCode: miurDivisionCode == null && nullToAbsent
           ? const Value.absent()
           : Value(miurDivisionCode),
+      periodIndex: periodIndex == null && nullToAbsent
+          ? const Value.absent()
+          : Value(periodIndex),
     );
   }
 
@@ -3510,7 +3519,8 @@ class Period extends DataClass implements Insertable<Period> {
           bool isFinal,
           DateTime start,
           DateTime end,
-          String miurDivisionCode}) =>
+          String miurDivisionCode,
+          int periodIndex}) =>
       Period(
         code: code ?? this.code,
         position: position ?? this.position,
@@ -3519,6 +3529,7 @@ class Period extends DataClass implements Insertable<Period> {
         start: start ?? this.start,
         end: end ?? this.end,
         miurDivisionCode: miurDivisionCode ?? this.miurDivisionCode,
+        periodIndex: periodIndex ?? this.periodIndex,
       );
   @override
   String toString() {
@@ -3529,7 +3540,8 @@ class Period extends DataClass implements Insertable<Period> {
           ..write('isFinal: $isFinal, ')
           ..write('start: $start, ')
           ..write('end: $end, ')
-          ..write('miurDivisionCode: $miurDivisionCode')
+          ..write('miurDivisionCode: $miurDivisionCode, ')
+          ..write('periodIndex: $periodIndex')
           ..write(')'))
         .toString();
   }
@@ -3543,8 +3555,12 @@ class Period extends DataClass implements Insertable<Period> {
               description.hashCode,
               $mrjc(
                   isFinal.hashCode,
-                  $mrjc(start.hashCode,
-                      $mrjc(end.hashCode, miurDivisionCode.hashCode)))))));
+                  $mrjc(
+                      start.hashCode,
+                      $mrjc(
+                          end.hashCode,
+                          $mrjc(miurDivisionCode.hashCode,
+                              periodIndex.hashCode))))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -3555,7 +3571,8 @@ class Period extends DataClass implements Insertable<Period> {
           other.isFinal == this.isFinal &&
           other.start == this.start &&
           other.end == this.end &&
-          other.miurDivisionCode == this.miurDivisionCode);
+          other.miurDivisionCode == this.miurDivisionCode &&
+          other.periodIndex == this.periodIndex);
 }
 
 class PeriodsCompanion extends UpdateCompanion<Period> {
@@ -3566,6 +3583,7 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
   final Value<DateTime> start;
   final Value<DateTime> end;
   final Value<String> miurDivisionCode;
+  final Value<int> periodIndex;
   const PeriodsCompanion({
     this.code = const Value.absent(),
     this.position = const Value.absent(),
@@ -3574,6 +3592,7 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
     this.start = const Value.absent(),
     this.end = const Value.absent(),
     this.miurDivisionCode = const Value.absent(),
+    this.periodIndex = const Value.absent(),
   });
   PeriodsCompanion.insert({
     @required String code,
@@ -3583,13 +3602,15 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
     @required DateTime start,
     @required DateTime end,
     @required String miurDivisionCode,
+    @required int periodIndex,
   })  : code = Value(code),
         position = Value(position),
         description = Value(description),
         isFinal = Value(isFinal),
         start = Value(start),
         end = Value(end),
-        miurDivisionCode = Value(miurDivisionCode);
+        miurDivisionCode = Value(miurDivisionCode),
+        periodIndex = Value(periodIndex);
   PeriodsCompanion copyWith(
       {Value<String> code,
       Value<int> position,
@@ -3597,7 +3618,8 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
       Value<bool> isFinal,
       Value<DateTime> start,
       Value<DateTime> end,
-      Value<String> miurDivisionCode}) {
+      Value<String> miurDivisionCode,
+      Value<int> periodIndex}) {
     return PeriodsCompanion(
       code: code ?? this.code,
       position: position ?? this.position,
@@ -3606,6 +3628,7 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
       start: start ?? this.start,
       end: end ?? this.end,
       miurDivisionCode: miurDivisionCode ?? this.miurDivisionCode,
+      periodIndex: periodIndex ?? this.periodIndex,
     );
   }
 }
@@ -3702,9 +3725,31 @@ class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
     );
   }
 
+  final VerificationMeta _periodIndexMeta =
+      const VerificationMeta('periodIndex');
+  GeneratedIntColumn _periodIndex;
   @override
-  List<GeneratedColumn> get $columns =>
-      [code, position, description, isFinal, start, end, miurDivisionCode];
+  GeneratedIntColumn get periodIndex =>
+      _periodIndex ??= _constructPeriodIndex();
+  GeneratedIntColumn _constructPeriodIndex() {
+    return GeneratedIntColumn(
+      'period_index',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        code,
+        position,
+        description,
+        isFinal,
+        start,
+        end,
+        miurDivisionCode,
+        periodIndex
+      ];
   @override
   $PeriodsTable get asDslTable => this;
   @override
@@ -3758,6 +3803,12 @@ class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
     } else if (miurDivisionCode.isRequired && isInserting) {
       context.missing(_miurDivisionCodeMeta);
     }
+    if (d.periodIndex.present) {
+      context.handle(_periodIndexMeta,
+          periodIndex.isAcceptableValue(d.periodIndex.value, _periodIndexMeta));
+    } else if (periodIndex.isRequired && isInserting) {
+      context.missing(_periodIndexMeta);
+    }
     return context;
   }
 
@@ -3793,6 +3844,9 @@ class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
     if (d.miurDivisionCode.present) {
       map['miur_division_code'] =
           Variable<String, StringType>(d.miurDivisionCode.value);
+    }
+    if (d.periodIndex.present) {
+      map['period_index'] = Variable<int, IntType>(d.periodIndex.value);
     }
     return map;
   }

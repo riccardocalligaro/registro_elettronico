@@ -11,7 +11,7 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 // TextColumn get miurDivisionCode => text()();
 
 class PeriodMapper {
-  db.Period convertEventEntityToInsertable(Period period) {
+  db.Period convertEventEntityToInsertable(Period period, int index) {
     return db.Period(
       code: period.periodCode ?? "",
       position: period.periodPos ?? -1,
@@ -22,6 +22,7 @@ class PeriodMapper {
       end: DateUtils.getDateFromApiString(period.dateEnd) ??
           DateTime.utc(DateTime.now().year, DateTime.june, 10),
       miurDivisionCode: period.miurDivisionCode ?? "",
+      periodIndex: index,
     );
   }
 }

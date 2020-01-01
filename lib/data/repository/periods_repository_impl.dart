@@ -18,10 +18,16 @@ class PeriodsRepositoryImpl implements PeriodsRepository {
   Future updatePeriods() async {
     final profile = await profileDao.getProfile();
     final periods = await spaggiariClient.getPeriods(profile.studentId);
+
+    List<Period> periodsList = [];
+    int periodIndex = 1;
     periods.periods.forEach((period) {
-      periodDao
-          .insertPeriod(periodMapper.convertEventEntityToInsertable(period));
+      periodsList.add(
+          periodMapper.convertEventEntityToInsertable(period, periodIndex));
+      periodIndex++;
     });
+
+    periodDao.insertPeriods(periodsList);
   }
 
   @override
