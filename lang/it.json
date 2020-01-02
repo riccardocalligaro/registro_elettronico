@@ -116,5 +116,7 @@
   "no_name": "Senza nome",
   "reset_db_alert": "Sei sicuro?",
   "reset_db_alert_message": "Tutti i dati verrano eliminati e dovrai effetuare di nuovo la sincronizzazione.",
-  "no_events": "Nessun evento"
+  "no_events": "Nessun evento",
+  "press_here": "Premi qui",
+  "download_slide_description": "Questi dati sono fondamentali per il corretto funzionamento dell'applicazione"
 }

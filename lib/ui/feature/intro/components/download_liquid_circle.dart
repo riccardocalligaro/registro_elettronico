@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class IntroDownloadLiquidCircle extends StatefulWidget {
   IntroDownloadLiquidCircle({Key key}) : super(key: key);
@@ -34,7 +35,7 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                 ),
               );
             }
-            if (state is IntroLoaded || state is IntroInitial) {
+            if (state is IntroLoaded) {
               return Container(
                 height: 300,
                 width: 300,
@@ -55,7 +56,7 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                           height: 20,
                         ),
                         Text(
-                          'Press here',
+                          AppLocalizations.of(context).translate('press_here'),
                           style: TextStyle(fontSize: 24),
                         )
                       ],
@@ -76,12 +77,6 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
             );
           },
         ),
-        // RaisedButton(
-        //   child: Text('increment'),
-        //   onPressed: () {
-        //     BlocProvider.of<IntroBloc>(context).add(FetchAllData());
-        //   },
-        // )
       ],
     );
   }

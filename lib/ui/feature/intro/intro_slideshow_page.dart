@@ -63,14 +63,6 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
 
   List<SwiperItem> _getSwiperItems() {
     List<SwiperItem> slides = [];
-    // slides.add(
-    //   SwiperItem(
-    //     centerWidget: _getSwiperIconFromIconData(Icons.timeline),
-    //     title: 'Stats',
-    //     description:
-    //         'You might wanna check the amazing graphs and stats we offer in the grades page',
-    //   ),
-    // );
 
     slides.add(_getNotificationsSwipetItem());
     slides.add(
@@ -79,7 +71,6 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
         title: AppLocalizations.of(context).translate('theme'),
         dy: -110,
         description: '',
-        //description: 'Set the application theme',
       ),
     );
 
@@ -88,8 +79,8 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
         centerWidget: IntroDownloadLiquidCircle(),
         title: 'Download',
         dy: -90,
-        description:
-            'This is data is vital for the correct functioning of the application',
+        description: AppLocalizations.of(context)
+            .translate('download_slide_description'),
       ),
     );
     return slides;
@@ -97,46 +88,16 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
 
   SwiperItem _getNotificationsSwipetItem() {
     return SwiperItem(
-        centerWidget: AlignPositioned(
-          dy: 260,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 64.0),
-            child: NotificationsSettingsDialog(),
-          ),
+      centerWidget: AlignPositioned(
+        dy: 260,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 64.0),
+          child: NotificationsSettingsDialog(),
         ),
-        // centerWidget: Column(
-        //   mainAxisSize: MainAxisSize.max,
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   crossAxisAlignment: CrossAxisAlignment.center,
-        //   children: <Widget>[
-        //     _getSwiperIconFromIconData(Icons.notifications),
-        //   ],
-        // ),
-        title: AppLocalizations.of(context).translate('notifications'),
-        // additionalWigets: [
-        //   AlignPositioned(
-        //     alignment: Alignment.topCenter,
-        //     dy: 500,
-        //     child: Padding(
-        //       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        //       child: Switch(
-        //         activeColor: Colors.red,
-        //         value: _notificationsActivated,
-        //         onChanged: (value) async {
-        //           setState(() {
-        //             _notificationsActivated = !_notificationsActivated;
-        //           });
-
-        //           SharedPreferences sharedPreferences =
-        //               await SharedPreferences.getInstance();
-        //           sharedPreferences.setBool(
-        //               PrefsConstants.NOTIFICATIONS, value);
-        //         },
-        //       ),
-        //     ),
-        //   ),
-        // ],
-        description: '');
+      ),
+      title: AppLocalizations.of(context).translate('notifications'),
+      description: '',
+    );
     // description:
     //     'Press the switch to activate notifications, you can later set more preferences about when to check');
   }
@@ -170,14 +131,6 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
           ],
         ),
       ),
-    );
-  }
-
-  Icon _getSwiperIconFromIconData(IconData icon) {
-    return Icon(
-      icon,
-      color: Theme.of(context).accentColor,
-      size: 142,
     );
   }
 }
