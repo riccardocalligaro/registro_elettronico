@@ -1,11 +1,14 @@
+import 'package:align_positioned/align_positioned.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:registro_elettronico/component/navigator.dart';
-import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
-import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:registro_elettronico/ui/feature/intro/components/download_liquid_circle.dart';
+import 'package:registro_elettronico/ui/feature/intro/components/intro_item.dart';
+import 'package:registro_elettronico/ui/feature/intro/components/theme_chooser.dart';
+import 'package:registro_elettronico/ui/feature/settings/components/notifications/notifications_type_settings_dialog.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroSlideshowPage extends StatefulWidget {
   IntroSlideshowPage({Key key}) : super(key: key);
@@ -15,105 +18,182 @@ class IntroSlideshowPage extends StatefulWidget {
 }
 
 class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
-  List<Slide> slides = new List();
-  bool _downloadDataFinished = false;
+  bool _firstPage = true;
+  bool _notificationsActivated = false;
+  bool upDirection;
 
-  _addSlides() {
-    slides.add(
-      new Slide(
-        title: "REGISTRO ELETTRONICO",
-        maxLineTitle: 2,
-        centerWidget: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 81),
-          child: Icon(
-            Icons.school,
-            size: 80,
-            color: Colors.red,
-          ),
-        ),
-        description:
-            "This is a quick intro of the application while we are downloading data from Spaggiari",
-        backgroundColor: Colors.grey[900],
-      ),
-    );
-    slides.add(
-      new Slide(
-        title: "GRADES",
-        centerWidget: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 100),
-          child: Icon(
-            Icons.timeline,
-            size: 80,
-            color: Colors.red,
-          ),
-        ),
-        description:
-            "The app provides amazing graphs and stats about your school grades",
-        backgroundColor: Colors.grey[900],
-      ),
-    );
-    slides.add(
-      new Slide(
-        title: "DOWNLOAD",
-        centerWidget: BlocBuilder<IntroBloc, IntroState>(
-          builder: (context, state) {
-            if (state is IntroLoading) {
-              return CircularPercentIndicator(
-                radius: 240,
-                lineWidth: 10,
-                center: Text('${state.progress}%'),
-                percent: state.progress / 100,
-              );
-            }
-            if (state is IntroLoaded) {
-              _downloadDataFinished = true;
-              return CircularPercentIndicator(
-                radius: 240,
-                animation: true,
-                animationDuration: 500,
-                lineWidth: 10,
-                percent: 1.0,
-                center: Text('OK!'),
-              );
-            }
-
-            if (state is IntroError) {
-              return CustomPlaceHolder(
-                text: 'Error',
-                icon: Icons.error,
-                showUpdate: true,
-                onTap: () {},
-              );
-            }
-
-            return Container();
-          },
-        ),
-        backgroundColor: Colors.grey[900],
-      ),
-    );
-  }
+  double height = 50;
 
   @override
   void initState() {
     super.initState();
-    _addSlides();
-    //GlobalUtils.initialFetch(context);
+    restore();
   }
 
-  void onDonePress() {
-    _downloadDataFinished
-        ? AppNavigator.instance.navToHome(context)
-        : BlocProvider.of<IntroBloc>(context).add(FetchAllData());
+  void restore() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    _notificationsActivated =
+        sharedPreferences.getBool(PrefsConstants.NOTIFICATIONS) ?? false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return IntroSlider(
-      isShowDotIndicator: true,
-      slides: this.slides,
-      onDonePress: this.onDonePress,
-      isShowSkipBtn: false,
+    final items = _getSwiperItems();
+    return Scaffold(
+      body: _firstPage
+          ? _getFirstPage()
+          : Swiper(
+              loop: false,
+              pagination: SwiperPagination(
+                builder: DotSwiperPaginationBuilder(color: Colors.grey[300]),
+              ),
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                return IntroItem(
+                  title: items[index].title,
+                  centerWidget: items[index].centerWidget,
+                  description: items[index].description,
+                  additionalWidgets: items[index].additionalWigets,
+                  dy: items[index].dy,
+                );
+              },
+            ),
     );
   }
+
+  List<SwiperItem> _getSwiperItems() {
+    List<SwiperItem> slides = [];
+    // slides.add(
+    //   SwiperItem(
+    //     centerWidget: _getSwiperIconFromIconData(Icons.timeline),
+    //     title: 'Stats',
+    //     description:
+    //         'You might wanna check the amazing graphs and stats we offer in the grades page',
+    //   ),
+    // );
+
+    slides.add(_getNotificationsSwipetItem());
+    slides.add(
+      SwiperItem(
+        centerWidget: IntroThemeChooser(),
+        title: AppLocalizations.of(context).translate('theme'),
+        dy: -110,
+        description: '',
+        //description: 'Set the application theme',
+      ),
+    );
+
+    slides.add(
+      SwiperItem(
+        centerWidget: IntroDownloadLiquidCircle(),
+        title: 'Download',
+        dy: -90,
+        description:
+            'This is data is vital for the correct functioning of the application',
+      ),
+    );
+    return slides;
+  }
+
+  SwiperItem _getNotificationsSwipetItem() {
+    return SwiperItem(
+        centerWidget: AlignPositioned(
+          dy: 260,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 64.0),
+            child: NotificationsSettingsDialog(),
+          ),
+        ),
+        // centerWidget: Column(
+        //   mainAxisSize: MainAxisSize.max,
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   crossAxisAlignment: CrossAxisAlignment.center,
+        //   children: <Widget>[
+        //     _getSwiperIconFromIconData(Icons.notifications),
+        //   ],
+        // ),
+        title: AppLocalizations.of(context).translate('notifications'),
+        // additionalWigets: [
+        //   AlignPositioned(
+        //     alignment: Alignment.topCenter,
+        //     dy: 500,
+        //     child: Padding(
+        //       padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        //       child: Switch(
+        //         activeColor: Colors.red,
+        //         value: _notificationsActivated,
+        //         onChanged: (value) async {
+        //           setState(() {
+        //             _notificationsActivated = !_notificationsActivated;
+        //           });
+
+        //           SharedPreferences sharedPreferences =
+        //               await SharedPreferences.getInstance();
+        //           sharedPreferences.setBool(
+        //               PrefsConstants.NOTIFICATIONS, value);
+        //         },
+        //       ),
+        //     ),
+        //   ),
+        // ],
+        description: '');
+    // description:
+    //     'Press the switch to activate notifications, you can later set more preferences about when to check');
+  }
+
+  Widget _getFirstPage() {
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 32.0),
+        child: Stack(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.center,
+              child: Icon(
+                Icons.school,
+                color: Theme.of(context).accentColor,
+                size: 142,
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: FloatingActionButton(
+                elevation: 0.0,
+                child: Icon(Icons.navigate_next),
+                onPressed: () {
+                  setState(() {
+                    _firstPage = false;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Icon _getSwiperIconFromIconData(IconData icon) {
+    return Icon(
+      icon,
+      color: Theme.of(context).accentColor,
+      size: 142,
+    );
+  }
+}
+
+class SwiperItem {
+  final String title;
+  final Widget centerWidget;
+  final String description;
+  final double dy;
+  final List<Widget> additionalWigets;
+
+  const SwiperItem({
+    @required this.title,
+    @required this.centerWidget,
+    @required this.description,
+    this.dy,
+    this.additionalWigets,
+  });
 }

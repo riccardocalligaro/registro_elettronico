@@ -54,7 +54,11 @@ dependencies:
   # random colors for timetable
   random_color: ^1.0.3
   # initial slideshow
-  intro_slider: ^2.2.8
+  flutter_swiper: ^1.1.6
+  # intro page aligment
+  align_positioned: ^1.2.5
+  # download indicator
+  liquid_progress_indicator: ^0.3.2
 
   # Storing user password
   shared_preferences: ^0.5.4+8

@@ -1,4 +1,5 @@
 class PrefsConstants {
+  static const NOTIFICATIONS = 'notifications';
   static const GRADES_NOTIFICATIONS = 'grades_notifications';
   static const AGENDA_NOTIFICATIONS = 'agenda_notifications';
   static const LESSONS_NOTIFICATIONS = 'lessons_notifications';
@@ -9,4 +10,5 @@ class PrefsConstants {
   static const PERIOD_TO_SHOW = 'period_to_show';
   static const SORTING_ASCENDING = 'sorting_ascending';
   static const FIRST_LOGIN = 'first_login';
+  static const DARK_THEME = 'ThemeBloc_DARK_THEME';
 }
