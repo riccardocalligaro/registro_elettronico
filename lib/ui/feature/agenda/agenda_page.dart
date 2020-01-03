@@ -4,6 +4,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
+import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
@@ -69,10 +70,10 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       drawer: AppDrawer(
         position: DrawerConstants.AGENDA,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {},
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   onPressed: () {},
+      // ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -157,11 +158,14 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final List<Lesson> lessons = snapshot.data ?? List<Lesson>();
         if (lessons.length == 0) {
-          return Center(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Text(AppLocalizations.of(context).translate('nothing_here')),
-          ));
+          return Padding(
+            padding: const EdgeInsets.only(top: 64.0),
+            child: CustomPlaceHolder(
+              icon: Icons.subject,
+              text: '',
+              showUpdate: false,
+            ),
+          );
         }
         return IgnorePointer(
           child: Padding(
@@ -203,11 +207,14 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
 
   Widget _buildEventList() {
     if (_selectedEvents.length == 0) {
-      return Center(
-          child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Text(AppLocalizations.of(context).translate('free_to_go')),
-      ));
+      return Padding(
+        padding: const EdgeInsets.only(top: 32.0),
+        child: CustomPlaceHolder(
+          icon: Icons.calendar_today,
+          showUpdate: false,
+          text: '',
+        ),
+      );
     }
     return IgnorePointer(
       child: ListView(

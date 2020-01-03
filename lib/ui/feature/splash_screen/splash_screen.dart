@@ -34,9 +34,9 @@ class _SplashScreenState extends State<SplashScreen> {
           /// Checks if the autosign in returns the positive result that the user is
           /// auto signed in, so it redirects to the Home page
           if (state is AutoSignInResult) {
-            AppNavigator.instance.navToIntro(context);
+            //AppNavigator.instance.navToIntro(context);
 
-            //AppNavigator.instance.navToHome(context);
+            AppNavigator.instance.navToHome(context);
           }
 
           /// If the auto sign in returns an error the user is redirected to the

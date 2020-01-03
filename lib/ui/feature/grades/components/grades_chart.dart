@@ -154,6 +154,7 @@ class _GradesChartState extends State<GradesChart> {
       // All the titles
       titlesData: FlTitlesData(
         show: true,
+
         // Some dates of the grades
         bottomTitles: SideTitles(
           showTitles: true,
@@ -162,6 +163,9 @@ class _GradesChartState extends State<GradesChart> {
               color: const Color(0xff68737d),
               fontWeight: FontWeight.w500,
               fontSize: 12),
+          getTitles: (vlue) {
+            return '';
+          },
           margin: 8,
         ),
 

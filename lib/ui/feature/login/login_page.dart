@@ -30,7 +30,8 @@ class _LoginPageState extends State<LoginPage> {
     super.didChangeDependencies();
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     //! change to false
-    _firstLogin = sharedPreferences.getBool(PrefsConstants.FIRST_LOGIN) ?? false;
+    _firstLogin =
+        sharedPreferences.getBool(PrefsConstants.FIRST_LOGIN) ?? false;
   }
 
   @override
@@ -106,9 +107,10 @@ class _LoginPageState extends State<LoginPage> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is SignInSuccess) {
-          ///AppNavigator.instance.navToIntro(context);
+          AppNavigator.instance.navToIntro(context);
+
           /// If the sign in is successful then navigate to the home page
-          AppNavigator.instance.navToHome(context);
+          //AppNavigator.instance.navToHome(context);
         }
 
         /// Sets the valide data to true

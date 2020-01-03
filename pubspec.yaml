@@ -59,6 +59,8 @@ dependencies:
   align_positioned: ^1.2.5
   # download indicator
   liquid_progress_indicator: ^0.3.2
+  # date and range picker for timetable
+  date_range_picker: ^1.0.6
 
   # Storing user password
   shared_preferences: ^0.5.4+8
