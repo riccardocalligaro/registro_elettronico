@@ -39,7 +39,6 @@ class LessonsRepositoryImpl implements LessonsRepository {
       dateInterval.begin,
       dateInterval.end,
     );
-
     List<Lesson> lessonsInsertable = [];
     lessons.lessons.forEach((lesson) {
       lessonsInsertable
@@ -50,53 +49,8 @@ class LessonsRepositoryImpl implements LessonsRepository {
   }
 
   @override
-  Future<List<Lesson>> getDateLessons(DateTime date) {
-    return lessonDao.getDateLessons(date);
-  }
-
-  @override
-  Future deleteLessons() {
-    return lessonDao.deleteLessons();
-  }
-
-  @override
-  Stream<List<Lesson>> watchRelevantLessons() {
-    return lessonDao.watchRelevantLessons();
-  }
-
-  @override
-  Stream<List<Lesson>> watchRelevantLessonsOfToday(DateTime today) {
-    return lessonDao.watchRelevantLessonsOfToday(today);
-  }
-
-  @override
-  Stream<List<Lesson>> watchLessonsOrdered() {
-    return lessonDao.watchLessonsOrdered();
-  }
-
-  @override
-  Stream<List<Lesson>> watchLessonsByDate(DateTime date) {
-    return lessonDao.watchLessonsByDate(date);
-  }
-
-  @override
-  Stream<List<Lesson>> watchLessonsByDateGrouped(DateTime date) {
-    return lessonDao.watchLessonsByDateGrouped(date);
-  }
-
-  @override
-  Stream<List<Lesson>> watchLastLessons() {
-    return lessonDao.watchLastLessons();
-  }
-
-  @override
   Future<List<Lesson>> getLessons() {
     return lessonDao.getLessons();
-  }
-
-  @override
-  Stream<List<Lesson>> watchLessons() {
-    return lessonDao.watchLessons();
   }
 
   @override
@@ -107,5 +61,20 @@ class LessonsRepositoryImpl implements LessonsRepository {
   @override
   Future insertLessons(List<Lesson> lessonsToInsert) {
     return lessonDao.insertLessons(lessonsToInsert);
+  }
+
+  @override
+  Future deleteAllLessons() {
+    return lessonDao.deleteLessons();
+  }
+
+  @override
+  Future<List<Lesson>> getLastLessons() {
+    return lessonDao.getLastLessons();
+  }
+
+  @override
+  Future<List<Lesson>> getLessonsByDate(DateTime date) {
+    return lessonDao.getLessonsByDate(date);
   }
 }

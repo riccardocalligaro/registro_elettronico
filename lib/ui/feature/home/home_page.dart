@@ -8,9 +8,11 @@ import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
-import 'package:registro_elettronico/ui/feature/noticeboard/noticeboard_page.dart';
+import 'package:registro_elettronico/ui/feature/home/components/sections/agenda_section.dart';
+import 'package:registro_elettronico/ui/feature/home/components/sections/last_grades_section.dart';
+import 'package:registro_elettronico/ui/feature/home/components/sections/lessons_cards_section.dart';
+import 'package:registro_elettronico/ui/feature/home/components/sections/noticeboard_section.dart';
+import 'package:registro_elettronico/ui/feature/home/components/sections/subjects_grid_section.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
@@ -19,30 +21,32 @@ import 'package:registro_elettronico/ui/global/localizations/app_localizations.d
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'components/event_card.dart';
-import 'components/lesson_card.dart';
-import 'components/subjects_grid.dart';
+import 'components/widgets/event_card.dart';
 
+/// The [home] page of the application
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  /// The period of the [aberages] in my subjects
   int _periodToShow;
+
+  /// Key necessaery for the [drawer]
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
   @override
   void initState() {
+    // we need to get shared preferences to change the grades we show in the home page
     getPreferences();
     super.initState();
   }
 
+  /// Updates [shared preferences]
   getPreferences() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     _periodToShow = (sharedPreferences.getInt(PrefsConstants.PERIOD_TO_SHOW) ??
@@ -52,7 +56,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     AppLocalizations trans = AppLocalizations.of(context);
-
     return Scaffold(
       key: _drawerKey,
       appBar: CustomAppBar(
@@ -64,56 +67,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: BlocListener<LessonsBloc, LessonsState>(
         listener: (context, state) {
-          if (state is LessonsLoading) {
-            Scaffold.of(context)
-              ..removeCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  content: Text(trans.translate('loading_new_data')),
-                  duration: Duration(seconds: 3),
-                ),
-              );
-          }
-
-          if (state is LessonsError) {
-            if (state.error.response != null &&
-                state.error.response.statusCode == 422) {
-              final exception =
-                  ServerException.fromJson(state.error.response.data);
-              Scaffold.of(context)
-                ..removeCurrentSnackBar()
-                ..showSnackBar(
-                  SnackBar(
-                    content: Text(exception.message),
-                    duration: Duration(seconds: 3),
-                    action: SnackBarAction(
-                      label: trans.translate('log_out'),
-                      onPressed: () {
-                        AppNavigator.instance.navToLogin(context);
-                        BlocProvider.of<AuthBloc>(context).add(SignOut());
-                      },
-                    ),
-                  ),
-                );
-            } else {
-              // TODO: handle if there is no internet
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(state.error.error.toString()),
-                duration: Duration(seconds: 3),
-                action: SnackBarAction(
-                  label: AppLocalizations.of(context).translate('log_out'),
-                  onPressed: () {
-                    AppNavigator.instance.navToLogin(context);
-                    BlocProvider.of<AuthBloc>(context).add(SignOut());
-                  },
-                ),
-              ));
-            }
-          }
-
-          if (state is LessonsLoaded) {
-            Scaffold.of(context)..removeCurrentSnackBar();
-          }
+          _mapStateToUI(state, context);
         },
         child: RefreshIndicator(
           onRefresh: _refreshData,
@@ -125,92 +79,24 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    SectionHeader(
-                      headingText: trans.translate('last_lessons'),
-                      onTap: () {
-                        AppNavigator.instance.navToLessons(context);
-                      },
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-                      child: Container(
-                        height: 140,
-                        child: _buildLessonsCards(context),
-                      ),
-                    ),
-                    Divider(
-                      color: Colors.grey[300],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                AppLocalizations.of(context)
-                                    .translate('notice_board'),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline
-                                    .copyWith(fontSize: 14),
-                              ),
-                              Text(
-                                trans.translate("discover_all_notice"),
-                                style: TextStyle(
-                                    color: Colors.grey[500], fontSize: 14),
-                              )
-                            ],
-                          ),
-                          RaisedButton(
-                            color: Colors.red,
-                            textColor: Colors.white,
-                            child: Text(
-                              trans.translate("view"),
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(18.0),
-                            ),
-                            onPressed: () async {
-                              AppNavigator.instance.navToNoticeboard(context);
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Lessons
+                    _buildLastLessonsHeader(),
+                    LessonsCardsSection(),
+                    // Noticeboard
                     Divider(color: Colors.grey[300]),
-                    SectionHeader(
-                      headingText:
-                          AppLocalizations.of(context).translate('next_events'),
-                      onTap: () {
-                        AppNavigator.instance.navToAgenda(context);
-                      },
-                    ),
-                    _buildAgenda(context),
+                    NoticeboardSection(),
+                    // Next events
                     Divider(color: Colors.grey[300]),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: SectionHeader(
-                        headingText: AppLocalizations.of(context)
-                            .translate('my_subjects'),
-                      ),
-                    ),
-                    _buildSubjectsGrid(context),
+                    _buildNextEventsHeader(),
+                    AgendaSection(),
+                    // My subjects
                     Divider(color: Colors.grey[300]),
-                    SectionHeader(
-                      headingText:
-                          AppLocalizations.of(context).translate('last_grades'),
-                      onTap: () {
-                        AppNavigator.instance.navToGrades(context);
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: _buildLastGrades(context),
-                    ),
+                    _buildMySubjectsHeader(),
+                    SubjectsGridSection(),
+                    // Last grades
+                    Divider(color: Colors.grey[300]),
+                    _buildLastGradesHeader(),
+                    LastGradesSection()
                   ],
                 ),
               ),
@@ -221,214 +107,106 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> _refreshData() async {
-    BlocProvider.of<LessonsBloc>(context).add(FetchTodayLessons());
-    BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
-    BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
-    BlocProvider.of<GradesBloc>(context).add(FetchGrades());
-    BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
-  }
-
-  StreamBuilder<List<Grade>> _buildLastGrades(BuildContext context) {
-    return StreamBuilder(
-      stream: BlocProvider.of<GradesBloc>(context).watchNumberOfGradesByDate(),
-      initialData: List<Grade>(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final List<Grade> grades =
-            snapshot.data.toSet().toList() ?? List<Grade>();
-
-        if (grades.length > 0) {
-          return ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.all(0),
-            shrinkWrap: true,
-            itemCount: grades.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: GradeCard(
-                  grade: grades[index],
-                ),
-              );
-            },
-          );
-        } else {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 24.0),
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.timeline,
-                    size: 64,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(AppLocalizations.of(context).translate('no_grades'))
-                ],
-              ),
-            ),
-          );
-        }
+  //----- HEADERS -------- //
+  SectionHeader _buildLastLessonsHeader() {
+    return SectionHeader(
+      headingText: AppLocalizations.of(context).translate('last_lessons'),
+      onTap: () {
+        AppNavigator.instance.navToLessons(context);
       },
     );
   }
 
-  StreamBuilder<List<db.AgendaEvent>> _buildAgenda(BuildContext context) {
-    return StreamBuilder(
-      stream: BlocProvider.of<AgendaBloc>(context).watchAllEvents(),
-      initialData: List(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final List<db.AgendaEvent> events =
-            snapshot.data.toSet().toList() ?? List();
-        if (events.length == 0) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 24.0),
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.calendar_today,
-                    size: 64,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(AppLocalizations.of(context).translate('no_events'))
-                ],
+  SectionHeader _buildNextEventsHeader() {
+    return SectionHeader(
+      headingText: AppLocalizations.of(context).translate('next_events'),
+      onTap: () {
+        AppNavigator.instance.navToAgenda(context);
+      },
+    );
+  }
+
+  Widget _buildMySubjectsHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: SectionHeader(
+        headingText: AppLocalizations.of(context).translate('my_subjects'),
+      ),
+    );
+  }
+
+  Widget _buildLastGradesHeader() {
+    return SectionHeader(
+      headingText: AppLocalizations.of(context).translate('last_grades'),
+      onTap: () {
+        AppNavigator.instance.navToGrades(context);
+      },
+    );
+  }
+
+  /// Returns a different element basing on the [state]
+  void _mapStateToUI(LessonsState state, BuildContext context) {
+    final trans = AppLocalizations.of(context);
+    print(state);
+    if (state is LessonsUpdateLoadInProgress) {
+      Scaffold.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            content: Text(trans.translate('loading_new_data')),
+            duration: Duration(seconds: 3),
+          ),
+        );
+    } else if (state is LessonsLoadServerError) {
+      if (state.serverError.response != null &&
+          state.serverError.response.statusCode == 422) {
+        final exception =
+            ServerException.fromJson(state.serverError.response.data);
+        Scaffold.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              content: Text(exception.message),
+              duration: Duration(seconds: 3),
+              action: SnackBarAction(
+                label: trans.translate('log_out'),
+                onPressed: () {
+                  AppNavigator.instance.navToLogin(context);
+                  BlocProvider.of<AuthBloc>(context).add(SignOut());
+                },
               ),
             ),
           );
-          ///// return Padding(
-          /////   padding: const EdgeInsets.symmetric(vertical: 16.0),
-          /////   child: Center(
-          /////     child: Text(AppLocalizations.of(context).translate('free_to_go')),
-          /////   ),
-          ///// );s
-        } else {
-          return Container(
-            child: ListView.builder(
-              padding: EdgeInsets.all(0),
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: events.length,
-              itemBuilder: (BuildContext context, int index) {
-                return AgendaCardEvent(
-                  agendaEvent: events[index],
-                );
+      } else {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text(state.serverError.error.toString()),
+            duration: Duration(seconds: 3),
+            action: SnackBarAction(
+              label: AppLocalizations.of(context).translate('log_out'),
+              onPressed: () {
+                AppNavigator.instance.navToLogin(context);
+                BlocProvider.of<AuthBloc>(context).add(SignOut());
               },
             ),
-          );
-        }
-      },
-    );
-  }
-
-  StreamBuilder<List<Subject>> _buildSubjectsGrid(BuildContext context) {
-    return StreamBuilder(
-      stream: BlocProvider.of<SubjectsBloc>(context).subjects,
-      initialData: List(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final List<Subject> subjects = snapshot.data ?? List();
-        return StreamBuilder(
-          stream: BlocProvider.of<GradesBloc>(context).watchAllGrades(),
-          initialData: List<Grade>(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            final List<Grade> grades = snapshot.data ?? List<Grade>();
-            if (subjects.length == 0) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24.0),
-                child: Center(
-                  child: Column(
-                    children: <Widget>[
-                      Icon(
-                        Icons.assessment,
-                        size: 64,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                          AppLocalizations.of(context).translate('no_subjects'))
-                    ],
-                  ),
-                ),
-              );
-            }
-            return SubjectsGrid(
-              subjects: GlobalUtils.removeUnwantedSubject(subjects),
-              grades: grades,
-              period: _periodToShow,
-            );
-          },
+          ),
         );
-      },
-    );
-  }
-
-  StreamBuilder<List<Lesson>> _buildLessonsCards(BuildContext context) {
-    return StreamBuilder(
-      stream: BlocProvider.of<LessonsBloc>(context)
-          .watchLessonsByDate(DateTime.utc(2019, 12, 14)),
-
-      //stream: BlocProvider.of<LessonsBloc>(context).relevandLessonsOfToday(),
-      initialData: List(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        List<Lesson> lessons = snapshot.data ?? List();
-        final lessonsGrouped = GlobalUtils.getGroupedLessonsMap(lessons);
-        print(lessons.length);
-
-        return ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: lessonsGrouped.keys.length,
-          itemBuilder: (context, index) {
-            final lessonKey = lessonsGrouped.keys.elementAt(index);
-            final duration = lessonsGrouped[lessonKey];
-            final lesson = lessons
-                .where((l) =>
-                    l.lessonArg == lessonKey.item2 &&
-                    l.subjectId == lessonKey.item1)
-                .elementAt(0);
-            return LessonCard(
-              lesson: lesson,
-              duration: duration,
-              position: index,
-            );
-          },
-        );
-        // if (lessons.length == 0) {
-        //   return Center(
-        //     child: Icon(
-        //       Icons.subject,
-        //       size: 80,
-        //     ),
-        //   );
-        // } else {
-        //   return ListView.builder(
-        //     scrollDirection: Axis.horizontal,
-        //     itemCount: lessons.length,
-        //     itemBuilder: (_, index) {
-        //       final lesson = lessons[index];
-        //       return LessonCard(
-        //         position: index,
-        //         lesson: lesson,
-        //       );
-        //     },
-        //   );
-        // }
-      },
-    );
-  }
-
-  Future onSelectNotification(String payload) async {
-    if (payload != null) {
-      debugPrint('notification payload: ' + payload);
+      }
+    } else if (state is LessonsUpdateLoadSuccess) {
+      // We remove the current snackbar
+      Scaffold.of(context)..removeCurrentSnackBar();
+      BlocProvider.of<LessonsBloc>(context).add(GetLastLessons());
     }
-    await Navigator.push(
-      context,
-      new MaterialPageRoute(builder: (context) => NoticeboardPage()),
-    );
+  }
+
+  // Function that is called when refresh]is pulled
+  /// Updates lessons, agenda, grades for the [user]
+  Future<void> _refreshData() async {
+    BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
+    // BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
+    // BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
+    // BlocProvider.of<GradesBloc>(context).add(FetchGrades());
+    // BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
   }
 }
 

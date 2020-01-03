@@ -2,7 +2,6 @@ import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/table/lesson_table.dart';
 import 'package:registro_elettronico/data/db/table/professor_table.dart';
-import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 
 part 'lesson_dao.g.dart';
 
@@ -15,86 +14,118 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
 
   LessonDao(this.db) : super(db);
 
-  /// Get the lessons for a date
-  Future<List<Insertable<Lesson>>> getDateLessons(DateTime date) =>
-      (select(lessons)..where((lesson) => lesson.date.equals(date))).get();
-
-  Future deleteLessons() => (delete(lessons)
-        ..where((entry) => entry.eventId.isBiggerOrEqualValue(-1)))
-      .go();
-
-  ///// Gets only the lessons that are not 'sostegno'
-  //// Stream<List<Lesson>> watchRelevantLessons() => (select(lessons)
-  ////       ..where((lesson) =>
-  ////           not(lesson.subjectCode.equals(RegistroConstants.SOSTEGNO)))
-  ////       ..orderBy([
-  ////         (lesson) =>
-  ////             OrderingTerm(expression: lesson.date, mode: OrderingMode.desc)
-  ////       ]))
-  ////     .watch();
-
-  /// Gets the lesson ignoring sostegno
-  Stream<List<Lesson>> watchRelevantLessonsOfToday(DateTime today) =>
-      (select(lessons)..where((lesson) =>
-          // todo: need to add the date comparing
-          not(lesson.subjectCode.equals(RegistroConstants.SOSTEGNO)))).watch();
-
-  /// Gets the lessons ordering by a date
-  Stream<List<Lesson>> watchLessonsOrdered() {
-    return (select(lessons)..orderBy([(t) => OrderingTerm(expression: t.date)]))
-        .watch();
+  /// Gets the [last] lessons of the [last day] where there are lessons
+  /// It ignores [sostegno]
+  Future<List<Lesson>> getLastLessons() {
+    return customSelectQuery(
+      'SELECT * FROM lessons WHERE date IN (SELECT max(date) FROM lessons) AND subject_code != "SOST"',
+      readsFrom: {
+        lessons,
+      },
+    ).map((row) {
+      return Lesson.fromData(row.data, db);
+    }).get();
   }
 
-  Stream<List<Lesson>> watchLessonsByDate(DateTime date) {
-    return (select(lessons)
-          ..where((row) {
-            final endDate = row.date;
-            final sameYear = year(endDate).equals(date.year);
-            final sameMonth = month(endDate).equals(date.month);
-            final sameDay = day(endDate).equals(date.day - 1);
-            return and(sameYear, and(sameMonth, sameDay));
-          }))
-        .watch();
-  }
-
-  Stream<List<Lesson>> watchLessonsByDateGrouped(DateTime date) {
+  /// Gets lessons of a [date] by checking the day, month and year
+  Future<List<Lesson>> getLessonsByDate(DateTime date) {
     return customSelectQuery("""
         SELECT * FROM lessons 
         WHERE (CAST(strftime("%Y", date, "unixepoch") AS INTEGER) = ?) 
         AND ((CAST(strftime("%m", date, "unixepoch") AS INTEGER) = ?) 
         AND (CAST(strftime("%d", date, "unixepoch") AS INTEGER) = ?)) 
-        GROUP BY subject_id ORDER BY position ASC""", readsFrom: {
+        AND subject_code != 'SOST'
+        GROUP BY lesson_arg, author ORDER BY position ASC""", readsFrom: {
       lessons
     }, variables: [
       Variable.withInt(date.year),
       Variable.withInt(date.month),
       Variable.withInt(date.day)
-    ]).watch().map((rows) {
-      return rows.map((row) => Lesson.fromData(row.data, db)).toList();
-    });
+    ]).map((row) {
+      return Lesson.fromData(row.data, db);
+    }).get();
   }
 
-  Stream<List<Lesson>> watchLastLessons() {
+  /// Gets lessons between [begin] and [end], it ignores [sostegno] and [supplenza]
+  /// This function is used for generating the timetable
+  Future<List<Lesson>> getLessonsBetweenDates(DateTime begin, DateTime end) {
     return customSelectQuery(
-      'SELECT * FROM lessons WHERE date IN (SELECT max(date) FROM lessons)',
-      readsFrom: {
-        lessons,
-      },
-    ).watch().map((rows) {
-      return rows.map((row) => Lesson.fromData(row.data, db)).toList();
-    });
+        'SELECT * FROM lessons WHERE date >= ? AND date <= ? AND subject_code NOT IN("SOST", "SUPZ") GROUP BY subject_id,date, position',
+        variables: [
+          Variable.withDateTime(begin),
+          Variable.withDateTime(end)
+        ]).map((row) => Lesson.fromData(row.data, db)).get();
   }
 
-  Stream<List<Lesson>> watchRelevantLessons() {
-    return customSelectQuery(
-      """ SELECT * FROM lessons GROUP BY lesson_arg, author ORDER BY date DESC""",
-      readsFrom: {
-        lessons,
-      },
-    ).watch().map((rows) {
-      return rows.map((row) => Lesson.fromData(row.data, db)).toList();
-    });
-  }
+  /// Future of [all] the lessons
+  Future<List<Lesson>> getLessons() => select(lessons).get();
+
+  /// Inserts a [single] lesson
+  Future insertLesson(Insertable<Lesson> lesson) =>
+      into(lessons).insert(lesson, orReplace: true);
+
+  /// Inserts a [list] of lessons
+  Future insertLessons(List<Insertable<Lesson>> lessonsToInsert) =>
+      into(lessons).insertAll(lessonsToInsert, orReplace: true);
+
+  /// Deletes [all] lessons
+  Future deleteLessons() => delete(lessons).go();
+
+  ////Stream<List<Lesson>> watchLessonsOrdered() {
+  ////  return (select(lessons)..orderBy([(t) => OrderingTerm(expression: t.date)]))
+  ////      .watch();
+  ////}
+////
+  ////Stream<List<Lesson>> watchLessonsByDate(DateTime date) {
+  ////  return (select(lessons)
+  ////        ..where((row) {
+  ////          final endDate = row.date;
+  ////          final sameYear = year(endDate).equals(date.year);
+  ////          final sameMonth = month(endDate).equals(date.month);
+  ////          final sameDay = day(endDate).equals(date.day - 1);
+  ////          return and(sameYear, and(sameMonth, sameDay));
+  ////        }))
+  ////      .watch();
+  ////}
+////
+  ////Stream<List<Lesson>> watchLessonsByDateGrouped(DateTime date) {
+  ////  return customSelectQuery("""
+  ////      SELECT * FROM lessons
+  ////      WHERE (CAST(strftime("%Y", date, "unixepoch") AS INTEGER) = ?)
+  ////      AND ((CAST(strftime("%m", date, "unixepoch") AS INTEGER) = ?)
+  ////      AND (CAST(strftime("%d", date, "unixepoch") AS INTEGER) = ?))
+  ////      GROUP BY subject_id ORDER BY position ASC""", readsFrom: {
+  ////    lessons
+  ////  }, variables: [
+  ////    Variable.withInt(date.year),
+  ////    Variable.withInt(date.month),
+  ////    Variable.withInt(date.day)
+  ////  ]).watch().map((rows) {
+  ////    return rows.map((row) => Lesson.fromData(row.data, db)).toList();
+  ////  });
+  ////}
+
+  ////Stream<List<Lesson>> watchLastLessons() {
+  ////  return customSelectQuery(
+  ////    'SELECT * FROM lessons WHERE date IN (SELECT max(date) FROM lessons)',
+  ////    readsFrom: {
+  ////      lessons,
+  ////    },
+  ////  ).watch().map((rows) {
+  ////    return rows.map((row) => Lesson.fromData(row.data, db)).toList();
+  ////  });
+  ////}
+
+  ////Stream<List<Lesson>> watchRelevantLessons() {
+  ////  return customSelectQuery(
+  ////    """ SELECT * FROM lessons GROUP BY lesson_arg, author ORDER BY date DESC""",
+  ////    readsFrom: {
+  ////      lessons,
+  ////    },
+  ////  ).watch().map((rows) {
+  ////    return rows.map((row) => Lesson.fromData(row.data, db)).toList();
+  ////  });
+  ////}
 
   // Future<List<Lesson>> getLessonsBetweenDates(DateTime begin, DateTime end) {
   //   return customSelectQuery(
@@ -108,15 +139,6 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   //     return Lesson.fromData(row.data, db);
   //   }).get();
   // }
-
-  Future<List<Lesson>> getLessonsBetweenDates(DateTime begin, DateTime end) {
-    return customSelectQuery(
-        'SELECT * FROM lessons WHERE date >= ? AND date <= ? AND subject_code NOT IN("SOST", "SUPZ") GROUP BY subject_id,date, position',
-        variables: [
-          Variable.withDateTime(begin),
-          Variable.withDateTime(end)
-        ]).map((row) => Lesson.fromData(row.data, db)).get();
-  }
 
   ////Future<List<GeniusTimetable>> getGeniusTimetable() {
   ////  Logger logger = Logger();
@@ -144,17 +166,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   ////  }).get();
   ////}
 
-  /// Future of all the lessons
-  Future<List<Lesson>> getLessons() => select(lessons).get();
+  ////// Stream all the lessons
+  ////Stream<List<Lesson>> watchLessons() => select(lessons).watch();
 
-  // Stream all the lessons
-  Stream<List<Lesson>> watchLessons() => select(lessons).watch();
-
-  /// Inserts a single lesson
-  Future insertLesson(Insertable<Lesson> lesson) =>
-      into(lessons).insert(lesson, orReplace: true);
-
-  /// Inserts a list of lessons
-  Future insertLessons(List<Insertable<Lesson>> lessonsToInsert) =>
-      into(lessons).insertAll(lessonsToInsert, orReplace: true);
 }

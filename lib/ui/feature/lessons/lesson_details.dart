@@ -74,11 +74,11 @@ class _LessonDetailsState extends State<LessonDetails> {
         padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: BlocBuilder<LessonsBloc, LessonsState>(
           builder: (context, state) {
-            if (state is LessonsLoading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+            // if (state is LessonsLoading) {
+            //   return Center(
+            //     child: CircularProgressIndicator(),
+            //   );
+            // }
             return _buildLessonsList(context);
           },
         ),
@@ -110,65 +110,66 @@ class _LessonDetailsState extends State<LessonDetails> {
   }
 
   StreamBuilder<List<Lesson>> _buildLessonsList(BuildContext context) {
-    return StreamBuilder(
-      stream: BlocProvider.of<LessonsBloc>(context).relevantLessons,
-      initialData: List<Lesson>(),
-      builder: (BuildContext context, AsyncSnapshot<List<Lesson>> snapshot) {
-        List<Lesson> lessons = snapshot.data
-                .where((lesson) => lesson.subjectId == widget.subjectId)
-                .toList() ??
-            List<Lesson>();
+    return null;
+    // return StreamBuilder(
+    //   stream: BlocProvider.of<LessonsBloc>(context).relevantLessons,
+    //   initialData: List<Lesson>(),
+    //   builder: (BuildContext context, AsyncSnapshot<List<Lesson>> snapshot) {
+    //     List<Lesson> lessons = snapshot.data
+    //             .where((lesson) => lesson.subjectId == widget.subjectId)
+    //             .toList() ??
+    //         List<Lesson>();
 
-        if (_searchText.isNotEmpty) {
-          lessons = lessons
-              .where((lesson) => lesson.lessonArg
-                  .toLowerCase()
-                  .contains(_searchText.toLowerCase()))
-              .toList()
-                ..sort((b, a) => a.date.compareTo(b.date));
-        }
-        if (lessons.length > 0) {
-          return ListView.builder(
-            itemCount: lessons.length,
-            itemBuilder: (context, index) {
-              final lesson = lessons[index];
-              return Padding(
-                padding: const EdgeInsets.only(top: 4.0),
-                child: Card(
-                    child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: ListTile(
-                    title: Text(DateUtils.convertDateLocale(lesson.date,
-                        AppLocalizations.of(context).locale.toString())),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: _buildDescription(lesson),
-                    ),
-                    isThreeLine: false,
-                  ),
-                )),
-              );
-            },
-          );
-        }
-        if (_searchText.isNotEmpty) {
-          return CustomPlaceHolder(
-            text: AppLocalizations.of(context).translate('no_lessons'),
-            icon: Icons.assignment,
-            showUpdate: false,
-          );
-        } else {
-          return CustomPlaceHolder(
-            text: AppLocalizations.of(context).translate('no_lessons'),
-            icon: Icons.assignment,
-            onTap: () {
-              BlocProvider.of<LessonsBloc>(context).add(FetchAllLessons());
-            },
-            showUpdate: true,
-          );
-        }
-      },
-    );
+    //     if (_searchText.isNotEmpty) {
+    //       lessons = lessons
+    //           .where((lesson) => lesson.lessonArg
+    //               .toLowerCase()
+    //               .contains(_searchText.toLowerCase()))
+    //           .toList()
+    //             ..sort((b, a) => a.date.compareTo(b.date));
+    //     }
+    //     if (lessons.length > 0) {
+    //       return ListView.builder(
+    //         itemCount: lessons.length,
+    //         itemBuilder: (context, index) {
+    //           final lesson = lessons[index];
+    //           return Padding(
+    //             padding: const EdgeInsets.only(top: 4.0),
+    //             child: Card(
+    //                 child: Padding(
+    //               padding: const EdgeInsets.all(4.0),
+    //               child: ListTile(
+    //                 title: Text(DateUtils.convertDateLocale(lesson.date,
+    //                     AppLocalizations.of(context).locale.toString())),
+    //                 subtitle: Column(
+    //                   crossAxisAlignment: CrossAxisAlignment.start,
+    //                   children: _buildDescription(lesson),
+    //                 ),
+    //                 isThreeLine: false,
+    //               ),
+    //             )),
+    //           );
+    //         },
+    //       );
+    //     }
+    //     if (_searchText.isNotEmpty) {
+    //       return CustomPlaceHolder(
+    //         text: AppLocalizations.of(context).translate('no_lessons'),
+    //         icon: Icons.assignment,
+    //         showUpdate: false,
+    //       );
+    //     } else {
+    //       return CustomPlaceHolder(
+    //         text: AppLocalizations.of(context).translate('no_lessons'),
+    //         icon: Icons.assignment,
+    //         onTap: () {
+    //           BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
+    //         },
+    //         showUpdate: true,
+    //       );
+    //     }
+    //   },
+    // );
   }
 
   /// With this method we can show the lesson argument if present otherwise we show only the lesson type

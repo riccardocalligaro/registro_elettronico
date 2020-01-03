@@ -369,7 +369,7 @@ class GlobalUtils {
   }
 
   static void initialFetch(BuildContext context) {
-    BlocProvider.of<LessonsBloc>(context).add(FetchTodayLessons());
+    BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
     BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
     BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
     BlocProvider.of<GradesBloc>(context).add(FetchGrades());

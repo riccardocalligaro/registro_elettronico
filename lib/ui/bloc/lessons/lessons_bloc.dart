@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
 
 import './bloc.dart';
@@ -15,44 +14,78 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     this.lessonsRepository,
   );
 
-  Stream<List<Lesson>> get relevantLessons =>
-      lessonsRepository.watchRelevantLessons();
-
-  Stream<List<Lesson>> watchLessonsByDate(DateTime selectedDate) =>
-      lessonsRepository.watchLessonsByDate(selectedDate);
-
-  /// With this stream lessosn are grouped so there are no duplicates
-  Stream<List<Lesson>> watchLessonsByDateGrouped(DateTime selectedDate) =>
-      lessonsRepository.watchLessonsByDateGrouped(selectedDate);
-
-  Stream<List<Lesson>> relevandLessonsOfToday() =>
-      lessonsRepository.watchLastLessons();
-
   @override
-  LessonsState get initialState => LessonsNotLoaded();
+  LessonsState get initialState => LessonsIntial();
 
   @override
   Stream<LessonsState> mapEventToState(
     LessonsEvent event,
   ) async* {
-    if (event is FetchTodayLessons) {
-      yield LessonsLoading();
-      try {
-        await lessonsRepository.upadateTodayLessons();
-        yield LessonsLoaded();
-      } on DioError catch (e) {
-        yield LessonsError(e);
-      }
+    if (event is GetLastLessons) {
+      yield* _mapGetLastLessonsToState();
+    } else if (event is GetLessonsByDate) {
+      yield* _mapGetLessonsByDateLessonsToState(event.dateTime);
+    } else if (event is GetLessons) {
+      yield* _mapGetLessonsToState();
+    } else if (event is UpdateAllLessons) {
+      yield* _mapUpdateAllLessonsToState();
+    } else if (event is UpdateTodayLessons) {
+      yield* _mapTodayLessonsToState();
     }
+  }
 
-    if (event is FetchAllLessons) {
-      yield LessonsLoading();
-      try {
-        await lessonsRepository.updateAllLessons();
-        yield LessonsLoaded();
-      } on DioError catch (e) {
-        yield LessonsError(e);
-      }
+  Stream<LessonsState> _mapGetLastLessonsToState() async* {
+    yield LessonsLoadInProgress();
+    try {
+      final lessons = await lessonsRepository.getLastLessons();
+      yield LessonsLoadSuccess(lessons: lessons);
+    } catch (e) {
+      yield LessonsLoadError(error: e.toString());
+    }
+  }
+
+  Stream<LessonsState> _mapGetLessonsByDateLessonsToState(
+      DateTime dateTime) async* {
+    yield LessonsLoadInProgress();
+    try {
+      final lessons = await lessonsRepository.getLessonsByDate(dateTime);
+      yield LessonsLoadSuccess(lessons: lessons);
+    } catch (e) {
+      yield LessonsLoadError(error: e.toString());
+    }
+  }
+
+  Stream<LessonsState> _mapGetLessonsToState() async* {
+    yield LessonsLoadInProgress();
+    try {
+      final lessons = await lessonsRepository.getLessons();
+      yield LessonsLoadSuccess(lessons: lessons);
+    } catch (e) {
+      yield LessonsLoadError(error: e.toString());
+    }
+  }
+
+  Stream<LessonsState> _mapUpdateAllLessonsToState() async* {
+    yield LessonsUpdateLoadInProgress();
+    try {
+      await lessonsRepository.updateAllLessons();
+      yield LessonsUpdateLoadSuccess();
+    } on DioError catch (dioError) {
+      yield LessonsLoadServerError(serverError: dioError);
+    } catch (e) {
+      LessonsLoadError(error: e.toString());
+    }
+  }
+
+  Stream<LessonsState> _mapTodayLessonsToState() async* {
+    yield LessonsUpdateLoadInProgress();
+    try {
+      await lessonsRepository.upadateTodayLessons();
+      yield LessonsUpdateLoadSuccess();
+    } on DioError catch (dioError) {
+      yield LessonsLoadServerError(serverError: dioError);
+    } catch (e) {
+      LessonsLoadError(error: e.toString());
     }
   }
 }
