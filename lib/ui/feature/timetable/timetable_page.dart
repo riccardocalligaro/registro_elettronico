@@ -12,6 +12,7 @@ import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
+import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 
 class TimetablePage extends StatefulWidget {
   const TimetablePage({Key key}) : super(key: key);
@@ -42,13 +43,22 @@ class _TimetablePageState extends State<TimetablePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.refresh),
-            onPressed: () {
-              BlocProvider.of<TimetableBloc>(context).add(
-                GetNewTimetable(
-                  begin: date,
-                  end: date.add(Duration(days: 6)),
-                ),
+            onPressed: () async {
+              final List<DateTime> picked = await DateRagePicker.showDatePicker(
+                context: context,
+                initialFirstDate: DateTime.now(),
+                initialLastDate: (DateTime.now()).add(Duration(days: 6)),
+                firstDate: DateTime(2015),
+                lastDate: DateTime(2021),
               );
+              if (picked != null && picked.length == 2) {
+                BlocProvider.of<TimetableBloc>(context).add(
+                  GetNewTimetable(
+                    begin: picked[0],
+                    end: picked[0].add(Duration(days: 6)),
+                  ),
+                );
+              }
             },
           ),
           IconButton(
@@ -75,7 +85,22 @@ class _TimetablePageState extends State<TimetablePage> {
           }
 
           if (state is TimetableLoaded) {
-            return _buildTimetableList(state.timetable);
+            if (state.timetable.length > 0)
+              return _buildTimetableList(state.timetable);
+
+            return CustomPlaceHolder(
+              icon: Icons.access_time,
+              text: 'No timetable',
+              showUpdate: true,
+              onTap: () {
+                BlocProvider.of<TimetableBloc>(context).add(
+                  GetNewTimetable(
+                    begin: date,
+                    end: date.add(Duration(days: 6)),
+                  ),
+                );
+              },
+            );
           }
           return Container();
         },
@@ -108,10 +133,17 @@ class _TimetablePageState extends State<TimetablePage> {
                     itemBuilder: (context, index) {
                       final lesson = lessons[index];
                       return Card(
-                        color: GlobalUtils.getColorFromPosition(lesson.position),
+                        color:
+                            GlobalUtils.getColorFromPosition(lesson.position),
                         child: ListTile(
-                          title: Text(lesson.subject, style: TextStyle(color: Colors.white),),
-                          subtitle: Text('${lesson.duration}H', style: TextStyle(color: Colors.white),),
+                          title: Text(
+                            lesson.subject,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            '${lesson.duration}H',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       );
                     },
