@@ -1,35 +1,39 @@
 <h1 align="center">
+
     <img src="https://i.imgur.com/BCktmzl.png" alt="Registto elettronico"><br>
+
 </h1>
 
 ![GitHub](https://img.shields.io/github/license/Zuccante-Web-App/Registro-elettronico?style=flat-square)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Zuccante-Web-App/Registro-elettronico?style=flat-square)
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/Zuccante-Web-App/Registro-elettronico/master?style=flat-square)
-[![HitCount](http://hits.dwyl.io/Zuccante-Web-App/Registro-elettronico.svg)](http://hits.dwyl.io/Zuccante-Web-App/Registro-elettronico)
 
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Zuccante-Web-App/Registro-elettronico?style=flat-square)
+
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/Zuccante-Web-App/Registro-elettronico/master?style=flat-square)
+
+[![HitCount](http://hits.dwyl.io/Zuccante-Web-App/Registro-elettronico.svg)](http://hits.dwyl.io/Zuccante-Web-App/Registro-elettronico)
 
 <a href="https://www.mediafire.com/file/xrwlwz3dky9nf51/app-release.apk/file">Download Preview APK</a>
 
 ## Table of contents
 
-- [Overview of the project](#overview-of-the-project)
-- [Group members](#developers)
-- [Current state of the project](#current-state-of-the-project)
-- [Project structure](#project-structure)
-- [Descrizione in italiano](#descrizione-in-italiano)
-- [Design](#design)
-- [API Documentation](#classeviva-api-documentation)
+* [Overview of the project](#overview-of-the-project)
+* [Group members](#developers)
+* [Current state of the project](#current-state-of-the-project)
+* [Project structure](#project-structure)
+* [Descrizione in italiano](#descrizione-in-italiano)
+* [Design](#design)
+* [API Documentation](#classeviva-api-documentation)
 
 |                         Home Page 1                         |                         Home Page 2                          |                           Lessons                           |
-| :---------------------------------------------------------: | :----------------------------------------------------------: | :---------------------------------------------------------: |
+|:-----------------------------------------------------------:|:------------------------------------------------------------:|:-----------------------------------------------------------:|
 | <img src="https://i.imgur.com/bVkuG8Y.png" height="400px" > | <img src="https://i.imgur.com/B24gPrs.png"  height="400px" > | <img src="https://i.imgur.com/VzlGctu.png" height="400px" > |
 
 |                       Lessons details                       |                         Last grades                         |                           Grades                            |
-| :---------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: |
+|:-----------------------------------------------------------:|:-----------------------------------------------------------:|:-----------------------------------------------------------:|
 | <img src="https://i.imgur.com/Q4lZGyF.png" height="400px" > | <img src="https://i.imgur.com/Ne1KmZr.png" height="400px" > | <img src="https://i.imgur.com/kYjm6JG.png" height="400px" > |
 
 |                           Agenda                            |                          Absences                           |                         Noticeboard                         |
-| :---------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: |
+|:-----------------------------------------------------------:|:-----------------------------------------------------------:|:-----------------------------------------------------------:|
 | <img src="https://i.imgur.com/SWp4dJ5.png" height="400px" > | <img src="https://i.imgur.com/JkVKOXK.png" height="400px" > | <img src="https://i.imgur.com/61uQrX9.png" height="400px" > |
 
 [![Preview](https://i.ibb.co/pbnPKdF/https-i-ytimg-com-vi-LVk-FTSKe-Rl-M-maxresdefault.jpg)](https://youtu.be/LVkFTSKeRlM "Preview")
@@ -40,32 +44,32 @@ If you want to try the app (still alpha and a lot to do) feel free to contact [m
 
 Flutter client for eletronic school register (Classeviva) management using clean architecture.
 
-- Simple and beautiful
-- Useful charts and stats about grades, absences, etc...
-- Dark & Light theme (dark is just better)
-- Notifications when there is a new event (new grade, new event, etc..)
-- Data persistency
-- 🌍 Multi language support (Italian & English) and localizaiton
+* Simple and beautiful
+* Useful charts and stats about grades, absences, etc... 
+* Dark & Light theme (dark is just better)
+* Notifications when there is a new event (new grade, new event, etc..)
+* Data persistency
+* Multi language support (Italian & English) and localizaiton
 
 Main technologies and libraries that I will use:
 
-- 🔝 Flutter + Dart
-- 📡 Retrofit + Dio for API requests
-- 🧱 BLoC for state management
-- 📚 Moor for data persistency
-- 💉 Injector for dependency injection
-- 🐠 Equatable for object comparison
+* 🔝 Flutter + Dart
+* 📡 Retrofit + Dio for API requests
+* 💡 BLoC for state management
+* 📚 Moor for data persistency
+* 💉 Injector for dependency injection
+* 🐠 Equatable for object comparison
 
 Other libraries:
 
-- [Fl_Chart](https://pub.dev/packages/fl_chart)
-- [Table calendar](https://pub.dev/packages/table_calendar)
-- [Work manager for notifications](https://pub.dev/packages/workmanager)
+* [Fl_Chart](https://pub.dev/packages/fl_chart)
+* [Table calendar](https://pub.dev/packages/table_calendar)
+* [Work manager for notifications](https://pub.dev/packages/workmanager)
 
 ## Developers:
 
 | Name               |            Email            |                                       Role |
-| ------------------ | :-------------------------: | -----------------------------------------: |
+|--------------------|:---------------------------:|-------------------------------------------:|
 | Riccardo Calligaro | riccardocalligaro@gmail.com | Project manager, app architecture, API, UI |
 | Filippo Veggo      |   filippoveggo@gmail.com    |                                Design & UI |
 
@@ -74,44 +78,45 @@ Other libraries:
 These group members haven't developed the app but are learning flutter.
 
 | Name            |           Email            |
-| --------------- | :------------------------: |
+|-----------------|:--------------------------:|
 | Jacopo Ferian   |    jacopo893@gmail.com     |
 | Samuele Zanella | samuelezanella02@gmail.com |
 
 ## Current state of the project
 
-| Function           | State | Made by |  Design by  |
-| ------------------ | :---: | :-----: | :---------: |
-| Login              |  ✔️   |  R.C.   |    F.V.     |
-| Home Page          |  ✔️   |  R.C.   | F.V + R.C.  |
-| Lessons            |  ✔️   |  R.C.   |    R.C.     |
-| Agenda             |  ✔️   |  R.C.   | F.V. + R.C. |
-| Marks              |  ✔️   |  R.C.   |    R.C.     |
-| Noticeboard        |  ✔️   |  R.C.   |    R.C.     |
-| Absences           |  ✔️   |  R.C.   |    R.C.     |
-| School material    |  ✔️   |  R.C.   |    R.C.     |
-| Notes              |  ✔️   |  R.C.   |    R.C.     |
-| Intitial slideshow |  ❌   |  R.C.   |      -      |
-| Dark theme         |  ✔️   |  R.C.   |      -      |
-| Settings           |   ¼   |  R.C.   |    R.C.     |
+| Function           | State | Made by |  Design by   |
+|--------------------|:-----:|:-------:|:------------:|
+| Login              |   ✔️   |  R. C.  |    F. V.     |
+| Home Page          |   ✔️   |  R. C.  | F. V + R. C. |
+| Lessons            |   ✔️   |  R. C.  |    R. C.     |
+| Agenda             |   ✔️   |  R. C.  | F. V.+ R. C. |
+| Marks              |   ✔️   |  R. C.  |    R. C.     |
+| Noticeboard        |   ✔️   |  R. C.  |    R. C.     |
+| Absences           |   ✔️   |  R. C.  |    R. C.     |
+| School material    |   ✔️   |  R. C.  |    R. C.     |
+| Notes              |   ✔️   |  R. C.  |    R. C.     |
+| Intitial slideshow |   ✔️   |  R. C.  |    R. C.     |
+| Dark theme         |   ✔️   |  R. C.  |    R. C.     |
+| Settings           |   ✔️   |  R. C.  |    R. C.     |
 
 Additional features that will be implemented
 
 | Function                | State | Made by | Design by |
-| ----------------------- | :---: | :-----: | :-------: |
+|-------------------------|:-----:|:-------:|:---------:|
 | Local grades and agenda |   ½   |    -    |     -     |
-| Timetable               |   ¼   |    -    |     -     |
-| Notifications           |   ½   |    -    |     -     |
-| Summary page            |  ❌   |    -    |     -     |
+| Timetable               |   ✔️   |  R. C.  |     -     |
+| Notifications           |   ½   |  R. C.  |     -     |
+| Summary page            |   ❌   |    -    |     -     |
 
 ## Project structure
-- Clean architecture structure 
+
+* Clean architecture structure 
 
 <img src="https://i0.wp.com/resocoder.com/wp-content/uploads/2019/08/Clean-Architecture-Flutter-Diagram.png?resize=556%2C707&ssl=1">
 
-- Project tree
+* Project tree
 
-```
+``` 
 📦lib
  ┣ 📂component
  ┃ ┣ 📂notifications
@@ -379,13 +384,13 @@ Client Flutter per la gestione dei dati del registro elettronico (ClasseViva).
 
 Tecnologie e librerie che useremo:
 
-- 🔝 Flutter + Dart
-- 📡 Retrofit + Dio per richieste alle API
-- 🧱 BLoC per la gestione dello stato
-- 📚 Moor per persistenza dati
-- 💉 Injector per dependency injection
-- 🐠 Equatable per comparazione oggetto
-- 🔥 Flare per animazioni
+* 🔝 Flutter + Dart
+* 📡 Retrofit + Dio per richieste alle API
+* 🧱 BLoC per la gestione dello stato
+* 📚 Moor per persistenza dati
+* 💉 Injector per dependency injection
+* 🐠 Equatable per comparazione oggetto
+* 🔥 Flare per animazioni
 
 ## Design
 
@@ -393,35 +398,41 @@ Tecnologie e librerie che useremo:
 
 <div align="center">
 
-<div style="display: inline-flex;">
+<div style="display: inline-flex; ">
 <img src="https://i.imgur.com/kA3nnBG.png"
+
      height="400px"
      alt="the home page"
      style="float: left; margin-right: 10px;" />
 
 <img src="https://i.imgur.com/TW6aTcM.png"
+
      height="400px"
      alt="the home page"
      style="float: left; margin-right: 10px;" />
 
 <img src="https://i.imgur.com/rqPtEbl.png"
+
     height="400px"
      alt="the home page"
      style="float: left; margin-right: 10px; margin-bottom: 10px;" /> </div>
 
-<div style="display: inline-flex;">
+<div style="display: inline-flex; ">
 
 <img src="https://i.imgur.com/nP5XXON.png"
+
     height="400px"
      alt="the home page"
      style="float: left; margin-right: 10px;" />
 
 <img src="https://i.imgur.com/5ZVDoBi.png"
+
     height="400px"
      alt="the home page"
      style="float: left; margin-right: 10px;" />
 
 <img src="https://i.imgur.com/nDsK6vw.png"
+
     height="400px"
      alt="the home page"
      style="margin-right: 10px;" />
@@ -436,17 +447,17 @@ Tecnologie e librerie che useremo:
 
 ## Login
 
-`POST **v1/auth/login`
+`POST **v1/auth/login` 
 
 Body:
 
-```json
+``` json
 { "ident": "null", "pass": "user_pass", "uid": "user_id" }
 ```
 
 **Response**
 
-```json
+``` json
 {
   "ident": "**********",
   "firstName": "RICCARDO",
@@ -461,7 +472,7 @@ Body:
 
 ## Status
 
-`GET v1/auth/status`
+`GET v1/auth/status` 
 
 ## Description
 
@@ -469,11 +480,11 @@ This endpoint provides the timestamp of the relase and expire date of the token,
 
 ## Required Header
 
-- Z-Auth-Token: _token_
+* Z-Auth-Token: _token_
 
 **Response**
 
-```json
+``` json
 {
   "status": {
     "expire": "2017-10-20T13:14:23+02:00",
@@ -488,7 +499,7 @@ This endpoint provides the timestamp of the relase and expire date of the token,
 
 ## Absenences
 
-`GET v1/students/{studentId}/noticeboard`
+`GET v1/students/{studentId}/noticeboard` 
 
 ## Description
 
@@ -496,11 +507,11 @@ This endpoint provides the absences of a student.
 
 ## Required Header
 
-- Z-Auth-Token: _token_
+* Z-Auth-Token: _token_
 
 **Response**
 
-```json
+``` json
 {
   "pubId": 4359232,
   "pubDT": "2019-12-02T10:41:30+01:00",
@@ -532,7 +543,7 @@ This endpoint provides the absences of a student.
 
 ## Subjects
 
-`GET v1/students/{studentId}/subjects`
+`GET v1/students/{studentId}/subjects` 
 
 ## Description
 
@@ -540,11 +551,11 @@ This endpoint provides the subjects of a student.
 
 ## Required Header
 
-- Z-Auth-Token: _token_
+* Z-Auth-Token: _token_
 
 **Response**
 
-```json
+``` json
 {
   "subjects": [
     {
@@ -570,7 +581,7 @@ This endpoint provides the subjects of a student.
 
 ## Didactics
 
-`GET v1/students/{studentId}/ditactics`
+`GET v1/students/{studentId}/ditactics` 
 
 ## Description
 
@@ -578,11 +589,11 @@ This endpoint provides the didactic material of a student.
 
 ## Required Header
 
-- Z-Auth-Token: _token_
+* Z-Auth-Token: _token_
 
 **Response**
 
-```json
+``` json
 {
   "teacherId": "A3175419",
   "teacherName": "PANCIERA DONATELLA",
@@ -611,7 +622,7 @@ This endpoint provides the didactic material of a student.
 
 ## Cards
 
-`GET v1/students/{studentId}/cards`
+`GET v1/students/{studentId}/cards` 
 
 ## Description
 
@@ -619,11 +630,11 @@ This endpoint provides information about the user.
 
 ## Required Header
 
-- Z-Auth-Token: _token_
+* Z-Auth-Token: _token_
 
 **Response**
 
-```json
+``` json
 {
   "cards": [
     {
@@ -650,7 +661,7 @@ This endpoint provides information about the user.
 
 ## Calendar
 
-`GET v1/students/{studentId}/calendar/all`
+`GET v1/students/{studentId}/calendar/all` 
 
 ## Description
 
@@ -658,11 +669,11 @@ This endpoint provides information about the calendar (1 year from july).
 
 ## Required Header
 
-- Z-Auth-Token: _token_
+* Z-Auth-Token: _token_
 
 **Response**
 
-```json
+``` json
 {
   "calendar": [
     {
@@ -684,7 +695,7 @@ This endpoint provides information about the calendar (1 year from july).
 
 ## Grades
 
-`GET v1/students/{studentId}/grades`
+`GET v1/students/{studentId}/grades` 
 
 ## Description
 
@@ -692,11 +703,11 @@ This endpoint provides user's grades.
 
 ## Required Header
 
-- Z-Auth-Token: _token_
+* Z-Auth-Token: _token_
 
 **Response**
 
-```json
+``` json
 {
   "grades": [
     {
@@ -734,8 +745,8 @@ This endpoint provides user's grades.
 
 ## Lessons
 
-`GET v1/students/{studentId}/lessons/today`
-`GET v1/students/{studentId}/lessons/begin/end`
+`GET v1/students/{studentId}/lessons/today` 
+`GET v1/students/{studentId}/lessons/begin/end` 
 
 ## Description
 
@@ -743,11 +754,11 @@ This endpoint provides user's today lessons.
 
 ## Required Header
 
-- Z-Auth-Token: _token_
+* Z-Auth-Token: _token_
 
 **Response**
 
-```json
+``` json
 {
   "lessons": [
     {
@@ -772,7 +783,7 @@ This endpoint provides user's today lessons.
 
 ## Notes
 
-`GET v1/students/{studentId}/notes/all`
+`GET v1/students/{studentId}/notes/all` 
 
 ## Description
 
@@ -780,11 +791,11 @@ This endpoint provides user's notes.
 
 ## Required Header
 
-- Z-Auth-Token: _token_
+* Z-Auth-Token: _token_
 
 **Response**
 
-```json
+``` json
 {
   "NTTE": [],
   "NTCL": [],
@@ -797,7 +808,7 @@ This endpoint provides user's notes.
 
 ## Periods
 
-`GET v1/students/{studentId}/periods`
+`GET v1/students/{studentId}/periods` 
 
 ## Description
 
@@ -805,11 +816,11 @@ This endpoint provides user's periods.
 
 ## Required Header
 
-- Z-Auth-Token: _token_
+* Z-Auth-Token: _token_
 
 **Response**
 
-```json
+``` json
 {
   "periods": [
     {
@@ -838,7 +849,7 @@ This endpoint provides user's periods.
 
 ## Schoolbooks
 
-`GET v1/students/{studentId}/schoolbooks`
+`GET v1/students/{studentId}/schoolbooks` 
 
 ## Description
 
@@ -846,11 +857,11 @@ This endpoint provides user's school books.
 
 ## Required Header
 
-- Z-Auth-Token: _token_
+* Z-Auth-Token: _token_
 
 **Response**
 
-```json
+``` json
 {
     "schoolbooks": [
         {
@@ -879,3 +890,4 @@ This endpoint provides user's school books.
     ]
 }
 ```
+
