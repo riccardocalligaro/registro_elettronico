@@ -85,7 +85,7 @@ These group members haven't developed the app but are learning flutter.
 | Home Page          |   ✔️   |  R. C.  | F. V + R. C. |
 | Lessons            |   ✔️   |  R. C.  |    R. C.     |
 | Agenda             |   ✔️   |  R. C.  | F. V.+ R. C. |
-| Marks              |   ✔️   |  R. C.  |    R. C.     |
+| Grades              |   ✔️   |  R. C.  |    R. C.     |
 | Noticeboard        |   ✔️   |  R. C.  |    R. C.     |
 | Absences           |   ✔️   |  R. C.  |    R. C.     |
 | School material    |   ✔️   |  R. C.  |    R. C.     |
@@ -394,43 +394,21 @@ Tecnologie e librerie che useremo:
 <div align="center">
 
 <div style="display: inline-flex; ">
-<img src="https://i.imgur.com/kA3nnBG.png"
+<img src="https://i.imgur.com/kA3nnBG.png" height="400px" alt="the home page" style="float: left; margin-right: 10px;" />
 
-     height="400px"
-     alt="the home page"
-     style="float: left; margin-right: 10px;" />
+<img src="https://i.imgur.com/TW6aTcM.png" height="400px" alt="the home page" style="float: left; margin-right: 10px;" />
 
-<img src="https://i.imgur.com/TW6aTcM.png"
-
-     height="400px"
-     alt="the home page"
-     style="float: left; margin-right: 10px;" />
-
-<img src="https://i.imgur.com/rqPtEbl.png"
-
-    height="400px"
-     alt="the home page"
-     style="float: left; margin-right: 10px; margin-bottom: 10px;" /> </div>
+<img src="https://i.imgur.com/rqPtEbl.png"height="400px" alt="the home page" style="float: left; margin-right: 10px; margin-bottom: 10px;" /> </div>
 
 <div style="display: inline-flex; ">
 
-<img src="https://i.imgur.com/nP5XXON.png"
-
-    height="400px"
-     alt="the home page"
-     style="float: left; margin-right: 10px;" />
+<img src="https://i.imgur.com/nP5XXON.png" style="float: left; margin-right: 10px;" />
 
 <img src="https://i.imgur.com/5ZVDoBi.png"
-
-    height="400px"
-     alt="the home page"
-     style="float: left; margin-right: 10px;" />
+height="400px" alt="the home page" style="float: left; margin-right: 10px;" />
 
 <img src="https://i.imgur.com/nDsK6vw.png"
-
-    height="400px"
-     alt="the home page"
-     style="margin-right: 10px;" />
+height="400px" alt="the home page" style="margin-right: 10px;" />
 
 </div>
 
