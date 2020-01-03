@@ -368,11 +368,11 @@ class GlobalUtils {
     return randomNumber;
   }
 
-  static void initialFetch(BuildContext context) {
-    BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
-    BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
-    BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
-    BlocProvider.of<GradesBloc>(context).add(FetchGrades());
-    BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
-  }
+  // static void initialFetch(BuildContext context) {
+  //   BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
+  //   BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
+  //   BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
+  //   BlocProvider.of<GradesBloc>(context).add(FetchGrades());
+  //   BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
+  // }
 }

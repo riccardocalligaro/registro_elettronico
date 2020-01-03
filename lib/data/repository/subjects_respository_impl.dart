@@ -37,11 +37,6 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
   }
 
   @override
-  Stream<List<Subject>> watchAllSubjects() {
-    return subjectDao.watchAllSubjects();
-  }
-
-  @override
   Future insertSubject(Subject subject) {
     return subjectDao.insertSubject(subject);
   }
@@ -52,12 +47,12 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
   }
 
   @override
-  Stream<List<Subject>> watchRelevantSubjects() {
-    return subjectDao.watchRelevanantSubjects();
+  Future<List<Professor>> getAllProfessors() {
+    return professorDao.getAllProfessors();
   }
 
   @override
-  Stream<List<Professor>> watchAllProfessors() {
-    return professorDao.watchAllProfessors();
+  Future<List<Subject>> getSubjectsOrdered() {
+    return subjectDao.getSubjectsOrdered();
   }
 }

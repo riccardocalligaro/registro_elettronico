@@ -21,26 +21,64 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
   @override
   SubjectsState get initialState => SubjectsInitial();
 
-  Stream<List<Subject>> get subjects =>
-      subjectsRepository.watchRelevantSubjects();
-
-  Stream<List<Professor>> get professors =>
-      subjectsRepository.watchAllProfessors();
-
   @override
   Stream<SubjectsState> mapEventToState(
     SubjectsEvent event,
   ) async* {
-    if (event is FetchSubjects) {
-      yield SubjectsUpdateLoading();
-      try {
-        subjectsRepository.updateSubjects();
-        yield SubjectsUpdateLoaded();
-      } on DioError catch (e) {
-        yield SubjectsUpdateError(e.response.data.toString());
-      } catch (e) {
-        yield SubjectsUpdateError(e.toString());
-      }
+    if (event is UpdateSubjects) {
+      yield* _mapUpdateSubjectsToState();
+    } else if (event is GetSubjects) {
+      yield* _mapGetSubjectsToState();
+    } else if (event is GetSubjectsAndProfessors) {
+      yield* _mapGetSubjectsAndProfessorsToState();
+    } else if (event is GetProfessors) {
+      yield* _mapGetProfessorsoState();
+    }
+  }
+
+  Stream<SubjectsState> _mapUpdateSubjectsToState() async* {
+    yield SubjectsUpdateLoadInProgress();
+    try {
+      await subjectsRepository.updateSubjects();
+      yield SubjectsUpdateLoadSuccess();
+    } catch (e) {
+      yield SubjectsUpdateLoadError(error: e.toString());
+    }
+  }
+
+  Stream<SubjectsState> _mapGetSubjectsToState() async* {
+    yield SubjectsLoadInProgress();
+    try {
+      final subjects = await subjectsRepository.getAllSubjects();
+      yield SubjectsLoadSuccess(subjects: subjects);
+    } catch (e) {
+      yield SubjectsLoadError(error: e.toString());
+    }
+  }
+
+  Stream<SubjectsState> _mapGetSubjectsAndProfessorsToState() async* {
+    yield SubjectsAndProfessorsLoadInProgress();
+    try {
+      final subjects = await subjectsRepository.getAllSubjects();
+      final professors = await subjectsRepository.getAllProfessors();
+      yield SubjectsAndProfessorsLoadSuccess(
+        subjects: subjects,
+        professors: professors,
+      );
+    } catch (e) {
+      yield SubjectsAndProfessorsLoadError(error: e.toString());
+    }
+  }
+
+  Stream<SubjectsState> _mapGetProfessorsoState() async* {
+    yield ProfessorsLoadInProgress();
+    try {
+      final professors = await subjectsRepository.getAllProfessors();
+      yield ProfessorsLoadSuccess(
+        professors: professors,
+      );
+    } catch (e) {
+      yield ProfessorsLoadError(error: e.toString());
     }
   }
 }

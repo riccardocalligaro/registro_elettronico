@@ -13,14 +13,14 @@ class ProfessorDao extends DatabaseAccessor<AppDatabase>
   Future insertProfessor(Insertable<Professor> profile) =>
       into(professors).insert(profile, orReplace: true);
 
-  //Stream<List<Professor>> watchAllProfessors() => select(professors).watch();
-
-  Stream<List<Professor>> watchAllProfessors() {
-    return customSelectQuery("""
-        SELECT DISTINCT * FROM professors""", readsFrom: {
-      professors,
-    }).watch().map((rows) {
-      return rows.map((row) => Professor.fromData(row.data, db)).toList();
-    });
+  Future<List<Professor>> getAllProfessors() {
+    return customSelectQuery(
+      'SELECT DISTINCT * FROM professors',
+      readsFrom: {
+        professors,
+      },
+    ).map((row) {
+      return Professor.fromData(row.data, db);
+    }).get();
   }
 }

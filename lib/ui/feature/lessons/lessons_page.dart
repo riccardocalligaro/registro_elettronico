@@ -10,18 +10,12 @@ import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 
 import 'components/subjects_list.dart';
 
-class LessonsPage extends StatefulWidget {
-  const LessonsPage({Key key}) : super(key: key);
-
-  @override
-  _LessonsPageState createState() => _LessonsPageState();
-}
-
-class _LessonsPageState extends State<LessonsPage> {
+class LessonsPage extends StatelessWidget {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<SubjectsBloc>(context).add(GetSubjectsAndProfessors());
     return Scaffold(
       key: _drawerKey,
       drawer: AppDrawer(
@@ -31,42 +25,64 @@ class _LessonsPageState extends State<LessonsPage> {
         title: Text(AppLocalizations.of(context).translate('lessons')),
         scaffoldKey: _drawerKey,
       ),
-      body: Container(
-        child: _buildSubjectsList(context),
+      body: BlocBuilder<SubjectsBloc, SubjectsState>(
+        builder: (context, state) {
+          if (state is SubjectsAndProfessorsLoadInProgress) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is SubjectsAndProfessorsLoadSuccess) {
+            return _buildSubjectsList(
+              subjects: state.subjects,
+              professors: state.professors,
+              context: context,
+            );
+          } else if (state is SubjectsUpdateLoadError ||
+              state is SubjectsLoadError) {
+            return CustomPlaceHolder(
+              text: AppLocalizations.of(context).translate('error'),
+              icon: Icons.error,
+              showUpdate: true,
+              onTap: () {
+                BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
+              },
+            );
+          }
+          return Container();
+        },
       ),
     );
   }
 
-  StreamBuilder _buildSubjectsList(BuildContext context) {
-    return StreamBuilder(
-      stream: BlocProvider.of<SubjectsBloc>(context).subjects,
-      initialData: List<Subject>(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final List<Subject> subjects = snapshot.data ?? List<Subject>();
-        if (subjects.length > 0) {
-          return StreamBuilder(
-            stream: BlocProvider.of<SubjectsBloc>(context).professors,
-            initialData: List<Professor>(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              final List<Professor> professors =
-                  snapshot.data ?? List<Professor>();
-              return SubjectsList(
-                professors: professors,
-                subjects: subjects,
-              );
-            },
-          );
-        } else {
-          return CustomPlaceHolder(
-            text: AppLocalizations.of(context).translate('no_subjects_to_show'),
-            icon: Icons.assignment,
-            onTap: () {
-              BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
-            },
-            showUpdate: true,
-          );
-        }
-      },
-    );
+  Widget _buildSubjectsList({
+    @required List<Subject> subjects,
+    @required List<Professor> professors,
+    @required BuildContext context,
+  }) {
+    if (subjects.length > 0) {
+      return RefreshIndicator(
+        onRefresh: () {
+          _refreshSubjects(context);
+        },
+        child: SubjectsList(
+          professors: professors,
+          subjects: subjects,
+        ),
+      );
+    } else {
+      return CustomPlaceHolder(
+        text: AppLocalizations.of(context).translate('no_subjects_to_show'),
+        icon: Icons.assignment,
+        onTap: () {
+          BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
+        },
+        showUpdate: true,
+      );
+    }
+  }
+
+  Future _refreshSubjects(BuildContext context) {
+    BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
+    BlocProvider.of<SubjectsBloc>(context).add(GetSubjectsAndProfessors());
   }
 }
