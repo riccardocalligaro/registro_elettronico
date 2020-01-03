@@ -1,15 +1,10 @@
 <h1 align="center">
-
-    <img src="https://i.imgur.com/BCktmzl.png" alt="Registto elettronico"><br>
-
+  <img src="https://i.imgur.com/BCktmzl.png" alt="Registto elettronico"><br>
 </h1>
 
 ![GitHub](https://img.shields.io/github/license/Zuccante-Web-App/Registro-elettronico?style=flat-square)
-
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Zuccante-Web-App/Registro-elettronico?style=flat-square)
-
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/Zuccante-Web-App/Registro-elettronico/master?style=flat-square)
-
 [![HitCount](http://hits.dwyl.io/Zuccante-Web-App/Registro-elettronico.svg)](http://hits.dwyl.io/Zuccante-Web-App/Registro-elettronico)
 
 <a href="https://www.mediafire.com/file/xrwlwz3dky9nf51/app-release.apk/file">Download Preview APK</a>
