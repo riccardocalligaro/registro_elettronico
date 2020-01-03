@@ -66,14 +66,18 @@ class AppNavigator {
   Future showMessageDialog(
       BuildContext context, String title, String message) async {
     await showDialog(
-        context: context,
-        builder: (bCtx) => AlertDialog(
-              title: Text(title),
-              content: Text(message),
-              actions: <Widget>[
-                RaisedButton(onPressed: () => Navigator.of(bCtx).pop())
-              ],
-            ));
+      context: context,
+      builder: (bCtx) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('OK'),
+            onPressed: () => Navigator.of(bCtx).pop(),
+          )
+        ],
+      ),
+    );
   }
 
   void showSnackBar(BuildContext context, String content) {

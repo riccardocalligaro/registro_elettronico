@@ -22,11 +22,11 @@ class AppBlocDelegate {
   static AppBlocDelegate _instance;
 
   List<BlocProvider> _blocProviders;
-  List<RepositoryProvider> _repositoryProviders;
+  //List<RepositoryProvider> _repositoryProviders;
 
   AppBlocDelegate._(BuildContext context) {
     Injector i = Injector.appInstance;
-    _repositoryProviders = [];
+    //_repositoryProviders = [];
 
     _blocProviders = [
       BlocProvider<AuthBloc>(

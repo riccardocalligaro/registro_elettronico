@@ -349,7 +349,8 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(
                         height: 10,
                       ),
-                      Text(AppLocalizations.of(context).translate('no_subjects'))
+                      Text(
+                          AppLocalizations.of(context).translate('no_subjects'))
                     ],
                   ),
                 ),
@@ -368,34 +369,54 @@ class _HomePageState extends State<HomePage> {
 
   StreamBuilder<List<Lesson>> _buildLessonsCards(BuildContext context) {
     return StreamBuilder(
-      stream: BlocProvider.of<LessonsBloc>(context).relevandLessonsOfToday(),
+      stream: BlocProvider.of<LessonsBloc>(context)
+          .watchLessonsByDate(DateTime.utc(2019, 12, 14)),
+
+      //stream: BlocProvider.of<LessonsBloc>(context).relevandLessonsOfToday(),
       initialData: List(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         List<Lesson> lessons = snapshot.data ?? List();
-        if (lessons.length >= 2) {
-          lessons = GlobalUtils.getGroupedLessonsList(lessons);
-        }
+        final lessonsGrouped = GlobalUtils.getGroupedLessonsMap(lessons);
         print(lessons.length);
-        if (lessons.length == 0) {
-          return Center(
-            child: Icon(
-              Icons.subject,
-              size: 80,
-            ),
-          );
-        } else {
-          return ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: lessons.length,
-            itemBuilder: (_, index) {
-              final lesson = lessons[index];
-              return LessonCard(
-                position: index,
-                lesson: lesson,
-              );
-            },
-          );
-        }
+
+        return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: lessonsGrouped.keys.length,
+          itemBuilder: (context, index) {
+            final lessonKey = lessonsGrouped.keys.elementAt(index);
+            final duration = lessonsGrouped[lessonKey];
+            final lesson = lessons
+                .where((l) =>
+                    l.lessonArg == lessonKey.item2 &&
+                    l.subjectId == lessonKey.item1)
+                .elementAt(0);
+            return LessonCard(
+              lesson: lesson,
+              duration: duration,
+              position: index,
+            );
+          },
+        );
+        // if (lessons.length == 0) {
+        //   return Center(
+        //     child: Icon(
+        //       Icons.subject,
+        //       size: 80,
+        //     ),
+        //   );
+        // } else {
+        //   return ListView.builder(
+        //     scrollDirection: Axis.horizontal,
+        //     itemCount: lessons.length,
+        //     itemBuilder: (_, index) {
+        //       final lesson = lessons[index];
+        //       return LessonCard(
+        //         position: index,
+        //         lesson: lesson,
+        //       );
+        //     },
+        //   );
+        // }
       },
     );
   }

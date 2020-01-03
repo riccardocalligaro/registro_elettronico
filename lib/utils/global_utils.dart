@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:core';
 import 'dart:math';
 
@@ -5,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:injector/injector.dart';
+import 'package:logger/logger.dart';
 import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/data/repository/lessons_repository_impl.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
@@ -15,6 +18,7 @@ import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
+import 'package:tuple/tuple.dart';
 
 import 'constants/registro_constants.dart';
 
@@ -24,7 +28,6 @@ class GlobalUtils {
   static List<Lesson> getGroupedLessonsList(List<Lesson> lessons) {
     List<Lesson> lessonsList = [];
     int count = 1;
-
     for (var i = 0; i < lessons.length - 1; i++) {
       if (i == lessons.length - 1) {
         if (lessons[i - 1].lessonArg == lessons[i].lessonArg &&
@@ -42,6 +45,22 @@ class GlobalUtils {
     }
     lessonsList.add(lessons[lessons.length - 1]);
     return lessonsList;
+  }
+
+  static Map<Tuple2<int, String>, int> getGroupedLessonsMap(
+      List<Lesson> lessons) {
+    final Map<Tuple2<int, String>, int> lessonsMap = Map.fromIterable(
+      lessons,
+      key: (e) => Tuple2<int, String>(e.subjectId, e.lessonArg),
+      value: (e) => lessons
+          .where(
+            (entry) =>
+                entry.lessonArg == e.lessonArg &&
+                entry.subjectId == e.subjectId,
+          )
+          .length,
+    );
+    return lessonsMap;
   }
 
   static Future<Period> getPeriodFromDate(DateTime date) async {

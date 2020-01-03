@@ -118,5 +118,8 @@
   "reset_db_alert_message": "All the data will be eliminated and you'll need to synchronize again.",
   "no_events": "No events",
   "press_here": "Press here",
-  "download_slide_description": "This is data is vital for the correct functioning of the application"
+  "download_slide_description": "This is data is vital for the correct functioning of the application",
+  "author":"Author",
+  "argument":"Argument",
+  "type":"Type"
 }

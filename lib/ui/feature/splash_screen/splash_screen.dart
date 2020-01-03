@@ -13,12 +13,12 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   bool _alreadyInit = false;
-  bool _firstLogin = false;
+  //bool _firstLogin = false;
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (!_alreadyInit) {
       _alreadyInit = true;
       _autoSignIn(context);
