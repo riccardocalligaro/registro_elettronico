@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
-import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/agenda_section.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/last_grades_section.dart';
@@ -15,15 +11,12 @@ import 'package:registro_elettronico/ui/feature/home/components/sections/noticeb
 import 'package:registro_elettronico/ui/feature/home/components/sections/subjects_grid_section.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
-import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'components/widgets/event_card.dart';
 
 /// The [home] page of the application
 class HomePage extends StatefulWidget {
@@ -55,7 +48,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations trans = AppLocalizations.of(context);
     return Scaffold(
       key: _drawerKey,
       appBar: CustomAppBar(

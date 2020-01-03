@@ -27,6 +27,20 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
     }).get();
   }
 
+  Future<List<Lesson>> getLessonsForSubjectId(int subjectId) {
+    return customSelectQuery(
+      'SELECT * FROM lessons WHERE subject_id = ? GROUP BY lesson_arg ORDER BY date DESC',
+      readsFrom: {
+        lessons,
+      },
+      variables: [
+        Variable.withInt(subjectId),
+      ],
+    ).map((row) {
+      return Lesson.fromData(row.data, db);
+    }).get();
+  }
+
   /// Gets lessons of a [date] by checking the day, month and year
   Future<List<Lesson>> getLessonsByDate(DateTime date) {
     return customSelectQuery("""

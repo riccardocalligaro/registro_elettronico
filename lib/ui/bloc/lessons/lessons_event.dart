@@ -16,6 +16,12 @@ class UpdateAllLessons extends LessonsEvent {}
 /// Gets the [last] lessons
 class GetLastLessons extends LessonsEvent {}
 
+class GetLessonsForSubject extends LessonsEvent {
+  final int subjectId;
+
+  const GetLessonsForSubject({@required this.subjectId});
+}
+
 /// Gets the lessons for a [date]
 class GetLessonsByDate extends LessonsEvent {
   final DateTime dateTime;

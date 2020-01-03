@@ -17,6 +17,9 @@ abstract class LessonsRepository {
   /// Gets of [all] the lessons
   Future<List<Lesson>> getLessons();
 
+  /// Gets lessons for a [subject]
+  Future<List<Lesson>> getLessonsForSubject(int subjectId);
+
   ///Delete all lessons
   Future deleteAllLessons();
 

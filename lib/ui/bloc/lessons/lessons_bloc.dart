@@ -31,6 +31,8 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
       yield* _mapUpdateAllLessonsToState();
     } else if (event is UpdateTodayLessons) {
       yield* _mapTodayLessonsToState();
+    } else if (event is GetLessonsForSubject) {
+      yield* _mapGetLessonsForSubjectToState(event.subjectId);
     }
   }
 
@@ -86,6 +88,16 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
       yield LessonsLoadServerError(serverError: dioError);
     } catch (e) {
       LessonsLoadError(error: e.toString());
+    }
+  }
+
+  Stream<LessonsState> _mapGetLessonsForSubjectToState(int subjectId) async* {
+    yield LessonsLoadInProgress();
+    try {
+      final lessons = await lessonsRepository.getLessonsForSubject(subjectId);
+      yield LessonsLoadSuccess(lessons: lessons);
+    } catch (e) {
+      yield LessonsLoadError(error: e.toString());
     }
   }
 }

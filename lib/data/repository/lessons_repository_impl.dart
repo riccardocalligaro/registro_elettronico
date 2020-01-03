@@ -77,4 +77,9 @@ class LessonsRepositoryImpl implements LessonsRepository {
   Future<List<Lesson>> getLessonsByDate(DateTime date) {
     return lessonDao.getLessonsByDate(date);
   }
+
+  @override
+  Future<List<Lesson>> getLessonsForSubject(int subjectId) {
+    return lessonDao.getLessonsForSubjectId(subjectId);
+  }
 }
