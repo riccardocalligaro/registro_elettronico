@@ -13,6 +13,7 @@ class AgendaCardEvent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Stack(
+        overflow: Overflow.visible,
         children: <Widget>[
           Positioned(
             left: 38,
@@ -36,29 +37,34 @@ class AgendaCardEvent extends StatelessWidget {
                               fontWeight: FontWeight.bold, fontSize: 14.0),
                         ),
                         Text(
-                          DateFormat.MMM(AppLocalizations.of(context).locale.toString()).format(agendaEvent.begin),
+                          DateFormat.MMM(AppLocalizations.of(context)
+                                  .locale
+                                  .toString())
+                              .format(agendaEvent.begin),
                           style: TextStyle(fontSize: 13.0),
                         )
                       ],
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          agendaEvent.authorName,
-                          style: TextStyle(
-                              fontSize: 14.0, fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          agendaEvent.notes,
-                          style: TextStyle(fontSize: 13.0),
-                        )
-                      ],
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            agendaEvent.authorName,
+                            style: TextStyle(
+                                fontSize: 14.0, fontWeight: FontWeight.w500),
+                          ),
+                          Text(
+                            agendaEvent.notes,
+                            style: TextStyle(fontSize: 13.0),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 )

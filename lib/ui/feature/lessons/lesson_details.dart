@@ -56,6 +56,8 @@ class _LessonDetailsState extends State<LessonDetails> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<LessonsBloc>(context)
+        .add(GetLessonsForSubject(subjectId: widget.subjectId));
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -71,15 +73,28 @@ class _LessonDetailsState extends State<LessonDetails> {
         ],
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: BlocBuilder<LessonsBloc, LessonsState>(
           builder: (context, state) {
-            if (state is LessonsLoading) {
+            if (state is LessonsUpdateLoadInProgress ||
+                state is LessonsLoadInProgress) {
               return Center(
                 child: CircularProgressIndicator(),
               );
+            } else if (state is LessonsLoadSuccess) {
+              return _buildLessonsList(state.lessons);
+            } else if (state is LessonsLoadServerError ||
+                state is LessonsLoadError) {
+              return CustomPlaceHolder(
+                text: AppLocalizations.of(context).translate('error'),
+                icon: Icons.error,
+                showUpdate: true,
+                onTap: () {
+                  BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
+                },
+              );
             }
-            return _buildLessonsList(context);
+
+            return Text(state.toString());
           },
         ),
       ),
@@ -90,7 +105,6 @@ class _LessonDetailsState extends State<LessonDetails> {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {
         this._searchIcon = new Icon(Icons.close);
-        // todo: group
         this._appBarTitle = new TextField(
           controller: _filter,
           autofocus: true,
@@ -109,66 +123,59 @@ class _LessonDetailsState extends State<LessonDetails> {
     });
   }
 
-  StreamBuilder<List<Lesson>> _buildLessonsList(BuildContext context) {
-    return StreamBuilder(
-      stream: BlocProvider.of<LessonsBloc>(context).relevantLessons,
-      initialData: List<Lesson>(),
-      builder: (BuildContext context, AsyncSnapshot<List<Lesson>> snapshot) {
-        List<Lesson> lessons = snapshot.data
-                .where((lesson) => lesson.subjectId == widget.subjectId)
-                .toList() ??
-            List<Lesson>();
-
-        if (_searchText.isNotEmpty) {
-          lessons = lessons
-              .where((lesson) => lesson.lessonArg
-                  .toLowerCase()
-                  .contains(_searchText.toLowerCase()))
-              .toList()
-                ..sort((b, a) => a.date.compareTo(b.date));
-        }
-        if (lessons.length > 0) {
-          return ListView.builder(
-            itemCount: lessons.length,
-            itemBuilder: (context, index) {
-              final lesson = lessons[index];
-              return Padding(
-                padding: const EdgeInsets.only(top: 4.0),
-                child: Card(
-                    child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: ListTile(
-                    title: Text(DateUtils.convertDateLocale(lesson.date,
-                        AppLocalizations.of(context).locale.toString())),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: _buildDescription(lesson),
-                    ),
-                    isThreeLine: false,
+  Widget _buildLessonsList(List<Lesson> lessons) {
+    if (_searchText.isNotEmpty) {
+      lessons = lessons
+          .where((lesson) => lesson.lessonArg
+              .toLowerCase()
+              .contains(_searchText.toLowerCase()))
+          .toList()
+            ..sort((b, a) => a.date.compareTo(b.date));
+    }
+    if (lessons.length > 0) {
+      return RefreshIndicator(
+        onRefresh: _refreshLessons,
+        child: ListView.builder(
+          padding: EdgeInsets.all(8.0),
+          itemCount: lessons.length,
+          itemBuilder: (context, index) {
+            final lesson = lessons[index];
+            return Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: Card(
+                  child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: ListTile(
+                  title: Text(DateUtils.convertDateLocale(lesson.date,
+                      AppLocalizations.of(context).locale.toString())),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: _buildDescription(lesson),
                   ),
-                )),
-              );
-            },
-          );
-        }
-        if (_searchText.isNotEmpty) {
-          return CustomPlaceHolder(
-            text: AppLocalizations.of(context).translate('no_lessons'),
-            icon: Icons.assignment,
-            showUpdate: false,
-          );
-        } else {
-          return CustomPlaceHolder(
-            text: AppLocalizations.of(context).translate('no_lessons'),
-            icon: Icons.assignment,
-            onTap: () {
-              BlocProvider.of<LessonsBloc>(context).add(FetchAllLessons());
-            },
-            showUpdate: true,
-          );
-        }
-      },
-    );
+                  isThreeLine: false,
+                ),
+              )),
+            );
+          },
+        ),
+      );
+    }
+    if (_searchText.isNotEmpty) {
+      return CustomPlaceHolder(
+        text: AppLocalizations.of(context).translate('no_lessons'),
+        icon: Icons.assignment,
+        showUpdate: false,
+      );
+    } else {
+      return CustomPlaceHolder(
+        text: AppLocalizations.of(context).translate('no_lessons'),
+        icon: Icons.assignment,
+        onTap: () {
+          BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
+        },
+        showUpdate: true,
+      );
+    }
   }
 
   /// With this method we can show the lesson argument if present otherwise we show only the lesson type
@@ -182,5 +189,10 @@ class _LessonDetailsState extends State<LessonDetails> {
     }
 
     return textWidgets;
+  }
+
+  Future _refreshLessons() async {
+    BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
+    BlocProvider.of<LessonsBloc>(context).add(GetLessonsForSubject(subjectId: widget.subjectId));
   }
 }

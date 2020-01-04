@@ -10,11 +10,8 @@ abstract class SubjectsRepository {
   Future<List<Subject>> getAllSubjects();
 
   /// Stream of all subjects
-  Stream<List<Subject>> watchAllSubjects();
-
-  /// Stream of subjects without sostegno
-  Stream<List<Subject>> watchRelevantSubjects();
+  Future<List<Subject>> getSubjectsOrdered();
 
   /// Stream of all professors
-  Stream<List<Professor>> watchAllProfessors();
+  Future<List<Professor>> getAllProfessors();
 }

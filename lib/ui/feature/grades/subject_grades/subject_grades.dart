@@ -8,7 +8,9 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/local_grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/local_grades/local_grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/local_grades/local_grades_state.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/subjects_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/subjects_event.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
@@ -53,7 +55,9 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     log.v(_objective);
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      _objective = (preferences.getInt('objective_${widget.subject.id}_${widget.period}') ?? 6);
+      _objective = (preferences
+              .getInt('objective_${widget.subject.id}_${widget.period}') ??
+          6);
     });
     log.i(_objective);
   }
@@ -120,18 +124,6 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            // Padding(
-            //   padding: const EdgeInsets.only(bottom: 8.0),
-            //   child: Row(
-            //     children: <Widget>[
-            //       Container(
-            //         child: Expanded(
-            //           child: Text('Your grades'),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
             BlocBuilder<LocalGradesBloc, LocalGradesState>(
               builder: (context, state) {
                 if (state is LocalGradesError) {
@@ -172,7 +164,9 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                             AppLocalizations.of(context)
                                 .translate('pick_a_grade'),
                           ),
-                        cancelWidget: Text(AppLocalizations.of(context).translate('cancel').toUpperCase()),
+                          cancelWidget: Text(AppLocalizations.of(context)
+                              .translate('cancel')
+                              .toUpperCase()),
                           initialDoubleValue: _currentPickerValue,
                         );
                       },
@@ -320,27 +314,30 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
   }
 
   Widget _buildProfessorsCard() {
-    return StreamBuilder(
-      stream: BlocProvider.of<SubjectsBloc>(context).professors,
-      initialData: List<Professor>(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        List<Professor> professors = snapshot.data ?? List<Professor>();
-        return Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              leading: Icon(Icons.person),
-              title: Text(
-                _getProfessorsText(
-                  professors
-                      .where((professor) =>
-                          professor.subjectId == widget.subject.id)
-                      .toList(),
-                ),
+    BlocProvider.of<SubjectsBloc>(context).add(GetProfessors());
+
+    return BlocBuilder<SubjectsBloc, SubjectsState>(
+      builder: (context, state) {
+        if (state is ProfessorsLoadSuccess) {
+          String professorsText;
+          if (state.professors.length > 0) {
+            professorsText = _getProfessorsText(state.professors
+                .where((professor) => professor.subjectId == widget.subject.id)
+                .toList());
+          } else {
+            professorsText =
+                AppLocalizations.of(context).translate('no_professors');
+          }
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                leading: Icon(Icons.person),
+                title: Text(professorsText ?? ''),
               ),
             ),
-          ),
-        );
+          );
+        }
       },
     );
   }
@@ -427,18 +424,27 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
               Column(
                 children: <Widget>[
                   _buildStatsCircle(averages.scrittoAverage),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(AppLocalizations.of(context).translate('written')),
                 ],
               ),
               Column(
                 children: <Widget>[
                   _buildStatsCircle(averages.oraleAverage),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(AppLocalizations.of(context).translate('oral')),
                 ],
               ),
               Column(
                 children: <Widget>[
                   _buildStatsCircle(averages.praticoAverage),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(AppLocalizations.of(context).translate('pratico')),
                 ],
               ),
@@ -453,7 +459,10 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     return Card(
       child: Padding(
         padding: const EdgeInsets.only(right: 21.0),
-        child: GradesChart(grades: grades, objective: _objective,),
+        child: GradesChart(
+          grades: grades,
+          objective: _objective,
+        ),
       ),
     );
   }
@@ -487,6 +496,6 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
         Icons.trending_down,
         color: Colors.red,
       );
-      return Icon(Icons.trending_flat);
+    return Icon(Icons.trending_flat);
   }
 }

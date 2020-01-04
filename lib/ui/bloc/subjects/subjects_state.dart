@@ -6,26 +6,65 @@ abstract class SubjectsState {}
 
 class SubjectsInitial extends SubjectsState {}
 
-class SubjectsUpdateLoading extends SubjectsState {}
+// Updates
+class SubjectsUpdateLoadInProgress extends SubjectsState {}
 
-class SubjectsUpdateError extends SubjectsState {
+class SubjectsUpdateLoadError extends SubjectsState {
   final String error;
 
-  SubjectsUpdateError(this.error);
+  SubjectsUpdateLoadError({@required this.error});
 }
 
-class SubjectsUpdateLoaded extends SubjectsState {}
+class SubjectsUpdateLoadSuccess extends SubjectsState {}
 
-class SubjectsLoading extends SubjectsState {}
+// Subjects
 
-class SubjectsError extends SubjectsState {
+class SubjectsLoadInProgress extends SubjectsState {}
+
+class SubjectsLoadError extends SubjectsState {
   final String error;
 
-  SubjectsError(this.error);
+  SubjectsLoadError({@required this.error});
 }
 
-class SubjectsLoaded extends SubjectsState {
+class SubjectsLoadSuccess extends SubjectsState {
   final List<Subject> subjects;
 
-  SubjectsLoaded(this.subjects);
+  SubjectsLoadSuccess({@required this.subjects});
+}
+
+// Subjects and professors
+
+class SubjectsAndProfessorsLoadInProgress extends SubjectsState {}
+
+class SubjectsAndProfessorsLoadSuccess extends SubjectsState {
+  final List<Subject> subjects;
+  final List<Professor> professors;
+
+  SubjectsAndProfessorsLoadSuccess({
+    @required this.subjects,
+    @required this.professors,
+  });
+}
+
+class SubjectsAndProfessorsLoadError extends SubjectsState {
+  final String error;
+
+  SubjectsAndProfessorsLoadError({@required this.error});
+}
+
+// Professors
+
+class ProfessorsLoadInProgress extends SubjectsState {}
+
+class ProfessorsLoadSuccess extends SubjectsState {
+  final List<Professor> professors;
+
+  ProfessorsLoadSuccess({@required this.professors});
+}
+
+class ProfessorsLoadError extends SubjectsState {
+  final String error;
+
+  ProfessorsLoadError({@required this.error});
 }

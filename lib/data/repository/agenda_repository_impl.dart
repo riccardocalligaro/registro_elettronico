@@ -65,17 +65,6 @@ class AgendaRepositoryImpl implements AgendaRepository {
   }
 
   @override
-  Stream<List<AgendaEvent>> watchAllEvents() {
-    return agendaDao.watchAllEvents();
-  }
-
-  @override
-  Stream<List<AgendaEvent>> watchLastEvents(
-      DateTime date, int numbersOfEvents) {
-    return agendaDao.watchLastEvents(date, numbersOfEvents);
-  }
-
-  @override
   Future deleteAllEvents() {
     return agendaDao.deleteAllEvents();
   }
@@ -83,5 +72,10 @@ class AgendaRepositoryImpl implements AgendaRepository {
   @override
   Future<List<AgendaEvent>> getAllEvents() {
     return agendaDao.getAllEvents();
+  }
+
+  @override
+  Future<List<AgendaEvent>> getLastEvents(DateTime date, int numbersOfEvents) {
+    return agendaDao.getLastEvents(date, numbersOfEvents);
   }
 }

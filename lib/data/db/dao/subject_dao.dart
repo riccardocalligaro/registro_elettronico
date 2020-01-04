@@ -11,16 +11,13 @@ class SubjectDao extends DatabaseAccessor<AppDatabase> with _$SubjectDaoMixin {
   Future insertSubject(Insertable<Subject> subject) =>
       into(subjects).insert(subject, orReplace: true);
 
-  Stream<List<Subject>> watchAllSubjects() => select(subjects).watch();
-
   Future<List<Subject>> getAllSubjects() => select(subjects).get();
 
-  Stream<List<Subject>> watchRelevanantSubjects() {
+  Future<List<Subject>> getSubjectsOrdered() {
     return (select(subjects)
           ..orderBy([
-            (t) =>
-                OrderingTerm(expression: t.name, mode: OrderingMode.asc)
+            (t) => OrderingTerm(expression: t.name, mode: OrderingMode.asc)
           ]))
-        .watch();
+        .get();
   }
 }
