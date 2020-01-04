@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
+import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/agenda_section.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/last_grades_section.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/lessons_cards_section.dart';
@@ -195,12 +199,15 @@ class _HomePageState extends State<HomePage> {
   /// Updates lessons, agenda, grades for the [user]
   Future<void> _refreshData() async {
     BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
-    // BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
-    // BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
-    // BlocProvider.of<GradesBloc>(context).add(FetchGrades());
-    // BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
+
+    BlocProvider.of<GradesBloc>(context).add(FetchGrades());
+    BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
+    //BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
+    //BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
   }
 }
+
+class FetchSubjects {}
 
 class NoGlowBehavior extends ScrollBehavior {
   @override
