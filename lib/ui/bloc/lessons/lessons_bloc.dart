@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
 
 import './bloc.dart';
@@ -21,6 +22,8 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
   Stream<LessonsState> mapEventToState(
     LessonsEvent event,
   ) async* {
+    Logger log = Logger();
+    log.i(event.toString());
     if (event is GetLastLessons) {
       yield* _mapGetLastLessonsToState();
     } else if (event is GetLessonsByDate) {

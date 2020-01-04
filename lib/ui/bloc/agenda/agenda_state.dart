@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 
 abstract class AgendaState extends Equatable {
   const AgendaState();
@@ -9,12 +11,20 @@ abstract class AgendaState extends Equatable {
 
 class AgendaInitial extends AgendaState {}
 
-class AgendaLoading extends AgendaState {}
+// Updates
+class AgendaUpdateLoadInProgress extends AgendaState {}
 
-class AgendaLoaded extends AgendaState {}
+class AgendaUpdateLoadSuccess extends AgendaState {}
 
-class AgendaError extends AgendaState {
-  final String message;
+// Updates
+class AgendaLoadInProgress extends AgendaState {}
 
-  AgendaError(this.message);
+class AgendaLoadSuccess extends AgendaState {
+  final List<AgendaEvent> events;
+  const AgendaLoadSuccess({@required this.events});
+}
+
+class AgendaLoadError extends AgendaState {
+  final String error;
+  const AgendaLoadError({@required this.error});
 }
