@@ -41,7 +41,7 @@ class TimetableBloc extends Bloc<TimetableEvent, TimetableState> {
       try {
         Logger log = Logger();
 
-        await timetableRepository.updateTimeTable(event.begin, event.end);
+        await timetableRepository.updateTimeTable();
         final subjects = await subjectsRepository.getAllSubjects();
         final timetable = await timetableRepository.getTimetable();
         log.i(timetable.length);

@@ -90,6 +90,8 @@ class _LessonDetailsState extends State<LessonDetails> {
                 showUpdate: true,
                 onTap: () {
                   BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
+                  BlocProvider.of<LessonsBloc>(context)
+                      .add(GetLessonsForSubject(subjectId: widget.subjectId));
                 },
               );
             }
@@ -193,6 +195,7 @@ class _LessonDetailsState extends State<LessonDetails> {
 
   Future _refreshLessons() async {
     BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
-    BlocProvider.of<LessonsBloc>(context).add(GetLessonsForSubject(subjectId: widget.subjectId));
+    BlocProvider.of<LessonsBloc>(context)
+        .add(GetLessonsForSubject(subjectId: widget.subjectId));
   }
 }

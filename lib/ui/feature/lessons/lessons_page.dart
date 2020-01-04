@@ -75,6 +75,7 @@ class LessonsPage extends StatelessWidget {
         icon: Icons.assignment,
         onTap: () {
           BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
+          BlocProvider.of<SubjectsBloc>(context).add(GetSubjectsAndProfessors());
         },
         showUpdate: true,
       );

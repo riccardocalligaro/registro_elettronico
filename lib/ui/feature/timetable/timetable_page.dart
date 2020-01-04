@@ -1,6 +1,9 @@
+import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:injector/injector.dart';
+import 'package:intl/intl.dart';
 import 'package:registro_elettronico/data/db/dao/timetable_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/timetable/bloc.dart';
@@ -10,9 +13,6 @@ import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
-import 'package:registro_elettronico/utils/string_utils.dart';
-import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 
 import '../../bloc/timetable/timetable_event.dart';
 
@@ -33,13 +33,7 @@ class _TimetablePageState extends State<TimetablePage> {
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-    final date = DateTime.utc(2019, 12, 10);
-    BlocProvider.of<TimetableBloc>(context).add(
-      GetNewTimetable(
-        begin: DateTime.now(),
-        end: DateTime.now().add(Duration(days: 6)),
-      ),
-    );
+
     return Scaffold(
       key: _drawerKey,
       appBar: CustomAppBar(
@@ -49,105 +43,95 @@ class _TimetablePageState extends State<TimetablePage> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: Icon(Icons.sync),
             onPressed: () async {
-              final List<DateTime> picked = await DateRagePicker.showDatePicker(
-                context: context,
-                initialFirstDate: DateTime.now(),
-                initialLastDate: (DateTime.now()).add(Duration(days: 6)),
-                firstDate: DateTime(2015),
-                lastDate: DateTime(2021),
-              );
-              if (picked != null && picked.length == 2) {
-                BlocProvider.of<TimetableBloc>(context).add(
-                  GetNewTimetable(
-                    begin: picked[0],
-                    end: picked[0].add(Duration(days: 6)),
-                  ),
-                );
-              }
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () async {
-              final TimetableDao timetableDao =
-                  TimetableDao(Injector.appInstance.getDependency());
-              await timetableDao.deleteTimetable();
+              BlocProvider.of<TimetableBloc>(context).add(GetNewTimetable());
               BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
             },
-          )
+          ),
         ],
       ),
       drawer: AppDrawer(
         position: DrawerConstants.TIMETABLE,
       ),
-      body: BlocBuilder<TimetableBloc, TimetableState>(
-        builder: (context, state) {
-          if (state is TimetableLoading) {
-            return _buildTimetableLoading();
-          }
+      body: Container(
+        child: BlocBuilder<TimetableBloc, TimetableState>(
+          builder: (context, state) {
+            if (state is TimetableLoading) {
+              return _buildTimetableLoading();
+            }
 
-          if (state is TimetableError) {
-            return _buildTimetableError(state.error);
-          }
+            if (state is TimetableError) {
+              return _buildTimetableError(state.error);
+            }
 
-          if (state is TimetableLoaded) {
-            if (state.timetableEntries.length > 0)
-              return _buildTimetableList(state.timetableEntries, state.subjects);
+            if (state is TimetableLoaded) {
+              if (state.timetableEntries.length > 0)
+                return _buildTimetableList(
+                    state.timetableEntries, state.subjects);
 
-            return CustomPlaceHolder(
-              icon: Icons.access_time,
-              text: 'No timetable',
-              showUpdate: true,
-              onTap: () {
-                BlocProvider.of<TimetableBloc>(context).add(
-                  GetNewTimetable(
-                    begin: date,
-                    end: date.add(Duration(days: 6)),
-                  ),
-                );
-              },
-            );
-          }
-          return Container();
-        },
+              return CustomPlaceHolder(
+                icon: Icons.access_time,
+                text: 'No timetable',
+                showUpdate: true,
+                onTap: () {},
+              );
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }
 
-  Widget _buildTimetableList(List<TimetableEntry> timetable, List<Subject> subjects) {
-    
+  Widget _buildTimetableList(
+      List<TimetableEntry> timetable, List<Subject> subjects) {
     return ListView.builder(
+      itemCount: 7,
       shrinkWrap: true,
-      itemCount: timetable.length,
+      //scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        final entry = timetable[index];
-        return Container(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(entry.dayOfWeek.toString()),
+        if (index != 0) {
+          final List<TimetableEntry> entries =
+              timetable.where((t) => t.dayOfWeek == index).toList();
+          entries.sort((a, b) => a.start.compareTo(b.start));
+          return Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 21.0),
+                child: Text(
+                  DateUtils.convertSingleDayForDisplay(
+                      DateTime.utc(2000, 1, 2).add(Duration(days: index)),
+                      AppLocalizations.of(context).locale.toString()),
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                 ),
-                Card(
-                  child: ListTile(
-                    title: Text(
-                      subjects.where((s) => s.id == entry.subject).single.name ?? '',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    subtitle: Text(
-                      '${entry.start}H',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
+              ),
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: entries.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index2) {
+                  final entry = entries[index2];
+                  return Column(
+                    children: <Widget>[
+                      ListTile(
+                        leading: Text('${entry.start}H'),
+                        title: Text(
+                          subjects
+                              .where((s) => s.id == entry.subject)
+                              .single
+                              .name,
+                        ),
+                      ),
+                      Divider(),
+                    ],
+                  );
+                },
+              )
+            ],
+          );
+        }
+        return Container();
       },
     );
   }

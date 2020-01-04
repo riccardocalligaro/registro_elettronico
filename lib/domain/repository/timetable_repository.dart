@@ -2,7 +2,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 
 abstract class TimetableRepository {
   /// Checks the lessons and [updates] the timetable
-  Future updateTimeTable(DateTime begin, DateTime end);
+  Future updateTimeTable();
 
   /// Gets [all] events of the [timetable]
   Future<List<TimetableEntry>> getTimetable();

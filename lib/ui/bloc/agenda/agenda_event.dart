@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 
 abstract class AgendaEvent extends Equatable {
   const AgendaEvent();
