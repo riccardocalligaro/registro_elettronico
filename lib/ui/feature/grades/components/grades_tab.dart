@@ -23,8 +23,7 @@ class GradeTab extends StatefulWidget {
   _GradeTabState createState() => _GradeTabState();
 }
 
-class _GradeTabState extends State<GradeTab>
-    with AutomaticKeepAliveClientMixin {
+class _GradeTabState extends State<GradeTab> {
   bool _ascending = false;
 
   @override
@@ -220,21 +219,4 @@ class _GradeTabState extends State<GradeTab>
     BlocProvider.of<GradesBloc>(context).add(FetchGrades());
     BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
   }
-
-  @override
-  bool get wantKeepAlive => true;
-
-  //// List _getGradesListForPeriodFromMap(Map<dynamic, List<Grade>> grades) {
-  ////   final List<Grade> gradesList = [];
-  ////   grades.forEach((subject, grades) => grades.forEach((grade) {
-  ////         if (grade.periodPos == widget.period ||
-  ////             widget.period == TabsConstants.GENERALE) {
-  ////           gradesList.add(grade);
-  ////         }
-  ////       }));
-  ////   gradesList.sort((b, a) => a.eventDate.compareTo(b.eventDate));
-  ////
-  ////   return gradesList;
-  //// }
-
 }

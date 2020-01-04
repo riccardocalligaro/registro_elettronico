@@ -62,7 +62,7 @@ class LessonsPage extends StatelessWidget {
     if (subjects.length > 0) {
       return RefreshIndicator(
         onRefresh: () {
-          _refreshSubjects(context);
+          return _refreshSubjects(context);
         },
         child: SubjectsList(
           professors: professors,

@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  /// The period of the [aberages] in my subjects
+  /// The period of the [averages] in my subjects
   int _periodToShow;
 
   /// Key necessaery for the [drawer]
