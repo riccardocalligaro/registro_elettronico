@@ -24,7 +24,6 @@ class AgendaPage extends StatefulWidget {
 class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-  DateTime _currentSelectedDay;
   List _selectedEvents;
   AnimationController _animationController;
   CalendarController _calendarController;
@@ -59,7 +58,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     BlocProvider.of<LessonsBloc>(context).add(GetLessonsByDate(dateTime: day));
     setState(() {
       _selectedEvents = events;
-      _currentSelectedDay = day;
     });
   }
 
@@ -68,7 +66,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    //BlocProvider.of<AgendaBloc>(context).add(GetAllAgenda());
+    BlocProvider.of<AgendaBloc>(context).add(GetAllAgenda());
 
     return Scaffold(
       key: _drawerKey,

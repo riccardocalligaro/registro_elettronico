@@ -338,6 +338,8 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
             ),
           );
         }
+
+        return Container();
       },
     );
   }
