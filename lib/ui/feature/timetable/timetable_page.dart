@@ -14,6 +14,8 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 
+import '../../bloc/timetable/timetable_event.dart';
+
 class TimetablePage extends StatefulWidget {
   const TimetablePage({Key key}) : super(key: key);
 
@@ -32,7 +34,12 @@ class _TimetablePageState extends State<TimetablePage> {
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
     final date = DateTime.utc(2019, 12, 10);
-
+    BlocProvider.of<TimetableBloc>(context).add(
+      GetNewTimetable(
+        begin: DateTime.now(),
+        end: DateTime.now().add(Duration(days: 6)),
+      ),
+    );
     return Scaffold(
       key: _drawerKey,
       appBar: CustomAppBar(
@@ -67,6 +74,7 @@ class _TimetablePageState extends State<TimetablePage> {
               final TimetableDao timetableDao =
                   TimetableDao(Injector.appInstance.getDependency());
               await timetableDao.deleteTimetable();
+              BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
             },
           )
         ],
@@ -85,8 +93,8 @@ class _TimetablePageState extends State<TimetablePage> {
           }
 
           if (state is TimetableLoaded) {
-            if (state.timetable.length > 0)
-              return _buildTimetableList(state.timetable);
+            if (state.timetableEntries.length > 0)
+              return _buildTimetableList(state.timetableEntries, state.subjects);
 
             return CustomPlaceHolder(
               icon: Icons.access_time,
@@ -108,13 +116,13 @@ class _TimetablePageState extends State<TimetablePage> {
     );
   }
 
-  Widget _buildTimetableList(Map<DateTime, List<TimetableEntry>> timetable) {
+  Widget _buildTimetableList(List<TimetableEntry> timetable, List<Subject> subjects) {
+    
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: timetable.keys.length,
+      itemCount: timetable.length,
       itemBuilder: (context, index) {
-        final date = timetable.keys.elementAt(index);
-        List<TimetableEntry> lessons = timetable[date];
+        final entry = timetable[index];
         return Container(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -122,31 +130,18 @@ class _TimetablePageState extends State<TimetablePage> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(StringUtils.capitalize(
-                      DateUtils.convertSingleDayForDisplay(date,
-                          AppLocalizations.of(context).locale.toString()))),
+                  child: Text(entry.dayOfWeek.toString()),
                 ),
-                IgnorePointer(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: lessons.length,
-                    itemBuilder: (context, index) {
-                      final lesson = lessons[index];
-                      return Card(
-                        color:
-                            GlobalUtils.getColorFromPosition(lesson.position),
-                        child: ListTile(
-                          title: Text(
-                            lesson.subject,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          subtitle: Text(
-                            '${lesson.duration}H',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      );
-                    },
+                Card(
+                  child: ListTile(
+                    title: Text(
+                      subjects.where((s) => s.id == entry.subject).single.name ?? '',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    subtitle: Text(
+                      '${entry.start}H',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 )
               ],

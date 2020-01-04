@@ -14,9 +14,11 @@ class TimetableError extends TimetableState {
 }
 
 class TimetableLoaded extends TimetableState {
-  final Map<DateTime, List<TimetableEntry>> timetable;
+  final List<TimetableEntry> timetableEntries;
+  final List<Subject> subjects;
 
   TimetableLoaded({
-    @required this.timetable,
+    @required this.timetableEntries,
+    @required this.subjects,
   });
 }

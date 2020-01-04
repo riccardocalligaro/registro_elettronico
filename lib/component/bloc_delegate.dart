@@ -86,7 +86,7 @@ class AppBlocDelegate {
         create: (ctx) => LocalGradesBloc(i.getDependency()),
       ),
       BlocProvider<TimetableBloc>(
-        create: (ctx) => TimetableBloc(i.getDependency()),
+        create: (ctx) => TimetableBloc(i.getDependency(), i.getDependency()),
       )
     ];
   }

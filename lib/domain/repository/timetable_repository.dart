@@ -1,7 +1,6 @@
 import 'package:registro_elettronico/data/db/moor_database.dart';
 
 abstract class TimetableRepository {
-
   /// Checks the lessons and [updates] the timetable
   Future updateTimeTable(DateTime begin, DateTime end);
 
@@ -19,6 +18,4 @@ abstract class TimetableRepository {
 
   /// Updates an entry looking at the [eventId]
   Future updateTimetableEntry(TimetableEntry entry);
-
-  Future<Map<DateTime, List<TimetableEntry>>> getTimetableMap();
 }

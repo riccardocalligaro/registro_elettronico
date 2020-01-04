@@ -2,12 +2,12 @@ import 'package:moor_flutter/moor_flutter.dart';
 
 @DataClassName('TimetableEntry')
 class TimetableEntries extends Table {
-  IntColumn get eventId => integer()();
-  DateTimeColumn get date => dateTime()();
-  IntColumn get position => integer()();
-  IntColumn get duration => integer()();
-  TextColumn get subject => text()();
-  TextColumn get author => text()();
+  IntColumn get id => integer().nullable().autoIncrement()();
+  IntColumn get start => integer()();
+  IntColumn get end => integer()();
+  IntColumn get dayOfWeek => integer()();
+  IntColumn get subject => integer()();
+
   @override
-  Set<Column> get primaryKey => {eventId};
+  Set<Column> get primaryKey => {id};
 }

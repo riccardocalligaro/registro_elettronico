@@ -6794,177 +6794,142 @@ class $LocalGradesTable extends LocalGrades
 }
 
 class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
-  final int eventId;
-  final DateTime date;
-  final int position;
-  final int duration;
-  final String subject;
-  final String author;
+  final int id;
+  final int start;
+  final int end;
+  final int dayOfWeek;
+  final int subject;
   TimetableEntry(
-      {@required this.eventId,
-      @required this.date,
-      @required this.position,
-      @required this.duration,
-      @required this.subject,
-      @required this.author});
+      {@required this.id,
+      @required this.start,
+      @required this.end,
+      @required this.dayOfWeek,
+      @required this.subject});
   factory TimetableEntry.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final stringType = db.typeSystem.forDartType<String>();
     return TimetableEntry(
-      eventId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}event_id']),
-      date:
-          dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}date']),
-      position:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}position']),
-      duration:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}duration']),
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      start: intType.mapFromDatabaseResponse(data['${effectivePrefix}start']),
+      end: intType.mapFromDatabaseResponse(data['${effectivePrefix}end']),
+      dayOfWeek: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}day_of_week']),
       subject:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}subject']),
-      author:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}author']),
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}subject']),
     );
   }
   factory TimetableEntry.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return TimetableEntry(
-      eventId: serializer.fromJson<int>(json['eventId']),
-      date: serializer.fromJson<DateTime>(json['date']),
-      position: serializer.fromJson<int>(json['position']),
-      duration: serializer.fromJson<int>(json['duration']),
-      subject: serializer.fromJson<String>(json['subject']),
-      author: serializer.fromJson<String>(json['author']),
+      id: serializer.fromJson<int>(json['id']),
+      start: serializer.fromJson<int>(json['start']),
+      end: serializer.fromJson<int>(json['end']),
+      dayOfWeek: serializer.fromJson<int>(json['dayOfWeek']),
+      subject: serializer.fromJson<int>(json['subject']),
     );
   }
   @override
   Map<String, dynamic> toJson(
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return {
-      'eventId': serializer.toJson<int>(eventId),
-      'date': serializer.toJson<DateTime>(date),
-      'position': serializer.toJson<int>(position),
-      'duration': serializer.toJson<int>(duration),
-      'subject': serializer.toJson<String>(subject),
-      'author': serializer.toJson<String>(author),
+      'id': serializer.toJson<int>(id),
+      'start': serializer.toJson<int>(start),
+      'end': serializer.toJson<int>(end),
+      'dayOfWeek': serializer.toJson<int>(dayOfWeek),
+      'subject': serializer.toJson<int>(subject),
     };
   }
 
   @override
   TimetableEntriesCompanion createCompanion(bool nullToAbsent) {
     return TimetableEntriesCompanion(
-      eventId: eventId == null && nullToAbsent
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      start:
+          start == null && nullToAbsent ? const Value.absent() : Value(start),
+      end: end == null && nullToAbsent ? const Value.absent() : Value(end),
+      dayOfWeek: dayOfWeek == null && nullToAbsent
           ? const Value.absent()
-          : Value(eventId),
-      date: date == null && nullToAbsent ? const Value.absent() : Value(date),
-      position: position == null && nullToAbsent
-          ? const Value.absent()
-          : Value(position),
-      duration: duration == null && nullToAbsent
-          ? const Value.absent()
-          : Value(duration),
+          : Value(dayOfWeek),
       subject: subject == null && nullToAbsent
           ? const Value.absent()
           : Value(subject),
-      author:
-          author == null && nullToAbsent ? const Value.absent() : Value(author),
     );
   }
 
   TimetableEntry copyWith(
-          {int eventId,
-          DateTime date,
-          int position,
-          int duration,
-          String subject,
-          String author}) =>
+          {int id, int start, int end, int dayOfWeek, int subject}) =>
       TimetableEntry(
-        eventId: eventId ?? this.eventId,
-        date: date ?? this.date,
-        position: position ?? this.position,
-        duration: duration ?? this.duration,
+        id: id ?? this.id,
+        start: start ?? this.start,
+        end: end ?? this.end,
+        dayOfWeek: dayOfWeek ?? this.dayOfWeek,
         subject: subject ?? this.subject,
-        author: author ?? this.author,
       );
   @override
   String toString() {
     return (StringBuffer('TimetableEntry(')
-          ..write('eventId: $eventId, ')
-          ..write('date: $date, ')
-          ..write('position: $position, ')
-          ..write('duration: $duration, ')
-          ..write('subject: $subject, ')
-          ..write('author: $author')
+          ..write('id: $id, ')
+          ..write('start: $start, ')
+          ..write('end: $end, ')
+          ..write('dayOfWeek: $dayOfWeek, ')
+          ..write('subject: $subject')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => $mrjf($mrjc(
-      eventId.hashCode,
-      $mrjc(
-          date.hashCode,
-          $mrjc(
-              position.hashCode,
-              $mrjc(duration.hashCode,
-                  $mrjc(subject.hashCode, author.hashCode))))));
+      id.hashCode,
+      $mrjc(start.hashCode,
+          $mrjc(end.hashCode, $mrjc(dayOfWeek.hashCode, subject.hashCode)))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
       (other is TimetableEntry &&
-          other.eventId == this.eventId &&
-          other.date == this.date &&
-          other.position == this.position &&
-          other.duration == this.duration &&
-          other.subject == this.subject &&
-          other.author == this.author);
+          other.id == this.id &&
+          other.start == this.start &&
+          other.end == this.end &&
+          other.dayOfWeek == this.dayOfWeek &&
+          other.subject == this.subject);
 }
 
 class TimetableEntriesCompanion extends UpdateCompanion<TimetableEntry> {
-  final Value<int> eventId;
-  final Value<DateTime> date;
-  final Value<int> position;
-  final Value<int> duration;
-  final Value<String> subject;
-  final Value<String> author;
+  final Value<int> id;
+  final Value<int> start;
+  final Value<int> end;
+  final Value<int> dayOfWeek;
+  final Value<int> subject;
   const TimetableEntriesCompanion({
-    this.eventId = const Value.absent(),
-    this.date = const Value.absent(),
-    this.position = const Value.absent(),
-    this.duration = const Value.absent(),
+    this.id = const Value.absent(),
+    this.start = const Value.absent(),
+    this.end = const Value.absent(),
+    this.dayOfWeek = const Value.absent(),
     this.subject = const Value.absent(),
-    this.author = const Value.absent(),
   });
   TimetableEntriesCompanion.insert({
-    @required int eventId,
-    @required DateTime date,
-    @required int position,
-    @required int duration,
-    @required String subject,
-    @required String author,
-  })  : eventId = Value(eventId),
-        date = Value(date),
-        position = Value(position),
-        duration = Value(duration),
-        subject = Value(subject),
-        author = Value(author);
+    this.id = const Value.absent(),
+    @required int start,
+    @required int end,
+    @required int dayOfWeek,
+    @required int subject,
+  })  : start = Value(start),
+        end = Value(end),
+        dayOfWeek = Value(dayOfWeek),
+        subject = Value(subject);
   TimetableEntriesCompanion copyWith(
-      {Value<int> eventId,
-      Value<DateTime> date,
-      Value<int> position,
-      Value<int> duration,
-      Value<String> subject,
-      Value<String> author}) {
+      {Value<int> id,
+      Value<int> start,
+      Value<int> end,
+      Value<int> dayOfWeek,
+      Value<int> subject}) {
     return TimetableEntriesCompanion(
-      eventId: eventId ?? this.eventId,
-      date: date ?? this.date,
-      position: position ?? this.position,
-      duration: duration ?? this.duration,
+      id: id ?? this.id,
+      start: start ?? this.start,
+      end: end ?? this.end,
+      dayOfWeek: dayOfWeek ?? this.dayOfWeek,
       subject: subject ?? this.subject,
-      author: author ?? this.author,
     );
   }
 }
@@ -6974,81 +6939,65 @@ class $TimetableEntriesTable extends TimetableEntries
   final GeneratedDatabase _db;
   final String _alias;
   $TimetableEntriesTable(this._db, [this._alias]);
-  final VerificationMeta _eventIdMeta = const VerificationMeta('eventId');
-  GeneratedIntColumn _eventId;
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
   @override
-  GeneratedIntColumn get eventId => _eventId ??= _constructEventId();
-  GeneratedIntColumn _constructEventId() {
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _startMeta = const VerificationMeta('start');
+  GeneratedIntColumn _start;
+  @override
+  GeneratedIntColumn get start => _start ??= _constructStart();
+  GeneratedIntColumn _constructStart() {
     return GeneratedIntColumn(
-      'event_id',
+      'start',
       $tableName,
       false,
     );
   }
 
-  final VerificationMeta _dateMeta = const VerificationMeta('date');
-  GeneratedDateTimeColumn _date;
+  final VerificationMeta _endMeta = const VerificationMeta('end');
+  GeneratedIntColumn _end;
   @override
-  GeneratedDateTimeColumn get date => _date ??= _constructDate();
-  GeneratedDateTimeColumn _constructDate() {
-    return GeneratedDateTimeColumn(
-      'date',
+  GeneratedIntColumn get end => _end ??= _constructEnd();
+  GeneratedIntColumn _constructEnd() {
+    return GeneratedIntColumn(
+      'end',
       $tableName,
       false,
     );
   }
 
-  final VerificationMeta _positionMeta = const VerificationMeta('position');
-  GeneratedIntColumn _position;
+  final VerificationMeta _dayOfWeekMeta = const VerificationMeta('dayOfWeek');
+  GeneratedIntColumn _dayOfWeek;
   @override
-  GeneratedIntColumn get position => _position ??= _constructPosition();
-  GeneratedIntColumn _constructPosition() {
+  GeneratedIntColumn get dayOfWeek => _dayOfWeek ??= _constructDayOfWeek();
+  GeneratedIntColumn _constructDayOfWeek() {
     return GeneratedIntColumn(
-      'position',
-      $tableName,
-      false,
-    );
-  }
-
-  final VerificationMeta _durationMeta = const VerificationMeta('duration');
-  GeneratedIntColumn _duration;
-  @override
-  GeneratedIntColumn get duration => _duration ??= _constructDuration();
-  GeneratedIntColumn _constructDuration() {
-    return GeneratedIntColumn(
-      'duration',
+      'day_of_week',
       $tableName,
       false,
     );
   }
 
   final VerificationMeta _subjectMeta = const VerificationMeta('subject');
-  GeneratedTextColumn _subject;
+  GeneratedIntColumn _subject;
   @override
-  GeneratedTextColumn get subject => _subject ??= _constructSubject();
-  GeneratedTextColumn _constructSubject() {
-    return GeneratedTextColumn(
+  GeneratedIntColumn get subject => _subject ??= _constructSubject();
+  GeneratedIntColumn _constructSubject() {
+    return GeneratedIntColumn(
       'subject',
       $tableName,
       false,
     );
   }
 
-  final VerificationMeta _authorMeta = const VerificationMeta('author');
-  GeneratedTextColumn _author;
   @override
-  GeneratedTextColumn get author => _author ??= _constructAuthor();
-  GeneratedTextColumn _constructAuthor() {
-    return GeneratedTextColumn(
-      'author',
-      $tableName,
-      false,
-    );
-  }
-
-  @override
-  List<GeneratedColumn> get $columns =>
-      [eventId, date, position, duration, subject, author];
+  List<GeneratedColumn> get $columns => [id, start, end, dayOfWeek, subject];
   @override
   $TimetableEntriesTable get asDslTable => this;
   @override
@@ -7059,29 +7008,27 @@ class $TimetableEntriesTable extends TimetableEntries
   VerificationContext validateIntegrity(TimetableEntriesCompanion d,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.eventId.present) {
-      context.handle(_eventIdMeta,
-          eventId.isAcceptableValue(d.eventId.value, _eventIdMeta));
-    } else if (eventId.isRequired && isInserting) {
-      context.missing(_eventIdMeta);
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
     }
-    if (d.date.present) {
+    if (d.start.present) {
       context.handle(
-          _dateMeta, date.isAcceptableValue(d.date.value, _dateMeta));
-    } else if (date.isRequired && isInserting) {
-      context.missing(_dateMeta);
+          _startMeta, start.isAcceptableValue(d.start.value, _startMeta));
+    } else if (start.isRequired && isInserting) {
+      context.missing(_startMeta);
     }
-    if (d.position.present) {
-      context.handle(_positionMeta,
-          position.isAcceptableValue(d.position.value, _positionMeta));
-    } else if (position.isRequired && isInserting) {
-      context.missing(_positionMeta);
+    if (d.end.present) {
+      context.handle(_endMeta, end.isAcceptableValue(d.end.value, _endMeta));
+    } else if (end.isRequired && isInserting) {
+      context.missing(_endMeta);
     }
-    if (d.duration.present) {
-      context.handle(_durationMeta,
-          duration.isAcceptableValue(d.duration.value, _durationMeta));
-    } else if (duration.isRequired && isInserting) {
-      context.missing(_durationMeta);
+    if (d.dayOfWeek.present) {
+      context.handle(_dayOfWeekMeta,
+          dayOfWeek.isAcceptableValue(d.dayOfWeek.value, _dayOfWeekMeta));
+    } else if (dayOfWeek.isRequired && isInserting) {
+      context.missing(_dayOfWeekMeta);
     }
     if (d.subject.present) {
       context.handle(_subjectMeta,
@@ -7089,17 +7036,11 @@ class $TimetableEntriesTable extends TimetableEntries
     } else if (subject.isRequired && isInserting) {
       context.missing(_subjectMeta);
     }
-    if (d.author.present) {
-      context.handle(
-          _authorMeta, author.isAcceptableValue(d.author.value, _authorMeta));
-    } else if (author.isRequired && isInserting) {
-      context.missing(_authorMeta);
-    }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {eventId};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   TimetableEntry map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -7109,23 +7050,20 @@ class $TimetableEntriesTable extends TimetableEntries
   @override
   Map<String, Variable> entityToSql(TimetableEntriesCompanion d) {
     final map = <String, Variable>{};
-    if (d.eventId.present) {
-      map['event_id'] = Variable<int, IntType>(d.eventId.value);
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
     }
-    if (d.date.present) {
-      map['date'] = Variable<DateTime, DateTimeType>(d.date.value);
+    if (d.start.present) {
+      map['start'] = Variable<int, IntType>(d.start.value);
     }
-    if (d.position.present) {
-      map['position'] = Variable<int, IntType>(d.position.value);
+    if (d.end.present) {
+      map['end'] = Variable<int, IntType>(d.end.value);
     }
-    if (d.duration.present) {
-      map['duration'] = Variable<int, IntType>(d.duration.value);
+    if (d.dayOfWeek.present) {
+      map['day_of_week'] = Variable<int, IntType>(d.dayOfWeek.value);
     }
     if (d.subject.present) {
-      map['subject'] = Variable<String, StringType>(d.subject.value);
-    }
-    if (d.author.present) {
-      map['author'] = Variable<String, StringType>(d.author.value);
+      map['subject'] = Variable<int, IntType>(d.subject.value);
     }
     return map;
   }
