@@ -121,7 +121,7 @@
   "download_slide_description": "Questi dati sono fondamentali per il corretto funzionamento dell'applicazione",
   "author":"Autore",
   "argument":"Argomento lezione",
-  "Tipo":"Tipo",
+  "type":"Tipo",
   "no_timetable": "Nessun orario",
   "no_timetable_message": "L'orario viene calcolato analizzando le lezioni se esse non sono presenti non riusciamo a generarlo."
 }
