@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class LocalNotification {
@@ -7,8 +8,10 @@ class LocalNotification {
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-  LocalNotification(Future onSelectNotification(String payload),
-      {String icon}) {
+  LocalNotification(
+    Future onSelectNotification(String payload), {
+    String icon,
+  }) {
     var initializationSettingsAndroid =
         new AndroidInitializationSettings(icon ?? 'app_icon');
     var initializationSettingsIOS = new IOSInitializationSettings();
@@ -19,8 +22,12 @@ class LocalNotification {
         onSelectNotification: onSelectNotification);
   }
 
-  Future showNotificationWithDefaultSound(int id, String title, String message,
-      {String payload}) async {
+  Future showNotificationWithDefaultSound(
+    int id,
+    String title,
+    String message, {
+    String payload,
+  }) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         CHANNEL_ID, CHANNEL_NAME, CHANNEL_DESCRIPTION,
         importance: Importance.Max, priority: Priority.High);
@@ -54,6 +61,28 @@ class LocalNotification {
       message,
       platformChannelSpecifics,
       payload: payload ?? 'No_Sound',
+    );
+  }
+
+  Future scheduleNotification({
+    @required int eventId,
+    @required String title,
+    @required String message,
+    @required DateTime scheduledTime,
+  }) async {
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+        CHANNEL_ID, CHANNEL_NAME, CHANNEL_DESCRIPTION,
+        importance: Importance.Default, priority: Priority.Default);
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.schedule(
+      eventId,
+      title,
+      message,
+      scheduledTime,
+      platformChannelSpecifics,
     );
   }
 }

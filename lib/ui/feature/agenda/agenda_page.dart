@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/component/notifications/local_notification.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
@@ -11,6 +12,7 @@ import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -76,6 +78,20 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       ),
       drawer: AppDrawer(
         position: DrawerConstants.AGENDA,
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () async {
+          final LocalNotification localNotification =
+              LocalNotification(onSelectNotification);
+
+          localNotification.scheduleNotification(
+            title: 'New event',
+            message: 'Got new event',
+            scheduledTime: DateTime.now().add(Duration(seconds: 5)),
+            eventId: GlobalUtils.getRandomNumber(),
+          );
+        },
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -277,5 +293,11 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
             );
           }).toList()),
     );
+  }
+
+  Future onSelectNotification(String payload) async {
+    if (payload != null) {
+      print('notification payload: ' + payload);
+    }
   }
 }
