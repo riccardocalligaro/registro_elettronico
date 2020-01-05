@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/feature/grades/subject_grades/subject_grades.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_painter.dart';
+import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
 
@@ -30,7 +31,14 @@ class SubjectsGrid extends StatelessWidget {
         shrinkWrap: true,
         children: List.generate(subjects.length, (index) {
           final subject = subjects[index];
-          final average = GradesUtils.getAverage(subject.id, grades.where((g) => g.periodPos == period).toList());
+          double average;
+          if (period != TabsConstants.GENERALE) {
+            average = GradesUtils.getAverage(subject.id,
+                grades.where((g) => g.periodPos == period).toList());
+          } else {
+            average = GradesUtils.getAverage(subject.id, grades);
+          }
+
           return GridTile(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

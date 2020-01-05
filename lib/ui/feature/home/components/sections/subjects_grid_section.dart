@@ -9,10 +9,25 @@ import 'package:registro_elettronico/ui/global/localizations/app_localizations.d
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
-class SubjectsGridSection extends StatelessWidget {
-  final Period period;
+class SubjectsGridSection extends StatefulWidget {
+  const SubjectsGridSection({Key key}) : super(key: key);
 
-  const SubjectsGridSection({Key key, this.period}) : super(key: key);
+  @override
+  _SubjectsGridSectionState createState() => _SubjectsGridSectionState();
+}
+
+class _SubjectsGridSectionState extends State<SubjectsGridSection> {
+  Period period;
+
+  @override
+  void initState() {
+    restore();
+    super.initState();
+  }
+
+  void restore() async {
+    period = await GlobalUtils.getPeriodFromDate(DateTime.now());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +79,11 @@ class SubjectsGridSection extends StatelessWidget {
         ),
       );
     }
- 
+
     return SubjectsGrid(
       subjects: GlobalUtils.removeUnwantedSubject(subjects),
       grades: grades,
-      period: period == null ? TabsConstants.GENERALE : period.position,
+      period: period.position,
     );
   }
 }

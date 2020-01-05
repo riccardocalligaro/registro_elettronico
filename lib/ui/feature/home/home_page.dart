@@ -27,9 +27,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  /// The period of the [averages] in my subjects
-  Period _periodToShow;
-
   /// Key necessaery for the [drawer]
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
@@ -45,7 +42,6 @@ class _HomePageState extends State<HomePage> {
     //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     //_periodToShow = (sharedPreferences.getInt(PrefsConstants.PERIOD_TO_SHOW) ??
     //    TabsConstants.GENERALE);
-    _periodToShow = await GlobalUtils.getPeriodFromDate(DateTime.now());
   }
 
   @override
@@ -86,9 +82,7 @@ class _HomePageState extends State<HomePage> {
                     // My subjects
                     Divider(color: Colors.grey[300]),
                     _buildMySubjectsHeader(),
-                    SubjectsGridSection(
-                      period: _periodToShow,
-                    ),
+                    SubjectsGridSection(),
                     // Last grades
                     Divider(color: Colors.grey[300]),
                     _buildLastGradesHeader(),
