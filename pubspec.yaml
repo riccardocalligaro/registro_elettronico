@@ -59,8 +59,6 @@ dependencies:
   align_positioned: ^1.2.5
   # download indicator
   liquid_progress_indicator: ^0.3.2
-  # date and range picker for timetable
-  date_range_picker: ^1.0.6
   tuple: ^1.0.3
   # timetable
   flutter_staggered_grid_view: ^0.3.0
