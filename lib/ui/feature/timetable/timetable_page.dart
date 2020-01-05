@@ -1,15 +1,12 @@
-import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:injector/injector.dart';
-import 'package:intl/intl.dart';
-import 'package:registro_elettronico/data/db/dao/timetable_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/timetable/bloc.dart';
+import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -24,6 +21,8 @@ class TimetablePage extends StatefulWidget {
 }
 
 class _TimetablePageState extends State<TimetablePage> {
+  PageController pageController = PageController(viewportFraction: 0.85);
+
   @override
   void initState() {
     BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
@@ -66,9 +65,10 @@ class _TimetablePageState extends State<TimetablePage> {
             }
 
             if (state is TimetableLoaded) {
-              if (state.timetableEntries.length > 0)
+              if (state.timetableEntries.length > 0) {
                 return _buildTimetableList(
                     state.timetableEntries, state.subjects);
+              }
 
               return CustomPlaceHolder(
                 icon: Icons.access_time,
@@ -97,13 +97,14 @@ class _TimetablePageState extends State<TimetablePage> {
           entries.sort((a, b) => a.start.compareTo(b.start));
           return Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 21.0),
-                child: Text(
+              ListTile(
+                title: Text(
                   DateUtils.convertSingleDayForDisplay(
                       DateTime.utc(2000, 1, 2).add(Duration(days: index)),
                       AppLocalizations.of(context).locale.toString()),
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
                 ),
               ),
               ListView.builder(
@@ -136,6 +137,19 @@ class _TimetablePageState extends State<TimetablePage> {
     );
   }
 
+  // void _navigateToCurrentDay() {
+  //   int currentDay = DateTime.now().weekday;
+  //   if (currentDay > 6) {
+  //     currentDay = 1;
+  //   }
+
+  //   pageController.animateToPage(
+  //     currentDay - 1,
+  //     duration: Duration(milliseconds: 400),
+  //     curve: Curves.ease,
+  //   );
+  // }
+
   Widget _buildTimetableLoading() {
     return Center(
       child: CircularProgressIndicator(),
@@ -154,3 +168,54 @@ class _TimetablePageState extends State<TimetablePage> {
     );
   }
 }
+// // When this widget is built the navigate to current day function is executed
+// // If we tried to navigate to current day at the start it would have given
+// // an error beacause the controller isn't binded to any widget yet
+// WidgetsBinding.instance.addPostFrameCallback((_) => _navigateToCurrentDay);
+//
+// return PageView.builder(
+//   // number of days in a school-week
+//   itemCount: timetable.last.dayOfWeek,
+//   controller: pageController,
+//   pageSnapping: true,
+//   itemBuilder: (context, index) {
+//     final List<TimetableEntry> entries =
+//         timetable.where((t) => t.dayOfWeek == index + 1).toList();
+//     entries.sort((a, b) => a.start.compareTo(b.start));
+//
+//     return Container(
+//       child: Column(
+//         mainAxisSize: MainAxisSize.min,
+//         children: <Widget>[
+//           HeaderText(
+//             text: DateUtils.convertSingleDayForDisplay(
+//                 DateTime.utc(2000, 1, 2).add(Duration(days: index + 1)),
+//                 AppLocalizations.of(context).locale.toString()),
+//           ),
+//           ListView.builder(
+//             physics: NeverScrollableScrollPhysics(),
+//             itemCount: entries.length,
+//             shrinkWrap: true,
+//             itemBuilder: (context, index2) {
+//               final entry = entries[index2];
+//               return Column(
+//                 children: <Widget>[
+//                   ListTile(
+//                     leading: Text('${entry.start}H'),
+//                     title: Text(
+//                       subjects
+//                           .where((s) => s.id == entry.subject)
+//                           .single
+//                           .name,
+//                     ),
+//                   ),
+//                   Divider(),
+//                 ],
+//               );
+//             },
+//           )
+//         ],
+//       ),
+//     );
+//   },
+// );
