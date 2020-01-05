@@ -217,7 +217,7 @@ class _GradeTabState extends State<GradeTab> {
   }
 
   Future<void> _updateGrades() async {
-    BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
+    BlocProvider.of<SubjectsGradesBloc>(context).add(UpdateSubjectGrades());
     BlocProvider.of<SubjectsGradesBloc>(context).add(GetGradesAndSubjects());
   }
 }

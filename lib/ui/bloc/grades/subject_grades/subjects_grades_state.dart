@@ -6,6 +6,11 @@ abstract class SubjectsGradesState {}
 
 class SubjectsGradesInitial extends SubjectsGradesState {}
 
+class SubjectsGradesUpdateLoadInProgress extends SubjectsGradesState {}
+
+class SubjectsGradesUpdateLoadSuccess extends SubjectsGradesState {}
+
+
 class SubjectsGradesLoadInProgress extends SubjectsGradesState {}
 
 class SubjectsGradesLoadSuccess extends SubjectsGradesState {

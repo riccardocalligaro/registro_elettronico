@@ -46,6 +46,8 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
 
     BlocProvider.of<LessonsBloc>(context)
         .add(GetLessonsByDate(dateTime: DateTime.now()));
+
+    BlocProvider.of<AgendaBloc>(context).add(GetAllAgenda());
   }
 
   @override
@@ -68,13 +70,17 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<AgendaBloc>(context).add(GetAllAgenda());
-
     return Scaffold(
       key: _drawerKey,
       appBar: CustomAppBar(
         scaffoldKey: _drawerKey,
         title: Text(AppLocalizations.of(context).translate('agenda')),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: _refreshAgenda,
+          )
+        ],
       ),
       drawer: AppDrawer(
         position: DrawerConstants.AGENDA,
@@ -132,7 +138,10 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       builder: (context, state) {
         if (state is AgendaUpdateLoadInProgress) {
           return Center(
-            child: CircularProgressIndicator(),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 140),
+              child: CircularProgressIndicator(),
+            ),
           );
         } else if (state is AgendaLoadSuccess) {
           return _buildTableCalendar(state.events);
@@ -299,5 +308,10 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     if (payload != null) {
       print('notification payload: ' + payload);
     }
+  }
+
+  Future<void> _refreshAgenda() async {
+    BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
+    BlocProvider.of<AgendaBloc>(context).add(GetAllAgenda());
   }
 }

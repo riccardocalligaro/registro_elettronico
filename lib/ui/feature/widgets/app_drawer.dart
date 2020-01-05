@@ -57,6 +57,7 @@ class _AppDrawerState extends State<AppDrawer> {
         }
 
         return UserAccountsDrawerHeader(
+          margin: EdgeInsets.zero,
           accountEmail: Text(ident,
               style: Theme.of(context)
                   .primaryTextTheme

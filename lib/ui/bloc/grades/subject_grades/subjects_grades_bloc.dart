@@ -19,6 +19,8 @@ class SubjectsGradesBloc
   ) async* {
     if (event is GetGradesAndSubjects) {
       yield* _mapGetGradesAndSubjectsToState();
+    } else if (event is UpdateSubjectGrades) {
+      yield* _mapUpdateSubjectGradesToState();
     }
   }
 
@@ -28,6 +30,16 @@ class SubjectsGradesBloc
       final subjects = await subjectsRepository.getAllSubjects();
       final grades = await gradesRepository.getAllGrades();
       yield SubjectsGradesLoadSuccess(subjects: subjects, grades: grades);
+    } catch (e) {
+      yield SubjectsGradesLoadError(error: e.toString());
+    }
+  }
+
+  Stream<SubjectsGradesState> _mapUpdateSubjectGradesToState() async* {
+    yield SubjectsGradesUpdateLoadInProgress();
+    try {
+      await gradesRepository.updateGrades();
+      yield SubjectsGradesUpdateLoadSuccess();
     } catch (e) {
       yield SubjectsGradesLoadError(error: e.toString());
     }

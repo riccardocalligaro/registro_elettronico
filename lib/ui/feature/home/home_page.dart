@@ -5,6 +5,7 @@ import 'package:registro_elettronico/data/network/exception/server_exception.dar
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/agenda_section.dart';
@@ -202,18 +203,18 @@ class _HomePageState extends State<HomePage> {
   /// Updates lessons, agenda, grades for the [user]
   Future<void> _refreshData() async {
     // Update lessons
-    //BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
-    //BlocProvider.of<LessonsBloc>(context).add(GetLastLessons());
+    BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
+    BlocProvider.of<LessonsBloc>(context).add(GetLastLessons());
 
     // // Update grades
-    //BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
-    //BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
-    BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
-    //BlocProvider.of<SubjectsGradesBloc>(context).add(GetGradesAndSubjects());
+    BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
+    BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
+    //BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
+    BlocProvider.of<SubjectsGradesBloc>(context).add(GetGradesAndSubjects());
     // Update agenda
-    // BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
-    // BlocProvider.of<AgendaBloc>(context)
-    //     .add(GetNextEvents(dateTime: DateTime.now(), numberOfevents: 3));
+    BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
+    BlocProvider.of<AgendaBloc>(context)
+        .add(GetNextEvents(dateTime: DateTime.now(), numberOfevents: 3));
   }
 }
 
