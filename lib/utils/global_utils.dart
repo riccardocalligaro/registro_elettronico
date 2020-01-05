@@ -62,18 +62,22 @@ class GlobalUtils {
       if (periods[i].start.isBefore(date) && periods[i].end.isAfter(date))
         return periods[i];
     }
-    int closestIndex = 0;
-    int minDays = 366;
-    for (var i = 0; i < periods.length; i++) {
-      int diff = date.difference(periods[i].end).inDays;
-      if (diff < minDays) {
-        minDays = diff;
-        closestIndex = i;
+    if (periods.length > 0) {
+      int closestIndex = 0;
+      int minDays = 366;
+      for (var i = 0; i < periods.length; i++) {
+        int diff = date.difference(periods[i].end).inDays;
+        if (diff < minDays) {
+          minDays = diff;
+          closestIndex = i;
+        }
       }
+      Logger log = Logger();
+      log.i(closestIndex);
+      return periods[closestIndex];
     }
-    Logger log = Logger();
-    log.i(closestIndex);
-    return periods[closestIndex];
+
+    return null;
   }
 
   static int getSubjectConstFromName(String subjectName) {

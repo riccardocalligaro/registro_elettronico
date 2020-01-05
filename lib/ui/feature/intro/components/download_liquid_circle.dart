@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
@@ -18,6 +19,7 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<IntroBloc>(context).add(FetchAllData());
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -40,7 +42,9 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                 height: 300,
                 width: 300,
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    AppNavigator.instance.navToHome(context);
+                  },
                   child: LiquidCircularProgressIndicator(
                     value: 1.0,
                     valueColor: AlwaysStoppedAnimation(Colors.green),
