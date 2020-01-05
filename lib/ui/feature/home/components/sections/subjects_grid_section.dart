@@ -1,32 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
 import 'package:registro_elettronico/ui/feature/home/components/widgets/subjects_grid.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class SubjectsGridSection extends StatelessWidget {
-  final int period;
+  final Period period;
 
   const SubjectsGridSection({Key key, this.period}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
-    return _buildSubjectsBlocBuilder(context);
+    BlocProvider.of<SubjectsGradesBloc>(context).add(GetGradesAndSubjects());
+    return BlocListener<GradesBloc, GradesState>(
+      listener: (context, state) {
+        if (state is GradesUpdateLoaded)
+          BlocProvider.of<SubjectsGradesBloc>(context)
+              .add(GetGradesAndSubjects());
+      },
+      child: _buildSubjectsBlocBuilder(context),
+    );
   }
 
   BlocBuilder _buildSubjectsBlocBuilder(BuildContext context) {
-    return BlocBuilder<GradesBloc, GradesState>(
+    return BlocBuilder<SubjectsGradesBloc, SubjectsGradesState>(
       builder: (context, state) {
-        if (state is GradesAndSubjectsLoading) {
+        if (state is SubjectsGradesLoadInProgress) {
           return Center(
             child: CircularProgressIndicator(),
           );
         }
-        if (state is GradesAndSubjectsLoaded) {
-          return _buildSubjectsGrid(state.subject, state.grades, context);
+        if (state is SubjectsGradesLoadSuccess) {
+          return _buildSubjectsGrid(state.subjects, state.grades, context);
         }
         return Container();
       },
@@ -54,10 +64,11 @@ class SubjectsGridSection extends StatelessWidget {
         ),
       );
     }
+ 
     return SubjectsGrid(
       subjects: GlobalUtils.removeUnwantedSubject(subjects),
       grades: grades,
-      period: period ?? -3,
+      period: period == null ? TabsConstants.GENERALE : period.position,
     );
   }
 }

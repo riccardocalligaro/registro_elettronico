@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grade_subject_card.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grades_overall_stats.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
@@ -43,7 +44,7 @@ class _GradeTabState extends State<GradeTab> {
   @override
   void didChangeDependencies() {
     restore();
-    BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
+    BlocProvider.of<SubjectsGradesBloc>(context).add(GetGradesAndSubjects());
     super.didChangeDependencies();
   }
 
@@ -52,17 +53,17 @@ class _GradeTabState extends State<GradeTab> {
     return RefreshIndicator(
       onRefresh: _updateGrades,
       child: Container(
-        child: BlocBuilder<GradesBloc, GradesState>(
+        child: BlocBuilder<SubjectsGradesBloc, SubjectsGradesState>(
           builder: (context, state) {
-            if (state is GradesAndSubjectsLoaded) {
+            if (state is SubjectsGradesLoadSuccess) {
               final period = widget.period;
               if (state.grades.length > 0) {
                 if (period == TabsConstants.GENERALE) {
-                  return _buildStatsAndAverages(state.grades, state.subject);
+                  return _buildStatsAndAverages(state.grades, state.subjects);
                 } else if (period == TabsConstants.ULTIMI_VOTI) {
                   return _buildGradesList(state.grades);
                 } else {
-                  return _buildStatsAndAverages(state.grades, state.subject);
+                  return _buildStatsAndAverages(state.grades, state.subjects);
                   //return _buildStatsAndAverages(state.data);
                 }
               } else {
@@ -216,7 +217,7 @@ class _GradeTabState extends State<GradeTab> {
   }
 
   Future<void> _updateGrades() async {
-    BlocProvider.of<GradesBloc>(context).add(FetchGrades());
-    BlocProvider.of<GradesBloc>(context).add(GetGradesAndSubjects());
+    BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
+    BlocProvider.of<SubjectsGradesBloc>(context).add(GetGradesAndSubjects());
   }
 }

@@ -1,11 +1,8 @@
-import 'package:logger/logger.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/dao/timetable_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/utils/entity/genius_timetable.dart';
-
-import '../../utils/global_utils.dart';
 
 class TimetableRepositoryImpl implements TimetableRepository {
   TimetableDao timetableDao;

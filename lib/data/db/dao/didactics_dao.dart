@@ -59,4 +59,16 @@ class DidacticsDao extends DatabaseAccessor<AppDatabase>
       return DidacticsTeacher.fromData(row.data, db);
     }).get();
   }
+
+  // Future deleteAllDidactics() {
+  //   return customSelectQuery(
+  //     'DELETE * FROM didactics_teachers',
+  //     readsFrom: {
+  //       didacticsTeachers,
+  //       didacticsFolders,
+  //       didacticsContents,
+  //       didacticsDownloadedFiles
+  //     }
+  //   ).get();
+  // }
 }

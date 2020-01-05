@@ -174,6 +174,7 @@ class _LessonDetailsState extends State<LessonDetails> {
         icon: Icons.assignment,
         onTap: () {
           BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
+          BlocProvider.of<LessonsBloc>(context).add(GetLessons());
         },
         showUpdate: true,
       );

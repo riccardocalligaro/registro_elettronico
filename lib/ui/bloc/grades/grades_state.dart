@@ -18,7 +18,9 @@ class GradesUpdateLoaded extends GradesState {}
 class GradesUpdateError extends GradesState {
   final String message;
 
-  GradesUpdateError(this.message);
+  GradesUpdateError({
+    @required this.message,
+  });
 }
 
 // Only grades
@@ -34,22 +36,7 @@ class GradesLoaded extends GradesState {
 class GradesError extends GradesState {
   final String message;
 
-  GradesError(this.message);
-}
-
-// Grades and subjects
-
-class GradesAndSubjectsLoading extends GradesState {}
-
-class GradesAndSubjectsLoaded extends GradesState {
-  final List<Subject> subject;
-  final List<Grade> grades;
-
-  GradesAndSubjectsLoaded({@required this.subject, @required this.grades});
-}
-
-class GradesAndSubjectsError extends GradesState {
-  final String message;
-
-  GradesAndSubjectsError(this.message);
+  GradesError({
+    @required this.message,
+  });
 }

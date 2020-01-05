@@ -72,9 +72,16 @@ class _TimetablePageState extends State<TimetablePage> {
 
               return CustomPlaceHolder(
                 icon: Icons.access_time,
-                text: 'No timetable',
+                text: AppLocalizations.of(context).translate('no_timetable') +
+                    '\n' +
+                    AppLocalizations.of(context).translate('no_timetable_message'),
                 showUpdate: true,
-                onTap: () {},
+                onTap: () {
+                  BlocProvider.of<TimetableBloc>(context).add(
+                    GetNewTimetable(),
+                  );
+                  BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
+                },
               );
             }
             return Container();

@@ -7,6 +7,7 @@ import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/didactics_attachments/didactics_attachments_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/subject_grades/subjects_grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/local_grades/local_grades_bloc.dart';
@@ -87,6 +88,10 @@ class AppBlocDelegate {
       ),
       BlocProvider<TimetableBloc>(
         create: (ctx) => TimetableBloc(i.getDependency(), i.getDependency()),
+      ),
+      BlocProvider<SubjectsGradesBloc>(
+        create: (ctx) =>
+            SubjectsGradesBloc(i.getDependency(), i.getDependency()),
       )
     ];
   }

@@ -37,31 +37,22 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
         .get();
   }
 
-  Stream<List<Grade>> watchAllGradesOrdered() {
-    return (select(grades)
-          ..orderBy([
-            (t) =>
-                OrderingTerm(expression: t.eventDate, mode: OrderingMode.desc)
-          ]))
-        .watch();
-  }
-
-  Stream<List<Grade>> watchNumberOfGradesByDate(int number) {
+  Future<List<Grade>> getNumberOfGradesByDate(int number) {
     return ((select(grades)
           ..orderBy(
               [(grade) => OrderingTerm(expression: grade.eventDate, mode: OrderingMode.desc)]))
           ..limit(number))
-        .watch();
+        .get();
   }
 
-  Stream<List<Grade>> watchLastGrades() {
+  Future<List<Grade>> getLastGrades() {
     return customSelectQuery("""
         SELECT DISTINCT * FROM grades ORDER BY event_date DESC LIMIT 2""",
         readsFrom: {
           grades,
-        }).watch().map((rows) {
-      return rows.map((row) => Grade.fromData(row.data, db)).toList();
-    });
+        }).map((row) {
+      return Grade.fromData(row.data, db);
+    }).get();
   }
 
   Future deleteAllGrades() =>

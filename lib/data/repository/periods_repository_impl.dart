@@ -18,7 +18,7 @@ class PeriodsRepositoryImpl implements PeriodsRepository {
   Future updatePeriods() async {
     final profile = await profileDao.getProfile();
     final periods = await spaggiariClient.getPeriods(profile.studentId);
-
+    await periodDao.deleteAllPeriods();
     List<Period> periodsList = [];
     int periodIndex = 1;
     periods.periods.forEach((period) {

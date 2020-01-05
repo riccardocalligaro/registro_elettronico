@@ -22,20 +22,20 @@ class SubjectsGrid extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0),
       child: GridView.count(
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.all(0),
-          crossAxisCount: 4,
-          crossAxisSpacing: 0.0,
-          mainAxisSpacing: 5.0,
-          shrinkWrap: true,
-          children: List.generate(subjects.length, (index) {
-            final subject = subjects[index];
-            final average = GradesUtils.getAverage(subject.id, grades);
-            return GridTile(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.all(0),
+        crossAxisCount: 4,
+        crossAxisSpacing: 0.0,
+        mainAxisSpacing: 5.0,
+        shrinkWrap: true,
+        children: List.generate(subjects.length, (index) {
+          final subject = subjects[index];
+          final average = GradesUtils.getAverage(subject.id, grades.where((g) => g.periodPos == period).toList());
+          return GridTile(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: new Container(
@@ -78,19 +78,6 @@ class SubjectsGrid extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Container(
-                  //   child: ClipOval(
-                  //     child: Container(
-                  //         width: 60.0,
-                  //         height: 60.0,
-                  //         padding: EdgeInsets.all(16.0),
-                  //         decoration: BoxDecoration(
-                  //           color: Colors.white,
-                  //         ),
-                  //         child:
-                  //             GlobalUtils.getIconFromSubject(subject.name)),
-                  //   ),
-                  // ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 6.0),
                     child: Text(
@@ -100,8 +87,10 @@ class SubjectsGrid extends StatelessWidget {
                       style: TextStyle(fontSize: 9),
                     ),
                   )
-                ]));
-          })),
+                ]),
+          );
+        }),
+      ),
     );
   }
 

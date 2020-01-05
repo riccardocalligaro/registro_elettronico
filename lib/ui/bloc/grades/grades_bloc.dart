@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
@@ -16,42 +17,44 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
   @override
   GradesState get initialState => GradesInitial();
 
-  Stream<List<Grade>> watchAllGrades() => gradesRepository.watchAllGrades();
-
-  Stream<List<Grade>> watchAllGradesOrdered() =>
-      gradesRepository.watchAllGradesOrdered();
-
-  Stream<List<Grade>> watchNumberOfGradesByDate() =>
-      gradesRepository.watchLastGrades();
-
   @override
   Stream<GradesState> mapEventToState(
     GradesEvent event,
   ) async* {
-    if (event is FetchGrades) {
-      yield GradesUpdateLoading();
+    Logger log = Logger();
+    log.i(event.toString());
+    if (event is UpdateGrades) {
+      yield* _mapUpdateGradesToState();
+    } else if (event is GetGrades) {
+      yield* _mapGetGradesToState(event.limit ?? -1, event.ordered ?? false);
+    }
+  }
+
+  Stream<GradesState> _mapUpdateGradesToState() async* {
+    yield GradesUpdateLoading();
+    try {
+      await gradesRepository.deleteAllGrades();
       await gradesRepository.updateGrades();
       yield GradesUpdateLoaded();
+    } catch (e) {
+      yield GradesError(message: e.toString());
     }
+  }
 
-    if (event is GetGrades) {
-      //yield GradesLoading();
-      final grades = await gradesRepository.getAllGradesOrdered();
+  Stream<GradesState> _mapGetGradesToState(int limit, bool ordered) async* {
+    try {
+      List<Grade> grades = [];
+      if (limit > -1) {
+        grades = await gradesRepository.getNumberOfGradesByDate(limit);
+      } else if (ordered) {
+        grades = await gradesRepository.getAllGradesOrdered();
+      } else {
+        grades = await gradesRepository.getAllGrades();
+      }
+
       yield GradesLoaded(grades);
-    }
-
-    if (event is GetGradesAndSubjects) {
-      //yield GradesAndSubjectsLoading();
-      final grades = await gradesRepository.getAllGrades();
-      final subjects = await subjectsRepository.getAllSubjects();
-      yield GradesAndSubjectsLoaded(grades: grades, subject: subjects);
-    }
-
-    if (event is UpdateGrade) {
-      await gradesRepository.updateGrade(event.grade);
-      print("updated");
-      final grades = await gradesRepository.getAllGradesOrdered();
-      yield GradesLoaded(grades);
+    } catch (e) {
+      yield GradesError(message: e.toString());
     }
   }
 }

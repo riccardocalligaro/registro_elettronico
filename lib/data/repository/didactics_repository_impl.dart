@@ -28,6 +28,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future updateDidactics() async {
     final profile = await profileDao.getProfile();
+
     final didactics = await spaggiariClient.getDidactics(profile.studentId);
     List<DidacticsTeacher> teachers = [];
     didactics.teachers.forEach((teacher) {

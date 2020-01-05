@@ -119,7 +119,9 @@
   "no_events": "No events",
   "press_here": "Press here",
   "download_slide_description": "This is data is vital for the correct functioning of the application",
-  "author":"Author",
-  "argument":"Argument",
-  "type":"Type"
+  "author": "Author",
+  "argument": "Argument",
+  "type": "Type",
+  "no_timetable": "No timetable",
+  "no_timetable_message": "The timetable is calculated by analyzing the lessons, if there aren't enough lesssons we can't generate one ☹"
 }

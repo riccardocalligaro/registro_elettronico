@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:injector/injector.dart';
+import 'package:logger/logger.dart';
 import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
@@ -55,13 +56,24 @@ class GlobalUtils {
   }
 
   static Future<Period> getPeriodFromDate(DateTime date) async {
-    final now = DateTime.now();
     final PeriodDao periodDao = PeriodDao(Injector.appInstance.getDependency());
     final periods = await periodDao.getAllPeriods();
-    periods.forEach((period) {
-      if (period.start.isAfter(now) && period.end.isBefore(now)) return period;
-    });
-    return null;
+    for (var i = 0; i < periods.length; i++) {
+      if (periods[i].start.isBefore(date) && periods[i].end.isAfter(date))
+        return periods[i];
+    }
+    int closestIndex = 0;
+    int minDays = 366;
+    for (var i = 0; i < periods.length; i++) {
+      int diff = date.difference(periods[i].end).inDays;
+      if (diff < minDays) {
+        minDays = diff;
+        closestIndex = i;
+      }
+    }
+    Logger log = Logger();
+    log.i(closestIndex);
+    return periods[closestIndex];
   }
 
   static int getSubjectConstFromName(String subjectName) {

@@ -17,6 +17,7 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
   @override
   Future updateAbsences() async {
     final profile = await profileDao.getProfile();
+    await absenceDao.deleteAllAbsences();
     final absences = await spaggiariClient.getAbsences(profile.studentId);
     List<Absence> absencesList = [];
     absences.events.forEach((event) {

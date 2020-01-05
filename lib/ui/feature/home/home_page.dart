@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:registro_elettronico/component/navigator.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
-import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/agenda_section.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/last_grades_section.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/lessons_cards_section.dart';
@@ -18,9 +17,7 @@ import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
-import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 
 /// The [home] page of the application
 class HomePage extends StatefulWidget {
@@ -31,7 +28,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   /// The period of the [averages] in my subjects
-  int _periodToShow;
+  Period _periodToShow;
 
   /// Key necessaery for the [drawer]
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
@@ -45,9 +42,10 @@ class _HomePageState extends State<HomePage> {
 
   /// Updates [shared preferences]
   getPreferences() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    _periodToShow = (sharedPreferences.getInt(PrefsConstants.PERIOD_TO_SHOW) ??
-        TabsConstants.GENERALE);
+    //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    //_periodToShow = (sharedPreferences.getInt(PrefsConstants.PERIOD_TO_SHOW) ??
+    //    TabsConstants.GENERALE);
+    _periodToShow = await GlobalUtils.getPeriodFromDate(DateTime.now());
   }
 
   @override
@@ -88,7 +86,9 @@ class _HomePageState extends State<HomePage> {
                     // My subjects
                     Divider(color: Colors.grey[300]),
                     _buildMySubjectsHeader(),
-                    SubjectsGridSection(),
+                    SubjectsGridSection(
+                      period: _periodToShow,
+                    ),
                     // Last grades
                     Divider(color: Colors.grey[300]),
                     _buildLastGradesHeader(),
@@ -198,16 +198,21 @@ class _HomePageState extends State<HomePage> {
   // Function that is called when refresh]is pulled
   /// Updates lessons, agenda, grades for the [user]
   Future<void> _refreshData() async {
-    BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
+    // Update lessons
+    //BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
+    //BlocProvider.of<LessonsBloc>(context).add(GetLastLessons());
 
-    BlocProvider.of<GradesBloc>(context).add(FetchGrades());
+    // // Update grades
+    //BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
+    //BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
     BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
-    //BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
-    //BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
+    //BlocProvider.of<SubjectsGradesBloc>(context).add(GetGradesAndSubjects());
+    // Update agenda
+    // BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
+    // BlocProvider.of<AgendaBloc>(context)
+    //     .add(GetNextEvents(dateTime: DateTime.now(), numberOfevents: 3));
   }
 }
-
-class FetchSubjects {}
 
 class NoGlowBehavior extends ScrollBehavior {
   @override
