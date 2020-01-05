@@ -11,9 +11,6 @@ class LastGradesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<GradesBloc>(context).add(GetGrades(
-      limit: 3
-    ));
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: _buildLastGrades(context),

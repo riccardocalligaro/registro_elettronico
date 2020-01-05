@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
@@ -83,7 +82,7 @@ class _SubjectsGridSectionState extends State<SubjectsGridSection> {
     return SubjectsGrid(
       subjects: GlobalUtils.removeUnwantedSubject(subjects),
       grades: grades,
-      period: period.position,
+      period: period != null ? period.position : TabsConstants.GENERALE,
     );
   }
 }

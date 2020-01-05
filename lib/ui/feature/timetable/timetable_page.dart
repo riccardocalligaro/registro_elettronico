@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/timetable/bloc.dart';
-import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
-import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -73,9 +71,8 @@ class _TimetablePageState extends State<TimetablePage> {
               return CustomPlaceHolder(
                 icon: Icons.access_time,
                 text:
-                    """${AppLocalizations.of(context).translate('no_timetable')} +
-                  
-                    ${AppLocalizations.of(context).translate('no_timetable_message')}"""  ,
+                    """${AppLocalizations.of(context).translate('no_timetable')}
+${AppLocalizations.of(context).translate('no_timetable_message')}""",
                 showUpdate: true,
                 onTap: () {
                   BlocProvider.of<TimetableBloc>(context).add(

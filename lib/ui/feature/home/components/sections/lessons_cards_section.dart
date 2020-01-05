@@ -11,8 +11,6 @@ class LessonsCardsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<LessonsBloc>(context).add(GetLastLessons());
-
     return Padding(
       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
       child: Container(

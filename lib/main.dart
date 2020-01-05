@@ -27,12 +27,13 @@ void main() {
 void initApp() {
   // This is for the notification service
 
-  WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
   // Workmanager.initialize(
   //   callbackDispatcher,
   //   isInDebugMode: true,
   // );
-  //Workmanager.registerOneOffTask("checkForNewContent", "checkForNewContent", initialDelay: Duration(seconds: 10));
+  // Workmanager.registerOneOffTask("checkForNewContent", "checkForNewContent",
+  //     initialDelay: Duration(seconds: 3));
 
   // Workmanager.registerPeriodicTask(
   //   "checkForNewContent",

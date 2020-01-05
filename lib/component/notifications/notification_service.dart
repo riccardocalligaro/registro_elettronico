@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:logger/logger.dart';
 import 'package:registro_elettronico/component/notifications/local_notification.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
@@ -14,12 +16,14 @@ import 'package:registro_elettronico/data/repository/profile_repository_impl.dar
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
-  Future checkForNewContent() async {
+  Future checkForNewContent({BuildContext context}) async {
+    Logger log = Logger();
     final AppDatabase appDatabase = AppDatabase();
     final GradeDao gradeDao = GradeDao(appDatabase);
     final ProfileDao profileDao = ProfileDao(AppDatabase());
@@ -48,6 +52,13 @@ class NotificationService {
         prefs.getBool(PrefsConstants.AGENDA_NOTIFICATIONS) ?? false;
     final notifyNotes =
         prefs.getBool(PrefsConstants.NOTES_NOTIFICATIONS) ?? false;
+
+    log.i("Checking new content...");
+    localNotification.showNotificationWithDefaultSound(
+      1,
+      AppLocalizations.of(context).translate('app_name'),
+      'Hai preso',
+    );
 
     // Send grades notifications
     if (notifyGrades) {
@@ -89,7 +100,7 @@ class NotificationService {
 
     gradesAfterFetching.forEach(
       (grade) => {
-        if (!gradesBeforeFetching.contains(grade)) gradesToNotify.add(grade)
+        if (!gradesBeforeFetching.contains(grade))gradesToNotify.add(grade)
       },
     );
 

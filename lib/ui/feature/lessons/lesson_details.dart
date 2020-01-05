@@ -55,9 +55,14 @@ class _LessonDetailsState extends State<LessonDetails> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() async {
     BlocProvider.of<LessonsBloc>(context)
         .add(GetLessonsForSubject(subjectId: widget.subjectId));
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

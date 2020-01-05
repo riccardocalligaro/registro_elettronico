@@ -11,8 +11,6 @@ class AgendaSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<AgendaBloc>(context)
-        .add(GetNextEvents(dateTime: DateTime.now(), numberOfevents: 3));
     return BlocBuilder<AgendaBloc, AgendaState>(
       builder: (context, state) {
         if (state is AgendaUpdateLoadInProgress) {
@@ -40,6 +38,7 @@ class AgendaSection extends StatelessWidget {
     BuildContext context,
     List<db.AgendaEvent> events,
   ) {
+    events = events.toSet().toList();
     if (events.length == 0) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 24.0),

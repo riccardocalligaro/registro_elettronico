@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:registro_elettronico/component/navigator.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
+import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/agenda_section.dart';
@@ -17,7 +17,6 @@ import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
 
 /// The [home] page of the application
 class HomePage extends StatefulWidget {
@@ -34,7 +33,17 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // we need to get shared preferences to change the grades we show in the home page
     getPreferences();
+    BlocProvider.of<AgendaBloc>(context)
+        .add(GetNextEvents(dateTime: DateTime.now(), numberOfevents: 3));
+    BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
+    BlocProvider.of<LessonsBloc>(context).add(GetLastLessons());
+
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   /// Updates [shared preferences]

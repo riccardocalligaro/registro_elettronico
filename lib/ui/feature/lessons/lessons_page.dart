@@ -11,11 +11,12 @@ import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'components/subjects_list.dart';
 
 class LessonsPage extends StatelessWidget {
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  const LessonsPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<SubjectsBloc>(context).add(GetSubjectsAndProfessors());
+    final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
     return Scaffold(
       key: _drawerKey,
       drawer: AppDrawer(
@@ -25,32 +26,54 @@ class LessonsPage extends StatelessWidget {
         title: Text(AppLocalizations.of(context).translate('lessons')),
         scaffoldKey: _drawerKey,
       ),
-      body: BlocBuilder<SubjectsBloc, SubjectsState>(
-        builder: (context, state) {
-          if (state is SubjectsAndProfessorsLoadInProgress) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is SubjectsAndProfessorsLoadSuccess) {
-            return _buildSubjectsList(
-              subjects: state.subjects,
-              professors: state.professors,
-              context: context,
-            );
-          } else if (state is SubjectsUpdateLoadError ||
-              state is SubjectsLoadError) {
-            return CustomPlaceHolder(
-              text: AppLocalizations.of(context).translate('error'),
-              icon: Icons.error,
-              showUpdate: true,
-              onTap: () {
-                BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
-              },
-            );
-          }
-          return Container();
-        },
-      ),
+      body: LessonsPageContent(),
+    );
+  }
+}
+
+class LessonsPageContent extends StatefulWidget {
+  const LessonsPageContent({Key key}) : super(key: key);
+
+  @override
+  _LessonsPageContentState createState() => _LessonsPageContentState();
+}
+
+class _LessonsPageContentState extends State<LessonsPageContent> {
+  @override
+  void didChangeDependencies() {
+
+    BlocProvider.of<SubjectsBloc>(context).add(GetSubjectsAndProfessors());
+
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SubjectsBloc, SubjectsState>(
+      builder: (context, state) {
+        if (state is SubjectsAndProfessorsLoadInProgress) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is SubjectsAndProfessorsLoadSuccess) {
+          return _buildSubjectsList(
+            subjects: state.subjects,
+            professors: state.professors,
+            context: context,
+          );
+        } else if (state is SubjectsUpdateLoadError ||
+            state is SubjectsLoadError) {
+          return CustomPlaceHolder(
+            text: AppLocalizations.of(context).translate('error'),
+            icon: Icons.error,
+            showUpdate: true,
+            onTap: () {
+              BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
+            },
+          );
+        }
+        return Container();
+      },
     );
   }
 
@@ -75,7 +98,8 @@ class LessonsPage extends StatelessWidget {
         icon: Icons.assignment,
         onTap: () {
           BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
-          BlocProvider.of<SubjectsBloc>(context).add(GetSubjectsAndProfessors());
+          BlocProvider.of<SubjectsBloc>(context)
+              .add(GetSubjectsAndProfessors());
         },
         showUpdate: true,
       );

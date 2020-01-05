@@ -17,6 +17,22 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
+
+    // await Workmanager.initialize(
+    //   callbackDispatcher,
+    //   isInDebugMode: true,
+    // );
+
+    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // print(sharedPreferences
+    //     .getBool(PrefsConstants.GRADES_NOTIFICATIONS ?? "false13"));
+
+    // Workmanager.registerOneOffTask(
+    //   "checkForNewContent",
+    //   "checkForNewContent",
+    //   initialDelay: Duration(seconds: 2),
+    // );
+
     //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (!_alreadyInit) {
       _alreadyInit = true;
