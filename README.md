@@ -2,16 +2,13 @@
   <img src="https://i.imgur.com/BCktmzl.png" alt="Registto elettronico"><br>
 </h1>
 
-![GitHub](https://img.shields.io/github/license/Zuccante-Web-App/Registro-elettronico?style=flat-square)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Zuccante-Web-App/Registro-elettronico?style=flat-square)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/Zuccante-Web-App/Registro-elettronico/master?style=flat-square)
 [![HitCount](http://hits.dwyl.io/Zuccante-Web-App/Registro-elettronico.svg)](http://hits.dwyl.io/Zuccante-Web-App/Registro-elettronico)
 
 <a href="https://www.mediafire.com/file/xrwlwz3dky9nf51/app-release.apk/file">Download Preview APK</a>
 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
-
-
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />
 
 ## Table of contents
 
@@ -51,6 +48,7 @@ Other libraries:
 - [Work manager for notifications](https://pub.dev/packages/workmanager)
 
 ## Screenshots
+
 |                         Home Page 1                         |                         Home Page 2                          |                           Lessons                           |
 | :---------------------------------------------------------: | :----------------------------------------------------------: | :---------------------------------------------------------: |
 | <img src="https://i.imgur.com/m2B8hol.png" height="400px" > | <img src="https://i.imgur.com/B24gPrs.png"  height="400px" > | <img src="https://i.imgur.com/EsPUVLn.png" height="400px" > |
@@ -123,309 +121,47 @@ Additional features that will be implemented
 
 <img src="https://i0.wp.com/resocoder.com/wp-content/uploads/2019/08/Clean-Architecture-Flutter-Diagram.png?resize=556%2C707&ssl=1">
 
-- Project tree
-
-```
-📦lib
- ┣ 📂component
- ┃ ┣ 📂notifications
- ┃ ┃ ┣ 📜local_notification.dart
- ┃ ┃ ┣ 📜local_notification_widget.dart
- ┃ ┃ ┗ 📜notification_service.dart
- ┃ ┣ 📜api_config.dart
- ┃ ┣ 📜app_injection.dart
- ┃ ┣ 📜bloc_delegate.dart
- ┃ ┣ 📜navigator.dart
- ┃ ┣ 📜routes.dart
- ┃ ┗ 📜simple_bloc_delegate.dart
- ┣ 📂data
- ┃ ┣ 📂db
- ┃ ┃ ┣ 📂dao
- ┃ ┃ ┃ ┣ 📜absence_dao.dart
- ┃ ┃ ┃ ┣ 📜absence_dao.g.dart
- ┃ ┃ ┃ ┣ 📜agenda_dao.dart
- ┃ ┃ ┃ ┣ 📜agenda_dao.g.dart
- ┃ ┃ ┃ ┣ 📜grade_dao.dart
- ┃ ┃ ┃ ┣ 📜grade_dao.g.dart
- ┃ ┃ ┃ ┣ 📜lesson_dao.dart
- ┃ ┃ ┃ ┣ 📜lesson_dao.g.dart
- ┃ ┃ ┃ ┣ 📜notice_dao.dart
- ┃ ┃ ┃ ┣ 📜notice_dao.g.dart
- ┃ ┃ ┃ ┣ 📜period_dao.dart
- ┃ ┃ ┃ ┣ 📜period_dao.g.dart
- ┃ ┃ ┃ ┣ 📜professor_dao.dart
- ┃ ┃ ┃ ┣ 📜professor_dao.g.dart
- ┃ ┃ ┃ ┣ 📜profile_dao.dart
- ┃ ┃ ┃ ┣ 📜profile_dao.g.dart
- ┃ ┃ ┃ ┣ 📜subject_dao.dart
- ┃ ┃ ┃ ┗ 📜subject_dao.g.dart
- ┃ ┃ ┣ 📂table
- ┃ ┃ ┃ ┣ 📜absence_table.dart
- ┃ ┃ ┃ ┣ 📜agenda_event_table.dart
- ┃ ┃ ┃ ┣ 📜attachment_table.dart
- ┃ ┃ ┃ ┣ 📜grade_table.dart
- ┃ ┃ ┃ ┣ 📜lesson_table.dart
- ┃ ┃ ┃ ┣ 📜notice_table.dart
- ┃ ┃ ┃ ┣ 📜period_table.dart
- ┃ ┃ ┃ ┣ 📜professor_table.dart
- ┃ ┃ ┃ ┣ 📜profile_table.dart
- ┃ ┃ ┃ ┗ 📜subject_table.dart
- ┃ ┃ ┣ 📜moor_database.dart
- ┃ ┃ ┗ 📜moor_database.g.dart
- ┃ ┣ 📂network
- ┃ ┃ ┣ 📂exception
- ┃ ┃ ┃ ┗ 📜server_exception.dart
- ┃ ┃ ┗ 📂service
- ┃ ┃ ┃ ┗ 📂api
- ┃ ┃ ┃ ┃ ┣ 📜dio_client.dart
- ┃ ┃ ┃ ┃ ┣ 📜spaggiari_client.dart
- ┃ ┃ ┃ ┃ ┗ 📜spaggiari_client.g.dart
- ┃ ┗ 📂repository
- ┃ ┃ ┣ 📂mapper
- ┃ ┃ ┃ ┣ 📜absence_mapper.dart
- ┃ ┃ ┃ ┣ 📜event_mapper.dart
- ┃ ┃ ┃ ┣ 📜grade_mapper.dart
- ┃ ┃ ┃ ┣ 📜lesson_mapper.dart
- ┃ ┃ ┃ ┣ 📜mappers_export.dart
- ┃ ┃ ┃ ┣ 📜notice_mapper.dart
- ┃ ┃ ┃ ┣ 📜period_mapper.dart
- ┃ ┃ ┃ ┣ 📜profile_mapper.dart
- ┃ ┃ ┃ ┗ 📜subject_mapper.dart
- ┃ ┃ ┣ 📜absences_repository_impl.dart
- ┃ ┃ ┣ 📜agenda_repository_impl.dart
- ┃ ┃ ┣ 📜grades_repository_impl.dart
- ┃ ┃ ┣ 📜lessons_repository_impl.dart
- ┃ ┃ ┣ 📜login_repository_impl.dart
- ┃ ┃ ┣ 📜notices_repository_impl.dart
- ┃ ┃ ┣ 📜periods_repository_impl.dart
- ┃ ┃ ┣ 📜professors_repository_impl.dart
- ┃ ┃ ┣ 📜profile_repository_impl.dart
- ┃ ┃ ┣ 📜repository_impl_export.dart
- ┃ ┃ ┗ 📜subjects_respository_impl.dart
- ┣ 📂domain
- ┃ ┣ 📂entity
- ┃ ┃ ┣ 📂api_requests
- ┃ ┃ ┃ ┗ 📜login_request.dart
- ┃ ┃ ┣ 📂api_responses
- ┃ ┃ ┃ ┣ 📜absences_response.dart
- ┃ ┃ ┃ ┣ 📜agenda_response.dart
- ┃ ┃ ┃ ┣ 📜grades_response.dart
- ┃ ┃ ┃ ┣ 📜lessons_response.dart
- ┃ ┃ ┃ ┣ 📜login_response.dart
- ┃ ┃ ┃ ┣ 📜noticeboard_read_response.dart
- ┃ ┃ ┃ ┣ 📜noticeboard_response.dart
- ┃ ┃ ┃ ┣ 📜periods_response.dart
- ┃ ┃ ┃ ┗ 📜subjects_response.dart
- ┃ ┃ ┣ 📜entities.dart
- ┃ ┃ ┣ 📜profile.dart
- ┃ ┃ ┗ 📜profile.g.dart
- ┃ ┗ 📂repository
- ┃ ┃ ┣ 📜absences_repository.dart
- ┃ ┃ ┣ 📜agenda_repository.dart
- ┃ ┃ ┣ 📜grades_repository.dart
- ┃ ┃ ┣ 📜lessons_repository.dart
- ┃ ┃ ┣ 📜login_repository.dart
- ┃ ┃ ┣ 📜notices_repository.dart
- ┃ ┃ ┣ 📜periods_repository.dart
- ┃ ┃ ┣ 📜professors_repository.dart
- ┃ ┃ ┣ 📜profile_repository.dart
- ┃ ┃ ┣ 📜repositories_export.dart
- ┃ ┃ ┗ 📜subjects_repository.dart
- ┣ 📂ui
- ┃ ┣ 📂bloc
- ┃ ┃ ┣ 📂absences
- ┃ ┃ ┃ ┣ 📜absences_bloc.dart
- ┃ ┃ ┃ ┣ 📜absences_event.dart
- ┃ ┃ ┃ ┣ 📜absences_state.dart
- ┃ ┃ ┃ ┗ 📜bloc.dart
- ┃ ┃ ┣ 📂agenda
- ┃ ┃ ┃ ┣ 📜agenda_bloc.dart
- ┃ ┃ ┃ ┣ 📜agenda_event.dart
- ┃ ┃ ┃ ┣ 📜agenda_state.dart
- ┃ ┃ ┃ ┗ 📜bloc.dart
- ┃ ┃ ┣ 📂auth
- ┃ ┃ ┃ ┣ 📜auth_bloc.dart
- ┃ ┃ ┃ ┣ 📜auth_event.dart
- ┃ ┃ ┃ ┣ 📜auth_state.dart
- ┃ ┃ ┃ ┗ 📜bloc.dart
- ┃ ┃ ┣ 📂grades
- ┃ ┃ ┃ ┣ 📜bloc.dart
- ┃ ┃ ┃ ┣ 📜grades_bloc.dart
- ┃ ┃ ┃ ┣ 📜grades_event.dart
- ┃ ┃ ┃ ┗ 📜grades_state.dart
- ┃ ┃ ┣ 📂lessons
- ┃ ┃ ┃ ┣ 📜bloc.dart
- ┃ ┃ ┃ ┣ 📜lessons_bloc.dart
- ┃ ┃ ┃ ┣ 📜lessons_event.dart
- ┃ ┃ ┃ ┗ 📜lessons_state.dart
- ┃ ┃ ┣ 📂notices
- ┃ ┃ ┃ ┣ 📂attachments
- ┃ ┃ ┃ ┃ ┣ 📜attachments_bloc.dart
- ┃ ┃ ┃ ┃ ┣ 📜attachments_event.dart
- ┃ ┃ ┃ ┃ ┣ 📜attachments_state.dart
- ┃ ┃ ┃ ┃ ┗ 📜bloc.dart
- ┃ ┃ ┃ ┣ 📂attachment_download
- ┃ ┃ ┃ ┃ ┣ 📜attachment_download_bloc.dart
- ┃ ┃ ┃ ┃ ┣ 📜attachment_download_event.dart
- ┃ ┃ ┃ ┃ ┣ 📜attachment_download_state.dart
- ┃ ┃ ┃ ┃ ┗ 📜bloc.dart
- ┃ ┃ ┃ ┣ 📜bloc.dart
- ┃ ┃ ┃ ┣ 📜notices_bloc.dart
- ┃ ┃ ┃ ┣ 📜notices_event.dart
- ┃ ┃ ┃ ┗ 📜notices_state.dart
- ┃ ┃ ┣ 📂periods
- ┃ ┃ ┃ ┣ 📜bloc.dart
- ┃ ┃ ┃ ┣ 📜periods_bloc.dart
- ┃ ┃ ┃ ┣ 📜periods_event.dart
- ┃ ┃ ┃ ┗ 📜periods_state.dart
- ┃ ┃ ┗ 📂subjects
- ┃ ┃ ┃ ┣ 📜bloc.dart
- ┃ ┃ ┃ ┣ 📜subjects_bloc.dart
- ┃ ┃ ┃ ┣ 📜subjects_event.dart
- ┃ ┃ ┃ ┗ 📜subjects_state.dart
- ┃ ┣ 📂feature
- ┃ ┃ ┣ 📂absences
- ┃ ┃ ┃ ┣ 📂components
- ┃ ┃ ┃ ┃ ┣ 📜absences_chart_bars.dart
- ┃ ┃ ┃ ┃ ┣ 📜absences_chart_lines.dart
- ┃ ┃ ┃ ┃ ┗ 📜absence_card.dart
- ┃ ┃ ┃ ┗ 📜absences_page.dart
- ┃ ┃ ┣ 📂agenda
- ┃ ┃ ┃ ┗ 📜agenda_page.dart
- ┃ ┃ ┣ 📂grades
- ┃ ┃ ┃ ┣ 📂components
- ┃ ┃ ┃ ┃ ┣ 📜grades_chart.dart
- ┃ ┃ ┃ ┃ ┣ 📜grades_overall_stats.dart
- ┃ ┃ ┃ ┃ ┣ 📜grades_tab.dart
- ┃ ┃ ┃ ┃ ┗ 📜grade_subject_card.dart
- ┃ ┃ ┃ ┣ 📂subject_grades
- ┃ ┃ ┃ ┃ ┗ 📜subject_grades.dart
- ┃ ┃ ┃ ┗ 📜grades_page.dart
- ┃ ┃ ┣ 📂home
- ┃ ┃ ┃ ┣ 📂components
- ┃ ┃ ┃ ┃ ┣ 📜event_card.dart
- ┃ ┃ ┃ ┃ ┣ 📜lesson_card.dart
- ┃ ┃ ┃ ┃ ┗ 📜subjects_grid.dart
- ┃ ┃ ┃ ┗ 📜home_page.dart
- ┃ ┃ ┣ 📂lessons
- ┃ ┃ ┃ ┣ 📂components
- ┃ ┃ ┃ ┃ ┗ 📜subjects_list.dart
- ┃ ┃ ┃ ┣ 📜lessons_page.dart
- ┃ ┃ ┃ ┗ 📜lesson_details.dart
- ┃ ┃ ┣ 📂login
- ┃ ┃ ┃ ┗ 📜login_page.dart
- ┃ ┃ ┣ 📂noticeboard
- ┃ ┃ ┃ ┗ 📜noticeboard_page.dart
- ┃ ┃ ┣ 📂settings
- ┃ ┃ ┃ ┣ 📂components
- ┃ ┃ ┃ ┃ ┣ 📂customization
- ┃ ┃ ┃ ┃ ┃ ┗ 📜customization_settings.dart
- ┃ ┃ ┃ ┃ ┣ 📂general
- ┃ ┃ ┃ ┃ ┃ ┣ 📜general_averages_home_settings_dialog.dart
- ┃ ┃ ┃ ┃ ┃ ┣ 📜general_objective_settings_dialog.dart
- ┃ ┃ ┃ ┃ ┃ ┗ 📜general_settings.dart
- ┃ ┃ ┃ ┃ ┣ 📂notifications
- ┃ ┃ ┃ ┃ ┃ ┣ 📜notifications_interval_settings_dialog.dart
- ┃ ┃ ┃ ┃ ┃ ┗ 📜notifications_type_settings_dialog.dart
- ┃ ┃ ┃ ┃ ┗ 📜header_text.dart
- ┃ ┃ ┃ ┗ 📜settings_page.dart
- ┃ ┃ ┣ 📂splash_screen
- ┃ ┃ ┃ ┗ 📜splash_screen.dart
- ┃ ┃ ┣ 📂widgets
- ┃ ┃ ┃ ┣ 📜app_drawer.dart
- ┃ ┃ ┃ ┣ 📜cusotm_placeholder.dart
- ┃ ┃ ┃ ┣ 📜custom_app_bar.dart
- ┃ ┃ ┃ ┣ 📜grade_card.dart
- ┃ ┃ ┃ ┣ 📜grade_painter.dart
- ┃ ┃ ┃ ┗ 📜section_header.dart
- ┃ ┃ ┗ 📜pages.dart
- ┃ ┣ 📂global
- ┃ ┃ ┣ 📂localizations
- ┃ ┃ ┃ ┣ 📂bloc
- ┃ ┃ ┃ ┃ ┣ 📜bloc.dart
- ┃ ┃ ┃ ┃ ┣ 📜localizations_bloc.dart
- ┃ ┃ ┃ ┃ ┣ 📜localizations_event.dart
- ┃ ┃ ┃ ┃ ┗ 📜localizations_state.dart
- ┃ ┃ ┃ ┣ 📂ui
- ┃ ┃ ┃ ┃ ┗ 📜locale_bloc_builder.dart
- ┃ ┃ ┃ ┣ 📜app_localizations.dart
- ┃ ┃ ┃ ┗ 📜localizations_delegates.dart
- ┃ ┃ ┗ 📂theme
- ┃ ┃ ┃ ┣ 📂bloc
- ┃ ┃ ┃ ┃ ┣ 📜bloc.dart
- ┃ ┃ ┃ ┃ ┣ 📜theme_bloc.dart
- ┃ ┃ ┃ ┃ ┣ 📜theme_event.dart
- ┃ ┃ ┃ ┃ ┗ 📜theme_state.dart
- ┃ ┃ ┃ ┣ 📂theme_data
- ┃ ┃ ┃ ┃ ┣ 📜dark_theme.dart
- ┃ ┃ ┃ ┃ ┣ 📜default_theme.dart
- ┃ ┃ ┃ ┃ ┣ 📜light_theme.dart
- ┃ ┃ ┃ ┃ ┗ 📜text_styles.dart
- ┃ ┃ ┃ ┣ 📂ui
- ┃ ┃ ┃ ┃ ┣ 📜theme_bloc_builder.dart
- ┃ ┃ ┃ ┃ ┣ 📜theme_item.dart
- ┃ ┃ ┃ ┃ ┗ 📜theme_settings_page.dart
- ┃ ┃ ┃ ┗ 📜app_themes.dart
- ┃ ┗ 📜application.dart
- ┣ 📂utils
- ┃ ┣ 📂constants
- ┃ ┃ ┣ 📜drawer_constants.dart
- ┃ ┃ ┣ 📜preferences_constants.dart
- ┃ ┃ ┣ 📜registro_constants.dart
- ┃ ┃ ┣ 📜subjects_constants.dart
- ┃ ┃ ┗ 📜tabs_constants.dart
- ┃ ┣ 📂entity
- ┃ ┃ ┣ 📜datetime_interval.dart
- ┃ ┃ ┣ 📜overall_stats.dart
- ┃ ┃ ┗ 📜subject_averages.dart
- ┃ ┣ 📜color_utils.dart
- ┃ ┣ 📜date_utils.dart
- ┃ ┣ 📜global_utils.dart
- ┃ ┣ 📜grades_utils.dart
- ┃ ┣ 📜profile_utils.dart
- ┃ ┗ 📜string_utils.dart
- ┗ 📜main.dart
-```
-
 ## Descrizione in italiano
 
-Client Flutter per la gestione dei dati del registro elettronico (ClasseViva).
+- Semplice e funzionale
+- Grafici utili sulle assenze, voti, etc...
+- Dark & Light theme (dark è meglio)
+- Notifiche quando ci sono nuovi eventi (nuovo voto, nuovo evento..)
+- Persistenza dati
+- Supporto multilingue (Italiano e inglese) e localizzazione
 
-Tecnologie e librerie che useremo:
+Tecnologie principali e librerie usate:
 
 - 🔝 Flutter + Dart
-- 📡 Retrofit + Dio per richieste alle API
-- 🧱 BLoC per la gestione dello stato
+- 📡 Retrofit + Dio per le richieste alle API
+- 💡 BLoC per la gestione dello stato
 - 📚 Moor per persistenza dati
 - 💉 Injector per dependency injection
-- 🐠 Equatable per comparazione oggetto
-- 🔥 Flare per animazioni
+- 🐠 Equatable per comparazione oggetti
+
+Altre librerie:
+
+- [Fl_Chart](https://pub.dev/packages/fl_chart)
+- [Table calendar](https://pub.dev/packages/table_calendar)
+- [Work manager for notifications](https://pub.dev/packages/workmanager)
 
 ## Design
 
 ### Filippo Veggo & Riccardo Calligaro
 
 <div align="center">
-
 <div style="display: inline-flex; ">
-<img src="https://i.imgur.com/kA3nnBG.png" height="400px" alt="the home page" style="float: left; margin-right: 10px;" />
-
-<img src="https://i.imgur.com/TW6aTcM.png" height="400px" alt="the home page" style="float: left; margin-right: 10px;" />
-
-<img src="https://i.imgur.com/rqPtEbl.png"height="400px" alt="the home page" style="float: left; margin-right: 10px; margin-bottom: 10px;" /> </div>
-
-<div style="display: inline-flex; ">
-
-<img src="https://i.imgur.com/nP5XXON.png" style="float: left; margin-right: 10px;" />
-
-<img src="https://i.imgur.com/5ZVDoBi.png"
-height="400px" alt="the home page" style="float: left; margin-right: 10px;" />
-
-<img src="https://i.imgur.com/nDsK6vw.png"
-height="400px" alt="the home page" style="margin-right: 10px;" />
-
+<img src="https://i.imgur.com/kA3nnBG.png" height="400px" alt="the home page" style="float: left; margin-right: 10px;"/>
+<img src="https://i.imgur.com/TW6aTcM.png" height="400px" alt="the home page" style="float: left; margin-right: 10px;"/>
+<img src="https://i.imgur.com/rqPtEbl.png"height="400px" alt="the home page" style="float: left; margin-right: 10px; margin-bottom: 10px;"/>
 </div>
-
+<div style="display: inline-flex;">
+<img src="https://i.imgur.com/nP5XXON.png"  height="400px" style="float: left; margin-right: 10px; margin-bottom: 10px;" />
+<img src="https://i.imgur.com/5ZVDoBi.png"
+height="400px" alt="the home page" height="400px"  style="float: left; margin-right: 10px;" />
+<img src="https://i.imgur.com/nDsK6vw.png"
+height="400px" alt="the home page" height="400px" style="margin-right: 10px;" />
+</div>
 </div>
 
 ---
@@ -877,3 +613,4 @@ This endpoint provides user's school books.
     ]
 }
 ```
+This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
