@@ -7,7 +7,6 @@ import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/agenda_section.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/last_grades_section.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/lessons_cards_section.dart';
