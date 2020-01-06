@@ -8,6 +8,7 @@ import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/feature/home/home_page.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
+import 'package:share/share.dart';
 
 class AppDrawer extends StatefulWidget {
   final int position;
@@ -191,9 +192,12 @@ class _AppDrawerState extends State<AppDrawer> {
               },
             ),
             _createDrawerItem(
-              icon: Icons.send,
-              text: trans.translate("contact_us"),
+              icon: Icons.share,
+              text: trans.translate("share"),
               pos: 10,
+              onTap: () {
+                Share.share('check out my website https://example.com');
+              },
             ),
           ],
         ),
