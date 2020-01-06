@@ -196,7 +196,7 @@ class _AppDrawerState extends State<AppDrawer> {
               text: trans.translate("share"),
               pos: 10,
               onTap: () {
-                Share.share('check out my website https://example.com');
+                Share.share(AppLocalizations.of(context).translate('share_message').replaceAll('{download_url}', 'https://github.com/Zuccante-Web-App'));
               },
             ),
           ],

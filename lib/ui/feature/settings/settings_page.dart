@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:registro_elettronico/main.dart';
+import 'package:registro_elettronico/ui/feature/settings/components/about/about_developers_page.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/account/account_settings.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/customization/customization_settings.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/general/general_settings.dart';
@@ -12,6 +13,7 @@ import 'package:registro_elettronico/ui/global/localizations/app_localizations.d
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'components/notifications/notifications_type_settings_dialog.dart';
@@ -72,7 +74,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
               CustomizationSettings(),
 
-              AccountSettings()
+              AccountSettings(),
+
+              _buildAboutSection()
             ],
           ),
         ),
@@ -92,8 +96,10 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ),
         ListTile(
-          title: Text('Notifications'),
-          subtitle: Text('Activate notifications'),
+          title: Text(
+              AppLocalizations.of(context).translate('notifications_title')),
+          subtitle: Text(
+              AppLocalizations.of(context).translate('notifications_message')),
           trailing: Checkbox(
             value: _notificationsActivated ?? false,
             onChanged: (value) {
@@ -157,6 +163,45 @@ class _SettingsPageState extends State<SettingsPage> {
                 }
               });
             });
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAboutSection() {
+    final trans = AppLocalizations.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0, left: 16.0),
+          child: HeaderText(
+            text: AppLocalizations.of(context).translate('about_title'),
+          ),
+        ),
+        ListTile(
+          title: Text(trans.translate('about_developers_title')),
+          subtitle: Text(trans.translate('about_developers_subtitle')),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AboutDevelopersPage()));
+          },
+        ),
+        ListTile(
+          title: Text(trans.translate('about_donate_title')),
+          subtitle: Text(trans.translate('about_donate_subtitle')),
+        ),
+        ListTile(
+          title: Text(trans.translate('contact_us')),
+          subtitle: Text(trans.translate('contact_us_message')),
+          onTap: () async {
+            var url = 'mailto:riccardocalligaro@gmail.com';
+            if (await canLaunch(url)) {
+              await launch(url);
+            } else {
+              throw 'Could not launch $url';
+            }
           },
         ),
       ],
