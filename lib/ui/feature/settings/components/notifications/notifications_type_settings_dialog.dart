@@ -55,9 +55,11 @@ class _NotificationsSettingsDialogState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           HeaderText(
-            text: AppLocalizations.of(context).translate('choose_what_to_notify'),
+            text:
+                AppLocalizations.of(context).translate('choose_what_to_notify'),
           ),
           SwitchListTile(
+            
             activeColor: Colors.red,
             contentPadding: EdgeInsets.all(0.0),
             value: _gradesNotifications,
@@ -66,6 +68,7 @@ class _NotificationsSettingsDialogState
               setState(() {
                 _gradesNotifications = value;
               });
+
               save(PrefsConstants.GRADES_NOTIFICATIONS, value);
             },
           ),
@@ -78,6 +81,7 @@ class _NotificationsSettingsDialogState
               setState(() {
                 _agendaNotifications = value;
               });
+
               save(PrefsConstants.AGENDA_NOTIFICATIONS, value);
             },
           ),
@@ -90,6 +94,7 @@ class _NotificationsSettingsDialogState
               setState(() {
                 _lessonsNotifications = value;
               });
+
               save(PrefsConstants.LESSONS_NOTIFICATIONS, value);
             },
           ),
@@ -114,7 +119,8 @@ class _NotificationsSettingsDialogState
               setState(() {
                 _absencesNotifications = value;
               });
-              save(PrefsConstants.ABSENCES_NOTIFICATIONS, value);
+
+              if (value) save(PrefsConstants.ABSENCES_NOTIFICATIONS, value);
             },
           ),
         ],

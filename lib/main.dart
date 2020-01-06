@@ -13,7 +13,6 @@ import 'component/routes.dart';
 void callbackDispatcher() {
   Workmanager.executeTask((task, inputData) async {
     await NotificationService().checkForNewContent();
-
     return Future.value(true);
   });
 }
@@ -26,14 +25,6 @@ void main() {
 
 void initApp() {
   // This is for the notification service
-
-  // WidgetsFlutterBinding.ensureInitialized();
-  // Workmanager.initialize(
-  //   callbackDispatcher,
-  //   isInDebugMode: true,
-  // );
-  // Workmanager.registerOneOffTask("checkForNewContent", "checkForNewContent",
-  //     initialDelay: Duration(seconds: 3));
 
   // Workmanager.registerPeriodicTask(
   //   "checkForNewContent",

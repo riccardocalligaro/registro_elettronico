@@ -92,7 +92,11 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
         dy: 210,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 64.0),
-          child: NotificationsSettingsDialog(),
+          child: Column(
+            children: <Widget>[
+              NotificationsSettingsDialog(),
+            ],
+          ),
         ),
       ),
       title: AppLocalizations.of(context).translate('notifications'),

@@ -123,5 +123,6 @@
   "argument": "Argument",
   "type": "Type",
   "no_timetable": "No timetable",
-  "no_timetable_message": "The timetable is calculated by analyzing the lessons, if there aren't enough lesssons we can't generate one ☹"
+  "no_timetable_message": "The timetable is calculated by analyzing the lessons, if there aren't enough lesssons we can't generate one ☹",
+  "download":"Download"
 }

@@ -123,5 +123,7 @@
   "argument":"Argomento lezione",
   "type":"Tipo",
   "no_timetable": "Nessun orario",
-  "no_timetable_message": "L'orario viene calcolato analizzando le lezioni se esse non sono presenti non riusciamo a generarlo."
+  "no_timetable_message": "L'orario viene calcolato analizzando le lezioni se esse non sono presenti non riusciamo a generarlo.",
+  "download":"Scarica"
+
 }

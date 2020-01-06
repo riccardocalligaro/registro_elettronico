@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:registro_elettronico/component/notifications/local_notification.dart';
@@ -13,16 +12,16 @@ import 'package:registro_elettronico/data/repository/grades_repository_impl.dart
 import 'package:registro_elettronico/data/repository/mapper/grade_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/data/repository/profile_repository_impl.dart';
+import 'package:registro_elettronico/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
-  Future checkForNewContent({BuildContext context}) async {
+  Future checkForNewContent() async {
     Logger log = Logger();
     final AppDatabase appDatabase = AppDatabase();
     final GradeDao gradeDao = GradeDao(appDatabase);
@@ -39,6 +38,7 @@ class NotificationService {
     final GradesRepository gradesRepository = GradesRepositoryImpl(
         gradeDao, spaggiariClient, gradeMapper, profileDao);
 
+    log.i("Checking for new contnet...");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final LocalNotification localNotification =
         LocalNotification(onSelectNotification);
@@ -53,16 +53,12 @@ class NotificationService {
     final notifyNotes =
         prefs.getBool(PrefsConstants.NOTES_NOTIFICATIONS) ?? false;
 
-    log.i("Checking new content...");
-    localNotification.showNotificationWithDefaultSound(
-      1,
-      AppLocalizations.of(context).translate('app_name'),
-      'Hai preso',
-    );
-
     // Send grades notifications
     if (notifyGrades) {
+      log.i("Checking for new content in GRADES!");
       final gradesToNotify = await _getGradesToNotify(gradesRepository);
+      log.i("Found ${gradesToNotify.length} NEW grades in GRADES!");
+
       gradesToNotify.forEach(
         (grade) => localNotification.showNotificationWithDefaultSound(
           grade.evtId,
@@ -74,9 +70,12 @@ class NotificationService {
 
     // Send agenda notifications
     if (notifyAgenda) {
+      log.i("Checking for new content in AGENDA!");
       final AgendaRepository agendaRepository = AgendaRepositoryImpl(
           spaggiariClient, AgendaDao(appDatabase), profileDao);
       final eventsToNotify = await _getAgendaEventsToNotify(agendaRepository);
+      log.i("Found ${eventsToNotify.length} NEW events in AGENDA!");
+
       eventsToNotify.forEach(
         (event) => localNotification.showNotificationWithDefaultSound(
           event.evtId,
@@ -86,7 +85,9 @@ class NotificationService {
       );
     }
 
-    if (notifyAbsenes) {}
+    if (notifyAbsenes) {
+      log.i("Checking for new content in ABSENCES!");
+    }
 
     if (notifyNotes) {}
   }
@@ -100,7 +101,7 @@ class NotificationService {
 
     gradesAfterFetching.forEach(
       (grade) => {
-        if (!gradesBeforeFetching.contains(grade))gradesToNotify.add(grade)
+        if (!gradesBeforeFetching.contains(grade)) gradesToNotify.add(grade)
       },
     );
 
@@ -120,9 +121,24 @@ class NotificationService {
     return eventsToNotify;
   }
 
+  // Future<List<Absence>> _getAbsencesToNotify(
+  //     AbsencesRepository absencesRepository) async {
+  //   List<Absence> absencesToNotify = [];
+  //   final before = await absencesRepository.getAllAbsences();
+  //   await absencesRepository.updateAbsences();
+  //   final after = await absencesRepository.getAllAbsences();
+
+  //   after.forEach((event) {
+  //     if (!before.contains(event)) absencesToNotify.add(event);
+  //   });
+  //   return absencesToNotify;
+  // }
+
   Future onSelectNotification(String payload) async {
     if (payload != null) {
       print('notification payload: ' + payload);
     }
   }
 }
+
+class Strings {}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -13,8 +14,8 @@ class GradeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onDoubleTap: () {
-        // GradeDao gradeDao = GradeDao(AppDatabase());
-        // gradeDao.deleteGrade(grade);
+        GradeDao gradeDao = GradeDao(AppDatabase());
+        gradeDao.deleteGrade(grade);
       },
       onTap: () {
         final trans = AppLocalizations.of(context);
@@ -105,8 +106,8 @@ class GradeCard extends StatelessWidget {
   Widget _buildLessonArgument(Grade grade) {
     String text = grade.notesForFamily;
     if (text.length > 0) {
-      if (text.length > 40) {
-        text = text.substring(0, 39);
+      if (text.length > 30) {
+        text = text.substring(0, 30);
         text += "...";
       }
       return Text(

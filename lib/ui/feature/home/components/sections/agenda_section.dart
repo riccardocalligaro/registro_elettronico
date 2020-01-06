@@ -15,7 +15,10 @@ class AgendaSection extends StatelessWidget {
       builder: (context, state) {
         if (state is AgendaUpdateLoadInProgress) {
           return Center(
-            child: CircularProgressIndicator(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: CircularProgressIndicator(),
+            ),
           );
         } else if (state is AgendaLoadSuccess) {
           return _buildAgenda(context, state.events);

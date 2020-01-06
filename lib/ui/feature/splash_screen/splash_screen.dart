@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
+import 'package:registro_elettronico/main.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
+import 'package:workmanager/workmanager.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
@@ -18,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
 
-    // await Workmanager.initialize(
+    //  Workmanager.initialize(
     //   callbackDispatcher,
     //   isInDebugMode: true,
     // );
@@ -49,15 +51,14 @@ class _SplashScreenState extends State<SplashScreen> {
           /// Checks if the autosign in returns the positive result that the user is
           /// auto signed in, so it redirects to the Home page
           if (state is AutoSignInResult) {
-            //AppNavigator.instance.navToIntro(context);
+            AppNavigator.instance.navToIntro(context);
 
-            AppNavigator.instance.navToHome(context);
+            //AppNavigator.instance.navToHome(context);
           }
 
           /// If the auto sign in returns an error the user is redirected to the
           /// login page
           if (state is AutoSignInError) {
-            //! remove this
             //AppNavigator.instance.navToIntro(context);
             AppNavigator.instance.navToLogin(context);
           }

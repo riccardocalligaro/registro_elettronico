@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
+import 'package:registro_elettronico/main.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
@@ -17,6 +18,7 @@ import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
+import 'package:workmanager/workmanager.dart';
 
 /// The [home] page of the application
 class HomePage extends StatefulWidget {
@@ -60,6 +62,7 @@ class _HomePageState extends State<HomePage> {
       appBar: CustomAppBar(
         title: Text('Home'),
         scaffoldKey: _drawerKey,
+        
       ),
       drawer: AppDrawer(
         position: DrawerConstants.HOME,
@@ -147,16 +150,7 @@ class _HomePageState extends State<HomePage> {
   void _mapStateToUI(LessonsState state, BuildContext context) {
     final trans = AppLocalizations.of(context);
     print(state);
-    if (state is LessonsUpdateLoadInProgress) {
-      Scaffold.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(
-            content: Text(trans.translate('loading_new_data')),
-            duration: Duration(seconds: 3),
-          ),
-        );
-    } else if (state is LessonsLoadServerError) {
+    if (state is LessonsLoadServerError) {
       if (state.serverError.response != null &&
           state.serverError.response.statusCode == 422) {
         final exception =
@@ -194,7 +188,6 @@ class _HomePageState extends State<HomePage> {
     } else if (state is LessonsUpdateLoadSuccess) {
       // We remove the current snackbar
       Scaffold.of(context)..removeCurrentSnackBar();
-      BlocProvider.of<LessonsBloc>(context).add(GetLastLessons());
     }
   }
 
