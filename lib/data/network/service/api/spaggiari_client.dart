@@ -89,6 +89,7 @@ abstract class SpaggiariClient {
     @Path('studentId') String studentId,
     @Path("type") String type,
     @Path("layout_note") int note,
+    @Body() String body,
   );
 
   @GET("/students/{studentId}/didactics")

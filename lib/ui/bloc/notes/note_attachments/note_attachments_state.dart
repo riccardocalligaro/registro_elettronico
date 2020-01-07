@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/notes_read_response.dart';
 
 @immutable
@@ -9,10 +10,10 @@ class NoteAttachmentsInitial extends NoteAttachmentsState {}
 class NoteAttachmentsLoadInProgress extends NoteAttachmentsState {}
 
 class NoteAttachmentsLoadSuccess extends NoteAttachmentsState {
-  final NotesReadResponse readResponse;
+  final NotesAttachment attachment;
 
   NoteAttachmentsLoadSuccess({
-    @required this.readResponse,
+    @required this.attachment,
   });
 }
 

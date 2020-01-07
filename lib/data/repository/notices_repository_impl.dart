@@ -19,6 +19,7 @@ class NoticesRepositoryImpl implements NoticesRepository {
   Future updateNotices() async {
     final profile = await profileDao.getProfile();
     final response = await spaggiariClient.getNoticeBoard(profile.studentId);
+    await noticeDao.deleteAllNotices();
     response.items.forEach((notice) {
       noticeDao
           .insertNotice(noticeMapper.convertNoticeEntityToInsertable(notice));

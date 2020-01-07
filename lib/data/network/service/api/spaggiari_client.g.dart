@@ -257,13 +257,14 @@ class _SpaggiariClient implements SpaggiariClient {
   }
 
   @override
-  markNote(studentId, type, note) async {
+  markNote(studentId, type, note, body) async {
     ArgumentError.checkNotNull(studentId, 'studentId');
     ArgumentError.checkNotNull(type, 'type');
     ArgumentError.checkNotNull(note, 'note');
+    ArgumentError.checkNotNull(body, 'body');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final _data = body;
     final Response<Map<String, dynamic>> _result = await _dio.request(
         '/students/$studentId/notes/$type/read/$note',
         queryParameters: queryParameters,

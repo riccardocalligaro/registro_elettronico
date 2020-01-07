@@ -43,6 +43,7 @@ part 'moor_database.g.dart';
   Notices,
   Attachments,
   Notes,
+  NotesAttachments,
   DidacticsTeachers,
   DidacticsFolders,
   DidacticsContents,

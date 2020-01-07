@@ -5277,7 +5277,7 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Note map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -5314,6 +5314,212 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
   @override
   $NotesTable createAlias(String alias) {
     return $NotesTable(_db, alias);
+  }
+}
+
+class NotesAttachment extends DataClass implements Insertable<NotesAttachment> {
+  final int id;
+  final String type;
+  final String description;
+  NotesAttachment(
+      {@required this.id, @required this.type, @required this.description});
+  factory NotesAttachment.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return NotesAttachment(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
+      description: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
+    );
+  }
+  factory NotesAttachment.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return NotesAttachment(
+      id: serializer.fromJson<int>(json['id']),
+      type: serializer.fromJson<String>(json['type']),
+      description: serializer.fromJson<String>(json['description']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'id': serializer.toJson<int>(id),
+      'type': serializer.toJson<String>(type),
+      'description': serializer.toJson<String>(description),
+    };
+  }
+
+  @override
+  NotesAttachmentsCompanion createCompanion(bool nullToAbsent) {
+    return NotesAttachmentsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      type: type == null && nullToAbsent ? const Value.absent() : Value(type),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+    );
+  }
+
+  NotesAttachment copyWith({int id, String type, String description}) =>
+      NotesAttachment(
+        id: id ?? this.id,
+        type: type ?? this.type,
+        description: description ?? this.description,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NotesAttachment(')
+          ..write('id: $id, ')
+          ..write('type: $type, ')
+          ..write('description: $description')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(type.hashCode, description.hashCode)));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is NotesAttachment &&
+          other.id == this.id &&
+          other.type == this.type &&
+          other.description == this.description);
+}
+
+class NotesAttachmentsCompanion extends UpdateCompanion<NotesAttachment> {
+  final Value<int> id;
+  final Value<String> type;
+  final Value<String> description;
+  const NotesAttachmentsCompanion({
+    this.id = const Value.absent(),
+    this.type = const Value.absent(),
+    this.description = const Value.absent(),
+  });
+  NotesAttachmentsCompanion.insert({
+    @required int id,
+    @required String type,
+    @required String description,
+  })  : id = Value(id),
+        type = Value(type),
+        description = Value(description);
+  NotesAttachmentsCompanion copyWith(
+      {Value<int> id, Value<String> type, Value<String> description}) {
+    return NotesAttachmentsCompanion(
+      id: id ?? this.id,
+      type: type ?? this.type,
+      description: description ?? this.description,
+    );
+  }
+}
+
+class $NotesAttachmentsTable extends NotesAttachments
+    with TableInfo<$NotesAttachmentsTable, NotesAttachment> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $NotesAttachmentsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn(
+      'id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  GeneratedTextColumn _type;
+  @override
+  GeneratedTextColumn get type => _type ??= _constructType();
+  GeneratedTextColumn _constructType() {
+    return GeneratedTextColumn(
+      'type',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  GeneratedTextColumn _description;
+  @override
+  GeneratedTextColumn get description =>
+      _description ??= _constructDescription();
+  GeneratedTextColumn _constructDescription() {
+    return GeneratedTextColumn(
+      'description',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, type, description];
+  @override
+  $NotesAttachmentsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'notes_attachments';
+  @override
+  final String actualTableName = 'notes_attachments';
+  @override
+  VerificationContext validateIntegrity(NotesAttachmentsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.type.present) {
+      context.handle(
+          _typeMeta, type.isAcceptableValue(d.type.value, _typeMeta));
+    } else if (type.isRequired && isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (d.description.present) {
+      context.handle(_descriptionMeta,
+          description.isAcceptableValue(d.description.value, _descriptionMeta));
+    } else if (description.isRequired && isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  NotesAttachment map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return NotesAttachment.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(NotesAttachmentsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.type.present) {
+      map['type'] = Variable<String, StringType>(d.type.value);
+    }
+    if (d.description.present) {
+      map['description'] = Variable<String, StringType>(d.description.value);
+    }
+    return map;
+  }
+
+  @override
+  $NotesAttachmentsTable createAlias(String alias) {
+    return $NotesAttachmentsTable(_db, alias);
   }
 }
 
@@ -7099,6 +7305,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AttachmentsTable get attachments => _attachments ??= $AttachmentsTable(this);
   $NotesTable _notes;
   $NotesTable get notes => _notes ??= $NotesTable(this);
+  $NotesAttachmentsTable _notesAttachments;
+  $NotesAttachmentsTable get notesAttachments =>
+      _notesAttachments ??= $NotesAttachmentsTable(this);
   $DidacticsTeachersTable _didacticsTeachers;
   $DidacticsTeachersTable get didacticsTeachers =>
       _didacticsTeachers ??= $DidacticsTeachersTable(this);
@@ -7156,6 +7365,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         notices,
         attachments,
         notes,
+        notesAttachments,
         didacticsTeachers,
         didacticsFolders,
         didacticsContents,

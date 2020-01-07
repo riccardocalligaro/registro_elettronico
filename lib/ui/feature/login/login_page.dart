@@ -152,14 +152,15 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               TextFormField(
                 controller: _usernameController,
-                decoration: InputDecoration(
+                decoration: InputDecoration(  
                   hintText: AppLocalizations.of(context)
                       .translate('username_form_login_placeholder'),
                   errorText: _valide ? _errorMessage : null,
                   contentPadding: EdgeInsetsGeometry.lerp(
-                      const EdgeInsetsDirectional.only(end: 6.0),
-                      EdgeInsets.symmetric(vertical: 5),
-                      2.0),
+                    const EdgeInsetsDirectional.only(end: 6.0),
+                    EdgeInsets.symmetric(vertical: 5),
+                    2.0,
+                  ),
                 ),
               ),
               SizedBox(

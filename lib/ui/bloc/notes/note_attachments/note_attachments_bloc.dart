@@ -23,9 +23,8 @@ class NoteAttachmentsBloc
   Stream<NoteAttachmentsState> _mapReadNoteToState(String type, int id) async* {
     yield NoteAttachmentsLoadInProgress();
     try {
-      // await read notes
-      final readResponse = await notesRepository.readNote(type, id);
-      yield NoteAttachmentsLoadSuccess(readResponse: readResponse);
+      final attachment = await notesRepository.getAttachmentForNote(type, id);
+      yield NoteAttachmentsLoadSuccess(attachment: attachment);
     } catch (e) {
       yield NoteAttachmentsLoadError(error: e.toString());
     }

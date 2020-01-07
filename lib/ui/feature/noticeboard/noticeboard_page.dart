@@ -89,7 +89,13 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
     return BlocBuilder<NoticesBloc, NoticesState>(
       builder: (context, state) {
         if (state is NoticesError) {
-          return Text(state.error);
+          return CustomPlaceHolder(
+            icon: Icons.error,
+            text: AppLocalizations.of(context)
+                .translate('unexcepted_error_single'),
+            showUpdate: true,
+            onTap: _refreshNoticeBoard,
+          );
         }
         if (state is NoticesLoaded) {
           return RefreshIndicator(
@@ -98,13 +104,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           );
         }
 
-        if (state is NoticesUpdateLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        if (state is NoticesLoading) {
+        if (state is NoticesLoading || state is NoticesUpdateLoading) {
           return Center(
             child: CircularProgressIndicator(),
           );

@@ -7,9 +7,13 @@ abstract class NotesRepository {
 
   Future<List<Note>> getAllNotes();
 
+  Future<NotesReadResponse> readNote(String type, int eventId);
+
   Future insertNote(Note note);
+
+  Future<NotesAttachment> getAttachmentForNote(String type, int eventId);
 
   Future deleteAllNotes();
 
-  Future<NotesReadResponse> readNote(String type, int eventId);
+  Future deleteAllAttachments();
 }

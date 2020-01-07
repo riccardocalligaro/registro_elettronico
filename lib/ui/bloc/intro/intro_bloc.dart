@@ -63,6 +63,8 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
       } catch (e) {
         yield IntroError(e.toString());
       }
+    } else if (event is Reset) {
+      yield IntroInitial();
     }
   }
 }

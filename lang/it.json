@@ -139,5 +139,10 @@
   "riccardo_calligaro_description": "Project manager & Codice",
   "app_description": "Client Flutter per la gestione dei dati del registro elettronico (ClasseViva).",
   "view_source_code": "Visualizza codice sorgente",
-  "contact_us_message": "Inviaci una mail per qualsiasi richiesta o segnalazione"
+  "contact_us_message": "Inviaci una mail per qualsiasi richiesta o segnalazione",
+  "description": "Descrizione",
+  "ntcl": "Nota discpilinare",
+  "ntwn": "Richiamo",
+  "ntte": "Nota professore",
+  "ntst": "Nota disciplinare"
 }

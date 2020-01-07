@@ -4,3 +4,5 @@ import 'package:meta/meta.dart';
 abstract class IntroEvent {}
 
 class FetchAllData extends IntroEvent {}
+
+class Reset extends IntroEvent {}

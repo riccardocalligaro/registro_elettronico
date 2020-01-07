@@ -5,6 +5,7 @@ import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
 import 'package:registro_elettronico/ui/feature/home/home_page.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
@@ -92,6 +93,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 icon: Icons.exit_to_app,
                 text: "Logout",
                 onTap: () {
+                  BlocProvider.of<IntroBloc>(context).add(Reset());
                   BlocProvider.of<AuthBloc>(context).add(SignOut());
                   AppNavigator.instance.navToLogin(context);
                 },

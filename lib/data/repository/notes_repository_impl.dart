@@ -36,12 +36,10 @@ class NotesRepositoryImpl implements NotesRepository {
 
   @override
   Future updateNotes() async {
-    Logger log = Logger();
     final profile = await profileDao.getProfile();
-    log.i("UPDATING NOTES");
+    await noteDao.deleteAllAttachments();
     await noteDao.deleteAllNotes();
     final notesResponse = await spaggiariClient.getNotes(profile.studentId);
-    log.i("Got NOTES");
 
     List<Note> notes = [];
     notesResponse.notesNTCL.forEach((note) =>
@@ -61,7 +59,31 @@ class NotesRepositoryImpl implements NotesRepository {
     final profile = await profileDao.getProfile();
 
     final res =
-        await spaggiariClient.markNote(profile.studentId, type, eventId);
+        await spaggiariClient.markNote(profile.studentId, type, eventId, "");
     return res;
+  }
+
+  @override
+  Future deleteAllAttachments() {
+    return noteDao.deleteAllAttachments();
+  }
+
+  @override
+  Future<NotesAttachment> getAttachmentForNote(String type, int eventId) async {
+    final profile = await profileDao.getProfile();
+    final attachments = await noteDao.getAllAttachments();
+
+    for (var attachment in attachments) {
+      if (attachment.id == eventId) return attachment;
+    }
+
+    final res =
+        await spaggiariClient.markNote(profile.studentId, type, eventId, "");
+    final insertable =
+        noteMapper.convertNoteAttachmentResponseToInsertable(res);
+
+    noteDao.insertAttachment(insertable);
+
+    return insertable;
   }
 }

@@ -136,8 +136,13 @@
   "about_donate_subtitle": "Buy us a coffe ☕",
   "about_licenses_title": "Licences",
   "about_licenses_subtitle": "Info about all open source licenses used",
-  "riccardo_calligaro_description":"Project manager & Code",
-  "app_description":"Flutter client for eletronic school register (Classeviva) management using clean architecture.",
-  "view_source_code":"View source code",
-  "contact_us_message":"Send us an email with a new feature request or a bug report"
+  "riccardo_calligaro_description": "Project manager & Code",
+  "app_description": "Flutter client for eletronic school register (Classeviva) management using clean architecture.",
+  "view_source_code": "View source code",
+  "contact_us_message": "Send us an email with a new feature request or a bug report",
+  "description": "Description",
+  "ntcl": "Disciplinary note",
+  "ntwn": "Recall",
+  "ntte": "Teacher note",
+  "ntst": "Disciplinary note"
 }

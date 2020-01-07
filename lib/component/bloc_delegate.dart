@@ -11,6 +11,7 @@ import 'package:registro_elettronico/ui/bloc/grades/subject_grades/subjects_grad
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/local_grades/local_grades_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/notes/note_attachments/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notes/notes_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notices/attachment_download/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notices/attachments/bloc.dart';
@@ -92,6 +93,9 @@ class AppBlocDelegate {
       BlocProvider<SubjectsGradesBloc>(
         create: (ctx) =>
             SubjectsGradesBloc(i.getDependency(), i.getDependency()),
+      ),
+      BlocProvider<NoteAttachmentsBloc>(
+        create: (ctx) => NoteAttachmentsBloc(i.getDependency()),
       )
     ];
   }
