@@ -202,7 +202,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
       itemBuilder: (ctx, index) {
         final content = contents[index];
         return ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 32.0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 32.0),
           leading: _getIconFromFileType(content.type),
           title: FutureBuilder(
             future: _getContentText(content),

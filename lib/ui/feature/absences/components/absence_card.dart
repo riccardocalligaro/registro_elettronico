@@ -19,7 +19,7 @@ class AbsenceCard extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4.0),
           color: ColorUtils.getColorFromCode(absence.evtCode)),
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Row(
         children: <Widget>[
           ClipOval(
@@ -27,7 +27,8 @@ class AbsenceCard extends StatelessWidget {
               height: 55,
               width: 55,
               color: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
               child: Text(
                 _getLetterFromCode(context, absence.evtCode),
                 textAlign: TextAlign.center,

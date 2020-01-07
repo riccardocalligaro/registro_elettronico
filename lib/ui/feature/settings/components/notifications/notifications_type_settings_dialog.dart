@@ -59,9 +59,8 @@ class _NotificationsSettingsDialogState
                 AppLocalizations.of(context).translate('choose_what_to_notify'),
           ),
           SwitchListTile(
-            
             activeColor: Colors.red,
-            contentPadding: EdgeInsets.all(0.0),
+            contentPadding: const EdgeInsets.all(0.0),
             value: _gradesNotifications,
             title: Text(AppLocalizations.of(context).translate('grades')),
             onChanged: (value) {
@@ -74,7 +73,7 @@ class _NotificationsSettingsDialogState
           ),
           SwitchListTile(
             activeColor: Colors.red,
-            contentPadding: EdgeInsets.all(0.0),
+            contentPadding: EdgeInsets.zero,
             value: _agendaNotifications,
             title: Text(AppLocalizations.of(context).translate('agenda')),
             onChanged: (value) {
@@ -87,7 +86,7 @@ class _NotificationsSettingsDialogState
           ),
           SwitchListTile(
             activeColor: Colors.red,
-            contentPadding: EdgeInsets.all(0.0),
+            contentPadding: EdgeInsets.zero,
             value: _lessonsNotifications,
             title: Text(AppLocalizations.of(context).translate('lessons')),
             onChanged: (value) {
@@ -100,7 +99,7 @@ class _NotificationsSettingsDialogState
           ),
           SwitchListTile(
             activeColor: Colors.red,
-            contentPadding: EdgeInsets.all(0.0),
+            contentPadding: EdgeInsets.zero,
             value: _notesNotifications,
             title: Text(AppLocalizations.of(context).translate('notes')),
             onChanged: (value) {
@@ -112,7 +111,7 @@ class _NotificationsSettingsDialogState
           ),
           SwitchListTile(
             activeColor: Colors.red,
-            contentPadding: EdgeInsets.all(0.0),
+            contentPadding: EdgeInsets.zero,
             value: _absencesNotifications,
             title: Text(AppLocalizations.of(context).translate('absences')),
             onChanged: (value) {

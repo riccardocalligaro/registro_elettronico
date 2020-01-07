@@ -63,7 +63,7 @@ class AgendaSection extends StatelessWidget {
     } else {
       return Container(
         child: ListView.builder(
-          padding: EdgeInsets.all(0),
+          padding: const EdgeInsets.all(0),
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: events.length,

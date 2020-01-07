@@ -47,7 +47,7 @@ class LastGradesSection extends StatelessWidget {
     if (grades.length > 0) {
       return ListView.builder(
         physics: NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         shrinkWrap: true,
         itemCount: grades.length,
         itemBuilder: (BuildContext context, int index) {

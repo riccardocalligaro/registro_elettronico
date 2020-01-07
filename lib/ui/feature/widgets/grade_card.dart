@@ -60,7 +60,7 @@ class GradeCard extends StatelessWidget {
             color: grade.cancelled
                 ? GlobalUtils.getColorFromAverage(-1)
                 : GlobalUtils.getColorFromAverage(grade.decimalValue)),
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Row(
           children: <Widget>[
             ClipOval(
@@ -68,7 +68,8 @@ class GradeCard extends StatelessWidget {
                 height: 55,
                 width: 55,
                 color: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
                 child: Text(grade.displayValue,
                     textAlign: TextAlign.center,
                     style: TextStyle(

@@ -13,7 +13,7 @@ class NoticeboardSection extends StatelessWidget {
   /// Noticce board [section] that contains the text and the button
   Widget _buildNoticeBoardSection(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

@@ -66,11 +66,11 @@ class _AbsencesPageState extends State<AbsencesPage>
 
           return SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8.0),
+                    padding: const EdgeInsets.only(bottom: 8.0),
                     child: _buildOverallStats(absences),
                   ),
                   _buildNotJustifiedAbsences(map),
@@ -189,7 +189,7 @@ class _AbsencesPageState extends State<AbsencesPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
             child:
                 Text(AppLocalizations.of(context).translate('not_justified')),
           ),
@@ -201,7 +201,7 @@ class _AbsencesPageState extends State<AbsencesPage>
                 final absence = notJustifiedAbsences.keys.elementAt(index);
                 final days = notJustifiedAbsences[absence];
                 return Padding(
-                  padding: EdgeInsets.only(bottom: 8.0),
+                  padding: const EdgeInsets.only(bottom: 8.0),
                   child: AbsenceCard(
                     absence: absence,
                     days: days,
@@ -228,7 +228,7 @@ class _AbsencesPageState extends State<AbsencesPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(AppLocalizations.of(context).translate('justified')),
           ),
           IgnorePointer(

@@ -91,7 +91,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
       body: SingleChildScrollView(
         child: Container(
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               children: <Widget>[
                 _buildProfessorsCard(),
@@ -360,7 +360,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
 
   Widget _buildLastGrades(List<Grade> grades) {
     return Padding(
-      padding: EdgeInsets.all(4.0),
+      padding: const EdgeInsets.all(4.0),
       child: ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,

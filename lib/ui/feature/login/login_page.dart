@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
           child: Padding(
-        padding: EdgeInsets.fromLTRB(LEFT_LOGIN_PADDING, 0, 0, 0),
+        padding: const EdgeInsets.fromLTRB(LEFT_LOGIN_PADDING, 0, 0, 0),
         child: Column(
           children: <Widget>[
             Column(
@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                 _buildLoginMessageText(trans.translate('login_with')),
                 _buildLoginForm(context),
                 Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: RaisedButton(
                       child: Text(
                         trans.translate('log_in'),
@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Container _buildWelcomeText(String welcomeMessage) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
       child: Align(
         alignment: Alignment.bottomLeft,
         child: Text(
@@ -145,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
         }
       },
       child: Padding(
-        padding: EdgeInsets.only(top: TOP_FIELDS_PADDING),
+        padding: const EdgeInsets.only(top: TOP_FIELDS_PADDING),
         child: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

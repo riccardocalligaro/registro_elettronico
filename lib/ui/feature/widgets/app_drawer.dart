@@ -196,7 +196,10 @@ class _AppDrawerState extends State<AppDrawer> {
               text: trans.translate("share"),
               pos: 10,
               onTap: () {
-                Share.share(AppLocalizations.of(context).translate('share_message').replaceAll('{download_url}', 'https://github.com/Zuccante-Web-App'));
+                Share.share(AppLocalizations.of(context)
+                    .translate('share_message')
+                    .replaceAll('{download_url}',
+                        'https://github.com/Zuccante-Web-App'));
               },
             ),
           ],
@@ -222,7 +225,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 : Theme.of(context).primaryIconTheme.color,
           ),
           Padding(
-            padding: EdgeInsets.only(left: 8.0),
+            padding: const EdgeInsets.only(left: 8.0),
             child: Text(text, style: TextStyle(color: _getColor(isAccount))),
           )
         ],

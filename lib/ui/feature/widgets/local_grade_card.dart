@@ -18,7 +18,7 @@ class LocalGradeCard extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4.0),
             color: GlobalUtils.getColorFromAverage(localGrade.decimalValue)),
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           children: <Widget>[
             ClipOval(
@@ -26,7 +26,8 @@ class LocalGradeCard extends StatelessWidget {
                 height: 70,
                 width: 40,
                 color: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 9.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 9.0),
                 child: Text(localGrade.displayValue,
                     textAlign: TextAlign.center,
                     style: TextStyle(

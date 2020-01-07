@@ -77,7 +77,7 @@ class LessonCard extends StatelessWidget {
                       child: Container(
                           width: 40.0,
                           height: 40.0,
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           decoration: BoxDecoration(color: Colors.white),
                           child: GlobalUtils.getIconFromSubject(
                               lesson.subjectDescription)),
@@ -87,7 +87,7 @@ class LessonCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 7.0, vertical: 4.0),
                           decoration: BoxDecoration(
                               color: Colors.grey[200].withOpacity(0.4),
@@ -109,7 +109,7 @@ class LessonCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(top: 10.0),
+                      padding: const EdgeInsets.only(top: 10.0),
                       child: Text(
                         lesson.subjectDescription.length > 20
                             ? GlobalUtils.reduceSubjectTitle(

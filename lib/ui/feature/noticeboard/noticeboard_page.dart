@@ -260,7 +260,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
               if (state is NoticesAttachmentsLoaded) {
                 return Container(
                   width: double.maxFinite,
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   //height: 300.0,
                   child: ListView.builder(
                     shrinkWrap: true,

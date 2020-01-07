@@ -143,7 +143,7 @@ class _LessonDetailsState extends State<LessonDetails> {
       return RefreshIndicator(
         onRefresh: _refreshLessons,
         child: ListView.builder(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           itemCount: lessons.length,
           itemBuilder: (context, index) {
             final lesson = lessons[index];

@@ -21,10 +21,10 @@ class SubjectsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: GridView.count(
         physics: NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         crossAxisCount: 4,
         crossAxisSpacing: 0.0,
         mainAxisSpacing: 5.0,
@@ -72,7 +72,7 @@ class SubjectsGrid extends StatelessWidget {
                               child: Container(
                                 width: 70.0,
                                 height: 70.0,
-                                padding: EdgeInsets.all(13.0),
+                                padding: const EdgeInsets.all(13.0),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                 ),

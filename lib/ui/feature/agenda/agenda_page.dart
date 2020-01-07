@@ -109,7 +109,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
             const SizedBox(height: 8.0),
             const SizedBox(height: 8.0),
             Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
+              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
               child: Text(
                 AppLocalizations.of(context).translate('events'),
                 style: TextStyle(fontWeight: FontWeight.w500),
@@ -140,7 +140,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         if (state is AgendaUpdateLoadInProgress) {
           return Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 140),
+              padding: const EdgeInsets.symmetric(vertical: 140),
               child: CircularProgressIndicator(),
             ),
           );
