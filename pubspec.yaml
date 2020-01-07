@@ -92,7 +92,7 @@ dev_dependencies:
   json_serializable: ^3.2.3
   retrofit_generator: ^1.0.2+2
 flutter_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
   image_path: "assets/icons/launcher_icon.png"
 # For information on the generic Dart part of this file, see the

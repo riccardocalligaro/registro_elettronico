@@ -24,15 +24,6 @@ void main() {
 }
 
 void initApp() {
-  // This is for the notification service
-
-  // Workmanager.registerPeriodicTask(
-  //   "checkForNewContent",
-  //   "checkForNewContent",
-  //   // minimum is 15 minutes
-  //   frequency: Duration(hours: 2),
-  // );
-
   // Init the dependency injection -> compile-time dependency injection for Dart and Flutter, similar to Dagger.
   AppInjector.init();
 
