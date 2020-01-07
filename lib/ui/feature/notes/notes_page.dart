@@ -33,6 +33,15 @@ class _NotesPageState extends State<NotesPage> {
       appBar: CustomAppBar(
         scaffoldKey: _drawerKey,
         title: Text(AppLocalizations.of(context).translate('notes')),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              BlocProvider.of<NotesBloc>(context).add(UpdateNotes());
+              BlocProvider.of<NotesBloc>(context).add(GetNotes());
+            },
+          )
+        ],
       ),
       drawer: AppDrawer(
         position: DrawerConstants.NOTES,
@@ -78,15 +87,26 @@ class _NotesPageState extends State<NotesPage> {
   }
 
   Widget _buildNotesList(List<Note> notes, BuildContext context) {
+    //static const CLASSEVIVA_NOTE = 'NTCL';
+    //static const RECALL = 'NTWN';
+    //static const TEACHER_NOTE = 'NTTE';
+    //static const DISCIPLINARY_NOTE = 'NTST';
     if (notes.length > 0) {
       return ListView.builder(
         itemCount: notes.length,
         itemBuilder: (context, index) {
           final note = notes[index];
+          print(note.toString());
           return ListTile(
-            title: Text(note.description),
+            title: Text(
+              "${note.author} - ${DateUtils.convertDateLocale(note.date, AppLocalizations.of(context).locale.toString())}",
+            ),
             subtitle: Text(
-                "${note.author} - ${DateUtils.convertDateLocale(note.date, AppLocalizations.of(context).locale.toString())}"),
+              "${note.warning}",
+            ),
+            trailing: IconButton(
+              icon: Icon(Icons.new_releases),
+            ),
           );
         },
       );

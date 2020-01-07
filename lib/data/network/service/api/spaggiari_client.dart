@@ -12,6 +12,8 @@ import 'package:registro_elettronico/domain/entity/api_responses/noticeboard_rea
 import 'package:registro_elettronico/domain/entity/api_responses/noticeboard_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/periods_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/subjects_response.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/notes_read_response.dart';
+
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -82,12 +84,12 @@ abstract class SpaggiariClient {
   @GET("/students/{studentId}/notes/all/")
   Future<NotesResponse> getNotes(@Path() String studentId);
 
-  // @POST("/students/{studentId}/notes/{type}/read/{layout_note}")
-  // Future<Response> markNote(
-  //   @Path('studentId') String studentId,
-  //   @Path("type") String type,
-  //   @Path("layout_note") int note,
-  // );
+  @POST("/students/{studentId}/notes/{type}/read/{layout_note}")
+  Future<NotesReadResponse> markNote(
+    @Path('studentId') String studentId,
+    @Path("type") String type,
+    @Path("layout_note") int note,
+  );
 
   @GET("/students/{studentId}/didactics")
   Future<DidacticsResponse> getDidactics(@Path() String studentId);

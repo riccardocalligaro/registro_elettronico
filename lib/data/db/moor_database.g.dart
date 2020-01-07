@@ -6800,7 +6800,7 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
   final int dayOfWeek;
   final int subject;
   TimetableEntry(
-      {@required this.id,
+      {this.id,
       @required this.start,
       @required this.end,
       @required this.dayOfWeek,
@@ -6944,7 +6944,7 @@ class $TimetableEntriesTable extends TimetableEntries
   @override
   GeneratedIntColumn get id => _id ??= _constructId();
   GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
+    return GeneratedIntColumn('id', $tableName, true,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
   }
 

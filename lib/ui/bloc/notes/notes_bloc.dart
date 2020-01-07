@@ -16,23 +16,29 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     NotesEvent event,
   ) async* {
     if (event is UpdateNotes) {
-      yield NotesUpdateLoading();
-      try {
-        await notesRepository.updateNotes();
-      } catch (e) {
-        yield NotesUpdateError(e.toString());
-      }
-      yield NotesUpdateLoaded();
+      yield* _mapUpdateNotesToState();
+    } else if (event is GetNotes) {
+      yield* _mapGetNotesToState();
     }
+  }
 
-    if (event is GetNotes) {
-      yield NotesLoading();
-      try {
-        final notes = await notesRepository.getAllNotes();
-        yield NotesLoaded(notes);
-      } catch (e) {
-        yield NotesError(e.toString());
-      }
+  Stream<NotesState> _mapUpdateNotesToState() async* {
+    yield NotesUpdateLoading();
+    try {
+      await notesRepository.updateNotes();
+    } catch (e) {
+      yield NotesUpdateError(e.toString());
+    }
+    yield NotesUpdateLoaded();
+  }
+
+  Stream<NotesState> _mapGetNotesToState() async* {
+    yield NotesLoading();
+    try {
+      final notes = await notesRepository.getAllNotes();
+      yield NotesLoaded(notes);
+    } catch (e) {
+      yield NotesError(e.toString());
     }
   }
 }

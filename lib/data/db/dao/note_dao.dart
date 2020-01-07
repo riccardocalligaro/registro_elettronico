@@ -9,11 +9,11 @@ class NoteDao extends DatabaseAccessor<AppDatabase> with _$NoteDaoMixin {
   AppDatabase db;
   NoteDao(this.db) : super(db);
 
-  Stream<List<Note>> watchAllNotes() => select(notes).watch();
-
   Future<List<Note>> getAllNotes() => select(notes).get();
 
   Future insertNote(Note note) => into(notes).insert(note, orReplace: true);
+
+  Future insertNotes(List<Note> notesList) => into(notes).insertAll(notesList, orReplace: true);
 
   Future deleteAllNotes() => delete(notes).go();
 }
