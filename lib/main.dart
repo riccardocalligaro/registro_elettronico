@@ -37,9 +37,6 @@ void initApp() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
 
   Crashlytics.instance.enableInDevMode = true;
-
-  // Pass all uncaught errors from the framework to Crashlytics.
-  //FlutterError.onError = Crashlytics.instance.recordFlutterError;
 }
 
 void setupLogging() {}
