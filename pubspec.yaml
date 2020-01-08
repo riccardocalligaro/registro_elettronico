@@ -65,6 +65,14 @@ dependencies:
   # share dialog
   share: ^0.6.3+5
 
+  # firebase
+  firebase_core: ^0.4.3+1
+  # analytics
+  firebase_analytics: ^5.0.2
+  # crashalitycs
+  firebase_crashlytics: ^0.1.2+4
+
+
   # Storing user password
   shared_preferences: ^0.5.4+8
   flutter_secure_storage: ^3.3.1+1

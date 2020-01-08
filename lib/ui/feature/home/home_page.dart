@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
@@ -133,6 +134,12 @@ class _HomePageState extends State<HomePage> {
     return SectionHeader(
       headingText: AppLocalizations.of(context).translate('last_lessons'),
       onTap: () {
+        // final List list = [];
+        // print(list[0]);
+        //Crashlytics.instance.crash();
+
+        //Crashlytics.instance.log('Last lessons error');
+
         AppNavigator.instance.navToLessons(context);
       },
     );

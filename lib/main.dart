@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:registro_elettronico/component/app_injection.dart';
@@ -20,7 +23,10 @@ void callbackDispatcher() {
 void main() {
   initApp();
   // Finnaly run the app
-  runApp(MyApp());
+  runZoned<Future<void>>(() async {
+    runApp(MyApp());
+  }, onError: Crashlytics.instance.recordError);
+  //runApp(MyApp());
 }
 
 void initApp() {
@@ -29,6 +35,11 @@ void initApp() {
 
   // BloC supervisor delegate to show all the different states of the bloc
   BlocSupervisor.delegate = SimpleBlocDelegate();
+
+  Crashlytics.instance.enableInDevMode = true;
+
+  // Pass all uncaught errors from the framework to Crashlytics.
+  //FlutterError.onError = Crashlytics.instance.recordFlutterError;
 }
 
 void setupLogging() {}
