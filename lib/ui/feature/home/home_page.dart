@@ -134,8 +134,6 @@ class _HomePageState extends State<HomePage> {
     return SectionHeader(
       headingText: AppLocalizations.of(context).translate('last_lessons'),
       onTap: () {
-        // final List list = [];
-        // print(list[0]);
         //Crashlytics.instance.crash();
 
         //Crashlytics.instance.log('Last lessons error');
