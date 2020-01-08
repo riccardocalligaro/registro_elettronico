@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/notes_read_response.dart';
 
 @immutable
 abstract class NoteAttachmentsState {}

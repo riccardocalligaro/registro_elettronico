@@ -62,7 +62,26 @@ class _HomePageState extends State<HomePage> {
       appBar: CustomAppBar(
         title: Text('Home'),
         scaffoldKey: _drawerKey,
-        
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(Icons.refresh),
+        //     onPressed: () {
+        //       WidgetsFlutterBinding.ensureInitialized();
+        //       Workmanager.cancelAll();
+        //       Workmanager.initialize(
+        //         callbackDispatcher,
+        //         //! set to false in production
+        //         isInDebugMode: true,
+        //       );
+
+        //       Workmanager.registerOneOffTask(
+        //         "checkForNewContent",
+        //         "checkForNewContent",
+        //         initialDelay: Duration(seconds: 2),
+        //       );
+        //     },
+        //   )
+        // ],
       ),
       drawer: AppDrawer(
         position: DrawerConstants.HOME,

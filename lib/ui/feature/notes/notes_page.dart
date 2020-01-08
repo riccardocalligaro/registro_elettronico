@@ -1,6 +1,7 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/data/db/dao/note_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/notes/note_attachments/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notes/notes_bloc.dart';
@@ -95,6 +96,12 @@ class _NotesPageState extends State<NotesPage> {
             ),
             child: ExpandablePanel(
               header: ListTile(
+                // onLongPress: () {
+                //   final AppDatabase appDatabase = AppDatabase();
+                //   final NoteDao noteDao = NoteDao(appDatabase);
+
+                //   noteDao.deleteAllNotes();
+                // },
                 title: Text("${note.author}"),
                 subtitle: Text(
                     "${AppLocalizations.of(context).translate(note.type.toLowerCase()) ?? ""} - ${DateUtils.convertDateLocale(note.date, AppLocalizations.of(context).locale.toString())}"),

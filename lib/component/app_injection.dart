@@ -202,7 +202,6 @@ class AppInjector {
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
-        i.getDependency(),
       );
       return absencesRepository;
     });
@@ -229,7 +228,6 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton((i) {
       NotesRepository notesRepository = NotesRepositoryImpl(
-        i.getDependency(),
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),

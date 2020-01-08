@@ -25,4 +25,6 @@ class AgendaDao extends DatabaseAccessor<AppDatabase> with _$AgendaDaoMixin {
   }
 
   Future deleteAllEvents() => delete(agendaEvents).go();
+
+  Future deleteEvent(AgendaEvent event) => delete(agendaEvents).delete(event);
 }

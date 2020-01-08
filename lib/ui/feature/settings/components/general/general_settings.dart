@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/ui/feature/settings/components/general/general_averages_home_settings_dialog.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/general/general_sorting_settings_dialog.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
-import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../header_text.dart';

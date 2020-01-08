@@ -13,7 +13,7 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class NoteMapper {
-  db.Note convertNotetEntityToInsertable(Note note, String type) {
+  static db.Note convertNotetEntityToInsertable(Note note, String type) {
     return db.Note(
       author: note.authorName ?? "",
       date: DateUtils.getDateFromApiString(note.evtDate) ?? DateTime.now(),
@@ -25,7 +25,7 @@ class NoteMapper {
     );
   }
 
-  db.NotesAttachment convertNoteAttachmentResponseToInsertable(
+  static db.NotesAttachment convertNoteAttachmentResponseToInsertable(
     NotesReadResponse res,
   ) {
     return db.NotesAttachment(

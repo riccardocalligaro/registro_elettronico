@@ -1,8 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
@@ -327,6 +327,14 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
               child: Card(
                 color: Colors.red[400],
                 child: ListTile(
+                  // onLongPress: () {
+                  //   print("ok");
+                  //   // onLongPress: () {
+                  //   final AppDatabase appDatabase = AppDatabase();
+                  //   final AgendaDao agendaDao = AgendaDao(appDatabase);
+
+                  //   agendaDao.deleteEvent(event);
+                  // },
                   title: Padding(
                     padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                     child: Text(

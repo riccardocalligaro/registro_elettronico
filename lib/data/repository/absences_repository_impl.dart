@@ -9,10 +9,12 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
   SpaggiariClient spaggiariClient;
   AbsenceDao absenceDao;
   ProfileDao profileDao;
-  AbsenceMapper absenceMapper;
 
-  AbsencesRepositoryImpl(this.spaggiariClient, this.absenceDao, this.profileDao,
-      this.absenceMapper);
+  AbsencesRepositoryImpl(
+    this.spaggiariClient,
+    this.absenceDao,
+    this.profileDao,
+  );
 
   @override
   Future updateAbsences() async {
