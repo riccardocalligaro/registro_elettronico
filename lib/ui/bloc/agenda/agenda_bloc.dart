@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './bloc.dart';
 
@@ -30,9 +32,12 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
   }
 
   Stream<AgendaState> _mapUpdateAllAgendaToState() async* {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     yield AgendaUpdateLoadInProgress();
     try {
       await agendaRepository.updateAllAgenda();
+      prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
+          DateTime.now().millisecondsSinceEpoch);
       yield AgendaUpdateLoadSuccess();
     } on DioError catch (e) {
       yield AgendaLoadError(error: e.response.statusMessage.toString());
@@ -42,9 +47,13 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
   }
 
   Stream<AgendaState> _mapGetAllAgendaToState() async* {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     yield AgendaLoadInProgress();
     try {
       final events = await agendaRepository.getAllEvents();
+      prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
+          DateTime.now().millisecondsSinceEpoch);
       yield AgendaLoadSuccess(events: events);
     } catch (e) {
       yield AgendaLoadError(error: e.toString());

@@ -15,6 +15,25 @@ import 'package:tuple/tuple.dart';
 import 'constants/registro_constants.dart';
 
 class GlobalUtils {
+  static String getLastUpdateMessage(BuildContext context, DateTime date) {
+    final now = DateTime.now();
+    final difference = now.difference(date);
+
+    if (difference.inSeconds < 60) return "Now";
+    if (difference.inMinutes == 0) return "${difference.inSeconds} seconds ago";
+    if (difference.inMinutes == 1) return "${difference.inMinutes} minute ago";
+    if (difference.inHours == 0) return "${difference.inMinutes} minutes ago";
+    if (difference.inDays == 0) return "${difference.inHours} hours ago";
+    if (difference.inDays == 1) return "Yesterday";
+    if (difference.inDays > 1 && difference.inDays < 7)
+      return "${difference.inDays} days ago";
+    if (difference.inDays == 7) return "A week ago";
+    if (difference.inDays > 31) {
+      return (difference.inDays / 30).toStringAsFixed(0);
+    } else
+      return "${difference.inDays} days ago";
+  }
+
   /// This method thakes a list of lessons and returns the lesson [grouped]
   /// checking the lesson argument and the subject id just in case
   static List<Lesson> getGroupedLessonsList(List<Lesson> lessons) {
@@ -45,12 +64,10 @@ class GlobalUtils {
       lessons,
       key: (e) => Tuple2<int, String>(e.subjectId, e.lessonArg),
       value: (e) => lessons
-          .where(
-            (entry) =>
-                entry.lessonArg == e.lessonArg &&
-                entry.subjectId == e.subjectId &&
-                entry.author == e.author
-          )
+          .where((entry) =>
+              entry.lessonArg == e.lessonArg &&
+              entry.subjectId == e.subjectId &&
+              entry.author == e.author)
           .length,
     );
     return lessonsMap;

@@ -18,7 +18,10 @@ import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// The [home] page of the application
 class HomePage extends StatefulWidget {
@@ -30,6 +33,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   /// Key necessaery for the [drawer]
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  int _lastUpdate = DateTime.now().millisecondsSinceEpoch;
 
   @override
   void initState() {
@@ -50,9 +54,9 @@ class _HomePageState extends State<HomePage> {
 
   /// Updates [shared preferences]
   getPreferences() async {
-    //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    //_periodToShow = (sharedPreferences.getInt(PrefsConstants.PERIOD_TO_SHOW) ??
-    //    TabsConstants.GENERALE);
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    _lastUpdate = sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_HOME) ??
+        DateTime.now().millisecondsSinceEpoch;
   }
 
   @override
@@ -82,6 +86,22 @@ class _HomePageState extends State<HomePage> {
         //     },
         //   )
         // ],
+      ),
+      bottomSheet: Container(
+        // height: 20,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(color: Colors.grey[800]),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Ultimo aggiornamento: ${GlobalUtils.getLastUpdateMessage(context, DateTime.fromMillisecondsSinceEpoch(_lastUpdate))}',
+            style: TextStyle(fontSize: 10),
+          ),
+        ),
       ),
       drawer: AppDrawer(
         position: DrawerConstants.HOME,
