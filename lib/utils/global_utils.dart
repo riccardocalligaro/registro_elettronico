@@ -48,7 +48,8 @@ class GlobalUtils {
           .where(
             (entry) =>
                 entry.lessonArg == e.lessonArg &&
-                entry.subjectId == e.subjectId,
+                entry.subjectId == e.subjectId &&
+                entry.author == e.author
           )
           .length,
     );

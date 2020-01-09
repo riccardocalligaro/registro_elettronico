@@ -327,14 +327,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
               child: Card(
                 color: Colors.red[400],
                 child: ListTile(
-                  // onLongPress: () {
-                  //   print("ok");
-                  //   // onLongPress: () {
-                  //   final AppDatabase appDatabase = AppDatabase();
-                  //   final AgendaDao agendaDao = AgendaDao(appDatabase);
-
-                  //   agendaDao.deleteEvent(event);
-                  // },
                   title: Padding(
                     padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                     child: Text(

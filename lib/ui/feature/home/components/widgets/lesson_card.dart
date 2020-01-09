@@ -36,8 +36,7 @@ class LessonCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SelectableText(
-                      """${trans.translate('author')}: ${StringUtils.titleCase(lesson.author)}
-                      \n${trans.translate('argument')}: ${lesson.lessonArg}
+                      """${trans.translate('argument')}: ${lesson.lessonArg}
                       \n${trans.translate('date')}: ${DateUtils.convertDateLocale(lesson.date, AppLocalizations.of(context).locale.toString())}
                       \n${trans.translate('type')}: ${lesson.lessonType}
                       """),
