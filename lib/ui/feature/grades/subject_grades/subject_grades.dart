@@ -381,15 +381,14 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
 
   Widget _buildProgressBarCard(SubjectAverages averages) {
     double percent;
-    if(averages.average.isNaN) {
+    if (averages.average.isNaN) {
       percent = 0.0;
-    } else if(averages.average / _objective > 1) {
+    } else if (averages.average / _objective > 1) {
       percent = 1.0;
     } else {
       percent = (averages.average / _objective);
     }
 
-                
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
