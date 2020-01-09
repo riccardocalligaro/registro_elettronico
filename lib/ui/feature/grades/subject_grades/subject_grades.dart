@@ -380,6 +380,16 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
   }
 
   Widget _buildProgressBarCard(SubjectAverages averages) {
+    double percent;
+    if(averages.average.isNaN) {
+      percent = 0.0;
+    } else if(averages.average / _objective > 1) {
+      percent = 1.0;
+    } else {
+      percent = (averages.average / _objective);
+    }
+
+                
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -389,9 +399,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
             Container(
               child: LinearPercentIndicator(
                 lineHeight: 14.0,
-                percent: (averages.average / _objective) > 1.0
-                    ? 1.0
-                    : (averages.average / _objective),
+                percent: percent,
                 backgroundColor: Colors.grey,
                 progressColor: GlobalUtils.getColorFromAverageAndObjective(
                     averages.average, _objective),

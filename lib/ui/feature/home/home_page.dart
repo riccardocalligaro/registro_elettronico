@@ -1,14 +1,13 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
-import 'package:registro_elettronico/main.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
+import 'package:registro_elettronico/ui/feature/grades/components/grades_tab.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/agenda_section.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/last_grades_section.dart';
 import 'package:registro_elettronico/ui/feature/home/components/sections/lessons_cards_section.dart';
@@ -19,7 +18,7 @@ import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/section_header.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
-import 'package:workmanager/workmanager.dart';
+import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 
 /// The [home] page of the application
 class HomePage extends StatefulWidget {
@@ -130,27 +129,33 @@ class _HomePageState extends State<HomePage> {
   }
 
   //----- HEADERS -------- //
-  SectionHeader _buildLastLessonsHeader() {
-    return SectionHeader(
-      headingText: AppLocalizations.of(context).translate('last_lessons'),
-      onTap: () {
-        AppNavigator.instance.navToLessons(context);
-      },
+  Widget _buildLastLessonsHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 11.0),
+      child: SectionHeader(
+        headingText: AppLocalizations.of(context).translate('last_lessons'),
+      ),
     );
+    // return SectionHeader(
+    //   headingText: AppLocalizations.of(context).translate('last_lessons'),
+    // );
   }
 
-  SectionHeader _buildNextEventsHeader() {
-    return SectionHeader(
-      headingText: AppLocalizations.of(context).translate('next_events'),
-      onTap: () {
-        AppNavigator.instance.navToAgenda(context);
-      },
+  Widget _buildNextEventsHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: SectionHeader(
+        headingText: AppLocalizations.of(context).translate('next_events'),
+      ),
     );
+    // return SectionHeader(
+    //   headingText: AppLocalizations.of(context).translate('next_events'),
+    // );
   }
 
   Widget _buildMySubjectsHeader() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 11.0),
       child: SectionHeader(
         headingText: AppLocalizations.of(context).translate('my_subjects'),
       ),
@@ -161,7 +166,19 @@ class _HomePageState extends State<HomePage> {
     return SectionHeader(
       headingText: AppLocalizations.of(context).translate('last_grades'),
       onTap: () {
-        AppNavigator.instance.navToGrades(context);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => Scaffold(
+              appBar: AppBar(
+                title:
+                    Text(AppLocalizations.of(context).translate('last_grades')),
+              ),
+              body: GradeTab(
+                period: TabsConstants.ULTIMI_VOTI,
+              ),
+            ),
+          ),
+        );
       },
     );
   }
