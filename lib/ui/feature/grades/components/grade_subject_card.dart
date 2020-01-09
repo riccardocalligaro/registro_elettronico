@@ -40,7 +40,6 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
       objective = (preferences.getInt('objective_${widget.subject.id}') ??
           ((preferences.getInt(PrefsConstants.OVERALL_OBJECTIVE) ?? 6)));
     });
-    ////objective = (preferences.getInt(PrefsConstants.OVERALL_OBJECTIVE));
   }
 
   @override
