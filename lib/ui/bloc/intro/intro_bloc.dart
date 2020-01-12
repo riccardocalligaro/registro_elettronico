@@ -84,6 +84,8 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
         await didacticsRepository.updateDidactics();
         prefs.setInt(PrefsConstants.LAST_UPDATE_SCHOOL_MATERIAL,
             DateTime.now().millisecondsSinceEpoch);
+        prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
+            DateTime.now().millisecondsSinceEpoch);
 
         yield IntroLoaded();
       } catch (e) {
