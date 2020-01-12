@@ -1,3 +1,4 @@
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
@@ -8,12 +9,55 @@ import 'entity/overall_stats.dart';
 import 'entity/subject_averages.dart';
 
 class GradesUtils {
+  static double getAverageFromGradesAndLocalGrades({
+    @required List<LocalGrade> localGrades,
+    @required List<Grade> grades,
+  }) {
+    double sum = 0;
+    int count = 0;
+    grades.forEach((g) {
+      if (isValidGrade(g)) {
+        sum += g.decimalValue;
+        count++;
+      }
+    });
+    FLog.info(text: 'Media senza local: ${sum / count}');
+    FLog.info(text: 'Local Grades: ${localGrades.length}');
+
+    localGrades.forEach((g) {
+      if (isValidLocalGrade(g)) {
+        sum += g.decimalValue;
+        count++;
+      }
+    });
+
+    FLog.info(text: 'Media con local: ${sum / count}');
+
+    return sum / count;
+  }
+
+  static double getDifferencePercentage({
+    @required double oldAverage,
+    @required double newAverage,
+  }) {
+    if (newAverage > 0 && oldAverage > 0) {
+      return (newAverage - oldAverage) / oldAverage * 10;
+    }
+    return 0.0;
+//     If (CurrentValue > 0.0 && PreviousValue > 0.0) {
+//    return (CurrentValue - PreviousValue) / PreviousValue;
+// }  return 0.0;
+  }
+
   static double getAverage(int subjectId, List<Grade> grades) {
     double sum = 0;
     int count = 0;
 
     grades.forEach((grade) {
-      if (grade.subjectId == subjectId && grade.decimalValue != -1.00) {
+      if (grade.subjectId == subjectId &&
+          (grade.decimalValue != -1.00 ||
+              grade.cancelled == true ||
+              grade.localllyCancelled == true)) {
         sum += grade.decimalValue;
 
         count++;
@@ -27,7 +71,9 @@ class GradesUtils {
     int count = 0;
 
     grades.forEach((grade) {
-      if (grade.decimalValue != -1.00) {
+      if (grade.decimalValue != -1.00 ||
+          grade.cancelled == true ||
+          grade.localllyCancelled == true) {
         sum += grade.decimalValue;
 
         count++;
@@ -89,9 +135,9 @@ class GradesUtils {
     int insufficienze = 0;
     int sufficienze = 0;
 
-    double average = 0;
-    double worstAverage = 10.0;
-    double bestAverage = 0;
+    ///double average = 0;
+    ///double worstAverage = 10.0;
+    ///double bestAverage = 0;
     Subject worstSubject;
     Subject bestSubject;
 
@@ -106,7 +152,7 @@ class GradesUtils {
     // // Check if it is best average
     // if (average > bestAverage) {
     //   bestSubject = subject;
-    //   bestAverage = average;
+    //   bestAverageó = average;
     // }
     // // Check fo worst subject
     // if (average < worstAverage) {
@@ -168,10 +214,10 @@ class GradesUtils {
   static String getGradeMessage(
       double obj, double average, int numberOfGrades, BuildContext context) {
     if (obj > 10 || average > 10) {
-      return "Errore nel calcolo";
+      return AppLocalizations.of(context).translate('calculation_error');
     }
     if (obj >= 10 && average < obj) {
-      return "Obiettivo irragiungibile";
+      return AppLocalizations.of(context).translate('objective_unreacheable');
     }
 
     var array = [0.75, 0.5, 0.25, 0.0];
@@ -233,5 +279,15 @@ class GradesUtils {
       print(e);
       return AppLocalizations.of(context).translate('objective_unreacheable');
     }
+  }
+
+  static bool isValidGrade(Grade grade) {
+    return (grade.decimalValue != -1.00 ||
+        grade.cancelled == false ||
+        grade.localllyCancelled == false);
+  }
+
+  static bool isValidLocalGrade(LocalGrade grade) {
+    return (grade.decimalValue != -1.00 || grade.cancelled != true);
   }
 }

@@ -29,7 +29,10 @@ class CustomPlaceHolder extends StatelessWidget {
               color: Colors.grey,
             ),
           ),
-          Text(text),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Text(text, textAlign: TextAlign.center,),
+          ),
           showUpdate
               ? FlatButton(
                   child: Text(

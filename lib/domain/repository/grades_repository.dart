@@ -7,20 +7,14 @@ abstract class GradesRepository {
   /// Given a list it inserts a list of grades
   Future insertGrades(List<Grade> gradesData);
 
-  ///Gets all grades
-  Stream<List<Grade>> watchAllGrades();
-
   ///Gets all grades ordered by date
-  Stream<List<Grade>> watchAllGradesOrdered();
+  Future<List<Grade>> getAllGradesOrdered();
 
   ///Gets number of grades by a date
-  Stream<List<Grade>> watchNumberOfGradesByDate(int number);
+  Future<List<Grade>> getNumberOfGradesByDate(int number);
 
   ///Gets last grades
-  Stream<List<Grade>> watchLastGrades();
-
-  /// Gets the grades in the descending order
-  Future<List<Grade>> getAllGradesOrdered();
+  Future<List<Grade>> getLastGrades();
 
   /// Future of all grades in the table
   Future<List<Grade>> getAllGrades();
@@ -36,6 +30,8 @@ abstract class GradesRepository {
   Future deleteLocalGrade(LocalGrade localGrade);
 
   Future updateLocalGrade(LocalGrade localGrade);
+
+  Future updateGrade(Grade grade);
 
   Future<List<LocalGrade>> getLocalGrades();
 }

@@ -1,6 +1,5 @@
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/domain/entity/api_responses/grades_response.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
 
 class GradeMapper {
   const GradeMapper();
@@ -25,6 +24,7 @@ class GradeMapper {
       weightFactor: grade.weightFactor ?? 1,
       skillId: grade.skillId ?? -1,
       gradeMasterId: grade.gradeMasterId ?? -1,
+      localllyCancelled: false
     );
   }
 }

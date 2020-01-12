@@ -11,10 +11,10 @@ abstract class AgendaRepository {
   Future updateAgendaBetweenDates(DateTime begin, DateTime end);
 
   ///Gets all events
-  Stream<List<AgendaEvent>> watchAllEvents();
+  Future<List<AgendaEvent>> getAllEvents();
 
   ///Gets last events of a date
-  Stream<List<AgendaEvent>> watchLastEvents(DateTime date, int numbersOfEvents);
+  Future<List<AgendaEvent>> getLastEvents(DateTime date, int numbersOfEvents);
 
   ///Delete all events
   Future deleteAllEvents();

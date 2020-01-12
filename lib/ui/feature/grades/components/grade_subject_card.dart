@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/ui/feature/grades/subject_grades/subject_grades.dart';
+import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
+import 'package:registro_elettronico/ui/feature/grades/pages/subject_grades.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/general/general_objective_settings_dialog.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,40 +12,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 class GradeSubjectCard extends StatefulWidget {
   final Subject subject;
   final List<Grade> grades;
+  final int objective;
   final int period;
-  const GradeSubjectCard(
-      {Key key,
-      @required this.grades,
-      @required this.subject,
-      @required this.period})
-      : super(key: key);
+
+  const GradeSubjectCard({
+    Key key,
+    @required this.grades,
+    @required this.subject,
+    @required this.objective,
+    @required this.period,
+  }) : super(key: key);
 
   @override
   _GradeSubjectCardState createState() => _GradeSubjectCardState();
 }
 
 class _GradeSubjectCardState extends State<GradeSubjectCard> {
-  int objective = 6;
-
-  @override
-  void initState() {
-    restore();
-    super.initState();
-  }
-
-  void restore() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    setState(() {
-      objective = (preferences.getInt('objective_${widget.subject.id}') ??
-          ((preferences.getInt(PrefsConstants.OVERALL_OBJECTIVE) ?? 6)));
-    });
-    ////objective = (preferences.getInt(PrefsConstants.OVERALL_OBJECTIVE));
-  }
-
   @override
   Widget build(BuildContext context) {
     final average = GradesUtils.getAverage(widget.subject.id, widget.grades);
+    int objective = widget.objective;
+
     return Card(
       child: InkWell(
         onTap: () {
@@ -54,6 +41,7 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
               builder: (context) => SubjectGradesPage(
                 subject: widget.subject,
                 grades: widget.grades,
+                objective: widget.objective,
                 period: widget.period,
               ),
             ),
@@ -72,13 +60,9 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
           ).then((value) async {
             if (value != null) {
               SharedPreferences pres = await SharedPreferences.getInstance();
-              pres.setInt('objective_${widget.subject.id}', value);
-              setState(() {
-                objective = value;
-              });
-              Logger log = Logger();
-              log.i(
-                  "Set objective for 'objective_${widget.subject.id}' at $value");
+              pres.setInt('${widget.subject.id}_objective', value);
+              BlocProvider.of<SubjectsGradesBloc>(context)
+                  .add(GetGradesAndSubjects());
             }
           });
         },

@@ -18,7 +18,7 @@ class DioClient {
     final dio = Dio();
 
     dio.options.headers["Content-Type"] = Headers.jsonContentType;
-    dio.options.headers["User-Agent"] = "${ApiConfig.BASE_USER_AGENT}";
+    dio.options.headers["User-Agent"] = "${ApiConfig.BASE_USER_AGENT}"; 
     dio.options.headers["Z-Dev-Apikey"] = "${ApiConfig.API_KEY}";
 
     dio.interceptors

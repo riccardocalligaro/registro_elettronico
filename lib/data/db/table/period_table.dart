@@ -16,6 +16,7 @@ class Periods extends Table {
   DateTimeColumn get start => dateTime()();
   DateTimeColumn get end => dateTime()();
   TextColumn get miurDivisionCode => text()();
+  IntColumn get periodIndex => integer()();
 
   @override
   Set<Column> get primaryKey => {start, end};

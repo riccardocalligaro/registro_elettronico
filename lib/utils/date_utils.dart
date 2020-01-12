@@ -2,16 +2,22 @@ import 'package:intl/intl.dart';
 import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
 
 class DateUtils {
+  /// Gives the date in the format [yyyyMMdd], no locale ->
+  /// [Date]: 20191113
   static String convertDate(DateTime date) {
     final formatter = DateFormat('yyyyMMdd');
     return formatter.format(date);
   }
 
+  /// Gives the date in the format [dd MMMM yyyy], no locale
+  /// [Date]: 07 January 2020
   static String convertDateForLessons(DateTime date) {
     final formatter = DateFormat("dd MMMM yyyy");
     return formatter.format(date);
   }
 
+  /// Gives the date in the format [dd MMMM yy], no locale
+  /// [Date]: 07 January 20
   static String convertDateForDisplay(DateTime date) {
     final formatter = DateFormat('dd MMMM yy');
     return formatter.format(date);
@@ -19,6 +25,11 @@ class DateUtils {
 
   static String convertMonthForDisplay(DateTime date, String locale) {
     final formatter = DateFormat.MMM(locale);
+    return formatter.format(date);
+  }
+
+  static String convertSingleDayForDisplay(DateTime date, String locale) {
+    final formatter = DateFormat.EEEE(locale);
     return formatter.format(date);
   }
 
@@ -32,6 +43,8 @@ class DateUtils {
     return formatter.format(date);
   }
 
+  /// The spaggiari API returns the date in the following 
+  /// format: [20191112], this function converts this [string] into a [date]
   static DateTime getDateFromApiString(String date) {
     final parts = date.split('-');
     return DateTime.utc(
@@ -41,8 +54,8 @@ class DateUtils {
     );
   }
 
-  /// this returns the max interval to fetch all the lessons / grades
-  /// for example if it is november 2019 it fetches => sep 2019 -> aug 2020
+  /// This returns the [max interval] to fetch all the lessons / grades
+  /// For example if it is november 2019 it fetches => sep 2019 to aug 2020
   static DateTimeInterval getDateInerval() {
     final now = DateTime.now();
     int yearBegin = now.year;
@@ -64,6 +77,8 @@ class DateUtils {
     return DateTimeInterval(begin: begin, end: end);
   }
 
+  /// Given [date1] and [date2] it checks the day and returns
+  /// true if are the same number
   static bool areSameDay(DateTime date1, DateTime date2) {
     return date1.day == date2.day &&
         date1.month == date2.month &&

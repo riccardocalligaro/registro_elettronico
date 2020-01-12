@@ -26,19 +26,25 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
     final profile = await profileDao.getProfile();
     final res = await spaggiariClient.getSubjects(profile.studentId);
 
+    // Clear the old profofessors and subjects from the database
+    await professorDao.deleteAllProfessors();
+    await subjectDao.deleteAllSubjects();
+
+    List<Subject> subjects = [];
+    List<Professor> teachers = [];
     res.subjects.forEach((subject) {
-      subjectDao.insertSubject(
-          subjectMapper.convertSubjectEntityToInsertable(subject));
+      subjects.add(subjectMapper.convertSubjectEntityToInsertable(subject));
       subject.teachers.forEach((professor) {
-        professorDao.insertProfessor(subjectMapper
-            .convertProfessorEntityToInsertable(professor, subject.id));
+        teachers.add(
+          subjectMapper.convertProfessorEntityToInsertable(
+            professor,
+            subject.id,
+          ),
+        );
       });
     });
-  }
-
-  @override
-  Stream<List<Subject>> watchAllSubjects() {
-    return subjectDao.watchAllSubjects();
+    subjectDao.insertSubjects(subjects);
+    professorDao.insertProfessors(teachers);
   }
 
   @override
@@ -52,12 +58,12 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
   }
 
   @override
-  Stream<List<Subject>> watchRelevantSubjects() {
-    return subjectDao.watchRelevanantSubjects();
+  Future<List<Professor>> getAllProfessors() {
+    return professorDao.getAllProfessors();
   }
 
   @override
-  Stream<List<Professor>> watchAllProfessors() {
-    return professorDao.watchAllProfessors();
+  Future<List<Subject>> getSubjectsOrdered() {
+    return subjectDao.getSubjectsOrdered();
   }
 }

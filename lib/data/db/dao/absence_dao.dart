@@ -15,6 +15,8 @@ class AbsenceDao extends DatabaseAccessor<AppDatabase> with _$AbsenceDaoMixin {
 
   Future insertEvent(Absence absence) =>
       into(absences).insert(absence, orReplace: true);
+  Future insertEvents(List<Absence> absencesList) =>
+      into(absences).insertAll(absencesList, orReplace: true);
 
   Future deleteAllAbsences() => delete(absences).go();
 

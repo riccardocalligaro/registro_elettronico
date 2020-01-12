@@ -18,8 +18,6 @@ class ServerException implements Exception {
     this.messageCode,
   });
 
-  // TODO: add the translation of the message -> spaggiari always returns a error in inglish with some grammar mistakes
-
   ServerException.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     error = json['error'];

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 
 class ColorUtils {
+
+  /// Returns a color by checking the event [code]
+  /// 
+  /// [Red] for Absence, [Blue] for delay and [yellow] for early exit
   static Color getColorFromCode(String code) {
     if (code == RegistroConstants.ASSENZA) {
       return Colors.red;

@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:registro_elettronico/ui/global/theme/app_themes.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './bloc.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
-  static const String DARK_THEME = "ThemeBloc_DARK_THEME";
+  //static const String DARK_THEME = "ThemeBloc_DARK_THEME";
 
   static ThemeBloc _instance;
 
@@ -43,13 +44,13 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   _loadSettings() async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
-    bool _darkTheme = prefs.getBool(DARK_THEME) ?? true;
+    bool _darkTheme = prefs.getBool(PrefsConstants.DARK_THEME) ?? true;
     add(ThemeChanged(theme: _darkTheme ? AppTheme.Dark : AppTheme.Light));
     return _darkTheme;
   }
 
   _saveSettings(bool darkTheme) async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(DARK_THEME, darkTheme);
+    await prefs.setBool(PrefsConstants.DARK_THEME, darkTheme);
   }
 }

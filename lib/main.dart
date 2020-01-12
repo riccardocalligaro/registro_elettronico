@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:registro_elettronico/component/app_injection.dart';
@@ -13,7 +16,6 @@ import 'component/routes.dart';
 void callbackDispatcher() {
   Workmanager.executeTask((task, inputData) async {
     await NotificationService().checkForNewContent();
-
     return Future.value(true);
   });
 }
@@ -21,31 +23,20 @@ void callbackDispatcher() {
 void main() {
   initApp();
   // Finnaly run the app
-  runApp(MyApp());
+  runZoned<Future<void>>(() async {
+    runApp(MyApp());
+  }, onError: Crashlytics.instance.recordError);
+  //runApp(MyApp());
 }
 
 void initApp() {
-  // This is for the notification service
-
-  WidgetsFlutterBinding.ensureInitialized();
-  // Workmanager.initialize(
-  //   callbackDispatcher,
-  //   isInDebugMode: true,
-  // );
-  //Workmanager.registerOneOffTask("checkForNewContent", "checkForNewContent", initialDelay: Duration(seconds: 10));
-
-  // Workmanager.registerPeriodicTask(
-  //   "checkForNewContent",
-  //   "checkForNewContent",
-  //   // minimum is 15 minutes
-  //   frequency: Duration(hours: 2),
-  // );
-
   // Init the dependency injection -> compile-time dependency injection for Dart and Flutter, similar to Dagger.
   AppInjector.init();
 
   // BloC supervisor delegate to show all the different states of the bloc
   BlocSupervisor.delegate = SimpleBlocDelegate();
+
+  Crashlytics.instance.enableInDevMode = true;
 }
 
 void setupLogging() {}

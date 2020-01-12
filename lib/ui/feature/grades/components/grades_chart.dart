@@ -5,8 +5,13 @@ import 'package:registro_elettronico/ui/global/localizations/app_localizations.d
 
 class GradesChart extends StatefulWidget {
   final List<Grade> grades;
+  final int objective;
 
-  const GradesChart({Key key, @required this.grades}) : super(key: key);
+  const GradesChart({
+    Key key,
+    @required this.grades,
+    this.objective,
+  }) : super(key: key);
 
   @override
   _GradesChartState createState() => _GradesChartState();
@@ -97,14 +102,15 @@ class _GradesChartState extends State<GradesChart> {
               child: Text(
                 AppLocalizations.of(context).translate('avg'),
                 style: TextStyle(
-                    fontSize: 8,
-                    color: showAvg
-                        ? Theme.of(context)
-                            .primaryTextTheme
-                            .headline
-                            .color
-                            .withOpacity(0.5)
-                        : Theme.of(context).primaryTextTheme.headline.color),
+                  fontSize: 8,
+                  color: showAvg
+                      ? Theme.of(context)
+                          .primaryTextTheme
+                          .headline
+                          .color
+                          .withOpacity(0.5)
+                      : Theme.of(context).primaryTextTheme.headline.color,
+                ),
               ),
             ),
           ),
@@ -119,9 +125,8 @@ class _GradesChartState extends State<GradesChart> {
     List<FlSpot> spots,
     BuildContext context,
   ) {
-    // TODO: change this to a constant or in db?
-
-    const cutOffYValue = 6.0;
+    double cutOffYValue =
+        widget.objective != null ? widget.objective.toDouble() : 6.0;
 
     return LineChartData(
       // The grid behind the graph
@@ -150,6 +155,7 @@ class _GradesChartState extends State<GradesChart> {
       // All the titles
       titlesData: FlTitlesData(
         show: true,
+
         // Some dates of the grades
         bottomTitles: SideTitles(
           showTitles: true,
@@ -158,8 +164,8 @@ class _GradesChartState extends State<GradesChart> {
               color: const Color(0xff68737d),
               fontWeight: FontWeight.w500,
               fontSize: 12),
-          getTitles: (value) {
-            // TODO: add some reference date
+          getTitles: (vlue) {
+            return '';
           },
           margin: 8,
         ),

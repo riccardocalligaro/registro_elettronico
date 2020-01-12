@@ -1,12 +1,8 @@
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
-import 'package:registro_elettronico/main.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:workmanager/workmanager.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
@@ -20,21 +16,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void didChangeDependencies() async {
-    // Workmanager.initialize(
-    //   callbackDispatcher,
-    //   isInDebugMode: true,
-    // );
-
-    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // print(sharedPreferences
-    //     .getBool(PrefsConstants.GRADES_NOTIFICATIONS ?? "false13"));
-
-    ///Workmanager.registerOneOffTask(
-    ///  "checkForNewContent",
-    ///  "checkForNewContent",
-    ///  initialDelay: Duration(seconds: 2),
-    ///);
-
     super.didChangeDependencies();
     if (!_alreadyInit) {
       _alreadyInit = true;
@@ -50,12 +31,14 @@ class _SplashScreenState extends State<SplashScreen> {
           /// Checks if the autosign in returns the positive result that the user is
           /// auto signed in, so it redirects to the Home page
           if (state is AutoSignInResult) {
+            FLog.info(text: "Auto sign in resulted -> Home screen");
             AppNavigator.instance.navToHome(context);
           }
 
-          /// If the auto sign in returns an error the user is redirected to the
-          /// login page
+          /// If the auto sign in returns an error the user
+          /// is redirected to the login page
           if (state is AutoSignInError) {
+            FLog.info(text: "Auto sign in error -> Login screen screen");
             AppNavigator.instance.navToLogin(context);
           }
         },
@@ -71,6 +54,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _autoSignIn(BuildContext context) {
+    FLog.info(
+      text: "Checking if user is signed in, adding auto sign in to BloC",
+    );
     BlocProvider.of<AuthBloc>(context).add(AutoSignIn());
   }
 }

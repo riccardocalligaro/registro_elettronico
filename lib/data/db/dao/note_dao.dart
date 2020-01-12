@@ -4,16 +4,28 @@ import 'package:registro_elettronico/data/db/table/note_table.dart';
 
 part 'note_dao.g.dart';
 
-@UseDao(tables: [Notes])
+@UseDao(tables: [Notes, NotesAttachments])
 class NoteDao extends DatabaseAccessor<AppDatabase> with _$NoteDaoMixin {
   AppDatabase db;
   NoteDao(this.db) : super(db);
 
-  Stream<List<Note>> watchAllNotes() => select(notes).watch();
-
   Future<List<Note>> getAllNotes() => select(notes).get();
+
+  Future<List<NotesAttachment>> getAllAttachments() =>
+      select(notesAttachments).get();
+
+  Future insertAttachment(NotesAttachment attachment) =>
+      into(notesAttachments).insert(attachment, orReplace: true);
 
   Future insertNote(Note note) => into(notes).insert(note, orReplace: true);
 
+  Future insertNotes(List<Note> notesList) =>
+      into(notes).insertAll(notesList, orReplace: true);
+
+  Future insertAttachments(List<NotesAttachment> notesAttachmentsList) =>
+      into(notesAttachments).insertAll(notesAttachmentsList, orReplace: true);
+
   Future deleteAllNotes() => delete(notes).go();
+
+  Future deleteAllAttachments() => delete(notesAttachments).go();
 }

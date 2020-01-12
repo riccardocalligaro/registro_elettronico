@@ -8,17 +8,105 @@ import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
+import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:tuple/tuple.dart';
 
 import 'constants/registro_constants.dart';
 
 class GlobalUtils {
-  static Future<Period> getPeriodFromDate(DateTime date) async {
+  static Profile getMockProfile() {
+    return Profile(
+      id: -1,
+      ident: '32',
+      firstName: 'x',
+      lastName: '',
+      release: DateTime.now(),
+      passwordKey: '',
+      token: '',
+      studentId: '',
+      expire: DateTime.now(),
+    );
+  }
+
+  static String getLastUpdateMessage(BuildContext context, DateTime date) {
     final now = DateTime.now();
+    final difference = now.difference(date);
+
+    if (difference.inSeconds < 30) return "Now";
+    if (difference.inMinutes == 0) return "${difference.inSeconds} seconds ago";
+    if (difference.inMinutes == 1) return "${difference.inMinutes} minute ago";
+    if (difference.inHours == 0) return "${difference.inMinutes} minutes ago";
+    if (difference.inDays == 0) return "${difference.inHours} hours ago";
+    if (difference.inDays == 1) return "Yesterday";
+    if (difference.inDays > 1 && difference.inDays < 7)
+      return "${difference.inDays} days ago";
+    if (difference.inDays == 7) return "A week ago";
+    if (difference.inDays > 31) {
+      return (difference.inDays / 30).toStringAsFixed(0);
+    } else
+      return "${difference.inDays} days ago";
+  }
+
+  /// This method thakes a list of lessons and returns the lesson [grouped]
+  /// checking the lesson argument and the subject id just in case
+  static List<Lesson> getGroupedLessonsList(List<Lesson> lessons) {
+    List<Lesson> lessonsList = [];
+    int count = 1;
+    for (var i = 0; i < lessons.length - 1; i++) {
+      if (i == lessons.length - 1) {
+        if (lessons[i - 1].lessonArg == lessons[i].lessonArg &&
+            lessons[i - 1].subjectId == lessons[i].subjectId) {
+          lessonsList.add(lessons[i].copyWith(duration: ++count));
+        }
+      }
+      if (lessons[i].lessonArg == lessons[i + 1].lessonArg &&
+          lessons[i].subjectId == lessons[i + 1].subjectId) {
+        count++;
+      } else {
+        lessonsList.add(lessons[i].copyWith(duration: count));
+        count = 1;
+      }
+    }
+    lessonsList.add(lessons[lessons.length - 1]);
+    return lessonsList;
+  }
+
+  static Map<Tuple2<int, String>, int> getGroupedLessonsMap(
+      List<Lesson> lessons) {
+    final Map<Tuple2<int, String>, int> lessonsMap = Map.fromIterable(
+      lessons,
+      key: (e) => Tuple2<int, String>(e.subjectId, e.lessonArg),
+      value: (e) => lessons
+          .where((entry) =>
+              entry.lessonArg == e.lessonArg &&
+              entry.subjectId == e.subjectId &&
+              entry.author == e.author)
+          .length,
+    );
+    return lessonsMap;
+  }
+
+  static Future<Period> getPeriodFromDate(DateTime date) async {
     final PeriodDao periodDao = PeriodDao(Injector.appInstance.getDependency());
     final periods = await periodDao.getAllPeriods();
-    periods.forEach((period) {
-      if (period.start.isAfter(now) && period.end.isBefore(now)) return period;
-    });
+    for (var i = 0; i < periods.length; i++) {
+      if (periods[i].start.isBefore(date) && periods[i].end.isAfter(date))
+        return periods[i];
+    }
+    if (periods.length > 0) {
+      int closestIndex = 0;
+      int minDays = 366;
+      for (var i = 0; i < periods.length; i++) {
+        int diff = date.difference(periods[i].end).inDays;
+        if (diff < minDays) {
+          minDays = diff;
+          closestIndex = i;
+        }
+      }
+      return periods[closestIndex];
+    }
+
     return null;
   }
 
@@ -113,6 +201,20 @@ class GlobalUtils {
     }
   }
 
+  static String reduceSubjectTitleWithLength(String subjectTitle, int length) {
+    String reducedName;
+    final subjId = getSubjectConstFromName(subjectTitle);
+
+    reducedName = translateSubject(subjId);
+    if (reducedName != "") {
+      return reducedName;
+    } else {
+      reducedName = subjectTitle.substring(0, length);
+      reducedName += "...";
+      return reducedName;
+    }
+  }
+
   static String reduceLessonArgument(String argument) {
     String reducedName = argument.substring(0, 25);
     reducedName += "...";
@@ -136,10 +238,10 @@ class GlobalUtils {
         return Colors.deepOrangeAccent;
         break;
       case 3:
-        return Colors.greenAccent;
+        return Colors.green;
         break;
       case 4:
-        return Colors.amber;
+        return Colors.teal;
         break;
       case 5:
         return Colors.deepOrange;
@@ -260,7 +362,9 @@ class GlobalUtils {
   /// that are null are stored in the database with -1 value, so if it is -1 it must be
   /// canelled or
   static Color getColorFromGrade(Grade grade) {
-    if (grade.cancelled || grade.decimalValue == -1.00) {
+    if (grade.cancelled ||
+        grade.decimalValue == -1.00 ||
+        grade.localllyCancelled) {
       return Colors.blue;
     } else if (grade.decimalValue >= 6) {
       return Colors.green;
@@ -290,15 +394,23 @@ class GlobalUtils {
       return Colors.green;
     } else if (value >= 5.5 && value < 6) {
       return Colors.yellow[700];
-    } else if(value < 5){
+    } else if (value < 5) {
       return Colors.red;
     } else {
       return Colors.lightGreen;
     }
   }
 
+  //// static String getPeriodName(int index, BuildContext context) {
+  ////   return "$index° ${AppLocalizations.of(context).translate('term').toUpperCase()}";
+  //// }
+
   static String getPeriodName(int index, BuildContext context) {
-    return "$index° ${AppLocalizations.of(context).translate('term').toUpperCase()}";
+    final trans = AppLocalizations.of(context);
+    if (index == TabsConstants.GENERALE)
+      return trans.translate('general');
+    else
+      return '$index ${AppLocalizations.of(context).translate('term')}';
   }
 
   static int getRandomNumber() {
@@ -306,4 +418,37 @@ class GlobalUtils {
     int randomNumber = random.nextInt(99999);
     return randomNumber;
   }
+
+  static bool isCompito(String event) {
+    event = event.toLowerCase();
+    return (event.contains('compiti') ||
+        event.contains('consegna') ||
+        event.contains('consegnare'));
+  }
+
+  static bool isVerificaOrInterrogazione(String event) {
+    event = event.toLowerCase();
+    return (event.contains('compito') ||
+        event.contains('verifica') ||
+        event.contains('interrogazione'));
+  }
+
+  /// `venerdi alla 4 ora`
+  /// `friday at the 4 hour`
+  static String getEventDateMessage(BuildContext context, DateTime date) {
+    final String dateString = DateUtils.convertDateLocale(
+        date, AppLocalizations.of(context).locale.toString());
+    return AppLocalizations.of(context)
+        .translate('event_hour_day')
+        .replaceAll('{date}', dateString)
+        .replaceAll('{hour}', date.hour.toString());
+  }
+
+  // static void initialFetch(BuildContext context) {
+  //   BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
+  //   BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
+  //   BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
+  //   BlocProvider.of<GradesBloc>(context).add(FetchGrades());
+  //   BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
+  // }
 }

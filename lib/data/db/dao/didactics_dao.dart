@@ -1,7 +1,7 @@
-import 'package:logger/logger.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/db/table/didactics/content_table.dart';
+import 'package:registro_elettronico/data/db/table/didactics/downloaded_files.dart';
 import 'package:registro_elettronico/data/db/table/didactics/folder_table.dart';
 import 'package:registro_elettronico/data/db/table/didactics/teacher_table.dart';
 
@@ -11,6 +11,7 @@ part 'didactics_dao.g.dart';
   DidacticsTeachers,
   DidacticsFolders,
   DidacticsContents,
+  DidacticsDownloadedFiles
 ])
 class DidacticsDao extends DatabaseAccessor<AppDatabase>
     with _$DidacticsDaoMixin {
@@ -26,11 +27,29 @@ class DidacticsDao extends DatabaseAccessor<AppDatabase>
   Future<List<DidacticsContent>> getAllContents() =>
       select(didacticsContents).get();
 
+  Future deleteTeachers() => delete(didacticsTeachers).go();
+
+  Future deleteFolders() => delete(didacticsContents).go();
+
+  Future deleteContents() => delete(didacticsFolders).go();
+
   Future insertTeachers(List<DidacticsTeacher> teachers) =>
       into(didacticsTeachers).insertAll(teachers, orReplace: true);
 
   Future insertFolders(List<DidacticsFolder> folders) =>
       into(didacticsFolders).insertAll(folders, orReplace: true);
+
+  Future insertDownloadedFile(DidacticsDownloadedFile file) =>
+      into(didacticsDownloadedFiles).insert(file, orReplace: true);
+
+  Future deleteDownloadedFile(DidacticsDownloadedFile file) =>
+      delete(didacticsDownloadedFiles).delete(file);
+
+  Future<DidacticsDownloadedFile> getDownloadedFile(int contentId) {
+    return (select(didacticsDownloadedFiles)
+          ..where((g) => g.contentId.equals(contentId)))
+        .getSingle();
+  }
 
   Future insertContents(List<DidacticsContent> contents) => into(
         didacticsContents,
@@ -46,4 +65,16 @@ class DidacticsDao extends DatabaseAccessor<AppDatabase>
       return DidacticsTeacher.fromData(row.data, db);
     }).get();
   }
+
+  // Future deleteAllDidactics() {
+  //   return customSelectQuery(
+  //     'DELETE * FROM didactics_teachers',
+  //     readsFrom: {
+  //       didacticsTeachers,
+  //       didacticsFolders,
+  //       didacticsContents,
+  //       didacticsDownloadedFiles
+  //     }
+  //   ).get();
+  // }
 }
