@@ -27,4 +27,6 @@ abstract class DidacticsRepository {
   Future<DidacticsDownloadedFile> getDownloadedFileFromContentId(int contentId);
 
   Future deleteDownloadedFile(DidacticsDownloadedFile downloadedFile);
+
+  Future deleteAllDidactics();
 }

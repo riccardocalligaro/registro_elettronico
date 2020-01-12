@@ -4,7 +4,7 @@ class SimpleBlocDelegate extends BlocDelegate {
   @override
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);
-    print('BLoC Event: $event');
+    print('BLoC $bloc Event: $event');
   }
 
   @override

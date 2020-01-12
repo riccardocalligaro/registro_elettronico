@@ -4,22 +4,36 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:injector/injector.dart';
-import 'package:logger/logger.dart';
 import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:tuple/tuple.dart';
 
 import 'constants/registro_constants.dart';
 
 class GlobalUtils {
+  static Profile getMockProfile() {
+    return Profile(
+      id: -1,
+      ident: '32',
+      firstName: 'x',
+      lastName: '',
+      release: DateTime.now(),
+      passwordKey: '',
+      token: '',
+      studentId: '',
+      expire: DateTime.now(),
+    );
+  }
+
   static String getLastUpdateMessage(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
 
-    if (difference.inSeconds < 60) return "Now";
+    if (difference.inSeconds < 30) return "Now";
     if (difference.inMinutes == 0) return "${difference.inSeconds} seconds ago";
     if (difference.inMinutes == 1) return "${difference.inMinutes} minute ago";
     if (difference.inHours == 0) return "${difference.inMinutes} minutes ago";
@@ -90,8 +104,6 @@ class GlobalUtils {
           closestIndex = i;
         }
       }
-      Logger log = Logger();
-      log.i(closestIndex);
       return periods[closestIndex];
     }
 
@@ -184,6 +196,20 @@ class GlobalUtils {
       return reducedName;
     } else {
       reducedName = subjectTitle.substring(0, 20);
+      reducedName += "...";
+      return reducedName;
+    }
+  }
+
+  static String reduceSubjectTitleWithLength(String subjectTitle, int length) {
+    String reducedName;
+    final subjId = getSubjectConstFromName(subjectTitle);
+
+    reducedName = translateSubject(subjId);
+    if (reducedName != "") {
+      return reducedName;
+    } else {
+      reducedName = subjectTitle.substring(0, length);
       reducedName += "...";
       return reducedName;
     }
@@ -391,6 +417,31 @@ class GlobalUtils {
     Random random = new Random();
     int randomNumber = random.nextInt(99999);
     return randomNumber;
+  }
+
+  static bool isCompito(String event) {
+    event = event.toLowerCase();
+    return (event.contains('compiti') ||
+        event.contains('consegna') ||
+        event.contains('consegnare'));
+  }
+
+  static bool isVerificaOrInterrogazione(String event) {
+    event = event.toLowerCase();
+    return (event.contains('compito') ||
+        event.contains('verifica') ||
+        event.contains('interrogazione'));
+  }
+
+  /// `venerdi alla 4 ora`
+  /// `friday at the 4 hour`
+  static String getEventDateMessage(BuildContext context, DateTime date) {
+    final String dateString = DateUtils.convertDateLocale(
+        date, AppLocalizations.of(context).locale.toString());
+    return AppLocalizations.of(context)
+        .translate('event_hour_day')
+        .replaceAll('{date}', dateString)
+        .replaceAll('{hour}', date.hour.toString());
   }
 
   // static void initialFetch(BuildContext context) {

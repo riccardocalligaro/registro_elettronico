@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/local_grades/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/local_grades/local_grades_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/local_grades/local_grades_state.dart';
-import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/subjects/subjects_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/subjects/subjects_event.dart';
+import 'package:registro_elettronico/ui/bloc/professors/bloc.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
@@ -20,46 +15,33 @@ import 'package:registro_elettronico/utils/entity/subject_averages.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SubjectGradesPage extends StatefulWidget {
   final List<Grade> grades;
   final Subject subject;
+  final int objective;
   final int period;
 
-  SubjectGradesPage(
-      {Key key,
-      @required this.grades,
-      @required this.subject,
-      @required this.period})
-      : super(key: key);
+  const SubjectGradesPage({
+    Key key,
+    @required this.grades,
+    @required this.subject,
+    @required this.objective,
+    @required this.period,
+  }) : super(key: key);
 
   @override
   _SubjectGradesPageState createState() => _SubjectGradesPageState();
 }
 
 class _SubjectGradesPageState extends State<SubjectGradesPage> {
-  int _objective = 6;
   double _currentPickerValue = 6.0;
 
   @override
-  void initState() {
-    BlocProvider.of<LocalGradesBloc>(context)
-        .add(GetLocalGrades(period: widget.period));
-    restore();
-    super.initState();
-  }
-
-  void restore() async {
-    Logger log = Logger();
-    log.v(_objective);
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      _objective = (preferences
-              .getInt('objective_${widget.subject.id}_${widget.period}') ??
-          6);
-    });
-    log.i(_objective);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    BlocProvider.of<ProfessorsBloc>(context)
+        .add(GetProfessorsForSubject(subjectId: widget.subject.id));
   }
 
   @override
@@ -314,9 +296,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
   }
 
   Widget _buildProfessorsCard() {
-    BlocProvider.of<SubjectsBloc>(context).add(GetProfessors());
-
-    return BlocBuilder<SubjectsBloc, SubjectsState>(
+    return BlocBuilder<ProfessorsBloc, ProfessorsState>(
       builder: (context, state) {
         if (state is ProfessorsLoadSuccess) {
           String professorsText;
@@ -338,7 +318,6 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
             ),
           );
         }
-
         return Container();
       },
     );
@@ -383,10 +362,10 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     double percent;
     if (averages.average.isNaN) {
       percent = 0.0;
-    } else if (averages.average / _objective > 1) {
+    } else if (averages.average / widget.objective > 1) {
       percent = 1.0;
     } else {
-      percent = (averages.average / _objective);
+      percent = (averages.average / widget.objective);
     }
 
     return Card(
@@ -401,7 +380,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                 percent: percent,
                 backgroundColor: Colors.grey,
                 progressColor: GlobalUtils.getColorFromAverageAndObjective(
-                    averages.average, _objective),
+                    averages.average, widget.objective),
               ),
             ),
             Padding(
@@ -410,7 +389,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                      '${AppLocalizations.of(context).translate('your_objective')}: $_objective'),
+                      '${AppLocalizations.of(context).translate('your_objective')}: ${widget.objective}'),
                   Text(
                       '${AppLocalizations.of(context).translate('your_average')}: ${averages.averageValue}'),
                 ],
@@ -470,7 +449,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
         padding: const EdgeInsets.only(right: 21.0),
         child: GradesChart(
           grades: grades,
-          objective: _objective,
+          objective: widget.objective,
         ),
       ),
     );

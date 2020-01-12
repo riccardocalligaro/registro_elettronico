@@ -11,6 +11,9 @@ class SubjectDao extends DatabaseAccessor<AppDatabase> with _$SubjectDaoMixin {
   Future insertSubject(Insertable<Subject> subject) =>
       into(subjects).insert(subject, orReplace: true);
 
+  Future insertSubjects(List<Subject> subjectsList) =>
+      into(subjects).insertAll(subjectsList, orReplace: true);
+
   Future<List<Subject>> getAllSubjects() => select(subjects).get();
 
   Future<List<Subject>> getSubjectsOrdered() {
@@ -20,4 +23,6 @@ class SubjectDao extends DatabaseAccessor<AppDatabase> with _$SubjectDaoMixin {
           ]))
         .get();
   }
+
+  Future deleteAllSubjects() => delete(subjects).go();
 }

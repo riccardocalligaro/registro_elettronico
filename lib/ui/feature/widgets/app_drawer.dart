@@ -6,7 +6,6 @@ import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
-import 'package:registro_elettronico/ui/feature/home/home_page.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:share/share.dart';
@@ -23,12 +22,14 @@ class AppDrawer extends StatefulWidget {
   _AppDrawerState createState() => _AppDrawerState();
 }
 
-class _AppDrawerState extends State<AppDrawer> {
+class _AppDrawerState extends State<AppDrawer>
+    with AutomaticKeepAliveClientMixin {
   List<bool> selectedList = new List<bool>.filled(12, false);
   bool _showUserDetails = false;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     selectedList[widget.position] = true;
     return Drawer(
       child: Column(
@@ -243,6 +244,20 @@ class _AppDrawerState extends State<AppDrawer> {
   }
 
   Color _getColor(bool isAccount) {
-    if (isAccount ?? false) return Theme.of(context).textTheme.body1.color;
+    if (isAccount ?? false)
+      return Theme.of(context).textTheme.body1.color;
+    else
+      return null;
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}
+
+class NoGlowBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
   }
 }

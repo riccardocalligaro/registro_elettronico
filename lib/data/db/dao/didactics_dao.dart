@@ -27,6 +27,12 @@ class DidacticsDao extends DatabaseAccessor<AppDatabase>
   Future<List<DidacticsContent>> getAllContents() =>
       select(didacticsContents).get();
 
+  Future deleteTeachers() => delete(didacticsTeachers).go();
+
+  Future deleteFolders() => delete(didacticsContents).go();
+
+  Future deleteContents() => delete(didacticsFolders).go();
+
   Future insertTeachers(List<DidacticsTeacher> teachers) =>
       into(didacticsTeachers).insertAll(teachers, orReplace: true);
 
@@ -38,7 +44,7 @@ class DidacticsDao extends DatabaseAccessor<AppDatabase>
 
   Future deleteDownloadedFile(DidacticsDownloadedFile file) =>
       delete(didacticsDownloadedFiles).delete(file);
-      
+
   Future<DidacticsDownloadedFile> getDownloadedFile(int contentId) {
     return (select(didacticsDownloadedFiles)
           ..where((g) => g.contentId.equals(contentId)))

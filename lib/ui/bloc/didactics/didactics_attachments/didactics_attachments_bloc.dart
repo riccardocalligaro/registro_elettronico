@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:bloc/bloc.dart';
-import 'package:logger/logger.dart';
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
+
 import './bloc.dart';
 
 class DidacticsAttachmentsBloc
@@ -27,28 +29,27 @@ class DidacticsAttachmentsBloc
     DidacticsAttachmentsEvent event,
   ) async* {
     if (event is GetAttachment) {
-      Logger log = Logger();
       final content = event.content;
       final file =
           await didacticsRepository.getDownloadedFileFromContentId(content.id);
 
       if (file != null) {
-        log.i('File exists ${file.path}');
+        FLog.info(text: 'File exists ${file.path}');
         yield DidacticsAttachmentsFileLoaded(path: file.path);
       } else {
         yield DidacticsAttachmentsLoading();
         if (content.type == 'file') {
           try {
-            Logger log = Logger();
             final response =
                 await didacticsRepository.getFileAttachment(content.id);
-            log.i("Got response from Spaggiari of file ${content.id}");
+            FLog.info(
+                text: 'Got response from Spaggiari of file ${content.id}');
             String filename =
                 response.headers.value('content-disposition') ?? "";
             filename = filename.replaceAll('attachment; filename=', '');
             filename = filename.replaceAll(RegExp('\"'), '');
             filename = filename.trim();
-            log.i("filename -> $filename");
+            FLog.info(text: 'Filename -> $filename');
             final path = await _localPath;
             String filePath = '$path/$filename';
             File file = File(filePath);

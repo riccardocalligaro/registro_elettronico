@@ -10,9 +10,13 @@ class ProfessorDao extends DatabaseAccessor<AppDatabase>
   AppDatabase db;
   ProfessorDao(this.db) : super(db);
 
-  Future insertProfessor(Insertable<Professor> profile) =>
-      into(professors).insert(profile, orReplace: true);
+  Future insertProfessor(Insertable<Professor> professor) =>
+      into(professors).insert(professor, orReplace: true);
 
+  Future insertProfessors(List<Professor> professorsList) =>
+      into(professors).insertAll(professorsList, orReplace: true);
+
+  Future deleteAllProfessors() => delete(professors).go();
   Future<List<Professor>> getAllProfessors() {
     return customSelectQuery(
       'SELECT DISTINCT * FROM professors',

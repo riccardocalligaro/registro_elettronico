@@ -3,7 +3,6 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
-import 'package:registro_elettronico/utils/string_utils.dart';
 
 class LessonCard extends StatelessWidget {
   final Lesson lesson;

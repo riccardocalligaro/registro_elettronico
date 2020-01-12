@@ -1,8 +1,9 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
+
 import './bloc.dart';
 
 class LocalGradesBloc extends Bloc<LocalGradesEvent, LocalGradesState> {
@@ -31,16 +32,12 @@ class LocalGradesBloc extends Bloc<LocalGradesEvent, LocalGradesState> {
     }
 
     if (event is AddLocalGrade) {
-      //yield LocalGradesLoading();
-      Logger log = Logger();
       await gradesRepository.insertLocalGrade(event.localGrade);
       final grades = await gradesRepository.getLocalGrades();
-      log.i("Got ${grades.length} in bloc"); 
       yield LocalGradesLoaded(localGrades: grades);
     }
     if (event is DeleteLocalGrade) {
       //yield LocalGradesLoading();
-
       await gradesRepository.deleteLocalGrade(event.localGrade);
       final grades = await gradesRepository.getLocalGrades();
       yield LocalGradesLoaded(localGrades: grades);

@@ -1,7 +1,7 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/data/db/dao/note_dao.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/notes/note_attachments/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notes/notes_bloc.dart';
@@ -10,6 +10,7 @@ import 'package:registro_elettronico/ui/bloc/notes/notes_state.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -40,7 +41,10 @@ class _NotesPageState extends State<NotesPage> {
       drawer: AppDrawer(
         position: DrawerConstants.NOTES,
       ),
-      body: _buildNotes(context),
+      body: DoubleBackToCloseApp(
+        snackBar: AppNavigator.instance.getLeaveSnackBar(context),
+        child: _buildNotes(context),
+      ),
     );
   }
 

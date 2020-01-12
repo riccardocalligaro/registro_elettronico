@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
-import 'package:registro_elettronico/ui/feature/grades/components/grades_tab.dart';
+import 'package:registro_elettronico/component/navigator.dart';
+import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
+import 'package:registro_elettronico/ui/feature/grades/pages/last_grades_page.dart';
+import 'package:registro_elettronico/ui/feature/grades/pages/term_grades_page.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
-import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
+import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GradesPage extends StatefulWidget {
   GradesPage({Key key}) : super(key: key);
@@ -16,41 +20,45 @@ class GradesPage extends StatefulWidget {
   _GradesPageState createState() => _GradesPageState();
 }
 
-class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
-  TabController _tabController;
-  List<Color> gradientColors = [Colors.red[400], Colors.white];
-
-  bool showAvg = false;
-
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+class _GradesPageState extends State<GradesPage> {
+  int _lastUpdateGrades;
 
   @override
   void initState() {
+    getPreferences();
     super.initState();
+  }
+
+  getPreferences() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      _lastUpdateGrades =
+          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_GRADES);
+    });
   }
 
   @override
   void didChangeDependencies() {
-    BlocProvider.of<PeriodsBloc>(context).add(GetPeriods());
     super.didChangeDependencies();
+    BlocProvider.of<SubjectsGradesBloc>(context).add(GetGradesAndSubjects());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PeriodsBloc, PeriodsState>(
+    return BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
+        listener: (context, state) {
+      if (state is SubjectsGradesUpdateLoadSuccess) {
+        setState(() {
+          _lastUpdateGrades = DateTime.now().millisecondsSinceEpoch;
+        });
+      }
+    }, child: BlocBuilder<SubjectsGradesBloc, SubjectsGradesState>(
       builder: (context, state) {
-        if (state is PeriodsLoaded) {
-          final periods = state.periods;
-          _tabController =
-              TabController(vsync: this, length: periods.length + 2);
-          _tabController.addListener(() {
-            if (_tabController.indexIsChanging) {
-              print("changed");
-            }
-          });
+        if (state is SubjectsGradesLoadSuccess) {
+          state.grades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
 
           return DefaultTabController(
-            length: periods.length + 2,
+            length: 4,
             child: Scaffold(
               appBar: AppBar(
                 elevation: 0.0,
@@ -60,26 +68,85 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
                   isScrollable: true,
                   indicatorColor: Colors.red,
                   labelColor: Theme.of(context).primaryTextTheme.headline.color,
-                  tabs: _getTabBar(periods),
+                  tabs: _getTabBar(),
                 ),
                 title: Text(AppLocalizations.of(context).translate('grades')),
+              ),
+              bottomSheet: LastUpdateBottomSheet(
+                millisecondsSinceEpoch: _lastUpdateGrades,
               ),
               drawer: AppDrawer(
                 position: DrawerConstants.GRADES,
               ),
-              body: TabBarView(
-                children: _getTabsSections(periods),
+              body: DoubleBackToCloseApp(
+                snackBar: AppNavigator.instance.getLeaveSnackBar(context),
+                child: TabBarView(
+                  children: <Widget>[
+                    LastGradesPage(
+                      grades: state.grades,
+                    ),
+                    TermGradesPage(
+                      grades: state.grades,
+                      subjects: state.subjects,
+                      objectives: state.objectives,
+                      periodPosition: state.periods
+                          .where((p) => p.periodIndex == 1)
+                          .single
+                          .position,
+                      generalObjective: state.generalObjective,
+                    ),
+                    TermGradesPage(
+                      grades: state.grades,
+                      subjects: state.subjects,
+                      objectives: state.objectives,
+                      periodPosition: state.periods
+                          .where((p) => p.periodIndex == 2)
+                          .single
+                          .position,
+                      generalObjective: state.generalObjective,
+                    ),
+                    TermGradesPage(
+                      grades: state.grades,
+                      subjects: state.subjects,
+                      objectives: state.objectives,
+                      periodPosition: TabsConstants.GENERALE,
+                      generalObjective: state.generalObjective,
+                    )
+                  ],
+                ),
               ),
             ),
           );
+        } else {
+          return DefaultTabController(
+            length: 4,
+            child: Scaffold(
+                appBar: AppBar(
+                  elevation: 0.0,
+                  textTheme: Theme.of(context).textTheme,
+                  iconTheme: Theme.of(context).primaryIconTheme,
+                  bottom: TabBar(
+                    isScrollable: true,
+                    indicatorColor: Colors.red,
+                    labelColor:
+                        Theme.of(context).primaryTextTheme.headline.color,
+                    tabs: _getTabBar(),
+                  ),
+                  title: Text(AppLocalizations.of(context).translate('grades')),
+                ),
+                drawer: AppDrawer(
+                  position: DrawerConstants.GRADES,
+                ),
+                body: Center(
+                  child: CircularProgressIndicator(),
+                )),
+          );
         }
-        return _buildLoadingScaffold();
       },
-    );
+    ));
   }
 
-  /// Take the periods from spaggiari and add the general tab
-  List<Widget> _getTabBar(List<Period> periods) {
+  List<Widget> _getTabBar() {
     List<Widget> tabs = [];
 
     tabs.add(
@@ -93,29 +160,26 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
       ),
     );
 
-    for (var i = 1; i <= periods.length; i++) {
-      tabs.add(
-        Container(
-          width: 140,
-          child: Tab(
-            child: Text(
-                "$i° ${AppLocalizations.of(context).translate('term').toUpperCase()}"),
-          ),
+    tabs.add(
+      Container(
+        width: 140,
+        child: Tab(
+          child: Text(
+              "1° ${AppLocalizations.of(context).translate('term').toUpperCase()}"),
         ),
-      );
-    }
-    //// tabs.addAll(
-    //// periods.map(
-    //// (period) => Container(
-    //// width: 140,
-    //// child: Tab(
-    //// child: Text(
-    //// GlobalUtils.getPeriodName(period.position, context),
-    //// ),
-    //// ),
-    //// ),
-    //// ),
-    //// );
+      ),
+    );
+
+    tabs.add(
+      Container(
+        width: 140,
+        child: Tab(
+          child: Text(
+              "2° ${AppLocalizations.of(context).translate('term').toUpperCase()}"),
+        ),
+      ),
+    );
+
     tabs.add(Container(
       width: 140,
       child: Tab(
@@ -126,48 +190,5 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
     ));
 
     return tabs;
-  }
-
-  /// This function is for selecting the respective tab in the tab layout
-  List<Widget> _getTabsSections(List<Period> periods) {
-    return List.generate(
-      periods.length + 2,
-      (index) {
-        // If its last marks use the constants for last marks
-        if (index == 0) {
-          return GradeTab(period: TabsConstants.ULTIMI_VOTI);
-        }
-        if (index >= periods.length + 1) {
-          return GradeTab(
-            period: TabsConstants.GENERALE,
-          );
-        } else {
-          return GradeTab(
-            period: periods[index - 1].position,
-          );
-        }
-      },
-    );
-  }
-
-  /// Loading scaffold while periods are loading
-  Scaffold _buildLoadingScaffold() {
-    return Scaffold(
-      key: _drawerKey,
-      appBar: CustomAppBar(
-        scaffoldKey: _drawerKey,
-        title: Text(AppLocalizations.of(context).translate('grades')),
-      ),
-      drawer: AppDrawer(
-        position: DrawerConstants.GRADES,
-      ),
-      body: Container(
-        child: Center(
-          child: CircularProgressIndicator(
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
-        ),
-      ),
-    );
   }
 }

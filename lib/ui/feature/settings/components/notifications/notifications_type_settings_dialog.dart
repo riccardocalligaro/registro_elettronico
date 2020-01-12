@@ -1,5 +1,5 @@
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
@@ -128,8 +128,8 @@ class _NotificationsSettingsDialogState
   }
 
   save(String key, dynamic value) async {
-    Logger logger = Logger();
-    logger.i('Changed value $key -> $value');
+    FLog.info(text: 'Changed value $key -> $value');
+
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     if (value is bool) {
       sharedPrefs.setBool(key, value);

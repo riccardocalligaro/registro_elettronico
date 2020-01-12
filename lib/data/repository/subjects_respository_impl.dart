@@ -26,14 +26,25 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
     final profile = await profileDao.getProfile();
     final res = await spaggiariClient.getSubjects(profile.studentId);
 
+    // Clear the old profofessors and subjects from the database
+    await professorDao.deleteAllProfessors();
+    await subjectDao.deleteAllSubjects();
+
+    List<Subject> subjects = [];
+    List<Professor> teachers = [];
     res.subjects.forEach((subject) {
-      subjectDao.insertSubject(
-          subjectMapper.convertSubjectEntityToInsertable(subject));
+      subjects.add(subjectMapper.convertSubjectEntityToInsertable(subject));
       subject.teachers.forEach((professor) {
-        professorDao.insertProfessor(subjectMapper
-            .convertProfessorEntityToInsertable(professor, subject.id));
+        teachers.add(
+          subjectMapper.convertProfessorEntityToInsertable(
+            professor,
+            subject.id,
+          ),
+        );
       });
     });
+    subjectDao.insertSubjects(subjects);
+    professorDao.insertProfessors(teachers);
   }
 
   @override

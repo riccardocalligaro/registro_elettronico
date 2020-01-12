@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
-import 'package:registro_elettronico/ui/feature/home/home_page.dart';
 import 'package:registro_elettronico/ui/feature/intro/components/download_liquid_circle.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';

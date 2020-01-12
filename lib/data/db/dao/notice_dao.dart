@@ -33,10 +33,18 @@ class NoticeDao extends DatabaseAccessor<AppDatabase> with _$NoticeDaoMixin {
   Future insertNotice(Notice notice) =>
       into(notices).insert(notice, orReplace: true);
 
+  Future insertNotices(List<Notice> noticesList) =>
+      into(notices).insertAll(noticesList, orReplace: true);
+
   Future insertAttachment(Attachment attachment) =>
       into(attachments).insert(attachment, orReplace: true);
 
+  Future insertAttachments(List<Attachment> attachmentsList) =>
+      into(attachments).insertAll(attachmentsList, orReplace: true);
+
   Future deleteAllNotices() => delete(notices).go();
+
+  Future deleteAllAttachments() => delete(attachments).go();
 
   /// Based on the primary key it replaces the notice
   Future updateNotice(Notice notice) => update(notices).replace(notice);

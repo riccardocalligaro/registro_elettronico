@@ -2,15 +2,20 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/didactics_attachments/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
+import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SchoolMaterialPage extends StatefulWidget {
   const SchoolMaterialPage({Key key}) : super(key: key);
@@ -20,58 +25,91 @@ class SchoolMaterialPage extends StatefulWidget {
 }
 
 class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
+  int _schoolMaterialLastUpdate;
+
   @override
   void initState() {
-    BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
+    restore();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
+  }
+
+  void restore() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      _schoolMaterialLastUpdate =
+          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_SCHOOL_MATERIAL);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+    return BlocListener<DidacticsBloc, DidacticsState>(
+      listener: (context, state) {
+        if (state is DidacticsUpdateLoaded) {
+          setState(() {
+            _schoolMaterialLastUpdate = DateTime.now().millisecondsSinceEpoch;
+          });
+        }
+      },
+      child: Scaffold(
+        key: _drawerKey,
+        appBar: CustomAppBar(
+          title:
+              Text(AppLocalizations.of(context).translate('school_material')),
+          scaffoldKey: _drawerKey,
+        ),
+        drawer: AppDrawer(
+          position: DrawerConstants.SCHOOL_MATERIAL,
+        ),
+        bottomSheet: LastUpdateBottomSheet(
+          millisecondsSinceEpoch: _schoolMaterialLastUpdate,
+        ),
+        body: DoubleBackToCloseApp(
+          snackBar: AppNavigator.instance.getLeaveSnackBar(context),
+          child:
+              BlocListener<DidacticsAttachmentsBloc, DidacticsAttachmentsState>(
+            listener: (context, state) {
+              if (state is DidacticsAttachmentsLoading) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(AppLocalizations.of(context)
+                              .translate('downloading')),
+                          Container(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.red,
+                            ),
+                          )
+                        ],
+                      ),
+                      duration: Duration(minutes: 10),
+                    ),
+                  );
+              }
 
-    return Scaffold(
-      key: _drawerKey,
-      appBar: CustomAppBar(
-        title: Text(AppLocalizations.of(context).translate('school_material')),
-        scaffoldKey: _drawerKey,
-      ),
-      drawer: AppDrawer(
-        position: DrawerConstants.SCHOOL_MATERIAL,
-      ),
-      body: BlocListener<DidacticsAttachmentsBloc, DidacticsAttachmentsState>(
-        listener: (context, state) {
-          if (state is DidacticsAttachmentsLoading) {
-            Scaffold.of(context)
-              ..removeCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context)
-                          .translate('downloading')),
-                      Container(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.red,
-                        ),
-                      )
-                    ],
-                  ),
-                  duration: Duration(minutes: 10),
-                ),
-              );
-          }
-
-          if (state is DidacticsAttachmentsFileLoaded) {
-            OpenFile.open(state.path);
-            Scaffold.of(context)..removeCurrentSnackBar();
-          }
-          //if(state is DidacticsAttachments)
-        },
-        child: _buildBlocBuilder(),
+              if (state is DidacticsAttachmentsFileLoaded) {
+                OpenFile.open(state.path);
+                Scaffold.of(context)..removeCurrentSnackBar();
+              }
+              //if(state is DidacticsAttachments)
+            },
+            child: _buildBlocBuilder(),
+          ),
+        ),
       ),
     );
   }
@@ -119,27 +157,30 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
     List<DidacticsContent> contents,
   }) {
     if (teachers.length > 0) {
-      return ListView.builder(
-        shrinkWrap: true,
-        itemCount: teachers.length,
-        itemBuilder: (ctx, index) {
-          final teacher = teachers[index];
-          final List<DidacticsFolder> foldersList = folders
-              .where((folder) => folder.teacherId == teacher.id)
-              .toList();
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: teachers.length,
+          itemBuilder: (ctx, index) {
+            final teacher = teachers[index];
+            final List<DidacticsFolder> foldersList = folders
+                .where((folder) => folder.teacherId == teacher.id)
+                .toList();
 
-          return Column(
-            children: <Widget>[
-              ListTile(
-                title: Text(
-                  teacher.name,
-                  style: TextStyle(color: Colors.red),
+            return Column(
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    teacher.name,
+                    style: TextStyle(color: Colors.red),
+                  ),
                 ),
-              ),
-              _buildFolderList(foldersList, contents)
-            ],
-          );
-        },
+                _buildFolderList(foldersList, contents)
+              ],
+            );
+          },
+        ),
       );
     }
 
@@ -267,7 +308,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
     return AppLocalizations.of(context).translate('no_name');
   }
 
-  Future _refreshDidactics() {
+  Future<void> _refreshDidactics() {
     BlocProvider.of<DidacticsBloc>(context).add(UpdateDidactics());
     BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
   }

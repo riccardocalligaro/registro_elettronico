@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
@@ -27,9 +28,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> mapEventToState(
     AuthEvent event,
   ) async* {
+    FLog.info(text: "$event added to Auth Bloc");
+
     if (event is AutoSignIn) {
       yield AutoSignInLoading();
       final isUserLoggedIn = await profileRepository.isLoggedIn();
+      FLog.info(text: 'Auto sign in result: $isUserLoggedIn');
       if (isUserLoggedIn) {
         yield AutoSignInResult();
       } else {
@@ -45,12 +49,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await flutterSecureStorage.write(
             key: event.username, value: event.password);
         _saveProfileInDb(responseProfile, event.password);
-//
+        FLog.info(text: 'Log in success');
         yield SignInSuccess(ProfileMapper()
             .mapLoginResponseProfileToProfileEntity(responseProfile));
       } on DioError catch (e) {
+        FLog.error(text: 'Error while logging in user: ${e.response.data}');
         yield SignInNetworkError(ServerException.fromJson(e.response.data));
       } catch (e) {
+        FLog.error(text: 'Sign in other error ${e.toString()}');
         yield SignInError(e.toString());
       }
     }
@@ -66,10 +72,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   _saveProfileInDb(LoginResponse returnedProfile, String userPassword) {
+    FLog.info(text: 'Saving profile in database');
     final profileEntity =
         ProfileMapper().mapLoginResponseProfileToProfileEntity(returnedProfile);
     profileRepository.insertProfile(profile: profileEntity);
-
     flutterSecureStorage.write(key: profileEntity.ident, value: userPassword);
   }
 }
