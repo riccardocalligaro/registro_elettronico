@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_event.dart';
@@ -53,18 +54,19 @@ class _LoginPageState extends State<LoginPage> {
                 _buildLoginMessageText(trans.translate('login_with')),
                 _buildLoginForm(context),
                 Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: RaisedButton(
-                      child: Text(
-                        trans.translate('log_in'),
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                      color: Theme.of(context).accentColor,
-                      onPressed: () {
-                        _signIn(context);
-                      },
-                    )),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: RaisedButton(
+                    child: Text(
+                      trans.translate('log_in'),
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    color: Theme.of(context).accentColor,
+                    onPressed: () {
+                      _signIn(context);
+                    },
+                  ),
+                ),
               ],
             ),
           ],
@@ -152,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               TextFormField(
                 controller: _usernameController,
-                decoration: InputDecoration(  
+                decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)
                       .translate('username_form_login_placeholder'),
                   errorText: _valide ? _errorMessage : null,
