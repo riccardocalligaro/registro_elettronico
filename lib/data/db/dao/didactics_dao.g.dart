@@ -10,4 +10,6 @@ mixin _$DidacticsDaoMixin on DatabaseAccessor<AppDatabase> {
   $DidacticsTeachersTable get didacticsTeachers => db.didacticsTeachers;
   $DidacticsFoldersTable get didacticsFolders => db.didacticsFolders;
   $DidacticsContentsTable get didacticsContents => db.didacticsContents;
+  $DidacticsDownloadedFilesTable get didacticsDownloadedFiles =>
+      db.didacticsDownloadedFiles;
 }

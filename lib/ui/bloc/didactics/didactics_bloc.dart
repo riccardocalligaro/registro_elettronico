@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './bloc.dart';
 
 class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
@@ -34,7 +36,14 @@ class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
     if (event is UpdateDidactics) {
       yield DidacticsUpdateLoading();
       try {
+        await didacticsRepository.deleteAllDidactics();
         await didacticsRepository.updateDidactics();
+
+        final prefs = await SharedPreferences.getInstance();
+
+        prefs.setInt(PrefsConstants.LAST_UPDATE_SCHOOL_MATERIAL,
+            DateTime.now().millisecondsSinceEpoch);
+
         yield DidacticsUpdateLoaded();
       } catch (e) {
         yield DidacticsError(e.toString());

@@ -1,20 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
-import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
-import 'package:registro_elettronico/domain/entity/genius_timetable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/component/navigator.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/ui/bloc/timetable/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
+import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 
-class TimetablePage extends StatelessWidget {
+import '../../bloc/timetable/timetable_event.dart';
+
+class TimetablePage extends StatefulWidget {
   const TimetablePage({Key key}) : super(key: key);
+
+  @override
+  _TimetablePageState createState() => _TimetablePageState();
+}
+
+class _TimetablePageState extends State<TimetablePage> {
+  PageController pageController = PageController(viewportFraction: 0.85);
+
+  @override
+  void initState() {
+    BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-    final LessonDao lessonDao = LessonDao(Injector.appInstance.getDependency());
-    lessonDao.getGeniusTimetable();
+
     return Scaffold(
       key: _drawerKey,
       appBar: CustomAppBar(
@@ -22,34 +40,141 @@ class TimetablePage extends StatelessWidget {
         title: Text(
           AppLocalizations.of(context).translate('timetable'),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.sync),
+            onPressed: () async {
+              BlocProvider.of<TimetableBloc>(context).add(GetNewTimetable());
+              BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
+            },
+          ),
+        ],
       ),
       drawer: AppDrawer(
         position: DrawerConstants.TIMETABLE,
       ),
-      body: Column(
-        children: <Widget>[
-          RaisedButton(
-            child: Text('Tiemtable'),
-            onPressed: () {
-              lessonDao.getGeniusTimetable();
+      body: DoubleBackToCloseApp(
+        snackBar: AppNavigator.instance.getLeaveSnackBar(context),
+        child: Container(
+          child: BlocBuilder<TimetableBloc, TimetableState>(
+            builder: (context, state) {
+              if (state is TimetableLoading) {
+                return _buildTimetableLoading();
+              }
+
+              if (state is TimetableError) {
+                return _buildTimetableError(state.error);
+              }
+
+              if (state is TimetableLoaded) {
+                if (state.timetableEntries.length > 0) {
+                  return _buildTimetableList(
+                      state.timetableEntries, state.subjects);
+                }
+
+                return CustomPlaceHolder(
+                  icon: Icons.access_time,
+                  text:
+                      """${AppLocalizations.of(context).translate('no_timetable')}
+${AppLocalizations.of(context).translate('no_timetable_message')}""",
+                  showUpdate: true,
+                  onTap: () {
+                    BlocProvider.of<TimetableBloc>(context).add(
+                      GetNewTimetable(),
+                    );
+                    BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
+                  },
+                );
+              }
+              return Container();
             },
           ),
-          // FutureBuilder(
-          //   future: lessonDao.getGeniusTimetable(),
-          //   initialData: [],
-          //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-          //     final List<GeniusTimetable> geniusTimetable = snapshot.data;
-          //     return ListView.builder(
-          //       shrinkWrap: true,
-          //       itemCount: geniusTimetable.length,
-          //       itemBuilder: (ctx, index) {
-          //         return Text(geniusTimetable[index].teacher);
-          //       },
-          //     );
-          //   },
-          // ),
-        ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildTimetableList(
+      List<TimetableEntry> timetable, List<Subject> subjects) {
+    return ListView.builder(
+      itemCount: 7,
+      shrinkWrap: true,
+      //scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) {
+        if (index != 0) {
+          final List<TimetableEntry> entries =
+              timetable.where((t) => t.dayOfWeek == index).toList();
+          entries.sort((a, b) => a.start.compareTo(b.start));
+          return Column(
+            children: <Widget>[
+              ListTile(
+                title: Text(
+                  DateUtils.convertSingleDayForDisplay(
+                      DateTime.utc(2000, 1, 2).add(Duration(days: index)),
+                      AppLocalizations.of(context).locale.toString()),
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: entries.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index2) {
+                  final entry = entries[index2];
+                  return Column(
+                    children: <Widget>[
+                      ListTile(
+                        leading: Text('${entry.start}H'),
+                        title: Text(
+                          subjects
+                              .where((s) => s.id == entry.subject)
+                              .single
+                              .name,
+                        ),
+                      ),
+                      Divider(),
+                    ],
+                  );
+                },
+              )
+            ],
+          );
+        }
+        return Container();
+      },
+    );
+  }
+
+  // void _navigateToCurrentDay() {
+  //   int currentDay = DateTime.now().weekday;
+  //   if (currentDay > 6) {
+  //     currentDay = 1;
+  //   }
+
+  //   pageController.animateToPage(
+  //     currentDay - 1,
+  //     duration: Duration(milliseconds: 400),
+  //     curve: Curves.ease,
+  //   );
+  // }
+
+  Widget _buildTimetableLoading() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget _buildTimetableError(String error) {
+    return CustomPlaceHolder(
+      text: error ??
+          AppLocalizations.of(context).translate('unexcepted_error_single'),
+      icon: Icons.error,
+      showUpdate: true,
+      onTap: () {
+        BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
+      },
     );
   }
 }

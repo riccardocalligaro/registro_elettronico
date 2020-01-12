@@ -17,8 +17,8 @@ class GeneralSettings extends StatefulWidget {
 }
 
 class _GeneralSettingsState extends State<GeneralSettings> {
-  int _updateInterval = 30;
   int _sliderValue = 6;
+  //int _periodAveragesHomeScreen;
   bool _ascending = false;
 
   @override
@@ -32,6 +32,11 @@ class _GeneralSettingsState extends State<GeneralSettings> {
     setState(() {
       _sliderValue =
           (sharedPrefs.getInt(PrefsConstants.OVERALL_OBJECTIVE)) ?? 6;
+
+      // _periodAveragesHomeScreen =
+      //     (sharedPrefs.getInt(PrefsConstants.PERIOD_TO_SHOW)) ??
+      //         TabsConstants.GENERALE;
+
       _ascending =
           (sharedPrefs.getBool(PrefsConstants.SORTING_ASCENDING)) ?? false;
     });
@@ -73,14 +78,31 @@ class _GeneralSettingsState extends State<GeneralSettings> {
             });
           },
         ),
-        ListTile(
-          title: Text(
-            AppLocalizations.of(context)
-                .translate('averages_to_show_in_the_home_screen'),
-          ),
-          subtitle: Text('$_sliderValue'),
-          onTap: () async {},
-        ),
+        // ListTile(
+        //   title: Text(
+        //     AppLocalizations.of(context)
+        //         .translate('averages_to_show_in_the_home_screen'),
+        //   ),
+        //   subtitle: Text(
+        //     _periodAveragesHomeScreen != TabsConstants.GENERALE
+        //         ? ""
+        //         : AppLocalizations.of(context).translate('general'),
+        //   ),
+        //   onTap: () async {
+        //     showDialog(
+        //       context: context,
+        //       builder: (context) {
+        //         return SimpleDialog(
+        //           children: <Widget>[
+        //             GeneralAveragesHomeSettings(
+        //               period: _periodAveragesHomeScreen,
+        //             )
+        //           ],
+        //         );
+        //       },
+        //     );
+        //   },
+        // ),
         ListTile(
           title: Text(
             AppLocalizations.of(context).translate('sort_averages_by'),
@@ -101,9 +123,11 @@ class _GeneralSettingsState extends State<GeneralSettings> {
                 ],
               ),
             ).then((value) async {
-              setState(() {
-                _ascending = value;
-              });
+              if (value != null) {
+                setState(() {
+                  _ascending = value;
+                });
+              }
 
               SharedPreferences sharedPreferences =
                   await SharedPreferences.getInstance();

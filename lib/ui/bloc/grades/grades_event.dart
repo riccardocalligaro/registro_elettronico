@@ -8,11 +8,13 @@ abstract class GradesEvent extends Equatable {
 }
 
 /// This is only for updateing grades in the database
-class FetchGrades extends GradesEvent {}
+class UpdateGrades extends GradesEvent {}
 
 /// This gets all the grades, in the state [grades] loaded
 /// there is a [list] of grades
-class GetGrades extends GradesEvent {}
+class GetGrades extends GradesEvent {
+  final int limit;
+  final bool ordered;
 
-///This gets both [grades] and [subjects]
-class GetGradesAndSubjects extends GradesEvent {}
+  GetGrades({this.limit, this.ordered});
+}

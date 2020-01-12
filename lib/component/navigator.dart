@@ -19,6 +19,10 @@ class AppNavigator {
     Navigator.pushReplacementNamed(context, Routes.HOME);
   }
 
+  void navToIntro(BuildContext context) {
+    Navigator.pushReplacementNamed(context, Routes.INTRO);
+  }
+
   void navToLogin(BuildContext context) {
     Navigator.pushReplacementNamed(context, Routes.LOGIN);
   }
@@ -62,18 +66,31 @@ class AppNavigator {
   Future showMessageDialog(
       BuildContext context, String title, String message) async {
     await showDialog(
-        context: context,
-        builder: (bCtx) => AlertDialog(
-              title: Text(title),
-              content: Text(message),
-              actions: <Widget>[
-                RaisedButton(onPressed: () => Navigator.of(bCtx).pop())
-              ],
-            ));
+      context: context,
+      builder: (bCtx) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('OK'),
+            onPressed: () => Navigator.of(bCtx).pop(),
+          )
+        ],
+      ),
+    );
   }
 
   void showSnackBar(BuildContext context, String content) {
     Scaffold.of(context).showSnackBar(SnackBar(content: Text(content)));
+  }
+
+  SnackBar getLeaveSnackBar(BuildContext context) {
+    return SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: Text(
+        AppLocalizations.of(context).translate('leave_snackbar'),
+      ),
+    );
   }
 
   BuildContext showAlertDialog(BuildContext context,

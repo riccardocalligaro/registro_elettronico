@@ -1,5 +1,5 @@
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
@@ -55,47 +55,51 @@ class _NotificationsSettingsDialogState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           HeaderText(
-            text: AppLocalizations.of(context).translate('choose_what_to_notify'),
+            text:
+                AppLocalizations.of(context).translate('choose_what_to_notify'),
           ),
           SwitchListTile(
             activeColor: Colors.red,
-            contentPadding: EdgeInsets.all(0.0),
+            contentPadding: const EdgeInsets.all(0.0),
             value: _gradesNotifications,
             title: Text(AppLocalizations.of(context).translate('grades')),
             onChanged: (value) {
               setState(() {
                 _gradesNotifications = value;
               });
+
               save(PrefsConstants.GRADES_NOTIFICATIONS, value);
             },
           ),
           SwitchListTile(
             activeColor: Colors.red,
-            contentPadding: EdgeInsets.all(0.0),
+            contentPadding: EdgeInsets.zero,
             value: _agendaNotifications,
             title: Text(AppLocalizations.of(context).translate('agenda')),
             onChanged: (value) {
               setState(() {
                 _agendaNotifications = value;
               });
+
               save(PrefsConstants.AGENDA_NOTIFICATIONS, value);
             },
           ),
           SwitchListTile(
             activeColor: Colors.red,
-            contentPadding: EdgeInsets.all(0.0),
+            contentPadding: EdgeInsets.zero,
             value: _lessonsNotifications,
             title: Text(AppLocalizations.of(context).translate('lessons')),
             onChanged: (value) {
               setState(() {
                 _lessonsNotifications = value;
               });
+
               save(PrefsConstants.LESSONS_NOTIFICATIONS, value);
             },
           ),
           SwitchListTile(
             activeColor: Colors.red,
-            contentPadding: EdgeInsets.all(0.0),
+            contentPadding: EdgeInsets.zero,
             value: _notesNotifications,
             title: Text(AppLocalizations.of(context).translate('notes')),
             onChanged: (value) {
@@ -107,14 +111,15 @@ class _NotificationsSettingsDialogState
           ),
           SwitchListTile(
             activeColor: Colors.red,
-            contentPadding: EdgeInsets.all(0.0),
+            contentPadding: EdgeInsets.zero,
             value: _absencesNotifications,
             title: Text(AppLocalizations.of(context).translate('absences')),
             onChanged: (value) {
               setState(() {
                 _absencesNotifications = value;
               });
-              save(PrefsConstants.ABSENCES_NOTIFICATIONS, value);
+
+              if (value) save(PrefsConstants.ABSENCES_NOTIFICATIONS, value);
             },
           ),
         ],
@@ -123,8 +128,8 @@ class _NotificationsSettingsDialogState
   }
 
   save(String key, dynamic value) async {
-    Logger logger = Logger();
-    logger.i('Changed value $key -> $value');
+    FLog.info(text: 'Changed value $key -> $value');
+
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     if (value is bool) {
       sharedPrefs.setBool(key, value);

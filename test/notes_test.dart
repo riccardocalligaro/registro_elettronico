@@ -15,7 +15,7 @@ void main() {
     );
 
     test('conversion to db entity', () {
-      final note = NoteMapper().convertNotetEntityToInsertable(
+      final note = NoteMapper.convertNotetEntityToInsertable(
           note1, RegistroConstants.DISCIPLINARY_NOTE);
       expect(note1.authorName, note.author);
       expect(RegistroConstants.DISCIPLINARY_NOTE, note.type);

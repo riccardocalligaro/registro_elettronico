@@ -9,11 +9,9 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 class AgendaRepositoryImpl implements AgendaRepository {
   SpaggiariClient spaggiariClient;
   AgendaDao agendaDao;
-  EventMapper eventMapper;
   ProfileDao profileDao;
 
-  AgendaRepositoryImpl(
-      this.spaggiariClient, this.agendaDao, this.eventMapper, this.profileDao);
+  AgendaRepositoryImpl(this.spaggiariClient, this.agendaDao, this.profileDao);
 
   @override
   Future updateAgendaBetweenDates(DateTime begin, DateTime end) async {
@@ -21,12 +19,16 @@ class AgendaRepositoryImpl implements AgendaRepository {
 
     final beginDate = DateUtils.convertDate(begin);
     final endDate = DateUtils.convertDate(end);
+    List<AgendaEvent> events = [];
 
     final agenda =
         await spaggiariClient.getAgenda(profile.studentId, beginDate, endDate);
+
+    await agendaDao.deleteAllEvents();
     agenda.events.forEach((event) {
-      agendaDao.insertEvent(eventMapper.convertEventEntityToInsertable(event));
+      events.add(EventMapper.convertEventEntityToInsertable(event));
     });
+    agendaDao.insertEvents(events);
   }
 
   @override
@@ -37,9 +39,12 @@ class AgendaRepositoryImpl implements AgendaRepository {
     final interval = DateUtils.getDateInerval();
     final agenda =
         await spaggiariClient.getAgenda(profile.studentId, now, interval.end);
+    List<AgendaEvent> events = [];
+
     agenda.events.forEach((event) {
-      agendaDao.insertEvent(eventMapper.convertEventEntityToInsertable(event));
+      events.add(EventMapper.convertEventEntityToInsertable(event));
     });
+    agendaDao.insertEvents(events);
   }
 
   @override
@@ -49,9 +54,11 @@ class AgendaRepositoryImpl implements AgendaRepository {
     final interval = DateUtils.getDateInerval();
     final agenda = await spaggiariClient.getAgenda(
         profile.studentId, interval.begin, interval.end);
+    List<AgendaEvent> events = [];
     agenda.events.forEach((event) {
-      agendaDao.insertEvent(eventMapper.convertEventEntityToInsertable(event));
+      events.add(EventMapper.convertEventEntityToInsertable(event));
     });
+    agendaDao.insertEvents(events);
   }
 
   @override
@@ -60,18 +67,17 @@ class AgendaRepositoryImpl implements AgendaRepository {
   }
 
   @override
-  Stream<List<AgendaEvent>> watchAllEvents() {
-    return agendaDao.watchAllEvents();
-  }
-
-  @override
-  Stream<List<AgendaEvent>> watchLastEvents(
-      DateTime date, int numbersOfEvents) {
-    return agendaDao.watchLastEvents(date, numbersOfEvents);
-  }
-
-  @override
   Future deleteAllEvents() {
     return agendaDao.deleteAllEvents();
+  }
+
+  @override
+  Future<List<AgendaEvent>> getAllEvents() {
+    return agendaDao.getAllEvents();
+  }
+
+  @override
+  Future<List<AgendaEvent>> getLastEvents(DateTime date, int numbersOfEvents) {
+    return agendaDao.getLastEvents(date, numbersOfEvents);
   }
 }

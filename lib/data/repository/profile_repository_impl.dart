@@ -25,8 +25,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future insertProfile({Profile profile}) {
     final convertedProfile =
         profileMapper.mapProfileEntityToProfileInsertable(profile);
-    profileDao.insertProfile(convertedProfile);
-    // TODO: handle error if can't add user to dabase
+    return profileDao.insertProfile(convertedProfile);
   }
 
   @override
@@ -46,7 +45,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future updateProfile(Profile profile) {
-    profileDao.updateProfile(
+    return profileDao.updateProfile(
         profileMapper.mapProfileEntityToProfileInsertable(profile));
   }
 }

@@ -12,17 +12,19 @@ class AgendaDao extends DatabaseAccessor<AppDatabase> with _$AgendaDaoMixin {
   Future insertEvent(AgendaEvent event) =>
       into(agendaEvents).insert(event, orReplace: true);
 
-  Stream<List<AgendaEvent>> watchAllEvents() => select(agendaEvents).watch();
+  Future insertEvents(List<AgendaEvent> events) =>
+      into(agendaEvents).insertAll(events, orReplace: true);
 
-  Stream<List<AgendaEvent>> watchLastEvents(
-      DateTime date, int numbersOfEvents) {
+  Future<List<AgendaEvent>> getAllEvents() => select(agendaEvents).get();
+
+  Future<List<AgendaEvent>> getLastEvents(DateTime date, int numbersOfEvents) {
     return (select(agendaEvents)
           ..where((event) => event.end.isBiggerOrEqualValue(date))
           ..limit(numbersOfEvents))
-        .watch();
+        .get();
   }
 
-  Future deleteAllEvents() => (delete(agendaEvents)
-        ..where((entry) => entry.evtId.isBiggerOrEqualValue(-1)))
-      .go();
+  Future deleteAllEvents() => delete(agendaEvents).go();
+
+  Future deleteEvent(AgendaEvent event) => delete(agendaEvents).delete(event);
 }

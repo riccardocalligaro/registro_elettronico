@@ -1512,6 +1512,7 @@ class Grade extends DataClass implements Insertable<Grade> {
   final int weightFactor;
   final int skillId;
   final int gradeMasterId;
+  final bool localllyCancelled;
   Grade(
       {@required this.subjectId,
       @required this.subjectDesc,
@@ -1530,7 +1531,8 @@ class Grade extends DataClass implements Insertable<Grade> {
       @required this.componentDesc,
       @required this.weightFactor,
       @required this.skillId,
-      @required this.gradeMasterId});
+      @required this.gradeMasterId,
+      @required this.localllyCancelled});
   factory Grade.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -1575,6 +1577,8 @@ class Grade extends DataClass implements Insertable<Grade> {
           intType.mapFromDatabaseResponse(data['${effectivePrefix}skill_id']),
       gradeMasterId: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}grade_master_id']),
+      localllyCancelled: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}locallly_cancelled']),
     );
   }
   factory Grade.fromJson(Map<String, dynamic> json,
@@ -1598,6 +1602,7 @@ class Grade extends DataClass implements Insertable<Grade> {
       weightFactor: serializer.fromJson<int>(json['weightFactor']),
       skillId: serializer.fromJson<int>(json['skillId']),
       gradeMasterId: serializer.fromJson<int>(json['gradeMasterId']),
+      localllyCancelled: serializer.fromJson<bool>(json['localllyCancelled']),
     );
   }
   @override
@@ -1622,6 +1627,7 @@ class Grade extends DataClass implements Insertable<Grade> {
       'weightFactor': serializer.toJson<int>(weightFactor),
       'skillId': serializer.toJson<int>(skillId),
       'gradeMasterId': serializer.toJson<int>(gradeMasterId),
+      'localllyCancelled': serializer.toJson<bool>(localllyCancelled),
     };
   }
 
@@ -1681,6 +1687,9 @@ class Grade extends DataClass implements Insertable<Grade> {
       gradeMasterId: gradeMasterId == null && nullToAbsent
           ? const Value.absent()
           : Value(gradeMasterId),
+      localllyCancelled: localllyCancelled == null && nullToAbsent
+          ? const Value.absent()
+          : Value(localllyCancelled),
     );
   }
 
@@ -1702,7 +1711,8 @@ class Grade extends DataClass implements Insertable<Grade> {
           String componentDesc,
           int weightFactor,
           int skillId,
-          int gradeMasterId}) =>
+          int gradeMasterId,
+          bool localllyCancelled}) =>
       Grade(
         subjectId: subjectId ?? this.subjectId,
         subjectDesc: subjectDesc ?? this.subjectDesc,
@@ -1722,6 +1732,7 @@ class Grade extends DataClass implements Insertable<Grade> {
         weightFactor: weightFactor ?? this.weightFactor,
         skillId: skillId ?? this.skillId,
         gradeMasterId: gradeMasterId ?? this.gradeMasterId,
+        localllyCancelled: localllyCancelled ?? this.localllyCancelled,
       );
   @override
   String toString() {
@@ -1743,7 +1754,8 @@ class Grade extends DataClass implements Insertable<Grade> {
           ..write('componentDesc: $componentDesc, ')
           ..write('weightFactor: $weightFactor, ')
           ..write('skillId: $skillId, ')
-          ..write('gradeMasterId: $gradeMasterId')
+          ..write('gradeMasterId: $gradeMasterId, ')
+          ..write('localllyCancelled: $localllyCancelled')
           ..write(')'))
         .toString();
   }
@@ -1786,8 +1798,11 @@ class Grade extends DataClass implements Insertable<Grade> {
                                                                   $mrjc(
                                                                       skillId
                                                                           .hashCode,
-                                                                      gradeMasterId
-                                                                          .hashCode))))))))))))))))));
+                                                                      $mrjc(
+                                                                          gradeMasterId
+                                                                              .hashCode,
+                                                                          localllyCancelled
+                                                                              .hashCode)))))))))))))))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -1809,7 +1824,8 @@ class Grade extends DataClass implements Insertable<Grade> {
           other.componentDesc == this.componentDesc &&
           other.weightFactor == this.weightFactor &&
           other.skillId == this.skillId &&
-          other.gradeMasterId == this.gradeMasterId);
+          other.gradeMasterId == this.gradeMasterId &&
+          other.localllyCancelled == this.localllyCancelled);
 }
 
 class GradesCompanion extends UpdateCompanion<Grade> {
@@ -1831,6 +1847,7 @@ class GradesCompanion extends UpdateCompanion<Grade> {
   final Value<int> weightFactor;
   final Value<int> skillId;
   final Value<int> gradeMasterId;
+  final Value<bool> localllyCancelled;
   const GradesCompanion({
     this.subjectId = const Value.absent(),
     this.subjectDesc = const Value.absent(),
@@ -1850,6 +1867,7 @@ class GradesCompanion extends UpdateCompanion<Grade> {
     this.weightFactor = const Value.absent(),
     this.skillId = const Value.absent(),
     this.gradeMasterId = const Value.absent(),
+    this.localllyCancelled = const Value.absent(),
   });
   GradesCompanion.insert({
     @required int subjectId,
@@ -1870,6 +1888,7 @@ class GradesCompanion extends UpdateCompanion<Grade> {
     @required int weightFactor,
     @required int skillId,
     @required int gradeMasterId,
+    @required bool localllyCancelled,
   })  : subjectId = Value(subjectId),
         subjectDesc = Value(subjectDesc),
         evtId = Value(evtId),
@@ -1887,7 +1906,8 @@ class GradesCompanion extends UpdateCompanion<Grade> {
         componentDesc = Value(componentDesc),
         weightFactor = Value(weightFactor),
         skillId = Value(skillId),
-        gradeMasterId = Value(gradeMasterId);
+        gradeMasterId = Value(gradeMasterId),
+        localllyCancelled = Value(localllyCancelled);
   GradesCompanion copyWith(
       {Value<int> subjectId,
       Value<String> subjectDesc,
@@ -1906,7 +1926,8 @@ class GradesCompanion extends UpdateCompanion<Grade> {
       Value<String> componentDesc,
       Value<int> weightFactor,
       Value<int> skillId,
-      Value<int> gradeMasterId}) {
+      Value<int> gradeMasterId,
+      Value<bool> localllyCancelled}) {
     return GradesCompanion(
       subjectId: subjectId ?? this.subjectId,
       subjectDesc: subjectDesc ?? this.subjectDesc,
@@ -1926,6 +1947,7 @@ class GradesCompanion extends UpdateCompanion<Grade> {
       weightFactor: weightFactor ?? this.weightFactor,
       skillId: skillId ?? this.skillId,
       gradeMasterId: gradeMasterId ?? this.gradeMasterId,
+      localllyCancelled: localllyCancelled ?? this.localllyCancelled,
     );
   }
 }
@@ -2166,6 +2188,20 @@ class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
     );
   }
 
+  final VerificationMeta _localllyCancelledMeta =
+      const VerificationMeta('localllyCancelled');
+  GeneratedBoolColumn _localllyCancelled;
+  @override
+  GeneratedBoolColumn get localllyCancelled =>
+      _localllyCancelled ??= _constructLocalllyCancelled();
+  GeneratedBoolColumn _constructLocalllyCancelled() {
+    return GeneratedBoolColumn(
+      'locallly_cancelled',
+      $tableName,
+      false,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         subjectId,
@@ -2185,7 +2221,8 @@ class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
         componentDesc,
         weightFactor,
         skillId,
-        gradeMasterId
+        gradeMasterId,
+        localllyCancelled
       ];
   @override
   $GradesTable get asDslTable => this;
@@ -2319,6 +2356,14 @@ class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
     } else if (gradeMasterId.isRequired && isInserting) {
       context.missing(_gradeMasterIdMeta);
     }
+    if (d.localllyCancelled.present) {
+      context.handle(
+          _localllyCancelledMeta,
+          localllyCancelled.isAcceptableValue(
+              d.localllyCancelled.value, _localllyCancelledMeta));
+    } else if (localllyCancelled.isRequired && isInserting) {
+      context.missing(_localllyCancelledMeta);
+    }
     return context;
   }
 
@@ -2388,6 +2433,10 @@ class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
     }
     if (d.gradeMasterId.present) {
       map['grade_master_id'] = Variable<int, IntType>(d.gradeMasterId.value);
+    }
+    if (d.localllyCancelled.present) {
+      map['locallly_cancelled'] =
+          Variable<bool, BoolType>(d.localllyCancelled.value);
     }
     return map;
   }
@@ -3376,6 +3425,7 @@ class Period extends DataClass implements Insertable<Period> {
   final DateTime start;
   final DateTime end;
   final String miurDivisionCode;
+  final int periodIndex;
   Period(
       {@required this.code,
       @required this.position,
@@ -3383,7 +3433,8 @@ class Period extends DataClass implements Insertable<Period> {
       @required this.isFinal,
       @required this.start,
       @required this.end,
-      @required this.miurDivisionCode});
+      @required this.miurDivisionCode,
+      @required this.periodIndex});
   factory Period.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -3404,6 +3455,8 @@ class Period extends DataClass implements Insertable<Period> {
       end: dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}end']),
       miurDivisionCode: stringType.mapFromDatabaseResponse(
           data['${effectivePrefix}miur_division_code']),
+      periodIndex: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}period_index']),
     );
   }
   factory Period.fromJson(Map<String, dynamic> json,
@@ -3416,6 +3469,7 @@ class Period extends DataClass implements Insertable<Period> {
       start: serializer.fromJson<DateTime>(json['start']),
       end: serializer.fromJson<DateTime>(json['end']),
       miurDivisionCode: serializer.fromJson<String>(json['miurDivisionCode']),
+      periodIndex: serializer.fromJson<int>(json['periodIndex']),
     );
   }
   @override
@@ -3429,6 +3483,7 @@ class Period extends DataClass implements Insertable<Period> {
       'start': serializer.toJson<DateTime>(start),
       'end': serializer.toJson<DateTime>(end),
       'miurDivisionCode': serializer.toJson<String>(miurDivisionCode),
+      'periodIndex': serializer.toJson<int>(periodIndex),
     };
   }
 
@@ -3451,6 +3506,9 @@ class Period extends DataClass implements Insertable<Period> {
       miurDivisionCode: miurDivisionCode == null && nullToAbsent
           ? const Value.absent()
           : Value(miurDivisionCode),
+      periodIndex: periodIndex == null && nullToAbsent
+          ? const Value.absent()
+          : Value(periodIndex),
     );
   }
 
@@ -3461,7 +3519,8 @@ class Period extends DataClass implements Insertable<Period> {
           bool isFinal,
           DateTime start,
           DateTime end,
-          String miurDivisionCode}) =>
+          String miurDivisionCode,
+          int periodIndex}) =>
       Period(
         code: code ?? this.code,
         position: position ?? this.position,
@@ -3470,6 +3529,7 @@ class Period extends DataClass implements Insertable<Period> {
         start: start ?? this.start,
         end: end ?? this.end,
         miurDivisionCode: miurDivisionCode ?? this.miurDivisionCode,
+        periodIndex: periodIndex ?? this.periodIndex,
       );
   @override
   String toString() {
@@ -3480,7 +3540,8 @@ class Period extends DataClass implements Insertable<Period> {
           ..write('isFinal: $isFinal, ')
           ..write('start: $start, ')
           ..write('end: $end, ')
-          ..write('miurDivisionCode: $miurDivisionCode')
+          ..write('miurDivisionCode: $miurDivisionCode, ')
+          ..write('periodIndex: $periodIndex')
           ..write(')'))
         .toString();
   }
@@ -3494,8 +3555,12 @@ class Period extends DataClass implements Insertable<Period> {
               description.hashCode,
               $mrjc(
                   isFinal.hashCode,
-                  $mrjc(start.hashCode,
-                      $mrjc(end.hashCode, miurDivisionCode.hashCode)))))));
+                  $mrjc(
+                      start.hashCode,
+                      $mrjc(
+                          end.hashCode,
+                          $mrjc(miurDivisionCode.hashCode,
+                              periodIndex.hashCode))))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -3506,7 +3571,8 @@ class Period extends DataClass implements Insertable<Period> {
           other.isFinal == this.isFinal &&
           other.start == this.start &&
           other.end == this.end &&
-          other.miurDivisionCode == this.miurDivisionCode);
+          other.miurDivisionCode == this.miurDivisionCode &&
+          other.periodIndex == this.periodIndex);
 }
 
 class PeriodsCompanion extends UpdateCompanion<Period> {
@@ -3517,6 +3583,7 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
   final Value<DateTime> start;
   final Value<DateTime> end;
   final Value<String> miurDivisionCode;
+  final Value<int> periodIndex;
   const PeriodsCompanion({
     this.code = const Value.absent(),
     this.position = const Value.absent(),
@@ -3525,6 +3592,7 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
     this.start = const Value.absent(),
     this.end = const Value.absent(),
     this.miurDivisionCode = const Value.absent(),
+    this.periodIndex = const Value.absent(),
   });
   PeriodsCompanion.insert({
     @required String code,
@@ -3534,13 +3602,15 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
     @required DateTime start,
     @required DateTime end,
     @required String miurDivisionCode,
+    @required int periodIndex,
   })  : code = Value(code),
         position = Value(position),
         description = Value(description),
         isFinal = Value(isFinal),
         start = Value(start),
         end = Value(end),
-        miurDivisionCode = Value(miurDivisionCode);
+        miurDivisionCode = Value(miurDivisionCode),
+        periodIndex = Value(periodIndex);
   PeriodsCompanion copyWith(
       {Value<String> code,
       Value<int> position,
@@ -3548,7 +3618,8 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
       Value<bool> isFinal,
       Value<DateTime> start,
       Value<DateTime> end,
-      Value<String> miurDivisionCode}) {
+      Value<String> miurDivisionCode,
+      Value<int> periodIndex}) {
     return PeriodsCompanion(
       code: code ?? this.code,
       position: position ?? this.position,
@@ -3557,6 +3628,7 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
       start: start ?? this.start,
       end: end ?? this.end,
       miurDivisionCode: miurDivisionCode ?? this.miurDivisionCode,
+      periodIndex: periodIndex ?? this.periodIndex,
     );
   }
 }
@@ -3653,9 +3725,31 @@ class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
     );
   }
 
+  final VerificationMeta _periodIndexMeta =
+      const VerificationMeta('periodIndex');
+  GeneratedIntColumn _periodIndex;
   @override
-  List<GeneratedColumn> get $columns =>
-      [code, position, description, isFinal, start, end, miurDivisionCode];
+  GeneratedIntColumn get periodIndex =>
+      _periodIndex ??= _constructPeriodIndex();
+  GeneratedIntColumn _constructPeriodIndex() {
+    return GeneratedIntColumn(
+      'period_index',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        code,
+        position,
+        description,
+        isFinal,
+        start,
+        end,
+        miurDivisionCode,
+        periodIndex
+      ];
   @override
   $PeriodsTable get asDslTable => this;
   @override
@@ -3709,6 +3803,12 @@ class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
     } else if (miurDivisionCode.isRequired && isInserting) {
       context.missing(_miurDivisionCodeMeta);
     }
+    if (d.periodIndex.present) {
+      context.handle(_periodIndexMeta,
+          periodIndex.isAcceptableValue(d.periodIndex.value, _periodIndexMeta));
+    } else if (periodIndex.isRequired && isInserting) {
+      context.missing(_periodIndexMeta);
+    }
     return context;
   }
 
@@ -3744,6 +3844,9 @@ class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
     if (d.miurDivisionCode.present) {
       map['miur_division_code'] =
           Variable<String, StringType>(d.miurDivisionCode.value);
+    }
+    if (d.periodIndex.present) {
+      map['period_index'] = Variable<int, IntType>(d.periodIndex.value);
     }
     return map;
   }
@@ -5174,7 +5277,7 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Note map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -5211,6 +5314,212 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
   @override
   $NotesTable createAlias(String alias) {
     return $NotesTable(_db, alias);
+  }
+}
+
+class NotesAttachment extends DataClass implements Insertable<NotesAttachment> {
+  final int id;
+  final String type;
+  final String description;
+  NotesAttachment(
+      {@required this.id, @required this.type, @required this.description});
+  factory NotesAttachment.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return NotesAttachment(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
+      description: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
+    );
+  }
+  factory NotesAttachment.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return NotesAttachment(
+      id: serializer.fromJson<int>(json['id']),
+      type: serializer.fromJson<String>(json['type']),
+      description: serializer.fromJson<String>(json['description']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'id': serializer.toJson<int>(id),
+      'type': serializer.toJson<String>(type),
+      'description': serializer.toJson<String>(description),
+    };
+  }
+
+  @override
+  NotesAttachmentsCompanion createCompanion(bool nullToAbsent) {
+    return NotesAttachmentsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      type: type == null && nullToAbsent ? const Value.absent() : Value(type),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+    );
+  }
+
+  NotesAttachment copyWith({int id, String type, String description}) =>
+      NotesAttachment(
+        id: id ?? this.id,
+        type: type ?? this.type,
+        description: description ?? this.description,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NotesAttachment(')
+          ..write('id: $id, ')
+          ..write('type: $type, ')
+          ..write('description: $description')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(type.hashCode, description.hashCode)));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is NotesAttachment &&
+          other.id == this.id &&
+          other.type == this.type &&
+          other.description == this.description);
+}
+
+class NotesAttachmentsCompanion extends UpdateCompanion<NotesAttachment> {
+  final Value<int> id;
+  final Value<String> type;
+  final Value<String> description;
+  const NotesAttachmentsCompanion({
+    this.id = const Value.absent(),
+    this.type = const Value.absent(),
+    this.description = const Value.absent(),
+  });
+  NotesAttachmentsCompanion.insert({
+    @required int id,
+    @required String type,
+    @required String description,
+  })  : id = Value(id),
+        type = Value(type),
+        description = Value(description);
+  NotesAttachmentsCompanion copyWith(
+      {Value<int> id, Value<String> type, Value<String> description}) {
+    return NotesAttachmentsCompanion(
+      id: id ?? this.id,
+      type: type ?? this.type,
+      description: description ?? this.description,
+    );
+  }
+}
+
+class $NotesAttachmentsTable extends NotesAttachments
+    with TableInfo<$NotesAttachmentsTable, NotesAttachment> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $NotesAttachmentsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn(
+      'id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  GeneratedTextColumn _type;
+  @override
+  GeneratedTextColumn get type => _type ??= _constructType();
+  GeneratedTextColumn _constructType() {
+    return GeneratedTextColumn(
+      'type',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  GeneratedTextColumn _description;
+  @override
+  GeneratedTextColumn get description =>
+      _description ??= _constructDescription();
+  GeneratedTextColumn _constructDescription() {
+    return GeneratedTextColumn(
+      'description',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, type, description];
+  @override
+  $NotesAttachmentsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'notes_attachments';
+  @override
+  final String actualTableName = 'notes_attachments';
+  @override
+  VerificationContext validateIntegrity(NotesAttachmentsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.type.present) {
+      context.handle(
+          _typeMeta, type.isAcceptableValue(d.type.value, _typeMeta));
+    } else if (type.isRequired && isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (d.description.present) {
+      context.handle(_descriptionMeta,
+          description.isAcceptableValue(d.description.value, _descriptionMeta));
+    } else if (description.isRequired && isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  NotesAttachment map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return NotesAttachment.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(NotesAttachmentsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.type.present) {
+      map['type'] = Variable<String, StringType>(d.type.value);
+    }
+    if (d.description.present) {
+      map['description'] = Variable<String, StringType>(d.description.value);
+    }
+    return map;
+  }
+
+  @override
+  $NotesAttachmentsTable createAlias(String alias) {
+    return $NotesAttachmentsTable(_db, alias);
   }
 }
 
@@ -6044,6 +6353,213 @@ class $DidacticsContentsTable extends DidacticsContents
   }
 }
 
+class DidacticsDownloadedFile extends DataClass
+    implements Insertable<DidacticsDownloadedFile> {
+  final String name;
+  final String path;
+  final int contentId;
+  DidacticsDownloadedFile(
+      {@required this.name, @required this.path, @required this.contentId});
+  factory DidacticsDownloadedFile.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    final intType = db.typeSystem.forDartType<int>();
+    return DidacticsDownloadedFile(
+      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      path: stringType.mapFromDatabaseResponse(data['${effectivePrefix}path']),
+      contentId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}content_id']),
+    );
+  }
+  factory DidacticsDownloadedFile.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return DidacticsDownloadedFile(
+      name: serializer.fromJson<String>(json['name']),
+      path: serializer.fromJson<String>(json['path']),
+      contentId: serializer.fromJson<int>(json['contentId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'name': serializer.toJson<String>(name),
+      'path': serializer.toJson<String>(path),
+      'contentId': serializer.toJson<int>(contentId),
+    };
+  }
+
+  @override
+  DidacticsDownloadedFilesCompanion createCompanion(bool nullToAbsent) {
+    return DidacticsDownloadedFilesCompanion(
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      path: path == null && nullToAbsent ? const Value.absent() : Value(path),
+      contentId: contentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentId),
+    );
+  }
+
+  DidacticsDownloadedFile copyWith({String name, String path, int contentId}) =>
+      DidacticsDownloadedFile(
+        name: name ?? this.name,
+        path: path ?? this.path,
+        contentId: contentId ?? this.contentId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DidacticsDownloadedFile(')
+          ..write('name: $name, ')
+          ..write('path: $path, ')
+          ..write('contentId: $contentId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(name.hashCode, $mrjc(path.hashCode, contentId.hashCode)));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is DidacticsDownloadedFile &&
+          other.name == this.name &&
+          other.path == this.path &&
+          other.contentId == this.contentId);
+}
+
+class DidacticsDownloadedFilesCompanion
+    extends UpdateCompanion<DidacticsDownloadedFile> {
+  final Value<String> name;
+  final Value<String> path;
+  final Value<int> contentId;
+  const DidacticsDownloadedFilesCompanion({
+    this.name = const Value.absent(),
+    this.path = const Value.absent(),
+    this.contentId = const Value.absent(),
+  });
+  DidacticsDownloadedFilesCompanion.insert({
+    @required String name,
+    @required String path,
+    @required int contentId,
+  })  : name = Value(name),
+        path = Value(path),
+        contentId = Value(contentId);
+  DidacticsDownloadedFilesCompanion copyWith(
+      {Value<String> name, Value<String> path, Value<int> contentId}) {
+    return DidacticsDownloadedFilesCompanion(
+      name: name ?? this.name,
+      path: path ?? this.path,
+      contentId: contentId ?? this.contentId,
+    );
+  }
+}
+
+class $DidacticsDownloadedFilesTable extends DidacticsDownloadedFiles
+    with TableInfo<$DidacticsDownloadedFilesTable, DidacticsDownloadedFile> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DidacticsDownloadedFilesTable(this._db, [this._alias]);
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  GeneratedTextColumn _name;
+  @override
+  GeneratedTextColumn get name => _name ??= _constructName();
+  GeneratedTextColumn _constructName() {
+    return GeneratedTextColumn(
+      'name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _pathMeta = const VerificationMeta('path');
+  GeneratedTextColumn _path;
+  @override
+  GeneratedTextColumn get path => _path ??= _constructPath();
+  GeneratedTextColumn _constructPath() {
+    return GeneratedTextColumn(
+      'path',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _contentIdMeta = const VerificationMeta('contentId');
+  GeneratedIntColumn _contentId;
+  @override
+  GeneratedIntColumn get contentId => _contentId ??= _constructContentId();
+  GeneratedIntColumn _constructContentId() {
+    return GeneratedIntColumn(
+      'content_id',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [name, path, contentId];
+  @override
+  $DidacticsDownloadedFilesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'didactics_downloaded_files';
+  @override
+  final String actualTableName = 'didactics_downloaded_files';
+  @override
+  VerificationContext validateIntegrity(DidacticsDownloadedFilesCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.name.present) {
+      context.handle(
+          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
+    } else if (name.isRequired && isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (d.path.present) {
+      context.handle(
+          _pathMeta, path.isAcceptableValue(d.path.value, _pathMeta));
+    } else if (path.isRequired && isInserting) {
+      context.missing(_pathMeta);
+    }
+    if (d.contentId.present) {
+      context.handle(_contentIdMeta,
+          contentId.isAcceptableValue(d.contentId.value, _contentIdMeta));
+    } else if (contentId.isRequired && isInserting) {
+      context.missing(_contentIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {contentId};
+  @override
+  DidacticsDownloadedFile map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DidacticsDownloadedFile.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DidacticsDownloadedFilesCompanion d) {
+    final map = <String, Variable>{};
+    if (d.name.present) {
+      map['name'] = Variable<String, StringType>(d.name.value);
+    }
+    if (d.path.present) {
+      map['path'] = Variable<String, StringType>(d.path.value);
+    }
+    if (d.contentId.present) {
+      map['content_id'] = Variable<int, IntType>(d.contentId.value);
+    }
+    return map;
+  }
+
+  @override
+  $DidacticsDownloadedFilesTable createAlias(String alias) {
+    return $DidacticsDownloadedFilesTable(_db, alias);
+  }
+}
+
 class LocalGrade extends DataClass implements Insertable<LocalGrade> {
   final int id;
   final int subjectId;
@@ -6483,6 +6999,287 @@ class $LocalGradesTable extends LocalGrades
   }
 }
 
+class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
+  final int id;
+  final int start;
+  final int end;
+  final int dayOfWeek;
+  final int subject;
+  TimetableEntry(
+      {this.id,
+      @required this.start,
+      @required this.end,
+      @required this.dayOfWeek,
+      @required this.subject});
+  factory TimetableEntry.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    return TimetableEntry(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      start: intType.mapFromDatabaseResponse(data['${effectivePrefix}start']),
+      end: intType.mapFromDatabaseResponse(data['${effectivePrefix}end']),
+      dayOfWeek: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}day_of_week']),
+      subject:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}subject']),
+    );
+  }
+  factory TimetableEntry.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return TimetableEntry(
+      id: serializer.fromJson<int>(json['id']),
+      start: serializer.fromJson<int>(json['start']),
+      end: serializer.fromJson<int>(json['end']),
+      dayOfWeek: serializer.fromJson<int>(json['dayOfWeek']),
+      subject: serializer.fromJson<int>(json['subject']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'id': serializer.toJson<int>(id),
+      'start': serializer.toJson<int>(start),
+      'end': serializer.toJson<int>(end),
+      'dayOfWeek': serializer.toJson<int>(dayOfWeek),
+      'subject': serializer.toJson<int>(subject),
+    };
+  }
+
+  @override
+  TimetableEntriesCompanion createCompanion(bool nullToAbsent) {
+    return TimetableEntriesCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      start:
+          start == null && nullToAbsent ? const Value.absent() : Value(start),
+      end: end == null && nullToAbsent ? const Value.absent() : Value(end),
+      dayOfWeek: dayOfWeek == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dayOfWeek),
+      subject: subject == null && nullToAbsent
+          ? const Value.absent()
+          : Value(subject),
+    );
+  }
+
+  TimetableEntry copyWith(
+          {int id, int start, int end, int dayOfWeek, int subject}) =>
+      TimetableEntry(
+        id: id ?? this.id,
+        start: start ?? this.start,
+        end: end ?? this.end,
+        dayOfWeek: dayOfWeek ?? this.dayOfWeek,
+        subject: subject ?? this.subject,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TimetableEntry(')
+          ..write('id: $id, ')
+          ..write('start: $start, ')
+          ..write('end: $end, ')
+          ..write('dayOfWeek: $dayOfWeek, ')
+          ..write('subject: $subject')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(start.hashCode,
+          $mrjc(end.hashCode, $mrjc(dayOfWeek.hashCode, subject.hashCode)))));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is TimetableEntry &&
+          other.id == this.id &&
+          other.start == this.start &&
+          other.end == this.end &&
+          other.dayOfWeek == this.dayOfWeek &&
+          other.subject == this.subject);
+}
+
+class TimetableEntriesCompanion extends UpdateCompanion<TimetableEntry> {
+  final Value<int> id;
+  final Value<int> start;
+  final Value<int> end;
+  final Value<int> dayOfWeek;
+  final Value<int> subject;
+  const TimetableEntriesCompanion({
+    this.id = const Value.absent(),
+    this.start = const Value.absent(),
+    this.end = const Value.absent(),
+    this.dayOfWeek = const Value.absent(),
+    this.subject = const Value.absent(),
+  });
+  TimetableEntriesCompanion.insert({
+    this.id = const Value.absent(),
+    @required int start,
+    @required int end,
+    @required int dayOfWeek,
+    @required int subject,
+  })  : start = Value(start),
+        end = Value(end),
+        dayOfWeek = Value(dayOfWeek),
+        subject = Value(subject);
+  TimetableEntriesCompanion copyWith(
+      {Value<int> id,
+      Value<int> start,
+      Value<int> end,
+      Value<int> dayOfWeek,
+      Value<int> subject}) {
+    return TimetableEntriesCompanion(
+      id: id ?? this.id,
+      start: start ?? this.start,
+      end: end ?? this.end,
+      dayOfWeek: dayOfWeek ?? this.dayOfWeek,
+      subject: subject ?? this.subject,
+    );
+  }
+}
+
+class $TimetableEntriesTable extends TimetableEntries
+    with TableInfo<$TimetableEntriesTable, TimetableEntry> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $TimetableEntriesTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, true,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _startMeta = const VerificationMeta('start');
+  GeneratedIntColumn _start;
+  @override
+  GeneratedIntColumn get start => _start ??= _constructStart();
+  GeneratedIntColumn _constructStart() {
+    return GeneratedIntColumn(
+      'start',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _endMeta = const VerificationMeta('end');
+  GeneratedIntColumn _end;
+  @override
+  GeneratedIntColumn get end => _end ??= _constructEnd();
+  GeneratedIntColumn _constructEnd() {
+    return GeneratedIntColumn(
+      'end',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _dayOfWeekMeta = const VerificationMeta('dayOfWeek');
+  GeneratedIntColumn _dayOfWeek;
+  @override
+  GeneratedIntColumn get dayOfWeek => _dayOfWeek ??= _constructDayOfWeek();
+  GeneratedIntColumn _constructDayOfWeek() {
+    return GeneratedIntColumn(
+      'day_of_week',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _subjectMeta = const VerificationMeta('subject');
+  GeneratedIntColumn _subject;
+  @override
+  GeneratedIntColumn get subject => _subject ??= _constructSubject();
+  GeneratedIntColumn _constructSubject() {
+    return GeneratedIntColumn(
+      'subject',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, start, end, dayOfWeek, subject];
+  @override
+  $TimetableEntriesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'timetable_entries';
+  @override
+  final String actualTableName = 'timetable_entries';
+  @override
+  VerificationContext validateIntegrity(TimetableEntriesCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
+    if (d.start.present) {
+      context.handle(
+          _startMeta, start.isAcceptableValue(d.start.value, _startMeta));
+    } else if (start.isRequired && isInserting) {
+      context.missing(_startMeta);
+    }
+    if (d.end.present) {
+      context.handle(_endMeta, end.isAcceptableValue(d.end.value, _endMeta));
+    } else if (end.isRequired && isInserting) {
+      context.missing(_endMeta);
+    }
+    if (d.dayOfWeek.present) {
+      context.handle(_dayOfWeekMeta,
+          dayOfWeek.isAcceptableValue(d.dayOfWeek.value, _dayOfWeekMeta));
+    } else if (dayOfWeek.isRequired && isInserting) {
+      context.missing(_dayOfWeekMeta);
+    }
+    if (d.subject.present) {
+      context.handle(_subjectMeta,
+          subject.isAcceptableValue(d.subject.value, _subjectMeta));
+    } else if (subject.isRequired && isInserting) {
+      context.missing(_subjectMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  TimetableEntry map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return TimetableEntry.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(TimetableEntriesCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.start.present) {
+      map['start'] = Variable<int, IntType>(d.start.value);
+    }
+    if (d.end.present) {
+      map['end'] = Variable<int, IntType>(d.end.value);
+    }
+    if (d.dayOfWeek.present) {
+      map['day_of_week'] = Variable<int, IntType>(d.dayOfWeek.value);
+    }
+    if (d.subject.present) {
+      map['subject'] = Variable<int, IntType>(d.subject.value);
+    }
+    return map;
+  }
+
+  @override
+  $TimetableEntriesTable createAlias(String alias) {
+    return $TimetableEntriesTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProfilesTable _profiles;
@@ -6508,6 +7305,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AttachmentsTable get attachments => _attachments ??= $AttachmentsTable(this);
   $NotesTable _notes;
   $NotesTable get notes => _notes ??= $NotesTable(this);
+  $NotesAttachmentsTable _notesAttachments;
+  $NotesAttachmentsTable get notesAttachments =>
+      _notesAttachments ??= $NotesAttachmentsTable(this);
   $DidacticsTeachersTable _didacticsTeachers;
   $DidacticsTeachersTable get didacticsTeachers =>
       _didacticsTeachers ??= $DidacticsTeachersTable(this);
@@ -6517,8 +7317,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $DidacticsContentsTable _didacticsContents;
   $DidacticsContentsTable get didacticsContents =>
       _didacticsContents ??= $DidacticsContentsTable(this);
+  $DidacticsDownloadedFilesTable _didacticsDownloadedFiles;
+  $DidacticsDownloadedFilesTable get didacticsDownloadedFiles =>
+      _didacticsDownloadedFiles ??= $DidacticsDownloadedFilesTable(this);
   $LocalGradesTable _localGrades;
   $LocalGradesTable get localGrades => _localGrades ??= $LocalGradesTable(this);
+  $TimetableEntriesTable _timetableEntries;
+  $TimetableEntriesTable get timetableEntries =>
+      _timetableEntries ??= $TimetableEntriesTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   LessonDao _lessonDao;
@@ -6543,6 +7349,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   DidacticsDao _didacticsDao;
   DidacticsDao get didacticsDao =>
       _didacticsDao ??= DidacticsDao(this as AppDatabase);
+  TimetableDao _timetableDao;
+  TimetableDao get timetableDao =>
+      _timetableDao ??= TimetableDao(this as AppDatabase);
   @override
   List<TableInfo> get allTables => [
         profiles,
@@ -6556,9 +7365,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         notices,
         attachments,
         notes,
+        notesAttachments,
         didacticsTeachers,
         didacticsFolders,
         didacticsContents,
-        localGrades
+        didacticsDownloadedFiles,
+        localGrades,
+        timetableEntries
       ];
 }

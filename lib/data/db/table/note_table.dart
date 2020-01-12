@@ -8,4 +8,16 @@ class Notes extends Table {
   TextColumn get description => text()();
   TextColumn get warning => text()();
   TextColumn get type => text()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+class NotesAttachments extends Table {
+  IntColumn get id => integer()();
+  TextColumn get type => text()();
+  TextColumn get description => text()();
+
+  @override
+  Set<Column> get primaryKey => {id};
 }

@@ -18,10 +18,12 @@ class GradesRepositoryImpl implements GradesRepository {
   Future updateGrades() async {
     final profile = await profileDao.getProfile();
     final gradesResponse = await spaggiariClient.getGrades(profile.studentId);
-    print("got response");
+    List<Grade> grades = [];
+    await gradeDao.deleteAllGrades();
     gradesResponse.grades.forEach((grade) {
-      gradeDao.insertGrade(gradeMapper.convertGradeEntityToInserttable(grade));
+      grades.add(gradeMapper.convertGradeEntityToInserttable(grade));
     });
+    gradeDao.insertGrades(grades);
   }
 
   @override
@@ -35,26 +37,6 @@ class GradesRepositoryImpl implements GradesRepository {
   }
 
   @override
-  Stream<List<Grade>> watchAllGrades() {
-    return gradeDao.watchAllGrades();
-  }
-
-  @override
-  Stream<List<Grade>> watchAllGradesOrdered() {
-    return gradeDao.watchAllGradesOrdered();
-  }
-
-  @override
-  Stream<List<Grade>> watchNumberOfGradesByDate(int number) {
-    return gradeDao.watchNumberOfGradesByDate(number);
-  }
-
-  @override
-  Stream<List<Grade>> watchLastGrades() {
-    return gradeDao.watchLastGrades();
-  }
-
-  @override
   Future deleteAllGrades() {
     return gradeDao.deleteAllGrades();
   }
@@ -62,11 +44,6 @@ class GradesRepositoryImpl implements GradesRepository {
   @override
   Future<List<Grade>> getAllGrades() {
     return gradeDao.getAllGrades();
-  }
-
-  @override
-  Future<List<Grade>> getAllGradesOrdered() {
-    return gradeDao.getAllGradesOrdered();
   }
 
   @override
@@ -87,5 +64,25 @@ class GradesRepositoryImpl implements GradesRepository {
   @override
   Future updateLocalGrade(LocalGrade localGrade) {
     return gradeDao.updateLocalGrade(localGrade);
+  }
+
+  @override
+  Future updateGrade(Grade grade) {
+    return gradeDao.updateGrade(grade);
+  }
+
+  @override
+  Future<List<Grade>> getAllGradesOrdered() {
+    return gradeDao.getAllGradesOrdered();
+  }
+
+  @override
+  Future<List<Grade>> getLastGrades() {
+    return gradeDao.getLastGrades();
+  }
+
+  @override
+  Future<List<Grade>> getNumberOfGradesByDate(int number) {
+    return gradeDao.getNumberOfGradesByDate(number);
   }
 }

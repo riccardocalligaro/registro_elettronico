@@ -11,7 +11,7 @@ class SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 16.0),
+      padding: const EdgeInsets.only(left: 16.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -20,19 +20,24 @@ class SectionHeader extends StatelessWidget {
             headingText,
             style: Theme.of(context).textTheme.body1,
           ),
-          onTap != null ? FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(15.0),
-            ),
-            onPressed: onTap,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 0.0),
-              child: Text(
-                AppLocalizations.of(context).translate('view_all'),
-                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
-              ),
-            ),
-          ) : Container(),
+          onTap != null
+              ? FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(15.0),
+                  ),
+                  onPressed: onTap,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 0.0),
+                    child: Text(
+                      AppLocalizations.of(context).translate('view_all'),
+                      style: Theme.of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(fontSize: 12),
+                    ),
+                  ),
+                )
+              : Container(),
         ],
       ),
     );

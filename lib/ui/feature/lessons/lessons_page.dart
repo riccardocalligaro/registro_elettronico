@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 
@@ -18,10 +21,16 @@ class LessonsPage extends StatefulWidget {
 }
 
 class _LessonsPageState extends State<LessonsPage> {
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  @override
+  void initState() {
+    BlocProvider.of<SubjectsBloc>(context).add(GetSubjectsAndProfessors());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
     return Scaffold(
       key: _drawerKey,
       drawer: AppDrawer(
@@ -31,42 +40,98 @@ class _LessonsPageState extends State<LessonsPage> {
         title: Text(AppLocalizations.of(context).translate('lessons')),
         scaffoldKey: _drawerKey,
       ),
-      body: Container(
-        child: _buildSubjectsList(context),
+      body: BlocListener<LessonsBloc, LessonsState>(
+        listener: (context, state) {
+          if (state is LessonsUpdateLoadInProgress) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(AppLocalizations.of(context).translate('updating_lessons')),
+                  Container(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.red,
+                    ),
+                  )
+                ],
+              ),
+              duration: Duration(minutes: 2),
+            ));
+          }
+          if (state is LessonsUpdateLoadSuccess) {
+            Scaffold.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text(AppLocalizations.of(context).translate('lessons_updated')),
+              ));
+          }
+        },
+        child: DoubleBackToCloseApp(
+          snackBar: AppNavigator.instance.getLeaveSnackBar(context),
+          child: BlocBuilder<SubjectsBloc, SubjectsState>(
+            builder: (context, state) {
+              if (state is SubjectsAndProfessorsLoadInProgress) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is SubjectsAndProfessorsLoadSuccess) {
+                return _buildSubjectsList(
+                  subjects: state.subjects,
+                  professors: state.professors,
+                  context: context,
+                );
+              } else if (state is SubjectsUpdateLoadError ||
+                  state is SubjectsLoadError) {
+                return CustomPlaceHolder(
+                  text: AppLocalizations.of(context).translate('error'),
+                  icon: Icons.error,
+                  showUpdate: true,
+                  onTap: () {
+                    BlocProvider.of<SubjectsBloc>(context)
+                        .add(UpdateSubjects());
+                  },
+                );
+              }
+              return Container();
+            },
+          ),
+        ),
       ),
     );
   }
 
-  StreamBuilder _buildSubjectsList(BuildContext context) {
-    return StreamBuilder(
-      stream: BlocProvider.of<SubjectsBloc>(context).subjects,
-      initialData: List<Subject>(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final List<Subject> subjects = snapshot.data ?? List<Subject>();
-        if (subjects.length > 0) {
-          return StreamBuilder(
-            stream: BlocProvider.of<SubjectsBloc>(context).professors,
-            initialData: List<Professor>(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              final List<Professor> professors =
-                  snapshot.data ?? List<Professor>();
-              return SubjectsList(
-                professors: professors,
-                subjects: subjects,
-              );
-            },
-          );
-        } else {
-          return CustomPlaceHolder(
-            text: AppLocalizations.of(context).translate('no_subjects_to_show'),
-            icon: Icons.assignment,
-            onTap: () {
-              BlocProvider.of<SubjectsBloc>(context).add(FetchSubjects());
-            },
-            showUpdate: true,
-          );
-        }
-      },
-    );
+  Widget _buildSubjectsList({
+    @required List<Subject> subjects,
+    @required List<Professor> professors,
+    @required BuildContext context,
+  }) {
+    if (subjects.length > 0) {
+      return RefreshIndicator(
+        onRefresh: _refreshLessons,
+        child: SubjectsList(
+          professors: professors,
+          subjects: subjects,
+        ),
+      );
+    } else {
+      return CustomPlaceHolder(
+        text: AppLocalizations.of(context).translate('no_subjects_to_show'),
+        icon: Icons.assignment,
+        onTap: () {
+          BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
+          BlocProvider.of<SubjectsBloc>(context)
+              .add(GetSubjectsAndProfessors());
+        },
+        showUpdate: true,
+      );
+    }
+  }
+
+  Future _refreshLessons() async {
+    BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
   }
 }

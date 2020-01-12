@@ -1,21 +1,44 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 
 abstract class LessonsState extends Equatable {
   const LessonsState();
-
   @override
   List<Object> get props => [];
 }
 
-class LessonsNotLoaded extends LessonsState {}
+class LessonsIntial extends LessonsState {}
 
-class LessonsLoading extends LessonsState {}
+class LessonsLoadInProgress extends LessonsState {}
 
-class LessonsError extends LessonsState {
-  final DioError error;
+class LessonsLoadSuccess extends LessonsState {
+  final List<Lesson> lessons;
 
-  LessonsError(this.error);
+  const LessonsLoadSuccess({
+    @required this.lessons,
+  });
 }
 
-class LessonsLoaded extends LessonsState {}
+// Updates
+
+class LessonsUpdateLoadInProgress extends LessonsState {}
+
+class LessonsUpdateLoadSuccess extends LessonsState {}
+
+class LessonsLoadServerError extends LessonsState {
+  final DioError serverError;
+  const LessonsLoadServerError({@required this.serverError});
+
+  @override
+  List<Object> get props => [serverError];
+}
+
+class LessonsLoadError extends LessonsState {
+  final String error;
+  const LessonsLoadError({@required this.error});
+
+  @override
+  List<Object> get props => [error];
+}

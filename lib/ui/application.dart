@@ -6,7 +6,7 @@ import 'package:registro_elettronico/component/bloc_delegate.dart';
 import 'global/localizations/ui/locale_bloc_builder.dart';
 import 'global/theme/ui/theme_bloc_builder.dart';
 
-//This widget contains  init data, theme and locale manager and provide that data to child widget
+//This widget contains  init data, theme and locale manager and provides that data to child widget
 class Application extends StatelessWidget {
   final Widget Function(BuildContext context, InitData initData) builder;
 

@@ -7,12 +7,13 @@
 // TextColumn get type => text()();
 
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
+import 'package:registro_elettronico/domain/entity/api_responses/notes_read_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/notes_response.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class NoteMapper {
-  db.Note convertNotetEntityToInsertable(Note note, String type) {
+  static db.Note convertNotetEntityToInsertable(Note note, String type) {
     return db.Note(
       author: note.authorName ?? "",
       date: DateUtils.getDateFromApiString(note.evtDate) ?? DateTime.now(),
@@ -21,6 +22,16 @@ class NoteMapper {
       description: note.extText ?? "",
       warning: note.warningType ?? "",
       type: type ?? "",
+    );
+  }
+
+  static db.NotesAttachment convertNoteAttachmentResponseToInsertable(
+    NotesReadResponse res,
+  ) {
+    return db.NotesAttachment(
+      id: res.event.evtId,
+      type: res.event.evtCode,
+      description: res.event.evtText,
     );
   }
 }
