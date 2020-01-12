@@ -15,7 +15,10 @@ class LessonsLoadInProgress extends LessonsState {}
 
 class LessonsLoadSuccess extends LessonsState {
   final List<Lesson> lessons;
-  const LessonsLoadSuccess({@required this.lessons});
+
+  const LessonsLoadSuccess({
+    @required this.lessons,
+  });
 }
 
 // Updates

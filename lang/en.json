@@ -144,5 +144,10 @@
   "ntcl": "Disciplinary note",
   "ntwn": "Recall",
   "ntte": "Teacher note",
-  "ntst": "Disciplinary note"
+  "ntst": "Disciplinary note",
+  "event_hour_day": "{date} at {hour}",
+  "leave_snackbar": "Tap again to leave",
+  "updating_lessons": "Updating lessons",
+  "lessons_updated":"Lessons updated successfully",
+  "welcome_message":"Hi"
 }

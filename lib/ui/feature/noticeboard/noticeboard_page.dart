@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/notices/attachment_download/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notices/attachments/bloc.dart';
@@ -11,9 +12,13 @@ import 'package:registro_elettronico/ui/bloc/notices/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
+import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NoticeboardPage extends StatefulWidget {
   NoticeboardPage({Key key}) : super(key: key);
@@ -30,6 +35,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   List<Lesson> filteredLessons = List();
   Icon _searchIcon = new Icon(Icons.search);
   Widget _appBarTitle = Text("Comunicazioni");
+  int _noticeboardLastUpdate;
 
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
@@ -49,37 +55,67 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   }
 
   @override
+  void initState() {
+    restore();
+    super.initState();
+  }
+
+  void restore() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      _noticeboardLastUpdate =
+          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_NOTICEBOARD);
+    });
+  }
+
+  @override
   void didChangeDependencies() {
+    super.didChangeDependencies();
     _appBarTitle = Text(
       AppLocalizations.of(context).translate('notice_board'),
     );
     BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
-    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _drawerKey,
-      appBar: CustomAppBar(
-        scaffoldKey: _drawerKey,
-        title: _appBarTitle,
-        actions: <Widget>[
-          IconButton(
-            icon: _searchIcon,
-            onPressed: () {
-              _searchPressed(context);
-            },
-          )
-        ],
-      ),
-      drawer: AppDrawer(
-        position: DrawerConstants.NOTICE_BOARD,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-        child: Container(
-          child: _buildNoticeBoard(),
+    return BlocListener<NoticesBloc, NoticesState>(
+      listener: (context, state) {
+        if (state is NoticesUpdateLoaded) {
+          setState(() {
+            _noticeboardLastUpdate = DateTime.now().millisecondsSinceEpoch;
+          });
+        }
+      },
+      child: Scaffold(
+        key: _drawerKey,
+        appBar: CustomAppBar(
+          scaffoldKey: _drawerKey,
+          title: _appBarTitle,
+          actions: <Widget>[
+            IconButton(
+              icon: _searchIcon,
+              onPressed: () {
+                _searchPressed(context);
+              },
+            )
+          ],
+        ),
+        bottomSheet: LastUpdateBottomSheet(
+          millisecondsSinceEpoch: _noticeboardLastUpdate,
+        ),
+        drawer: AppDrawer(
+          position: DrawerConstants.NOTICE_BOARD,
+        ),
+        body: DoubleBackToCloseApp(
+          snackBar: AppNavigator.instance.getLeaveSnackBar(context),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: Container(
+              child: _buildNoticeBoard(),
+            ),
+          ),
         ),
       ),
     );
@@ -138,8 +174,22 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
               ..removeCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
-                  content: Text(
-                      AppLocalizations.of(context).translate('downloading')),
+                  behavior: SnackBarBehavior.floating,
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(AppLocalizations.of(context)
+                          .translate('downloading')),
+                      Container(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.red,
+                        ),
+                      )
+                    ],
+                  ),
+                  duration: Duration(days: 1),
                 ),
               );
           }
@@ -149,12 +199,12 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
               ..removeCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
+                  behavior: SnackBarBehavior.floating,
                   content: Text(
                     AppLocalizations.of(context)
                         .translate('download_of_file_completed')
                         .replaceAll('{fileName}', state.path),
                   ),
-                  duration: Duration(seconds: 6),
                   action: SnackBarAction(
                     label: AppLocalizations.of(context)
                         .translate('open')
@@ -174,7 +224,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                 SnackBar(
                   content: Text(
                       AppLocalizations.of(context).translate('error_download')),
-                  duration: Duration(seconds: 5),
                 ),
               );
           }

@@ -24,10 +24,13 @@ class LessonsRepositoryImpl implements LessonsRepository {
   Future upadateTodayLessons() async {
     final profile = await profileDao.getProfile();
     final lessons = await spaggiariClient.getTodayLessons(profile.studentId);
+
+    List<Lesson> lessonsList = [];
     lessons.lessons.forEach((lesson) {
-      lessonDao.insertLesson(
-          lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
+      lessonsList.add(lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
     });
+
+    lessonDao.insertLessons(lessonsList);
   }
 
   @override
@@ -39,6 +42,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
       dateInterval.begin,
       dateInterval.end,
     );
+    await lessonDao.deleteLessons();
     List<Lesson> lessonsInsertable = [];
     lessons.lessons.forEach((lesson) {
       lessonsInsertable

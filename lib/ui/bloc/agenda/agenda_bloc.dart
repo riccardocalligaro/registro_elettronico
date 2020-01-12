@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,23 +33,30 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
   }
 
   Stream<AgendaState> _mapUpdateAllAgendaToState() async* {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
     yield AgendaUpdateLoadInProgress();
     try {
       await agendaRepository.updateAllAgenda();
+      final prefs = await SharedPreferences.getInstance();
+
       prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
           DateTime.now().millisecondsSinceEpoch);
+      prefs.setInt(
+        PrefsConstants.LAST_UPDATE_AGENDA,
+        DateTime.now().millisecondsSinceEpoch,
+      );
+
       yield AgendaUpdateLoadSuccess();
     } on DioError catch (e) {
+      FLog.error(text: 'Updating all agenda server error ${e.toString()}');
       yield AgendaLoadError(error: e.response.statusMessage.toString());
     } catch (e) {
+      FLog.error(text: 'Updating all agenda  error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
   }
 
   Stream<AgendaState> _mapGetAllAgendaToState() async* {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     yield AgendaLoadInProgress();
     try {
       final events = await agendaRepository.getAllEvents();
@@ -56,6 +64,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
           DateTime.now().millisecondsSinceEpoch);
       yield AgendaLoadSuccess(events: events);
     } catch (e) {
+      FLog.error(text: 'Getting agenda error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
   }
@@ -70,6 +79,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       );
       yield AgendaLoadSuccess(events: events);
     } catch (e) {
+      FLog.error(text: 'Getting agenda error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
   }

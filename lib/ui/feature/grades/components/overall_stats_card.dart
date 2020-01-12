@@ -5,12 +5,15 @@ import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.d
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
-class GradesOverallStats extends StatelessWidget {
+class OverallStatsCard extends StatelessWidget {
   final List<Grade> grades;
+  final int objective;
   final double average;
-  const GradesOverallStats({
+
+  const OverallStatsCard({
     Key key,
     @required this.grades,
+    @required this.objective,
     @required this.average,
   }) : super(key: key);
 
@@ -25,6 +28,12 @@ class GradesOverallStats extends StatelessWidget {
   }
 
   Widget _getStats(BuildContext context) {
+    List<Grade> gradesToUse = grades
+        .where(
+            (grade) => grade.decimalValue != -1.00 || grade.cancelled == true)
+        .toList();
+    gradesToUse.sort((a, b) => a.eventDate.compareTo(b.eventDate));
+
     return Container(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -46,8 +55,9 @@ class GradesOverallStats extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
-                    child:
-                        Text(AppLocalizations.of(context).translate('average')),
+                    child: Text(
+                      AppLocalizations.of(context).translate('average'),
+                    ),
                   )
                 ],
               ),
@@ -59,14 +69,8 @@ class GradesOverallStats extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 21.0, right: 16.0),
                 child: GradesChart(
-                  grades: grades
-                      .where((grade) =>
-                          grade.decimalValue != -1.00 ||
-                          grade.cancelled == true)
-                      .toList()
-                        ..sort(
-                          (b, a) => b.eventDate.compareTo(a.eventDate),
-                        ),
+                  grades: gradesToUse,
+                  objective: objective,
                 ),
               ),
             ),

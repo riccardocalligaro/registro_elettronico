@@ -102,14 +102,15 @@ class _GradesChartState extends State<GradesChart> {
               child: Text(
                 AppLocalizations.of(context).translate('avg'),
                 style: TextStyle(
-                    fontSize: 8,
-                    color: showAvg
-                        ? Theme.of(context)
-                            .primaryTextTheme
-                            .headline
-                            .color
-                            .withOpacity(0.5)
-                        : Theme.of(context).primaryTextTheme.headline.color),
+                  fontSize: 8,
+                  color: showAvg
+                      ? Theme.of(context)
+                          .primaryTextTheme
+                          .headline
+                          .color
+                          .withOpacity(0.5)
+                      : Theme.of(context).primaryTextTheme.headline.color,
+                ),
               ),
             ),
           ),

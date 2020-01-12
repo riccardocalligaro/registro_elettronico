@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_event.dart';
@@ -9,9 +10,13 @@ import 'package:registro_elettronico/ui/feature/absences/components/absence_card
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
+import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/absences_chart_lines.dart';
 
@@ -22,8 +27,23 @@ class AbsencesPage extends StatefulWidget {
   _AbsencesPageState createState() => _AbsencesPageState();
 }
 
-class _AbsencesPageState extends State<AbsencesPage>
-    with AutomaticKeepAliveClientMixin {
+class _AbsencesPageState extends State<AbsencesPage> {
+  int _absencesLastUpdate;
+
+  @override
+  void initState() {
+    restore();
+    super.initState();
+  }
+
+  void restore() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      _absencesLastUpdate =
+          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_ABSENCES);
+    });
+  }
+
   @override
   void didChangeDependencies() {
     BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
@@ -33,19 +53,34 @@ class _AbsencesPageState extends State<AbsencesPage>
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-    super.build(context);
-    return Scaffold(
-      key: _drawerKey,
-      appBar: CustomAppBar(
-        scaffoldKey: _drawerKey,
-        title: Text(AppLocalizations.of(context).translate('absences')),
-      ),
-      drawer: AppDrawer(
-        position: DrawerConstants.ABSENCES,
-      ),
-      body: RefreshIndicator(
-        onRefresh: _updateAbsences,
-        child: _buildAbsences(context),
+
+    return BlocListener<AbsencesBloc, AbsencesState>(
+      listener: (context, state) {
+        if (state is AbsencesUpdateLoaded) {
+          setState(() {
+            _absencesLastUpdate = DateTime.now().millisecondsSinceEpoch;
+          });
+        }
+      },
+      child: Scaffold(
+        key: _drawerKey,
+        appBar: CustomAppBar(
+          scaffoldKey: _drawerKey,
+          title: Text(AppLocalizations.of(context).translate('absences')),
+        ),
+        drawer: AppDrawer(
+          position: DrawerConstants.ABSENCES,
+        ),
+        bottomSheet: LastUpdateBottomSheet(
+          millisecondsSinceEpoch: _absencesLastUpdate,
+        ),
+        body: DoubleBackToCloseApp(
+          snackBar: AppNavigator.instance.getLeaveSnackBar(context),
+          child: RefreshIndicator(
+            onRefresh: _updateAbsences,
+            child: _buildAbsences(context),
+          ),
+        ),
       ),
     );
   }
@@ -334,7 +369,4 @@ class _AbsencesPageState extends State<AbsencesPage>
     BlocProvider.of<AbsencesBloc>(context).add(FetchAbsences());
     BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

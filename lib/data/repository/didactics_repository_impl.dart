@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:injector/injector.dart';
-import 'package:logger/logger.dart';
 import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -28,6 +28,8 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future updateDidactics() async {
     final profile = await profileDao.getProfile();
+
+    FLog.info(text: 'Updating didactics');
 
     final didactics = await spaggiariClient.getDidactics(profile.studentId);
     List<DidacticsTeacher> teachers = [];
@@ -72,27 +74,33 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future<Response> getFileAttachment(int fileID) async {
     final profile = await profileDao.getProfile();
-    Logger log = Logger();
+    FLog.info(text: 'Getting attachment for $fileID!');
     final res = await _getAttachmentFile(profile.studentId, fileID);
-    log.i(res.headers);
+    FLog.info(text: 'Got attachment for $fileID!');
     return res;
   }
 
   @override
   Future<DownloadAttachmentTextResponse> getTextAtachment(int fileID) async {
     final profile = await profileDao.getProfile();
+    FLog.info(text: 'Getting text attachment for $fileID!');
     final res = spaggiariClient.getAttachmentText(profile.studentId, fileID);
+    FLog.info(text: 'Got text attachment for $fileID!');
     return res;
   }
 
   @override
   Future<DownloadAttachmentURLResponse> getURLAtachment(int fileID) async {
     final profile = await profileDao.getProfile();
+    FLog.info(text: 'Getting URL attachment for $fileID!');
     final res = spaggiariClient.getAttachmentUrl(profile.studentId, fileID);
+    FLog.info(text: 'Got URL attachment for $fileID!');
     return res;
   }
 
   Future<Response> _getAttachmentFile(String studentId, int fileId) async {
+    FLog.info(text: 'Getting attachment file for $fileId!');
+
     String baseUrl = 'https://web.spaggiari.eu/rest/v1';
     final _dio = DioClient(
         Injector.appInstance.getDependency(),
@@ -115,9 +123,6 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
           ),
           data: _data,
         );
-
-    // final value = Response<String>.fromJson(_result.data);
-    // return Future.value(value);
   }
 
   @override
@@ -134,5 +139,12 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future deleteDownloadedFile(DidacticsDownloadedFile downloadedFile) {
     return didacticsDao.deleteDownloadedFile(downloadedFile);
+  }
+
+  @override
+  Future deleteAllDidactics() async {
+    await didacticsDao.deleteContents();
+    await didacticsDao.deleteFolders();
+    await didacticsDao.deleteTeachers();
   }
 }

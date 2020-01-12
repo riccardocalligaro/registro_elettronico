@@ -11,4 +11,6 @@ abstract class AbsencesRepository {
   Stream<List<Absence>> watchAllAbsences();
 
   Future<List<Absence>> getAllAbsences();
+
+  Future deleteAllAbsences();
 }

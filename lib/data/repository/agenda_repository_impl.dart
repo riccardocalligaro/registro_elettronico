@@ -23,6 +23,8 @@ class AgendaRepositoryImpl implements AgendaRepository {
 
     final agenda =
         await spaggiariClient.getAgenda(profile.studentId, beginDate, endDate);
+
+    await agendaDao.deleteAllEvents();
     agenda.events.forEach((event) {
       events.add(EventMapper.convertEventEntityToInsertable(event));
     });

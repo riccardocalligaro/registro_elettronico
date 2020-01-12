@@ -84,6 +84,15 @@ class AppNavigator {
     Scaffold.of(context).showSnackBar(SnackBar(content: Text(content)));
   }
 
+  SnackBar getLeaveSnackBar(BuildContext context) {
+    return SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: Text(
+        AppLocalizations.of(context).translate('leave_snackbar'),
+      ),
+    );
+  }
+
   BuildContext showAlertDialog(BuildContext context,
       {@required Widget content,
       Widget title = const Text("Attention"),

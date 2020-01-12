@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:logger/logger.dart';
 import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './bloc.dart';
 
@@ -22,8 +23,6 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
   Stream<LessonsState> mapEventToState(
     LessonsEvent event,
   ) async* {
-    Logger log = Logger();
-    log.i(event.toString());
     if (event is GetLastLessons) {
       yield* _mapGetLastLessonsToState();
     } else if (event is GetLessonsByDate) {
@@ -43,6 +42,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     yield LessonsLoadInProgress();
     try {
       final lessons = await lessonsRepository.getLastLessons();
+
       yield LessonsLoadSuccess(lessons: lessons);
     } catch (e) {
       yield LessonsLoadError(error: e.toString());
@@ -54,6 +54,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     yield LessonsLoadInProgress();
     try {
       final lessons = await lessonsRepository.getLessonsByDate(dateTime);
+
       yield LessonsLoadSuccess(lessons: lessons);
     } catch (e) {
       yield LessonsLoadError(error: e.toString());
@@ -64,6 +65,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     yield LessonsLoadInProgress();
     try {
       final lessons = await lessonsRepository.getLessons();
+
       yield LessonsLoadSuccess(lessons: lessons);
     } catch (e) {
       yield LessonsLoadError(error: e.toString());
@@ -73,7 +75,11 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
   Stream<LessonsState> _mapUpdateAllLessonsToState() async* {
     yield LessonsUpdateLoadInProgress();
     try {
+      await lessonsRepository.deleteAllLessons();
       await lessonsRepository.updateAllLessons();
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setInt(PrefsConstants.LAST_UPDATE_LESSONS,
+          DateTime.now().millisecondsSinceEpoch);
       yield LessonsUpdateLoadSuccess();
     } on DioError catch (dioError) {
       yield LessonsLoadServerError(serverError: dioError);

@@ -1,3 +1,4 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -18,6 +19,7 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
 
   @override
   Future updateAbsences() async {
+    FLog.info(text: 'Updating absences');
     final profile = await profileDao.getProfile();
     await absenceDao.deleteAllAbsences();
     final absences = await spaggiariClient.getAbsences(profile.studentId);
@@ -25,6 +27,8 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
     absences.events.forEach((event) {
       absencesList.add(AbsenceMapper.convertEventEntityToInsertable(event));
     });
+    FLog.info(
+        text: 'Got response from server, procceding to inserting in database');
 
     absenceDao.insertEvents(absencesList);
   }
@@ -42,5 +46,10 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
   @override
   Future<List<Absence>> getAllAbsences() {
     return absenceDao.getAllAbsences();
+  }
+
+  @override
+  Future deleteAllAbsences() {
+    return absenceDao.deleteAllAbsences();
   }
 }

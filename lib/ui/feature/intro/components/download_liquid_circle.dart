@@ -1,7 +1,7 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
-import 'package:logger/logger.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/main.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
@@ -80,8 +80,8 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                 width: 300,
                 child: GestureDetector(
                   onTap: () async {
-                    Logger log = Logger();
-                    log.i("Checking shared prefrences for notifications!");
+                    FLog.info(
+                        text: 'Checking shared prefrences for notifications!');
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
 
@@ -123,10 +123,10 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                           requiresBatteryNotLow: true,
                         ),
                       );
-                      log.i("Set everything for periodic task!");
+                      FLog.info(text: 'Set everything for periodic task!');
                     } else {
                       prefs.setBool(PrefsConstants.NOTIFICATIONS, false);
-                      log.i("No notifications set! ");
+                      FLog.info(text: 'No notifications set!');
                     }
 
                     AppNavigator.instance.navToHome(context);

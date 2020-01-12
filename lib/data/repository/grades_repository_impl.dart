@@ -19,6 +19,7 @@ class GradesRepositoryImpl implements GradesRepository {
     final profile = await profileDao.getProfile();
     final gradesResponse = await spaggiariClient.getGrades(profile.studentId);
     List<Grade> grades = [];
+    await gradeDao.deleteAllGrades();
     gradesResponse.grades.forEach((grade) {
       grades.add(gradeMapper.convertGradeEntityToInserttable(grade));
     });

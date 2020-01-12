@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './bloc.dart';
 
@@ -21,8 +22,6 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
   Stream<GradesState> mapEventToState(
     GradesEvent event,
   ) async* {
-    Logger log = Logger();
-    log.i(event.toString());
     if (event is UpdateGrades) {
       yield* _mapUpdateGradesToState();
     } else if (event is GetGrades) {
@@ -33,8 +32,12 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
   Stream<GradesState> _mapUpdateGradesToState() async* {
     yield GradesUpdateLoading();
     try {
-      await gradesRepository.deleteAllGrades();
+      final prefs = await SharedPreferences.getInstance();
       await gradesRepository.updateGrades();
+      prefs.setInt(
+        PrefsConstants.LAST_UPDATE_GRADES,
+        DateTime.now().millisecondsSinceEpoch,
+      );
       yield GradesUpdateLoaded();
     } catch (e) {
       yield GradesError(message: e.toString());

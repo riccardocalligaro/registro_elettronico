@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/timetable/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -51,39 +53,42 @@ class _TimetablePageState extends State<TimetablePage> {
       drawer: AppDrawer(
         position: DrawerConstants.TIMETABLE,
       ),
-      body: Container(
-        child: BlocBuilder<TimetableBloc, TimetableState>(
-          builder: (context, state) {
-            if (state is TimetableLoading) {
-              return _buildTimetableLoading();
-            }
-
-            if (state is TimetableError) {
-              return _buildTimetableError(state.error);
-            }
-
-            if (state is TimetableLoaded) {
-              if (state.timetableEntries.length > 0) {
-                return _buildTimetableList(
-                    state.timetableEntries, state.subjects);
+      body: DoubleBackToCloseApp(
+        snackBar: AppNavigator.instance.getLeaveSnackBar(context),
+        child: Container(
+          child: BlocBuilder<TimetableBloc, TimetableState>(
+            builder: (context, state) {
+              if (state is TimetableLoading) {
+                return _buildTimetableLoading();
               }
 
-              return CustomPlaceHolder(
-                icon: Icons.access_time,
-                text:
-                    """${AppLocalizations.of(context).translate('no_timetable')}
+              if (state is TimetableError) {
+                return _buildTimetableError(state.error);
+              }
+
+              if (state is TimetableLoaded) {
+                if (state.timetableEntries.length > 0) {
+                  return _buildTimetableList(
+                      state.timetableEntries, state.subjects);
+                }
+
+                return CustomPlaceHolder(
+                  icon: Icons.access_time,
+                  text:
+                      """${AppLocalizations.of(context).translate('no_timetable')}
 ${AppLocalizations.of(context).translate('no_timetable_message')}""",
-                showUpdate: true,
-                onTap: () {
-                  BlocProvider.of<TimetableBloc>(context).add(
-                    GetNewTimetable(),
-                  );
-                  BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
-                },
-              );
-            }
-            return Container();
-          },
+                  showUpdate: true,
+                  onTap: () {
+                    BlocProvider.of<TimetableBloc>(context).add(
+                      GetNewTimetable(),
+                    );
+                    BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
+                  },
+                );
+              }
+              return Container();
+            },
+          ),
         ),
       ),
     );
@@ -173,54 +178,3 @@ ${AppLocalizations.of(context).translate('no_timetable_message')}""",
     );
   }
 }
-// // When this widget is built the navigate to current day function is executed
-// // If we tried to navigate to current day at the start it would have given
-// // an error beacause the controller isn't binded to any widget yet
-// WidgetsBinding.instance.addPostFrameCallback((_) => _navigateToCurrentDay);
-//
-// return PageView.builder(
-//   // number of days in a school-week
-//   itemCount: timetable.last.dayOfWeek,
-//   controller: pageController,
-//   pageSnapping: true,
-//   itemBuilder: (context, index) {
-//     final List<TimetableEntry> entries =
-//         timetable.where((t) => t.dayOfWeek == index + 1).toList();
-//     entries.sort((a, b) => a.start.compareTo(b.start));
-//
-//     return Container(
-//       child: Column(
-//         mainAxisSize: MainAxisSize.min,
-//         children: <Widget>[
-//           HeaderText(
-//             text: DateUtils.convertSingleDayForDisplay(
-//                 DateTime.utc(2000, 1, 2).add(Duration(days: index + 1)),
-//                 AppLocalizations.of(context).locale.toString()),
-//           ),
-//           ListView.builder(
-//             physics: NeverScrollableScrollPhysics(),
-//             itemCount: entries.length,
-//             shrinkWrap: true,
-//             itemBuilder: (context, index2) {
-//               final entry = entries[index2];
-//               return Column(
-//                 children: <Widget>[
-//                   ListTile(
-//                     leading: Text('${entry.start}H'),
-//                     title: Text(
-//                       subjects
-//                           .where((s) => s.id == entry.subject)
-//                           .single
-//                           .name,
-//                     ),
-//                   ),
-//                   Divider(),
-//                 ],
-//               );
-//             },
-//           )
-//         ],
-//       ),
-//     );
-//   },
-// );

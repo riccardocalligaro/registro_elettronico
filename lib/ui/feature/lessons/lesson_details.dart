@@ -5,8 +5,11 @@ import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_event.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_state.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
+import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LessonDetails extends StatefulWidget {
   final int subjectId;
@@ -25,6 +28,7 @@ class LessonDetails extends StatefulWidget {
 class _LessonDetailsState extends State<LessonDetails> {
   final TextEditingController _filter = TextEditingController();
   String _searchText = "";
+  int _lastUpdate;
 
   List<Lesson> lessons = List();
   List<Lesson> filteredLessons = List();
@@ -48,10 +52,18 @@ class _LessonDetailsState extends State<LessonDetails> {
 
   @override
   void initState() {
+    restore();
     _appBarTitle = Text(
       widget.subjectName,
     );
     super.initState();
+  }
+
+  void restore() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _lastUpdate = prefs.getInt(PrefsConstants.LAST_UPDATE_LESSONS);
+    });
   }
 
   @override
@@ -63,46 +75,59 @@ class _LessonDetailsState extends State<LessonDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        title: _appBarTitle,
-        actions: <Widget>[
-          IconButton(
-            icon: _searchIcon,
-            onPressed: () {
-              _searchPressed();
-            },
-          )
-        ],
-      ),
-      body: Container(
-        child: BlocBuilder<LessonsBloc, LessonsState>(
-          builder: (context, state) {
-            if (state is LessonsUpdateLoadInProgress ||
-                state is LessonsLoadInProgress) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (state is LessonsLoadSuccess) {
-              return _buildLessonsList(state.lessons);
-            } else if (state is LessonsLoadServerError ||
-                state is LessonsLoadError) {
-              return CustomPlaceHolder(
-                text: AppLocalizations.of(context).translate('error'),
-                icon: Icons.error,
-                showUpdate: true,
-                onTap: () {
-                  BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
-                  BlocProvider.of<LessonsBloc>(context)
-                      .add(GetLessonsForSubject(subjectId: widget.subjectId));
-                },
-              );
-            }
+    return BlocListener<LessonsBloc, LessonsState>(
+      listener: (context, state) {
+        if (state is LessonsUpdateLoadSuccess) {
+          setState(() {
+            _lastUpdate = DateTime.now().millisecondsSinceEpoch;
+          });
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          title: _appBarTitle,
+          actions: <Widget>[
+            IconButton(
+              icon: _searchIcon,
+              onPressed: () {
+                _searchPressed();
+              },
+            )
+          ],
+        ),
+        bottomSheet: LastUpdateBottomSheet(
+          millisecondsSinceEpoch: _lastUpdate,
+        ),
+        body: Container(
+          child: BlocBuilder<LessonsBloc, LessonsState>(
+            builder: (context, state) {
+              if (state is LessonsUpdateLoadInProgress ||
+                  state is LessonsLoadInProgress) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is LessonsLoadSuccess) {
+                return _buildLessonsList(state.lessons);
+              } else if (state is LessonsLoadServerError ||
+                  state is LessonsLoadError) {
+                return CustomPlaceHolder(
+                  text: AppLocalizations.of(context).translate('error'),
+                  icon: Icons.error,
+                  showUpdate: true,
+                  onTap: () {
+                    BlocProvider.of<LessonsBloc>(context)
+                        .add(UpdateAllLessons());
+                    BlocProvider.of<LessonsBloc>(context)
+                        .add(GetLessonsForSubject(subjectId: widget.subjectId));
+                  },
+                );
+              }
 
-            return Text(state.toString());
-          },
+              return Text(state.toString());
+            },
+          ),
         ),
       ),
     );

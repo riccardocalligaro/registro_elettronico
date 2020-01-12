@@ -22,7 +22,7 @@ class PeriodMapper {
       end: DateUtils.getDateFromApiString(period.dateEnd) ??
           DateTime.utc(DateTime.now().year, DateTime.june, 10),
       miurDivisionCode: period.miurDivisionCode ?? "",
-      periodIndex: index,
+      periodIndex: index ?? -1,
     );
   }
 }

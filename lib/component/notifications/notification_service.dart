@@ -1,5 +1,5 @@
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:logger/logger.dart';
 import 'package:registro_elettronico/component/notifications/local_notification.dart';
 import 'package:registro_elettronico/component/notifications/notification_message.dart';
 import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
@@ -28,7 +28,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
   Future checkForNewContent() async {
-    Logger log = Logger();
     final AppDatabase appDatabase = AppDatabase();
     final GradeDao gradeDao = GradeDao(appDatabase);
     final ProfileDao profileDao = ProfileDao(AppDatabase());
@@ -44,7 +43,8 @@ class NotificationService {
     final GradesRepository gradesRepository = GradesRepositoryImpl(
         gradeDao, spaggiariClient, gradeMapper, profileDao);
 
-    log.i("Checking for new contnet...");
+    FLog.info(
+        text: '${DateTime.now().toString()} - checking for new contnet...');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final LocalNotification localNotification =
         LocalNotification(onSelectNotification);
@@ -61,9 +61,9 @@ class NotificationService {
 
     // Send grades notifications
     if (notifyGrades) {
-      log.i("Checking for new content in GRADES!");
+      FLog.info(text: 'Checking for new content in grades!');
       final gradesToNotify = await _getGradesToNotify(gradesRepository);
-      log.i("Found ${gradesToNotify.length} NEW grades in GRADES!");
+      FLog.info(text: 'Found ${gradesToNotify.length} new grades in grades!');
 
       if (gradesToNotify.length < 5) {
         gradesToNotify.forEach(
@@ -79,11 +79,11 @@ class NotificationService {
 
     // Send agenda notifications
     if (notifyAgenda) {
-      log.i("Checking for new content in AGENDA!");
+      FLog.info(text: 'Checking for new content in AGENDA!');
       final AgendaRepository agendaRepository = AgendaRepositoryImpl(
           spaggiariClient, AgendaDao(appDatabase), profileDao);
       final eventsToNotify = await _getAgendaEventsToNotify(agendaRepository);
-      log.i("Found ${eventsToNotify.length} NEW events in AGENDA!");
+      FLog.info(text: 'Found ${eventsToNotify.length} NEW events in AGENDA!');
       if (eventsToNotify.length < 5) {
         eventsToNotify.forEach(
           (event) => localNotification.showNotificationWithDefaultSound(
@@ -96,7 +96,7 @@ class NotificationService {
     }
 
     if (notifyAbsenes) {
-      log.i("Checking for new content in ABSENCES!");
+      FLog.info(text: 'Checking for new content in ABSENCES!');
       final AbsencesRepository absencesRepository = AbsencesRepositoryImpl(
           spaggiariClient, AbsenceDao(appDatabase), profileDao);
       final absencesToNotify = await _getAbsencesToNotify(absencesRepository);
@@ -112,7 +112,7 @@ class NotificationService {
     }
 
     if (notifyNotes) {
-      log.i("Checking for new content in NOTES!");
+      FLog.info(text: 'Checking for new content in NOTES!');
       final NotesRepository notesRepository = NotesRepositoryImpl(
           NoteDao(appDatabase), spaggiariClient, profileDao);
 
