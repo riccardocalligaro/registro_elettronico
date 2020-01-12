@@ -359,7 +359,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                   leading: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text('ore'),
+                      Text(AppLocalizations.of(context).translate('hour').toLowerCase()),
                       Text(
                           '${event.begin.hour.toString()} - ${event.end.hour.toString()}')
                     ],

@@ -149,5 +149,7 @@
   "leave_snackbar": "Premi di nuovo per uscire",
   "updating_lessons": "Aggiornamento lezioni in corso",
   "lessons_updated": "Lezioni aggiornate con successo",
-  "welcome_message": "Ciao"
+  "welcome_message": "Ciao",
+  "notices": "Comunicazioni",
+  "hour":"Ore"
 }

@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text('Last grades'),
+                        child: Text(AppLocalizations.of(context).translate('last_grades')),
                       ),
                       SizedBox(
                         height: 4,
@@ -171,7 +171,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text('Last lessons'),
+                        child: Text(AppLocalizations.of(context).translate('last_lessons')),
                       ),
                       SizedBox(
                         height: 8,
@@ -182,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text('Next events'),
+                        child: Text(AppLocalizations.of(context).translate('next_events')),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -251,18 +251,24 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         height: 120,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            _buildSectionIcon('Agenda', Icons.event, () {
+            _buildSectionIcon(
+                AppLocalizations.of(context).translate('agenda'), Icons.event,
+                () {
               AppNavigator.instance.navToAgenda(context);
             }),
-            _buildSectionIcon('Grades', Icons.timeline, () {
+            _buildSectionIcon(AppLocalizations.of(context).translate('grades'),
+                Icons.timeline, () {
               AppNavigator.instance.navToGrades(context);
             }),
-            _buildSectionIcon('Timetable', Icons.access_time, () {
+            _buildSectionIcon(
+                AppLocalizations.of(context).translate('timetable'),
+                Icons.access_time, () {
               AppNavigator.instance.navToTimetable(context);
             }),
-            _buildSectionIcon('Notices', Icons.assignment, () {
+            _buildSectionIcon(AppLocalizations.of(context).translate('notices'),
+                Icons.assignment, () {
               AppNavigator.instance.navToNoticeboard(context);
             }),
           ],
