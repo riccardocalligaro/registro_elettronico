@@ -36,6 +36,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   Icon _searchIcon = new Icon(Icons.search);
   Widget _appBarTitle = Text("Comunicazioni");
   int _noticeboardLastUpdate;
+  bool _showOutdatedNotices;
 
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
@@ -66,6 +67,10 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
     setState(() {
       _noticeboardLastUpdate =
           sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_NOTICEBOARD);
+
+      _showOutdatedNotices =
+          sharedPreferences.getBool(PrefsConstants.SHOW_OUTDATED_NOTICES) ??
+              false;
     });
   }
 
@@ -99,6 +104,27 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
               onPressed: () {
                 _searchPressed(context);
               },
+            ),
+            PopupMenuButton(
+              onSelected: (bool result) async {
+                print(result);
+                setState(() {
+                  _showOutdatedNotices = result;
+                });
+                SharedPreferences sharedPreferences =
+                    await SharedPreferences.getInstance();
+                sharedPreferences.setBool(
+                  PrefsConstants.SHOW_OUTDATED_NOTICES,
+                  result,
+                );
+              },
+              itemBuilder: (BuildContext context) => [
+                CheckedPopupMenuItem(
+                  value: !_showOutdatedNotices,
+                  child: Text(AppLocalizations.of(context).translate('outdated_notices')),
+                  checked: _showOutdatedNotices,
+                ),
+              ],
             )
           ],
         ),
@@ -134,10 +160,20 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           );
         }
         if (state is NoticesLoaded) {
-          return RefreshIndicator(
-            onRefresh: _refreshNoticeBoard,
-            child: _buildNoticeBoardList(state.notices),
-          );
+          if (_showOutdatedNotices) {
+            return RefreshIndicator(
+              onRefresh: _refreshNoticeBoard,
+              child: _buildNoticeBoardList(state.notices),
+            );
+          } else {
+            return RefreshIndicator(
+              onRefresh: _refreshNoticeBoard,
+              child: _buildNoticeBoardList(state.notices
+                  .where(
+                      (notice) => notice.contentValidTo.isAfter(DateTime.now()))
+                  .toList()),
+            );
+          }
         }
 
         if (state is NoticesLoading || state is NoticesUpdateLoading) {

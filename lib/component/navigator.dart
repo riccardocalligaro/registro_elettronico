@@ -59,6 +59,10 @@ class AppNavigator {
     Navigator.pushReplacementNamed(context, Routes.TIMETABLE);
   }
 
+  void navToScrutini(BuildContext context) {
+    Navigator.pushReplacementNamed(context, Routes.SCRUTINI);
+  }
+
   void navToSettings(BuildContext context) {
     Navigator.pushReplacementNamed(context, Routes.SETTINGS);
   }

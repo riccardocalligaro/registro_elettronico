@@ -20,4 +20,5 @@ class PrefsConstants {
   static const LAST_UPDATE_NOTES = 'last_update_notes';
   static const LAST_UPDATE_NOTICEBOARD = 'last_update_noticeboard';
   static const DIRECTORY_NAME = 'FLogs';
+  static const SHOW_OUTDATED_NOTICES = 'show_outdated_notices';
 }

@@ -4,6 +4,7 @@ import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
+import 'package:registro_elettronico/data/db/dao/document_dao.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/dao/note_dao.dart';
@@ -18,6 +19,7 @@ import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/data/repository/absences_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/didactics_repository_impl.dart';
+import 'package:registro_elettronico/data/repository/documents_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/mapper/absence_mapper.dart';
 
 // All the mappers to convert an entity to a db entity and vice versa
@@ -34,6 +36,7 @@ import 'package:registro_elettronico/data/repository/repository_impl_export.dart
 import 'package:registro_elettronico/data/repository/timetable_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
+import 'package:registro_elettronico/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/domain/repository/notes_repository.dart';
 import 'package:registro_elettronico/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/domain/repository/periods_repository.dart';
@@ -123,6 +126,10 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton<TimetableDao>((i) {
       return TimetableDao(i.getDependency());
+    });
+
+    Injector.appInstance.registerSingleton<DocumentsDao>((i) {
+      return DocumentsDao(i.getDependency());
     });
   }
 
@@ -250,6 +257,15 @@ class AppInjector {
         i.getDependency(),
       );
       return timetableRepository;
+    });
+
+    Injector.appInstance.registerSingleton((i) {
+      DocumentsRepository documentsRepository = DocumentsRepositoryImpl(
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
+      return documentsRepository;
     });
   }
 

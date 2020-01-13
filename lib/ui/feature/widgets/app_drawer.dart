@@ -185,6 +185,14 @@ class _AppDrawerState extends State<AppDrawer>
                 AppNavigator.instance.navToTimetable(context);
               },
             ),
+            _createDrawerItem(
+              icon: Icons.import_contacts,
+              text: AppLocalizations.of(context).translate('scrutini'),
+              pos: DrawerConstants.SCRUTINI,
+              onTap: () {
+                AppNavigator.instance.navToScrutini(context);
+              },
+            ),
             Divider(),
             _createDrawerItem(
               icon: Icons.settings,

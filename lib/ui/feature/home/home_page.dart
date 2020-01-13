@@ -117,24 +117,24 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      Positioned(
-                        top: 7,
-                        left: -16,
-                        child: SafeArea(
-                          child: RawMaterialButton(
-                            onPressed: () {
-                              _drawerKey.currentState.openDrawer();
-                            },
-                            child: Icon(
-                              Icons.menu,
-                              color: Colors.white,
-                            ),
-                            shape: CircleBorder(),
-                            elevation: 2.0,
-                            padding: const EdgeInsets.all(15.0),
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   //top: 7,
+                      //   left: -16,
+                      //   child: SafeArea(
+                      //     child: RawMaterialButton(
+                      //       onPressed: () {
+                      //         _drawerKey.currentState.openDrawer();
+                      //       },
+                      //       child: Icon(
+                      //         Icons.menu,
+                      //         color: Colors.white,
+                      //       ),
+                      //       shape: CircleBorder(),
+                      //       elevation: 2.0,
+                      //       padding: const EdgeInsets.all(15.0),
+                      //     ),
+                      //   ),
+                      // ),
 
                       _buildWelcomeSection(),
 
@@ -157,7 +157,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(AppLocalizations.of(context).translate('last_grades')),
+                        child: Text(AppLocalizations.of(context)
+                            .translate('last_grades')),
                       ),
                       SizedBox(
                         height: 4,
@@ -171,7 +172,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(AppLocalizations.of(context).translate('last_lessons')),
+                        child: Text(AppLocalizations.of(context)
+                            .translate('last_lessons')),
                       ),
                       SizedBox(
                         height: 8,
@@ -182,7 +184,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(AppLocalizations.of(context).translate('next_events')),
+                        child: Text(AppLocalizations.of(context)
+                            .translate('next_events')),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -202,36 +205,54 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildWelcomeSection() {
     return Positioned(
-      top: 90,
-      left: 16,
-      right: 16,
+      top: 40,
+      left: -16,
+      right: 0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              FutureBuilder(
-                future: RepositoryProvider.of<ProfileRepository>(context)
-                    .getDbProfile(),
-                initialData: GlobalUtils.getMockProfile(),
-                builder: (context, snapshot) {
-                  final Profile profile = snapshot.data;
-                  return Text(
-                    '${AppLocalizations.of(context).translate('welcome_message')}, ${StringUtils.titleCase(profile.firstName)}.',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  );
+              RawMaterialButton(
+                onPressed: () {
+                  _drawerKey.currentState.openDrawer();
                 },
-              ),
-              Text(
-                DateUtils.convertDateLocale(DateTime.now(),
-                    AppLocalizations.of(context).locale.toString()),
-                style: TextStyle(
+                child: Icon(
+                  Icons.menu,
                   color: Colors.white,
+                ),
+                shape: CircleBorder(),
+                elevation: 2.0,
+                padding: const EdgeInsets.all(15.0),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: FutureBuilder(
+                  future: RepositoryProvider.of<ProfileRepository>(context)
+                      .getDbProfile(),
+                  initialData: GlobalUtils.getMockProfile(),
+                  builder: (context, snapshot) {
+                    final Profile profile = snapshot.data;
+                    return Text(
+                      '${AppLocalizations.of(context).translate('welcome_message')}, ${StringUtils.titleCase(profile.firstName)}.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: Text(
+                  DateUtils.convertDateLocale(DateTime.now(),
+                      AppLocalizations.of(context).locale.toString()),
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               )
             ],

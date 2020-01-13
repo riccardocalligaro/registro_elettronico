@@ -78,6 +78,7 @@ class _TimetablePageState extends State<TimetablePage> {
                       """${AppLocalizations.of(context).translate('no_timetable')}
 ${AppLocalizations.of(context).translate('no_timetable_message')}""",
                   showUpdate: true,
+                  updateMessage: AppLocalizations.of(context).translate('generate'),
                   onTap: () {
                     BlocProvider.of<TimetableBloc>(context).add(
                       GetNewTimetable(),

@@ -17,15 +17,8 @@ class LastGradesSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GradesBloc, GradesState>(
       builder: (context, state) {
-        if (state is GradesUpdateLoading) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 100.0),
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else if (state is GradesLoaded) {
-          return _buildLastGradesList(state.grades);
+        if (state is GradesLoaded) {
+          return _buildLastGradesList(state.grades, context);
         } else if (state is GradesError || state is GradesUpdateError) {
           return CustomPlaceHolder(
             icon: Icons.error,
@@ -37,21 +30,37 @@ class LastGradesSection extends StatelessWidget {
             },
           );
         }
-        return Container();
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 100.0),
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
       },
     );
   }
 
-  Widget _buildLastGradesList(List<Grade> grades) {
-    return ListView.builder(
-      padding: EdgeInsets.symmetric(vertical: 6.0),
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: grades.length,
-      itemBuilder: (context, index) {
-        return _buildListViewCard(grades[index], context);
-      },
-    );
+  Widget _buildLastGradesList(List<Grade> grades, BuildContext context) {
+    if (grades.length > 0) {
+      return ListView.builder(
+        padding: EdgeInsets.symmetric(vertical: 6.0),
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: grades.length,
+        itemBuilder: (context, index) {
+          return _buildListViewCard(grades[index], context);
+        },
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 32.0),
+        child: CustomPlaceHolder(
+          icon: Icons.timeline,
+          text: AppLocalizations.of(context).translate('no_grades'),
+          showUpdate: false,
+        ),
+      );
+    }
   }
 
   Widget _buildListViewCard(Grade grade, BuildContext context) {
@@ -82,7 +91,7 @@ class LastGradesSection extends StatelessWidget {
                       grade.subjectDesc.length > 35
                           ? StringUtils.titleCase(
                               GlobalUtils.reduceSubjectTitleWithLength(
-                                grade.subjectDesc, 34))
+                                  grade.subjectDesc, 34))
                           : StringUtils.titleCase(grade.subjectDesc),
                       style: TextStyle(fontSize: 15),
                     ),

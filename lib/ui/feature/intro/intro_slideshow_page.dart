@@ -16,7 +16,6 @@ class IntroSlideshowPage extends StatefulWidget {
 }
 
 class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
-  bool _firstPage = true;
   bool upDirection;
 
   double height = 50;
@@ -30,24 +29,22 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
   Widget build(BuildContext context) {
     final items = _getSwiperItems();
     return Scaffold(
-      body: _firstPage
-          ? _getFirstPage()
-          : Swiper(
-              loop: false,
-              pagination: SwiperPagination(
-                builder: DotSwiperPaginationBuilder(color: Colors.grey[300]),
-              ),
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                return IntroItem(
-                  title: items[index].title,
-                  centerWidget: items[index].centerWidget,
-                  description: items[index].description,
-                  additionalWidgets: items[index].additionalWigets,
-                  dy: items[index].dy,
-                );
-              },
-            ),
+      body: Swiper(
+        loop: false,
+        pagination: SwiperPagination(
+          builder: DotSwiperPaginationBuilder(color: Colors.grey[300]),
+        ),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return IntroItem(
+            title: items[index].title,
+            centerWidget: items[index].centerWidget,
+            description: items[index].description,
+            additionalWidgets: items[index].additionalWigets,
+            dy: items[index].dy,
+          );
+        },
+      ),
     );
   }
 
@@ -94,38 +91,6 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
     );
     // description:
     //     'Press the switch to activate notifications, you can later set more preferences about when to check');
-  }
-
-  Widget _getFirstPage() {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 32.0),
-        child: Stack(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Icon(
-                Icons.school,
-                color: Theme.of(context).accentColor,
-                size: 142,
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: FloatingActionButton(
-                elevation: 0.0,
-                child: Icon(Icons.navigate_next),
-                onPressed: () {
-                  setState(() {
-                    _firstPage = false;
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
 
