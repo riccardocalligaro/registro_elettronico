@@ -5,6 +5,7 @@ import 'package:registro_elettronico/domain/entity/api_requests/login_request.da
 import 'package:registro_elettronico/domain/entity/api_responses/absences_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/agenda_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/documents_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/grades_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/lessons_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/login_response.dart';
@@ -98,11 +99,6 @@ abstract class SpaggiariClient {
   @GET("/students/{studentId}/didactics")
   Future<DidacticsResponse> getDidactics(@Path() String studentId);
 
-  // @GET("/students/{studentId}/didactics/item/{fileId}")
-  // @DioResponseType(ResponseType.bytes)
-  // Future<Response<String>> getAttachmentFile(
-  //     @Path() String studentId, @Path("fileId") int fileId);
-
   @GET("/students/{studentId}/didactics/item/{fileId}")
   Future<DownloadAttachmentURLResponse> getAttachmentUrl(
       @Path() String studentId, @Path("fileId") int fileId);
@@ -110,6 +106,9 @@ abstract class SpaggiariClient {
   @GET("/students/{studentId}/didactics/item/{fileId}")
   Future<DownloadAttachmentTextResponse> getAttachmentText(
       @Path() String studentId, @Path("fileId") int fileId);
+
+  @POST('/students/{studentId}/documents')
+  Future<DocumentsResponse> getDocuments(@Path() String studentId);
 }
 
 class _SpaggiariClient implements SpaggiariClient {
@@ -447,6 +446,26 @@ class _SpaggiariClient implements SpaggiariClient {
             baseUrl: baseUrl),
         data: _data);
     final value = DownloadAttachmentTextResponse.fromJson(_result.data);
+    return Future.value(value);
+  }
+
+  @override
+  Future<DocumentsResponse> getDocuments(String studentId) async {
+    ArgumentError.checkNotNull(studentId, 'studentId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = '';
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+      '/students/$studentId/documents',
+      queryParameters: queryParameters,
+      options: RequestOptions(
+          method: 'POST',
+          headers: <String, dynamic>{},
+          extra: _extra,
+          baseUrl: baseUrl),
+      data: _data,
+    );
+    final value = DocumentsResponse.fromJson(_result.data);
     return Future.value(value);
   }
 }

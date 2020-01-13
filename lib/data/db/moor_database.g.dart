@@ -7280,6 +7280,391 @@ class $TimetableEntriesTable extends TimetableEntries
   }
 }
 
+class Document extends DataClass implements Insertable<Document> {
+  final String hash;
+  final String description;
+  Document({@required this.hash, @required this.description});
+  factory Document.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    return Document(
+      hash: stringType.mapFromDatabaseResponse(data['${effectivePrefix}hash']),
+      description: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
+    );
+  }
+  factory Document.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return Document(
+      hash: serializer.fromJson<String>(json['hash']),
+      description: serializer.fromJson<String>(json['description']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'hash': serializer.toJson<String>(hash),
+      'description': serializer.toJson<String>(description),
+    };
+  }
+
+  @override
+  DocumentsCompanion createCompanion(bool nullToAbsent) {
+    return DocumentsCompanion(
+      hash: hash == null && nullToAbsent ? const Value.absent() : Value(hash),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+    );
+  }
+
+  Document copyWith({String hash, String description}) => Document(
+        hash: hash ?? this.hash,
+        description: description ?? this.description,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Document(')
+          ..write('hash: $hash, ')
+          ..write('description: $description')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(hash.hashCode, description.hashCode));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is Document &&
+          other.hash == this.hash &&
+          other.description == this.description);
+}
+
+class DocumentsCompanion extends UpdateCompanion<Document> {
+  final Value<String> hash;
+  final Value<String> description;
+  const DocumentsCompanion({
+    this.hash = const Value.absent(),
+    this.description = const Value.absent(),
+  });
+  DocumentsCompanion.insert({
+    @required String hash,
+    @required String description,
+  })  : hash = Value(hash),
+        description = Value(description);
+  DocumentsCompanion copyWith({Value<String> hash, Value<String> description}) {
+    return DocumentsCompanion(
+      hash: hash ?? this.hash,
+      description: description ?? this.description,
+    );
+  }
+}
+
+class $DocumentsTable extends Documents
+    with TableInfo<$DocumentsTable, Document> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DocumentsTable(this._db, [this._alias]);
+  final VerificationMeta _hashMeta = const VerificationMeta('hash');
+  GeneratedTextColumn _hash;
+  @override
+  GeneratedTextColumn get hash => _hash ??= _constructHash();
+  GeneratedTextColumn _constructHash() {
+    return GeneratedTextColumn(
+      'hash',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  GeneratedTextColumn _description;
+  @override
+  GeneratedTextColumn get description =>
+      _description ??= _constructDescription();
+  GeneratedTextColumn _constructDescription() {
+    return GeneratedTextColumn(
+      'description',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [hash, description];
+  @override
+  $DocumentsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'documents';
+  @override
+  final String actualTableName = 'documents';
+  @override
+  VerificationContext validateIntegrity(DocumentsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.hash.present) {
+      context.handle(
+          _hashMeta, hash.isAcceptableValue(d.hash.value, _hashMeta));
+    } else if (hash.isRequired && isInserting) {
+      context.missing(_hashMeta);
+    }
+    if (d.description.present) {
+      context.handle(_descriptionMeta,
+          description.isAcceptableValue(d.description.value, _descriptionMeta));
+    } else if (description.isRequired && isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  Document map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Document.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DocumentsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.hash.present) {
+      map['hash'] = Variable<String, StringType>(d.hash.value);
+    }
+    if (d.description.present) {
+      map['description'] = Variable<String, StringType>(d.description.value);
+    }
+    return map;
+  }
+
+  @override
+  $DocumentsTable createAlias(String alias) {
+    return $DocumentsTable(_db, alias);
+  }
+}
+
+class SchoolReport extends DataClass implements Insertable<SchoolReport> {
+  final String description;
+  final String confirmLink;
+  final String viewLink;
+  SchoolReport(
+      {@required this.description,
+      @required this.confirmLink,
+      @required this.viewLink});
+  factory SchoolReport.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    return SchoolReport(
+      description: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}description']),
+      confirmLink: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}confirm_link']),
+      viewLink: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}view_link']),
+    );
+  }
+  factory SchoolReport.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return SchoolReport(
+      description: serializer.fromJson<String>(json['description']),
+      confirmLink: serializer.fromJson<String>(json['confirmLink']),
+      viewLink: serializer.fromJson<String>(json['viewLink']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'description': serializer.toJson<String>(description),
+      'confirmLink': serializer.toJson<String>(confirmLink),
+      'viewLink': serializer.toJson<String>(viewLink),
+    };
+  }
+
+  @override
+  SchoolReportsCompanion createCompanion(bool nullToAbsent) {
+    return SchoolReportsCompanion(
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      confirmLink: confirmLink == null && nullToAbsent
+          ? const Value.absent()
+          : Value(confirmLink),
+      viewLink: viewLink == null && nullToAbsent
+          ? const Value.absent()
+          : Value(viewLink),
+    );
+  }
+
+  SchoolReport copyWith(
+          {String description, String confirmLink, String viewLink}) =>
+      SchoolReport(
+        description: description ?? this.description,
+        confirmLink: confirmLink ?? this.confirmLink,
+        viewLink: viewLink ?? this.viewLink,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SchoolReport(')
+          ..write('description: $description, ')
+          ..write('confirmLink: $confirmLink, ')
+          ..write('viewLink: $viewLink')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      description.hashCode, $mrjc(confirmLink.hashCode, viewLink.hashCode)));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is SchoolReport &&
+          other.description == this.description &&
+          other.confirmLink == this.confirmLink &&
+          other.viewLink == this.viewLink);
+}
+
+class SchoolReportsCompanion extends UpdateCompanion<SchoolReport> {
+  final Value<String> description;
+  final Value<String> confirmLink;
+  final Value<String> viewLink;
+  const SchoolReportsCompanion({
+    this.description = const Value.absent(),
+    this.confirmLink = const Value.absent(),
+    this.viewLink = const Value.absent(),
+  });
+  SchoolReportsCompanion.insert({
+    @required String description,
+    @required String confirmLink,
+    @required String viewLink,
+  })  : description = Value(description),
+        confirmLink = Value(confirmLink),
+        viewLink = Value(viewLink);
+  SchoolReportsCompanion copyWith(
+      {Value<String> description,
+      Value<String> confirmLink,
+      Value<String> viewLink}) {
+    return SchoolReportsCompanion(
+      description: description ?? this.description,
+      confirmLink: confirmLink ?? this.confirmLink,
+      viewLink: viewLink ?? this.viewLink,
+    );
+  }
+}
+
+class $SchoolReportsTable extends SchoolReports
+    with TableInfo<$SchoolReportsTable, SchoolReport> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $SchoolReportsTable(this._db, [this._alias]);
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  GeneratedTextColumn _description;
+  @override
+  GeneratedTextColumn get description =>
+      _description ??= _constructDescription();
+  GeneratedTextColumn _constructDescription() {
+    return GeneratedTextColumn(
+      'description',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _confirmLinkMeta =
+      const VerificationMeta('confirmLink');
+  GeneratedTextColumn _confirmLink;
+  @override
+  GeneratedTextColumn get confirmLink =>
+      _confirmLink ??= _constructConfirmLink();
+  GeneratedTextColumn _constructConfirmLink() {
+    return GeneratedTextColumn(
+      'confirm_link',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _viewLinkMeta = const VerificationMeta('viewLink');
+  GeneratedTextColumn _viewLink;
+  @override
+  GeneratedTextColumn get viewLink => _viewLink ??= _constructViewLink();
+  GeneratedTextColumn _constructViewLink() {
+    return GeneratedTextColumn(
+      'view_link',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [description, confirmLink, viewLink];
+  @override
+  $SchoolReportsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'school_reports';
+  @override
+  final String actualTableName = 'school_reports';
+  @override
+  VerificationContext validateIntegrity(SchoolReportsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.description.present) {
+      context.handle(_descriptionMeta,
+          description.isAcceptableValue(d.description.value, _descriptionMeta));
+    } else if (description.isRequired && isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (d.confirmLink.present) {
+      context.handle(_confirmLinkMeta,
+          confirmLink.isAcceptableValue(d.confirmLink.value, _confirmLinkMeta));
+    } else if (confirmLink.isRequired && isInserting) {
+      context.missing(_confirmLinkMeta);
+    }
+    if (d.viewLink.present) {
+      context.handle(_viewLinkMeta,
+          viewLink.isAcceptableValue(d.viewLink.value, _viewLinkMeta));
+    } else if (viewLink.isRequired && isInserting) {
+      context.missing(_viewLinkMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  SchoolReport map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return SchoolReport.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(SchoolReportsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.description.present) {
+      map['description'] = Variable<String, StringType>(d.description.value);
+    }
+    if (d.confirmLink.present) {
+      map['confirm_link'] = Variable<String, StringType>(d.confirmLink.value);
+    }
+    if (d.viewLink.present) {
+      map['view_link'] = Variable<String, StringType>(d.viewLink.value);
+    }
+    return map;
+  }
+
+  @override
+  $SchoolReportsTable createAlias(String alias) {
+    return $SchoolReportsTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProfilesTable _profiles;
@@ -7325,6 +7710,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $TimetableEntriesTable _timetableEntries;
   $TimetableEntriesTable get timetableEntries =>
       _timetableEntries ??= $TimetableEntriesTable(this);
+  $DocumentsTable _documents;
+  $DocumentsTable get documents => _documents ??= $DocumentsTable(this);
+  $SchoolReportsTable _schoolReports;
+  $SchoolReportsTable get schoolReports =>
+      _schoolReports ??= $SchoolReportsTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   LessonDao _lessonDao;
@@ -7352,6 +7742,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   TimetableDao _timetableDao;
   TimetableDao get timetableDao =>
       _timetableDao ??= TimetableDao(this as AppDatabase);
+  DocumentsDao _documentsDao;
+  DocumentsDao get documentsDao =>
+      _documentsDao ??= DocumentsDao(this as AppDatabase);
   @override
   List<TableInfo> get allTables => [
         profiles,
@@ -7371,6 +7764,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         didacticsContents,
         didacticsDownloadedFiles,
         localGrades,
-        timetableEntries
+        timetableEntries,
+        documents,
+        schoolReports
       ];
 }
