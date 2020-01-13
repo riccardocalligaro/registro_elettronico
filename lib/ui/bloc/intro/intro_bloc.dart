@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:f_logs/f_logs.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
@@ -42,6 +44,8 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
     IntroEvent event,
   ) async* {
     if (event is FetchAllData) {
+      final start = DateTime.now();
+      FLog.info(text: 'Getting all data -> ${DateTime.now().toString()}');
       yield IntroLoading(0);
       try {
         final prefs = await SharedPreferences.getInstance();
@@ -86,9 +90,11 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
             DateTime.now().millisecondsSinceEpoch);
         prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
             DateTime.now().millisecondsSinceEpoch);
-
+        final difference = start.difference(DateTime.now());
+        FLog.info(text: 'Got all data in ${difference.inMilliseconds} ms');
         yield IntroLoaded();
-      } catch (e) {
+      } catch (e, s) {
+        Crashlytics.instance.recordError(e, s);
         yield IntroError(e.toString());
       }
     } else if (event is Reset) {

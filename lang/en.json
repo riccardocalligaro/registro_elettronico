@@ -151,5 +151,10 @@
   "lessons_updated": "Lessons updated successfully",
   "welcome_message": "Hi",
   "notices": "Notices",
-  "hour": "Hour"
+  "hour": "Hour",
+  "report_bug_title": "Report a bug",
+  "report_bug_message": "Help us improve the app",
+  "email_message": "Please provide a more detailed possible description of the bug. Thank you 👍🏻",
+  "thanks_to": "Thanks to",
+  "the_application": "The application"
 }

@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Positioned(
-                        top: -5,
+                        top: 7,
                         left: -16,
                         child: SafeArea(
                           child: RawMaterialButton(

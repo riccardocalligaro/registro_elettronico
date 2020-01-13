@@ -308,7 +308,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
     return AppLocalizations.of(context).translate('no_name');
   }
 
-  Future<void> _refreshDidactics() {
+  Future<void> _refreshDidactics() async {
     BlocProvider.of<DidacticsBloc>(context).add(UpdateDidactics());
     BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
   }

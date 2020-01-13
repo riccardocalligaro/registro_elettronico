@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/component/api_config.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
@@ -18,7 +19,7 @@ class DioClient {
     final dio = Dio();
 
     dio.options.headers["Content-Type"] = Headers.jsonContentType;
-    dio.options.headers["User-Agent"] = "${ApiConfig.BASE_USER_AGENT}"; 
+    dio.options.headers["User-Agent"] = "${ApiConfig.BASE_USER_AGENT}";
     dio.options.headers["Z-Dev-Apikey"] = "${ApiConfig.API_KEY}";
 
     dio.interceptors
@@ -31,7 +32,9 @@ class DioClient {
         final profile = await profileRepository.getDbProfile();
         //? This checks if the profile exires before now, so if this  results true the token is expired
         if (profile.expire.isBefore(DateTime.now())) {
-          print("NEED TO REQUEST NEW TOKEN!");
+          FLog.info(
+            text: "Need to request new token - ${profile.expire.toString()}",
+          );
           // this gets the password from flutter secure storage which is saved using the ident
           final password = await flutterSecureStorage.read(key: profile.ident);
           // we create a dio client for requesting the token to spaggiari
@@ -46,7 +49,6 @@ class DioClient {
           final res = await tokenDio.post("/auth/login", data: {
             "ident": profile.ident,
             "pass": password,
-            //"pass": password,
             "uid": profile.ident
           });
 
@@ -62,11 +64,17 @@ class DioClient {
               .mapLoginResponseProfileToProfileEntity(loginResponse));
 
           //profileRepository.updateProfile();
-          print("${res.statusCode} GOT NEW TOKEN! ${loginResponse.token}");
+          FLog.info(
+            text:
+                "${res.statusCode} recieved new token - ${DateTime.now().toString()}",
+          );
           // this sets the token as the new one we just got from the api
           options.headers["Z-Auth-Token"] = loginResponse.token;
         } else {
-          print("NO NEED FOR TOKEN!");
+          FLog.info(
+            text:
+                "${DateTime.now().toString()} no need for token - proceeding with request",
+          );
           // If the token is still vaid we just use the one we got from the database
           options.headers["Z-Auth-Token"] = profile.token;
         }

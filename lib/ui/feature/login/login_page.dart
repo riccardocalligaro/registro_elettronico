@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_event.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_state.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -24,15 +21,10 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _valide = false;
   String _errorMessage = "";
-  bool _firstLogin = false;
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    //! change to false
-    _firstLogin =
-        sharedPreferences.getBool(PrefsConstants.FIRST_LOGIN) ?? false;
   }
 
   @override

@@ -132,7 +132,7 @@ class _NotesPageState extends State<NotesPage> {
     }
   }
 
-  Future _refreshNotes() {
+  Future<void> _refreshNotes() async {
     BlocProvider.of<NotesBloc>(context).add(UpdateNotes());
     BlocProvider.of<NotesBloc>(context).add(GetNotes());
   }

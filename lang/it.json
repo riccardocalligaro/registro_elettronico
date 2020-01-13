@@ -151,5 +151,10 @@
   "lessons_updated": "Lezioni aggiornate con successo",
   "welcome_message": "Ciao",
   "notices": "Comunicazioni",
-  "hour":"Ore"
+  "hour": "Ore",
+  "report_bug_title": "Segnala un bug",
+  "report_bug_message": "Aiutaci a migliorare l'applicazione",
+  "email_message": "Fornisci una descrizione piú dettagliata possibile del bug in questione. Grazie mille 👍🏻",
+  "thanks_to": "Grazie a",
+  "the_application": "L'applicazione"
 }

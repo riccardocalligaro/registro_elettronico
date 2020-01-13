@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
@@ -63,7 +64,8 @@ class DidacticsAttachmentsBloc
               contentId: content.id,
             ));
             yield DidacticsAttachmentsFileLoaded(path: filePath);
-          } catch (e) {
+          } catch (e, s) {
+            Crashlytics.instance.recordError(e, s);
             yield DidacticsAttachmentsErrror(error: e.toString());
           }
         } else if (content.type == 'text') {
@@ -73,6 +75,11 @@ class DidacticsAttachmentsBloc
           final res = await didacticsRepository.getURLAtachment(content.id);
           yield DidacticsAttachmentsURLLoaded(url: res.item);
         } else {
+          Crashlytics.instance.log('Unknown file type ${file.contentId}');
+          FLog.error(
+              text:
+                  'Unknown file type ${file.contentId} - File name: ${file.name} - Content type: ${content.type}');
+
           yield DidacticsAttachmentsErrror(error: 'Unknown file type');
         }
       }
