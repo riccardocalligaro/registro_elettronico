@@ -67,6 +67,7 @@ dependencies:
   # email 
   flutter_email_sender: ^2.2.2
   #flutter_mailer: ^0.4.2
+  dartz: ^0.8.9
 
   # firebase
   firebase_core: ^0.4.3+1

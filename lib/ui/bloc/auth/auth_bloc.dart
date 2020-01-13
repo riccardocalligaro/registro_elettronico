@@ -8,6 +8,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/login_response.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/parent_response.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,17 +49,35 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         final responseProfile = await loginRepository.signIn(
             username: event.username, password: event.password);
-        await flutterSecureStorage.write(
-            key: event.username, value: event.password);
-        _saveProfileInDb(responseProfile, event.password);
-        FLog.info(text: 'Log in success');
-        yield SignInSuccess(ProfileMapper()
-            .mapLoginResponseProfileToProfileEntity(responseProfile));
+
+        FLog.info(text: responseProfile.toString());
+        // If it is classic login response
+
+        yield* responseProfile.fold(
+          (loginReponse) async* {
+            FLog.info(text: loginReponse.toJson().toString());
+
+            await flutterSecureStorage.write(
+                key: event.username, value: event.password);
+            _saveProfileInDb(loginReponse, event.password);
+            FLog.info(text: 'Log in success');
+
+            yield SignInSuccess(ProfileMapper()
+                .mapLoginResponseProfileToProfileEntity(loginReponse));
+          },
+          (parentsLoginResponse) async* {
+            FLog.info(text: 'Got parents response');
+            final ParentsLoginResponse parentsLoginResponse =
+                responseProfile.getOrElse(null);
+            yield SignInParent(parentsLoginResponse);
+          },
+        );
       } on DioError catch (e) {
         FLog.error(text: 'Error while logging in user: ${e.response.data}');
         yield SignInNetworkError(ServerException.fromJson(e.response.data));
-      } catch (e) {
-        FLog.error(text: 'Sign in other error ${e.toString()}');
+      } catch (e, s) {
+        FLog.error(
+            text: 'Sign in other error ${e.toString()}, ${s.toString()};');
         yield SignInError(e.toString());
       }
     }
