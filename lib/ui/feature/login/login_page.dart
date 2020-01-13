@@ -1,3 +1,4 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
@@ -34,36 +35,94 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.fromLTRB(LEFT_LOGIN_PADDING, 0, 0, 0),
-        child: Column(
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                // Welcome, login with Classeviva
-                _buildWelcomeText(trans.translate('welcome')),
-                _buildLoginMessageText(trans.translate('login_with')),
-                _buildLoginForm(context),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: RaisedButton(
-                    child: Text(
-                      trans.translate('log_in'),
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+        child: BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is SignInSuccess) {
+              AppNavigator.instance.navToIntro(context);
+
+              /// If the sign in is successful then navigate to the home page
+              //AppNavigator.instance.navToHome(context);
+            }
+
+            if (state is SignInParent) {
+              Scaffold.of(context)..removeCurrentSnackBar();
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return SimpleDialog(
+                    title: Text('Scegli un profilo'),
+                    children: <Widget>[
+                      Container(
+                        width: double.maxFinite,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: state.parentsLoginResponse.choices.length,
+                          itemBuilder: (context, index) {
+                            final user =
+                                state.parentsLoginResponse.choices[index];
+                            return ListTile(
+                              title: Text(user.name),
+                              subtitle: Text(user.school),
+                              onTap: () {
+                                BlocProvider.of<AuthBloc>(context).add(SignIn(
+                                  username: user.ident,
+                                  password: _passwordController.text,
+                                ));
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  );
+                },
+              );
+            }
+          },
+          child: BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              //return Text(state.toString());
+              if (state is SignInLoading) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
+                child: Column(
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // Welcome, login with Classeviva
+                        _buildWelcomeText(trans.translate('welcome')),
+                        _buildLoginMessageText(trans.translate('login_with')),
+                        _buildLoginForm(context),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          child: RaisedButton(
+                            child: Text(
+                              trans.translate('log_in'),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            color: Theme.of(context).accentColor,
+                            onPressed: () {
+                              _signIn(context);
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                    color: Theme.of(context).accentColor,
-                    onPressed: () {
-                      _signIn(context);
-                    },
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ],
+              );
+            },
+          ),
         ),
-      )),
+      ),
     );
   }
 
@@ -181,8 +240,18 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _signIn(BuildContext context) {
-    BlocProvider.of<AuthBloc>(context).add(SignIn(
-        username: _usernameController.text,
-        password: _passwordController.text));
+    final username = _usernameController.text;
+    final password = _passwordController.text;
+
+    if (username != '' && password != '') {
+      BlocProvider.of<AuthBloc>(context).add(SignIn(
+          username: _usernameController.text,
+          password: _passwordController.text));
+    } else {
+      setState(() {
+        _valide = true;
+        _errorMessage = 'Devi compilare tutti i campi';
+      });
+    }
   }
 }
