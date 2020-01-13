@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/domain/entity/subject_objective.dart';
 import 'package:registro_elettronico/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
@@ -63,7 +64,8 @@ class SubjectsGradesBloc
         objectives: objectives,
         generalObjective: generalObjective,
       );
-    } catch (e) {
+    } catch (e, s) {
+      Crashlytics.instance.recordError(e, s);
       yield SubjectsGradesLoadError(error: e.toString());
     }
   }
@@ -79,7 +81,8 @@ class SubjectsGradesBloc
         DateTime.now().millisecondsSinceEpoch,
       );
       yield SubjectsGradesUpdateLoadSuccess();
-    } catch (e) {
+    } catch (e, s) {
+      Crashlytics.instance.recordError(e, s);
       yield SubjectsGradesLoadError(error: e.toString());
     }
   }

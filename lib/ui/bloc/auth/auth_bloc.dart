@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
@@ -10,6 +11,7 @@ import 'package:registro_elettronico/domain/entity/api_responses/login_response.
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import './bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {

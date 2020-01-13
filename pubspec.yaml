@@ -64,6 +64,9 @@ dependencies:
   share: ^0.6.3+5
   # advanced logging
   f_logs: ^1.2.2
+  # email 
+  flutter_email_sender: ^2.2.2
+  #flutter_mailer: ^0.4.2
 
   # firebase
   firebase_core: ^0.4.3+1

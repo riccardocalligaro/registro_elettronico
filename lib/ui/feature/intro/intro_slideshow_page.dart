@@ -7,8 +7,6 @@ import 'package:registro_elettronico/ui/feature/intro/components/intro_item.dart
 import 'package:registro_elettronico/ui/feature/intro/components/theme_chooser.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/notifications/notifications_type_settings_dialog.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroSlideshowPage extends StatefulWidget {
   IntroSlideshowPage({Key key}) : super(key: key);
@@ -19,7 +17,6 @@ class IntroSlideshowPage extends StatefulWidget {
 
 class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
   bool _firstPage = true;
-  bool _notificationsActivated = false;
   bool upDirection;
 
   double height = 50;
@@ -27,13 +24,6 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
   @override
   void initState() {
     super.initState();
-    restore();
-  }
-
-  void restore() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    _notificationsActivated =
-        sharedPreferences.getBool(PrefsConstants.NOTIFICATIONS) ?? false;
   }
 
   @override

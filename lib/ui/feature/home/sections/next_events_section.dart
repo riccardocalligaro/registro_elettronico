@@ -80,7 +80,7 @@ class NextEventsSection extends StatelessWidget {
       );
     } else {
       return Padding(
-        padding: const EdgeInsets.only(bottom: 16.0),
+        padding: const EdgeInsets.only(bottom: 0.0),
         child: Timeline(
           children: events.map((e) {
             return Card(

@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/main.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/about/about_developers_page.dart';
@@ -14,6 +18,7 @@ import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:workmanager/workmanager.dart';
@@ -194,20 +199,35 @@ class _SettingsPageState extends State<SettingsPage> {
           },
         ),
         ListTile(
-          title: Text(trans.translate('about_donate_title')),
-          subtitle: Text(trans.translate('about_donate_subtitle')),
-        ),
-        ListTile(
-          title: Text(trans.translate('contact_us')),
-          subtitle: Text(trans.translate('contact_us_message')),
+          title: Text(AppLocalizations.of(context).translate('report_bug_title')),
+          subtitle: Text(AppLocalizations.of(context).translate('report_bug_message')),
           onTap: () async {
-            var url = 'mailto:riccardocalligaro@gmail.com';
-            if (await canLaunch(url)) {
-              await launch(url);
-            } else {
-              throw 'Could not launch $url';
+            await FLog.exportLogs();
+            final path = await _localPath + "/" + PrefsConstants.DIRECTORY_NAME;
+            var file = File("$path/flog.txt");
+            var exists = await file.exists();
+            if (exists) {
+              final random = GlobalUtils.getRandomNumber();
+              final subject =
+                  'Bug report #$random - ${DateTime.now().toString()}';
+              String userMessage;
+              userMessage =
+                  '${AppLocalizations.of(context).translate("email_message")}\n  -';
+
+              final Email reportEmail = Email(
+                body: userMessage,
+                subject: subject,
+                recipients: ['riccardocalligaro@gmail.com'],
+                attachmentPath: '$path/flog.txt',
+                isHTML: false,
+              );
+              await FlutterEmailSender.send(reportEmail);
             }
           },
+        ),
+        ListTile(
+          title: Text(trans.translate('about_donate_title')),
+          subtitle: Text(trans.translate('about_donate_subtitle')),
         ),
       ],
     );
@@ -276,5 +296,17 @@ class _SettingsPageState extends State<SettingsPage> {
       Workmanager.cancelAll();
       FLog.info(text: '-> Cancelled all notifications intervals');
     }
+  }
+
+  Future<String> get _localPath async {
+    var directory;
+
+    if (Platform.isIOS) {
+      directory = await getApplicationDocumentsDirectory();
+    } else {
+      directory = await getExternalStorageDirectory();
+    }
+
+    return directory.path;
   }
 }

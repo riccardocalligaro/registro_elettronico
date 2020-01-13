@@ -36,7 +36,7 @@ void initApp() {
   // BloC supervisor delegate to show all the different states of the bloc
   BlocSupervisor.delegate = SimpleBlocDelegate();
 
-  Crashlytics.instance.enableInDevMode = true;
+  Crashlytics.instance.enableInDevMode = false;
 }
 
 void setupLogging() {}
