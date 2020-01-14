@@ -45,5 +45,12 @@
 	<string>FLogs would like to save photos from the app to your gallery</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>FLogs would like to access your photo gallery for uploading images to the app</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+    	<key>NSAllowsArbitraryLoads</key>
+    	<true/>
+    	<key>NSAllowsArbitraryLoadsInWebContent</key>
+    	<true/>
+	</dict>	
 </dict>
 </plist>

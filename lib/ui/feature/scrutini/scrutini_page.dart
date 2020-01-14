@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/data/network/service/api/web_spaggiari_client.dart';
+import 'package:registro_elettronico/data/network/service/web/web_spaggiari_client.dart';
+import 'package:registro_elettronico/data/network/service/web/web_spaggiari_client_impl.dart';
+import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
 import 'package:registro_elettronico/ui/bloc/documents/bloc.dart';
 import 'package:registro_elettronico/ui/feature/scrutini/web/spaggiari_web_view.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
@@ -97,17 +99,25 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
             return ListTile(
               title: Text(report.description),
               onTap: () async {
-                WebSpaggiariClient webSpaggiariClient = WebSpaggiariClientImpl(
-                  Dio(),
-                );
-
-                // final res = await webSpaggiariClient.getPHPToken(
-
-                // );
-
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SpaggiariWebView(
-                  ssid: 'CIAO232',
-                )));
+                final tokenResponse =
+                    await RepositoryProvider.of<ScrutiniRepository>(context)
+                        .getLoginToken();
+                tokenResponse.fold(
+                    (error) => {
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                            content: Text('Retry'),
+                          ))
+                        }, (token) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SpaggiariWebView(
+                        phpSessid: token,
+                        url: report.viewLink,
+                        appBarTitle: report.description,
+                      ),
+                    ),
+                  );
+                });
               },
             );
           },
