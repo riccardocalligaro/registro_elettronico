@@ -39,8 +39,6 @@ void initApp() {
   Crashlytics.instance.enableInDevMode = false;
 }
 
-void setupLogging() {}
-
 /// Registro elettronico by Riccardo Calligaro
 class MyApp extends StatelessWidget {
   @override
