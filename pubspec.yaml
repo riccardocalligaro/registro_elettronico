@@ -69,8 +69,8 @@ dependencies:
   #flutter_mailer: ^0.4.2
   dartz: ^0.8.9
   cookie_jar: ^1.0.1
-  #flutter_webview_plugin: ^0.3.10+1
-  webview_flutter: ^0.3.19+4
+  flutter_webview_plugin: ^0.3.10+1
+  #webview_flutter: ^0.3.19+4
 
   # firebase
   firebase_core: ^0.4.3+1

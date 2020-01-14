@@ -17,6 +17,8 @@ import 'package:registro_elettronico/data/db/dao/timetable_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
+import 'package:registro_elettronico/data/network/service/web/web_spaggiari_client.dart';
+import 'package:registro_elettronico/data/network/service/web/web_spaggiari_client_impl.dart';
 import 'package:registro_elettronico/data/repository/absences_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/didactics_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/documents_repository_impl.dart';
@@ -146,8 +148,16 @@ class AppInjector {
           .createDio();
     });
 
+    Injector.appInstance.registerSingleton<Dio>((i) {
+      return Dio();
+    }, dependencyName: 'WebSpaggiariDio');
+
     Injector.appInstance.registerSingleton<SpaggiariClient>((i) {
       return SpaggiariClient(i.getDependency());
+    });
+
+    Injector.appInstance.registerSingleton<WebSpaggiariClient>((i) {
+      return WebSpaggiariClientImpl(i.getDependency(dependencyName: 'WebSpaggiariDio'));
     });
   }
 

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
+import 'package:registro_elettronico/data/repository/scrutini_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
@@ -37,6 +39,13 @@ class AppBlocDelegate {
     _repositoryProviders = [
       RepositoryProvider<ProfileRepository>(
         create: (ctx) => ProfileRepositoryImpl(
+          i.getDependency(),
+          i.getDependency(),
+        ),
+      ),
+      RepositoryProvider<ScrutiniRepository>(
+        create: (ctx) => ScrutiniRepositoryImpl(
+          i.getDependency(),
           i.getDependency(),
           i.getDependency(),
         ),
