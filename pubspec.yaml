@@ -64,10 +64,13 @@ dependencies:
   share: ^0.6.3+5
   # advanced logging
   f_logs: ^1.2.2
-  # email 
+  # email
   flutter_email_sender: ^2.2.2
   #flutter_mailer: ^0.4.2
   dartz: ^0.8.9
+  cookie_jar: ^1.0.1
+  #flutter_webview_plugin: ^0.3.10+1
+  webview_flutter: ^0.3.19+4
 
   # firebase
   firebase_core: ^0.4.3+1
@@ -75,7 +78,6 @@ dependencies:
   firebase_analytics: ^5.0.2
   # crashalitycs
   firebase_crashlytics: ^0.1.2+4
-
 
   # Storing user password
   shared_preferences: ^0.5.4+8

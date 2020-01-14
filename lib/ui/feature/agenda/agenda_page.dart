@@ -33,6 +33,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   AnimationController _animationController;
   CalendarController _calendarController;
   int _agendaLastUpdate;
+  List<db.AgendaEvent> _firstDayEvents = [];
 
   @override
   void initState() {
@@ -73,13 +74,21 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   void _onDaySelected(DateTime day, List events) {
     // We need to update the bloc for the lessons of that day
     BlocProvider.of<LessonsBloc>(context).add(GetLessonsByDate(dateTime: day));
+    if (!DateUtils.areSameDay(day, DateTime.now())) {
+      setState(() {
+        _firstDayEvents = [];
+      });
+    }
     setState(() {
       _selectedEvents = events;
     });
   }
 
   void _onVisibleDaysChanged(
-      DateTime first, DateTime last, CalendarFormat format) {}
+    DateTime first,
+    DateTime last,
+    CalendarFormat format,
+  ) {}
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +172,15 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   }
 
   Widget _buildAgendaBlocBuilder() {
-    return BlocBuilder<AgendaBloc, AgendaState>(
+    return BlocListener<AgendaBloc, AgendaState>(listener: (context, state) {
+      if (state is AgendaLoadSuccess) {
+        setState(() {
+          _firstDayEvents = state.events
+              .where((e) => DateUtils.areSameDay(e.begin, DateTime.now()))
+              .toList();
+        });
+      }
+    }, child: BlocBuilder<AgendaBloc, AgendaState>(
       builder: (context, state) {
         if (state is AgendaUpdateLoadInProgress) {
           return Center(
@@ -187,7 +204,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
 
         return Container();
       },
-    );
+    ));
   }
 
   Widget _buildTableCalendar(List<db.AgendaEvent> events) {
@@ -200,6 +217,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
           .toList(),
     );
     return TableCalendar(
+      initialSelectedDay: DateTime.now(),
       calendarController: _calendarController,
       events: eventsMap,
       startingDayOfWeek: StartingDayOfWeek.monday,
@@ -336,6 +354,16 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
 
   Widget _buildEventList() {
     if (_selectedEvents.length == 0) {
+      final events = _firstDayEvents
+          .where((e) => DateUtils.areSameDay(e.begin, DateTime.now()))
+          .toList();
+      if (events.length > 0) {
+        print(_firstDayEvents
+            .where((e) => DateUtils.areSameDay(e.begin, DateTime.now()))
+            .toList()
+            .length);
+        return _buildEventsList(events.toSet().toList());
+      }
       return Padding(
         padding: const EdgeInsets.only(top: 32.0),
         child: CustomPlaceHolder(
@@ -345,6 +373,54 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         ),
       );
     }
+    return _buildEventsMap();
+  }
+
+  Widget _buildEventsList(List<db.AgendaEvent> events) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: events.length,
+        itemBuilder: (context, index) {
+          final event = events[index];
+          return Card(
+            color: Colors.red[400],
+            child: ListTile(
+              leading: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(AppLocalizations.of(context)
+                      .translate('hour')
+                      .toLowerCase()),
+                  Text(
+                      '${event.begin.hour.toString()} - ${event.end.hour.toString()}')
+                ],
+              ),
+              title: Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                child: Text(
+                  '${StringUtils.titleCase(event.authorName)}',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600),
+                ),
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                child: Text(
+                  '${event.notes} ${event.isFullDay ? " - (Tutto il giorno)" : ""}',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildEventsMap() {
+    //return Text(selectedEvents.toSet().toString());
     return IgnorePointer(
       child: ListView(
           shrinkWrap: true,
@@ -359,7 +435,9 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                   leading: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(AppLocalizations.of(context).translate('hour').toLowerCase()),
+                      Text(AppLocalizations.of(context)
+                          .translate('hour')
+                          .toLowerCase()),
                       Text(
                           '${event.begin.hour.toString()} - ${event.end.hour.toString()}')
                     ],

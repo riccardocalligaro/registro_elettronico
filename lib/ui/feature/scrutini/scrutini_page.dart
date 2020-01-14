@@ -1,7 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/data/network/service/api/web_spaggiari_client.dart';
 import 'package:registro_elettronico/ui/bloc/documents/bloc.dart';
+import 'package:registro_elettronico/ui/feature/scrutini/web/spaggiari_web_view.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
@@ -92,8 +96,18 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
             final report = schoolReports[index];
             return ListTile(
               title: Text(report.description),
-              onTap: () {
-                //TODO: open a web view with the pagella
+              onTap: () async {
+                WebSpaggiariClient webSpaggiariClient = WebSpaggiariClientImpl(
+                  Dio(),
+                );
+
+                // final res = await webSpaggiariClient.getPHPToken(
+
+                // );
+
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SpaggiariWebView(
+                  ssid: 'CIAO232',
+                )));
               },
             );
           },
