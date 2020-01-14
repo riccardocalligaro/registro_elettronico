@@ -33,4 +33,5 @@ abstract class SubjectsConstants {
   static const RUSSO = 28;
   static const CINESE = 29;
   static const TEDESCO = 30;
+  static const LINGUE = 31;
 }

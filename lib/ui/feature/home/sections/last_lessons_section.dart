@@ -8,6 +8,8 @@ import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart'
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
+import '../../../bloc/lessons/bloc.dart';
+
 class LastLessonsSection extends StatelessWidget {
   const LastLessonsSection({Key key}) : super(key: key);
 
@@ -22,6 +24,13 @@ class LastLessonsSection extends StatelessWidget {
               icon: Icons.error,
               showUpdate: false,
               text: 'Erorr',
+            ),
+          );
+        } else if (state is LessonsUpdateLoadInProgress) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 50),
+              child: CircularProgressIndicator(),
             ),
           );
         } else {
