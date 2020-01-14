@@ -97,10 +97,10 @@ These group members haven't developed the app but are learning flutter.
 | Home Page          |  ✔️   |  R. C.  | F. V + R. C. |
 | Lessons            |  ✔️   |  R. C.  |    R. C.     |
 | Agenda             |  ✔️   |  R. C.  | F. V.+ R. C. |
-| Grades             |  ✔️   |  R. C.  |    R. C.     |
+| Grades             |  ✔️   |  R. C.  | F. V.+ R. C. |
 | Noticeboard        |  ✔️   |  R. C.  |    R. C.     |
-| Absences           |  ✔️   |  R. C.  |    R. C.     |
-| School material    |  ✔️   |  R. C.  |    R. C.     |
+| Absences           |  ✔️   |  R. C.  | F. V.+ R. C. |
+| School material    |  ✔️   |  R. C.  | F. V.+ R. C. |
 | Notes              |  ✔️   |  R. C.  |    R. C.     |
 | Intitial slideshow |  ✔️   |  R. C.  |    R. C.     |
 | Dark theme         |  ✔️   |  R. C.  |    R. C.     |
