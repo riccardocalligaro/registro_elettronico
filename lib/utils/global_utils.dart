@@ -355,6 +355,11 @@ class GlobalUtils {
           "assets/icons/subjects/diritto.svg",
         );
         break;
+      case SubjectsConstants.GINNASTICA:
+        return SvgPicture.asset(
+          "assets/icons/subjects/barbell.svg",
+        );
+        break;
       default:
         return SvgPicture.asset(
           "assets/icons/book_red_lines.svg",
