@@ -13,6 +13,7 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:tuple/tuple.dart';
 
 import 'constants/registro_constants.dart';
+import 'constants/subjects_constants.dart';
 
 class GlobalUtils {
   static Profile getMockProfile() {
@@ -112,34 +113,59 @@ class GlobalUtils {
 
   static int getSubjectConstFromName(String subjectName) {
     final stringToCompare = subjectName.toUpperCase();
-    switch (stringToCompare) {
-      case "MATEMATICA E COMPLEMENTI DI MATEMATICA":
-        return SubjectsConstants.MATEMATICA;
-        break;
-      case "RELIGIONE CATTOLICA / ATTIVITA ALTERNATIVA":
-        return SubjectsConstants.RELIGIONE;
-        break;
-      case "LINGUA INGLESE":
-        return SubjectsConstants.INGLESE;
-        break;
-      case "TECNOLOGIE E PROGETTAZIONE DI SISTEMI INFORMATICI E DI TELECOMUNICAZIONI":
-        return SubjectsConstants.TPSIT;
-        break;
-      case "LINGUA E LETTERATURA ITALIANA":
-        return SubjectsConstants.ITALIANO;
-        break;
-      case "SCIENZE MOTORIE E SPORTIVE":
-        return SubjectsConstants.GINNASTICA;
-        break;
-      case "INFORMATICA":
-        return SubjectsConstants.INFORMATICA;
-        break;
-      case "TELECOMUNICAZIONI":
-        return SubjectsConstants.TELECOMUNICAZIONI;
-        break;
-      default:
-        return -1;
+    if (stringToCompare.contains(RegExp(r'(MATEMATICA)'))) {
+      return SubjectsConstants.MATEMATICA;
     }
+    if (stringToCompare.contains(RegExp(r'(RELIGIONE|ALTERNATIVA)'))) {
+      return SubjectsConstants.RELIGIONE;
+    }
+    if (stringToCompare.contains("INGLESE")) {
+      return SubjectsConstants.INGLESE;
+    }
+    if (stringToCompare.contains(RegExp(r'(ITALIANA|ITALIANO)'))) {
+      return SubjectsConstants.ITALIANO;
+    }
+    if (stringToCompare.contains(RegExp(
+        r'("TECNOLOGIE E PROGETTAZIONE DI SISTEMI INFORMATICI E DI TELECOMUNICAZIONI")'))) {
+      return SubjectsConstants.TPSIT;
+    }
+    if (stringToCompare.contains(RegExp(r'(GINNASTICA|"SCIENZE MOTORIE")'))) {
+      return SubjectsConstants.GINNASTICA;
+    }
+    if (stringToCompare
+        .contains(RegExp(r'(INFORMATICA|"SCIENZE TECNOLOGIE APPLICATE")'))) {
+      return SubjectsConstants.INFORMATICA;
+    }
+    if (stringToCompare.contains(RegExp(r'(TELECOMUNICAZIONI)'))) {
+      return SubjectsConstants.TELECOMUNICAZIONI;
+    }
+    if (stringToCompare.contains(RegExp(r'(GEOGRAFIA)'))) {
+      return SubjectsConstants.GEOGRAFIA;
+    }
+    if (stringToCompare.contains(RegExp(r'(DIRITTO)'))) {
+      return SubjectsConstants.DIRITTO;
+    }
+    if (stringToCompare.contains(RegExp(r'(CHIMICA)'))) {
+      return SubjectsConstants.CHIMICA;
+    }
+    if (stringToCompare.contains(RegExp(
+        r'("LINGUA STRANIERA"|RUSSO|CINESE|TEDESCO|TEDESCA|SPAGNOLO|FRANCESE)'))) {
+      return SubjectsConstants.LINGUE;
+    }
+    if (stringToCompare.contains(RegExp(r'(ELETTRONICA)'))) {
+      return SubjectsConstants.ELETTRONICA;
+    }
+    if (stringToCompare.contains(RegExp(r'(ARTE)'))) {
+      return SubjectsConstants.ARTE;
+    }
+    if (stringToCompare
+        .contains(RegExp(r'("DISEGNO TECNICO"|TECNICHE|GRAFICHE|GRAFICA)'))) {
+      return SubjectsConstants.DISEGNO_TECNICO;
+    }
+    if (stringToCompare.contains(RegExp(r'(BIOLOGIA)'))) {
+      return SubjectsConstants.BIOLOGIA;
+    } else
+      return -1;
   }
 
   static String translateSubject(int subjectId) {
@@ -316,30 +342,8 @@ class GlobalUtils {
           "assets/icons/subjects/inglese.svg",
         );
         break;
-      case SubjectsConstants.FRANCESE:
-        return SvgPicture.asset(
-          "assets/icons/subjects/lingue.svg",
-        );
-        break;
-      case SubjectsConstants.SPAGNOLO:
-        return SvgPicture.asset(
-          "assets/icons/subjects/lingue.svg",
-        );
-        break;
-      case SubjectsConstants.RUSSO:
-        return SvgPicture.asset(
-          "assets/icons/subjects/lingue.svg",
-        );
-        break;
-      case SubjectsConstants.CINESE:
-        return SvgPicture.asset(
-          "assets/icons/subjects/lingue.svg",
-        );
-        break;
-      case SubjectsConstants.TEDESCO:
-        return SvgPicture.asset(
-          "assets/icons/subjects/lingue.svg",
-        );
+      case SubjectsConstants.LINGUE:
+        return SvgPicture.asset("assets/icons/subjects/lingue.svg");
         break;
       case SubjectsConstants.DISEGNO_TECNICO:
         return SvgPicture.asset(
