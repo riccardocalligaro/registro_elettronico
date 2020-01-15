@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 
 abstract class DocumentsRepository {
@@ -7,4 +8,9 @@ abstract class DocumentsRepository {
       getDocumentsAndSchoolReports();
 
   Future updateDocuments();
+
+  Future<Either<Failure, bool>> checkDocument(String documentHash);
+
+  /// Returns the [path]
+  Future<Either<Failure, String>> readDocument(String documentHash);
 }

@@ -40,6 +40,7 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
         clearCookies: true,
         appCacheEnabled: false,
         url: widget.url,
+        hidden: true,
         headers: {
           'Set-Cookie': '${widget.phpSessid}',
           'Cookie': '${widget.phpSessid}',

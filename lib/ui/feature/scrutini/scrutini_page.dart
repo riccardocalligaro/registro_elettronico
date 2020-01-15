@@ -1,12 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_file/open_file.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/data/network/service/web/web_spaggiari_client.dart';
-import 'package:registro_elettronico/data/network/service/web/web_spaggiari_client_impl.dart';
-import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
 import 'package:registro_elettronico/ui/bloc/documents/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/documents/document_attachment/bloc/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/token/bloc.dart';
 import 'package:registro_elettronico/ui/feature/scrutini/web/spaggiari_web_view.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
@@ -34,97 +32,165 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _drawerKey,
-      appBar: CustomAppBar(
-        scaffoldKey: _drawerKey,
-        title: Text(AppLocalizations.of(context).translate('scrutini')),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () {
-              BlocProvider.of<DocumentsBloc>(context).add(UpdateDocuments());
-              BlocProvider.of<DocumentsBloc>(context).add(GetDocuments());
-            },
-          )
-        ],
-      ),
-      drawer: AppDrawer(
-        position: DrawerConstants.SCRUTINI,
-      ),
-      body: BlocListener<TokenBloc, TokenState>(
-        listener: (context, state) {
-          if (state is TokenLoadInProgress) {
-            Scaffold.of(context).showSnackBar(
-              SnackBar(
-                behavior: SnackBarBehavior.floating,
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(AppLocalizations.of(context).translate('loading')),
-                    Container(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.red,
-                      ),
-                    )
-                  ],
-                ),
-                duration: Duration(minutes: 1),
-              ),
-            );
-          } else if (state is TokenLoadSuccess) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => SpaggiariWebView(
-                  phpSessid: state.token,
-                  url: state.schoolReport.viewLink,
-                  appBarTitle: state.schoolReport.description,
-                ),
-              ),
-            );
-          } else if (state is TokenLoadError) {
-            Scaffold.of(context).showSnackBar(
-              SnackBar(
-                behavior: SnackBarBehavior.floating,
-                content: Text(
-                  AppLocalizations.of(context)
-                      .translate('unexcepted_error_single'),
-                ),
-              ),
-            );
-          }
-        },
-        child: BlocBuilder<DocumentsBloc, DocumentsState>(
-          builder: (context, state) {
-            if (state is DocumentsLoadSuccess) {
-              return _buildDocumentsList(
-                documents: state.documents,
-                schoolReports: state.schoolReports,
-              );
-            }
-
-            if (state is DocumentsUpdateLoadError ||
-                state is DocumentsLoadError) {
-              return CustomPlaceHolder(
-                icon: Icons.error,
-                text:
-                    AppLocalizations.of(context).translate('unexcepted_error'),
-                showUpdate: true,
-                onTap: () {
-                  BlocProvider.of<DocumentsBloc>(context)
-                      .add(UpdateDocuments());
-                },
-              );
-            }
-
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          },
+        key: _drawerKey,
+        appBar: CustomAppBar(
+          scaffoldKey: _drawerKey,
+          title: Text(AppLocalizations.of(context).translate('scrutini')),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                BlocProvider.of<DocumentsBloc>(context).add(UpdateDocuments());
+                BlocProvider.of<DocumentsBloc>(context).add(GetDocuments());
+              },
+            )
+          ],
         ),
-      ),
-    );
+        drawer: AppDrawer(
+          position: DrawerConstants.SCRUTINI,
+        ),
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<TokenBloc, TokenState>(
+              listener: (context, state) {
+                if (state is TokenLoadInProgress) {
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(AppLocalizations.of(context)
+                              .translate('loading')),
+                          Container(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.red,
+                            ),
+                          )
+                        ],
+                      ),
+                      duration: Duration(minutes: 1),
+                    ),
+                  );
+                } else if (state is TokenLoadSuccess) {
+                  Scaffold.of(context)..removeCurrentSnackBar();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SpaggiariWebView(
+                        phpSessid: state.token,
+                        url: state.schoolReport.viewLink,
+                        appBarTitle: state.schoolReport.description,
+                      ),
+                    ),
+                  );
+                } else if (state is TokenLoadError) {
+                  Scaffold.of(context)..removeCurrentSnackBar();
+
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Text(
+                        AppLocalizations.of(context)
+                            .translate('unexcepted_error_single'),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+            BlocListener<DocumentAttachmentBloc, DocumentAttachmentState>(
+              listener: (context, state) {
+                if (state is DocumentLoadInProgress) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              AppLocalizations.of(context).translate('loading'),
+                            ),
+                            Container(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.red,
+                              ),
+                            )
+                          ],
+                        ),
+                        duration: Duration(minutes: 1),
+                      ),
+                    );
+                } else if (state is DocumentNotAvailable) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        content: Text('Not available'),
+                      ),
+                    );
+                } else if (state is DocumentLoadSuccess) {
+                  FLog.info(text: state.path);
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(
+                          AppLocalizations.of(context)
+                              .translate('download_of_file_completed')
+                              .replaceAll('{fileName}', state.path),
+                        ),
+                        action: SnackBarAction(
+                          label: AppLocalizations.of(context)
+                              .translate('open')
+                              .toUpperCase(),
+                          onPressed: () {
+                            OpenFile.open(state.path);
+                          },
+                        ),
+                      ),
+                    );
+                }
+              },
+              child: Container(),
+            )
+          ],
+          child: BlocBuilder<DocumentsBloc, DocumentsState>(
+            builder: (context, state) {
+              if (state is DocumentsLoadSuccess) {
+                return _buildDocumentsList(
+                  documents: state.documents,
+                  schoolReports: state.schoolReports,
+                );
+              }
+
+              if (state is DocumentsUpdateLoadError ||
+                  state is DocumentsLoadError) {
+                return CustomPlaceHolder(
+                  icon: Icons.error,
+                  text: AppLocalizations.of(context)
+                      .translate('unexcepted_error'),
+                  showUpdate: true,
+                  onTap: () {
+                    BlocProvider.of<DocumentsBloc>(context)
+                        .add(UpdateDocuments());
+                  },
+                );
+              }
+
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
+        ));
   }
 
   Widget _buildDocumentsList({
@@ -168,7 +234,9 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
             return ListTile(
               title: Text(document.description),
               onTap: () {
-                //TODO: open a web view with the pagella
+                BlocProvider.of<DocumentAttachmentBloc>(context).add(
+                  GetDocumentAttachment(document: document),
+                );
               },
             );
           },
