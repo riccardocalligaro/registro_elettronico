@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
+import 'package:dartz/dartz_streaming.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:registro_elettronico/component/api_config.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/entity/api_requests/login_request.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/absences_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/agenda_response.dart';
@@ -109,6 +111,18 @@ abstract class SpaggiariClient {
 
   @POST('/students/{studentId}/documents')
   Future<DocumentsResponse> getDocuments(@Path() String studentId);
+
+  @POST('/students/{studentId}/documents/check/{documentHash}')
+  Future<bool> checkDocumentAvailability(
+    @Path() String studentId,
+    @Path() String documentHash,
+  );
+
+  @POST('/students/{studentId}/documents/check/{documentHash}')
+  Future<Tuple2<List<int>, String>> readDocument(
+    @Path() String studentId,
+    @Path() String documentHash,
+  );
 }
 
 class _SpaggiariClient implements SpaggiariClient {
@@ -467,5 +481,60 @@ class _SpaggiariClient implements SpaggiariClient {
     );
     final value = DocumentsResponse.fromJson(_result.data);
     return Future.value(value);
+  }
+
+  @override
+  Future<bool> checkDocumentAvailability(
+      String studentId, String documentHash) async {
+    ArgumentError.checkNotNull(studentId, 'studentId');
+    ArgumentError.checkNotNull(documentHash, 'documentHash');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = '';
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+      '/students/$studentId/documents/check/$documentHash',
+      queryParameters: queryParameters,
+      options: RequestOptions(
+        method: 'POST',
+        headers: <String, dynamic>{},
+        extra: _extra,
+        baseUrl: baseUrl,
+      ),
+      data: _data,
+    );
+
+    final bool avaliable = _result.data['document']['available'];
+    return Future.value(avaliable);
+  }
+
+  @override
+  Future<Tuple2<List<int>, String>> readDocument(
+    String studentId,
+    String documentHash,
+  ) async {
+    ArgumentError.checkNotNull(studentId, 'studentId');
+    ArgumentError.checkNotNull(documentHash, 'documentHash');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = '';
+    final Response<List<dynamic>> _result = await _dio.request(
+      '/students/$studentId/documents/read/$documentHash',
+      queryParameters: queryParameters,
+      options: RequestOptions(
+        method: 'POST',
+        headers: <String, dynamic>{},
+        extra: _extra,
+        baseUrl: baseUrl,
+        responseType: ResponseType.bytes,
+      ),
+      data: _data,
+    );
+    final bytes = _result.data.cast<int>();
+
+    String filename = _result.headers.value('content-disposition') ?? "";
+    filename = filename.replaceAll('attachment; filename=', '');
+    filename = filename.replaceAll(RegExp('\"'), '');
+    filename = filename.trim();
+    return Tuple2(bytes, filename);
   }
 }

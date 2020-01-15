@@ -1,7 +1,9 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
+
 import './bloc.dart';
 
 class TokenBloc extends Bloc<TokenEvent, TokenState> {
@@ -19,6 +21,7 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
     if (event is GetLoginToken) {
       FLog.info(text: 'Getting token from Spaggiari');
       yield TokenLoadInProgress();
+
       final tokenResponse = await scrutiniRepository.getLoginToken();
       FLog.info(text: 'Got token from Spaggiari');
       yield tokenResponse.fold(
