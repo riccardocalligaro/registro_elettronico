@@ -35,6 +35,7 @@ import 'package:registro_elettronico/data/repository/periods_repository_impl.dar
 
 // All the data level repositories
 import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
+import 'package:registro_elettronico/data/repository/scrutini_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/timetable_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
@@ -45,6 +46,7 @@ import 'package:registro_elettronico/domain/repository/periods_repository.dart';
 
 // All the domain level repositories
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
+import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
 import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
 
 // BLoc
@@ -157,7 +159,8 @@ class AppInjector {
     });
 
     Injector.appInstance.registerSingleton<WebSpaggiariClient>((i) {
-      return WebSpaggiariClientImpl(i.getDependency(dependencyName: 'WebSpaggiariDio'));
+      return WebSpaggiariClientImpl(
+          i.getDependency(dependencyName: 'WebSpaggiariDio'));
     });
   }
 
@@ -276,6 +279,15 @@ class AppInjector {
         i.getDependency(),
       );
       return documentsRepository;
+    });
+
+    Injector.appInstance.registerSingleton((i) {
+      ScrutiniRepository scrutiniRepository = ScrutiniRepositoryImpl(
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
+      return scrutiniRepository;
     });
   }
 

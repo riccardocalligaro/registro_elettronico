@@ -7,6 +7,7 @@ import 'package:registro_elettronico/data/network/service/web/web_spaggiari_clie
 import 'package:registro_elettronico/data/network/service/web/web_spaggiari_client_impl.dart';
 import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
 import 'package:registro_elettronico/ui/bloc/documents/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/token/bloc.dart';
 import 'package:registro_elettronico/ui/feature/scrutini/web/spaggiari_web_view.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
@@ -50,31 +51,78 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
       drawer: AppDrawer(
         position: DrawerConstants.SCRUTINI,
       ),
-      body: BlocBuilder<DocumentsBloc, DocumentsState>(
-        builder: (context, state) {
-          if (state is DocumentsLoadSuccess) {
-            return _buildDocumentsList(
-              documents: state.documents,
-              schoolReports: state.schoolReports,
+      body: BlocListener<TokenBloc, TokenState>(
+        listener: (context, state) {
+          if (state is TokenLoadInProgress) {
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(AppLocalizations.of(context).translate('loading')),
+                    Container(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.red,
+                      ),
+                    )
+                  ],
+                ),
+                duration: Duration(minutes: 1),
+              ),
+            );
+          } else if (state is TokenLoadSuccess) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SpaggiariWebView(
+                  phpSessid: state.token,
+                  url: state.schoolReport.viewLink,
+                  appBarTitle: state.schoolReport.description,
+                ),
+              ),
+            );
+          } else if (state is TokenLoadError) {
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text(
+                  AppLocalizations.of(context)
+                      .translate('unexcepted_error_single'),
+                ),
+              ),
             );
           }
-
-          if (state is DocumentsUpdateLoadError ||
-              state is DocumentsLoadError) {
-            return CustomPlaceHolder(
-              icon: Icons.error,
-              text: AppLocalizations.of(context).translate('unexcepted_error'),
-              showUpdate: true,
-              onTap: () {
-                BlocProvider.of<DocumentsBloc>(context).add(UpdateDocuments());
-              },
-            );
-          }
-
-          return Center(
-            child: CircularProgressIndicator(),
-          );
         },
+        child: BlocBuilder<DocumentsBloc, DocumentsState>(
+          builder: (context, state) {
+            if (state is DocumentsLoadSuccess) {
+              return _buildDocumentsList(
+                documents: state.documents,
+                schoolReports: state.schoolReports,
+              );
+            }
+
+            if (state is DocumentsUpdateLoadError ||
+                state is DocumentsLoadError) {
+              return CustomPlaceHolder(
+                icon: Icons.error,
+                text:
+                    AppLocalizations.of(context).translate('unexcepted_error'),
+                showUpdate: true,
+                onTap: () {
+                  BlocProvider.of<DocumentsBloc>(context)
+                      .add(UpdateDocuments());
+                },
+              );
+            }
+
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
       ),
     );
   }
@@ -98,37 +146,10 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
             final report = schoolReports[index];
             return ListTile(
               title: Text(report.description),
-              onTap: () async {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => SpaggiariWebView(
-                      phpSessid: '26ftcn9ih43loas936h21ilpl2l520mh',
-                      url: report.viewLink,
-                      appBarTitle: report.viewLink,
-                    ),
-                  ),
-                );
-                // final tokenResponse =
-                //     await RepositoryProvider.of<ScrutiniRepository>(context)
-                //         .getLoginToken();
-                // tokenResponse.fold(
-                //     (error) => {
-                //           Scaffold.of(context).showSnackBar(
-                //             SnackBar(
-                //               content: Text('Retry'),
-                //             ),
-                //           )
-                //         }, (token) {
-                //   Navigator.of(context).push(
-                //     MaterialPageRoute(
-                //       builder: (context) => SpaggiariWebView(
-                //         phpSessid: token,
-                //         url: report.viewLink,
-                //         appBarTitle: report.description,
-                //       ),
-                //     ),
-                //   );
-                // });
+              onTap: () {
+                BlocProvider.of<TokenBloc>(context).add(GetLoginToken(
+                  schoolReport: report,
+                ));
               },
             );
           },

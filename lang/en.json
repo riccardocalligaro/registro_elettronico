@@ -157,7 +157,8 @@
   "email_message": "Please provide a more detailed possible description of the bug. Thank you 👍🏻",
   "thanks_to": "Thanks to",
   "the_application": "The application",
-  "generate":"Generate",
-  "outdated_notices":"Show outdated notices",
-  "scrutini":"Final grades"
+  "generate": "Generate",
+  "outdated_notices": "Show outdated notices",
+  "scrutini": "Final grades",
+  "loading": "Loading..."
 }
