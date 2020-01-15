@@ -25,6 +25,8 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
   final flutterWebViewPlugin = FlutterWebviewPlugin();
   final _channel = const MethodChannel('flutter_webview_plugin');
   StreamSubscription<String> _onUrlChanged;
+  StreamSubscription<WebViewStateChanged> _onStateChanged;
+
   bool flag = true;
 
   @override
@@ -33,26 +35,40 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
     _onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {
       FLog.info(text: 'Url changed $url');
       if (flag) {
+        //_getcookies();
+      }
+    });
+
+    _onStateChanged =
+        flutterWebViewPlugin.onStateChanged.listen((WebViewStateChanged state) {
+      FLog.info(text: 'state $state');
+      if (state.type == WebViewState.startLoad) {
         _getcookies();
       }
     });
+
     super.initState();
   }
 
-  Future _getcookies() async {
+  Future _getcookies() async {\
     setState(() {
       flag = false;
     });
     print("get cookies");
 
-    await evalJavascript('document.cookie="Authority=manager"');
-    await evalJavascript(
-        'document.cookie="bestimage_dev_access_token=${'ads'}"');
-
     String cookiesString = await evalJavascript('document.cookie');
+    print("cookies before");
+    await flutterWebViewPlugin.cleanCookies();
+    cookiesString = await evalJavascript('document.cookie');
+    print("cookies after cleaning before");
+    print(cookiesString.toString());
+
+    await evalJavascript('document.cookie="PHPSESSID=${widget.phpSessid}"');
+
+    cookiesString = await evalJavascript('document.cookie');
     print("just inserted cookie is");
     print(cookiesString.toString());
-    await evalJavascript('location.reload();');
+    //await evalJavascript('location.reload();');
   }
 
   Future<String> evalJavascript(String code) async {
@@ -67,7 +83,6 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
       debuggingEnabled: true,
       withZoom: true,
       displayZoomControls: true,
-      clearCookies: true,
       clearCache: true,
       appCacheEnabled: false,
       url: widget.url,
