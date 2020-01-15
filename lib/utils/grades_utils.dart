@@ -213,6 +213,7 @@ class GradesUtils {
   /// Taken from registro elettroncio github by Simone Luconi, thanks
   static String getGradeMessage(
       double obj, double average, int numberOfGrades, BuildContext context) {
+    if(average.isNaN) return AppLocalizations.of(context).translate('dont_worry');
     if (obj > 10 || average > 10) {
       return AppLocalizations.of(context).translate('calculation_error');
     }

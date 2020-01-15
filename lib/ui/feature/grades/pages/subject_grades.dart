@@ -59,7 +59,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
       grades = widget.grades
           .where((grade) => grade.subjectId == subject.id)
           .toList()
-            ..sort((a, b) => a.eventDate.compareTo(b.eventDate));
+            ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
     }
 
     final averages =

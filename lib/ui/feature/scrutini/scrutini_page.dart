@@ -99,25 +99,36 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
             return ListTile(
               title: Text(report.description),
               onTap: () async {
-                final tokenResponse =
-                    await RepositoryProvider.of<ScrutiniRepository>(context)
-                        .getLoginToken();
-                tokenResponse.fold(
-                    (error) => {
-                          Scaffold.of(context).showSnackBar(SnackBar(
-                            content: Text('Retry'),
-                          ))
-                        }, (token) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SpaggiariWebView(
-                        phpSessid: token,
-                        url: report.viewLink,
-                        appBarTitle: report.description,
-                      ),
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SpaggiariWebView(
+                      phpSessid: '26ftcn9ih43loas936h21ilpl2l520mh',
+                      url: report.viewLink,
+                      appBarTitle: report.viewLink,
                     ),
-                  );
-                });
+                  ),
+                );
+                // final tokenResponse =
+                //     await RepositoryProvider.of<ScrutiniRepository>(context)
+                //         .getLoginToken();
+                // tokenResponse.fold(
+                //     (error) => {
+                //           Scaffold.of(context).showSnackBar(
+                //             SnackBar(
+                //               content: Text('Retry'),
+                //             ),
+                //           )
+                //         }, (token) {
+                //   Navigator.of(context).push(
+                //     MaterialPageRoute(
+                //       builder: (context) => SpaggiariWebView(
+                //         phpSessid: token,
+                //         url: report.viewLink,
+                //         appBarTitle: report.description,
+                //       ),
+                //     ),
+                //   );
+                // });
               },
             );
           },
