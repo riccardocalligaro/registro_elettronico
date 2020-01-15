@@ -76,11 +76,12 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
                 child: CircularPercentIndicator(
                   radius: 60.0,
                   lineWidth: 6.0,
-                  percent: average / 10,
+                  percent: average.isNaN ? 1 : average / 10,
                   backgroundColor: Colors.white,
                   animation: true,
                   animationDuration: 300,
-                  center: new Text(average.toStringAsFixed(2)),
+                  center: new Text(
+                      average.isNaN ? '-' : average.toStringAsFixed(2)),
                   progressColor: GlobalUtils.getColorFromAverage(average),
                 ),
               ),
