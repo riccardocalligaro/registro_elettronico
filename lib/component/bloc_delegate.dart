@@ -27,6 +27,7 @@ import 'package:registro_elettronico/ui/bloc/periods/periods_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/professors/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/timetable/timetable_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/token/token_bloc.dart';
 
 class AppBlocDelegate {
   static AppBlocDelegate _instance;
@@ -133,6 +134,9 @@ class AppBlocDelegate {
       ),
       BlocProvider<DocumentsBloc>(
         create: (ctx) => DocumentsBloc(i.getDependency()),
+      ),
+      BlocProvider<TokenBloc>(
+        create: (ctx) => TokenBloc(i.getDependency()),
       ),
     ];
   }
