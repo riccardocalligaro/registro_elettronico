@@ -42,6 +42,9 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     super.didChangeDependencies();
     BlocProvider.of<ProfessorsBloc>(context)
         .add(GetProfessorsForSubject(subjectId: widget.subject.id));
+    BlocProvider.of<LocalGradesBloc>(context).add(GetLocalGrades(
+      period: widget.period,
+    ));
   }
 
   @override
@@ -123,7 +126,14 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                       grades);
                 }
 
-                if (state is LocalGradesError) {}
+                if (state is LocalGradesError) {
+                  return CustomPlaceHolder(
+                    icon: Icons.error,
+                    showUpdate: false,
+                    text: AppLocalizations.of(context)
+                        .translate('unexcepted_error_single'),
+                  );
+                }
 
                 return Container();
               },
