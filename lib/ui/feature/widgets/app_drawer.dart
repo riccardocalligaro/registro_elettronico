@@ -224,7 +224,7 @@ class _AppDrawerState extends State<AppDrawer>
             _createDrawerItem(
               icon: Icons.share,
               text: trans.translate("share"),
-              pos: 10,
+              pos: DrawerConstants.SHARE,
               onTap: () {
                 Share.share(AppLocalizations.of(context)
                     .translate('share_message')
