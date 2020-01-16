@@ -7665,6 +7665,211 @@ class $SchoolReportsTable extends SchoolReports
   }
 }
 
+class DownloadedDocument extends DataClass
+    implements Insertable<DownloadedDocument> {
+  final String hash;
+  final String path;
+  final String filename;
+  DownloadedDocument(
+      {@required this.hash, @required this.path, @required this.filename});
+  factory DownloadedDocument.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final stringType = db.typeSystem.forDartType<String>();
+    return DownloadedDocument(
+      hash: stringType.mapFromDatabaseResponse(data['${effectivePrefix}hash']),
+      path: stringType.mapFromDatabaseResponse(data['${effectivePrefix}path']),
+      filename: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}filename']),
+    );
+  }
+  factory DownloadedDocument.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return DownloadedDocument(
+      hash: serializer.fromJson<String>(json['hash']),
+      path: serializer.fromJson<String>(json['path']),
+      filename: serializer.fromJson<String>(json['filename']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'hash': serializer.toJson<String>(hash),
+      'path': serializer.toJson<String>(path),
+      'filename': serializer.toJson<String>(filename),
+    };
+  }
+
+  @override
+  DownloadedDocumentsCompanion createCompanion(bool nullToAbsent) {
+    return DownloadedDocumentsCompanion(
+      hash: hash == null && nullToAbsent ? const Value.absent() : Value(hash),
+      path: path == null && nullToAbsent ? const Value.absent() : Value(path),
+      filename: filename == null && nullToAbsent
+          ? const Value.absent()
+          : Value(filename),
+    );
+  }
+
+  DownloadedDocument copyWith({String hash, String path, String filename}) =>
+      DownloadedDocument(
+        hash: hash ?? this.hash,
+        path: path ?? this.path,
+        filename: filename ?? this.filename,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DownloadedDocument(')
+          ..write('hash: $hash, ')
+          ..write('path: $path, ')
+          ..write('filename: $filename')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(hash.hashCode, $mrjc(path.hashCode, filename.hashCode)));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is DownloadedDocument &&
+          other.hash == this.hash &&
+          other.path == this.path &&
+          other.filename == this.filename);
+}
+
+class DownloadedDocumentsCompanion extends UpdateCompanion<DownloadedDocument> {
+  final Value<String> hash;
+  final Value<String> path;
+  final Value<String> filename;
+  const DownloadedDocumentsCompanion({
+    this.hash = const Value.absent(),
+    this.path = const Value.absent(),
+    this.filename = const Value.absent(),
+  });
+  DownloadedDocumentsCompanion.insert({
+    @required String hash,
+    @required String path,
+    @required String filename,
+  })  : hash = Value(hash),
+        path = Value(path),
+        filename = Value(filename);
+  DownloadedDocumentsCompanion copyWith(
+      {Value<String> hash, Value<String> path, Value<String> filename}) {
+    return DownloadedDocumentsCompanion(
+      hash: hash ?? this.hash,
+      path: path ?? this.path,
+      filename: filename ?? this.filename,
+    );
+  }
+}
+
+class $DownloadedDocumentsTable extends DownloadedDocuments
+    with TableInfo<$DownloadedDocumentsTable, DownloadedDocument> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DownloadedDocumentsTable(this._db, [this._alias]);
+  final VerificationMeta _hashMeta = const VerificationMeta('hash');
+  GeneratedTextColumn _hash;
+  @override
+  GeneratedTextColumn get hash => _hash ??= _constructHash();
+  GeneratedTextColumn _constructHash() {
+    return GeneratedTextColumn(
+      'hash',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _pathMeta = const VerificationMeta('path');
+  GeneratedTextColumn _path;
+  @override
+  GeneratedTextColumn get path => _path ??= _constructPath();
+  GeneratedTextColumn _constructPath() {
+    return GeneratedTextColumn(
+      'path',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _filenameMeta = const VerificationMeta('filename');
+  GeneratedTextColumn _filename;
+  @override
+  GeneratedTextColumn get filename => _filename ??= _constructFilename();
+  GeneratedTextColumn _constructFilename() {
+    return GeneratedTextColumn(
+      'filename',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [hash, path, filename];
+  @override
+  $DownloadedDocumentsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'downloaded_documents';
+  @override
+  final String actualTableName = 'downloaded_documents';
+  @override
+  VerificationContext validateIntegrity(DownloadedDocumentsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.hash.present) {
+      context.handle(
+          _hashMeta, hash.isAcceptableValue(d.hash.value, _hashMeta));
+    } else if (hash.isRequired && isInserting) {
+      context.missing(_hashMeta);
+    }
+    if (d.path.present) {
+      context.handle(
+          _pathMeta, path.isAcceptableValue(d.path.value, _pathMeta));
+    } else if (path.isRequired && isInserting) {
+      context.missing(_pathMeta);
+    }
+    if (d.filename.present) {
+      context.handle(_filenameMeta,
+          filename.isAcceptableValue(d.filename.value, _filenameMeta));
+    } else if (filename.isRequired && isInserting) {
+      context.missing(_filenameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  DownloadedDocument map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DownloadedDocument.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DownloadedDocumentsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.hash.present) {
+      map['hash'] = Variable<String, StringType>(d.hash.value);
+    }
+    if (d.path.present) {
+      map['path'] = Variable<String, StringType>(d.path.value);
+    }
+    if (d.filename.present) {
+      map['filename'] = Variable<String, StringType>(d.filename.value);
+    }
+    return map;
+  }
+
+  @override
+  $DownloadedDocumentsTable createAlias(String alias) {
+    return $DownloadedDocumentsTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProfilesTable _profiles;
@@ -7715,6 +7920,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $SchoolReportsTable _schoolReports;
   $SchoolReportsTable get schoolReports =>
       _schoolReports ??= $SchoolReportsTable(this);
+  $DownloadedDocumentsTable _downloadedDocuments;
+  $DownloadedDocumentsTable get downloadedDocuments =>
+      _downloadedDocuments ??= $DownloadedDocumentsTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   LessonDao _lessonDao;
@@ -7766,6 +7974,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         localGrades,
         timetableEntries,
         documents,
-        schoolReports
+        schoolReports,
+        downloadedDocuments
       ];
 }

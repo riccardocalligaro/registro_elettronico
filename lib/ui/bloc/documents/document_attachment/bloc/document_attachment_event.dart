@@ -9,3 +9,9 @@ class GetDocumentAttachment extends DocumentAttachmentEvent {
 
   GetDocumentAttachment({@required this.document});
 }
+
+class DeleteDocumentAttachment extends DocumentAttachmentEvent {
+  final Document document;
+
+  DeleteDocumentAttachment({@required this.document});
+}

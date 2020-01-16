@@ -9,4 +9,5 @@ part of 'document_dao.dart';
 mixin _$DocumentsDaoMixin on DatabaseAccessor<AppDatabase> {
   $DocumentsTable get documents => db.documents;
   $SchoolReportsTable get schoolReports => db.schoolReports;
+  $DownloadedDocumentsTable get downloadedDocuments => db.downloadedDocuments;
 }

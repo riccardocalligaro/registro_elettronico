@@ -53,7 +53,8 @@ part 'moor_database.g.dart';
   LocalGrades,
   TimetableEntries,
   Documents,
-  SchoolReports
+  SchoolReports,
+  DownloadedDocuments,
 ], daos: [
   ProfileDao,
   LessonDao,

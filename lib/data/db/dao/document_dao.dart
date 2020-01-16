@@ -7,6 +7,7 @@ part 'document_dao.g.dart';
 @UseDao(tables: [
   Documents,
   SchoolReports,
+  DownloadedDocuments,
 ])
 class DocumentsDao extends DatabaseAccessor<AppDatabase>
     with _$DocumentsDaoMixin {
@@ -18,6 +19,22 @@ class DocumentsDao extends DatabaseAccessor<AppDatabase>
 
   Future<List<Document>> getAllDocuments() => select(documents).get();
 
+  Future<List<DownloadedDocument>> getAllDownloadedDocuments() =>
+      select(downloadedDocuments).get();
+
+  Future<DownloadedDocument> getDownloadedDocument(String hash) {
+    return (select(downloadedDocuments)..where((d) => d.hash.equals(hash)))
+        .getSingle();
+  }
+
+  Future deleteAllDownloadedDocuments() => delete(downloadedDocuments).go();
+
+  Future deleteDownloadedDocument(DownloadedDocument downloadedDocument) =>
+      delete(downloadedDocuments).delete(downloadedDocument);
+
+  Future insertDownloadedDocument(DownloadedDocument downloadedDocument) =>
+      into(downloadedDocuments).insert(downloadedDocument);
+
   Future deeteAllDocuments() => delete(documents).go();
 
   Future deeteAllSchoolReports() => delete(schoolReports).go();
@@ -27,4 +44,9 @@ class DocumentsDao extends DatabaseAccessor<AppDatabase>
 
   Future insertSchoolReports(List<SchoolReport> schoolReportsList) =>
       into(schoolReports).insertAll(schoolReportsList);
+
+  Future<DownloadedDocument> getDownloadedDocumentFromHash(String hash) {
+    return (select(downloadedDocuments)..where((g) => g.hash.equals(hash)))
+        .getSingle();
+  }
 }

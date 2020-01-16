@@ -10,3 +10,9 @@ class SchoolReports extends Table {
   TextColumn get confirmLink => text()();
   TextColumn get viewLink => text()();
 }
+
+class DownloadedDocuments extends Table {
+  TextColumn get hash => text()();
+  TextColumn get path => text()();
+  TextColumn get filename => text()();
+}

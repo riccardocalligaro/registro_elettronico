@@ -7,6 +7,12 @@ class DocumentAttachmentInitial extends DocumentAttachmentState {}
 
 class DocumentLoadInProgress extends DocumentAttachmentState {}
 
+class DocumentLoadedLocally extends DocumentAttachmentState {
+  final String path;
+
+  DocumentLoadedLocally({@required this.path});
+}
+
 class DocumentNotAvailable extends DocumentAttachmentState {}
 
 class DocumentLoadSuccess extends DocumentAttachmentState {
@@ -16,3 +22,9 @@ class DocumentLoadSuccess extends DocumentAttachmentState {
 }
 
 class DocumentAttachmentError extends DocumentAttachmentState {}
+
+// Delete
+
+class DocumentAttachmentDeleteSuccess extends DocumentAttachmentState {}
+
+class DocumentAttachmentDeleteError extends DocumentAttachmentState {}
