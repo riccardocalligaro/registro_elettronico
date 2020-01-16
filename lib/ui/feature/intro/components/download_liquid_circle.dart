@@ -119,7 +119,7 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                         constraints: Constraints(
                           // we need the user to be conntected, these parameters will be customizable in the future
                           //TODO: let user customize these params
-                          networkType: NetworkType.connected,
+                          networkType: NetworkType.unmetered,
                           requiresBatteryNotLow: true,
                         ),
                       );

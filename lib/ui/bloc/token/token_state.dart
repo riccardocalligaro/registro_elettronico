@@ -8,13 +8,21 @@ class TokenInitial extends TokenState {}
 
 class TokenLoadInProgress extends TokenState {}
 
-class TokenLoadSuccess extends TokenState {
+class TokenSchoolReportLoadSuccess extends TokenState {
   final String token;
   final SchoolReport schoolReport;
 
-  TokenLoadSuccess({
+  TokenSchoolReportLoadSuccess({
     @required this.token,
     @required this.schoolReport,
+  });
+}
+
+class TokenLoadSuccess extends TokenState {
+  final String token;
+
+  TokenLoadSuccess({
+    @required this.token,
   });
 }
 

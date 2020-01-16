@@ -74,7 +74,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                       duration: Duration(minutes: 1),
                     ),
                   );
-                } else if (state is TokenLoadSuccess) {
+                } else if (state is TokenSchoolReportLoadSuccess) {
                   Scaffold.of(context)..removeCurrentSnackBar();
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -237,7 +237,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
             return ListTile(
               title: Text(report.description),
               onTap: () {
-                BlocProvider.of<TokenBloc>(context).add(GetLoginToken(
+                BlocProvider.of<TokenBloc>(context)
+                    .add(GetLoginTokenForSchoolReport(
                   schoolReport: report,
                 ));
               },

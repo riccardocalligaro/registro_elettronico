@@ -164,5 +164,7 @@
   "error_emoji": "Error ❌",
   "deleted_success": "File eliminato",
   "last_year": "Last year",
-  "web":"Web"
+  "web": "Web",
+  "only_wifi_title": "Only Wi-Fi",
+  "only_wifi_subtitle": "Update notifications only when on Wi-Fi"
 }
