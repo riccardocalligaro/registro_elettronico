@@ -13,4 +13,5 @@ abstract class DrawerConstants {
   // static const ANNO_PRECEDENTE = 10;
   // static const WEB = 11;
   static const SETTINGS = 10;
+  static const SHARE = 11;
 }
