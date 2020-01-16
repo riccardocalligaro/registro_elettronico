@@ -160,5 +160,9 @@
   "generate": "Generate",
   "outdated_notices": "Show outdated notices",
   "scrutini": "Final grades",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "error_emoji": "Error ❌",
+  "deleted_success": "File eliminato",
+  "last_year": "Last year",
+  "web":"Web"
 }

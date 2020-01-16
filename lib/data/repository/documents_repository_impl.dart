@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:f_logs/f_logs.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/data/db/dao/document_dao.dart';
@@ -73,26 +74,62 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   Future<Either<Failure, String>> readDocument(String documentHash) async {
     try {
       final profile = await profileRepository.getDbProfile();
-      final directory = await getApplicationDocumentsDirectory();
       final document = await spaggiariClient.readDocument(
         profile.studentId,
         documentHash,
       );
-
-      final filePath = '${directory.path}/${document.value2}';
+      String filename = document.value2;
+      filename = filename.replaceAll('attachment; filename=', '');
+      filename = filename.replaceAll(RegExp('\"'), '');
+      filename = filename.trim();
+      FLog.info(text: 'Filename -> $filename');
+      final path = await _localPath;
+      String filePath = '$path/$filename';
       File file = File(filePath);
-      final exists = await file.exists();
+      var raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(document.value1);
+      await raf.close();
 
-      if (exists) {
-        var raf = file.openSync(mode: FileMode.write);
-        raf.writeFromSync(document.value1);
-        await raf.close();
-        return Right(filePath);
-      } else {
-        return Right(filePath);
-      }
+      await documentsDao.insertDownloadedDocument(DownloadedDocument(
+        path: filePath,
+        filename: filename,
+        hash: documentHash,
+      ));
+
+      return Right(filePath);
     } catch (e) {
       return Left(ServerFailure());
     }
+  }
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
+  @override
+  Future deleteAllDownloadedDocuments() {
+    return documentsDao.deleteAllDownloadedDocuments();
+  }
+
+  @override
+  Future deleteDownloadedDocument(String hash) async {
+    FLog.info(text: 'Checking downloaded');
+    final fileDb = await documentsDao.getDownloadedDocumentFromHash(hash);
+    if (fileDb != null) {
+      File file = File(fileDb.path);
+      file.deleteSync();
+      documentsDao.deleteDownloadedDocument(fileDb);
+    }
+  }
+
+  @override
+  Future<List<DownloadedDocument>> getAllDownloadedDocuments() {
+    return documentsDao.getAllDownloadedDocuments();
+  }
+
+  @override
+  Future<DownloadedDocument> getDownloadedDocument(String hash) {
+    return documentsDao.getDownloadedDocument(hash);
   }
 }

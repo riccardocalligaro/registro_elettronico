@@ -1,8 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:dartz/dartz_streaming.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:registro_elettronico/component/api_config.dart';
-import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/entity/api_requests/login_request.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/absences_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/agenda_response.dart';
@@ -11,14 +9,13 @@ import 'package:registro_elettronico/domain/entity/api_responses/documents_respo
 import 'package:registro_elettronico/domain/entity/api_responses/grades_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/lessons_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/login_response.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/notes_read_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/notes_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/noticeboard_read_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/noticeboard_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/parent_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/periods_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/subjects_response.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/notes_read_response.dart';
-
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -531,10 +528,8 @@ class _SpaggiariClient implements SpaggiariClient {
     );
     final bytes = _result.data.cast<int>();
 
-    String filename = _result.headers.value('content-disposition') ?? "";
-    filename = filename.replaceAll('attachment; filename=', '');
-    filename = filename.replaceAll(RegExp('\"'), '');
-    filename = filename.trim();
+    String filename = _result.headers.value('content-disposition');
+ 
     return Tuple2(bytes, filename);
   }
 }

@@ -24,7 +24,7 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer>
     with AutomaticKeepAliveClientMixin {
-  List<bool> selectedList = new List<bool>.filled(12, false);
+  List<bool> selectedList = new List<bool>.filled(14, false);
   bool _showUserDetails = false;
 
   @override
@@ -189,6 +189,22 @@ class _AppDrawerState extends State<AppDrawer>
               icon: Icons.import_contacts,
               text: AppLocalizations.of(context).translate('scrutini'),
               pos: DrawerConstants.SCRUTINI,
+              onTap: () {
+                AppNavigator.instance.navToScrutini(context);
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.archive,
+              text: trans.translate('last_year'),
+              pos: DrawerConstants.ANNO_PRECEDENTE,
+              onTap: () {
+                AppNavigator.instance.navToScrutini(context);
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.web,
+              text: trans.translate('web'),
+              pos: DrawerConstants.WEB,
               onTap: () {
                 AppNavigator.instance.navToScrutini(context);
               },

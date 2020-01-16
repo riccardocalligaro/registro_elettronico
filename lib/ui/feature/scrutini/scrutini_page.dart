@@ -157,6 +157,29 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                         ),
                       ),
                     );
+                } else if (state is DocumentLoadedLocally) {
+                  Scaffold.of(context)..removeCurrentSnackBar();
+                  OpenFile.open(state.path);
+                } else if (state is DocumentAttachmentDeleteSuccess) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(AppLocalizations.of(context)
+                            .translate('deleted_success')),
+                      ),
+                    );
+                } else if (state is DocumentAttachmentError) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(AppLocalizations.of(context)
+                            .translate('error_emoji')),
+                      ),
+                    );
                 }
               },
               child: Container(),
@@ -207,6 +230,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
         ),
         ListView.builder(
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           itemCount: schoolReports.length,
           itemBuilder: (context, index) {
             final report = schoolReports[index];
@@ -228,6 +252,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
         ),
         ListView.builder(
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           itemCount: documents.length,
           itemBuilder: (context, index) {
             final document = documents[index];
@@ -236,6 +261,44 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
               onTap: () {
                 BlocProvider.of<DocumentAttachmentBloc>(context).add(
                   GetDocumentAttachment(document: document),
+                );
+              },
+              onLongPress: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text(AppLocalizations.of(context)
+                          .translate('sure_to_delete_it')),
+                      content: Text(AppLocalizations.of(context)
+                          .translate('the_file_will_be_deleted')),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate('cancel')
+                                .toUpperCase(),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        FlatButton(
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate('delete')
+                                .toUpperCase(),
+                          ),
+                          onPressed: () {
+                            BlocProvider.of<DocumentAttachmentBloc>(context)
+                                .add(DeleteDocumentAttachment(
+                                    document: document));
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    );
+                  },
                 );
               },
             );

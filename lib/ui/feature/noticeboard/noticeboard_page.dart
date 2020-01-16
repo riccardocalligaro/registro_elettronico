@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
@@ -231,6 +232,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           }
 
           if (state is AttachmentDownloadLoaded) {
+            FLog.info(text: 'Path ${state.path}');
             Scaffold.of(context)
               ..removeCurrentSnackBar()
               ..showSnackBar(

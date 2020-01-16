@@ -160,5 +160,9 @@
   "generate": "Genera",
   "outdated_notices": "Mostra circolari non attive",
   "scrutini": "Scrutini",
-  "loading": "Caricando..."
+  "loading": "Caricando...",
+  "error_emoji": "Errore ❌",
+  "deleted_success": "File eliminato",
+  "last_year": "Anno precedente",
+  "web": "Web"
 }
