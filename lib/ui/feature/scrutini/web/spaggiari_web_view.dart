@@ -1,3 +1,4 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
@@ -18,8 +19,14 @@ class SpaggiariWebView extends StatefulWidget {
 }
 
 class _SpaggiariWebViewState extends State<SpaggiariWebView> {
+  final flutterWebviewPlugin = new FlutterWebviewPlugin();
+  Map<String, String> headers;
   @override
   void initState() {
+    headers = {
+      'Set-Cookie': '${widget.phpSessid}',
+      'Cookie': '${widget.phpSessid}',
+    };
     super.initState();
   }
 
@@ -30,22 +37,19 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
       key: _scaffoldkey,
       body: WebviewScaffold(
         debuggingEnabled: true,
+        userAgent:
+            'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:37.0) Gecko/20100101 Firefox/37.0',
         withZoom: true,
         displayZoomControls: true,
-        clearCache: true,
+        clearCache: false,
         clearCookies: true,
         appCacheEnabled: false,
         url: widget.url,
         hidden: true,
-        headers: {
-          'Set-Cookie': '${widget.phpSessid}',
-          'Cookie': '${widget.phpSessid}',
-          'User-Agent':
-              'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:37.0) Gecko/20100101 Firefox/37.0'
-        },
+        headers: headers,
         appBar: new AppBar(
           title: new Text(
-            widget.appBarTitle,
+            widget.appBarTitle ?? '',
           ),
           actions: <Widget>[
             IconButton(

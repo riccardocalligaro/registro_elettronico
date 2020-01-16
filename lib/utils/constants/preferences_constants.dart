@@ -21,4 +21,5 @@ class PrefsConstants {
   static const LAST_UPDATE_NOTICEBOARD = 'last_update_noticeboard';
   static const DIRECTORY_NAME = 'FLogs';
   static const SHOW_OUTDATED_NOTICES = 'show_outdated_notices';
+  static const UPDATE_ONLY_WIFI = 'update_only_wifi';
 }

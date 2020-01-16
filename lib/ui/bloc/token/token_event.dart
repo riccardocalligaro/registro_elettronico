@@ -4,10 +4,12 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 @immutable
 abstract class TokenEvent {}
 
-class GetLoginToken extends TokenEvent {
+class GetLoginTokenForSchoolReport extends TokenEvent {
   final SchoolReport schoolReport;
 
-  GetLoginToken({
+  GetLoginTokenForSchoolReport({
     @required this.schoolReport,
   });
 }
+
+class GetLoginToken extends TokenEvent {}

@@ -37,6 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
   int _updateInterval = 30;
   SharedPreferences sharedPrefs;
   bool _notificationsActivated;
+  bool _onlyOnWifiActivated;
 
   @override
   void initState() {
@@ -51,6 +52,9 @@ class _SettingsPageState extends State<SettingsPage> {
           (sharedPrefs.getInt(PrefsConstants.UPDATE_INTERVAL)) ?? 30;
       _notificationsActivated =
           (sharedPrefs.getBool(PrefsConstants.NOTIFICATIONS)) ?? false;
+
+      _onlyOnWifiActivated =
+          (sharedPrefs.getBool(PrefsConstants.UPDATE_ONLY_WIFI)) ?? false;
     });
   }
 
@@ -174,6 +178,25 @@ class _SettingsPageState extends State<SettingsPage> {
             });
           },
         ),
+        ListTile(
+          enabled: _notificationsActivated ?? false,
+          title:
+              Text(AppLocalizations.of(context).translate('only_wifi_title')),
+          subtitle: Text(
+              AppLocalizations.of(context).translate('only_wifi_subtitle')),
+          trailing: Checkbox(
+            value: _onlyOnWifiActivated ?? false,
+            onChanged: !_notificationsActivated
+                ? null
+                : (value) {
+                    setState(() {
+                      _onlyOnWifiActivated = value;
+                    });
+                    _setWorkmanager(value);
+                    save(PrefsConstants.UPDATE_ONLY_WIFI, value);
+                  },
+          ),
+        )
       ],
     );
   }
@@ -198,30 +221,30 @@ class _SettingsPageState extends State<SettingsPage> {
           },
         ),
         ListTile(
-          title: Text(AppLocalizations.of(context).translate('report_bug_title')),
-          subtitle: Text(AppLocalizations.of(context).translate('report_bug_message')),
+          title:
+              Text(AppLocalizations.of(context).translate('report_bug_title')),
+          subtitle: Text(
+              AppLocalizations.of(context).translate('report_bug_message')),
           onTap: () async {
             await FLog.exportLogs();
             final path = await _localPath + "/" + PrefsConstants.DIRECTORY_NAME;
             var file = File("$path/flog.txt");
-            var exists = await file.exists();
-            if (exists) {
-              final random = GlobalUtils.getRandomNumber();
-              final subject =
-                  'Bug report #$random - ${DateTime.now().toString()}';
-              String userMessage;
-              userMessage =
-                  '${AppLocalizations.of(context).translate("email_message")}\n  -';
 
-              final Email reportEmail = Email(
-                body: userMessage,
-                subject: subject,
-                recipients: ['riccardocalligaro@gmail.com'],
-                attachmentPath: '$path/flog.txt',
-                isHTML: false,
-              );
-              await FlutterEmailSender.send(reportEmail);
-            }
+            final random = GlobalUtils.getRandomNumber();
+            final subject =
+                'Bug report #$random - ${DateTime.now().toString()}';
+            String userMessage;
+            userMessage =
+                '${AppLocalizations.of(context).translate("email_message")}\n  -';
+
+            final Email reportEmail = Email(
+              body: userMessage,
+              subject: subject,
+              recipients: ['riccardocalligaro@gmail.com'],
+              attachmentPath: '$path/flog.txt',
+              isHTML: false,
+            );
+            await FlutterEmailSender.send(reportEmail);
           },
         ),
         ListTile(
@@ -236,7 +259,7 @@ class _SettingsPageState extends State<SettingsPage> {
     if (interval >= 60)
       return AppLocalizations.of(context)
           .translate('every_hours')
-          .replaceAll('{h}', (interval / 60).toString());
+          .replaceAll('{h}', (interval / 60).toStringAsFixed(0));
     return AppLocalizations.of(context)
         .translate('every_minutes')
         .replaceAll('{m}', interval.toString());
@@ -269,22 +292,23 @@ class _SettingsPageState extends State<SettingsPage> {
         text: '-> Set new time for notifications -> interval $refreshInterval',
       );
       WidgetsFlutterBinding.ensureInitialized();
-      Workmanager.cancelAll();
-      Workmanager.initialize(
+      await Workmanager.cancelAll();
+      await Workmanager.initialize(
         callbackDispatcher,
         //! set to false in production
         isInDebugMode: true,
       );
 
-      Workmanager.registerPeriodicTask(
+      await Workmanager.registerPeriodicTask(
         'checkForNewContent', 'checkForNewContent',
         initialDelay: Duration(minutes: 60),
         // minimum frequency for android is 15 minutes
         frequency: Duration(minutes: refreshInterval),
         constraints: Constraints(
           // we need the user to be conntected, these parameters will be customizable in the future
-          //TODO: let user customize these params
-          networkType: NetworkType.connected,
+          networkType: _onlyOnWifiActivated
+              ? NetworkType.unmetered
+              : NetworkType.connected,
           requiresBatteryNotLow: true,
         ),
       );

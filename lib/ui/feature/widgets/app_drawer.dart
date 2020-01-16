@@ -193,22 +193,25 @@ class _AppDrawerState extends State<AppDrawer>
                 AppNavigator.instance.navToScrutini(context);
               },
             ),
-            _createDrawerItem(
-              icon: Icons.archive,
-              text: trans.translate('last_year'),
-              pos: DrawerConstants.ANNO_PRECEDENTE,
-              onTap: () {
-                AppNavigator.instance.navToScrutini(context);
-              },
-            ),
-            _createDrawerItem(
-              icon: Icons.web,
-              text: trans.translate('web'),
-              pos: DrawerConstants.WEB,
-              onTap: () {
-                AppNavigator.instance.navToScrutini(context);
-              },
-            ),
+            // _createDrawerItem(
+            //   icon: Icons.archive,
+            //   text: trans.translate('last_year'),
+            //   pos: DrawerConstants.ANNO_PRECEDENTE,
+            //   onTap: () {
+            //     AppNavigator.instance.navToWebView(
+            //       context,
+            //       'https://web18.spaggiari.eu/home/app/default/menu_webinfoschool_studenti.php?custcode=',
+            //     );
+            //   },
+            // ),
+            // _createDrawerItem(
+            //   icon: Icons.web,
+            //   text: trans.translate('web'),
+            //   pos: DrawerConstants.WEB,
+            //   onTap: () {
+            //     AppNavigator.instance.navToScrutini(context);
+            //   },
+            // ),
             Divider(),
             _createDrawerItem(
               icon: Icons.settings,
