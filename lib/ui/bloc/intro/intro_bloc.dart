@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
+import 'package:registro_elettronico/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/domain/repository/notes_repository.dart';
 import 'package:registro_elettronico/domain/repository/notices_repository.dart';
@@ -24,6 +25,7 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
   GradesRepository gradesRepository;
   NotesRepository notesRepository;
   DidacticsRepository didacticsRepository;
+  DocumentsRepository documentsRepository;
 
   IntroBloc(
     this.absencesRepository,
@@ -35,6 +37,7 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
     this.gradesRepository,
     this.noticesRepository,
     this.didacticsRepository,
+    this.documentsRepository,
   );
   @override
   IntroState get initialState => IntroInitial();
@@ -88,8 +91,13 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
         await didacticsRepository.updateDidactics();
         prefs.setInt(PrefsConstants.LAST_UPDATE_SCHOOL_MATERIAL,
             DateTime.now().millisecondsSinceEpoch);
+
         prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
             DateTime.now().millisecondsSinceEpoch);
+
+        yield IntroLoading(90);
+        await documentsRepository.updateDocuments();
+
         final difference = start.difference(DateTime.now());
         FLog.info(text: 'Got all data in ${difference.inMilliseconds} ms');
         yield IntroLoaded();

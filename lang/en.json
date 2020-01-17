@@ -166,5 +166,9 @@
   "last_year": "Last year",
   "web": "Web",
   "only_wifi_title": "Only Wi-Fi",
-  "only_wifi_subtitle": "Update notifications only when on Wi-Fi"
+  "only_wifi_subtitle": "Update notifications only when on Wi-Fi",
+  "scrutini_documents": "School reports",
+  "scrutini_school_reports": "Documents",
+  "document_not_available":"Document not avaliable. Recuperi will not show if you don't have any insufficient subject.",
+  "no_final_grades":"No final grades"
 }

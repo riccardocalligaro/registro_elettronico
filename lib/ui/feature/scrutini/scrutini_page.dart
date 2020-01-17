@@ -2,6 +2,7 @@ import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/documents/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/documents/document_attachment/bloc/bloc.dart';
@@ -10,6 +11,7 @@ import 'package:registro_elettronico/ui/feature/scrutini/web/spaggiari_web_view.
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 
@@ -36,15 +38,6 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
         appBar: CustomAppBar(
           scaffoldKey: _drawerKey,
           title: Text(AppLocalizations.of(context).translate('scrutini')),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () {
-                BlocProvider.of<DocumentsBloc>(context).add(UpdateDocuments());
-                BlocProvider.of<DocumentsBloc>(context).add(GetDocuments());
-              },
-            )
-          ],
         ),
         drawer: AppDrawer(
           position: DrawerConstants.SCRUTINI,
@@ -132,7 +125,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                     ..showSnackBar(
                       SnackBar(
                         behavior: SnackBarBehavior.floating,
-                        content: Text('Not available'),
+                        content: Text(AppLocalizations.of(context)
+                            .translate('document_not_available')),
                       ),
                     );
                 } else if (state is DocumentLoadSuccess) {
@@ -188,9 +182,33 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
           child: BlocBuilder<DocumentsBloc, DocumentsState>(
             builder: (context, state) {
               if (state is DocumentsLoadSuccess) {
-                return _buildDocumentsList(
-                  documents: state.documents,
-                  schoolReports: state.schoolReports,
+                if (state.documents.length == 0 &&
+                    state.documents.length == 0) {
+                  return CustomPlaceHolder(
+                    icon: Icons.import_contacts,
+                    showUpdate: true,
+                    text: AppLocalizations.of(context)
+                        .translate('no_final_grades'),
+                    onTap: () {
+                      BlocProvider.of<DocumentsBloc>(context)
+                          .add(UpdateDocuments());
+                      BlocProvider.of<DocumentsBloc>(context)
+                          .add(GetDocuments());
+                    },
+                  );
+                }
+                return CustomRefresher(
+                  onRefresh: () {
+                    BlocProvider.of<DocumentsBloc>(context)
+                        .add(UpdateDocuments());
+                    BlocProvider.of<DocumentsBloc>(context).add(GetDocuments());
+                  },
+                  child: Container(
+                    child: _buildDocumentsList(
+                      documents: state.documents,
+                      schoolReports: state.schoolReports,
+                    ),
+                  ),
                 );
               }
 
@@ -224,7 +242,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
       children: <Widget>[
         ListTile(
           title: Text(
-            'School reports',
+            AppLocalizations.of(context).translate('scrutini_documents'),
             style: TextStyle(color: Colors.red),
           ),
         ),
@@ -248,7 +266,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
         ),
         ListTile(
           title: Text(
-            'Documents',
+            AppLocalizations.of(context).translate('scrutini_school_reports'),
             style: TextStyle(color: Colors.red),
           ),
         ),

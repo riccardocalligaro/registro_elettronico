@@ -34,7 +34,8 @@ class _LastGradesPageState extends State<LastGradesPage> {
     return RefreshIndicator(
       onRefresh: () {
         BlocProvider.of<SubjectsGradesBloc>(context).add(UpdateSubjectGrades());
-        BlocProvider.of<SubjectsGradesBloc>(context).add(GetGradesAndSubjects());
+        BlocProvider.of<SubjectsGradesBloc>(context)
+            .add(GetGradesAndSubjects());
         return _refreshCompleter.future;
       },
       child: Padding(
