@@ -49,9 +49,9 @@ class _AppDrawerState extends State<AppDrawer>
       // todo: need to fix null
       future: _getUsername(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        String ident = " ";
-        String firstName = " ";
-        String lastName = " ";
+        var ident = " ";
+        var firstName = " ";
+        var lastName = " ";
 
         if (snapshot.data != null) {
           ident = snapshot.data.ident;
@@ -271,10 +271,11 @@ class _AppDrawerState extends State<AppDrawer>
   }
 
   Color _getColor(bool isAccount) {
-    if (isAccount ?? false)
+    if (isAccount ?? false) {
       return Theme.of(context).textTheme.body1.color;
-    else
+    } else {
       return null;
+    }
   }
 
   @override

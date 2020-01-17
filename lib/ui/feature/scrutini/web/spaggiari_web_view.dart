@@ -1,4 +1,3 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
@@ -47,8 +46,8 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
         url: widget.url,
         hidden: true,
         headers: headers,
-        appBar: new AppBar(
-          title: new Text(
+        appBar: AppBar(
+          title: Text(
             widget.appBarTitle ?? '',
           ),
           actions: <Widget>[

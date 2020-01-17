@@ -117,8 +117,6 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                         // minimum frequency for android is 15 minutes
                         frequency: Duration(minutes: 30),
                         constraints: Constraints(
-                          // we need the user to be conntected, these parameters will be customizable in the future
-                          //TODO: let user customize these params
                           networkType: NetworkType.unmetered,
                           requiresBatteryNotLow: true,
                         ),
