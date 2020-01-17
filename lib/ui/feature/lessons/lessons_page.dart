@@ -48,7 +48,8 @@ class _LessonsPageState extends State<LessonsPage> {
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(AppLocalizations.of(context).translate('updating_lessons')),
+                  Text(AppLocalizations.of(context)
+                      .translate('updating_lessons')),
                   Container(
                     height: 20,
                     width: 20,
@@ -66,7 +67,8 @@ class _LessonsPageState extends State<LessonsPage> {
               ..removeCurrentSnackBar()
               ..showSnackBar(SnackBar(
                 behavior: SnackBarBehavior.floating,
-                content: Text(AppLocalizations.of(context).translate('lessons_updated')),
+                content: Text(
+                    AppLocalizations.of(context).translate('lessons_updated')),
               ));
           }
         },

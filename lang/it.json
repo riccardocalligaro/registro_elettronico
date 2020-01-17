@@ -166,5 +166,7 @@
   "last_year": "Anno precedente",
   "web": "Web",
   "only_wifi_title": "Solo Wi-Fi",
-  "only_wifi_subtitle": "Invia notifiche soltanto quando connessio al Wi-Fi"
+  "only_wifi_subtitle": "Invia notifiche soltanto quando connessio al Wi-Fi",
+  "document_not_available": "Document not avaliable. Recuperi will not show if you don't have any insufficient subject.",
+  "no_final_grades": "No final grades"
 }
