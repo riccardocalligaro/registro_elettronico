@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +19,7 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
   Stream<NoticesState> mapEventToState(
     NoticesEvent event,
   ) async* {
+    FLog.info(text: event.toString());
     if (event is FetchNoticeboard) {
       yield NoticesUpdateLoading();
       try {
