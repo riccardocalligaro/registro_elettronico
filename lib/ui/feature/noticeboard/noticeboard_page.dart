@@ -34,7 +34,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
 
   List<Lesson> lessons = List();
   List<Lesson> filteredLessons = List();
-  Icon _searchIcon = new Icon(Icons.search);
+  Icon _searchIcon = Icon(Icons.search);
   Widget _appBarTitle = Text("Comunicazioni");
   int _noticeboardLastUpdate;
   bool _showOutdatedNotices;
@@ -65,6 +65,10 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   void restore() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
+    _appBarTitle = Text(
+      AppLocalizations.of(context).translate('notice_board'),
+    );
+
     setState(() {
       _noticeboardLastUpdate =
           sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_NOTICEBOARD);
@@ -78,9 +82,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _appBarTitle = Text(
-      AppLocalizations.of(context).translate('notice_board'),
-    );
     BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
   }
 
@@ -122,7 +123,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
               itemBuilder: (BuildContext context) => [
                 CheckedPopupMenuItem(
                   value: !_showOutdatedNotices,
-                  child: Text(AppLocalizations.of(context).translate('outdated_notices')),
+                  child: Text(AppLocalizations.of(context)
+                      .translate('outdated_notices')),
                   checked: _showOutdatedNotices,
                 ),
               ],
@@ -247,8 +249,10 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                     label: AppLocalizations.of(context)
                         .translate('open')
                         .toUpperCase(),
-                    onPressed: () {
-                      OpenFile.open(state.path);
+                    onPressed: () async {
+                      await OpenFile.open(state.path);
+                      BlocProvider.of<NoticesBloc>(context)
+                          .add(GetNoticeboard());
                     },
                   ),
                 ),
@@ -348,7 +352,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                 return Container(
                   width: double.maxFinite,
                   padding: const EdgeInsets.all(16.0),
-                  //height: 300.0,
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: state.attachments.length,
@@ -360,12 +363,18 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                           onTap: () async {
                             final file = await _localFile(notice, attachment);
                             if (file.existsSync()) {
-                              OpenFile.open(file.path);
+                              await OpenFile.open(file.path);
+                              BlocProvider.of<NoticesBloc>(context)
+                                  .add(GetNoticeboard());
                             } else {
-                              BlocProvider.of<AttachmentDownloadBloc>(context)
+                              await BlocProvider.of<AttachmentDownloadBloc>(
+                                      context)
                                   .add(DownloadAttachment(
                                       notice: notice, attachment: attachment));
-                              Navigator.pop(context);
+
+                              await Navigator.pop(context);
+                              BlocProvider.of<NoticesBloc>(context)
+                                  .add(GetNoticeboard());
                             }
                           },
                         );
@@ -420,9 +429,9 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   void _searchPressed(BuildContext context) {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {
-        this._searchIcon = new Icon(Icons.close);
+        this._searchIcon = Icon(Icons.close);
 
-        this._appBarTitle = new TextField(
+        this._appBarTitle = TextField(
           autofocus: true,
           controller: _filter,
           decoration: InputDecoration(
@@ -432,7 +441,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           ),
         );
       } else {
-        this._searchIcon = new Icon(Icons.search);
+        this._searchIcon = Icon(Icons.search);
         this._appBarTitle = Text(
           AppLocalizations.of(context).translate('notice_board'),
         );
