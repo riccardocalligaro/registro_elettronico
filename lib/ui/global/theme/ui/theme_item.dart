@@ -26,7 +26,7 @@ class ThemeItem extends StatelessWidget {
             ),
           ),
           padding: const EdgeInsets.all(2.0), // borde width
-          decoration: new BoxDecoration(
+          decoration: BoxDecoration(
             color: themeData.brightness == Brightness.dark
                 ? Colors.white
                 : Colors.grey[800], // border color

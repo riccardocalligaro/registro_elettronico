@@ -32,7 +32,7 @@ class _LessonDetailsState extends State<LessonDetails> {
 
   List<Lesson> lessons = List();
   List<Lesson> filteredLessons = List();
-  Icon _searchIcon = new Icon(Icons.search);
+  Icon _searchIcon =  Icon(Icons.search);
   Widget _appBarTitle = Text("padding");
 
   _LessonDetailsState() {
@@ -136,8 +136,8 @@ class _LessonDetailsState extends State<LessonDetails> {
   void _searchPressed() {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {
-        this._searchIcon = new Icon(Icons.close);
-        this._appBarTitle = new TextField(
+        this._searchIcon = Icon(Icons.close);
+        this._appBarTitle = TextField(
           controller: _filter,
           autofocus: true,
           decoration: InputDecoration(
@@ -147,8 +147,8 @@ class _LessonDetailsState extends State<LessonDetails> {
           ),
         );
       } else {
-        this._searchIcon = new Icon(Icons.search);
-        this._appBarTitle = new Text(widget.subjectName);
+        this._searchIcon = Icon(Icons.search);
+        this._appBarTitle = Text(widget.subjectName);
         //filteredNames = names;
         _filter.clear();
       }

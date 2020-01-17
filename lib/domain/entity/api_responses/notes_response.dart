@@ -13,33 +13,33 @@ class NotesResponse {
 
   NotesResponse.fromJson(Map<String, dynamic> json) {
     if (json['NTTE'] != null) {
-      notesNTTE = new List<Note>();
+      notesNTTE = List<Note>();
       json['NTTE'].forEach((v) {
-        notesNTTE.add(new Note.fromJson(v));
+        notesNTTE.add(Note.fromJson(v));
       });
     }
     if (json['NTCL'] != null) {
-      notesNTCL = new List<Note>();
+      notesNTCL = List<Note>();
       json['NTCL'].forEach((v) {
-        notesNTCL.add(new Note.fromJson(v));
+        notesNTCL.add(Note.fromJson(v));
       });
     }
     if (json['NTWN'] != null) {
-      notesNTWN = new List<Note>();
+      notesNTWN = List<Note>();
       json['NTWN'].forEach((v) {
-        notesNTWN.add(new Note.fromJson(v));
+        notesNTWN.add(Note.fromJson(v));
       });
     }
     if (json['NTST'] != null) {
-      notesNTST = new List<Note>();
+      notesNTST = List<Note>();
       json['NTST'].forEach((v) {
-        notesNTST.add(new Note.fromJson(v));
+        notesNTST.add(Note.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.notesNTTE != null) {
       data['NTTE'] = this.notesNTTE.map((v) => v.toJson()).toList();
     }

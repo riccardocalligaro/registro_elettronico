@@ -228,7 +228,6 @@ class _SettingsPageState extends State<SettingsPage> {
           onTap: () async {
             await FLog.exportLogs();
             final path = await _localPath + "/" + PrefsConstants.DIRECTORY_NAME;
-            var file = File("$path/flog.txt");
 
             final random = GlobalUtils.getRandomNumber();
             final subject =
