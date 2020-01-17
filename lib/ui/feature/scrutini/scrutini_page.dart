@@ -229,6 +229,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
           ),
         ),
         ListView.builder(
+          padding: EdgeInsets.zero,
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: schoolReports.length,
@@ -252,6 +253,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
           ),
         ),
         ListView.builder(
+          padding: EdgeInsets.zero,
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: documents.length,
