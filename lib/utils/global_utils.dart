@@ -126,14 +126,14 @@ class GlobalUtils {
       return SubjectsConstants.ITALIANO;
     }
     if (stringToCompare.contains(RegExp(
-        r'("TECNOLOGIE E PROGETTAZIONE DI SISTEMI INFORMATICI E DI TELECOMUNICAZIONI")'))) {
+        r'(TECNOLOGIE E PROGETTAZIONE DI SISTEMI INFORMATICI E DI TELECOMUNICAZIONI)'))) {
       return SubjectsConstants.TPSIT;
     }
-    if (stringToCompare.contains(RegExp(r'(GINNASTICA|"SCIENZE MOTORIE")'))) {
+    if (stringToCompare.contains(RegExp(r'(GINNASTICA|SCIENZE MOTORIE)'))) {
       return SubjectsConstants.GINNASTICA;
     }
     if (stringToCompare
-        .contains(RegExp(r'(INFORMATICA|"SCIENZE TECNOLOGIE APPLICATE")'))) {
+        .contains(RegExp(r'(INFORMATICA|SCIENZE TECNOLOGIE APPLICATE)'))) {
       return SubjectsConstants.INFORMATICA;
     }
     if (stringToCompare.contains(RegExp(r'(TELECOMUNICAZIONI)'))) {
