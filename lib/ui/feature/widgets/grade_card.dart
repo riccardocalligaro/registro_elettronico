@@ -23,32 +23,35 @@ class GradeCard extends StatelessWidget {
           context: context,
           builder: (context) => SimpleDialog(
             children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "${trans.translate('notes')}: ${grade.notesForFamily.length > 0 ? grade.notesForFamily : trans.translate('not_presents').toLowerCase()}",
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                      '${trans.translate('decimal_value')}: ${grade.decimalValue == -1.0 ? "🤔" : grade.decimalValue.toString()}'),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                      '${trans.translate('date')}: ${DateUtils.convertDateLocale(grade.eventDate, trans.locale.toString())}'),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text('${trans.translate('term')}: ${grade.periodPos}'),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text('${trans.translate('weight')}: ${grade.weightFactor}'),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "${trans.translate('notes')}: ${grade.notesForFamily.length > 0 ? grade.notesForFamily : trans.translate('not_presents').toLowerCase()}",
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                        '${trans.translate('decimal_value')}: ${grade.decimalValue == -1.0 ? "🤔" : grade.decimalValue.toString()}'),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                        '${trans.translate('date')}: ${DateUtils.convertDateLocale(grade.eventDate, trans.locale.toString())}'),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text('${trans.translate('term')}: ${grade.periodPos}'),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text('${trans.translate('weight')}: ${grade.weightFactor}'),
+                  ],
+                ),
               )
             ],
           ),
