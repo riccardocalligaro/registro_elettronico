@@ -165,6 +165,6 @@
   "deleted_success": "File eliminato",
   "last_year": "Anno precedente",
   "web": "Web",
-  "only_wifi_title": "Only Wi-Fi",
-  "only_wifi_subtitle": "Update notifications only when on Wi-Fi"
+  "only_wifi_title": "Solo Wi-Fi",
+  "only_wifi_subtitle": "Invia notifiche soltanto quando connessio al Wi-Fi"
 }
