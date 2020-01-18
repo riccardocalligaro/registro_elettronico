@@ -28,7 +28,11 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
       yield* _mapUpdateGradesToState();
     } else if (event is GetGrades) {
       yield* _mapGetGradesToState(event.limit ?? -1, event.ordered ?? false);
-    }
+    } 
+    
+    // else if (event is ResetGrades) {
+    //   yield GradesInitial();
+    // }
   }
 
   Stream<GradesState> _mapUpdateGradesToState() async* {
@@ -57,7 +61,7 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
       } else {
         grades = await gradesRepository.getAllGrades();
       }
-      FLog.info(text: 'Got ${grades.length} grades in BloC');
+      FLog.info(text: 'BloC -> Got ${grades.length} grades');
       yield GradesLoaded(grades);
     } catch (e, s) {
       Crashlytics.instance.recordError(e, s);

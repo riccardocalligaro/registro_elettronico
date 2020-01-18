@@ -1,3 +1,4 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/data/db/dao/note_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -47,6 +48,23 @@ class NotesRepositoryImpl implements NotesRepository {
         notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTTE')));
     notesResponse.notesNTST.forEach((note) =>
         notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTST')));
+
+    FLog.info(
+      text:
+          'Got ${notesResponse.notesNTCL.length} notesNTCL from server, procceding to insert in database',
+    );
+    FLog.info(
+      text:
+          'Got ${notesResponse.notesNTWN.length} notesNTWN from server, procceding to insert in database',
+    );
+    FLog.info(
+      text:
+          'Got ${notesResponse.notesNTTE.length} notesNTTE from server, procceding to insert in database',
+    );
+    FLog.info(
+      text:
+          'Got ${notesResponse.notesNTST.length} notesNTST from server, procceding to insert in database',
+    );
 
     await noteDao.insertNotes(notes);
   }

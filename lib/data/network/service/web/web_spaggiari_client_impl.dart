@@ -33,10 +33,6 @@ class WebSpaggiariClientImpl implements WebSpaggiariClient {
           _result.headers.map.keys.where((k) => k == 'set-cookie').single;
       final ssid = _result.headers.map[key].elementAt(1);
 
-      //var cj = new CookieJar();
-      // List<Cookie> cookies = [new Cookie("PHPSESSID", ssid.split(';')[0])];
-      //
-      //cj.saveFromResponse(Uri.parse("https://web.spaggiari.eu/"), cookies);
       return ssid;
     } else {
       FLog.info(text: 'Erorr');

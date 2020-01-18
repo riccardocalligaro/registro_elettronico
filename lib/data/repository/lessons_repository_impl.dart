@@ -1,3 +1,4 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -29,6 +30,11 @@ class LessonsRepositoryImpl implements LessonsRepository {
     lessons.lessons.forEach((lesson) {
       lessonsList.add(lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
     });
+
+    FLog.info(
+      text:
+          'Got ${lessons.lessons.length} documents from server, procceding to insert in database',
+    );
 
     lessonDao.insertLessons(lessonsList);
   }

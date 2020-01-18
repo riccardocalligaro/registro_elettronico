@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:f_logs/f_logs.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
 import './bloc.dart';
 
@@ -19,11 +21,18 @@ class ProfessorsBloc extends Bloc<ProfessorsEvent, ProfessorsState> {
       yield ProfessorsLoadInProgress();
       try {
         final professors = await subjectsRepository.getAllProfessors();
+        FLog.info(text: 'BloC -> Got ${professors.length} professors');
         yield ProfessorsLoadSuccess(
           professors:
               professors.where((p) => p.subjectId == event.subjectId).toList(),
         );
-      } catch (e) {
+      } on Exception catch (e, s) {
+        FLog.error(
+          text: 'Error getting professors for subject',
+          exception: e,
+          stacktrace: s,
+        );
+        Crashlytics.instance.recordError(e, s);
         yield ProfessorsLoadError();
       }
     }

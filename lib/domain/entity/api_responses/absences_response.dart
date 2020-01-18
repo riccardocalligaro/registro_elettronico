@@ -31,15 +31,16 @@ class AbsenceEvent {
   String justifReasonCode;
   String justifReasonDesc;
 
-  AbsenceEvent(
-      {this.evtId,
-      this.evtCode,
-      this.evtDate,
-      this.evtHPos,
-      this.evtValue,
-      this.isJustified,
-      this.justifReasonCode,
-      this.justifReasonDesc});
+  AbsenceEvent({
+    this.evtId,
+    this.evtCode,
+    this.evtDate,
+    this.evtHPos,
+    this.evtValue,
+    this.isJustified,
+    this.justifReasonCode,
+    this.justifReasonDesc,
+  });
 
   AbsenceEvent.fromJson(Map<String, dynamic> json) {
     evtId = json['evtId'];

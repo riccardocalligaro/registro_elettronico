@@ -64,6 +64,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       final events = await agendaRepository.getAllEvents();
       prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
           DateTime.now().millisecondsSinceEpoch);
+      FLog.info(text: 'BloC -> Got ${events.length} events');
       yield AgendaLoadSuccess(events: events);
     } catch (e, s) {
       Crashlytics.instance.recordError(e, s);

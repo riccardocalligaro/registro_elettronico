@@ -1,3 +1,4 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -27,6 +28,10 @@ class PeriodsRepositoryImpl implements PeriodsRepository {
       periodIndex++;
     });
 
+    FLog.info(
+      text:
+          'Got ${periods.periods.length} periods from server, procceding to insert in database',
+    );
     periodDao.insertPeriods(periodsList);
   }
 

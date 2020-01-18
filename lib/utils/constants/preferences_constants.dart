@@ -19,6 +19,7 @@ class PrefsConstants {
   static const LAST_UPDATE_ABSENCES = 'last_update_absences';
   static const LAST_UPDATE_NOTES = 'last_update_notes';
   static const LAST_UPDATE_NOTICEBOARD = 'last_update_noticeboard';
+  static const LAST_UPDATE_SCRUTINI = 'last_update_scrutini';
   static const DIRECTORY_NAME = 'FLogs';
   static const SHOW_OUTDATED_NOTICES = 'show_outdated_notices';
   static const UPDATE_ONLY_WIFI = 'update_only_wifi';

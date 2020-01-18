@@ -48,7 +48,7 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
   ) async* {
     if (event is FetchAllData) {
       final start = DateTime.now();
-      FLog.info(text: 'Getting all data -> ${DateTime.now().toString()}');
+      FLog.info(text: 'Getting all data');
       yield IntroLoading(0);
       try {
         final prefs = await SharedPreferences.getInstance();
@@ -57,40 +57,58 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
             DateTime.now().millisecondsSinceEpoch);
         yield IntroLoading(10);
 
+        FLog.info(text: 'Updated absences');
+
         await agendaRepository.updateAllAgenda();
         prefs.setInt(PrefsConstants.LAST_UPDATE_AGENDA,
             DateTime.now().millisecondsSinceEpoch);
+
+        FLog.info(text: 'Updated agenda');
 
         yield IntroLoading(20);
         await lessonsRepository.updateAllLessons();
         prefs.setInt(PrefsConstants.LAST_UPDATE_LESSONS,
             DateTime.now().millisecondsSinceEpoch);
 
+        FLog.info(text: 'Updated lessons');
+
         yield IntroLoading(30);
         await noticesRepository.updateNotices();
         prefs.setInt(PrefsConstants.LAST_UPDATE_NOTICEBOARD,
             DateTime.now().millisecondsSinceEpoch);
 
+        FLog.info(text: 'Updated notices');
+
         yield IntroLoading(40);
         await periodsRepository.updatePeriods();
 
+        FLog.info(text: 'Updated periods');
+
         yield IntroLoading(50);
         await subjectsRepository.updateSubjects();
+
+        FLog.info(text: 'Updated subjects');
 
         yield IntroLoading(60);
         await gradesRepository.updateGrades();
         prefs.setInt(PrefsConstants.LAST_UPDATE_GRADES,
             DateTime.now().millisecondsSinceEpoch);
 
+        FLog.info(text: 'Updated grades');
+
         yield IntroLoading(70);
         await notesRepository.updateNotes();
         prefs.setInt(PrefsConstants.LAST_UPDATE_NOTES,
             DateTime.now().millisecondsSinceEpoch);
 
+        FLog.info(text: 'Updated notes');
+
         yield IntroLoading(80);
         await didacticsRepository.updateDidactics();
         prefs.setInt(PrefsConstants.LAST_UPDATE_SCHOOL_MATERIAL,
             DateTime.now().millisecondsSinceEpoch);
+
+        FLog.info(text: 'Updated school material');
 
         prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
             DateTime.now().millisecondsSinceEpoch);
@@ -98,10 +116,17 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
         yield IntroLoading(90);
         await documentsRepository.updateDocuments();
 
+        FLog.info(text: 'Updated documents');
+
         final difference = start.difference(DateTime.now());
         FLog.info(text: 'Got all data in ${difference.inMilliseconds} ms');
         yield IntroLoaded();
-      } catch (e, s) {
+      } on Exception catch (e, s) {
+        FLog.error(
+          text: 'Error getting data necessary for the app',
+          exception: e,
+          stacktrace: s,
+        );
         Crashlytics.instance.recordError(e, s);
         yield IntroError(e.toString());
       }

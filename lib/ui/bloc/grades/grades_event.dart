@@ -1,10 +1,5 @@
-import 'package:equatable/equatable.dart';
-
-abstract class GradesEvent extends Equatable {
+abstract class GradesEvent {
   const GradesEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 /// This is only for updateing grades in the database
@@ -18,3 +13,5 @@ class GetGrades extends GradesEvent {
 
   GetGrades({this.limit, this.ordered});
 }
+
+class ResetGrades extends GradesEvent {}

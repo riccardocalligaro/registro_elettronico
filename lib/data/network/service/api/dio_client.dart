@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/component/api_config.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
@@ -65,8 +66,7 @@ class DioClient {
 
           //profileRepository.updateProfile();
           FLog.info(
-            text:
-                "${res.statusCode} recieved new token - ${DateTime.now().toString()}",
+            text: "Got a new token - proceeding with request",
           );
           // this sets the token as the new one we just got from the api
           options.headers["Z-Auth-Token"] = loginResponse.token;
@@ -84,15 +84,17 @@ class DioClient {
 
       return options;
     }, onResponse: (Response response) {
-      print(
-          "[AppApiService][${DateTime.now().toString().split(' ').last}]-> DioEND\tonResponse \t${response.statusCode} [${response.request.path}] ${response.request.method}  ${response.request.responseType}");
-      print(response.request.headers.toString());
+      FLog.info(
+          text:
+              'DioEND -> Response -> ${response.statusCode} [${response.request.path}] ${response.request.method}  ${response.request.responseType}');
 
       return response; // continue
     }, onError: (DioError error) async {
-      print(
-          "[AppApiService][${DateTime.now().toString().split(' ').last}]-> DioEND\tonError \turl:[${error.request.baseUrl}] type:${error.type} message: ${error.message}");
+      FLog.error(
+          text:
+              'DioEND -> Error -> url:[${error.request.baseUrl}] type:${error.type} message: ${error.message}');
 
+      Crashlytics.instance.recordError(error, StackTrace.current);
       // handlError(error);
     }));
     return dio;

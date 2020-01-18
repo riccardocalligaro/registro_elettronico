@@ -80,8 +80,8 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
                   backgroundColor: Colors.white,
                   animation: true,
                   animationDuration: 300,
-                  center: new Text(
-                      average.isNaN ? '-' : average.toStringAsFixed(2)),
+                  center:
+                      Text(average.isNaN ? '-' : average.toStringAsFixed(2)),
                   progressColor: GlobalUtils.getColorFromAverage(average),
                 ),
               ),
