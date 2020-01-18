@@ -85,4 +85,14 @@ class GradesRepositoryImpl implements GradesRepository {
   Future<List<Grade>> getNumberOfGradesByDate(int number) {
     return gradeDao.getNumberOfGradesByDate(number);
   }
+
+  @override
+  Future cancelGradeLocally(Grade grade) {
+    return gradeDao.updateGrade(grade.copyWith(localllyCancelled: true));
+  }
+
+  @override
+  Future restoreGradeLocally(Grade grade) {
+    return gradeDao.updateGrade(grade.copyWith(localllyCancelled: false));
+  }
 }
