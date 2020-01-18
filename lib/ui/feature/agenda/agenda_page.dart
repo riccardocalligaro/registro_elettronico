@@ -9,6 +9,7 @@ import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
@@ -135,35 +136,38 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         // ),
         body: DoubleBackToCloseApp(
           snackBar: AppNavigator.instance.getLeaveSnackBar(context),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildAgendaBlocBuilder(),
-                const SizedBox(height: 8.0),
-                const SizedBox(height: 8.0),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
-                  child: Text(
-                    AppLocalizations.of(context).translate('events'),
-                    style: TextStyle(fontWeight: FontWeight.w500),
+          child: CustomRefresher(
+            onRefresh: _refreshAgenda,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _buildAgendaBlocBuilder(),
+                  const SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
+                    child: Text(
+                      AppLocalizations.of(context).translate('events'),
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
                   ),
-                ),
-                Container(
-                  child: _buildEventList(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
-                  child: Text(
-                    AppLocalizations.of(context).translate('lessons'),
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                  Container(
+                    child: _buildEventList(),
                   ),
-                ),
-                SingleChildScrollView(
-                  child: _buildLessonsBlocBuilder(),
-                )
-              ],
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
+                    child: Text(
+                      AppLocalizations.of(context).translate('lessons'),
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    child: _buildLessonsBlocBuilder(),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -380,6 +384,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
       child: ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: events.length,
         itemBuilder: (context, index) {

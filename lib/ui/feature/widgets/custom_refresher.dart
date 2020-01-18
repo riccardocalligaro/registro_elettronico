@@ -6,16 +6,19 @@ class CustomRefresher extends StatelessWidget {
 
   final VoidCallback onRefresh;
 
+  final RefreshController controller;
+
   const CustomRefresher({
     Key key,
     this.child,
     this.onRefresh,
+    this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
-      controller: RefreshController(),
+      controller: controller ?? RefreshController(),
       header: WaterDropMaterialHeader(
         backgroundColor: Theme.of(context).brightness == Brightness.dark
             ? Colors.grey[900]

@@ -2,7 +2,6 @@ import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/documents/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/documents/document_attachment/bloc/bloc.dart';

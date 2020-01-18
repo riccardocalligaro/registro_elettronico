@@ -13,6 +13,7 @@ import 'package:registro_elettronico/ui/bloc/notices/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
@@ -164,18 +165,12 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         }
         if (state is NoticesLoaded) {
           if (_showOutdatedNotices) {
-            return RefreshIndicator(
-              onRefresh: _refreshNoticeBoard,
-              child: _buildNoticeBoardList(state.notices),
-            );
+            return _buildNoticeBoardList(state.notices);
           } else {
-            return RefreshIndicator(
-              onRefresh: _refreshNoticeBoard,
-              child: _buildNoticeBoardList(state.notices
-                  .where(
-                      (notice) => notice.contentValidTo.isAfter(DateTime.now()))
-                  .toList()),
-            );
+            return _buildNoticeBoardList(state.notices
+                .where(
+                    (notice) => notice.contentValidTo.isAfter(DateTime.now()))
+                .toList());
           }
         }
 
@@ -270,19 +265,22 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
               );
           }
         },
-        child: ListView.builder(
-          itemCount: notices.length,
-          itemBuilder: (context, index) {
-            final notice = notices[index];
+        child: CustomRefresher(
+          onRefresh: _refreshNoticeBoard,
+          child: ListView.builder(
+            itemCount: notices.length,
+            itemBuilder: (context, index) {
+              final notice = notices[index];
 
-            if (index == 0) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: _buildNoticeCard(notice, context),
-              );
-            }
-            return _buildNoticeCard(notice, context);
-          },
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: _buildNoticeCard(notice, context),
+                );
+              }
+              return _buildNoticeCard(notice, context);
+            },
+          ),
         ),
       );
     } else if (_searchText.isNotEmpty) {

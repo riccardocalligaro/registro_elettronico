@@ -9,6 +9,7 @@ import 'package:registro_elettronico/ui/bloc/didactics/didactics_attachments/blo
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
@@ -124,13 +125,10 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
         }
 
         if (state is DidacticsLoaded) {
-          return RefreshIndicator(
-            onRefresh: _refreshDidactics,
-            child: _buildList(
-              teachers: state.teachers,
-              folders: state.folders,
-              contents: state.contents,
-            ),
+          return _buildList(
+            teachers: state.teachers,
+            folders: state.folders,
+            contents: state.contents,
           );
         }
 
@@ -159,27 +157,30 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
     if (teachers.length > 0) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 16.0),
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: teachers.length,
-          itemBuilder: (ctx, index) {
-            final teacher = teachers[index];
-            final List<DidacticsFolder> foldersList = folders
-                .where((folder) => folder.teacherId == teacher.id)
-                .toList();
+        child: CustomRefresher(
+          onRefresh: _refreshDidactics,
+          child: ListView.builder(
+            padding: EdgeInsets.zero,
+            itemCount: teachers.length,
+            itemBuilder: (ctx, index) {
+              final teacher = teachers[index];
+              final List<DidacticsFolder> foldersList = folders
+                  .where((folder) => folder.teacherId == teacher.id)
+                  .toList();
 
-            return Column(
-              children: <Widget>[
-                ListTile(
-                  title: Text(
-                    teacher.name,
-                    style: TextStyle(color: Colors.red),
+              return Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text(
+                      teacher.name,
+                      style: TextStyle(color: Colors.red),
+                    ),
                   ),
-                ),
-                _buildFolderList(foldersList, contents)
-              ],
-            );
-          },
+                  _buildFolderList(foldersList, contents)
+                ],
+              );
+            },
+          ),
         ),
       );
     }
@@ -198,6 +199,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
   Widget _buildFolderList(
       List<DidacticsFolder> folders, List<DidacticsContent> contents) {
     return ListView.builder(
+      padding: EdgeInsets.zero,
       physics: NeverScrollableScrollPhysics(),
       itemCount: folders.length,
       shrinkWrap: true,
@@ -240,6 +242,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
       physics: NeverScrollableScrollPhysics(),
       itemCount: contents.length,
       shrinkWrap: true,
+      padding: EdgeInsets.zero,
       itemBuilder: (ctx, index) {
         final content = contents[index];
         return ListTile(

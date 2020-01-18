@@ -10,6 +10,7 @@ import 'package:registro_elettronico/ui/feature/absences/components/absence_card
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
+import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
@@ -76,10 +77,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
         ),
         body: DoubleBackToCloseApp(
           snackBar: AppNavigator.instance.getLeaveSnackBar(context),
-          child: RefreshIndicator(
-            onRefresh: _updateAbsences,
-            child: _buildAbsences(context),
-          ),
+          child: _buildAbsences(context),
         ),
       ),
     );
@@ -99,18 +97,21 @@ class _AbsencesPageState extends State<AbsencesPage> {
           final map = getAbsencesMap(
               absences..sort((b, a) => a.evtDate.compareTo(b.evtDate)));
 
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: _buildOverallStats(absences),
-                  ),
-                  _buildNotJustifiedAbsences(map),
-                  _buildJustifiedAbsences(map, context),
-                ],
+          return CustomRefresher(
+            onRefresh: _updateAbsences,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: _buildOverallStats(absences),
+                    ),
+                    _buildNotJustifiedAbsences(map),
+                    _buildJustifiedAbsences(map, context),
+                  ],
+                ),
               ),
             ),
           );
@@ -325,17 +326,17 @@ class _AbsencesPageState extends State<AbsencesPage> {
       double delta = 0;
 
       if (absences.length > i + 1) {
-        current = absences[i].evtDate;
-        next = absences[i + 1].evtDate;
+        if (absences[i].evtCode == RegistroConstants.ASSENZA &&
+            absences[i + 1].evtCode == RegistroConstants.ASSENZA) {
+          current = absences[i].evtDate;
+          next = absences[i + 1].evtDate;
+        }
 
         delta = (next.millisecondsSinceEpoch - current.millisecondsSinceEpoch) /
             3600000;
       }
 
       if (absences[i].evtCode != RegistroConstants.ASSENZA) {
-        map[start] = days;
-        start = null;
-      } else if (delta > 72) {
         map[start] = days;
         start = null;
       } else if (delta == -72) {
