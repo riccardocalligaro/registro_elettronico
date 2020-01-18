@@ -112,12 +112,9 @@ class _LessonsPageState extends State<LessonsPage> {
     @required BuildContext context,
   }) {
     if (subjects.length > 0) {
-      return RefreshIndicator(
-        onRefresh: _refreshLessons,
-        child: SubjectsList(
-          professors: professors,
-          subjects: subjects,
-        ),
+      return SubjectsList(
+        professors: professors,
+        subjects: subjects,
       );
     } else {
       return CustomPlaceHolder(
@@ -131,9 +128,5 @@ class _LessonsPageState extends State<LessonsPage> {
         showUpdate: true,
       );
     }
-  }
-
-  Future _refreshLessons() async {
-    BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
   }
 }

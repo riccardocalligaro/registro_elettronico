@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
@@ -42,6 +43,7 @@ class _HomePageState extends State<HomePage> {
   final double _borderRadiusCard = 8.0;
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   int _lastUpdate;
+  RefreshController _refreshController = RefreshController();
 
   @override
   void initState() {
@@ -98,14 +100,20 @@ class _HomePageState extends State<HomePage> {
               AppLocalizations.of(context).translate('leave_snackbar'),
             ),
           ),
-          child: RefreshIndicator(
+          child: SmartRefresher(
+            controller: _refreshController,
+            header: MaterialClassicHeader(
+              backgroundColor: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.grey[900]
+                  : Colors.white,
+              color: Colors.red,
+            ),
             onRefresh: _refreshHome,
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
                   Stack(
                     children: <Widget>[
-                      // Background red color
                       Container(
                         height: 220,
                         decoration: BoxDecoration(
@@ -117,27 +125,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      // Positioned(
-                      //   //top: 7,
-                      //   left: -16,
-                      //   child: SafeArea(
-                      //     child: RawMaterialButton(
-                      //       onPressed: () {
-                      //         _drawerKey.currentState.openDrawer();
-                      //       },
-                      //       child: Icon(
-                      //         Icons.menu,
-                      //         color: Colors.white,
-                      //       ),
-                      //       shape: CircleBorder(),
-                      //       elevation: 2.0,
-                      //       padding: const EdgeInsets.all(15.0),
-                      //     ),
-                      //   ),
-                      // ),
-
                       _buildWelcomeSection(),
-
                       Positioned(
                         top: 150,
                         left: 16,
@@ -340,10 +328,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> _refreshHome() async {
+  void _refreshHome() async {
     BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
     BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
     BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
     BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
+    await Future.delayed(Duration(milliseconds: 500));
+    _refreshController.refreshCompleted();
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
+import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 
 /// Page of the [last grades]
@@ -31,15 +32,16 @@ class _LastGradesPageState extends State<LastGradesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () {
-        BlocProvider.of<SubjectsGradesBloc>(context).add(UpdateSubjectGrades());
-        BlocProvider.of<SubjectsGradesBloc>(context)
-            .add(GetGradesAndSubjects());
-        return _refreshCompleter.future;
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: CustomRefresher(
+        onRefresh: () {
+          BlocProvider.of<SubjectsGradesBloc>(context)
+              .add(UpdateSubjectGrades());
+          BlocProvider.of<SubjectsGradesBloc>(context)
+              .add(GetGradesAndSubjects());
+          return _refreshCompleter.future;
+        },
         child: ListView.builder(
           itemCount: widget.grades.length,
           itemBuilder: (context, index) {
