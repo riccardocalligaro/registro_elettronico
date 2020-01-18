@@ -33,5 +33,9 @@ abstract class GradesRepository {
 
   Future updateGrade(Grade grade);
 
+  Future cancelGradeLocally(Grade grade);
+
+  Future restoreGradeLocally(Grade grade);
+
   Future<List<LocalGrade>> getLocalGrades();
 }
