@@ -11,15 +11,17 @@ class Profile {
   String release;
   String expire;
 
-  Profile(
-      {this.ident,
-      this.firstName,
-      this.lastName,
-      this.token,
-      this.release,
-      this.expire});
+  Profile({
+    this.ident,
+    this.firstName,
+    this.lastName,
+    this.token,
+    this.release,
+    this.expire,
+  });
 
-  factory Profile.fromJson(Map<String, dynamic> json) => _$ProfileFromJson(json);
+  factory Profile.fromJson(Map<String, dynamic> json) =>
+      _$ProfileFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
 }

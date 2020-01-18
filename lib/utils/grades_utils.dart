@@ -55,9 +55,7 @@ class GradesUtils {
 
     grades.forEach((grade) {
       if (grade.subjectId == subjectId &&
-          (grade.decimalValue != -1.00 ||
-              grade.cancelled == true ||
-              grade.localllyCancelled == true)) {
+          isValidGrade(grade)) {
         sum += grade.decimalValue;
 
         count++;
@@ -99,7 +97,7 @@ class GradesUtils {
 
     grades.forEach((grade) {
       final decimalValue = grade.decimalValue;
-      if (decimalValue != -1.00 && grade.subjectId == subjectId) {
+      if (isValidGrade(grade) && grade.subjectId == subjectId) {
         // always check the average for all grades
         sumAverage += decimalValue;
         countAverage++;
@@ -283,8 +281,8 @@ class GradesUtils {
   }
 
   static bool isValidGrade(Grade grade) {
-    return (grade.decimalValue != -1.00 ||
-        grade.cancelled == false ||
+    return (grade.decimalValue != -1.00 &&
+        grade.cancelled == false &&
         grade.localllyCancelled == false);
   }
 

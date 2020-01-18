@@ -1,3 +1,4 @@
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -23,6 +24,11 @@ class GradesRepositoryImpl implements GradesRepository {
     gradesResponse.grades.forEach((grade) {
       grades.add(gradeMapper.convertGradeEntityToInserttable(grade));
     });
+
+    FLog.info(
+      text:
+          'Got ${gradesResponse.grades.length} grades from server, procceding to insert in database',
+    );
     gradeDao.insertGrades(grades);
   }
 

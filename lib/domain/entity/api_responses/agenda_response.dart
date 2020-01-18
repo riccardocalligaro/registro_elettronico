@@ -30,20 +30,21 @@ class Event {
   String notes;
   String authorName;
   String classDesc;
-  Null subjectId;
-  Null subjectDesc;
+  int subjectId;
+  String subjectDesc;
 
-  Event(
-      {this.evtId,
-      this.evtCode,
-      this.evtDatetimeBegin,
-      this.evtDatetimeEnd,
-      this.isFullDay,
-      this.notes,
-      this.authorName,
-      this.classDesc,
-      this.subjectId,
-      this.subjectDesc});
+  Event({
+    this.evtId,
+    this.evtCode,
+    this.evtDatetimeBegin,
+    this.evtDatetimeEnd,
+    this.isFullDay,
+    this.notes,
+    this.authorName,
+    this.classDesc,
+    this.subjectId,
+    this.subjectDesc,
+  });
 
   Event.fromJson(Map<String, dynamic> json) {
     evtId = json['evtId'];

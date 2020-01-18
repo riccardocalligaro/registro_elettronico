@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/f_logs.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/domain/entity/login_token.dart';
 import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
 
@@ -54,6 +55,10 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
         final res = await scrutiniRepository.getLoginToken();
         FLog.info(text: 'Got token from Spaggiari');
         yield* res.fold((failure) async* {
+          FLog.error(
+            text: 'Error getting token from spaggiari',
+          );
+          Crashlytics.instance.log('Error getting token from spaggiari');
           yield TokenLoadError();
         }, (token) async* {
           loginToken = LoginToken(token);

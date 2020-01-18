@@ -28,8 +28,9 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
       absencesList.add(AbsenceMapper.convertEventEntityToInsertable(event));
     });
     FLog.info(
-        text: 'Got response from server, procceding to inserting in database');
-
+      text:
+          'Got ${absences.events.length} events from server, procceding to insert in database',
+    );
     absenceDao.insertEvents(absencesList);
   }
 

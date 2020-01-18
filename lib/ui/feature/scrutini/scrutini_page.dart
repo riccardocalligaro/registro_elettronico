@@ -11,8 +11,11 @@ import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
+import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScrutiniPage extends StatefulWidget {
   const ScrutiniPage({Key key}) : super(key: key);
@@ -23,6 +26,21 @@ class ScrutiniPage extends StatefulWidget {
 
 class _ScrutiniPageState extends State<ScrutiniPage> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  int _scrutiniLastUpdate;
+
+  @override
+  void initState() {
+    restore();
+    super.initState();
+  }
+
+  void restore() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      _scrutiniLastUpdate =
+          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_SCRUTINI);
+    });
+  }
 
   @override
   void didChangeDependencies() {
@@ -40,6 +58,9 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
         ),
         drawer: AppDrawer(
           position: DrawerConstants.SCRUTINI,
+        ),
+        bottomSheet: LastUpdateBottomSheet(
+          millisecondsSinceEpoch: _scrutiniLastUpdate,
         ),
         body: MultiBlocListener(
           listeners: [
@@ -176,7 +197,17 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                 }
               },
               child: Container(),
-            )
+            ),
+            BlocListener<DocumentsBloc, DocumentsState>(
+                listener: (context, state) {
+                  if (state is DocumentsUpdateLoadSuccess) {
+                    setState(() {
+                      _scrutiniLastUpdate =
+                          DateTime.now().millisecondsSinceEpoch;
+                    });
+                  }
+                },
+                child: Container())
           ],
           child: BlocBuilder<DocumentsBloc, DocumentsState>(
             builder: (context, state) {

@@ -7,13 +7,13 @@ class PeriodsResponse {
     if (json['periods'] != null) {
       periods = new List<Period>();
       json['periods'].forEach((v) {
-        periods.add(new Period.fromJson(v));
+        periods.add(Period.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.periods != null) {
       data['periods'] = this.periods.map((v) => v.toJson()).toList();
     }
@@ -28,16 +28,17 @@ class Period {
   bool isFinal;
   String dateStart;
   String dateEnd;
-  Null miurDivisionCode;
+  String miurDivisionCode;
 
-  Period(
-      {this.periodCode,
-      this.periodPos,
-      this.periodDesc,
-      this.isFinal,
-      this.dateStart,
-      this.dateEnd,
-      this.miurDivisionCode});
+  Period({
+    this.periodCode,
+    this.periodPos,
+    this.periodDesc,
+    this.isFinal,
+    this.dateStart,
+    this.dateEnd,
+    this.miurDivisionCode,
+  });
 
   Period.fromJson(Map<String, dynamic> json) {
     periodCode = json['periodCode'];

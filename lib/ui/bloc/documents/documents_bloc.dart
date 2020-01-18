@@ -3,6 +3,8 @@ import 'package:bloc/bloc.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/domain/repository/documents_repository.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './bloc.dart';
 
 class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
@@ -30,6 +32,14 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
       FLog.info(text: 'Getting documents and school reports');
       final data = await documentsRepository.getDocumentsAndSchoolReports();
       FLog.info(text: 'Got documents and school reports');
+      FLog.info(text: 'BloC -> Got ${data.value1.length} school reports');
+      FLog.info(text: 'BloC -> Got ${data.value2.length} documents');
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      await sharedPreferences.setInt(
+        PrefsConstants.LAST_UPDATE_SCRUTINI,
+        DateTime.now().millisecondsSinceEpoch,
+      );
       yield DocumentsLoadSuccess(
         schoolReports: data.value1,
         documents: data.value2,

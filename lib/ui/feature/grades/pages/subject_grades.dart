@@ -5,7 +5,9 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
-import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/grades_event.dart';
+import 'package:registro_elettronico/ui/bloc/grades/grades_state.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/local_grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/professors/bloc.dart';
@@ -45,6 +47,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     super.didChangeDependencies();
     BlocProvider.of<ProfessorsBloc>(context)
         .add(GetProfessorsForSubject(subjectId: widget.subject.id));
+    BlocProvider.of<GradesBloc>(context).add(GetGrades());
     BlocProvider.of<LocalGradesBloc>(context).add(GetLocalGrades(
       period: widget.period,
     ));
@@ -54,25 +57,31 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
   Widget build(BuildContext context) {
     final subject = widget.subject;
 
-    List<Grade> grades;
-    if (widget.period != TabsConstants.GENERALE) {
-      grades = widget.grades
-          .where((grade) =>
-              grade.subjectId == subject.id && grade.periodPos == widget.period)
-          .toList()
-            ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
-    } else {
-      grades = widget.grades
-          .where((grade) => grade.subjectId == subject.id)
-          .toList()
-            ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
-    }
-
-    final averages =
-        GradesUtils.getSubjectAveragesFromGrades(grades, subject.id);
-    return BlocBuilder<SubjectsGradesBloc, SubjectsGradesState>(
+    return BlocBuilder<GradesBloc, GradesState>(
       builder: (context, state) {
-        if (state is SubjectsGradesLoadSuccess) {
+        if (state is GradesLoading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is GradesLoaded) {
+          List<Grade> grades;
+          if (widget.period != TabsConstants.GENERALE) {
+            grades = state.grades
+                .where((grade) =>
+                    grade.subjectId == subject.id &&
+                    grade.periodPos == widget.period)
+                .toList()
+                  ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
+          } else {
+            grades = state.grades
+                .where((grade) => grade.subjectId == subject.id)
+                .toList()
+                  ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
+          }
+
+          final averages =
+              GradesUtils.getSubjectAveragesFromGrades(grades, subject.id);
           return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.transparent,
@@ -91,7 +100,11 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                       _buildAveragesCard(averages),
 
                       /// The chart that shows the average and grades
-                      _buildChartCard(subject, grades),
+                      _buildChartCard(
+                          subject,
+                          grades
+                              .where((g) => GradesUtils.isValidGrade(g))
+                              .toList()),
 
                       // Shots the progress bar of the obj and the avg
                       _buildProgressBarCard(averages),
@@ -371,41 +384,45 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                 : EdgeInsets.only(bottom: 8.0),
             child: InkWell(
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text(grade.localllyCancelled
-                        ? 'Vuoi ripristinare questo voto dalla media?'
-                        : 'Vuoi eliminare questo voto dalla media?'),
-                    content: Text(grades[index].localllyCancelled.toString()),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text('NO'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      FlatButton(
-                        child: Text('SI'),
-                        onPressed: () async {
-                          if (grade.localllyCancelled) {
-                            await RepositoryProvider.of<GradesRepository>(
-                                    context)
-                                .cancelGradeLocally(grades[index]);
-                            BlocProvider.of<SubjectsGradesBloc>(context)
-                                .add(GetGradesAndSubjects());
-                          } else {
-                            await RepositoryProvider.of<GradesRepository>(
-                                    context)
-                                .restoreGradeLocally(grades[index]);
-                            BlocProvider.of<SubjectsGradesBloc>(context)
-                                .add(GetGradesAndSubjects());
-                          }
-                        },
-                      )
-                    ],
-                  ),
-                );
+                if (grade.decimalValue != -1.00 && grade.cancelled == false) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text(grade.localllyCancelled
+                          ? 'Vuoi ripristinare questo voto dalla media?'
+                          : 'Vuoi eliminare questo voto dalla media?'),
+                      content: Text(grades[index].localllyCancelled.toString()),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('NO'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        FlatButton(
+                          child: Text('SI'),
+                          onPressed: () async {
+                            if (grade.localllyCancelled) {
+                              await RepositoryProvider.of<GradesRepository>(
+                                      context)
+                                  .updateGrade(
+                                      grade.copyWith(localllyCancelled: false));
+                              BlocProvider.of<GradesBloc>(context)
+                                  .add(GetGrades());
+                            } else {
+                              await RepositoryProvider.of<GradesRepository>(
+                                      context)
+                                  .updateGrade(
+                                      grade.copyWith(localllyCancelled: true));
+                              BlocProvider.of<GradesBloc>(context)
+                                  .add(GetGrades());
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  );
+                }
               },
               child: GradeCard(
                 grade: grades[index],

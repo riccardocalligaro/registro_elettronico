@@ -53,6 +53,7 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
       yield AbsencesLoading();
       try {
         final absences = await absencesRepository.getAllAbsences();
+        FLog.info(text: 'BloC -> Got ${absences.length} absences');
         yield AbsencesLoaded(absences: absences);
       } catch (e, s) {
         Crashlytics.instance.recordError(e, s);

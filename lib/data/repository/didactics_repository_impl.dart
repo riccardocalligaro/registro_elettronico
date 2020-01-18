@@ -53,6 +53,10 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
       teachers.add(teacherDb);
     });
 
+    FLog.info(
+      text:
+          'Got ${didactics.teachers} teachers events from server, procceding to insert in database',
+    );
     didacticsDao.insertTeachers(teachers);
   }
 

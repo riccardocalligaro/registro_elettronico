@@ -33,20 +33,45 @@ class GlobalUtils {
   static String getLastUpdateMessage(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
+    final trans = AppLocalizations.of(context);
 
-    if (difference.inSeconds < 30) return "Now";
-    if (difference.inMinutes == 0) return "${difference.inSeconds} seconds ago";
-    if (difference.inMinutes == 1) return "${difference.inMinutes} minute ago";
-    if (difference.inHours == 0) return "${difference.inMinutes} minutes ago";
-    if (difference.inDays == 0) return "${difference.inHours} hours ago";
-    if (difference.inDays == 1) return "Yesterday";
-    if (difference.inDays > 1 && difference.inDays < 7)
-      return "${difference.inDays} days ago";
-    if (difference.inDays == 7) return "A week ago";
-    if (difference.inDays > 31) {
-      return (difference.inDays / 30).toStringAsFixed(0);
-    } else
-      return "${difference.inDays} days ago";
+    if (difference.inSeconds < 30) {
+      return trans.translate('update_now');
+    } else if (difference.inSeconds < 60) {
+      return trans.translate('update_while_ago');
+    } else if (difference.inMinutes == 0) {
+      return trans
+          .translate('update_seconds')
+          .replaceAll('{s}', difference.inSeconds.toString());
+    } else if (difference.inMinutes == 1) {
+      return trans
+          .translate('update_minute')
+          .replaceAll('{m}', difference.inMinutes.toString());
+    } else if (difference.inHours == 0) {
+      return trans
+          .translate('update_minutes')
+          .replaceAll('{m}', difference.inMinutes.toString());
+    } else if (difference.inDays == 0) {
+      return trans
+          .translate('update_hours')
+          .replaceAll('{h}', difference.inHours.toString());
+    } else if (difference.inDays == 1) {
+      return trans.translate('update_yesterday');
+    } else if (difference.inDays > 1 && difference.inDays < 7) {
+      return trans
+          .translate('update_days')
+          .replaceAll('{d}', difference.inDays.toString());
+    } else if (difference.inDays == 7) {
+      return trans.translate('update_week');
+    } else if (difference.inDays > 31) {
+      return trans
+          .translate('update_days')
+          .replaceAll('{d}', (difference.inDays / 30).toStringAsFixed(0));
+    } else {
+      return trans
+          .translate('update_days')
+          .replaceAll('{d}', difference.inDays.toString());
+    }
   }
 
   /// This method thakes a list of lessons and returns the lesson [grouped]

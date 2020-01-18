@@ -1,3 +1,4 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -28,6 +29,11 @@ class AgendaRepositoryImpl implements AgendaRepository {
     agenda.events.forEach((event) {
       events.add(EventMapper.convertEventEntityToInsertable(event));
     });
+
+    FLog.info(
+      text:
+          'Got ${agenda.events.length} events from server, procceding to insert in database',
+    );
     agendaDao.insertEvents(events);
   }
 

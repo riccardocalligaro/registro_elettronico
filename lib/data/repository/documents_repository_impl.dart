@@ -42,6 +42,16 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
       reportsList
           .add(DocumentMapper.convertApiSchoolReportToInsertable(report));
     });
+
+    FLog.info(
+      text:
+          'Got ${documents.documents.length} documents from server, procceding to insert in database',
+    );
+
+    FLog.info(
+      text:
+          'Got ${documents.schoolReports.length} school reports from server, procceding to insert in database',
+    );
     await documentsDao.insertDocuments(documentsList);
     await documentsDao.insertSchoolReports(reportsList);
   }

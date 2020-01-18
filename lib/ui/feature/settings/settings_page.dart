@@ -36,8 +36,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   int _updateInterval = 30;
   SharedPreferences sharedPrefs;
-  bool _notificationsActivated;
-  bool _onlyOnWifiActivated;
+  bool _notificationsActivated = false;
+  bool _onlyOnWifiActivated = false;
 
   @override
   void initState() {

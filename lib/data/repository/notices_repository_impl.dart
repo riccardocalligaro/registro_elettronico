@@ -1,3 +1,4 @@
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:registro_elettronico/data/db/dao/notice_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
@@ -33,6 +34,11 @@ class NoticesRepositoryImpl implements NoticesRepository {
             notice.pubId, attachment));
       });
     });
+    
+    FLog.info(
+      text:
+          'Got ${response.items.length} notice items from server, procceding to insert in database',
+    );
 
     noticeDao.insertNotices(notices);
     noticeDao.insertAttachments(attachments);
