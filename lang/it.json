@@ -178,6 +178,6 @@
   "update_yesterday": "Ieri",
   "update_days": "{d} giorni fa",
   "update_week": "1 settimana fa",
-  "last_update": "Last update",
-  "never": "Never"
+  "last_update": "Ultimo aggiornamento",
+  "never": "Mai"
 }
