@@ -136,10 +136,10 @@ class _NotesPageState extends State<NotesPage> {
     }
   }
 
-  Future<void> _refreshNotes() async {
-    BlocProvider.of<NotesBloc>(context).add(UpdateNotes());
-    BlocProvider.of<NotesBloc>(context).add(GetNotes());
-  }
+  // Future<void> _refreshNotes() async {
+  //   BlocProvider.of<NotesBloc>(context).add(UpdateNotes());
+  //   BlocProvider.of<NotesBloc>(context).add(GetNotes());
+  // }
 }
 
 class ExpandedNote extends StatelessWidget {

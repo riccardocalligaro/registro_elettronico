@@ -7,6 +7,7 @@ import 'package:registro_elettronico/ui/feature/home/widgets/timeline.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:registro_elettronico/utils/string_utils.dart';
 
 class NextEventsSection extends StatelessWidget {
   const NextEventsSection({Key key}) : super(key: key);
@@ -85,17 +86,27 @@ class NextEventsSection extends StatelessWidget {
           children: events.map((e) {
             return Card(
               child: ListTile(
-                title: Text(e.notes ?? ''),
-                subtitle:
-                    Text(GlobalUtils.getEventDateMessage(context, e.begin)),
+                title: Text('${e.notes ?? ''}'),
+                subtitle: Text(
+                    '${StringUtils.titleCase(e.authorName)} - ${GlobalUtils.getEventDateMessage(context, e.begin)}'),
               ),
             );
           }).toList(),
           indicators: events.map((e) {
-            if (GlobalUtils.isCompito(e.notes)) return Icon(Icons.assignment);
+            if (GlobalUtils.isCompito(e.notes))
+              return Icon(
+                Icons.assignment,
+                color: Colors.grey[700],
+              );
             if (GlobalUtils.isVerificaOrInterrogazione(e.notes))
-              return Icon(Icons.assignment_late);
-            return Icon(Icons.calendar_today);
+              return Icon(
+                Icons.assignment_late,
+                color: Colors.grey[700],
+              );
+            return Icon(
+              Icons.calendar_today,
+              color: Colors.grey[700],
+            );
           }).toList(),
         ),
       );

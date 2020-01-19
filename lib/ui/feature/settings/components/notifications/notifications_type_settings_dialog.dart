@@ -17,9 +17,10 @@ class _NotificationsSettingsDialogState
     extends State<NotificationsSettingsDialog> {
   bool _gradesNotifications = false;
   bool _agendaNotifications = false;
-  bool _lessonsNotifications = false;
+  bool _finalGradesNotifications = false;
   bool _notesNotifications = false;
   bool _absencesNotifications = false;
+  bool _noticesNotifications = false;
 
   @override
   void initState() {
@@ -34,12 +35,15 @@ class _NotificationsSettingsDialogState
           (sharedPrefs.getBool(PrefsConstants.GRADES_NOTIFICATIONS) ?? false);
       _agendaNotifications =
           (sharedPrefs.getBool(PrefsConstants.AGENDA_NOTIFICATIONS) ?? false);
-      _lessonsNotifications =
-          (sharedPrefs.getBool(PrefsConstants.LESSONS_NOTIFICATIONS) ?? false);
+      _finalGradesNotifications =
+          (sharedPrefs.getBool(PrefsConstants.FINAL_GRADES_NOTIFICATIONS) ??
+              false);
       _notesNotifications =
           (sharedPrefs.getBool(PrefsConstants.NOTES_NOTIFICATIONS) ?? false);
       _absencesNotifications =
           (sharedPrefs.getBool(PrefsConstants.ABSENCES_NOTIFICATIONS) ?? false);
+      _noticesNotifications =
+          (sharedPrefs.getBool(PrefsConstants.NOTICES_NOTIFICATIONS) ?? false);
     });
   }
 
@@ -87,19 +91,6 @@ class _NotificationsSettingsDialogState
           SwitchListTile(
             activeColor: Colors.red,
             contentPadding: EdgeInsets.zero,
-            value: _lessonsNotifications,
-            title: Text(AppLocalizations.of(context).translate('lessons')),
-            onChanged: (value) {
-              setState(() {
-                _lessonsNotifications = value;
-              });
-
-              save(PrefsConstants.LESSONS_NOTIFICATIONS, value);
-            },
-          ),
-          SwitchListTile(
-            activeColor: Colors.red,
-            contentPadding: EdgeInsets.zero,
             value: _notesNotifications,
             title: Text(AppLocalizations.of(context).translate('notes')),
             onChanged: (value) {
@@ -120,6 +111,30 @@ class _NotificationsSettingsDialogState
               });
 
               if (value) save(PrefsConstants.ABSENCES_NOTIFICATIONS, value);
+            },
+          ),
+          SwitchListTile(
+            activeColor: Colors.red,
+            contentPadding: EdgeInsets.zero,
+            value: _noticesNotifications,
+            title: Text(AppLocalizations.of(context).translate('notices')),
+            onChanged: (value) {
+              setState(() {
+                _noticesNotifications = value;
+              });
+              save(PrefsConstants.NOTICES_NOTIFICATIONS, value);
+            },
+          ),
+          SwitchListTile(
+            activeColor: Colors.red,
+            contentPadding: EdgeInsets.zero,
+            value: _finalGradesNotifications,
+            title: Text(AppLocalizations.of(context).translate('scrutini')),
+            onChanged: (value) {
+              setState(() {
+                _finalGradesNotifications = value;
+              });
+              save(PrefsConstants.FINAL_GRADES_NOTIFICATIONS, value);
             },
           ),
         ],

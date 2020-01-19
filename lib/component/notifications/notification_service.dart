@@ -4,27 +4,35 @@ import 'package:registro_elettronico/component/notifications/local_notification.
 import 'package:registro_elettronico/component/notifications/notification_message.dart';
 import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
+import 'package:registro_elettronico/data/db/dao/document_dao.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/note_dao.dart';
+import 'package:registro_elettronico/data/db/dao/notice_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/data/repository/absences_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/agenda_repository_impl.dart';
+import 'package:registro_elettronico/data/repository/documents_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/grades_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/mapper/grade_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/data/repository/notes_repository_impl.dart';
+import 'package:registro_elettronico/data/repository/notices_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
+import 'package:registro_elettronico/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/notes_repository.dart';
+import 'package:registro_elettronico/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tuple/tuple.dart';
 
 class NotificationService {
   Future checkForNewContent() async {
@@ -58,6 +66,10 @@ class NotificationService {
         prefs.getBool(PrefsConstants.AGENDA_NOTIFICATIONS) ?? false;
     final notifyNotes =
         prefs.getBool(PrefsConstants.NOTES_NOTIFICATIONS) ?? false;
+    final notifyFinalGrades =
+        prefs.getBool(PrefsConstants.FINAL_GRADES_NOTIFICATIONS) ?? false;
+    final notifyNotices =
+        prefs.getBool(PrefsConstants.NOTICES_NOTIFICATIONS) ?? false;
 
     // Send grades notifications
     if (notifyGrades) {
@@ -88,7 +100,7 @@ class NotificationService {
         eventsToNotify.forEach(
           (event) => localNotification.showNotificationWithDefaultSound(
             event.evtId,
-            '📅 Nuovo evento!',
+            '📅 Nuovo evento',
             '${event.notes} il ${DateUtils.convertDateForDisplay(event.begin)}',
           ),
         );
@@ -122,12 +134,84 @@ class NotificationService {
         notesToNotify.forEach(
           (event) => localNotification.showNotificationWithDefaultSound(
             event.id,
-            '⚠️ Nuova nota!',
+            '⚠️ Nuova nota',
             '${event.author}',
           ),
         );
       }
     }
+
+    if (notifyNotices) {
+      FLog.info(text: 'Checking for new content in NOTICES!');
+      final NoticeDao noticeDao = NoticeDao(appDatabase);
+
+      final NoticesRepository noticesRepository =
+          NoticesRepositoryImpl(noticeDao, profileDao, spaggiariClient);
+
+      final noticesToNotify = await _getNoticesToNotify(noticesRepository);
+
+      if (noticesToNotify.length < 10) {
+        noticesToNotify.forEach(
+          (event) {
+            localNotification.showNotificationWithDefaultSound(
+              event.pubId,
+              '📰 Nuova comunicazione',
+              '${event.contentTitle}',
+            );
+          },
+        );
+      }
+    }
+
+    if (notifyFinalGrades) {
+      FLog.info(text: 'Checking for new content in FINAL GRADES');
+      final DocumentsDao documentsDao = DocumentsDao(appDatabase);
+      final DocumentsRepository documentsRepository = DocumentsRepositoryImpl(
+        spaggiariClient,
+        profileRepository,
+        documentsDao,
+      );
+
+      final documentsToNotify =
+          await _getDocumentsToNotify(documentsRepository);
+
+      FLog.info(text: 'Documents to notify: ${documentsToNotify.item1.length}');
+
+      FLog.info(text: 'Reports to notify: ${documentsToNotify.item2.length}');
+
+      documentsToNotify.item1.forEach(
+        (report) => localNotification.showNotificationWithDefaultSound(
+          GlobalUtils.getRandomNumber(),
+          '📄 Nuovo documento',
+          '${report.description}',
+        ),
+      );
+
+      documentsToNotify.item2.forEach(
+        (report) => localNotification.showNotificationWithDefaultSound(
+          GlobalUtils.getRandomNumber(),
+          '🗄 Nuovo file finale',
+          '${report.description}',
+        ),
+      );
+    }
+  }
+
+  Future<List<Notice>> _getNoticesToNotify(
+    NoticesRepository noticesRepository,
+  ) async {
+    List<Notice> noticesToNotify = [];
+    final noticesBeforeFetching = await noticesRepository.getAllNotices();
+    await noticesRepository.updateNotices();
+    final noticesAfterFetching = await noticesRepository.getAllNotices();
+
+    noticesAfterFetching.forEach(
+      (notice) => {
+        if (!noticesBeforeFetching.contains(notice)) noticesToNotify.add(notice)
+      },
+    );
+
+    return noticesToNotify;
   }
 
   Future<List<Grade>> _getGradesToNotify(
@@ -144,6 +228,25 @@ class NotificationService {
     );
 
     return gradesToNotify;
+  }
+
+  Future<Tuple2<List<SchoolReport>, List<Document>>> _getDocumentsToNotify(
+      DocumentsRepository documentsRepository) async {
+    List<SchoolReport> reportsToNotify = [];
+    List<Document> documentsToNotify = [];
+
+    final before = await documentsRepository.getDocumentsAndSchoolReports();
+    await documentsRepository.updateDocuments();
+    final after = await documentsRepository.getDocumentsAndSchoolReports();
+
+    after.value1.forEach((report) =>
+        {if (!before.value1.contains(report)) reportsToNotify.add(report)});
+
+    after.value2.forEach((document) => {
+          if (!before.value2.contains(document)) documentsToNotify.add(document)
+        });
+
+    return Tuple2(reportsToNotify, documentsToNotify);
   }
 
   Future<List<AgendaEvent>> _getAgendaEventsToNotify(
@@ -188,5 +291,12 @@ class NotificationService {
     if (payload != null) {
       print('notification payload: ' + payload);
     }
+
+    // if (payload == PrefsConstants.NOTICES_NOTIFICATIONS) {
+    //   await Navigator.push(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => SecondScreen(payload)),
+    //   );
+    // }
   }
 }

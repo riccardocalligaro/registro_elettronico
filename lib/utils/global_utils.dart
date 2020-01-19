@@ -99,15 +99,21 @@ class GlobalUtils {
   }
 
   static Map<Tuple2<int, String>, int> getGroupedLessonsMap(
-      List<Lesson> lessons) {
+    List<Lesson> lessons,
+  ) {
     final Map<Tuple2<int, String>, int> lessonsMap = Map.fromIterable(
       lessons,
-      key: (e) => Tuple2<int, String>(e.subjectId, e.lessonArg),
+      key: (e) => Tuple2<int, String>(
+        e.subjectId,
+        e.lessonArg,
+      ),
       value: (e) => lessons
-          .where((entry) =>
-              entry.lessonArg == e.lessonArg &&
-              entry.subjectId == e.subjectId &&
-              entry.author == e.author)
+          .where(
+            (entry) =>
+                entry.lessonArg == e.lessonArg &&
+                entry.subjectId == e.subjectId &&
+                entry.author == e.author,
+          )
           .length,
     );
     return lessonsMap;
@@ -450,6 +456,12 @@ class GlobalUtils {
   static int getRandomNumber() {
     Random random = new Random();
     int randomNumber = random.nextInt(99999);
+    return randomNumber;
+  }
+
+  static int getSmallRandomNumber() {
+    Random random = new Random();
+    int randomNumber = random.nextInt(10000);
     return randomNumber;
   }
 

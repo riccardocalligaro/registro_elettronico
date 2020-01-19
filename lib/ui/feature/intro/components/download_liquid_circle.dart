@@ -31,8 +31,8 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
           builder: (context, state) {
             if (state is IntroInitial) {
               return Container(
-                height: 300,
-                width: 300,
+                height: MediaQuery.of(context).size.height / 2.5,
+                width: MediaQuery.of(context).size.height / 2.5,
                 child: GestureDetector(
                   onTap: () async {
                     BlocProvider.of<IntroBloc>(context).add(FetchAllData());
