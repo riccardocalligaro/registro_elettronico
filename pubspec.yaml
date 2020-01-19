@@ -1,17 +1,9 @@
 name: registro_elettronico
-description: A beautiful and simple school register app.
+description: >-
+  A beautiful and simple school register app for Spaggiari.
+  Made by students.
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 0.0.1-dev.1
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -49,8 +41,6 @@ dependencies:
   url_launcher: ^5.4.1
   # pick a grade
   numberpicker: ^1.1.0
-  # random colors for timetable
-  random_color: ^1.0.3
   # initial slideshow
   flutter_swiper: ^1.1.6
   # intro page aligment
@@ -59,7 +49,6 @@ dependencies:
   liquid_progress_indicator: ^0.3.2
   tuple: ^1.0.3
   # timetable
-  flutter_staggered_grid_view: ^0.3.0
   # share dialog
   share: ^0.6.3+5
   # advanced logging
@@ -68,12 +57,9 @@ dependencies:
   flutter_email_sender: ^2.2.2
   #flutter_mailer: ^0.4.2
   dartz: ^0.8.9
-  cookie_jar: ^1.0.1
   flutter_webview_plugin: ^0.3.10+1
   #webview_flutter: ^0.3.19+4
   pull_to_refresh: ^1.5.8
-  # better stack trace
-  stack_trace: ^1.9.3
 
   # firebase
   firebase_core: ^0.4.3+1
@@ -109,15 +95,10 @@ dev_dependencies:
   json_serializable: ^3.2.3
   retrofit_generator: ^1.0.2+2
 
-
 flutter_icons:
   android: true
   ios: true
   image_path: "assets/icons/launcher_icon.png"
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter.
 
 flutter:
   assets:
@@ -144,13 +125,3 @@ flutter:
           weight: 400
         - asset: assets/fonts/Montserrat-Medium.otf
           weight: 300
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
