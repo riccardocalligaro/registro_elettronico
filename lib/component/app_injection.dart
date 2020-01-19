@@ -25,7 +25,6 @@ import 'package:registro_elettronico/data/repository/documents_repository_impl.d
 import 'package:registro_elettronico/data/repository/mapper/absence_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/mappers_export.dart';
 import 'package:registro_elettronico/data/repository/mapper/note_mapper.dart';
-import 'package:registro_elettronico/data/repository/mapper/notice_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/period_mapper.dart';
 import 'package:registro_elettronico/data/repository/notes_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/notices_repository_impl.dart';
@@ -232,7 +231,6 @@ class AppInjector {
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
-        i.getDependency(),
       );
       return noticesRepository;
     });
@@ -309,10 +307,6 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton<PeriodMapper>((injector) {
       return PeriodMapper();
-    });
-
-    Injector.appInstance.registerSingleton<NoticeMapper>((injector) {
-      return NoticeMapper();
     });
 
     Injector.appInstance.registerSingleton<NoteMapper>((injector) {

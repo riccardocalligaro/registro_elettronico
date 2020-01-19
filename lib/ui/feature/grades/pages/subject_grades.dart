@@ -8,7 +8,6 @@ import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_event.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_state.dart';
-import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/local_grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/professors/bloc.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.dart';
@@ -120,6 +119,8 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
             ),
           );
         }
+
+        return Container();
       },
     );
   }

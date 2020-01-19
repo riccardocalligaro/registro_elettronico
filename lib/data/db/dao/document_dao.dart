@@ -33,17 +33,17 @@ class DocumentsDao extends DatabaseAccessor<AppDatabase>
       delete(downloadedDocuments).delete(downloadedDocument);
 
   Future insertDownloadedDocument(DownloadedDocument downloadedDocument) =>
-      into(downloadedDocuments).insert(downloadedDocument);
+      into(downloadedDocuments).insert(downloadedDocument, orReplace: true);
 
   Future deeteAllDocuments() => delete(documents).go();
 
   Future deeteAllSchoolReports() => delete(schoolReports).go();
 
   Future insertDocuments(List<Document> documentsList) =>
-      into(documents).insertAll(documentsList);
+      into(documents).insertAll(documentsList, orReplace: true);
 
   Future insertSchoolReports(List<SchoolReport> schoolReportsList) =>
-      into(schoolReports).insertAll(schoolReportsList);
+      into(schoolReports).insertAll(schoolReportsList, orReplace: true);
 
   Future<DownloadedDocument> getDownloadedDocumentFromHash(String hash) {
     return (select(downloadedDocuments)..where((g) => g.hash.equals(hash)))

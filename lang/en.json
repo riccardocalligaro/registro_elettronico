@@ -175,6 +175,7 @@
   "update_while_ago": "A little while ago",
   "update_seconds": "{s} seconds ago",
   "update_minutes": "{m} minutes ago",
+  "update_minute": "{m} minute ago",
   "update_hours": "{h} hours ago",
   "update_yesterday": "Yesterday",
   "update_days": "{d} days ago",

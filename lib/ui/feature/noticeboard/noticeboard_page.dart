@@ -309,8 +309,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         child: ListTile(
           title: Text(notice.contentTitle),
           subtitle: Text(
-            DateUtils.convertDateLocale(
-                notice.pubDate, AppLocalizations.of(context).locale.toString()),
+            DateUtils.convertDateLocale(notice.pubDate,
+                AppLocalizations.of(context).locale.toString()),
           ),
           trailing: notice.readStatus
               ? Icon(

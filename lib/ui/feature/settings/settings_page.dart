@@ -290,7 +290,7 @@ class _SettingsPageState extends State<SettingsPage> {
       FLog.info(
         text: '-> Set new time for notifications -> interval $refreshInterval',
       );
-      WidgetsFlutterBinding.ensureInitialized();
+      await WidgetsFlutterBinding.ensureInitialized();
       await Workmanager.cancelAll();
       await Workmanager.initialize(
         callbackDispatcher,
@@ -300,7 +300,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
       await Workmanager.registerPeriodicTask(
         'checkForNewContent', 'checkForNewContent',
-        initialDelay: Duration(minutes: 60),
+        initialDelay: Duration(minutes: refreshInterval),
         // minimum frequency for android is 15 minutes
         frequency: Duration(minutes: refreshInterval),
         constraints: Constraints(
@@ -314,8 +314,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
       FLog.info(text: '-> Set notifications every $refreshInterval');
     } else {
-      WidgetsFlutterBinding.ensureInitialized();
-      Workmanager.cancelAll();
+      await WidgetsFlutterBinding.ensureInitialized();
+      await Workmanager.cancelAll();
       FLog.info(text: '-> Cancelled all notifications intervals');
     }
   }

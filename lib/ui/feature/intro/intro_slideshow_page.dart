@@ -76,7 +76,7 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
   SwiperItem _getNotificationsSwipetItem() {
     return SwiperItem(
       centerWidget: AlignPositioned(
-        dy: 210,
+        dy: 180,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 64.0),
           child: Column(
