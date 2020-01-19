@@ -155,13 +155,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
-  cookie_jar:
-    dependency: "direct main"
-    description:
-      name: cookie_jar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
   crypto:
     dependency: transitive
     description:
@@ -333,13 +326,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.3.1+1"
-  flutter_staggered_grid_view:
-    dependency: "direct main"
-    description:
-      name: flutter_staggered_grid_view
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -707,13 +693,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
-  random_color:
-    dependency: "direct main"
-    description:
-      name: random_color
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.3"
   random_string:
     dependency: "direct main"
     description:
@@ -832,7 +811,7 @@ packages:
     source: hosted
     version: "0.4.0"
   stack_trace:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: stack_trace
       url: "https://pub.dartlang.org"
