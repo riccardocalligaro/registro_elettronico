@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/ui/bloc/dashboard/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_state.dart';
@@ -17,25 +18,38 @@ class LastGradesSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GradesBloc, GradesState>(
       builder: (context, state) {
-        if (state is GradesLoaded) {
-          return _buildLastGradesList(state.grades, context);
-        } else if (state is GradesError || state is GradesUpdateError) {
-          return CustomPlaceHolder(
-            icon: Icons.error,
-            text: AppLocalizations.of(context).translate('error'),
-            showUpdate: true,
-            onTap: () {
-              BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
-              BlocProvider.of<GradesBloc>(context).add(GetGrades());
+        if (state is GradesUpdateLoading) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 100.0),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else {
+          return BlocBuilder<GradesDashboardBloc, GradesDashboardState>(
+            builder: (context, state) {
+              if (state is GradesDashboardLoadSuccess) {
+                return _buildLastGradesList(state.grades, context);
+              } else if (state is GradesDashboardLoadError) {
+                return CustomPlaceHolder(
+                  icon: Icons.error,
+                  text: AppLocalizations.of(context).translate('error'),
+                  showUpdate: true,
+                  onTap: () {
+                    BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
+                  },
+                );
+              }
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 100.0),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             },
           );
         }
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 100.0),
-          child: Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
       },
     );
   }

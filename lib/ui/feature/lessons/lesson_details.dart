@@ -58,6 +58,8 @@ class _LessonDetailsState extends State<LessonDetails> {
     _appBarTitle = Text(
       widget.subjectName,
     );
+    BlocProvider.of<LessonsBloc>(context)
+        .add(GetLessonsForSubject(subjectId: widget.subjectId));
     super.initState();
   }
 
@@ -66,13 +68,6 @@ class _LessonDetailsState extends State<LessonDetails> {
     setState(() {
       _lastUpdate = prefs.getInt(PrefsConstants.LAST_UPDATE_LESSONS);
     });
-  }
-
-  @override
-  void didChangeDependencies() async {
-    BlocProvider.of<LessonsBloc>(context)
-        .add(GetLessonsForSubject(subjectId: widget.subjectId));
-    super.didChangeDependencies();
   }
 
   @override

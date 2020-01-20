@@ -4,7 +4,6 @@ import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/main.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/about/about_developers_page.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/account/account_settings.dart';
@@ -14,7 +13,6 @@ import 'package:registro_elettronico/ui/feature/settings/components/header_text.
 import 'package:registro_elettronico/ui/feature/settings/components/notifications/notifications_interval_settings_dialog.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
@@ -71,26 +69,23 @@ class _SettingsPageState extends State<SettingsPage> {
       drawer: AppDrawer(
         position: DrawerConstants.SETTINGS,
       ),
-      body: DoubleBackToCloseApp(
-        snackBar: AppNavigator.instance.getLeaveSnackBar(context),
-        child: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                /// Notification settins
-                _buildNotificationsSettingsSection(),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              /// Notification settins
+              _buildNotificationsSettingsSection(),
 
-                /// General settings
-                GeneralSettings(),
+              /// General settings
+              GeneralSettings(),
 
-                CustomizationSettings(),
+              CustomizationSettings(),
 
-                AccountSettings(),
+              AccountSettings(),
 
-                _buildAboutSection()
-              ],
-            ),
+              _buildAboutSection()
+            ],
           ),
         ),
       ),
