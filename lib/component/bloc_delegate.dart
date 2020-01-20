@@ -10,6 +10,7 @@ import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/agenda/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/dashboard/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/didactics_attachments/didactics_attachments_bloc.dart';
@@ -151,6 +152,9 @@ class AppBlocDelegate {
       ),
       BlocProvider<DocumentAttachmentBloc>(
         create: (ctx) => DocumentAttachmentBloc(i.getDependency()),
+      ),
+      BlocProvider<GradesDashboardBloc>(
+        create: (ctx) => GradesDashboardBloc(i.getDependency()),
       ),
     ];
   }

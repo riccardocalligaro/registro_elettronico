@@ -3,6 +3,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:registro_elettronico/utils/string_utils.dart';
 
 class LessonCard extends StatelessWidget {
   final Lesson lesson;
@@ -35,7 +36,8 @@ class LessonCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SelectableText(
-                      """${trans.translate('argument')}: ${lesson.lessonArg}
+                      """${trans.translate('author')}: ${StringUtils.titleCase(lesson.author)}
+                      \n${trans.translate('argument')}: ${lesson.lessonArg}
                       \n${trans.translate('date')}: ${DateUtils.convertDateLocale(lesson.date, AppLocalizations.of(context).locale.toString())}
                       \n${trans.translate('type')}: ${lesson.lessonType}
                       """),

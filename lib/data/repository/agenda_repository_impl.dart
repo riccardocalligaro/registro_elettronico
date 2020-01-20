@@ -83,7 +83,13 @@ class AgendaRepositoryImpl implements AgendaRepository {
   }
 
   @override
-  Future<List<AgendaEvent>> getLastEvents(DateTime date, int numbersOfEvents) {
-    return agendaDao.getLastEvents(date, numbersOfEvents);
+  Future<List<AgendaEvent>> getLastEvents(
+    DateTime date, {
+    int numbersOfEvents,
+  }) {
+    return agendaDao.getLastEvents(
+      date,
+      numbersOfEvents: numbersOfEvents,
+    );
   }
 }

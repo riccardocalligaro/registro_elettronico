@@ -181,5 +181,10 @@
   "update_days": "{d} days ago",
   "update_week": "A week ago",
   "last_update": "Last update",
-  "never": "Never"
+  "never": "Never",
+  "delete_grade_title_cancel": "Vuoi eliminare questo voto dalla media?",
+  "delete_grade_title_restore": "Vuoi ripristinare questo voto?",
+  "yes": "Yes",
+  "no": "No",
+  "unknown_subject":"Unknown subject"
 }

@@ -31,6 +31,7 @@ class DioClient {
         dio.lock();
         // get the profile from the database
         final profile = await profileRepository.getDbProfile();
+        FLog.info(text: 'Got profile');
         //? This checks if the profile exires before now, so if this  results true the token is expired
         if (profile.expire.isBefore(DateTime.now())) {
           FLog.info(
