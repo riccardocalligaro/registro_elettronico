@@ -79,7 +79,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     try {
       final events = await agendaRepository.getLastEvents(
         dateTime,
-        numberOfevents,
+        numbersOfEvents: numberOfevents,
       );
       yield AgendaLoadSuccess(events: events);
     } catch (e, s) {
