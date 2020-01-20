@@ -17,11 +17,20 @@ class AgendaDao extends DatabaseAccessor<AppDatabase> with _$AgendaDaoMixin {
 
   Future<List<AgendaEvent>> getAllEvents() => select(agendaEvents).get();
 
-  Future<List<AgendaEvent>> getLastEvents(DateTime date, int numbersOfEvents) {
-    return (select(agendaEvents)
-          ..where((event) => event.end.isBiggerOrEqualValue(date))
-          ..limit(numbersOfEvents))
-        .get();
+  Future<List<AgendaEvent>> getLastEvents(
+    DateTime date, {
+    int numbersOfEvents,
+  }) {
+    if (numbersOfEvents != null) {
+      return (select(agendaEvents)
+            ..where((event) => event.end.isBiggerOrEqualValue(date))
+            ..limit(numbersOfEvents))
+          .get();
+    } else {
+      return (select(agendaEvents)
+            ..where((event) => event.end.isBiggerOrEqualValue(date)))
+          .get();
+    }
   }
 
   Future deleteAllEvents() => delete(agendaEvents).go();

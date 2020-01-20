@@ -26,7 +26,7 @@ class AgendaDashboardBloc
   Stream<AgendaDashboardState> _mapGetEventsEventToState() async* {
     yield AgendaDashboardLoadInProgress();
     try {
-      final events = await agendaRepository.getLastEvents(DateTime.now(), 3);
+      final events = await agendaRepository.getLastEvents(DateTime.now());
       FLog.info(text: 'BloC -> Got ${events.length} events dashboard');
 
       yield AgendaDashboardLoadSuccess(events: events);

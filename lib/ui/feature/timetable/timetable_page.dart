@@ -1,3 +1,4 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -74,7 +75,8 @@ class _TimetablePageState extends State<TimetablePage> {
                     """${AppLocalizations.of(context).translate('no_timetable')}
 ${AppLocalizations.of(context).translate('no_timetable_message')}""",
                 showUpdate: true,
-                updateMessage: AppLocalizations.of(context).translate('generate'),
+                updateMessage:
+                    AppLocalizations.of(context).translate('generate'),
                 onTap: () {
                   BlocProvider.of<TimetableBloc>(context).add(
                     GetNewTimetable(),
@@ -119,15 +121,24 @@ ${AppLocalizations.of(context).translate('no_timetable_message')}""",
                 shrinkWrap: true,
                 itemBuilder: (context, index2) {
                   final entry = entries[index2];
+                  final subjectsList =
+                      subjects.where((s) => s.id == entry.subject).toList();
+                  String subject;
+                  if (subjectsList.length > 0) {
+                    subject = subjectsList[0].name;
+                  } else {
+                    FLog.info(
+                        text: 'Unknown subject: ' + entry.subject.toString());
+                    subject = AppLocalizations.of(context)
+                        .translate('unknown_subject')
+                        .toUpperCase();
+                  }
                   return Column(
                     children: <Widget>[
                       ListTile(
                         leading: Text('${entry.start}H'),
                         title: Text(
-                          subjects
-                              .where((s) => s.id == entry.subject)
-                              .single
-                              .name,
+                          subject,
                         ),
                       ),
                       Divider(),

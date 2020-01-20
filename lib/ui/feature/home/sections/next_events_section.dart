@@ -80,35 +80,44 @@ class NextEventsSection extends StatelessWidget {
         ),
       );
     } else {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 0.0),
-        child: Timeline(
-          children: events.map((e) {
-            return Card(
-              child: ListTile(
-                title: Text('${e.notes ?? ''}'),
-                subtitle: Text(
-                    '${StringUtils.titleCase(e.authorName)} - ${GlobalUtils.getEventDateMessage(context, e.begin)}'),
+      return Timeline(
+        children: events.map((e) {
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    '${e.notes ?? ''}',
+                    style: TextStyle(fontSize: 15.0),
+                  ),
+                  SizedBox(height: 2.5,),
+                  Text(
+                    '${StringUtils.titleCase(e.authorName)} - ${GlobalUtils.getEventDateMessage(context, e.begin)}',
+                    style: TextStyle(fontSize: 12.0),
+                  ),
+                ],
               ),
-            );
-          }).toList(),
-          indicators: events.map((e) {
-            if (GlobalUtils.isCompito(e.notes))
-              return Icon(
-                Icons.assignment,
-                color: Colors.grey[700],
-              );
-            if (GlobalUtils.isVerificaOrInterrogazione(e.notes))
-              return Icon(
-                Icons.assignment_late,
-                color: Colors.grey[700],
-              );
+            ),
+          );
+        }).toList(),
+        indicators: events.map((e) {
+          if (GlobalUtils.isCompito(e.notes))
             return Icon(
-              Icons.calendar_today,
+              Icons.assignment,
               color: Colors.grey[700],
             );
-          }).toList(),
-        ),
+          if (GlobalUtils.isVerificaOrInterrogazione(e.notes))
+            return Icon(
+              Icons.assignment_late,
+              color: Colors.grey[700],
+            );
+          return Icon(
+            Icons.calendar_today,
+            color: Colors.grey[700],
+          );
+        }).toList(),
       );
     }
   }

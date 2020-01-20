@@ -185,5 +185,6 @@
   "delete_grade_title_cancel": "Vuoi eliminare questo voto dalla media?",
   "delete_grade_title_restore": "Vuoi ripristinare questo voto?",
   "yes": "Yes",
-  "no": "Si"
+  "no": "Si",
+  "unknown_subject": "Materia sconosciuta"
 }
