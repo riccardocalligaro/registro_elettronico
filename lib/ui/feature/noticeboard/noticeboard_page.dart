@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/notices/attachment_download/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notices/attachments/bloc.dart';
@@ -14,7 +13,6 @@ import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
@@ -59,6 +57,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
 
   @override
   void initState() {
+    BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
+
     restore();
     super.initState();
   }
@@ -78,12 +78,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           sharedPreferences.getBool(PrefsConstants.SHOW_OUTDATED_NOTICES) ??
               false;
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
   }
 
   @override
@@ -138,13 +132,10 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         drawer: AppDrawer(
           position: DrawerConstants.NOTICE_BOARD,
         ),
-        body: DoubleBackToCloseApp(
-          snackBar: AppNavigator.instance.getLeaveSnackBar(context),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            child: Container(
-              child: _buildNoticeBoard(),
-            ),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+          child: Container(
+            child: _buildNoticeBoard(),
           ),
         ),
       ),
@@ -309,8 +300,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         child: ListTile(
           title: Text(notice.contentTitle),
           subtitle: Text(
-            DateUtils.convertDateLocale(notice.pubDate,
-                AppLocalizations.of(context).locale.toString()),
+            DateUtils.convertDateLocale(
+                notice.pubDate, AppLocalizations.of(context).locale.toString()),
           ),
           trailing: notice.readStatus
               ? Icon(
@@ -360,6 +351,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                           title: Text(attachment.fileName),
                           onTap: () async {
                             final file = await _localFile(notice, attachment);
+                            print(await file.exists());
                             if (file.existsSync()) {
                               await OpenFile.open(file.path);
                               BlocProvider.of<NoticesBloc>(context)
@@ -416,7 +408,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
     final path = await _localPath;
     final ext = attachment.fileName.split('.').last;
 
-    return File('$path/${notice.contentTitle.replaceAll(' ', '_')}.$ext');
+    return File(
+        '$path/${notice.contentTitle.replaceAll('/', '').replaceAll(' ', '_')}.$ext');
   }
 
   Future<void> _refreshNoticeBoard() async {

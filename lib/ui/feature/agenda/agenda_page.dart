@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/component/navigator.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
@@ -10,7 +10,6 @@ import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
@@ -29,6 +28,7 @@ class AgendaPage extends StatefulWidget {
 
 class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  RefreshController _refreshController = RefreshController();
 
   List _selectedEvents;
   AnimationController _animationController;
@@ -91,8 +91,17 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     return BlocListener<AgendaBloc, AgendaState>(
       listener: (context, state) {
         if (state is AgendaUpdateLoadSuccess) {
+          _refreshController.refreshCompleted();
+
           setState(() {
             _agendaLastUpdate = DateTime.now().millisecondsSinceEpoch;
+          });
+        } else if (state is AgendaLoadSuccess) {
+          setState(() {
+            _selectedEvents = state.events
+                .where((d) => DateUtils.areSameDay(d.begin, DateTime.now()))
+                .toSet()
+                .toList();
           });
         }
       },
@@ -114,40 +123,38 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         bottomSheet: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _agendaLastUpdate,
         ),
-        body: DoubleBackToCloseApp(
-          snackBar: AppNavigator.instance.getLeaveSnackBar(context),
-          child: CustomRefresher(
-            onRefresh: _refreshAgenda,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _buildAgendaBlocBuilder(),
-                  const SizedBox(height: 8.0),
-                  const SizedBox(height: 8.0),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
-                    child: Text(
-                      AppLocalizations.of(context).translate('events'),
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
+        body: CustomRefresher(
+          controller: _refreshController,
+          onRefresh: _refreshAgenda,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _buildAgendaBlocBuilder(),
+                const SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
+                  child: Text(
+                    AppLocalizations.of(context).translate('events'),
+                    style: TextStyle(fontWeight: FontWeight.w500),
                   ),
-                  Container(
-                    child: _buildEventsMap(),
+                ),
+                Container(
+                  child: _buildEventsMap(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
+                  child: Text(
+                    AppLocalizations.of(context).translate('lessons'),
+                    style: TextStyle(fontWeight: FontWeight.w500),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
-                    child: Text(
-                      AppLocalizations.of(context).translate('lessons'),
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    child: _buildLessonsBlocBuilder(),
-                  )
-                ],
-              ),
+                ),
+                SingleChildScrollView(
+                  child: _buildLessonsBlocBuilder(),
+                )
+              ],
             ),
           ),
         ),
@@ -166,10 +173,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
             ),
           );
         } else if (state is AgendaLoadSuccess) {
-          _selectedEvents = state.events
-              .where((d) => DateUtils.areSameDay(d.begin, DateTime.now()))
-              .toList();
-
           return _buildTableCalendar(state.events);
         } else if (state is AgendaLoadError) {
           return CustomPlaceHolder(
@@ -333,56 +336,62 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   }
 
   Widget _buildEventsMap() {
-    return IgnorePointer(
-      child: ListView(
-          shrinkWrap: true,
-          children: _selectedEvents.map((e) {
-            final db.AgendaEvent event = e;
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
-              child: Card(
-                color: Colors.red[400],
-                child: ListTile(
-                  leading: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context)
-                          .translate('hour')
-                          .toLowerCase()),
-                      Text(
-                          '${event.begin.hour.toString()} - ${event.end.hour.toString()}')
-                    ],
-                  ),
-                  title: Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-                    child: Text(
-                      '${StringUtils.titleCase(event.authorName)}',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w600),
+    if (_selectedEvents.length > 0) {
+      return IgnorePointer(
+        child: ListView(
+            shrinkWrap: true,
+            children: _selectedEvents.map((e) {
+              final db.AgendaEvent event = e;
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
+                child: Card(
+                  color: Colors.red[400],
+                  child: ListTile(
+                    leading: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(AppLocalizations.of(context)
+                            .translate('hour')
+                            .toLowerCase()),
+                        Text(
+                            '${event.begin.hour.toString()} - ${event.end.hour.toString()}')
+                      ],
                     ),
-                  ),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-                    child: Text(
-                      '${event.notes} ${event.isFullDay ? " - (Tutto il giorno)" : ""}',
-                      style: TextStyle(color: Colors.white),
+                    title: Padding(
+                      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                      child: Text(
+                        '${StringUtils.titleCase(event.authorName)}',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                      child: Text(
+                        '${event.notes} ${event.isFullDay ? " - (Tutto il giorno)" : ""}',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          }).toList()),
-    );
-  }
-
-  Future onSelectNotification(String payload) async {
-    if (payload != null) {
-      print('notification payload: ' + payload);
+              );
+            }).toList()),
+      );
     }
+
+    return Padding(
+        padding: const EdgeInsets.only(top: 64.0),
+        child: CustomPlaceHolder(
+          icon: Icons.event,
+          text: '',
+          showUpdate: false,
+        ),
+      );
   }
 
-  Future<void> _refreshAgenda() async {
+  Future _refreshAgenda() async {
     BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
     BlocProvider.of<AgendaBloc>(context).add(GetAllAgenda());
+    _refreshController.refreshFailed();
   }
 }

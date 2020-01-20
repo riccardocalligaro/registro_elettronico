@@ -25,6 +25,8 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   @override
   Future updateDocuments() async {
     final profile = await profileRepository.getDbProfile();
+    FLog.info(text: 'Got profile');
+
     await documentsDao.deeteAllDocuments();
     await documentsDao.deeteAllSchoolReports();
 
@@ -67,6 +69,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   @override
   Future<Either<Failure, bool>> checkDocument(String documentHash) async {
     final profile = await profileRepository.getDbProfile();
+    FLog.info(text: 'Got profile');
 
     try {
       final available = await spaggiariClient.checkDocumentAvailability(
@@ -84,6 +87,8 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   Future<Either<Failure, String>> readDocument(String documentHash) async {
     try {
       final profile = await profileRepository.getDbProfile();
+      FLog.info(text: 'Got profile');
+
       final document = await spaggiariClient.readDocument(
         profile.studentId,
         documentHash,

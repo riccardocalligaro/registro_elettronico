@@ -32,9 +32,11 @@ class AttachmentDownloadBloc
         FLog.info(text: 'Got response for file');
 
         final path = await _localPath;
+
+        FLog.info(text: 'Path $path');
         final ext = event.attachment.fileName.split('.').last;
         final filePath =
-            '$path/${event.notice.contentTitle.replaceAll(' ', '_')}.$ext';
+            '$path/${event.notice.contentTitle.replaceAll('/', '').replaceAll(' ', '_')}.$ext';
 
         File file = File(filePath);
         var raf = file.openSync(mode: FileMode.write);

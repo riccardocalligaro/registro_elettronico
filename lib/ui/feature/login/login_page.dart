@@ -23,11 +23,6 @@ class _LoginPageState extends State<LoginPage> {
   String _errorMessage = "";
 
   @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     AppLocalizations trans = AppLocalizations.of(context);
 

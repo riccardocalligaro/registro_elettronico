@@ -42,14 +42,14 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
   double _currentPickerValue = 6.0;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
     BlocProvider.of<ProfessorsBloc>(context)
         .add(GetProfessorsForSubject(subjectId: widget.subject.id));
     BlocProvider.of<GradesBloc>(context).add(GetGrades());
     BlocProvider.of<LocalGradesBloc>(context).add(GetLocalGrades(
       period: widget.period,
     ));
+    super.initState();
   }
 
   @override
@@ -390,18 +390,20 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                     context: context,
                     builder: (context) => AlertDialog(
                       title: Text(grade.localllyCancelled
-                          ? 'Vuoi ripristinare questo voto dalla media?'
-                          : 'Vuoi eliminare questo voto dalla media?'),
-                      content: Text(grades[index].localllyCancelled.toString()),
+                          ? AppLocalizations.of(context)
+                              .translate('delete_grade_title_restore')
+                          : AppLocalizations.of(context)
+                              .translate('delete_grade_title_cancel')),
+                      //content: Text(grades[index].localllyCancelled.toString()),
                       actions: <Widget>[
                         FlatButton(
-                          child: Text('NO'),
+                          child: Text(AppLocalizations.of(context).translate('no').toUpperCase()),
                           onPressed: () {
                             Navigator.pop(context);
                           },
                         ),
                         FlatButton(
-                          child: Text('SI'),
+                          child: Text(AppLocalizations.of(context).translate('yes').toUpperCase()),
                           onPressed: () async {
                             if (grade.localllyCancelled) {
                               await RepositoryProvider.of<GradesRepository>(
@@ -418,6 +420,8 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                               BlocProvider.of<GradesBloc>(context)
                                   .add(GetGrades());
                             }
+
+                            Navigator.pop(context);
                           },
                         )
                       ],
