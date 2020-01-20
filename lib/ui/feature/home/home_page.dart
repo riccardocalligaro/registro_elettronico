@@ -8,6 +8,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/agenda/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/dashboard/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/lessons/bloc.dart'
     as dash;
@@ -17,7 +18,6 @@ import 'package:registro_elettronico/ui/feature/home/sections/last_grades_sectio
 import 'package:registro_elettronico/ui/feature/home/sections/last_lessons_section.dart';
 import 'package:registro_elettronico/ui/feature/home/sections/next_events_section.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
     getPreferences();
     BlocProvider.of<dash.LessonsDashboardBloc>(context)
         .add(dash.GetLastLessons());
-    BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
+    BlocProvider.of<GradesDashboardBloc>(context).add(GetDashboardGrades());
     BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
   }
 
@@ -70,6 +70,14 @@ class _HomePageState extends State<HomePage> {
           listener: (context, state) {
             if (state is AgendaUpdateLoadSuccess) {
               BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
+            }
+          },
+        ),
+        BlocListener<GradesBloc, GradesState>(
+          listener: (context, state) {
+            if (state is GradesUpdateLoaded) {
+              BlocProvider.of<GradesDashboardBloc>(context)
+                  .add(GetDashboardGrades());
             }
           },
         ),
@@ -93,96 +101,88 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _lastUpdate,
         ),
-        body: DoubleBackToCloseApp(
-          snackBar: SnackBar(
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              AppLocalizations.of(context).translate('leave_snackbar'),
-            ),
+        body: SmartRefresher(
+          controller: _refreshController,
+          header: MaterialClassicHeader(
+            backgroundColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey[900]
+                : Colors.white,
+            color: Colors.red,
           ),
-          child: SmartRefresher(
-            controller: _refreshController,
-            header: MaterialClassicHeader(
-              backgroundColor: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.grey[900]
-                  : Colors.white,
-              color: Colors.red,
-            ),
-            onRefresh: _refreshHome,
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Stack(
-                    children: <Widget>[
-                      Container(
-                        height: 220,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            stops: [0.4, 1],
-                            colors: <Color>[Colors.red[400], Colors.red[900]],
-                            begin: Alignment(-1.0, -2.0),
-                            end: Alignment(1.0, 2.0),
-                          ),
+          onRefresh: _refreshHome,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      height: 220,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          stops: [0.4, 1],
+                          colors: <Color>[Colors.red[400], Colors.red[900]],
+                          begin: Alignment(-1.0, -2.0),
+                          end: Alignment(1.0, 2.0),
                         ),
                       ),
-                      _buildWelcomeSection(),
-                      Positioned(
-                        top: 150,
-                        left: 16,
-                        right: 16,
-                        child: _buildQuickShortcutsSection(),
-                      ),
-                      Container(
-                        height: 280,
-                      )
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(AppLocalizations.of(context)
-                            .translate('last_grades')),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: LastGradesSection(),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(AppLocalizations.of(context)
-                            .translate('last_lessons')),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      LastLessonsSection(),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(AppLocalizations.of(context)
-                            .translate('next_events')),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: NextEventsSection(),
-                      )
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    _buildWelcomeSection(),
+                    Positioned(
+                      top: 150,
+                      left: 16,
+                      right: 16,
+                      child: _buildQuickShortcutsSection(),
+                    ),
+                    Container(
+                      height: 280,
+                    )
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(AppLocalizations.of(context)
+                          .translate('last_grades')),
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: LastGradesSection(),
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(AppLocalizations.of(context)
+                          .translate('last_lessons')),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    LastLessonsSection(),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(AppLocalizations.of(context)
+                          .translate('next_events')),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: NextEventsSection(),
+                    )
+                  ],
+                ),
+              ],
             ),
           ),
         ),

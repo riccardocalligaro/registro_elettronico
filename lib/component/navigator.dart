@@ -24,43 +24,43 @@ class AppNavigator {
   }
 
   void navToLogin(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.LOGIN);
+    Navigator.pushNamed(context, Routes.LOGIN);
   }
 
   void navToLessons(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.LESSONS);
+    Navigator.pushNamed(context, Routes.LESSONS);
   }
 
   void navToGrades(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.GRADES);
+    Navigator.pushNamed(context, Routes.GRADES);
   }
 
   void navToAgenda(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.AGENDA);
+    Navigator.pushNamed(context, Routes.AGENDA);
   }
 
   void navToAbsences(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.ABSENCES);
+    Navigator.pushNamed(context, Routes.ABSENCES);
   }
 
   void navToSchoolMaterial(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.SCHOOL_MATERIAL);
+    Navigator.pushNamed(context, Routes.SCHOOL_MATERIAL);
   }
 
   void navToNotes(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.NOTES);
+    Navigator.pushNamed(context, Routes.NOTES);
   }
 
   void navToNoticeboard(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.NOTICEBOARD);
+    Navigator.pushNamed(context, Routes.NOTICEBOARD);
   }
 
   void navToTimetable(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.TIMETABLE);
+    Navigator.pushNamed(context, Routes.TIMETABLE);
   }
 
   void navToScrutini(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.SCRUTINI);
+    Navigator.pushNamed(context, Routes.SCRUTINI);
   }
 
   void navToWebView(BuildContext context, String url) {

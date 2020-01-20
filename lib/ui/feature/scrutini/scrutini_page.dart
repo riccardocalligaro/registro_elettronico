@@ -32,6 +32,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
 
   @override
   void initState() {
+    BlocProvider.of<DocumentsBloc>(context).add(GetDocuments());
+
     restore();
     super.initState();
   }
@@ -42,12 +44,6 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
       _scrutiniLastUpdate =
           sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_SCRUTINI);
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    BlocProvider.of<DocumentsBloc>(context).add(GetDocuments());
   }
 
   @override

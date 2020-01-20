@@ -30,11 +30,13 @@ void main() {
   runZoned<Future<void>>(() async {
     runApp(MyApp());
   }, onError: (Object error, Object stackTrace) {
-    FLog.error(
-      text: 'Exception',
-      exception: error,
-      stacktrace: stackTrace,
-    );
+    if (error is Exception) {
+      FLog.error(
+        text: 'Exception',
+        exception: error,
+        stacktrace: stackTrace,
+      );
+    }
     Crashlytics.instance.recordError(error, stackTrace);
   });
 }
@@ -65,7 +67,7 @@ class MyApp extends StatelessWidget {
           supportedLocales: initData.supportedLocales,
           localizationsDelegates: initData.localizationsDelegates,
           localeResolutionCallback: initData.localeResolutionCallback,
-          debugShowCheckedModeBanner: false,
+          //debugShowCheckedModeBanner: false,
           routes: Routes.routes,
           onUnknownRoute: (settings) {
             return MaterialPageRoute(builder: (ctx) => SplashScreen());

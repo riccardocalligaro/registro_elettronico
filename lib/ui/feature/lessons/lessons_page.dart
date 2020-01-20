@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 
@@ -72,8 +70,12 @@ class _LessonsPageState extends State<LessonsPage> {
               ));
           }
         },
-        child: DoubleBackToCloseApp(
-          snackBar: AppNavigator.instance.getLeaveSnackBar(context),
+        child: Container(
+          // onWillPop: () {
+          //    AppNavigator.instance.navToHome(context);
+          //    return 
+          // },
+          //snackBar: AppNavigator.instance.getLeaveSnackBar(context),
           child: BlocBuilder<SubjectsBloc, SubjectsState>(
             builder: (context, state) {
               if (state is SubjectsAndProfessorsLoadInProgress) {

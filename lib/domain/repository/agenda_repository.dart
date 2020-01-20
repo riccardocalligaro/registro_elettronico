@@ -14,7 +14,7 @@ abstract class AgendaRepository {
   Future<List<AgendaEvent>> getAllEvents();
 
   ///Gets last events of a date
-  Future<List<AgendaEvent>> getLastEvents(DateTime date, int numbersOfEvents);
+  Future<List<AgendaEvent>> getLastEvents(DateTime date, {int numbersOfEvents});
 
   ///Delete all events
   Future deleteAllEvents();

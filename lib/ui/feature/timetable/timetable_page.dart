@@ -1,12 +1,11 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/timetable/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -53,43 +52,41 @@ class _TimetablePageState extends State<TimetablePage> {
       drawer: AppDrawer(
         position: DrawerConstants.TIMETABLE,
       ),
-      body: DoubleBackToCloseApp(
-        snackBar: AppNavigator.instance.getLeaveSnackBar(context),
-        child: Container(
-          child: BlocBuilder<TimetableBloc, TimetableState>(
-            builder: (context, state) {
-              if (state is TimetableLoading) {
-                return _buildTimetableLoading();
+      body: Container(
+        child: BlocBuilder<TimetableBloc, TimetableState>(
+          builder: (context, state) {
+            if (state is TimetableLoading) {
+              return _buildTimetableLoading();
+            }
+
+            if (state is TimetableError) {
+              return _buildTimetableError(state.error);
+            }
+
+            if (state is TimetableLoaded) {
+              if (state.timetableEntries.length > 0) {
+                return _buildTimetableList(
+                    state.timetableEntries, state.subjects);
               }
 
-              if (state is TimetableError) {
-                return _buildTimetableError(state.error);
-              }
-
-              if (state is TimetableLoaded) {
-                if (state.timetableEntries.length > 0) {
-                  return _buildTimetableList(
-                      state.timetableEntries, state.subjects);
-                }
-
-                return CustomPlaceHolder(
-                  icon: Icons.access_time,
-                  text:
-                      """${AppLocalizations.of(context).translate('no_timetable')}
+              return CustomPlaceHolder(
+                icon: Icons.access_time,
+                text:
+                    """${AppLocalizations.of(context).translate('no_timetable')}
 ${AppLocalizations.of(context).translate('no_timetable_message')}""",
-                  showUpdate: true,
-                  updateMessage: AppLocalizations.of(context).translate('generate'),
-                  onTap: () {
-                    BlocProvider.of<TimetableBloc>(context).add(
-                      GetNewTimetable(),
-                    );
-                    BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
-                  },
-                );
-              }
-              return Container();
-            },
-          ),
+                showUpdate: true,
+                updateMessage:
+                    AppLocalizations.of(context).translate('generate'),
+                onTap: () {
+                  BlocProvider.of<TimetableBloc>(context).add(
+                    GetNewTimetable(),
+                  );
+                  BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
+                },
+              );
+            }
+            return Container();
+          },
         ),
       ),
     );
@@ -124,15 +121,24 @@ ${AppLocalizations.of(context).translate('no_timetable_message')}""",
                 shrinkWrap: true,
                 itemBuilder: (context, index2) {
                   final entry = entries[index2];
+                  final subjectsList =
+                      subjects.where((s) => s.id == entry.subject).toList();
+                  String subject;
+                  if (subjectsList.length > 0) {
+                    subject = subjectsList[0].name;
+                  } else {
+                    FLog.info(
+                        text: 'Unknown subject: ' + entry.subject.toString());
+                    subject = AppLocalizations.of(context)
+                        .translate('unknown_subject')
+                        .toUpperCase();
+                  }
                   return Column(
                     children: <Widget>[
                       ListTile(
                         leading: Text('${entry.start}H'),
                         title: Text(
-                          subjects
-                              .where((s) => s.id == entry.subject)
-                              .single
-                              .name,
+                          subject,
                         ),
                       ),
                       Divider(),

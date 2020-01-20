@@ -2,7 +2,6 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/didactics_attachments/bloc.dart';
@@ -10,7 +9,6 @@ import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
@@ -31,13 +29,9 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
   @override
   void initState() {
     restore();
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
+
+    super.initState();
   }
 
   void restore() async {
@@ -72,45 +66,41 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
         bottomSheet: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _schoolMaterialLastUpdate,
         ),
-        body: DoubleBackToCloseApp(
-          snackBar: AppNavigator.instance.getLeaveSnackBar(context),
-          child:
-              BlocListener<DidacticsAttachmentsBloc, DidacticsAttachmentsState>(
+        body: BlocListener<DidacticsAttachmentsBloc, DidacticsAttachmentsState>(
             listener: (context, state) {
-              if (state is DidacticsAttachmentsLoading) {
-                Scaffold.of(context)
-                  ..removeCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      content: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(AppLocalizations.of(context)
-                              .translate('downloading')),
-                          Container(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              backgroundColor: Colors.red,
-                            ),
-                          )
-                        ],
+        if (state is DidacticsAttachmentsLoading) {
+          Scaffold.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(AppLocalizations.of(context)
+                        .translate('downloading')),
+                    Container(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.red,
                       ),
-                      duration: Duration(minutes: 10),
-                    ),
-                  );
-              }
+                    )
+                  ],
+                ),
+                duration: Duration(minutes: 10),
+              ),
+            );
+        }
 
-              if (state is DidacticsAttachmentsFileLoaded) {
-                OpenFile.open(state.path);
-                Scaffold.of(context)..removeCurrentSnackBar();
-              }
-              //if(state is DidacticsAttachments)
+        if (state is DidacticsAttachmentsFileLoaded) {
+          OpenFile.open(state.path);
+          Scaffold.of(context)..removeCurrentSnackBar();
+        }
+        //if(state is DidacticsAttachments)
             },
             child: _buildBlocBuilder(),
           ),
-        ),
       ),
     );
   }
