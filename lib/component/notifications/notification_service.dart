@@ -149,7 +149,6 @@ class NotificationService {
           NoticesRepositoryImpl(noticeDao, profileDao, spaggiariClient);
 
       final noticesToNotify = await _getNoticesToNotify(noticesRepository);
-
       if (noticesToNotify.length < 10) {
         noticesToNotify.forEach(
           (event) {
@@ -291,12 +290,5 @@ class NotificationService {
     if (payload != null) {
       print('notification payload: ' + payload);
     }
-
-    // if (payload == PrefsConstants.NOTICES_NOTIFICATIONS) {
-    //   await Navigator.push(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => SecondScreen(payload)),
-    //   );
-    // }
   }
 }

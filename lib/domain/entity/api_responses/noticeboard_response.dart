@@ -38,7 +38,7 @@ class Items {
   bool needJoin;
   bool needReply;
   bool needFile;
-  String eventoId;
+  //String eventoId;
   List<Attachments> attachments;
 
   Items(
@@ -58,7 +58,7 @@ class Items {
       this.needJoin,
       this.needReply,
       this.needFile,
-      this.eventoId,
+      //this.eventoId,
       this.attachments});
 
   Items.fromJson(Map<String, dynamic> json) {
@@ -78,7 +78,7 @@ class Items {
     needJoin = json['needJoin'];
     needReply = json['needReply'];
     needFile = json['needFile'];
-    eventoId = json['evento_id'];
+    //eventoId = json['evento_id'] ?? json['pubId'].toString();
     if (json['attachments'] != null) {
       attachments = new List<Attachments>();
       json['attachments'].forEach((v) {
@@ -105,7 +105,7 @@ class Items {
     data['needJoin'] = this.needJoin;
     data['needReply'] = this.needReply;
     data['needFile'] = this.needFile;
-    data['evento_id'] = this.eventoId;
+    //data['evento_id'] = this.eventoId;
     if (this.attachments != null) {
       data['attachments'] = this.attachments.map((v) => v.toJson()).toList();
     }
