@@ -186,5 +186,6 @@
   "delete_grade_title_restore": "Vuoi ripristinare questo voto?",
   "yes": "Yes",
   "no": "No",
-  "unknown_subject":"Unknown subject"
+  "unknown_subject": "Unknown subject",
+  "next_tests": "Next tests"
 }
