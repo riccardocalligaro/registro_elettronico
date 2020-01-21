@@ -187,5 +187,6 @@
   "yes": "Yes",
   "no": "No",
   "unknown_subject": "Unknown subject",
-  "next_tests": "Next tests"
+  "next_tests": "Next tests",
+  "not_conntected_snackbar":"You are not conntected to the internet."
 }

@@ -30,13 +30,12 @@ void main() {
   runZoned<Future<void>>(() async {
     runApp(MyApp());
   }, onError: (Object error, Object stackTrace) {
-    if (error is Exception) {
-      FLog.error(
-        text: 'Exception',
-        exception: error,
-        stacktrace: stackTrace,
-      );
-    }
+    FLog.error(
+      text: 'Exception',
+      exception: error,
+      stacktrace: stackTrace,
+    );
+
     Crashlytics.instance.recordError(error, stackTrace);
   });
 }

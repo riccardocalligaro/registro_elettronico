@@ -8,6 +8,8 @@ class DidacticsAttachmentsInitial extends DidacticsAttachmentsState {}
 
 class DidacticsAttachmentsLoading extends DidacticsAttachmentsState {}
 
+class DidacticsAttachmentsErrorNotConnected extends DidacticsAttachmentsState {}
+
 class DidacticsAttachmentsTextLoaded extends DidacticsAttachmentsState {
   final String text;
 

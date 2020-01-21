@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/entity/subject_objective.dart';
 import 'package:registro_elettronico/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
@@ -81,6 +82,8 @@ class SubjectsGradesBloc
         DateTime.now().millisecondsSinceEpoch,
       );
       yield SubjectsGradesUpdateLoadSuccess();
+    } on NotConntectedException catch (_) {
+      yield SubjectsGradesLoadNotConnected();
     } catch (e, s) {
       Crashlytics.instance.recordError(e, s);
       yield SubjectsGradesLoadError(error: e.toString());

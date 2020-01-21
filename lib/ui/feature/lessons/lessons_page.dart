@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/component/routes.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
@@ -41,6 +42,12 @@ class _LessonsPageState extends State<LessonsPage> {
       ),
       body: BlocListener<LessonsBloc, LessonsState>(
         listener: (context, state) {
+          if (state is LessonsLoadErrorNotConnected) {
+            Scaffold.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(
+                  AppNavigator.instance.getNetworkErrorSnackBar(context));
+          }
           if (state is LessonsUpdateLoadInProgress) {
             Scaffold.of(context).showSnackBar(SnackBar(
               behavior: SnackBarBehavior.floating,
@@ -66,8 +73,8 @@ class _LessonsPageState extends State<LessonsPage> {
               ..removeCurrentSnackBar()
               ..showSnackBar(SnackBar(
                 behavior: SnackBarBehavior.floating,
-                content: Text(AppLocalizations.of(context)
-                    .translate('lessons_updated')),
+                content: Text(
+                    AppLocalizations.of(context).translate('lessons_updated')),
               ));
           }
         },
