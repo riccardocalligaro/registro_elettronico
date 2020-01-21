@@ -6,6 +6,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/main.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/grades/bloc.dart';
@@ -26,6 +27,7 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workmanager/workmanager.dart';
 
 /// [Dashboard] where the user first lands
 ///   - [Quick shortcuts] for changinc section
@@ -141,6 +143,18 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    RaisedButton(
+                      child: Text('Notifications'),
+                      onPressed: () async {
+                        await Workmanager.cancelAll();
+                        await Workmanager.initialize(
+                          callbackDispatcher,
+                          //! set to false in production
+                          isInDebugMode: true,
+                        );
+                        Workmanager.registerOneOffTask('checkContent', 'checkContent');
+                      },
+                    ),
                     SizedBox(
                       height: 10,
                     ),

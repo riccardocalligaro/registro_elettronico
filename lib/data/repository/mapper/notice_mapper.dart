@@ -23,7 +23,7 @@ class NoticeMapper {
       needJoin: notice.needJoin ?? false,
       needReply: notice.needReply ?? false,
       needFile: notice.needFile ?? false,
-      eventId: notice.eventoId ?? "${GlobalUtils.getRandomNumber()}",
+      //eventId: notice.eventoId ?? "${GlobalUtils.getRandomNumber()}",
     );
   }
 

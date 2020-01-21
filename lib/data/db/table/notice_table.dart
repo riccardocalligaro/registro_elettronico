@@ -35,8 +35,7 @@ class Notices extends Table {
   BoolColumn get needJoin => boolean()();
   BoolColumn get needReply => boolean()();
   BoolColumn get needFile => boolean()();
-  TextColumn get eventId => text()();
-
+  
   @override
   Set<Column> get primaryKey => {pubId};
 }
