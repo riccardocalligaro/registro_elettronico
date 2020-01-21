@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/component/routes.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
@@ -65,15 +66,15 @@ class _LessonsPageState extends State<LessonsPage> {
               ..removeCurrentSnackBar()
               ..showSnackBar(SnackBar(
                 behavior: SnackBarBehavior.floating,
-                content: Text(
-                    AppLocalizations.of(context).translate('lessons_updated')),
+                content: Text(AppLocalizations.of(context)
+                    .translate('lessons_updated')),
               ));
           }
         },
         child: Container(
           // onWillPop: () {
           //    AppNavigator.instance.navToHome(context);
-          //    return 
+          //    return
           // },
           //snackBar: AppNavigator.instance.getLeaveSnackBar(context),
           child: BlocBuilder<SubjectsBloc, SubjectsState>(
