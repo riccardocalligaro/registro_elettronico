@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
@@ -64,21 +65,36 @@ class DidacticsAttachmentsBloc
               contentId: content.id,
             ));
             yield DidacticsAttachmentsFileLoaded(path: filePath);
+          } on NotConntectedException catch (_) {
+            yield DidacticsAttachmentsErrorNotConnected();
           } catch (e, s) {
             Crashlytics.instance.recordError(e, s);
             yield DidacticsAttachmentsErrror(error: e.toString());
           }
         } else if (content.type == 'text') {
-          final res = await didacticsRepository.getTextAtachment(content.id);
-          yield DidacticsAttachmentsTextLoaded(text: res.text);
+          try {
+            final res = await didacticsRepository.getTextAtachment(content.id);
+            yield DidacticsAttachmentsTextLoaded(text: res.text);
+          } on DidacticsAttachmentsErrorNotConnected {
+            yield DidacticsAttachmentsErrorNotConnected();
+          } catch (e) {
+            yield DidacticsAttachmentsErrror(error: e.toString());
+          }
         } else if (content.type == 'link') {
-          final res = await didacticsRepository.getURLAtachment(content.id);
-          yield DidacticsAttachmentsURLLoaded(url: res.item);
+          try {
+            final res = await didacticsRepository.getURLAtachment(content.id);
+            yield DidacticsAttachmentsURLLoaded(url: res.item);
+          } on DidacticsAttachmentsErrorNotConnected {
+            yield DidacticsAttachmentsErrorNotConnected();
+          } catch (e) {
+            yield DidacticsAttachmentsErrror(error: e.toString());
+          }
         } else {
           Crashlytics.instance.log('Unknown file type ${file.contentId}');
           FLog.error(
-              text:
-                  'Unknown file type ${file.contentId} - File name: ${file.name} - Content type: ${content.type}');
+            text:
+                'Unknown file type ${file.contentId} - File name: ${file.name} - Content type: ${content.type}',
+          );
 
           yield DidacticsAttachmentsErrror(error: 'Unknown file type');
         }

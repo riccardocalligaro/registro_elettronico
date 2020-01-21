@@ -187,5 +187,6 @@
   "yes": "Yes",
   "no": "Si",
   "unknown_subject": "Materia sconosciuta",
-  "next_tests": "Prossime verifiche"
+  "next_tests": "Prossime verifiche",
+  "not_conntected_snackbar": "Connessione a internet assente."
 }

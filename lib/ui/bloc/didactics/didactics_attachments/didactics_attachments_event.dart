@@ -15,3 +15,5 @@ class DeleteAttachment extends DidacticsAttachmentsEvent {
   final DidacticsContent content;
   const DeleteAttachment({@required this.content});
 }
+
+

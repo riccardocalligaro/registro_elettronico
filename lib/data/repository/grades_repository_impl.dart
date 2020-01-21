@@ -1,4 +1,6 @@
 import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
+import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -9,27 +11,35 @@ import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 class GradesRepositoryImpl implements GradesRepository {
   GradeDao gradeDao;
   SpaggiariClient spaggiariClient;
-  GradeMapper gradeMapper;
   ProfileDao profileDao;
+  NetworkInfo networkInfo;
 
   GradesRepositoryImpl(
-      this.gradeDao, this.spaggiariClient, this.gradeMapper, this.profileDao);
+    this.gradeDao,
+    this.spaggiariClient,
+    this.profileDao,
+    this.networkInfo,
+  );
 
   @override
   Future updateGrades() async {
-    final profile = await profileDao.getProfile();
-    final gradesResponse = await spaggiariClient.getGrades(profile.studentId);
-    List<Grade> grades = [];
-    await gradeDao.deleteAllGrades();
-    gradesResponse.grades.forEach((grade) {
-      grades.add(gradeMapper.convertGradeEntityToInserttable(grade));
-    });
+    if (await networkInfo.isConnected) {
+      final profile = await profileDao.getProfile();
+      final gradesResponse = await spaggiariClient.getGrades(profile.studentId);
+      List<Grade> grades = [];
+      await gradeDao.deleteAllGrades();
+      gradesResponse.grades.forEach((grade) {
+        grades.add(GradeMapper.convertGradeEntityToInserttable(grade));
+      });
 
-    FLog.info(
-      text:
-          'Got ${gradesResponse.grades.length} grades from server, procceding to insert in database',
-    );
-    gradeDao.insertGrades(grades);
+      FLog.info(
+        text:
+            'Got ${gradesResponse.grades.length} grades from server, procceding to insert in database',
+      );
+      gradeDao.insertGrades(grades);
+    } else {
+      throw new NotConntectedException();
+    }
   }
 
   @override

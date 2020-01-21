@@ -1,4 +1,6 @@
 import 'package:f_logs/f_logs.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
+import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -11,60 +13,78 @@ class AgendaRepositoryImpl implements AgendaRepository {
   SpaggiariClient spaggiariClient;
   AgendaDao agendaDao;
   ProfileDao profileDao;
+  NetworkInfo networkInfo;
 
-  AgendaRepositoryImpl(this.spaggiariClient, this.agendaDao, this.profileDao);
+  AgendaRepositoryImpl(
+    this.spaggiariClient,
+    this.agendaDao,
+    this.profileDao,
+    this.networkInfo,
+  );
 
   @override
   Future updateAgendaBetweenDates(DateTime begin, DateTime end) async {
-    final profile = await profileDao.getProfile();
+    if (await networkInfo.isConnected) {
+      final profile = await profileDao.getProfile();
 
-    final beginDate = DateUtils.convertDate(begin);
-    final endDate = DateUtils.convertDate(end);
-    List<AgendaEvent> events = [];
+      final beginDate = DateUtils.convertDate(begin);
+      final endDate = DateUtils.convertDate(end);
+      List<AgendaEvent> events = [];
 
-    final agenda =
-        await spaggiariClient.getAgenda(profile.studentId, beginDate, endDate);
+      final agenda = await spaggiariClient.getAgenda(
+          profile.studentId, beginDate, endDate);
 
-    await agendaDao.deleteAllEvents();
-    agenda.events.forEach((event) {
-      events.add(EventMapper.convertEventEntityToInsertable(event));
-    });
+      await agendaDao.deleteAllEvents();
+      agenda.events.forEach((event) {
+        events.add(EventMapper.convertEventEntityToInsertable(event));
+      });
 
-    FLog.info(
-      text:
-          'Got ${agenda.events.length} events from server, procceding to insert in database',
-    );
-    agendaDao.insertEvents(events);
+      FLog.info(
+        text:
+            'Got ${agenda.events.length} events from server, procceding to insert in database',
+      );
+      agendaDao.insertEvents(events);
+    } else {
+      throw new NotConntectedException();
+    }
   }
 
   @override
   Future updateAgendaStartingFromDate(DateTime begin) async {
-    final profile = await profileDao.getProfile();
+    if (await networkInfo.isConnected) {
+      final profile = await profileDao.getProfile();
 
-    final now = DateUtils.convertDate(DateTime.now());
-    final interval = DateUtils.getDateInerval();
-    final agenda =
-        await spaggiariClient.getAgenda(profile.studentId, now, interval.end);
-    List<AgendaEvent> events = [];
+      final now = DateUtils.convertDate(DateTime.now());
+      final interval = DateUtils.getDateInerval();
+      final agenda =
+          await spaggiariClient.getAgenda(profile.studentId, now, interval.end);
+      List<AgendaEvent> events = [];
 
-    agenda.events.forEach((event) {
-      events.add(EventMapper.convertEventEntityToInsertable(event));
-    });
-    agendaDao.insertEvents(events);
+      agenda.events.forEach((event) {
+        events.add(EventMapper.convertEventEntityToInsertable(event));
+      });
+      agendaDao.insertEvents(events);
+    } else {
+      throw new NotConntectedException();
+    }
   }
 
   @override
   Future updateAllAgenda() async {
-    final profile = await profileDao.getProfile();
+    if (await networkInfo.isConnected) {
+      final profile = await profileDao.getProfile();
 
-    final interval = DateUtils.getDateInerval();
-    final agenda = await spaggiariClient.getAgenda(
-        profile.studentId, interval.begin, interval.end);
-    List<AgendaEvent> events = [];
-    agenda.events.forEach((event) {
-      events.add(EventMapper.convertEventEntityToInsertable(event));
-    });
-    agendaDao.insertEvents(events);
+      final interval = DateUtils.getDateInerval();
+      final agenda = await spaggiariClient.getAgenda(
+          profile.studentId, interval.begin, interval.end);
+      List<AgendaEvent> events = [];
+      agenda.events.forEach((event) {
+        events.add(EventMapper.convertEventEntityToInsertable(event));
+      });
+      agendaDao.insertEvents(events);
+    } else {
+      throw new NotConntectedException();
+    }
   }
 
   @override

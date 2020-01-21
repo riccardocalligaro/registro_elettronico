@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -92,10 +94,13 @@ class DioClient {
       return response; // continue
     }, onError: (DioError error) async {
       FLog.error(
-          text:
-              'DioEND -> Error -> url:[${error.request.baseUrl}] type:${error.type} message: ${error.message}');
+        text:
+            'DioEND -> Error -> url:[${error.request.baseUrl}] type:${error.type} message: ${error.message}',
+      );
+      if (error != SocketException) {
+        Crashlytics.instance.recordError(error, StackTrace.current);
+      }
 
-      Crashlytics.instance.recordError(error, StackTrace.current);
       // handlError(error);
     }));
     return dio;

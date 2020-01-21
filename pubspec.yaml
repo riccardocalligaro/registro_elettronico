@@ -60,6 +60,8 @@ dependencies:
   flutter_webview_plugin: ^0.3.10+1
   #webview_flutter: ^0.3.19+4
   pull_to_refresh: ^1.5.8
+  # check if user is conntected 
+  data_connection_checker: ^0.3.4
 
   # firebase
   firebase_core: ^0.4.3+1

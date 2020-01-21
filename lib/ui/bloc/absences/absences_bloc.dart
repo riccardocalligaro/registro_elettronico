@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
@@ -29,9 +30,7 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
     if (event is FetchAbsences) {
       yield AbsencesUpdateLoading();
       try {
-        await absencesRepository.deleteAllAbsences();
         await absencesRepository.updateAbsences();
-
         final prefs = await SharedPreferences.getInstance();
         prefs.setInt(
           PrefsConstants.LAST_UPDATE_ABSENCES,
@@ -42,6 +41,8 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
         Crashlytics.instance.recordError(e, s);
         FLog.error(text: 'Updating asbences error ${e.toString()}');
         yield AbsencesUpdateError(e.response.data.toString());
+      } on NotConntectedException catch (_) {
+        yield AbsencesLoadErrorNotConnected();
       } catch (e, s) {
         Crashlytics.instance.recordError(e, s);
         FLog.error(text: 'Updating absences error ${e.toString()}');
