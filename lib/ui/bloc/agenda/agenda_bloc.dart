@@ -27,7 +27,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     } else if (event is GetAllAgenda) {
       yield* _mapGetAllAgendaToState();
     } else if (event is GetNextEvents) {
-      yield* _mapGetNextEventsToState(event.dateTime, event.numberOfevents);
+      yield* _mapGetNextEventsToState(event.dateTime);
     } else if (event is UpdateFromDate) {
       yield* _mapUpdateFronDateToState(event.date);
     }
@@ -73,13 +73,11 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     }
   }
 
-  Stream<AgendaState> _mapGetNextEventsToState(
-      DateTime dateTime, int numberOfevents) async* {
+  Stream<AgendaState> _mapGetNextEventsToState(DateTime dateTime) async* {
     yield AgendaLoadInProgress();
     try {
       final events = await agendaRepository.getLastEvents(
         dateTime,
-        numbersOfEvents: numberOfevents,
       );
       yield AgendaLoadSuccess(events: events);
     } catch (e, s) {

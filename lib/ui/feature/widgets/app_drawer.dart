@@ -6,6 +6,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
+import 'package:registro_elettronico/ui/feature/next_tests/next_tests_page.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:share/share.dart';
@@ -159,15 +160,16 @@ class _AppDrawerState extends State<AppDrawer>
               },
             ),
             _createDrawerItem(
-                icon: Icons.folder,
-                text: trans.translate("school_material"),
-                pos: DrawerConstants.SCHOOL_MATERIAL,
-                onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, Routes.SCHOOL_MATERIAL, (Route<dynamic> route) {
-                    return route.isCurrent;
-                  });
-                }),
+              icon: Icons.assignment_late,
+              text: trans.translate("next_tests"),
+              pos: DrawerConstants.NEXT_TESTS,
+              onTap: () {
+                Navigator.pushNamedAndRemoveUntil(context, Routes.NEXT_TESTS,
+                    (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
+              },
+            ),
             _createDrawerItem(
               icon: Icons.assessment,
               text: trans.translate("absences"),
@@ -175,6 +177,17 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () {
                 Navigator.pushNamedAndRemoveUntil(context, Routes.ABSENCES,
                     (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.folder,
+              text: trans.translate("school_material"),
+              pos: DrawerConstants.SCHOOL_MATERIAL,
+              onTap: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, Routes.SCHOOL_MATERIAL, (Route<dynamic> route) {
                   return route.isCurrent;
                 });
               },
