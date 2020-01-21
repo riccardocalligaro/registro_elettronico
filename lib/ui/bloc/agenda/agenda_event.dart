@@ -19,11 +19,9 @@ class UpdateFromDate extends AgendaEvent {
 class GetAllAgenda extends AgendaEvent {}
 
 class GetNextEvents extends AgendaEvent {
-  final int numberOfevents;
   final DateTime dateTime;
 
   GetNextEvents({
-    @required this.numberOfevents,
     @required this.dateTime,
   });
 }

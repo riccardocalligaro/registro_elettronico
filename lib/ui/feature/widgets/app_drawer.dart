@@ -6,6 +6,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
+import 'package:registro_elettronico/ui/feature/next_tests/next_tests_page.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:share/share.dart';
@@ -138,7 +139,8 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("grades"),
               pos: DrawerConstants.GRADES,
               onTap: () {
-                Navigator.popAndPushNamed(context, Routes.GRADES);
+               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NextTestsPage()));
+               // Navigator.popAndPushNamed(context, Routes.GRADES);
               },
             ),
             _createDrawerItem(
