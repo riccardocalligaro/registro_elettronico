@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
+import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
+import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class NextTestsPage extends StatefulWidget {
@@ -54,43 +57,54 @@ class _NextTestsPageState extends State<NextTestsPage> {
   }
 
   Widget _buildEventsList(List<db.AgendaEvent> events) {
+    final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
     if (events.length == 0) {
       return Text('Nessun evento');
     } else {
-      return ListView.builder(
-        itemCount: events.length,
-        itemBuilder: (BuildContext context, int index) {
-          final event = events[index];
-          return Card(
-            child: ListTile(
-              leading: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(AppLocalizations.of(context)
-                      .translate('hour')
-                      .toLowerCase()),
-                  Text(
-                      '${event.begin.hour.toString()} - ${event.end.hour.toString()}')
-                ],
-              ),
-              title: Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-                child: Text(
-                  '${StringUtils.titleCase(event.authorName)}',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600),
+      return Scaffold(
+        key: _drawerKey,
+        drawer: AppDrawer(
+          position: DrawerConstants.NEXT_TESTS,
+        ),
+        appBar: CustomAppBar(
+        title: Text(AppLocalizations.of(context).translate('next_tests')),
+        scaffoldKey: _drawerKey,
+        ),
+        body: ListView.builder(
+          itemCount: events.length,
+          itemBuilder: (BuildContext context, int index) {
+            final event = events[index];
+            return Card(
+              child: ListTile(
+                leading: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(AppLocalizations.of(context)
+                        .translate('hour')
+                        .toLowerCase()),
+                    Text(
+                        '${event.begin.hour.toString()} - ${event.end.hour.toString()}')
+                  ],
+                ),
+                title: Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                  child: Text(
+                    '${StringUtils.titleCase(event.authorName)}',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                  child: Text(
+                    '${event.notes} ${event.isFullDay ? " - (Tutto il giorno)" : ""}',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
-              subtitle: Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-                child: Text(
-                  '${event.notes} ${event.isFullDay ? " - (Tutto il giorno)" : ""}',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       );
     }
   }

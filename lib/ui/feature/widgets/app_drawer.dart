@@ -160,15 +160,16 @@ class _AppDrawerState extends State<AppDrawer>
               },
             ),
             _createDrawerItem(
-                icon: Icons.folder,
-                text: trans.translate("school_material"),
-                pos: DrawerConstants.SCHOOL_MATERIAL,
-                onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, Routes.SCHOOL_MATERIAL, (Route<dynamic> route) {
-                    return route.isCurrent;
-                  });
-                }),
+              icon: Icons.assignment_late,
+              text: trans.translate("next_tests"),
+              pos: DrawerConstants.NEXT_TESTS,
+              onTap: () {
+                Navigator.pushNamedAndRemoveUntil(context, Routes.NEXT_TESTS,
+                    (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
+              },
+            ),
             _createDrawerItem(
               icon: Icons.assessment,
               text: trans.translate("absences"),
@@ -176,6 +177,17 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () {
                 Navigator.pushNamedAndRemoveUntil(context, Routes.ABSENCES,
                     (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.folder,
+              text: trans.translate("school_material"),
+              pos: DrawerConstants.SCHOOL_MATERIAL,
+              onTap: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, Routes.SCHOOL_MATERIAL, (Route<dynamic> route) {
                   return route.isCurrent;
                 });
               },
