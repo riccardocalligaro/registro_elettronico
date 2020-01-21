@@ -120,8 +120,10 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("home"),
               pos: DrawerConstants.HOME,
               onTap: () {
-                Navigator.popAndPushNamed(context, Routes.HOME);
-                //Navigator.of(context).pop();
+                Navigator.pushNamedAndRemoveUntil(context, Routes.LESSONS,
+                    (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
               },
             ),
             _createDrawerItem(
@@ -129,9 +131,10 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("lessons"),
               pos: DrawerConstants.LESSONS,
               onTap: () {
-                Navigator.popAndPushNamed(context, Routes.LESSONS);
-                // AppNavigator.instance.navToLessons(context);
-                // Navigator.of(context).pop();
+                Navigator.pushNamedAndRemoveUntil(context, Routes.LESSONS,
+                    (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
               },
             ),
             _createDrawerItem(
@@ -139,8 +142,10 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("grades"),
               pos: DrawerConstants.GRADES,
               onTap: () {
-               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NextTestsPage()));
-               // Navigator.popAndPushNamed(context, Routes.GRADES);
+                Navigator.pushNamedAndRemoveUntil(context, Routes.GRADES,
+                    (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
               },
             ),
             _createDrawerItem(
@@ -148,7 +153,10 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("agenda"),
               pos: DrawerConstants.AGENDA,
               onTap: () {
-                Navigator.popAndPushNamed(context, Routes.AGENDA);
+                Navigator.pushNamedAndRemoveUntil(context, Routes.AGENDA,
+                    (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
               },
             ),
             _createDrawerItem(
@@ -156,14 +164,20 @@ class _AppDrawerState extends State<AppDrawer>
                 text: trans.translate("school_material"),
                 pos: DrawerConstants.SCHOOL_MATERIAL,
                 onTap: () {
-                  Navigator.popAndPushNamed(context, Routes.SCHOOL_MATERIAL);
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, Routes.SCHOOL_MATERIAL, (Route<dynamic> route) {
+                    return route.isCurrent;
+                  });
                 }),
             _createDrawerItem(
               icon: Icons.assessment,
               text: trans.translate("absences"),
               pos: DrawerConstants.ABSENCES,
               onTap: () {
-                Navigator.popAndPushNamed(context, Routes.ABSENCES);
+                Navigator.pushNamedAndRemoveUntil(context, Routes.ABSENCES,
+                    (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
               },
             ),
             _createDrawerItem(
@@ -171,7 +185,10 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("notes"),
               pos: DrawerConstants.NOTES,
               onTap: () {
-                Navigator.popAndPushNamed(context, Routes.NOTES);
+                Navigator.pushNamedAndRemoveUntil(context, Routes.NOTES,
+                    (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
               },
             ),
             _createDrawerItem(
@@ -179,7 +196,10 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("notice_board"),
               pos: DrawerConstants.NOTICE_BOARD,
               onTap: () {
-                Navigator.popAndPushNamed(context, Routes.NOTICEBOARD);
+                Navigator.pushNamedAndRemoveUntil(context, Routes.NOTICEBOARD,
+                    (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
               },
             ),
             _createDrawerItem(
@@ -187,7 +207,10 @@ class _AppDrawerState extends State<AppDrawer>
               text: AppLocalizations.of(context).translate('timetable'),
               pos: DrawerConstants.TIMETABLE,
               onTap: () {
-                Navigator.popAndPushNamed(context, Routes.TIMETABLE);
+                Navigator.pushNamedAndRemoveUntil(context, Routes.TIMETABLE,
+                    (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
               },
             ),
             _createDrawerItem(
@@ -195,7 +218,10 @@ class _AppDrawerState extends State<AppDrawer>
               text: AppLocalizations.of(context).translate('scrutini'),
               pos: DrawerConstants.SCRUTINI,
               onTap: () {
-                Navigator.popAndPushNamed(context, Routes.SCRUTINI);
+                Navigator.pushNamedAndRemoveUntil(context, Routes.SCRUTINI,
+                    (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
               },
             ),
             // _createDrawerItem(
@@ -223,7 +249,10 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("settings"),
               pos: DrawerConstants.SETTINGS,
               onTap: () {
-                Navigator.popAndPushNamed(context, Routes.SETTINGS);
+                Navigator.pushNamedAndRemoveUntil(context, Routes.SETTINGS,
+                    (Route<dynamic> route) {
+                  return route.isCurrent;
+                });
               },
             ),
             _createDrawerItem(
@@ -271,7 +300,8 @@ class _AppDrawerState extends State<AppDrawer>
   }
 
   Future<Profile> _getUsername() async {
-    final profile = await RepositoryProvider.of<ProfileRepository>(context).getDbProfile();
+    final profile =
+        await RepositoryProvider.of<ProfileRepository>(context).getDbProfile();
     return await profile;
   }
 
