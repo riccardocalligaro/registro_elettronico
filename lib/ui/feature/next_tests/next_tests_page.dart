@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
+import 'package:registro_elettronico/ui/feature/next_tests/components/next_tests_chart.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
@@ -26,7 +27,7 @@ class _NextTestsPageState extends State<NextTestsPage> {
     // BlocProvider.of<AgendaBloc>(context)
     //     .add(GetNextEvents(dateTime: DateTime.now()));
 
-    BlocProvider.of<AgendaBloc>(context).add(GetAllAgenda());
+    BlocProvider.of<AgendaBloc>(context).add(GetNextEvents(dateTime: DateTime.now()));
     super.initState();
   }
 
@@ -50,10 +51,15 @@ class _NextTestsPageState extends State<NextTestsPage> {
           } else if (state is AgendaLoadSuccess) {
             final events = state.events
                 .toSet()
-                .where((e) => GlobalUtils.isVerificaOrInterrogazione(e.notes))
+                //.where((e) => GlobalUtils.isVerificaOrInterrogazione(e.notes))
                 .toList();
-                
-            return _buildEventsList(events);
+            return NextTestsChart(events: events);
+            return Column(
+              children: <Widget>[
+                NextTestsChart(events: events),
+                _buildEventsList(events),
+              ],
+            );
           } else if (state is AgendaLoadError) {
             return CustomPlaceHolder(
               text: AppLocalizations.of(context)
