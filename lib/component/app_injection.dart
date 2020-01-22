@@ -159,7 +159,11 @@ class AppInjector {
   static void injectRepository() {
     Injector.appInstance.registerSingleton((i) {
       LoginRepository loginRepository = LoginRepositoryImpl(
-          i.getDependency(), i.getDependency(), i.getDependency());
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
       return loginRepository;
     });
 
@@ -236,16 +240,14 @@ class AppInjector {
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
+        i.getDependency(),
       );
       return noticesRepository;
     });
 
     Injector.appInstance.registerSingleton((i) {
-      NotesRepository notesRepository = NotesRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
+      NotesRepository notesRepository = NotesRepositoryImpl(i.getDependency(),
+          i.getDependency(), i.getDependency(), i.getDependency());
       return notesRepository;
     });
 

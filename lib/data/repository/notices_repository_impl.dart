@@ -1,5 +1,7 @@
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
+import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/notice_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -11,35 +13,44 @@ class NoticesRepositoryImpl implements NoticesRepository {
   NoticeDao noticeDao;
   ProfileDao profileDao;
   SpaggiariClient spaggiariClient;
-
-  NoticesRepositoryImpl(this.noticeDao, this.profileDao, this.spaggiariClient);
+  NetworkInfo networkInfo;
+  NoticesRepositoryImpl(
+    this.noticeDao,
+    this.profileDao,
+    this.spaggiariClient,
+    this.networkInfo,
+  );
 
   @override
   Future updateNotices() async {
-    final profile = await profileDao.getProfile();
-    final response = await spaggiariClient.getNoticeBoard(profile.studentId);
+    if (await networkInfo.isConnected) {
+      final profile = await profileDao.getProfile();
+      final response = await spaggiariClient.getNoticeBoard(profile.studentId);
 
-    await noticeDao.deleteAllNotices();
-    await noticeDao.deleteAllAttachments();
+      List<Notice> notices = [];
+      List<Attachment> attachments = [];
 
-    List<Notice> notices = [];
-    List<Attachment> attachments = [];
-
-    response.items.forEach((notice) {
-      notices.add(NoticeMapper.convertNoticeEntityToInsertable(notice));
-      notice.attachments.forEach((attachment) {
-        attachments.add(NoticeMapper.convertAttachmentEntityToInsertable(
-            notice.pubId, attachment));
+      response.items.forEach((notice) {
+        notices.add(NoticeMapper.convertNoticeEntityToInsertable(notice));
+        notice.attachments.forEach((attachment) {
+          attachments.add(NoticeMapper.convertAttachmentEntityToInsertable(
+              notice.pubId, attachment));
+        });
       });
-    });
 
-    FLog.info(
-      text:
-          'Got ${response.items.length} notice items from server, procceding to insert in database',
-    );
+      FLog.info(
+        text:
+            'Got ${response.items.length} notice items from server, procceding to insert in database',
+      );
 
-    noticeDao.insertNotices(notices);
-    noticeDao.insertAttachments(attachments);
+      await noticeDao.deleteAllNotices();
+      await noticeDao.deleteAllAttachments();
+
+      noticeDao.insertNotices(notices);
+      noticeDao.insertAttachments(attachments);
+    } else {
+      throw new NotConntectedException();
+    }
   }
 
   @override
