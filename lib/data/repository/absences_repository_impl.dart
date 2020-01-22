@@ -26,7 +26,6 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
     if (await networkInfo.isConnected) {
       FLog.info(text: 'Updating absences');
       final profile = await profileDao.getProfile();
-      await absenceDao.deleteAllAbsences();
       final absences = await spaggiariClient.getAbsences(profile.studentId);
       List<Absence> absencesList = [];
       absences.events.forEach((event) {
@@ -36,6 +35,9 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
         text:
             'Got ${absences.events.length} events from server, procceding to insert in database',
       );
+
+      await absenceDao.deleteAllAbsences();
+
       absenceDao.insertEvents(absencesList);
     } else {
       throw new NotConntectedException();

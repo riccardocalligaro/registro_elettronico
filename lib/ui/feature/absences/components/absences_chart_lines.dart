@@ -188,7 +188,8 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
   List<LineChartBarData> linesBarData1() {
     LineChartBarData lineChartBarAbsences = LineChartBarData(
       spots: _getSposts(RegistroConstants.ASSENZA),
-      isCurved: false,
+      isCurved: true,
+      preventCurveOverShooting: true,
       colors: [Colors.red],
       barWidth: 6,
       dotData: FlDotData(
@@ -200,7 +201,8 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
     );
     final LineChartBarData lineChartBarRitardi = LineChartBarData(
       spots: _getSposts(RegistroConstants.RITARDO_BREVE),
-      isCurved: false,
+       isCurved: true,
+      preventCurveOverShooting: true,
       colors: [Colors.blue],
       barWidth: 6,
       isStrokeCapRound: true,
@@ -213,7 +215,8 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
     );
     LineChartBarData lineChartBarUscite = LineChartBarData(
       spots: _getSposts(RegistroConstants.USCITA),
-      isCurved: false,
+        isCurved: true,
+      preventCurveOverShooting: true,
       colors: [
         Colors.yellow[600],
       ],

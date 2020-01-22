@@ -34,7 +34,6 @@ class AgendaRepositoryImpl implements AgendaRepository {
       final agenda = await spaggiariClient.getAgenda(
           profile.studentId, beginDate, endDate);
 
-      await agendaDao.deleteAllEvents();
       agenda.events.forEach((event) {
         events.add(EventMapper.convertEventEntityToInsertable(event));
       });
@@ -43,6 +42,8 @@ class AgendaRepositoryImpl implements AgendaRepository {
         text:
             'Got ${agenda.events.length} events from server, procceding to insert in database',
       );
+      await agendaDao.deleteAllEvents();
+
       agendaDao.insertEvents(events);
     } else {
       throw new NotConntectedException();
@@ -63,6 +64,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
       agenda.events.forEach((event) {
         events.add(EventMapper.convertEventEntityToInsertable(event));
       });
+      await agendaDao.deleteEventsFromDate(DateTime.now());
       agendaDao.insertEvents(events);
     } else {
       throw new NotConntectedException();

@@ -52,20 +52,18 @@ class LessonsRepositoryImpl implements LessonsRepository {
   Future updateAllLessons() async {
     if (await networkInfo.isConnected) {
       final profile = await profileDao.getProfile();
-      await lessonDao.deleteLessons();
-
       final dateInterval = DateUtils.getDateInerval();
       final lessons = await spaggiariClient.getLessonBetweenDates(
         profile.studentId,
         dateInterval.begin,
         dateInterval.end,
       );
-      await lessonDao.deleteLessons();
       List<Lesson> lessonsInsertable = [];
       lessons.lessons.forEach((lesson) {
         lessonsInsertable
             .add(lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
       });
+      await lessonDao.deleteLessons();
 
       lessonDao.insertLessons(lessonsInsertable);
     } else {
