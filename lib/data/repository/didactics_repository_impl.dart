@@ -37,9 +37,10 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
 
       FLog.info(text: 'Updating didactics');
 
+      final didactics = await spaggiariClient.getDidactics(profile.studentId);
+
       await deleteAllDidactics();
 
-      final didactics = await spaggiariClient.getDidactics(profile.studentId);
       List<DidacticsTeacher> teachers = [];
       didactics.teachers.forEach((teacher) {
         List<DidacticsFolder> folders = [];
