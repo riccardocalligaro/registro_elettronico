@@ -14,27 +14,17 @@ class NextTestsChart extends StatefulWidget {
 }
 
 class _NextTestsChartState extends State<NextTestsChart> {
+
+  
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        AspectRatio(
-          aspectRatio: 1.70,
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                //color: const Color(0xff232d37)),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  right: 18.0, left: 12.0, top: 24, bottom: 12),
-              child: LineChart(mainData()),
-            ),
-          ),
-        ),
-      ],
+    return AspectRatio(
+      aspectRatio: 2.30,
+      child: Padding(
+        padding:
+            const EdgeInsets.only(right: 18.0, left: 18.0, top: 24, bottom: 12),
+        child: LineChart(mainData()),
+      ),
     );
   }
 
@@ -43,12 +33,7 @@ class _NextTestsChartState extends State<NextTestsChart> {
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        getDrawingHorizontalLine: (value) {
-          return const FlLine(
-            color: Color(0xff37434d),
-            strokeWidth: 0.75,
-          );
-        },
+        drawHorizontalLine: false,
       ),
       titlesData: FlTitlesData(
         show: true,
@@ -56,47 +41,24 @@ class _NextTestsChartState extends State<NextTestsChart> {
           showTitles: true,
           reservedSize: 22,
           textStyle: TextStyle(
-              color: const Color(0xff68737d),
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
+            fontSize: 12,
+          ),
           getTitles: (value) {
-            final locale = AppLocalizations.of(context).locale.toString();
-            switch (value.toInt()) {
-              case 1:
-                return DateUtils.convertSingleDayShortForDisplay(
-                        DateTime.utc(2019, 9, 2), locale)
-                    .toUpperCase();
-              case 2:
-                return DateUtils.convertSingleDayShortForDisplay(
-                        DateTime.utc(2019, 9, 3), locale)
-                    .toUpperCase();
-              case 3:
-                return DateUtils.convertSingleDayShortForDisplay(
-                        DateTime.utc(2019, 9, 4), locale)
-                    .toUpperCase();
-              case 4:
-                return DateUtils.convertSingleDayShortForDisplay(
-                        DateTime.utc(2019, 9, 5), locale)
-                    .toUpperCase();
-              case 5:
-                return DateUtils.convertSingleDayShortForDisplay(
-                        DateTime.utc(2019, 9, 6), locale)
-                    .toUpperCase();
-              case 6:
-                return DateUtils.convertSingleDayShortForDisplay(
-                        DateTime.utc(2019, 9, 7), locale)
-                    .toUpperCase();
+            if (value <= 7) {
+              final locale = AppLocalizations.of(context).locale.toString();
+              return DateUtils.convertSingleDayShortForDisplay(
+                      DateTime.utc(2019, 9, value.toInt() + 1), locale)
+                  .toUpperCase();
+            } else {
+              return '';
             }
-            return '';
           },
           margin: 8,
         ),
         leftTitles: SideTitles(
-          showTitles: true,
+          showTitles: false,
           textStyle: TextStyle(
-            color: const Color(0xff67727d),
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 12,
           ),
           getTitles: (value) {
             return value.toStringAsFixed(0);
@@ -106,35 +68,42 @@ class _NextTestsChartState extends State<NextTestsChart> {
         ),
       ),
       borderData: FlBorderData(
-        show: true,
-        border: Border.all(color: const Color(0xff37434d), width: 1),
+        show: false,
       ),
       minX: 1,
       maxX: 6,
+
       // maxY: 10,
       lineBarsData: [
         LineChartBarData(
-            spots: _getEventsSpots(),
-            isCurved: true,
-            colors: [
-              Colors.red[400],
+          //showingIndicators: [1, 2, 3, 4, 5, 6],
+          spots: _getEventsSpots(),
+          isCurved: true,
+          colors: [
+            Colors.red[400],
+          ],
+          preventCurveOverShooting: true,
+
+          // curveSmoothness: 0.20,
+          barWidth: 1,
+          isStrokeCapRound: true,
+          dotData: const FlDotData(
+            show: true,
+            dotColor: Colors.red,
+          ),
+          belowBarData: BarAreaData(
+            show: true,
+            colors: _getGradients(context)
+                .map((color) => color.withOpacity(0.6))
+                .toList(),
+            gradientColorStops: [
+              0.5,
+              1.0,
             ],
-            preventCurveOverShooting: true,
-            // curveSmoothness: 0.20,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: const FlDotData(
-              show: false,
-            ),
-            belowBarData: BarAreaData(
-              show: true,
-              colors: _getGradients(context)
-                  .map((color) => color.withOpacity(0.6))
-                  .toList(),
-              gradientColorStops: [0.5, 1.0],
-              gradientFrom: const Offset(0, 0),
-              gradientTo: const Offset(0, 1),
-            )),
+            gradientFrom: const Offset(0, 0),
+            gradientTo: const Offset(0, 1),
+          ),
+        ),
       ],
     );
   }
@@ -144,6 +113,7 @@ class _NextTestsChartState extends State<NextTestsChart> {
     List<FlSpot> spots = [];
     DateTime today = DateTime.now();
     DateTime firstDay = today.subtract(Duration(days: today.weekday - 1));
+
     DateTime dayOfWeek = DateTime.utc(today.year, today.month, firstDay.day);
     print(widget.events.length.toString());
     widget.events.forEach((e) {
@@ -154,17 +124,14 @@ class _NextTestsChartState extends State<NextTestsChart> {
       final numberOfEvents = widget.events.where((e) {
         return e.begin.day == dayOfWeek.day;
       }).length;
-      //FLog.info(text: numberOfEvents.toString());
       spots.add(FlSpot(i.toDouble(), numberOfEvents.toDouble()));
-      //FLog.info(text: dayOfWeek.toString()  );
       dayOfWeek = dayOfWeek.add(Duration(days: 1));
     }
     return spots;
   }
 
   List<Color> _getGradients(BuildContext context) {
-    List<Color> gradientColors;
-    return gradientColors = [
+    return [
       Colors.red[400],
       Theme.of(context).brightness == Brightness.dark
           ? Colors.grey[900]
