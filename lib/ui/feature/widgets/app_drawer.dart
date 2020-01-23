@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injector/injector.dart';
 import 'package:registro_elettronico/component/navigator.dart';
-import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
+import 'package:registro_elettronico/component/routes.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
@@ -24,7 +24,7 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer>
     with AutomaticKeepAliveClientMixin {
-  List<bool> selectedList = new List<bool>.filled(12, false);
+  List<bool> selectedList = new List<bool>.filled(14, false);
   bool _showUserDetails = false;
 
   @override
@@ -49,9 +49,9 @@ class _AppDrawerState extends State<AppDrawer>
       // todo: need to fix null
       future: _getUsername(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        String ident = " ";
-        String firstName = " ";
-        String lastName = " ";
+        var ident = " ";
+        var firstName = " ";
+        var lastName = " ";
 
         if (snapshot.data != null) {
           ident = snapshot.data.ident;
@@ -119,7 +119,8 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("home"),
               pos: DrawerConstants.HOME,
               onTap: () {
-                AppNavigator.instance.navToHome(context);
+                Navigator.popAndPushNamed(context, Routes.HOME);
+                //Navigator.of(context).pop();
               },
             ),
             _createDrawerItem(
@@ -127,7 +128,9 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("lessons"),
               pos: DrawerConstants.LESSONS,
               onTap: () {
-                AppNavigator.instance.navToLessons(context);
+                Navigator.popAndPushNamed(context, Routes.LESSONS);
+                // AppNavigator.instance.navToLessons(context);
+                // Navigator.of(context).pop();
               },
             ),
             _createDrawerItem(
@@ -135,7 +138,7 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("grades"),
               pos: DrawerConstants.GRADES,
               onTap: () {
-                AppNavigator.instance.navToGrades(context);
+                Navigator.popAndPushNamed(context, Routes.GRADES);
               },
             ),
             _createDrawerItem(
@@ -143,7 +146,7 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("agenda"),
               pos: DrawerConstants.AGENDA,
               onTap: () {
-                AppNavigator.instance.navToAgenda(context);
+                Navigator.popAndPushNamed(context, Routes.AGENDA);
               },
             ),
             _createDrawerItem(
@@ -151,14 +154,14 @@ class _AppDrawerState extends State<AppDrawer>
                 text: trans.translate("school_material"),
                 pos: DrawerConstants.SCHOOL_MATERIAL,
                 onTap: () {
-                  AppNavigator.instance.navToSchoolMaterial(context);
+                  Navigator.popAndPushNamed(context, Routes.SCHOOL_MATERIAL);
                 }),
             _createDrawerItem(
               icon: Icons.assessment,
               text: trans.translate("absences"),
               pos: DrawerConstants.ABSENCES,
               onTap: () {
-                AppNavigator.instance.navToAbsences(context);
+                Navigator.popAndPushNamed(context, Routes.ABSENCES);
               },
             ),
             _createDrawerItem(
@@ -166,7 +169,7 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("notes"),
               pos: DrawerConstants.NOTES,
               onTap: () {
-                AppNavigator.instance.navToNotes(context);
+                Navigator.popAndPushNamed(context, Routes.NOTES);
               },
             ),
             _createDrawerItem(
@@ -174,7 +177,7 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("notice_board"),
               pos: DrawerConstants.NOTICE_BOARD,
               onTap: () {
-                AppNavigator.instance.navToNoticeboard(context);
+                Navigator.popAndPushNamed(context, Routes.NOTICEBOARD);
               },
             ),
             _createDrawerItem(
@@ -182,22 +185,49 @@ class _AppDrawerState extends State<AppDrawer>
               text: AppLocalizations.of(context).translate('timetable'),
               pos: DrawerConstants.TIMETABLE,
               onTap: () {
-                AppNavigator.instance.navToTimetable(context);
+                Navigator.popAndPushNamed(context, Routes.TIMETABLE);
               },
             ),
+            _createDrawerItem(
+              icon: Icons.import_contacts,
+              text: AppLocalizations.of(context).translate('scrutini'),
+              pos: DrawerConstants.SCRUTINI,
+              onTap: () {
+                Navigator.popAndPushNamed(context, Routes.SCRUTINI);
+              },
+            ),
+            // _createDrawerItem(
+            //   icon: Icons.archive,
+            //   text: trans.translate('last_year'),
+            //   pos: DrawerConstants.ANNO_PRECEDENTE,
+            //   onTap: () {
+            //     AppNavigator.instance.navToWebView(
+            //       context,
+            //       'https://web18.spaggiari.eu/home/app/default/menu_webinfoschool_studenti.php?custcode=',
+            //     );
+            //   },
+            // ),
+            // _createDrawerItem(
+            //   icon: Icons.web,
+            //   text: trans.translate('web'),
+            //   pos: DrawerConstants.WEB,
+            //   onTap: () {
+            //     AppNavigator.instance.navToScrutini(context);
+            //   },
+            // ),
             Divider(),
             _createDrawerItem(
               icon: Icons.settings,
               text: trans.translate("settings"),
               pos: DrawerConstants.SETTINGS,
               onTap: () {
-                AppNavigator.instance.navToSettings(context);
+                Navigator.popAndPushNamed(context, Routes.SETTINGS);
               },
             ),
             _createDrawerItem(
               icon: Icons.share,
               text: trans.translate("share"),
-              pos: 10,
+              pos: DrawerConstants.SHARE,
               onTap: () {
                 Share.share(AppLocalizations.of(context)
                     .translate('share_message')
@@ -239,15 +269,16 @@ class _AppDrawerState extends State<AppDrawer>
   }
 
   Future<Profile> _getUsername() async {
-    final profileDao = ProfileDao(Injector.appInstance.getDependency());
-    return await profileDao.getProfile();
+    final profile = await RepositoryProvider.of<ProfileRepository>(context).getDbProfile();
+    return await profile;
   }
 
   Color _getColor(bool isAccount) {
-    if (isAccount ?? false)
+    if (isAccount ?? false) {
       return Theme.of(context).textTheme.body1.color;
-    else
+    } else {
       return null;
+    }
   }
 
   @override

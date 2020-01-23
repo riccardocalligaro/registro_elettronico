@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:f_logs/f_logs.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
@@ -26,7 +28,11 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
       yield* _mapUpdateGradesToState();
     } else if (event is GetGrades) {
       yield* _mapGetGradesToState(event.limit ?? -1, event.ordered ?? false);
-    }
+    } 
+    
+    // else if (event is ResetGrades) {
+    //   yield GradesInitial();
+    // }
   }
 
   Stream<GradesState> _mapUpdateGradesToState() async* {
@@ -39,7 +45,8 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
         DateTime.now().millisecondsSinceEpoch,
       );
       yield GradesUpdateLoaded();
-    } catch (e) {
+    } catch (e, s) {
+      Crashlytics.instance.recordError(e, s);
       yield GradesError(message: e.toString());
     }
   }
@@ -54,9 +61,10 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
       } else {
         grades = await gradesRepository.getAllGrades();
       }
-
+      FLog.info(text: 'BloC -> Got ${grades.length} grades');
       yield GradesLoaded(grades);
-    } catch (e) {
+    } catch (e, s) {
+      Crashlytics.instance.recordError(e, s);
       yield GradesError(message: e.toString());
     }
   }

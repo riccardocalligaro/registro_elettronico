@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_event.dart';
@@ -10,7 +9,7 @@ import 'package:registro_elettronico/ui/feature/absences/components/absence_card
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
+import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
@@ -34,6 +33,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
   void initState() {
     restore();
     super.initState();
+    BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
   }
 
   void restore() async {
@@ -42,12 +42,6 @@ class _AbsencesPageState extends State<AbsencesPage> {
       _absencesLastUpdate =
           sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_ABSENCES);
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
-    super.didChangeDependencies();
   }
 
   @override
@@ -74,13 +68,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
         bottomSheet: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _absencesLastUpdate,
         ),
-        body: DoubleBackToCloseApp(
-          snackBar: AppNavigator.instance.getLeaveSnackBar(context),
-          child: RefreshIndicator(
-            onRefresh: _updateAbsences,
-            child: _buildAbsences(context),
-          ),
-        ),
+        body: _buildAbsences(context),
       ),
     );
   }
@@ -99,18 +87,21 @@ class _AbsencesPageState extends State<AbsencesPage> {
           final map = getAbsencesMap(
               absences..sort((b, a) => a.evtDate.compareTo(b.evtDate)));
 
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: _buildOverallStats(absences),
-                  ),
-                  _buildNotJustifiedAbsences(map),
-                  _buildJustifiedAbsences(map, context),
-                ],
+          return CustomRefresher(
+            onRefresh: _updateAbsences,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: _buildOverallStats(absences),
+                    ),
+                    _buildNotJustifiedAbsences(map),
+                    _buildJustifiedAbsences(map, context),
+                  ],
+                ),
               ),
             ),
           );
@@ -325,17 +316,17 @@ class _AbsencesPageState extends State<AbsencesPage> {
       double delta = 0;
 
       if (absences.length > i + 1) {
-        current = absences[i].evtDate;
-        next = absences[i + 1].evtDate;
+        if (absences[i].evtCode == RegistroConstants.ASSENZA &&
+            absences[i + 1].evtCode == RegistroConstants.ASSENZA) {
+          current = absences[i].evtDate;
+          next = absences[i + 1].evtDate;
+        }
 
         delta = (next.millisecondsSinceEpoch - current.millisecondsSinceEpoch) /
             3600000;
       }
 
       if (absences[i].evtCode != RegistroConstants.ASSENZA) {
-        map[start] = days;
-        start = null;
-      } else if (delta > 72) {
         map[start] = days;
         start = null;
       } else if (delta == -72) {

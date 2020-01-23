@@ -4,6 +4,10 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/domain/repository/grades_repository.dart';
+import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/grades_event.dart';
+import 'package:registro_elettronico/ui/bloc/grades/grades_state.dart';
 import 'package:registro_elettronico/ui/bloc/local_grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/professors/bloc.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.dart';
@@ -38,64 +42,86 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
   double _currentPickerValue = 6.0;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
     BlocProvider.of<ProfessorsBloc>(context)
         .add(GetProfessorsForSubject(subjectId: widget.subject.id));
+    BlocProvider.of<GradesBloc>(context).add(GetGrades());
+    BlocProvider.of<LocalGradesBloc>(context).add(GetLocalGrades(
+      period: widget.period,
+    ));
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final subject = widget.subject;
 
-    List<Grade> grades;
-    if (widget.period != TabsConstants.GENERALE) {
-      grades = widget.grades
-          .where((grade) =>
-              grade.subjectId == subject.id && grade.periodPos == widget.period)
-          .toList()
-            ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
-    } else {
-      grades = widget.grades
-          .where((grade) => grade.subjectId == subject.id)
-          .toList()
-            ..sort((a, b) => a.eventDate.compareTo(b.eventDate));
-    }
+    return BlocBuilder<GradesBloc, GradesState>(
+      builder: (context, state) {
+        if (state is GradesLoading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is GradesLoaded) {
+          List<Grade> grades;
+          if (widget.period != TabsConstants.GENERALE) {
+            grades = state.grades
+                .where((grade) =>
+                    grade.subjectId == subject.id &&
+                    grade.periodPos == widget.period)
+                .toList()
+                  ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
+          } else {
+            grades = state.grades
+                .where((grade) => grade.subjectId == subject.id)
+                .toList()
+                  ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
+          }
 
-    final averages =
-        GradesUtils.getSubjectAveragesFromGrades(grades, subject.id);
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        title: Text(subject.name),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: <Widget>[
-                _buildProfessorsCard(),
-
-                /// Pratico scritto and orale ciruclar progress widgets
-                _buildAveragesCard(averages),
-
-                /// The chart that shows the average and grades
-                _buildChartCard(subject, grades),
-
-                // Shots the progress bar of the obj and the avg
-                _buildProgressBarCard(averages),
-
-                _buildLocalGrades(averages, grades),
-
-                // Last grades
-                _buildLastGrades(grades),
-              ],
+          final averages =
+              GradesUtils.getSubjectAveragesFromGrades(grades, subject.id);
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+              title: Text(subject.name),
             ),
-          ),
-        ),
-      ),
+            body: SingleChildScrollView(
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: <Widget>[
+                      _buildProfessorsCard(),
+
+                      /// Pratico scritto and orale ciruclar progress widgets
+                      _buildAveragesCard(averages),
+
+                      /// The chart that shows the average and grades
+                      _buildChartCard(
+                          subject,
+                          grades
+                              .where((g) => GradesUtils.isValidGrade(g))
+                              .toList()),
+
+                      // Shots the progress bar of the obj and the avg
+                      _buildProgressBarCard(averages),
+
+                      _buildLocalGrades(averages, grades),
+
+                      // Last grades
+                      _buildLastGrades(grades),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+
+        return Container();
+      },
     );
   }
 
@@ -123,7 +149,14 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                       grades);
                 }
 
-                if (state is LocalGradesError) {}
+                if (state is LocalGradesError) {
+                  return CustomPlaceHolder(
+                    icon: Icons.error,
+                    showUpdate: false,
+                    text: AppLocalizations.of(context)
+                        .translate('unexcepted_error_single'),
+                  );
+                }
 
                 return Container();
               },
@@ -345,12 +378,60 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
         shrinkWrap: true,
         itemCount: grades.length,
         itemBuilder: (context, index) {
+          final grade = grades[index];
           return Padding(
             padding: index == 0
                 ? EdgeInsets.only(top: 2.0, bottom: 8.0)
                 : EdgeInsets.only(bottom: 8.0),
-            child: GradeCard(
-              grade: grades[index],
+            child: InkWell(
+              onTap: () {
+                if (grade.decimalValue != -1.00 && grade.cancelled == false) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text(grade.localllyCancelled
+                          ? AppLocalizations.of(context)
+                              .translate('delete_grade_title_restore')
+                          : AppLocalizations.of(context)
+                              .translate('delete_grade_title_cancel')),
+                      //content: Text(grades[index].localllyCancelled.toString()),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text(AppLocalizations.of(context).translate('no').toUpperCase()),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        FlatButton(
+                          child: Text(AppLocalizations.of(context).translate('yes').toUpperCase()),
+                          onPressed: () async {
+                            if (grade.localllyCancelled) {
+                              await RepositoryProvider.of<GradesRepository>(
+                                      context)
+                                  .updateGrade(
+                                      grade.copyWith(localllyCancelled: false));
+                              BlocProvider.of<GradesBloc>(context)
+                                  .add(GetGrades());
+                            } else {
+                              await RepositoryProvider.of<GradesRepository>(
+                                      context)
+                                  .updateGrade(
+                                      grade.copyWith(localllyCancelled: true));
+                              BlocProvider.of<GradesBloc>(context)
+                                  .add(GetGrades());
+                            }
+
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ),
+                  );
+                }
+              },
+              child: GradeCard(
+                grade: grades[index],
+              ),
             ),
           );
         },

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/component/navigator.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
@@ -9,7 +9,7 @@ import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
+import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
@@ -28,6 +28,7 @@ class AgendaPage extends StatefulWidget {
 
 class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  RefreshController _refreshController = RefreshController();
 
   List _selectedEvents;
   AnimationController _animationController;
@@ -73,21 +74,34 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   void _onDaySelected(DateTime day, List events) {
     // We need to update the bloc for the lessons of that day
     BlocProvider.of<LessonsBloc>(context).add(GetLessonsByDate(dateTime: day));
+
     setState(() {
       _selectedEvents = events;
     });
   }
 
   void _onVisibleDaysChanged(
-      DateTime first, DateTime last, CalendarFormat format) {}
+    DateTime first,
+    DateTime last,
+    CalendarFormat format,
+  ) {}
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AgendaBloc, AgendaState>(
       listener: (context, state) {
         if (state is AgendaUpdateLoadSuccess) {
+          _refreshController.refreshCompleted();
+
           setState(() {
             _agendaLastUpdate = DateTime.now().millisecondsSinceEpoch;
+          });
+        } else if (state is AgendaLoadSuccess) {
+          setState(() {
+            _selectedEvents = state.events
+                .where((d) => DateUtils.areSameDay(d.begin, DateTime.now()))
+                .toSet()
+                .toList();
           });
         }
       },
@@ -109,23 +123,9 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         bottomSheet: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _agendaLastUpdate,
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   child: Icon(Icons.add),
-        //   onPressed: () async {
-        //     //print(AppLocalizations.of(context).locale.toString());
-        //     // final LocalNotification localNotification =
-        //     //     LocalNotification(onSelectNotification);
-
-        //     // localNotification.scheduleNotification(
-        //     //   title: 'New event',
-        //     //   message: 'Got new event',
-        //     //   scheduledTime: DateTime.now().add(Duration(seconds: 5)),
-        //     //   eventId: GlobalUtils.getRandomNumber(),
-        //     // );
-        //   },
-        // ),
-        body: DoubleBackToCloseApp(
-          snackBar: AppNavigator.instance.getLeaveSnackBar(context),
+        body: CustomRefresher(
+          controller: _refreshController,
+          onRefresh: _refreshAgenda,
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -142,7 +142,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                   ),
                 ),
                 Container(
-                  child: _buildEventList(),
+                  child: _buildEventsMap(),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
@@ -199,6 +199,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
           .toSet()
           .toList(),
     );
+
     return TableCalendar(
       calendarController: _calendarController,
       events: eventsMap,
@@ -334,66 +335,63 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildEventList() {
-    if (_selectedEvents.length == 0) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 32.0),
-        child: CustomPlaceHolder(
-          icon: Icons.calendar_today,
-          showUpdate: false,
-          text: '',
-        ),
-      );
-    }
-    return IgnorePointer(
-      child: ListView(
-          shrinkWrap: true,
-          children: _selectedEvents.map((e) {
-            final db.AgendaEvent event = e;
-
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
-              child: Card(
-                color: Colors.red[400],
-                child: ListTile(
-                  leading: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context).translate('hour').toLowerCase()),
-                      Text(
-                          '${event.begin.hour.toString()} - ${event.end.hour.toString()}')
-                    ],
-                  ),
-                  title: Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-                    child: Text(
-                      '${StringUtils.titleCase(event.authorName)}',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w600),
+  Widget _buildEventsMap() {
+    if (_selectedEvents.length > 0) {
+      return IgnorePointer(
+        child: ListView(
+            shrinkWrap: true,
+            children: _selectedEvents.map((e) {
+              final db.AgendaEvent event = e;
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
+                child: Card(
+                  color: Colors.red[400],
+                  child: ListTile(
+                    leading: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(AppLocalizations.of(context)
+                            .translate('hour')
+                            .toLowerCase()),
+                        Text(
+                            '${event.begin.hour.toString()} - ${event.end.hour.toString()}')
+                      ],
                     ),
-                  ),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-                    child: Text(
-                      '${event.notes} ${event.isFullDay ? " - (Tutto il giorno)" : ""}',
-                      style: TextStyle(color: Colors.white),
+                    title: Padding(
+                      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                      child: Text(
+                        '${StringUtils.titleCase(event.authorName)}',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                      child: Text(
+                        '${event.notes} ${event.isFullDay ? " - (Tutto il giorno)" : ""}',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          }).toList()),
-    );
-  }
-
-  Future onSelectNotification(String payload) async {
-    if (payload != null) {
-      print('notification payload: ' + payload);
+              );
+            }).toList()),
+      );
     }
+
+    return Padding(
+        padding: const EdgeInsets.only(top: 64.0),
+        child: CustomPlaceHolder(
+          icon: Icons.event,
+          text: '',
+          showUpdate: false,
+        ),
+      );
   }
 
-  Future<void> _refreshAgenda() async {
+  Future _refreshAgenda() async {
     BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
     BlocProvider.of<AgendaBloc>(context).add(GetAllAgenda());
+    _refreshController.refreshFailed();
   }
 }

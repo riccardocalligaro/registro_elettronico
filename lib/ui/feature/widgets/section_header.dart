@@ -23,7 +23,7 @@ class SectionHeader extends StatelessWidget {
           onTap != null
               ? FlatButton(
                   shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(15.0),
+                    borderRadius: BorderRadius.circular(15.0),
                   ),
                   onPressed: onTap,
                   child: Padding(

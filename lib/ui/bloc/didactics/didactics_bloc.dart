@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:f_logs/model/flog/flog.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,12 +25,18 @@ class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
         final teachers = await didacticsRepository.getTeachersGrouped();
         final folders = await didacticsRepository.getFolders();
         final contents = await didacticsRepository.getContents();
+        FLog.info(
+          text:
+              'BloC -> Got ${teachers.length} teachers, ${folders.length} folders, ${contents.length} contents',
+        );
+
         yield DidacticsLoaded(
           teachers: teachers,
           folders: folders,
           contents: contents,
         );
-      } catch (e) {
+      } catch (e, s) {
+        Crashlytics.instance.recordError(e, s);
         yield DidacticsError(e.toString());
       }
     }
@@ -45,7 +53,8 @@ class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
             DateTime.now().millisecondsSinceEpoch);
 
         yield DidacticsUpdateLoaded();
-      } catch (e) {
+      } catch (e, s) {
+        Crashlytics.instance.recordError(e, s);
         yield DidacticsError(e.toString());
       }
     }

@@ -1,3 +1,4 @@
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:registro_elettronico/data/db/dao/notice_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
@@ -9,11 +10,9 @@ import 'package:registro_elettronico/domain/repository/notices_repository.dart';
 class NoticesRepositoryImpl implements NoticesRepository {
   NoticeDao noticeDao;
   ProfileDao profileDao;
-  NoticeMapper noticeMapper;
   SpaggiariClient spaggiariClient;
 
-  NoticesRepositoryImpl(
-      this.noticeDao, this.profileDao, this.spaggiariClient, this.noticeMapper);
+  NoticesRepositoryImpl(this.noticeDao, this.profileDao, this.spaggiariClient);
 
   @override
   Future updateNotices() async {
@@ -27,12 +26,17 @@ class NoticesRepositoryImpl implements NoticesRepository {
     List<Attachment> attachments = [];
 
     response.items.forEach((notice) {
-      notices.add(noticeMapper.convertNoticeEntityToInsertable(notice));
+      notices.add(NoticeMapper.convertNoticeEntityToInsertable(notice));
       notice.attachments.forEach((attachment) {
-        attachments.add(noticeMapper.convertAttachmentEntityToInsertable(
+        attachments.add(NoticeMapper.convertAttachmentEntityToInsertable(
             notice.pubId, attachment));
       });
     });
+
+    FLog.info(
+      text:
+          'Got ${response.items.length} notice items from server, procceding to insert in database',
+    );
 
     noticeDao.insertNotices(notices);
     noticeDao.insertAttachments(attachments);

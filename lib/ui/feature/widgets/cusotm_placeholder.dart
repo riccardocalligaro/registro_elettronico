@@ -6,6 +6,7 @@ class CustomPlaceHolder extends StatelessWidget {
   final IconData icon;
   final GestureTapCallback onTap;
   final bool showUpdate;
+  final String updateMessage;
 
   const CustomPlaceHolder({
     Key key,
@@ -13,6 +14,7 @@ class CustomPlaceHolder extends StatelessWidget {
     @required this.text,
     @required this.icon,
     @required this.showUpdate,
+    this.updateMessage,
   }) : super(key: key);
 
   @override
@@ -31,12 +33,15 @@ class CustomPlaceHolder extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Text(text, textAlign: TextAlign.center,),
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+            ),
           ),
           showUpdate
               ? FlatButton(
                   child: Text(
-                    AppLocalizations.of(context).translate('sync'),
+                    updateMessage ?? AppLocalizations.of(context).translate('sync'),
                     style: TextStyle(
                       color: Colors.grey[600],
                     ),

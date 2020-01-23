@@ -13,6 +13,7 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:tuple/tuple.dart';
 
 import 'constants/registro_constants.dart';
+import 'constants/subjects_constants.dart';
 
 class GlobalUtils {
   static Profile getMockProfile() {
@@ -32,20 +33,45 @@ class GlobalUtils {
   static String getLastUpdateMessage(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
+    final trans = AppLocalizations.of(context);
 
-    if (difference.inSeconds < 30) return "Now";
-    if (difference.inMinutes == 0) return "${difference.inSeconds} seconds ago";
-    if (difference.inMinutes == 1) return "${difference.inMinutes} minute ago";
-    if (difference.inHours == 0) return "${difference.inMinutes} minutes ago";
-    if (difference.inDays == 0) return "${difference.inHours} hours ago";
-    if (difference.inDays == 1) return "Yesterday";
-    if (difference.inDays > 1 && difference.inDays < 7)
-      return "${difference.inDays} days ago";
-    if (difference.inDays == 7) return "A week ago";
-    if (difference.inDays > 31) {
-      return (difference.inDays / 30).toStringAsFixed(0);
-    } else
-      return "${difference.inDays} days ago";
+    if (difference.inSeconds < 30) {
+      return trans.translate('update_now');
+    } else if (difference.inSeconds < 60) {
+      return trans.translate('update_while_ago');
+    } else if (difference.inMinutes == 0) {
+      return trans
+          .translate('update_seconds')
+          .replaceAll('{s}', difference.inSeconds.toString());
+    } else if (difference.inMinutes == 1) {
+      return trans
+          .translate('update_minute')
+          .replaceAll('{m}', difference.inMinutes.toString());
+    } else if (difference.inHours == 0) {
+      return trans
+          .translate('update_minutes')
+          .replaceAll('{m}', difference.inMinutes.toString());
+    } else if (difference.inDays == 0) {
+      return trans
+          .translate('update_hours')
+          .replaceAll('{h}', difference.inHours.toString());
+    } else if (difference.inDays == 1) {
+      return trans.translate('update_yesterday');
+    } else if (difference.inDays > 1 && difference.inDays < 7) {
+      return trans
+          .translate('update_days')
+          .replaceAll('{d}', difference.inDays.toString());
+    } else if (difference.inDays == 7) {
+      return trans.translate('update_week');
+    } else if (difference.inDays > 31) {
+      return trans
+          .translate('update_days')
+          .replaceAll('{d}', (difference.inDays / 30).toStringAsFixed(0));
+    } else {
+      return trans
+          .translate('update_days')
+          .replaceAll('{d}', difference.inDays.toString());
+    }
   }
 
   /// This method thakes a list of lessons and returns the lesson [grouped]
@@ -73,15 +99,21 @@ class GlobalUtils {
   }
 
   static Map<Tuple2<int, String>, int> getGroupedLessonsMap(
-      List<Lesson> lessons) {
+    List<Lesson> lessons,
+  ) {
     final Map<Tuple2<int, String>, int> lessonsMap = Map.fromIterable(
       lessons,
-      key: (e) => Tuple2<int, String>(e.subjectId, e.lessonArg),
+      key: (e) => Tuple2<int, String>(
+        e.subjectId,
+        e.lessonArg,
+      ),
       value: (e) => lessons
-          .where((entry) =>
-              entry.lessonArg == e.lessonArg &&
-              entry.subjectId == e.subjectId &&
-              entry.author == e.author)
+          .where(
+            (entry) =>
+                entry.lessonArg == e.lessonArg &&
+                entry.subjectId == e.subjectId &&
+                entry.author == e.author,
+          )
           .length,
     );
     return lessonsMap;
@@ -112,34 +144,59 @@ class GlobalUtils {
 
   static int getSubjectConstFromName(String subjectName) {
     final stringToCompare = subjectName.toUpperCase();
-    switch (stringToCompare) {
-      case "MATEMATICA E COMPLEMENTI DI MATEMATICA":
-        return SubjectsConstants.MATEMATICA;
-        break;
-      case "RELIGIONE CATTOLICA / ATTIVITA ALTERNATIVA":
-        return SubjectsConstants.RELIGIONE;
-        break;
-      case "LINGUA INGLESE":
-        return SubjectsConstants.INGLESE;
-        break;
-      case "TECNOLOGIE E PROGETTAZIONE DI SISTEMI INFORMATICI E DI TELECOMUNICAZIONI":
-        return SubjectsConstants.TPSIT;
-        break;
-      case "LINGUA E LETTERATURA ITALIANA":
-        return SubjectsConstants.ITALIANO;
-        break;
-      case "SCIENZE MOTORIE E SPORTIVE":
-        return SubjectsConstants.GINNASTICA;
-        break;
-      case "INFORMATICA":
-        return SubjectsConstants.INFORMATICA;
-        break;
-      case "TELECOMUNICAZIONI":
-        return SubjectsConstants.TELECOMUNICAZIONI;
-        break;
-      default:
-        return -1;
+    if (stringToCompare.contains(RegExp(r'(MATEMATICA)'))) {
+      return SubjectsConstants.MATEMATICA;
     }
+    if (stringToCompare.contains(RegExp(r'(RELIGIONE|ALTERNATIVA)'))) {
+      return SubjectsConstants.RELIGIONE;
+    }
+    if (stringToCompare.contains("INGLESE")) {
+      return SubjectsConstants.INGLESE;
+    }
+    if (stringToCompare.contains(RegExp(r'(ITALIANA|ITALIANO)'))) {
+      return SubjectsConstants.ITALIANO;
+    }
+    if (stringToCompare.contains(RegExp(
+        r'(TECNOLOGIE E PROGETTAZIONE DI SISTEMI INFORMATICI E DI TELECOMUNICAZIONI)'))) {
+      return SubjectsConstants.TPSIT;
+    }
+    if (stringToCompare.contains(RegExp(r'(GINNASTICA|SCIENZE MOTORIE)'))) {
+      return SubjectsConstants.GINNASTICA;
+    }
+    if (stringToCompare
+        .contains(RegExp(r'(INFORMATICA|SCIENZE TECNOLOGIE APPLICATE)'))) {
+      return SubjectsConstants.INFORMATICA;
+    }
+    if (stringToCompare.contains(RegExp(r'(TELECOMUNICAZIONI)'))) {
+      return SubjectsConstants.TELECOMUNICAZIONI;
+    }
+    if (stringToCompare.contains(RegExp(r'(GEOGRAFIA)'))) {
+      return SubjectsConstants.GEOGRAFIA;
+    }
+    if (stringToCompare.contains(RegExp(r'(DIRITTO)'))) {
+      return SubjectsConstants.DIRITTO;
+    }
+    if (stringToCompare.contains(RegExp(r'(CHIMICA)'))) {
+      return SubjectsConstants.CHIMICA;
+    }
+    if (stringToCompare.contains(RegExp(
+        r'("LINGUA STRANIERA"|RUSSO|CINESE|TEDESCO|TEDESCA|SPAGNOLO|FRANCESE)'))) {
+      return SubjectsConstants.LINGUE;
+    }
+    if (stringToCompare.contains(RegExp(r'(ELETTRONICA)'))) {
+      return SubjectsConstants.ELETTRONICA;
+    }
+    if (stringToCompare.contains(RegExp(r'(ARTE)'))) {
+      return SubjectsConstants.ARTE;
+    }
+    if (stringToCompare
+        .contains(RegExp(r'("DISEGNO TECNICO"|TECNICHE|GRAFICHE|GRAFICA)'))) {
+      return SubjectsConstants.DISEGNO_TECNICO;
+    }
+    if (stringToCompare.contains(RegExp(r'(BIOLOGIA)'))) {
+      return SubjectsConstants.BIOLOGIA;
+    } else
+      return -1;
   }
 
   static String translateSubject(int subjectId) {
@@ -316,30 +373,8 @@ class GlobalUtils {
           "assets/icons/subjects/inglese.svg",
         );
         break;
-      case SubjectsConstants.FRANCESE:
-        return SvgPicture.asset(
-          "assets/icons/subjects/lingue.svg",
-        );
-        break;
-      case SubjectsConstants.SPAGNOLO:
-        return SvgPicture.asset(
-          "assets/icons/subjects/lingue.svg",
-        );
-        break;
-      case SubjectsConstants.RUSSO:
-        return SvgPicture.asset(
-          "assets/icons/subjects/lingue.svg",
-        );
-        break;
-      case SubjectsConstants.CINESE:
-        return SvgPicture.asset(
-          "assets/icons/subjects/lingue.svg",
-        );
-        break;
-      case SubjectsConstants.TEDESCO:
-        return SvgPicture.asset(
-          "assets/icons/subjects/lingue.svg",
-        );
+      case SubjectsConstants.LINGUE:
+        return SvgPicture.asset("assets/icons/subjects/lingue.svg");
         break;
       case SubjectsConstants.DISEGNO_TECNICO:
         return SvgPicture.asset(
@@ -349,6 +384,11 @@ class GlobalUtils {
       case SubjectsConstants.DIRITTO:
         return SvgPicture.asset(
           "assets/icons/subjects/diritto.svg",
+        );
+        break;
+      case SubjectsConstants.GINNASTICA:
+        return SvgPicture.asset(
+          "assets/icons/subjects/barbell.svg",
         );
         break;
       default:
@@ -416,6 +456,12 @@ class GlobalUtils {
   static int getRandomNumber() {
     Random random = new Random();
     int randomNumber = random.nextInt(99999);
+    return randomNumber;
+  }
+
+  static int getSmallRandomNumber() {
+    Random random = new Random();
+    int randomNumber = random.nextInt(10000);
     return randomNumber;
   }
 

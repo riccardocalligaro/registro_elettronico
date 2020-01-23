@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:f_logs/model/flog/flog.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
 
 import './bloc.dart';
@@ -24,11 +26,21 @@ class TimetableBloc extends Bloc<TimetableEvent, TimetableState> {
       try {
         final timetable = await timetableRepository.getTimetable();
         final subjects = await subjectsRepository.getAllSubjects();
+
+        FLog.info(text: 'BloC -> Got ${subjects.length} subjects');
+        FLog.info(text: 'BloC -> Got ${timetable.length} timetable entries');
+
         yield TimetableLoaded(
           timetableEntries: timetable,
           subjects: subjects,
         );
-      } catch (e) {
+      } on Exception catch (e, s) {
+        FLog.error(
+          text: 'Error getting timetable',
+          exception: e,
+          stacktrace: s,
+        );
+        Crashlytics.instance.recordError(e, s);
         yield TimetableError(e.toString());
       }
     }
@@ -40,11 +52,20 @@ class TimetableBloc extends Bloc<TimetableEvent, TimetableState> {
         final subjects = await subjectsRepository.getAllSubjects();
         final timetable = await timetableRepository.getTimetable();
 
+        FLog.info(text: 'BloC -> Got ${subjects.length} subjects');
+        FLog.info(text: 'BloC -> Got ${timetable.length} timetable entries');
+
         yield TimetableLoaded(
           timetableEntries: timetable,
           subjects: subjects,
         );
-      } catch (e) {
+      } on Exception catch (e, s) {
+        FLog.error(
+          text: 'Error getting new timetable',
+          exception: e,
+          stacktrace: s,
+        );
+        Crashlytics.instance.recordError(e, s);
         yield TimetableError(e.toString());
       }
     }

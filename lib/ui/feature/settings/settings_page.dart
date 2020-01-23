@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/component/navigator.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/main.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/about/about_developers_page.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/account/account_settings.dart';
@@ -10,12 +13,11 @@ import 'package:registro_elettronico/ui/feature/settings/components/header_text.
 import 'package:registro_elettronico/ui/feature/settings/components/notifications/notifications_interval_settings_dialog.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'components/notifications/notifications_type_settings_dialog.dart';
@@ -32,7 +34,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   int _updateInterval = 30;
   SharedPreferences sharedPrefs;
-  bool _notificationsActivated;
+  bool _notificationsActivated = false;
+  bool _onlyOnWifiActivated = false;
 
   @override
   void initState() {
@@ -47,6 +50,9 @@ class _SettingsPageState extends State<SettingsPage> {
           (sharedPrefs.getInt(PrefsConstants.UPDATE_INTERVAL)) ?? 30;
       _notificationsActivated =
           (sharedPrefs.getBool(PrefsConstants.NOTIFICATIONS)) ?? false;
+
+      _onlyOnWifiActivated =
+          (sharedPrefs.getBool(PrefsConstants.UPDATE_ONLY_WIFI)) ?? false;
     });
   }
 
@@ -63,26 +69,23 @@ class _SettingsPageState extends State<SettingsPage> {
       drawer: AppDrawer(
         position: DrawerConstants.SETTINGS,
       ),
-      body: DoubleBackToCloseApp(
-        snackBar: AppNavigator.instance.getLeaveSnackBar(context),
-        child: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                /// Notification settins
-                _buildNotificationsSettingsSection(),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              /// Notification settins
+              _buildNotificationsSettingsSection(),
 
-                /// General settings
-                GeneralSettings(),
+              /// General settings
+              GeneralSettings(),
 
-                CustomizationSettings(),
+              CustomizationSettings(),
 
-                AccountSettings(),
+              AccountSettings(),
 
-                _buildAboutSection()
-              ],
-            ),
+              _buildAboutSection()
+            ],
           ),
         ),
       ),
@@ -170,6 +173,25 @@ class _SettingsPageState extends State<SettingsPage> {
             });
           },
         ),
+        ListTile(
+          enabled: _notificationsActivated ?? false,
+          title:
+              Text(AppLocalizations.of(context).translate('only_wifi_title')),
+          subtitle: Text(
+              AppLocalizations.of(context).translate('only_wifi_subtitle')),
+          trailing: Checkbox(
+            value: _onlyOnWifiActivated ?? false,
+            onChanged: !_notificationsActivated
+                ? null
+                : (value) {
+                    setState(() {
+                      _onlyOnWifiActivated = value;
+                    });
+                    _setWorkmanager(value);
+                    save(PrefsConstants.UPDATE_ONLY_WIFI, value);
+                  },
+          ),
+        )
       ],
     );
   }
@@ -194,20 +216,34 @@ class _SettingsPageState extends State<SettingsPage> {
           },
         ),
         ListTile(
-          title: Text(trans.translate('about_donate_title')),
-          subtitle: Text(trans.translate('about_donate_subtitle')),
+          title:
+              Text(AppLocalizations.of(context).translate('report_bug_title')),
+          subtitle: Text(
+              AppLocalizations.of(context).translate('report_bug_message')),
+          onTap: () async {
+            await FLog.exportLogs();
+            final path = await _localPath + "/" + PrefsConstants.DIRECTORY_NAME;
+
+            final random = GlobalUtils.getRandomNumber();
+            final subject =
+                'Bug report #$random - ${DateTime.now().toString()}';
+            String userMessage;
+            userMessage =
+                '${AppLocalizations.of(context).translate("email_message")}\n  -';
+
+            final Email reportEmail = Email(
+              body: userMessage,
+              subject: subject,
+              recipients: ['riccardocalligaro@gmail.com'],
+              attachmentPath: '$path/flog.txt',
+              isHTML: false,
+            );
+            await FlutterEmailSender.send(reportEmail);
+          },
         ),
         ListTile(
-          title: Text(trans.translate('contact_us')),
-          subtitle: Text(trans.translate('contact_us_message')),
-          onTap: () async {
-            var url = 'mailto:riccardocalligaro@gmail.com';
-            if (await canLaunch(url)) {
-              await launch(url);
-            } else {
-              throw 'Could not launch $url';
-            }
-          },
+          title: Text(trans.translate('about_donate_title')),
+          subtitle: Text(trans.translate('about_donate_subtitle')),
         ),
       ],
     );
@@ -217,7 +253,7 @@ class _SettingsPageState extends State<SettingsPage> {
     if (interval >= 60)
       return AppLocalizations.of(context)
           .translate('every_hours')
-          .replaceAll('{h}', (interval / 60).toString());
+          .replaceAll('{h}', (interval / 60).toStringAsFixed(0));
     return AppLocalizations.of(context)
         .translate('every_minutes')
         .replaceAll('{m}', interval.toString());
@@ -249,32 +285,45 @@ class _SettingsPageState extends State<SettingsPage> {
       FLog.info(
         text: '-> Set new time for notifications -> interval $refreshInterval',
       );
-      WidgetsFlutterBinding.ensureInitialized();
-      Workmanager.cancelAll();
-      Workmanager.initialize(
+      await WidgetsFlutterBinding.ensureInitialized();
+      await Workmanager.cancelAll();
+      await Workmanager.initialize(
         callbackDispatcher,
         //! set to false in production
         isInDebugMode: true,
       );
 
-      Workmanager.registerPeriodicTask(
+      await Workmanager.registerPeriodicTask(
         'checkForNewContent', 'checkForNewContent',
-        initialDelay: Duration(minutes: 60),
+        initialDelay: Duration(minutes: refreshInterval),
         // minimum frequency for android is 15 minutes
         frequency: Duration(minutes: refreshInterval),
         constraints: Constraints(
           // we need the user to be conntected, these parameters will be customizable in the future
-          //TODO: let user customize these params
-          networkType: NetworkType.connected,
+          networkType: _onlyOnWifiActivated
+              ? NetworkType.unmetered
+              : NetworkType.connected,
           requiresBatteryNotLow: true,
         ),
       );
 
       FLog.info(text: '-> Set notifications every $refreshInterval');
     } else {
-      WidgetsFlutterBinding.ensureInitialized();
-      Workmanager.cancelAll();
+      await WidgetsFlutterBinding.ensureInitialized();
+      await Workmanager.cancelAll();
       FLog.info(text: '-> Cancelled all notifications intervals');
     }
+  }
+
+  Future<String> get _localPath async {
+    var directory;
+
+    if (Platform.isIOS) {
+      directory = await getApplicationDocumentsDirectory();
+    } else {
+      directory = await getExternalStorageDirectory();
+    }
+
+    return directory.path;
   }
 }

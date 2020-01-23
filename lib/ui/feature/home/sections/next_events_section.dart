@@ -7,6 +7,7 @@ import 'package:registro_elettronico/ui/feature/home/widgets/timeline.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:registro_elettronico/utils/string_utils.dart';
 
 class NextEventsSection extends StatelessWidget {
   const NextEventsSection({Key key}) : super(key: key);
@@ -79,25 +80,44 @@ class NextEventsSection extends StatelessWidget {
         ),
       );
     } else {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 16.0),
-        child: Timeline(
-          children: events.map((e) {
-            return Card(
-              child: ListTile(
-                title: Text(e.notes ?? ''),
-                subtitle:
-                    Text(GlobalUtils.getEventDateMessage(context, e.begin)),
+      return Timeline(
+        children: events.map((e) {
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    '${e.notes ?? ''}',
+                    style: TextStyle(fontSize: 15.0),
+                  ),
+                  SizedBox(height: 2.5,),
+                  Text(
+                    '${StringUtils.titleCase(e.authorName)} - ${GlobalUtils.getEventDateMessage(context, e.begin)}',
+                    style: TextStyle(fontSize: 12.0),
+                  ),
+                ],
               ),
+            ),
+          );
+        }).toList(),
+        indicators: events.map((e) {
+          if (GlobalUtils.isCompito(e.notes))
+            return Icon(
+              Icons.assignment,
+              color: Colors.grey[700],
             );
-          }).toList(),
-          indicators: events.map((e) {
-            if (GlobalUtils.isCompito(e.notes)) return Icon(Icons.assignment);
-            if (GlobalUtils.isVerificaOrInterrogazione(e.notes))
-              return Icon(Icons.assignment_late);
-            return Icon(Icons.calendar_today);
-          }).toList(),
-        ),
+          if (GlobalUtils.isVerificaOrInterrogazione(e.notes))
+            return Icon(
+              Icons.assignment_late,
+              color: Colors.grey[700],
+            );
+          return Icon(
+            Icons.calendar_today,
+            color: Colors.grey[700],
+          );
+        }).toList(),
       );
     }
   }

@@ -71,7 +71,7 @@ class AboutDevelopersPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 16.0, top: 8.0),
               child: HeaderText(
-                text: 'Thanks to',
+                text: AppLocalizations.of(context).translate('thanks_to'),
               ),
             ),
             ListTile(
@@ -80,7 +80,7 @@ class AboutDevelopersPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
               child: HeaderText(
-                text: 'The application',
+                text: AppLocalizations.of(context).translate('the_application'),
               ),
             ),
             ListTile(

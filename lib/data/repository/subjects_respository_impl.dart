@@ -1,3 +1,4 @@
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
@@ -43,6 +44,12 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
         );
       });
     });
+
+    FLog.info(
+      text:
+          'Got ${res.subjects} subjects from server, procceding to insert in database',
+    );
+
     subjectDao.insertSubjects(subjects);
     professorDao.insertProfessors(teachers);
   }

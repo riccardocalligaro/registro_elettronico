@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
+import 'package:registro_elettronico/data/repository/scrutini_repository_impl.dart';
+import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/agenda/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/dashboard/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/didactics_attachments/didactics_attachments_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/documents/document_attachment/bloc/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/documents/documents_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/subjects_grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
@@ -24,6 +30,7 @@ import 'package:registro_elettronico/ui/bloc/periods/periods_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/professors/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/timetable/timetable_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/token/token_bloc.dart';
 
 class AppBlocDelegate {
   static AppBlocDelegate _instance;
@@ -39,6 +46,21 @@ class AppBlocDelegate {
           i.getDependency(),
           i.getDependency(),
         ),
+      ),
+      RepositoryProvider<ScrutiniRepository>(
+        create: (ctx) => ScrutiniRepositoryImpl(
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+        ),
+      ),
+      RepositoryProvider<GradesRepository>(
+        create: (ctx) => GradesRepositoryImpl(
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+        ),
       )
     ];
 
@@ -49,6 +71,7 @@ class AppBlocDelegate {
       ),
       BlocProvider<IntroBloc>(
         create: (ctx) => IntroBloc(
+          i.getDependency(),
           i.getDependency(),
           i.getDependency(),
           i.getDependency(),
@@ -120,6 +143,18 @@ class AppBlocDelegate {
       ),
       BlocProvider<ProfessorsBloc>(
         create: (ctx) => ProfessorsBloc(i.getDependency()),
+      ),
+      BlocProvider<DocumentsBloc>(
+        create: (ctx) => DocumentsBloc(i.getDependency()),
+      ),
+      BlocProvider<TokenBloc>(
+        create: (ctx) => TokenBloc(i.getDependency()),
+      ),
+      BlocProvider<DocumentAttachmentBloc>(
+        create: (ctx) => DocumentAttachmentBloc(i.getDependency()),
+      ),
+      BlocProvider<GradesDashboardBloc>(
+        create: (ctx) => GradesDashboardBloc(i.getDependency()),
       ),
     ];
   }

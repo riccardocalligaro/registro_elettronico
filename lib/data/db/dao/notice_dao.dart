@@ -44,6 +44,8 @@ class NoticeDao extends DatabaseAccessor<AppDatabase> with _$NoticeDaoMixin {
 
   Future deleteAllNotices() => delete(notices).go();
 
+  Future deleteNotice(Notice notice) => delete(notices).delete(notice);
+
   Future deleteAllAttachments() => delete(attachments).go();
 
   /// Based on the primary key it replaces the notice
