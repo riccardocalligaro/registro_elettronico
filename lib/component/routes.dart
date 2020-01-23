@@ -5,7 +5,6 @@ import 'package:registro_elettronico/ui/feature/home/home_page.dart';
 import 'package:registro_elettronico/ui/feature/intro/intro_slideshow_page.dart';
 import 'package:registro_elettronico/ui/feature/lessons/lessons_page.dart';
 import 'package:registro_elettronico/ui/feature/login/login_page.dart';
-import 'package:registro_elettronico/ui/feature/next_tests/next_tests_page.dart';
 import 'package:registro_elettronico/ui/feature/notes/notes_page.dart';
 import 'package:registro_elettronico/ui/feature/noticeboard/noticeboard_page.dart';
 import 'package:registro_elettronico/ui/feature/school_material/school_material_page.dart';
@@ -23,7 +22,6 @@ class Routes {
   static const LESSONS = '/lessons';
   static const GRADES = '/grades';
   static const AGENDA = '/agenda';
-  //static const NEXT_TESTS = '/next-tests';
   static const ABSENCES = '/absences';
   static const SCHOOL_MATERIAL = '/school-material';
   static const NOTES = '/notes';
