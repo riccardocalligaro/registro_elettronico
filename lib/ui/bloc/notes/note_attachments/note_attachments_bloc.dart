@@ -1,9 +1,10 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/notes_repository.dart';
+
 import './bloc.dart';
 
 class NoteAttachmentsBloc
