@@ -11,6 +11,7 @@ import 'package:registro_elettronico/domain/repository/notes_repository.dart';
 import 'package:registro_elettronico/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
+import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './bloc.dart';
@@ -26,6 +27,7 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
   NotesRepository notesRepository;
   DidacticsRepository didacticsRepository;
   DocumentsRepository documentsRepository;
+  TimetableRepository timetableRepository;
 
   IntroBloc(
     this.absencesRepository,
@@ -38,6 +40,7 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
     this.noticesRepository,
     this.didacticsRepository,
     this.documentsRepository,
+    this.timetableRepository,
   );
   @override
   IntroState get initialState => IntroInitial();
@@ -120,6 +123,11 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
 
         final difference = start.difference(DateTime.now());
         FLog.info(text: 'Got all data in ${difference.inMilliseconds} ms');
+
+        await timetableRepository.updateTimeTable();
+
+        FLog.info(text: 'Updated timetable');
+
         yield IntroLoaded();
       } on Exception catch (e, s) {
         FLog.error(

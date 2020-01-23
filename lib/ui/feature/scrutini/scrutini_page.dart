@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:open_file/open_file.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/dao/document_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/documents/bloc.dart';
@@ -119,6 +120,11 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                       ),
                     ),
                   );
+                } else if (state is TokenLoadNotConnected) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                        AppNavigator.instance.getNetworkErrorSnackBar(context));
                 }
               },
             ),
@@ -203,20 +209,29 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                             .translate('error_emoji')),
                       ),
                     );
+                } else if (state is DocumentLoadNotConnected) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                        AppNavigator.instance.getNetworkErrorSnackBar(context));
                 }
               },
               child: Container(),
             ),
             BlocListener<DocumentsBloc, DocumentsState>(
-                listener: (context, state) {
-                  if (state is DocumentsUpdateLoadSuccess) {
-                    setState(() {
-                      _scrutiniLastUpdate =
-                          DateTime.now().millisecondsSinceEpoch;
-                    });
-                  }
-                },
-                child: Container())
+              listener: (context, state) {
+                if (state is DocumentsUpdateLoadSuccess) {
+                  setState(() {
+                    _scrutiniLastUpdate = DateTime.now().millisecondsSinceEpoch;
+                  });
+                } else if (state is DocumentsLoadNotConnected) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                        AppNavigator.instance.getNetworkErrorSnackBar(context));
+                }
+              },
+            )
           ],
           child: BlocBuilder<DocumentsBloc, DocumentsState>(
             builder: (context, state) {

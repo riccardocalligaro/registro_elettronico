@@ -29,6 +29,8 @@ class SubjectsGradesLoadSuccess extends SubjectsGradesState {
   });
 }
 
+class SubjectsGradesLoadNotConnected extends SubjectsGradesState {}
+
 class SubjectsGradesLoadError extends SubjectsGradesState {
   final String error;
 

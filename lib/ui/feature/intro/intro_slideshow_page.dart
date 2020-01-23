@@ -1,12 +1,10 @@
-import 'package:align_positioned/align_positioned.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:registro_elettronico/ui/feature/intro/components/download_liquid_circle.dart';
-import 'package:registro_elettronico/ui/feature/intro/components/intro_item.dart';
-import 'package:registro_elettronico/ui/feature/intro/components/theme_chooser.dart';
+import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/notifications/notifications_type_settings_dialog.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+
+import 'components/content_card.dart';
+import 'components/theme_content_card.dart';
 
 class IntroSlideshowPage extends StatefulWidget {
   IntroSlideshowPage({Key key}) : super(key: key);
@@ -15,97 +13,69 @@ class IntroSlideshowPage extends StatefulWidget {
   _IntroSlideshowPageState createState() => _IntroSlideshowPageState();
 }
 
+/// The [intro] the user sees when the login finishes
 class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
-  bool upDirection;
-
-  double height = 50;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final items = _getSwiperItems();
+    final trans = AppLocalizations.of(context);
     return Scaffold(
-      body: Swiper(
-        loop: false,
-        pagination: SwiperPagination(
-          builder: DotSwiperPaginationBuilder(color: Colors.grey[300]),
+      body: Builder(
+        builder: (context) => LiquidSwipe(
+          fullTransitionValue: 300,
+          enableLoop: false,
+          pages: <Container>[
+            Container(
+              child: ContentCard(
+                index: 0,
+                title: trans.translate('slide_1_title'),
+                subtitle: trans.translate('slide_1_subtitle'),
+                centerWidget: Icon(
+                  Icons.school,
+                  color: Colors.red,
+                  size: 150,
+                ),
+                backgroundColor: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.grey[900]
+                    : Colors.white,
+              ),
+            ),
+            Container(
+              child: ContentCard(
+                index: 1,
+                title: trans.translate('slide_2_title'),
+                subtitle: trans.translate('slide_2_subtitle'),
+                centerWidget: Icon(
+                  Icons.insert_chart,
+                  color: Colors.white,
+                  size: 150,
+                ),
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+              ),
+            ),
+            Container(
+              child: ContentCard(
+                index: 2,
+                title: trans.translate('slide_3_title'),
+                subtitle: trans.translate('slide_3_subtitle'),
+                centerWidget: NotificationsSettingsDialog(
+                  switchColor: Colors.white,
+                  textColor: Colors.white,
+                ),
+                backgroundColor: Colors.indigo,
+                textColor: Colors.white,
+              ),
+            ),
+            Container(
+              child: ThemeContentCard(
+                title: trans.translate('slide_4_title'),
+                subtitle: trans.translate('slide_4_subtitle'),
+                index: 3,
+              ),
+            ),
+          ],
         ),
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return IntroItem(
-            title: items[index].title,
-            centerWidget: items[index].centerWidget,
-            description: items[index].description,
-            additionalWidgets: items[index].additionalWigets,
-            dy: items[index].dy,
-          );
-        },
       ),
     );
   }
-
-  List<SwiperItem> _getSwiperItems() {
-    List<SwiperItem> slides = [];
-
-    slides.add(_getNotificationsSwipetItem());
-    slides.add(
-      SwiperItem(
-        centerWidget: IntroThemeChooser(),
-        title: AppLocalizations.of(context).translate('theme'),
-        dy: -110,
-        description: '',
-      ),
-    );
-
-    slides.add(
-      SwiperItem(
-        centerWidget: IntroDownloadLiquidCircle(),
-        title: 'Download',
-        dy: -90,
-        description: AppLocalizations.of(context)
-            .translate('download_slide_description'),
-      ),
-    );
-    return slides;
-  }
-
-  SwiperItem _getNotificationsSwipetItem() {
-    return SwiperItem(
-      centerWidget: AlignPositioned(
-        dy: 180,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 64.0),
-          child: Column(
-            children: <Widget>[
-              NotificationsSettingsDialog(),
-            ],
-          ),
-        ),
-      ),
-      title: AppLocalizations.of(context).translate('notifications'),
-      description: '',
-    );
-    // description:
-    //     'Press the switch to activate notifications, you can later set more preferences about when to check');
-  }
-}
-
-class SwiperItem {
-  final String title;
-  final Widget centerWidget;
-  final String description;
-  final double dy;
-  final List<Widget> additionalWigets;
-
-  const SwiperItem({
-    @required this.title,
-    @required this.centerWidget,
-    @required this.description,
-    this.dy,
-    this.additionalWigets,
-  });
 }

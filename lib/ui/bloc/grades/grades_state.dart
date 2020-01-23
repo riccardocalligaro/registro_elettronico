@@ -36,3 +36,5 @@ class GradesError extends GradesState {
     @required this.message,
   });
 }
+
+class GradesErrorNotConnected extends GradesState {}

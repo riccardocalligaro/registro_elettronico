@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
 import 'package:registro_elettronico/ui/feature/grades/pages/last_grades_page.dart';
 import 'package:registro_elettronico/ui/feature/grades/pages/term_grades_page.dart';
@@ -38,14 +39,7 @@ class _GradesPageState extends State<GradesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
-        listener: (context, state) {
-      if (state is SubjectsGradesUpdateLoadSuccess) {
-        setState(() {
-          _lastUpdateGrades = DateTime.now().millisecondsSinceEpoch;
-        });
-      }
-    }, child: BlocBuilder<SubjectsGradesBloc, SubjectsGradesState>(
+    return BlocBuilder<SubjectsGradesBloc, SubjectsGradesState>(
       builder: (context, state) {
         if (state is SubjectsGradesLoadSuccess) {
           state.grades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
@@ -71,40 +65,56 @@ class _GradesPageState extends State<GradesPage> {
               drawer: AppDrawer(
                 position: DrawerConstants.GRADES,
               ),
-              body: TabBarView(
-                children: <Widget>[
-                  LastGradesPage(
-                    grades: state.grades,
-                  ),
-                  TermGradesPage(
-                    grades: state.grades,
-                    subjects: state.subjects,
-                    objectives: state.objectives,
-                    periodPosition: state.periods
-                        .where((p) => p.periodIndex == 1)
-                        .single
-                        .position,
-                    generalObjective: state.generalObjective,
-                  ),
-                  TermGradesPage(
-                    grades: state.grades,
-                    subjects: state.subjects,
-                    objectives: state.objectives,
-                    periodPosition: state.periods
-                        .where((p) => p.periodIndex == 2)
-                        .single
-                        .position,
-                    generalObjective: state.generalObjective,
-                  ),
-                  TermGradesPage(
-                    grades: state.grades,
-                    subjects: state.subjects,
-                    objectives: state.objectives,
-                    periodPosition: TabsConstants.GENERALE,
-                    generalObjective: state.generalObjective,
-                  )
-                ],
-              ),
+              body: BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
+                  listener: (context, state) {
+                    if (state is SubjectsGradesUpdateLoadSuccess) {
+                      setState(() {
+                        _lastUpdateGrades =
+                            DateTime.now().millisecondsSinceEpoch;
+                      });
+                    }
+
+                    if (state is SubjectsGradesLoadNotConnected) {
+                      Scaffold.of(context)
+                        ..removeCurrentSnackBar()
+                        ..showSnackBar(AppNavigator.instance
+                            .getNetworkErrorSnackBar(context));
+                    }
+                  },
+                  child: TabBarView(
+                    children: <Widget>[
+                      LastGradesPage(
+                        grades: state.grades,
+                      ),
+                      TermGradesPage(
+                        grades: state.grades,
+                        subjects: state.subjects,
+                        objectives: state.objectives,
+                        periodPosition: state.periods
+                            .where((p) => p.periodIndex == 1)
+                            .single
+                            .position,
+                        generalObjective: state.generalObjective,
+                      ),
+                      TermGradesPage(
+                        grades: state.grades,
+                        subjects: state.subjects,
+                        objectives: state.objectives,
+                        periodPosition: state.periods
+                            .where((p) => p.periodIndex == 2)
+                            .single
+                            .position,
+                        generalObjective: state.generalObjective,
+                      ),
+                      TermGradesPage(
+                        grades: state.grades,
+                        subjects: state.subjects,
+                        objectives: state.objectives,
+                        periodPosition: TabsConstants.GENERALE,
+                        generalObjective: state.generalObjective,
+                      )
+                    ],
+                  )),
             ),
           );
         } else {
@@ -133,7 +143,7 @@ class _GradesPageState extends State<GradesPage> {
           );
         }
       },
-    ));
+    );
   }
 
   List<Widget> _getTabBar() {

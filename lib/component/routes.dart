@@ -39,6 +39,7 @@ class Routes {
     LESSONS: (ctx) => LessonsPage(),
     GRADES: (ctx) => GradesPage(),
     AGENDA: (ctx) => AgendaPage(),
+    //NEXT_TESTS: (ctx) => NextTestsPage(),
     ABSENCES: (ctx) => AbsencesPage(),
     NOTES: (ctx) => NotesPage(),
     SCHOOL_MATERIAL: (ctx) => SchoolMaterialPage(),

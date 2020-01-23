@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/notices/attachment_download/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notices/attachments/bloc.dart';
@@ -36,7 +37,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   Icon _searchIcon = Icon(Icons.search);
   Widget _appBarTitle = Text("Comunicazioni");
   int _noticeboardLastUpdate;
-  bool _showOutdatedNotices;
+  bool _showOutdatedNotices = false;
 
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
@@ -82,57 +83,82 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<NoticesBloc, NoticesState>(
-      listener: (context, state) {
-        if (state is NoticesUpdateLoaded) {
-          setState(() {
-            _noticeboardLastUpdate = DateTime.now().millisecondsSinceEpoch;
-          });
-        }
-      },
-      child: Scaffold(
-        key: _drawerKey,
-        appBar: CustomAppBar(
-          scaffoldKey: _drawerKey,
-          title: _appBarTitle,
-          actions: <Widget>[
-            IconButton(
-              icon: _searchIcon,
-              onPressed: () {
-                _searchPressed(context);
-              },
-            ),
-            PopupMenuButton(
-              onSelected: (bool result) async {
-                print(result);
-                setState(() {
-                  _showOutdatedNotices = result;
-                });
-                SharedPreferences sharedPreferences =
-                    await SharedPreferences.getInstance();
-                sharedPreferences.setBool(
-                  PrefsConstants.SHOW_OUTDATED_NOTICES,
-                  result,
-                );
-              },
-              itemBuilder: (BuildContext context) => [
-                CheckedPopupMenuItem(
-                  value: !_showOutdatedNotices,
-                  child: Text(AppLocalizations.of(context)
-                      .translate('outdated_notices')),
-                  checked: _showOutdatedNotices,
-                ),
-              ],
-            )
-          ],
-        ),
-        bottomSheet: LastUpdateBottomSheet(
-          millisecondsSinceEpoch: _noticeboardLastUpdate,
-        ),
-        drawer: AppDrawer(
-          position: DrawerConstants.NOTICE_BOARD,
-        ),
-        body: Padding(
+    return Scaffold(
+      key: _drawerKey,
+      appBar: CustomAppBar(
+        scaffoldKey: _drawerKey,
+        title: _appBarTitle,
+        actions: <Widget>[
+          IconButton(
+            icon: _searchIcon,
+            onPressed: () {
+              _searchPressed(context);
+            },
+          ),
+          PopupMenuButton(
+            onSelected: (bool result) async {
+              print(result);
+              setState(() {
+                _showOutdatedNotices = result;
+              });
+              SharedPreferences sharedPreferences =
+                  await SharedPreferences.getInstance();
+              sharedPreferences.setBool(
+                PrefsConstants.SHOW_OUTDATED_NOTICES,
+                result,
+              );
+            },
+            itemBuilder: (BuildContext context) => [
+              CheckedPopupMenuItem(
+                value: !_showOutdatedNotices,
+                child: Text(
+                    AppLocalizations.of(context).translate('outdated_notices')),
+                checked: _showOutdatedNotices,
+              ),
+            ],
+          )
+        ],
+      ),
+      bottomSheet: LastUpdateBottomSheet(
+        millisecondsSinceEpoch: _noticeboardLastUpdate,
+      ),
+      drawer: AppDrawer(
+        position: DrawerConstants.NOTICE_BOARD,
+      ),
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<NoticesBloc, NoticesState>(
+            listener: (context, state) {
+              if (state is NoticesAttachmentsLoadNotConnected) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                      AppNavigator.instance.getNetworkErrorSnackBar(context));
+              }
+            },
+          ),
+          BlocListener<AttachmentDownloadBloc, AttachmentDownloadState>(
+            listener: (context, state) {
+              if (state is AttachmentDownloadLoadNotConnected) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                      AppNavigator.instance.getNetworkErrorSnackBar(context));
+              }
+            },
+          ),
+          BlocListener<AttachmentsBloc, AttachmentsState>(
+            listener: (context, state) {
+              if (state is NoticesAttachmentsLoadNotConnected) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                      AppNavigator.instance.getNetworkErrorSnackBar(context));
+              }
+            },
+          ),
+        ],
+        child: Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8.0),
           child: Container(
             child: _buildNoticeBoard(),
@@ -250,6 +276,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
               ..removeCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
+                  behavior: SnackBarBehavior.floating,
                   content: Text(
                       AppLocalizations.of(context).translate('error_download')),
                 ),

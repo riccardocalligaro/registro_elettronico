@@ -1,4 +1,6 @@
 import 'package:f_logs/f_logs.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
+import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -13,49 +15,60 @@ class LessonsRepositoryImpl implements LessonsRepository {
   SpaggiariClient spaggiariClient;
   LessonDao lessonDao;
   ProfileDao profileDao;
+  NetworkInfo networkInfo;
 
   LessonsRepositoryImpl(
     this.spaggiariClient,
     this.lessonMapper,
     this.lessonDao,
     this.profileDao,
+    this.networkInfo,
   );
 
   @override
   Future upadateTodayLessons() async {
-    final profile = await profileDao.getProfile();
-    final lessons = await spaggiariClient.getTodayLessons(profile.studentId);
+    if (await networkInfo.isConnected) {
+      final profile = await profileDao.getProfile();
+      final lessons = await spaggiariClient.getTodayLessons(profile.studentId);
 
-    List<Lesson> lessonsList = [];
-    lessons.lessons.forEach((lesson) {
-      lessonsList.add(lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
-    });
+      List<Lesson> lessonsList = [];
+      lessons.lessons.forEach((lesson) {
+        lessonsList
+            .add(lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
+      });
 
-    FLog.info(
-      text:
-          'Got ${lessons.lessons.length} documents from server, procceding to insert in database',
-    );
+      FLog.info(
+        text:
+            'Got ${lessons.lessons.length} documents from server, procceding to insert in database',
+      );
 
-    lessonDao.insertLessons(lessonsList);
+      lessonDao.insertLessons(lessonsList);
+    } else {
+      throw NotConntectedException();
+    }
   }
 
   @override
   Future updateAllLessons() async {
-    final profile = await profileDao.getProfile();
-    final dateInterval = DateUtils.getDateInerval();
-    final lessons = await spaggiariClient.getLessonBetweenDates(
-      profile.studentId,
-      dateInterval.begin,
-      dateInterval.end,
-    );
-    await lessonDao.deleteLessons();
-    List<Lesson> lessonsInsertable = [];
-    lessons.lessons.forEach((lesson) {
-      lessonsInsertable
-          .add(lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
-    });
+    if (await networkInfo.isConnected) {
+      final profile = await profileDao.getProfile();
+      final dateInterval = DateUtils.getDateInerval();
+      final lessons = await spaggiariClient.getLessonBetweenDates(
+        profile.studentId,
+        dateInterval.begin,
+        dateInterval.end,
+      );
+      List<Lesson> lessonsInsertable = [];
+      lessons.lessons.forEach((lesson) {
+        lessonsInsertable
+            .add(lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
+      });
+      await lessonDao.deleteLessons();
 
-    lessonDao.insertLessons(lessonsInsertable);
+      lessonDao.insertLessons(lessonsInsertable);
+    } else {
+      throw NotConntectedException();
+    }
   }
 
   @override

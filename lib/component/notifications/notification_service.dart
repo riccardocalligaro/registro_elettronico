@@ -1,7 +1,9 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/component/notifications/local_notification.dart';
 import 'package:registro_elettronico/component/notifications/notification_message.dart';
+import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/document_dao.dart';
@@ -16,7 +18,6 @@ import 'package:registro_elettronico/data/repository/absences_repository_impl.da
 import 'package:registro_elettronico/data/repository/agenda_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/documents_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/grades_repository_impl.dart';
-import 'package:registro_elettronico/data/repository/mapper/grade_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/data/repository/notes_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/notices_repository_impl.dart';
@@ -47,9 +48,15 @@ class NotificationService {
         DioClient(ProfileMapper(), profileRepository, flutterSecureStorage);
     final SpaggiariClient spaggiariClient =
         SpaggiariClient(dioClient.createDio());
-    final GradeMapper gradeMapper = GradeMapper();
+
+    DataConnectionChecker dataConnectionChecker = DataConnectionChecker();
+    NetworkInfo networkInfo = NetworkInfoImpl(dataConnectionChecker);
     final GradesRepository gradesRepository = GradesRepositoryImpl(
-        gradeDao, spaggiariClient, gradeMapper, profileDao);
+      gradeDao,
+      spaggiariClient,
+      profileDao,
+      networkInfo,
+    );
 
     FLog.info(
         text: '${DateTime.now().toString()} - checking for new contnet...');
@@ -74,7 +81,7 @@ class NotificationService {
     // Send grades notifications
     if (notifyGrades) {
       FLog.info(text: 'Checking for new content in grades!');
-      final gradesToNotify = await _getGradesToNotify(gradesRepository);
+      final gradesToNotify = await _getGradesToNotify(gradesRepository, prefs);
       FLog.info(text: 'Found ${gradesToNotify.length} new grades in grades!');
 
       if (gradesToNotify.length < 5) {
@@ -84,7 +91,9 @@ class NotificationService {
               NotificationMessage.getGradeNotificationTitle(
                 grade: grade.decimalValue,
               ),
-              NotificationMessage.getGradeNotificationSubtitle(grade: grade)),
+              NotificationMessage.getGradeNotificationSubtitle(
+                grade: grade,
+              )),
         );
       }
     }
@@ -93,8 +102,13 @@ class NotificationService {
     if (notifyAgenda) {
       FLog.info(text: 'Checking for new content in AGENDA!');
       final AgendaRepository agendaRepository = AgendaRepositoryImpl(
-          spaggiariClient, AgendaDao(appDatabase), profileDao);
-      final eventsToNotify = await _getAgendaEventsToNotify(agendaRepository);
+        spaggiariClient,
+        AgendaDao(appDatabase),
+        profileDao,
+        networkInfo,
+      );
+      final eventsToNotify =
+          await _getAgendaEventsToNotify(agendaRepository, prefs);
       FLog.info(text: 'Found ${eventsToNotify.length} NEW events in AGENDA!');
       if (eventsToNotify.length < 5) {
         eventsToNotify.forEach(
@@ -110,8 +124,13 @@ class NotificationService {
     if (notifyAbsenes) {
       FLog.info(text: 'Checking for new content in ABSENCES!');
       final AbsencesRepository absencesRepository = AbsencesRepositoryImpl(
-          spaggiariClient, AbsenceDao(appDatabase), profileDao);
-      final absencesToNotify = await _getAbsencesToNotify(absencesRepository);
+        spaggiariClient,
+        AbsenceDao(appDatabase),
+        profileDao,
+        networkInfo,
+      );
+      final absencesToNotify =
+          await _getAbsencesToNotify(absencesRepository, prefs);
       if (absencesToNotify.length < 5) {
         absencesToNotify.forEach(
           (event) => localNotification.showNotificationWithDefaultSound(
@@ -126,9 +145,13 @@ class NotificationService {
     if (notifyNotes) {
       FLog.info(text: 'Checking for new content in NOTES!');
       final NotesRepository notesRepository = NotesRepositoryImpl(
-          NoteDao(appDatabase), spaggiariClient, profileDao);
+        NoteDao(appDatabase),
+        spaggiariClient,
+        profileDao,
+        networkInfo,
+      );
 
-      final notesToNotify = await _getNotesToNotify(notesRepository);
+      final notesToNotify = await _getNotesToNotify(notesRepository, prefs);
 
       if (notesToNotify.length < 5) {
         notesToNotify.forEach(
@@ -145,11 +168,15 @@ class NotificationService {
       FLog.info(text: 'Checking for new content in NOTICES!');
       final NoticeDao noticeDao = NoticeDao(appDatabase);
 
-      final NoticesRepository noticesRepository =
-          NoticesRepositoryImpl(noticeDao, profileDao, spaggiariClient);
+      final NoticesRepository noticesRepository = NoticesRepositoryImpl(
+        noticeDao,
+        profileDao,
+        spaggiariClient,
+        networkInfo,
+      );
 
-      final noticesToNotify = await _getNoticesToNotify(noticesRepository);
-
+      final noticesToNotify =
+          await _getNoticesToNotify(noticesRepository, prefs);
       if (noticesToNotify.length < 10) {
         noticesToNotify.forEach(
           (event) {
@@ -170,10 +197,11 @@ class NotificationService {
         spaggiariClient,
         profileRepository,
         documentsDao,
+        networkInfo,
       );
 
       final documentsToNotify =
-          await _getDocumentsToNotify(documentsRepository);
+          await _getDocumentsToNotify(documentsRepository, prefs);
 
       FLog.info(text: 'Documents to notify: ${documentsToNotify.item1.length}');
 
@@ -197,13 +225,19 @@ class NotificationService {
     }
   }
 
+  // -- notices --
+
   Future<List<Notice>> _getNoticesToNotify(
     NoticesRepository noticesRepository,
+    SharedPreferences prefs,
   ) async {
     List<Notice> noticesToNotify = [];
     final noticesBeforeFetching = await noticesRepository.getAllNotices();
     await noticesRepository.updateNotices();
     final noticesAfterFetching = await noticesRepository.getAllNotices();
+
+    prefs.setInt(PrefsConstants.LAST_UPDATE_NOTICEBOARD,
+        DateTime.now().millisecondsSinceEpoch);
 
     noticesAfterFetching.forEach(
       (notice) => {
@@ -215,11 +249,16 @@ class NotificationService {
   }
 
   Future<List<Grade>> _getGradesToNotify(
-      GradesRepository gradesRepository) async {
+    GradesRepository gradesRepository,
+    SharedPreferences prefs,
+  ) async {
     List<Grade> gradesToNotify = [];
     final gradesBeforeFetching = await gradesRepository.getAllGrades();
     await gradesRepository.updateGrades();
     final gradesAfterFetching = await gradesRepository.getAllGrades();
+
+    prefs.setInt(PrefsConstants.LAST_UPDATE_GRADES,
+        DateTime.now().millisecondsSinceEpoch);
 
     gradesAfterFetching.forEach(
       (grade) => {
@@ -231,13 +270,18 @@ class NotificationService {
   }
 
   Future<Tuple2<List<SchoolReport>, List<Document>>> _getDocumentsToNotify(
-      DocumentsRepository documentsRepository) async {
+    DocumentsRepository documentsRepository,
+    SharedPreferences prefs,
+  ) async {
     List<SchoolReport> reportsToNotify = [];
     List<Document> documentsToNotify = [];
 
     final before = await documentsRepository.getDocumentsAndSchoolReports();
     await documentsRepository.updateDocuments();
     final after = await documentsRepository.getDocumentsAndSchoolReports();
+
+    prefs.setInt(PrefsConstants.LAST_UPDATE_SCRUTINI,
+        DateTime.now().millisecondsSinceEpoch);
 
     after.value1.forEach((report) =>
         {if (!before.value1.contains(report)) reportsToNotify.add(report)});
@@ -250,11 +294,16 @@ class NotificationService {
   }
 
   Future<List<AgendaEvent>> _getAgendaEventsToNotify(
-      AgendaRepository agendaRepository) async {
+    AgendaRepository agendaRepository,
+    SharedPreferences prefs,
+  ) async {
     List<AgendaEvent> eventsToNotify = [];
     final before = await agendaRepository.getAllEvents();
     await agendaRepository.updateAgendaStartingFromDate(DateTime.now());
     final after = await agendaRepository.getAllEvents();
+
+    prefs.setInt(PrefsConstants.LAST_UPDATE_AGENDA,
+        DateTime.now().millisecondsSinceEpoch);
 
     after.forEach((event) {
       if (!before.contains(event)) eventsToNotify.add(event);
@@ -263,11 +312,16 @@ class NotificationService {
   }
 
   Future<List<Absence>> _getAbsencesToNotify(
-      AbsencesRepository absencesRepository) async {
+    AbsencesRepository absencesRepository,
+    SharedPreferences prefs,
+  ) async {
     List<Absence> absencesToNotify = [];
     final before = await absencesRepository.getAllAbsences();
     await absencesRepository.updateAbsences();
     final after = await absencesRepository.getAllAbsences();
+
+    prefs.setInt(PrefsConstants.LAST_UPDATE_ABSENCES,
+        DateTime.now().millisecondsSinceEpoch);
 
     after.forEach((event) {
       if (!before.contains(event)) absencesToNotify.add(event);
@@ -275,11 +329,15 @@ class NotificationService {
     return absencesToNotify;
   }
 
-  Future<List<Note>> _getNotesToNotify(NotesRepository notesRepository) async {
+  Future<List<Note>> _getNotesToNotify(
+      NotesRepository notesRepository, SharedPreferences prefs) async {
     List<Note> notesToNotify = [];
     final before = await notesRepository.getAllNotes();
     await notesRepository.updateNotes();
     final after = await notesRepository.getAllNotes();
+
+    prefs.setInt(PrefsConstants.LAST_UPDATE_NOTES,
+        DateTime.now().millisecondsSinceEpoch);
 
     after.forEach((event) {
       if (!before.contains(event)) notesToNotify.add(event);
@@ -291,12 +349,5 @@ class NotificationService {
     if (payload != null) {
       print('notification payload: ' + payload);
     }
-
-    // if (payload == PrefsConstants.NOTICES_NOTIFICATIONS) {
-    //   await Navigator.push(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => SecondScreen(payload)),
-    //   );
-    // }
   }
 }

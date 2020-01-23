@@ -11,7 +11,7 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 // TextColumn get miurDivisionCode => text()();
 
 class PeriodMapper {
-  db.Period convertEventEntityToInsertable(Period period, int index) {
+  static db.Period convertEventEntityToInsertable(Period period, int index) {
     return db.Period(
       code: period.periodCode ?? "",
       position: period.periodPos ?? -1,

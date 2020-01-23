@@ -14,4 +14,4 @@ class GetGrades extends GradesEvent {
   GetGrades({this.limit, this.ordered});
 }
 
-class ResetGrades extends GradesEvent {}
+// class ResetGrades extends GradesEvent {}

@@ -1,6 +1,7 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/notes/note_attachments/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notes/notes_bloc.dart';
@@ -40,7 +41,27 @@ class _NotesPageState extends State<NotesPage> {
       drawer: AppDrawer(
         position: DrawerConstants.NOTES,
       ),
-      body: _buildNotes(context),
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<NotesBloc, NotesState>(
+            listener: (context, state) {
+              if (state is NotesLoadErrorNotConnected) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    AppNavigator.instance.getNetworkErrorSnackBar(context),
+                  );
+              }
+            },
+          ),
+          BlocListener<NoteAttachmentsBloc, NoteAttachmentsState>(
+            listener: (context, state) {
+              // TODO: implement listener
+            },
+          ),
+        ],
+        child: _buildNotes(context),
+      ),
     );
   }
 

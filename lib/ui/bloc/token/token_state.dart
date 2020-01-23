@@ -26,4 +26,7 @@ class TokenLoadSuccess extends TokenState {
   });
 }
 
+class TokenLoadNotConnected extends TokenState {}
+
+
 class TokenLoadError extends TokenState {}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_event.dart';
@@ -48,27 +49,33 @@ class _AbsencesPageState extends State<AbsencesPage> {
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-    return BlocListener<AbsencesBloc, AbsencesState>(
-      listener: (context, state) {
-        if (state is AbsencesUpdateLoaded) {
-          setState(() {
-            _absencesLastUpdate = DateTime.now().millisecondsSinceEpoch;
-          });
-        }
-      },
-      child: Scaffold(
-        key: _drawerKey,
-        appBar: CustomAppBar(
-          scaffoldKey: _drawerKey,
-          title: Text(AppLocalizations.of(context).translate('absences')),
-        ),
-        drawer: AppDrawer(
-          position: DrawerConstants.ABSENCES,
-        ),
-        bottomSheet: LastUpdateBottomSheet(
-          millisecondsSinceEpoch: _absencesLastUpdate,
-        ),
-        body: _buildAbsences(context),
+    return Scaffold(
+      key: _drawerKey,
+      appBar: CustomAppBar(
+        scaffoldKey: _drawerKey,
+        title: Text(AppLocalizations.of(context).translate('absences')),
+      ),
+      drawer: AppDrawer(
+        position: DrawerConstants.ABSENCES,
+      ),
+      bottomSheet: LastUpdateBottomSheet(
+        millisecondsSinceEpoch: _absencesLastUpdate,
+      ),
+      body: BlocListener<AbsencesBloc, AbsencesState>(
+        listener: (context, state) {
+          if (state is AbsencesUpdateLoaded) {
+            setState(() {
+              _absencesLastUpdate = DateTime.now().millisecondsSinceEpoch;
+            });
+          }
+
+          if (state is AbsencesLoadErrorNotConnected) {
+            Scaffold.of(context).showSnackBar(
+              AppNavigator.instance.getNetworkErrorSnackBar(context),
+            );
+          }
+        },
+        child: _buildAbsences(context),
       ),
     );
   }

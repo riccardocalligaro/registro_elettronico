@@ -31,8 +31,8 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
           builder: (context, state) {
             if (state is IntroInitial) {
               return Container(
-                height: MediaQuery.of(context).size.height / 3,
-                width: MediaQuery.of(context).size.height / 2.80,
+                height: 250,
+                width: 250,
                 child: GestureDetector(
                   onTap: () async {
                     BlocProvider.of<IntroBloc>(context).add(FetchAllData());
@@ -64,8 +64,8 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
             }
             if (state is IntroLoading) {
               return Container(
-                height: MediaQuery.of(context).size.height / 3,
-                width: MediaQuery.of(context).size.height / 2.80,
+                height: 250,
+                width: 250,
                 child: LiquidCircularProgressIndicator(
                   value: state.progress / 100,
                   valueColor: AlwaysStoppedAnimation(Colors.red),
@@ -76,8 +76,8 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
             }
             if (state is IntroLoaded) {
               return Container(
-                height: MediaQuery.of(context).size.height / 3,
-                width: MediaQuery.of(context).size.height / 2.80,
+                height: 250,
+                width: 250,
                 child: GestureDetector(
                   onTap: () async {
                     FLog.info(
@@ -154,8 +154,8 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
               );
             }
             return Container(
-              height: MediaQuery.of(context).size.height / 3,
-              width: MediaQuery.of(context).size.height / 2.80,
+              height: 250,
+              width: 250,
               child: LiquidCircularProgressIndicator(
                 value: 0.0,
                 valueColor: AlwaysStoppedAnimation(Colors.red),

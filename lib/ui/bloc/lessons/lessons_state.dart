@@ -13,6 +13,8 @@ class LessonsIntial extends LessonsState {}
 
 class LessonsLoadInProgress extends LessonsState {}
 
+class LessonsLoadErrorNotConnected extends LessonsState {}
+
 class LessonsLoadSuccess extends LessonsState {
   final List<Lesson> lessons;
 
