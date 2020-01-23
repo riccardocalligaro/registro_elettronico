@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_event.dart';
@@ -32,8 +33,9 @@ class _LessonDetailsState extends State<LessonDetails> {
 
   List<Lesson> lessons = List();
   List<Lesson> filteredLessons = List();
-  Icon _searchIcon = new Icon(Icons.search);
+  Icon _searchIcon = Icon(Icons.search);
   Widget _appBarTitle = Text("padding");
+  RefreshController _refreshController = RefreshController();
 
   _LessonDetailsState() {
     _filter.addListener(() {
@@ -56,6 +58,8 @@ class _LessonDetailsState extends State<LessonDetails> {
     _appBarTitle = Text(
       widget.subjectName,
     );
+    BlocProvider.of<LessonsBloc>(context)
+        .add(GetLessonsForSubject(subjectId: widget.subjectId));
     super.initState();
   }
 
@@ -64,13 +68,6 @@ class _LessonDetailsState extends State<LessonDetails> {
     setState(() {
       _lastUpdate = prefs.getInt(PrefsConstants.LAST_UPDATE_LESSONS);
     });
-  }
-
-  @override
-  void didChangeDependencies() async {
-    BlocProvider.of<LessonsBloc>(context)
-        .add(GetLessonsForSubject(subjectId: widget.subjectId));
-    super.didChangeDependencies();
   }
 
   @override
@@ -136,8 +133,8 @@ class _LessonDetailsState extends State<LessonDetails> {
   void _searchPressed() {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {
-        this._searchIcon = new Icon(Icons.close);
-        this._appBarTitle = new TextField(
+        this._searchIcon = Icon(Icons.close);
+        this._appBarTitle = TextField(
           controller: _filter,
           autofocus: true,
           decoration: InputDecoration(
@@ -147,8 +144,8 @@ class _LessonDetailsState extends State<LessonDetails> {
           ),
         );
       } else {
-        this._searchIcon = new Icon(Icons.search);
-        this._appBarTitle = new Text(widget.subjectName);
+        this._searchIcon = Icon(Icons.search);
+        this._appBarTitle = Text(widget.subjectName);
         //filteredNames = names;
         _filter.clear();
       }
@@ -165,7 +162,14 @@ class _LessonDetailsState extends State<LessonDetails> {
             ..sort((b, a) => a.date.compareTo(b.date));
     }
     if (lessons.length > 0) {
-      return RefreshIndicator(
+      return SmartRefresher(
+        controller: RefreshController(),
+        header: MaterialClassicHeader(
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.grey[900]
+              : Colors.white,
+          color: Colors.red,
+        ),
         onRefresh: _refreshLessons,
         child: ListView.builder(
           padding: const EdgeInsets.all(8.0),
@@ -228,5 +232,6 @@ class _LessonDetailsState extends State<LessonDetails> {
     BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
     BlocProvider.of<LessonsBloc>(context)
         .add(GetLessonsForSubject(subjectId: widget.subjectId));
+    _refreshController.loadComplete();
   }
 }

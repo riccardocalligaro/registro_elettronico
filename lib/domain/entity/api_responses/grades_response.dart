@@ -42,8 +42,8 @@ class Grades {
   int weightFactor;
   int skillId;
   int gradeMasterId;
-  Null skillDesc;
-  Null skillCode;
+  String skillDesc;
+  int skillCode;
   int skillMasterId;
   int oldskillId;
   String oldskillDesc;

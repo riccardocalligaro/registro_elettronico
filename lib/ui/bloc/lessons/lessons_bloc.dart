@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:f_logs/f_logs.dart';
+import 'package:f_logs/model/flog/flog.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,9 +45,15 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     yield LessonsLoadInProgress();
     try {
       final lessons = await lessonsRepository.getLastLessons();
+      FLog.info(text: 'BloC -> Got ${lessons.length} lessons');
 
       yield LessonsLoadSuccess(lessons: lessons);
-    } catch (e) {
+    } on Exception catch (e, s) {
+      FLog.error(
+        text: 'Error getting last lessons by date',
+        exception: e,
+        stacktrace: s,
+      );
       yield LessonsLoadError(error: e.toString());
     }
   }
@@ -54,9 +63,15 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     yield LessonsLoadInProgress();
     try {
       final lessons = await lessonsRepository.getLessonsByDate(dateTime);
-
+      FLog.info(text: 'BloC -> Got ${lessons.length} lessons');
       yield LessonsLoadSuccess(lessons: lessons);
-    } catch (e) {
+    } on Exception catch (e, s) {
+      FLog.error(
+        text: 'Error getting lessons by date',
+        exception: e,
+        stacktrace: s,
+      );
+      Crashlytics.instance.recordError(e, s);
       yield LessonsLoadError(error: e.toString());
     }
   }
@@ -65,9 +80,15 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     yield LessonsLoadInProgress();
     try {
       final lessons = await lessonsRepository.getLessons();
-
+      FLog.info(text: 'BloC -> Got ${lessons.length} events');
       yield LessonsLoadSuccess(lessons: lessons);
-    } catch (e) {
+    } on Exception catch (e, s) {
+      FLog.error(
+        text: 'Error getting absences',
+        exception: e,
+        stacktrace: s,
+      );
+      Crashlytics.instance.recordError(e, s);
       yield LessonsLoadError(error: e.toString());
     }
   }
@@ -81,9 +102,17 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
       prefs.setInt(PrefsConstants.LAST_UPDATE_LESSONS,
           DateTime.now().millisecondsSinceEpoch);
       yield LessonsUpdateLoadSuccess();
-    } on DioError catch (dioError) {
-      yield LessonsLoadServerError(serverError: dioError);
-    } catch (e) {
+    } on DioError catch (e, s) {
+      FLog.info(text: 'Server - Error updating absences');
+      Crashlytics.instance.recordError(e, s);
+      yield LessonsLoadServerError(serverError: e);
+    } on Exception catch (e, s) {
+      FLog.error(
+        text: 'Other - Error updating absences',
+        exception: e,
+        stacktrace: s,
+      );
+      Crashlytics.instance.recordError(e, s);
       LessonsLoadError(error: e.toString());
     }
   }
@@ -93,9 +122,22 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     try {
       await lessonsRepository.upadateTodayLessons();
       yield LessonsUpdateLoadSuccess();
-    } on DioError catch (dioError) {
-      yield LessonsLoadServerError(serverError: dioError);
-    } catch (e) {
+    } on DioError catch (e, s) {
+      FLog.error(
+        text: 'Other - Error updating today lessons',
+        exception: e,
+        stacktrace: s,
+      );
+      Crashlytics.instance.recordError(e, s);
+      yield LessonsLoadServerError(serverError: e);
+    } on Exception catch (e, s) {
+      FLog.error(
+        text: 'Other - Error updating today lessons',
+        exception: e,
+        stacktrace: s,
+      );
+      Crashlytics.instance.recordError(e, s);
+
       LessonsLoadError(error: e.toString());
     }
   }
@@ -105,7 +147,12 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     try {
       final lessons = await lessonsRepository.getLessonsForSubject(subjectId);
       yield LessonsLoadSuccess(lessons: lessons);
-    } catch (e) {
+    } on Exception catch (e, s) {
+      FLog.error(
+        text: 'Other - Error getting lessons for subject lessons',
+        exception: e,
+        stacktrace: s,
+      );
       yield LessonsLoadError(error: e.toString());
     }
   }

@@ -8,6 +8,8 @@ import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart'
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
+import '../../../bloc/lessons/bloc.dart';
+
 class LastLessonsSection extends StatelessWidget {
   const LastLessonsSection({Key key}) : super(key: key);
 
@@ -15,21 +17,20 @@ class LastLessonsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LessonsBloc, LessonsState>(
       builder: (context, state) {
-        if (state is LessonsUpdateLoadInProgress) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50),
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else if (state is LessonsLoadServerError ||
-            state is LessonsLoadError) {
+        if (state is LessonsLoadServerError || state is LessonsLoadError) {
           return Padding(
             padding: const EdgeInsets.only(top: 16),
             child: CustomPlaceHolder(
               icon: Icons.error,
               showUpdate: false,
               text: 'Erorr',
+            ),
+          );
+        } else if (state is LessonsUpdateLoadInProgress) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 50),
+              child: CircularProgressIndicator(),
             ),
           );
         } else {
@@ -41,7 +42,12 @@ class LastLessonsSection extends StatelessWidget {
                   child: _buildLessonsCardsList(state.lessons, context),
                 );
               }
-              return Text(state.toString());
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 50),
+                  child: CircularProgressIndicator(),
+                ),
+              );
             },
           );
         }

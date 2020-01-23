@@ -3,6 +3,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/entity/subject_objective.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
@@ -53,7 +54,14 @@ class _TermGradesPageState extends State<TermGradesPage> {
     } else {
       gradesForThisPeriod = widget.grades;
     }
-    return RefreshIndicator(
+    return SmartRefresher(
+        controller: RefreshController(),
+        header: WaterDropMaterialHeader(
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.grey[900]
+              : Colors.white,
+          color: Colors.red,
+        ),
         onRefresh: () {
           BlocProvider.of<SubjectsGradesBloc>(context)
               .add(UpdateSubjectGrades());

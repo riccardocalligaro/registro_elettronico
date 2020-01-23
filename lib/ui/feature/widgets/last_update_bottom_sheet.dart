@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class LastUpdateBottomSheet extends StatelessWidget {
@@ -12,11 +13,14 @@ class LastUpdateBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String message;
+    AppLocalizations trans = AppLocalizations.of(context);
+
     if (millisecondsSinceEpoch == null) {
-      message = 'Ultimo aggiornamento: Mai';
+      message =
+          '${trans.translate('last_update')}: ${trans.translate('never')}';
     } else {
       message =
-          'Ultimo aggiornamento: ${GlobalUtils.getLastUpdateMessage(context, DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch))}';
+          '${trans.translate('last_update')}: ${GlobalUtils.getLastUpdateMessage(context, DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch))}';
     }
     return Container(
       // height: 20,

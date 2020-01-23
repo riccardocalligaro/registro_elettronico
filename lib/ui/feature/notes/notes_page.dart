@@ -1,7 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/notes/note_attachments/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notes/notes_bloc.dart';
@@ -10,7 +9,7 @@ import 'package:registro_elettronico/ui/bloc/notes/notes_state.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
+import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -41,10 +40,7 @@ class _NotesPageState extends State<NotesPage> {
       drawer: AppDrawer(
         position: DrawerConstants.NOTES,
       ),
-      body: DoubleBackToCloseApp(
-        snackBar: AppNavigator.instance.getLeaveSnackBar(context),
-        child: _buildNotes(context),
-      ),
+      body: _buildNotes(context),
     );
   }
 
@@ -58,10 +54,7 @@ class _NotesPageState extends State<NotesPage> {
         }
 
         if (state is NotesLoaded) {
-          return RefreshIndicator(
-            onRefresh: _refreshNotes,
-            child: _buildNotesList(state.notes, context),
-          );
+          return _buildNotesList(state.notes, context);
         }
 
         if (state is NotesError || state is NotesUpdateError) {
@@ -89,35 +82,41 @@ class _NotesPageState extends State<NotesPage> {
 
   Widget _buildNotesList(List<Note> notes, BuildContext context) {
     if (notes.length > 0) {
-      return ListView.builder(
-        itemCount: notes.length,
-        itemBuilder: (context, index) {
-          final note = notes[index];
-          print(note.toString());
-          return ExpandableTheme(
-            data: ExpandableThemeData(
-              iconColor: Theme.of(context).iconTheme.color,
-            ),
-            child: ExpandablePanel(
-              header: ListTile(
-                // onLongPress: () {
-                //   final AppDatabase appDatabase = AppDatabase();
-                //   final NoteDao noteDao = NoteDao(appDatabase);
-
-                //   noteDao.deleteAllNotes();
-                // },
-                title: Text("${note.author}"),
-                subtitle: Text(
-                    "${AppLocalizations.of(context).translate(note.type.toLowerCase()) ?? ""} - ${DateUtils.convertDateLocale(note.date, AppLocalizations.of(context).locale.toString())}"),
-              ),
-              expanded: ExpandedNote(
-                note: note,
-              ),
-              tapHeaderToExpand: true,
-              hasIcon: true,
-            ),
-          );
+      return CustomRefresher(
+        onRefresh: () {
+          BlocProvider.of<NotesBloc>(context).add(UpdateNotes());
+          BlocProvider.of<NotesBloc>(context).add(GetNotes());
         },
+        child: ListView.builder(
+          itemCount: notes.length,
+          itemBuilder: (context, index) {
+            final note = notes[index];
+            print(note.toString());
+            return ExpandableTheme(
+              data: ExpandableThemeData(
+                iconColor: Theme.of(context).iconTheme.color,
+              ),
+              child: ExpandablePanel(
+                header: ListTile(
+                  // onLongPress: () {
+                  //   final AppDatabase appDatabase = AppDatabase();
+                  //   final NoteDao noteDao = NoteDao(appDatabase);
+
+                  //   noteDao.deleteAllNotes();
+                  // },
+                  title: Text("${note.author}"),
+                  subtitle: Text(
+                      "${AppLocalizations.of(context).translate(note.type.toLowerCase()) ?? ""} - ${DateUtils.convertDateLocale(note.date, AppLocalizations.of(context).locale.toString())}"),
+                ),
+                expanded: ExpandedNote(
+                  note: note,
+                ),
+                tapHeaderToExpand: true,
+                hasIcon: true,
+              ),
+            );
+          },
+        ),
       );
     } else {
       return CustomPlaceHolder(
@@ -132,10 +131,10 @@ class _NotesPageState extends State<NotesPage> {
     }
   }
 
-  Future _refreshNotes() {
-    BlocProvider.of<NotesBloc>(context).add(UpdateNotes());
-    BlocProvider.of<NotesBloc>(context).add(GetNotes());
-  }
+  // Future<void> _refreshNotes() async {
+  //   BlocProvider.of<NotesBloc>(context).add(UpdateNotes());
+  //   BlocProvider.of<NotesBloc>(context).add(GetNotes());
+  // }
 }
 
 class ExpandedNote extends StatelessWidget {

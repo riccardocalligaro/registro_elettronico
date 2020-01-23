@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 
@@ -48,7 +46,8 @@ class _LessonsPageState extends State<LessonsPage> {
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(AppLocalizations.of(context).translate('updating_lessons')),
+                  Text(AppLocalizations.of(context)
+                      .translate('updating_lessons')),
                   Container(
                     height: 20,
                     width: 20,
@@ -66,12 +65,17 @@ class _LessonsPageState extends State<LessonsPage> {
               ..removeCurrentSnackBar()
               ..showSnackBar(SnackBar(
                 behavior: SnackBarBehavior.floating,
-                content: Text(AppLocalizations.of(context).translate('lessons_updated')),
+                content: Text(
+                    AppLocalizations.of(context).translate('lessons_updated')),
               ));
           }
         },
-        child: DoubleBackToCloseApp(
-          snackBar: AppNavigator.instance.getLeaveSnackBar(context),
+        child: Container(
+          // onWillPop: () {
+          //    AppNavigator.instance.navToHome(context);
+          //    return 
+          // },
+          //snackBar: AppNavigator.instance.getLeaveSnackBar(context),
           child: BlocBuilder<SubjectsBloc, SubjectsState>(
             builder: (context, state) {
               if (state is SubjectsAndProfessorsLoadInProgress) {
@@ -110,12 +114,9 @@ class _LessonsPageState extends State<LessonsPage> {
     @required BuildContext context,
   }) {
     if (subjects.length > 0) {
-      return RefreshIndicator(
-        onRefresh: _refreshLessons,
-        child: SubjectsList(
-          professors: professors,
-          subjects: subjects,
-        ),
+      return SubjectsList(
+        professors: professors,
+        subjects: subjects,
       );
     } else {
       return CustomPlaceHolder(
@@ -129,9 +130,5 @@ class _LessonsPageState extends State<LessonsPage> {
         showUpdate: true,
       );
     }
-  }
-
-  Future _refreshLessons() async {
-    BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
   }
 }

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
 import 'package:registro_elettronico/ui/feature/grades/pages/last_grades_page.dart';
 import 'package:registro_elettronico/ui/feature/grades/pages/term_grades_page.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
@@ -27,6 +25,7 @@ class _GradesPageState extends State<GradesPage> {
   void initState() {
     getPreferences();
     super.initState();
+    BlocProvider.of<SubjectsGradesBloc>(context).add(GetGradesAndSubjects());
   }
 
   getPreferences() async {
@@ -35,12 +34,6 @@ class _GradesPageState extends State<GradesPage> {
       _lastUpdateGrades =
           sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_GRADES);
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    BlocProvider.of<SubjectsGradesBloc>(context).add(GetGradesAndSubjects());
   }
 
   @override
@@ -78,42 +71,39 @@ class _GradesPageState extends State<GradesPage> {
               drawer: AppDrawer(
                 position: DrawerConstants.GRADES,
               ),
-              body: DoubleBackToCloseApp(
-                snackBar: AppNavigator.instance.getLeaveSnackBar(context),
-                child: TabBarView(
-                  children: <Widget>[
-                    LastGradesPage(
-                      grades: state.grades,
-                    ),
-                    TermGradesPage(
-                      grades: state.grades,
-                      subjects: state.subjects,
-                      objectives: state.objectives,
-                      periodPosition: state.periods
-                          .where((p) => p.periodIndex == 1)
-                          .single
-                          .position,
-                      generalObjective: state.generalObjective,
-                    ),
-                    TermGradesPage(
-                      grades: state.grades,
-                      subjects: state.subjects,
-                      objectives: state.objectives,
-                      periodPosition: state.periods
-                          .where((p) => p.periodIndex == 2)
-                          .single
-                          .position,
-                      generalObjective: state.generalObjective,
-                    ),
-                    TermGradesPage(
-                      grades: state.grades,
-                      subjects: state.subjects,
-                      objectives: state.objectives,
-                      periodPosition: TabsConstants.GENERALE,
-                      generalObjective: state.generalObjective,
-                    )
-                  ],
-                ),
+              body: TabBarView(
+                children: <Widget>[
+                  LastGradesPage(
+                    grades: state.grades,
+                  ),
+                  TermGradesPage(
+                    grades: state.grades,
+                    subjects: state.subjects,
+                    objectives: state.objectives,
+                    periodPosition: state.periods
+                        .where((p) => p.periodIndex == 1)
+                        .single
+                        .position,
+                    generalObjective: state.generalObjective,
+                  ),
+                  TermGradesPage(
+                    grades: state.grades,
+                    subjects: state.subjects,
+                    objectives: state.objectives,
+                    periodPosition: state.periods
+                        .where((p) => p.periodIndex == 2)
+                        .single
+                        .position,
+                    generalObjective: state.generalObjective,
+                  ),
+                  TermGradesPage(
+                    grades: state.grades,
+                    subjects: state.subjects,
+                    objectives: state.objectives,
+                    periodPosition: TabsConstants.GENERALE,
+                    generalObjective: state.generalObjective,
+                  )
+                ],
               ),
             ),
           );

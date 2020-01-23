@@ -4,6 +4,7 @@ import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
+import 'package:registro_elettronico/data/db/dao/document_dao.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/dao/note_dao.dart';
@@ -16,35 +17,31 @@ import 'package:registro_elettronico/data/db/dao/timetable_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
+import 'package:registro_elettronico/data/network/service/web/web_spaggiari_client.dart';
+import 'package:registro_elettronico/data/network/service/web/web_spaggiari_client_impl.dart';
 import 'package:registro_elettronico/data/repository/absences_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/didactics_repository_impl.dart';
+import 'package:registro_elettronico/data/repository/documents_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/mapper/absence_mapper.dart';
-
-// All the mappers to convert an entity to a db entity and vice versa
 import 'package:registro_elettronico/data/repository/mapper/mappers_export.dart';
 import 'package:registro_elettronico/data/repository/mapper/note_mapper.dart';
-import 'package:registro_elettronico/data/repository/mapper/notice_mapper.dart';
 import 'package:registro_elettronico/data/repository/mapper/period_mapper.dart';
 import 'package:registro_elettronico/data/repository/notes_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/notices_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/periods_repository_impl.dart';
-
-// All the data level repositories
 import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
+import 'package:registro_elettronico/data/repository/scrutini_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/timetable_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
+import 'package:registro_elettronico/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/domain/repository/notes_repository.dart';
 import 'package:registro_elettronico/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/domain/repository/periods_repository.dart';
-
-// All the domain level repositories
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
+import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
 import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
-
-// BLoc
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/intro/intro_bloc.dart';
 
 // Compile-time dependency injection for Dart and Flutter, similar to Dagger.
 
@@ -124,6 +121,10 @@ class AppInjector {
     Injector.appInstance.registerSingleton<TimetableDao>((i) {
       return TimetableDao(i.getDependency());
     });
+
+    Injector.appInstance.registerSingleton<DocumentsDao>((i) {
+      return DocumentsDao(i.getDependency());
+    });
   }
 
   static void injectMisc() {
@@ -139,8 +140,17 @@ class AppInjector {
           .createDio();
     });
 
+    Injector.appInstance.registerSingleton<Dio>((i) {
+      return Dio();
+    }, dependencyName: 'WebSpaggiariDio');
+
     Injector.appInstance.registerSingleton<SpaggiariClient>((i) {
       return SpaggiariClient(i.getDependency());
+    });
+
+    Injector.appInstance.registerSingleton<WebSpaggiariClient>((i) {
+      return WebSpaggiariClientImpl(
+          i.getDependency(dependencyName: 'WebSpaggiariDio'));
     });
   }
 
@@ -221,7 +231,6 @@ class AppInjector {
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
-        i.getDependency(),
       );
       return noticesRepository;
     });
@@ -250,6 +259,24 @@ class AppInjector {
         i.getDependency(),
       );
       return timetableRepository;
+    });
+
+    Injector.appInstance.registerSingleton((i) {
+      DocumentsRepository documentsRepository = DocumentsRepositoryImpl(
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
+      return documentsRepository;
+    });
+
+    Injector.appInstance.registerSingleton((i) {
+      ScrutiniRepository scrutiniRepository = ScrutiniRepositoryImpl(
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
+      return scrutiniRepository;
     });
   }
 
@@ -282,10 +309,6 @@ class AppInjector {
       return PeriodMapper();
     });
 
-    Injector.appInstance.registerSingleton<NoticeMapper>((injector) {
-      return NoticeMapper();
-    });
-
     Injector.appInstance.registerSingleton<NoteMapper>((injector) {
       return NoteMapper();
     });
@@ -294,20 +317,6 @@ class AppInjector {
   static void injectBloc() {
     Injector.appInstance.registerSingleton((i) {
       return AuthBloc(i.getDependency(), i.getDependency(), i.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<IntroBloc>((i) {
-      return IntroBloc(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
     });
   }
 

@@ -14,14 +14,14 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 class AbsenceMapper {
   static db.Absence convertEventEntityToInsertable(AbsenceEvent event) {
     return db.Absence(
-        evtId: event.evtId ?? 0,
-        evtCode: event.evtCode ?? "",
-        evtDate:
-            DateUtils.getDateFromApiString(event.evtDate) ?? DateTime.now(),
-        evtHPos: event.evtHPos ?? 0,
-        evtValue: event.evtValue ?? 0,
-        isJustified: event.isJustified ?? false,
-        justifiedReasonCode: event.justifReasonCode ?? "",
-        justifReasonDesc: event.justifReasonDesc ?? "");
+      evtId: event.evtId ?? 0,
+      evtCode: event.evtCode ?? "",
+      evtDate: DateUtils.getDateFromApiString(event.evtDate) ?? DateTime.now(),
+      evtHPos: event.evtHPos ?? 0,
+      evtValue: event.evtValue ?? 0,
+      isJustified: event.isJustified ?? false,
+      justifiedReasonCode: event.justifReasonCode ?? "",
+      justifReasonDesc: event.justifReasonDesc ?? "",
+    );
   }
 }

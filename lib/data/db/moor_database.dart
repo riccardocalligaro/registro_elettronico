@@ -2,6 +2,7 @@ import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
+import 'package:registro_elettronico/data/db/dao/document_dao.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/lesson_dao.dart';
 import 'package:registro_elettronico/data/db/dao/note_dao.dart';
@@ -18,6 +19,7 @@ import 'package:registro_elettronico/data/db/table/didactics/content_table.dart'
 import 'package:registro_elettronico/data/db/table/didactics/downloaded_files.dart';
 import 'package:registro_elettronico/data/db/table/didactics/folder_table.dart';
 import 'package:registro_elettronico/data/db/table/didactics/teacher_table.dart';
+import 'package:registro_elettronico/data/db/table/document_table.dart';
 import 'package:registro_elettronico/data/db/table/grade_table.dart';
 import 'package:registro_elettronico/data/db/table/lesson_table.dart';
 import 'package:registro_elettronico/data/db/table/local_grade_table.dart';
@@ -49,7 +51,10 @@ part 'moor_database.g.dart';
   DidacticsContents,
   DidacticsDownloadedFiles,
   LocalGrades,
-  TimetableEntries
+  TimetableEntries,
+  Documents,
+  SchoolReports,
+  DownloadedDocuments,
 ], daos: [
   ProfileDao,
   LessonDao,
@@ -62,7 +67,8 @@ part 'moor_database.g.dart';
   NoticeDao,
   NoteDao,
   DidacticsDao,
-  TimetableDao
+  TimetableDao,
+  DocumentsDao,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase()

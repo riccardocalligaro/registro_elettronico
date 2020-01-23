@@ -15,8 +15,8 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
 
   Future updateProfile(Profile profile) => update(profiles).replace(profile);
 
-  Stream<List<Insertable<Profile>>> watchAllprofiles() =>
-      select(profiles).watch();
+  // Stream<List<Insertable<Profile>>> watchAllprofiles() =>
+  //     select(profiles).watch();
 
   void updateUserName({String token, DateTime expire, DateTime release}) {
     final _entry = ProfilesCompanion(

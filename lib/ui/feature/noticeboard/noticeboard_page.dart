@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/notices/attachment_download/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notices/attachments/bloc.dart';
@@ -12,7 +12,7 @@ import 'package:registro_elettronico/ui/bloc/notices/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
+import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
@@ -33,9 +33,10 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
 
   List<Lesson> lessons = List();
   List<Lesson> filteredLessons = List();
-  Icon _searchIcon = new Icon(Icons.search);
+  Icon _searchIcon = Icon(Icons.search);
   Widget _appBarTitle = Text("Comunicazioni");
   int _noticeboardLastUpdate;
+  bool _showOutdatedNotices;
 
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
@@ -56,6 +57,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
 
   @override
   void initState() {
+    BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
+
     restore();
     super.initState();
   }
@@ -63,19 +66,18 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   void restore() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-    setState(() {
-      _noticeboardLastUpdate =
-          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_NOTICEBOARD);
-    });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     _appBarTitle = Text(
       AppLocalizations.of(context).translate('notice_board'),
     );
-    BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
+
+    setState(() {
+      _noticeboardLastUpdate =
+          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_NOTICEBOARD);
+
+      _showOutdatedNotices =
+          sharedPreferences.getBool(PrefsConstants.SHOW_OUTDATED_NOTICES) ??
+              false;
+    });
   }
 
   @override
@@ -99,6 +101,28 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
               onPressed: () {
                 _searchPressed(context);
               },
+            ),
+            PopupMenuButton(
+              onSelected: (bool result) async {
+                print(result);
+                setState(() {
+                  _showOutdatedNotices = result;
+                });
+                SharedPreferences sharedPreferences =
+                    await SharedPreferences.getInstance();
+                sharedPreferences.setBool(
+                  PrefsConstants.SHOW_OUTDATED_NOTICES,
+                  result,
+                );
+              },
+              itemBuilder: (BuildContext context) => [
+                CheckedPopupMenuItem(
+                  value: !_showOutdatedNotices,
+                  child: Text(AppLocalizations.of(context)
+                      .translate('outdated_notices')),
+                  checked: _showOutdatedNotices,
+                ),
+              ],
             )
           ],
         ),
@@ -108,13 +132,10 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         drawer: AppDrawer(
           position: DrawerConstants.NOTICE_BOARD,
         ),
-        body: DoubleBackToCloseApp(
-          snackBar: AppNavigator.instance.getLeaveSnackBar(context),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            child: Container(
-              child: _buildNoticeBoard(),
-            ),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+          child: Container(
+            child: _buildNoticeBoard(),
           ),
         ),
       ),
@@ -134,10 +155,14 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           );
         }
         if (state is NoticesLoaded) {
-          return RefreshIndicator(
-            onRefresh: _refreshNoticeBoard,
-            child: _buildNoticeBoardList(state.notices),
-          );
+          if (_showOutdatedNotices) {
+            return _buildNoticeBoardList(state.notices);
+          } else {
+            return _buildNoticeBoardList(state.notices
+                .where(
+                    (notice) => notice.contentValidTo.isAfter(DateTime.now()))
+                .toList());
+          }
         }
 
         if (state is NoticesLoading || state is NoticesUpdateLoading) {
@@ -195,6 +220,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           }
 
           if (state is AttachmentDownloadLoaded) {
+            FLog.info(text: 'Path ${state.path}');
             Scaffold.of(context)
               ..removeCurrentSnackBar()
               ..showSnackBar(
@@ -209,8 +235,10 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                     label: AppLocalizations.of(context)
                         .translate('open')
                         .toUpperCase(),
-                    onPressed: () {
-                      OpenFile.open(state.path);
+                    onPressed: () async {
+                      await OpenFile.open(state.path);
+                      BlocProvider.of<NoticesBloc>(context)
+                          .add(GetNoticeboard());
                     },
                   ),
                 ),
@@ -228,19 +256,22 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
               );
           }
         },
-        child: ListView.builder(
-          itemCount: notices.length,
-          itemBuilder: (context, index) {
-            final notice = notices[index];
+        child: CustomRefresher(
+          onRefresh: _refreshNoticeBoard,
+          child: ListView.builder(
+            itemCount: notices.length,
+            itemBuilder: (context, index) {
+              final notice = notices[index];
 
-            if (index == 0) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: _buildNoticeCard(notice, context),
-              );
-            }
-            return _buildNoticeCard(notice, context);
-          },
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: _buildNoticeCard(notice, context),
+                );
+              }
+              return _buildNoticeCard(notice, context);
+            },
+          ),
         ),
       );
     } else if (_searchText.isNotEmpty) {
@@ -310,7 +341,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                 return Container(
                   width: double.maxFinite,
                   padding: const EdgeInsets.all(16.0),
-                  //height: 300.0,
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: state.attachments.length,
@@ -321,13 +351,20 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                           title: Text(attachment.fileName),
                           onTap: () async {
                             final file = await _localFile(notice, attachment);
+                            print(await file.exists());
                             if (file.existsSync()) {
-                              OpenFile.open(file.path);
+                              await OpenFile.open(file.path);
+                              BlocProvider.of<NoticesBloc>(context)
+                                  .add(GetNoticeboard());
                             } else {
-                              BlocProvider.of<AttachmentDownloadBloc>(context)
+                              await BlocProvider.of<AttachmentDownloadBloc>(
+                                      context)
                                   .add(DownloadAttachment(
                                       notice: notice, attachment: attachment));
-                              Navigator.pop(context);
+
+                              await Navigator.pop(context);
+                              BlocProvider.of<NoticesBloc>(context)
+                                  .add(GetNoticeboard());
                             }
                           },
                         );
@@ -371,7 +408,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
     final path = await _localPath;
     final ext = attachment.fileName.split('.').last;
 
-    return File('$path/${notice.contentTitle.replaceAll(' ', '_')}.$ext');
+    return File(
+        '$path/${notice.contentTitle.replaceAll('/', '').replaceAll(' ', '_')}.$ext');
   }
 
   Future<void> _refreshNoticeBoard() async {
@@ -382,9 +420,9 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   void _searchPressed(BuildContext context) {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {
-        this._searchIcon = new Icon(Icons.close);
+        this._searchIcon = Icon(Icons.close);
 
-        this._appBarTitle = new TextField(
+        this._appBarTitle = TextField(
           autofocus: true,
           controller: _filter,
           decoration: InputDecoration(
@@ -394,7 +432,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           ),
         );
       } else {
-        this._searchIcon = new Icon(Icons.search);
+        this._searchIcon = Icon(Icons.search);
         this._appBarTitle = Text(
           AppLocalizations.of(context).translate('notice_board'),
         );

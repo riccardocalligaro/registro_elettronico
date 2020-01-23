@@ -5,7 +5,7 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/profile_utils.dart';
 
 class NoticeMapper {
-  db.Notice convertNoticeEntityToInsertable(Items notice) {
+  static db.Notice convertNoticeEntityToInsertable(Items notice) {
     return db.Notice(
       pubId: notice.pubId ?? GlobalUtils.getRandomNumber(),
       pubDate: DateTime.parse(notice.pubDT) ?? DateTime.now(),
@@ -27,7 +27,7 @@ class NoticeMapper {
     );
   }
 
-  db.Attachment convertAttachmentEntityToInsertable(
+  static db.Attachment convertAttachmentEntityToInsertable(
       int pubId, Attachments attachment) {
     return db.Attachment(
       pubId: pubId ?? GlobalUtils.getRandomNumber(),

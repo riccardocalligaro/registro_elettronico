@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,7 +50,8 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     } on DioError catch (e) {
       FLog.error(text: 'Updating all agenda server error ${e.toString()}');
       yield AgendaLoadError(error: e.response.statusMessage.toString());
-    } catch (e) {
+    } catch (e, s) {
+      Crashlytics.instance.recordError(e, s);
       FLog.error(text: 'Updating all agenda  error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
@@ -62,8 +64,10 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       final events = await agendaRepository.getAllEvents();
       prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
           DateTime.now().millisecondsSinceEpoch);
+      FLog.info(text: 'BloC -> Got ${events.length} events');
       yield AgendaLoadSuccess(events: events);
-    } catch (e) {
+    } catch (e, s) {
+      Crashlytics.instance.recordError(e, s);
       FLog.error(text: 'Getting agenda error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
@@ -75,10 +79,11 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     try {
       final events = await agendaRepository.getLastEvents(
         dateTime,
-        numberOfevents,
+        numbersOfEvents: numberOfevents,
       );
       yield AgendaLoadSuccess(events: events);
-    } catch (e) {
+    } catch (e, s) {
+      Crashlytics.instance.recordError(e, s);
       FLog.error(text: 'Getting agenda error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
@@ -89,7 +94,8 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     try {
       await agendaRepository.updateAgendaStartingFromDate(date);
       yield AgendaUpdateLoadSuccess();
-    } on DioError catch (e) {
+    } on DioError catch (e, s) {
+      Crashlytics.instance.recordError(e, s);
       yield AgendaLoadError(error: e.response.statusMessage.toString());
     } catch (e) {
       yield AgendaLoadError(error: e.toString());

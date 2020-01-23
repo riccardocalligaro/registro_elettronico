@@ -31,8 +31,8 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
           builder: (context, state) {
             if (state is IntroInitial) {
               return Container(
-                height: 300,
-                width: 300,
+                height: MediaQuery.of(context).size.height / 3,
+                width: MediaQuery.of(context).size.height / 2.80,
                 child: GestureDetector(
                   onTap: () async {
                     BlocProvider.of<IntroBloc>(context).add(FetchAllData());
@@ -64,8 +64,8 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
             }
             if (state is IntroLoading) {
               return Container(
-                height: 300,
-                width: 300,
+                height: MediaQuery.of(context).size.height / 3,
+                width: MediaQuery.of(context).size.height / 2.80,
                 child: LiquidCircularProgressIndicator(
                   value: state.progress / 100,
                   valueColor: AlwaysStoppedAnimation(Colors.red),
@@ -76,8 +76,8 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
             }
             if (state is IntroLoaded) {
               return Container(
-                height: 300,
-                width: 300,
+                height: MediaQuery.of(context).size.height / 3,
+                width: MediaQuery.of(context).size.height / 2.80,
                 child: GestureDetector(
                   onTap: () async {
                     FLog.info(
@@ -117,9 +117,7 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                         // minimum frequency for android is 15 minutes
                         frequency: Duration(minutes: 30),
                         constraints: Constraints(
-                          // we need the user to be conntected, these parameters will be customizable in the future
-                          //TODO: let user customize these params
-                          networkType: NetworkType.connected,
+                          networkType: NetworkType.unmetered,
                           requiresBatteryNotLow: true,
                         ),
                       );
@@ -156,8 +154,8 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
               );
             }
             return Container(
-              height: 300,
-              width: 300,
+              height: MediaQuery.of(context).size.height / 3,
+              width: MediaQuery.of(context).size.height / 2.80,
               child: LiquidCircularProgressIndicator(
                 value: 0.0,
                 valueColor: AlwaysStoppedAnimation(Colors.red),

@@ -28,7 +28,7 @@ class ServerException implements Exception {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['statusCode'] = this.statusCode;
     data['error'] = this.error;
     data['info'] = this.info;

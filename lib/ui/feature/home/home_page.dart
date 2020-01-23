@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/agenda/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/dashboard/grades/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/lessons/bloc.dart'
     as dash;
@@ -16,7 +18,6 @@ import 'package:registro_elettronico/ui/feature/home/sections/last_grades_sectio
 import 'package:registro_elettronico/ui/feature/home/sections/last_lessons_section.dart';
 import 'package:registro_elettronico/ui/feature/home/sections/next_events_section.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
-import 'package:registro_elettronico/ui/feature/widgets/double_back_to_close_app.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
@@ -42,6 +43,7 @@ class _HomePageState extends State<HomePage> {
   final double _borderRadiusCard = 8.0;
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   int _lastUpdate;
+  RefreshController _refreshController = RefreshController();
 
   @override
   void initState() {
@@ -49,7 +51,7 @@ class _HomePageState extends State<HomePage> {
     getPreferences();
     BlocProvider.of<dash.LessonsDashboardBloc>(context)
         .add(dash.GetLastLessons());
-    BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
+    BlocProvider.of<GradesDashboardBloc>(context).add(GetDashboardGrades());
     BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
   }
 
@@ -68,6 +70,14 @@ class _HomePageState extends State<HomePage> {
           listener: (context, state) {
             if (state is AgendaUpdateLoadSuccess) {
               BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
+            }
+          },
+        ),
+        BlocListener<GradesBloc, GradesState>(
+          listener: (context, state) {
+            if (state is GradesUpdateLoaded) {
+              BlocProvider.of<GradesDashboardBloc>(context)
+                  .add(GetDashboardGrades());
             }
           },
         ),
@@ -91,107 +101,88 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _lastUpdate,
         ),
-        body: DoubleBackToCloseApp(
-          snackBar: SnackBar(
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              AppLocalizations.of(context).translate('leave_snackbar'),
-            ),
+        body: SmartRefresher(
+          controller: _refreshController,
+          header: MaterialClassicHeader(
+            backgroundColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey[900]
+                : Colors.white,
+            color: Colors.red,
           ),
-          child: RefreshIndicator(
-            onRefresh: _refreshHome,
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Stack(
-                    children: <Widget>[
-                      // Background red color
-                      Container(
-                        height: 220,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            stops: [0.4, 1],
-                            colors: <Color>[Colors.red[400], Colors.red[900]],
-                            begin: Alignment(-1.0, -2.0),
-                            end: Alignment(1.0, 2.0),
-                          ),
+          onRefresh: _refreshHome,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      height: 220,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          stops: [0.4, 1],
+                          colors: <Color>[Colors.red[400], Colors.red[900]],
+                          begin: Alignment(-1.0, -2.0),
+                          end: Alignment(1.0, 2.0),
                         ),
                       ),
-                      Positioned(
-                        top: -5,
-                        left: -16,
-                        child: SafeArea(
-                          child: RawMaterialButton(
-                            onPressed: () {
-                              _drawerKey.currentState.openDrawer();
-                            },
-                            child: Icon(
-                              Icons.menu,
-                              color: Colors.white,
-                            ),
-                            shape: CircleBorder(),
-                            elevation: 2.0,
-                            padding: const EdgeInsets.all(15.0),
-                          ),
-                        ),
-                      ),
-
-                      _buildWelcomeSection(),
-
-                      Positioned(
-                        top: 150,
-                        left: 16,
-                        right: 16,
-                        child: _buildQuickShortcutsSection(),
-                      ),
-                      Container(
-                        height: 280,
-                      )
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(AppLocalizations.of(context).translate('last_grades')),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: LastGradesSection(),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(AppLocalizations.of(context).translate('last_lessons')),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      LastLessonsSection(),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(AppLocalizations.of(context).translate('next_events')),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: NextEventsSection(),
-                      )
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    _buildWelcomeSection(),
+                    Positioned(
+                      top: 150,
+                      left: 16,
+                      right: 16,
+                      child: _buildQuickShortcutsSection(),
+                    ),
+                    Container(
+                      height: 280,
+                    )
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(AppLocalizations.of(context)
+                          .translate('last_grades')),
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: LastGradesSection(),
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(AppLocalizations.of(context)
+                          .translate('last_lessons')),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    LastLessonsSection(),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(AppLocalizations.of(context)
+                          .translate('next_events')),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: NextEventsSection(),
+                    )
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -202,36 +193,54 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildWelcomeSection() {
     return Positioned(
-      top: 90,
-      left: 16,
-      right: 16,
+      top: 40,
+      left: -16,
+      right: 0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              FutureBuilder(
-                future: RepositoryProvider.of<ProfileRepository>(context)
-                    .getDbProfile(),
-                initialData: GlobalUtils.getMockProfile(),
-                builder: (context, snapshot) {
-                  final Profile profile = snapshot.data;
-                  return Text(
-                    '${AppLocalizations.of(context).translate('welcome_message')}, ${StringUtils.titleCase(profile.firstName)}.',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  );
+              RawMaterialButton(
+                onPressed: () {
+                  _drawerKey.currentState.openDrawer();
                 },
-              ),
-              Text(
-                DateUtils.convertDateLocale(DateTime.now(),
-                    AppLocalizations.of(context).locale.toString()),
-                style: TextStyle(
+                child: Icon(
+                  Icons.menu,
                   color: Colors.white,
+                ),
+                shape: CircleBorder(),
+                elevation: 2.0,
+                padding: const EdgeInsets.all(15.0),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: FutureBuilder(
+                  future: RepositoryProvider.of<ProfileRepository>(context)
+                      .getDbProfile(),
+                  initialData: GlobalUtils.getMockProfile(),
+                  builder: (context, snapshot) {
+                    final Profile profile = snapshot.data;
+                    return Text(
+                      '${AppLocalizations.of(context).translate('welcome_message')}, ${StringUtils.titleCase(profile.firstName)}.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: Text(
+                  DateUtils.convertDateLocale(DateTime.now(),
+                      AppLocalizations.of(context).locale.toString()),
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               )
             ],
@@ -319,10 +328,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> _refreshHome() async {
+  void _refreshHome() async {
     BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
     BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
     BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
     BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
+    await Future.delayed(Duration(milliseconds: 500));
+    _refreshController.refreshCompleted();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/parent_response.dart';
 import 'package:registro_elettronico/domain/entity/entities.dart';
 
 abstract class AuthState extends Equatable {
@@ -12,6 +13,12 @@ abstract class AuthState extends Equatable {
 class Init extends AuthState {}
 
 class SignInLoading extends AuthState {}
+
+class SignInParent extends AuthState {
+  final ParentsLoginResponse parentsLoginResponse;
+
+  SignInParent(this.parentsLoginResponse);
+}
 
 class SignInSuccess extends AuthState {
   final Profile profile;

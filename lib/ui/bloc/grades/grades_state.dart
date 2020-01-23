@@ -1,12 +1,8 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 
-abstract class GradesState extends Equatable {
+abstract class GradesState {
   const GradesState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class GradesInitial extends GradesState {}

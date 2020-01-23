@@ -5,6 +5,10 @@ class PrefsConstants {
   static const LESSONS_NOTIFICATIONS = 'lessons_notifications';
   static const NOTES_NOTIFICATIONS = 'notes_notifications';
   static const ABSENCES_NOTIFICATIONS = 'absences_notifications';
+  static const FINAL_GRADES_NOTIFICATIONS = 'final_grades_notifications';
+  static const SCHOOL_MATERIAL_NOTIFICATIONS = 'school_material_notifications';
+  static const NOTICES_NOTIFICATIONS = 'notices_notifications';
+
   static const UPDATE_INTERVAL = 'update_interval';
   static const OVERALL_OBJECTIVE = 'overall_objective';
   static const PERIOD_TO_SHOW = 'period_to_show';
@@ -19,4 +23,8 @@ class PrefsConstants {
   static const LAST_UPDATE_ABSENCES = 'last_update_absences';
   static const LAST_UPDATE_NOTES = 'last_update_notes';
   static const LAST_UPDATE_NOTICEBOARD = 'last_update_noticeboard';
+  static const LAST_UPDATE_SCRUTINI = 'last_update_scrutini';
+  static const DIRECTORY_NAME = 'FLogs';
+  static const SHOW_OUTDATED_NOTICES = 'show_outdated_notices';
+  static const UPDATE_ONLY_WIFI = 'update_only_wifi';
 }
