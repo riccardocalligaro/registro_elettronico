@@ -1,3 +1,35 @@
+Version 0.0.2-dev.1
+
+New features:
+
+* New login page design
+
+* New intro
+
+* App with no internet now gives proper messages and doesen't delete items in the databse
+
+* Better translations
+
+* Added a chart to the home page with the events summary
+
+* Changed navigation system (will be changed again in the future)
+
+Fixed:
+
+* Fixed #24 - Notification notices duplicates
+
+* Fixed #20 - Back button for going to home page
+
+* Fixed #18 - First day events duoplicates
+
+* Fixed #21 - App bugs when no internet
+
+* Fixed #19 - Timetable overflow issue
+
+* Fixed #9 - Login strange behavios
+
+---
+
 Version 0.0.1-dev.1+hotfix.1
 
 New features:
