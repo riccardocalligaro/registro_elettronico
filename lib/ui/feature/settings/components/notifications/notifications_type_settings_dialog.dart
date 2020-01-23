@@ -6,7 +6,13 @@ import 'package:registro_elettronico/utils/constants/preferences_constants.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationsSettingsDialog extends StatefulWidget {
-  NotificationsSettingsDialog({Key key}) : super(key: key);
+  final Color switchColor;
+  final Color textColor;
+  NotificationsSettingsDialog({
+    Key key,
+    this.switchColor,
+    this.textColor,
+  }) : super(key: key);
 
   @override
   _NotificationsSettingsDialogState createState() =>
@@ -66,7 +72,11 @@ class _NotificationsSettingsDialogState
             activeColor: Colors.red,
             contentPadding: const EdgeInsets.all(0.0),
             value: _gradesNotifications,
-            title: Text(AppLocalizations.of(context).translate('grades')),
+            inactiveTrackColor: widget.switchColor,
+            title: Text(
+              AppLocalizations.of(context).translate('grades'),
+              style: TextStyle(color: widget.textColor),
+            ),
             onChanged: (value) {
               setState(() {
                 _gradesNotifications = value;
@@ -79,7 +89,11 @@ class _NotificationsSettingsDialogState
             activeColor: Colors.red,
             contentPadding: EdgeInsets.zero,
             value: _agendaNotifications,
-            title: Text(AppLocalizations.of(context).translate('agenda')),
+            inactiveTrackColor: widget.switchColor,
+            title: Text(
+              AppLocalizations.of(context).translate('agenda'),
+              style: TextStyle(color: widget.textColor),
+            ),
             onChanged: (value) {
               setState(() {
                 _agendaNotifications = value;
@@ -92,7 +106,11 @@ class _NotificationsSettingsDialogState
             activeColor: Colors.red,
             contentPadding: EdgeInsets.zero,
             value: _notesNotifications,
-            title: Text(AppLocalizations.of(context).translate('notes')),
+            title: Text(
+              AppLocalizations.of(context).translate('notes'),
+              style: TextStyle(color: widget.textColor),
+            ),
+            inactiveTrackColor: widget.switchColor,
             onChanged: (value) {
               setState(() {
                 _notesNotifications = value;
@@ -104,7 +122,11 @@ class _NotificationsSettingsDialogState
             activeColor: Colors.red,
             contentPadding: EdgeInsets.zero,
             value: _absencesNotifications,
-            title: Text(AppLocalizations.of(context).translate('absences')),
+            title: Text(
+              AppLocalizations.of(context).translate('absences'),
+              style: TextStyle(color: widget.textColor),
+            ),
+            inactiveTrackColor: widget.switchColor,
             onChanged: (value) {
               setState(() {
                 _absencesNotifications = value;
@@ -117,7 +139,11 @@ class _NotificationsSettingsDialogState
             activeColor: Colors.red,
             contentPadding: EdgeInsets.zero,
             value: _noticesNotifications,
-            title: Text(AppLocalizations.of(context).translate('notices')),
+            title: Text(
+              AppLocalizations.of(context).translate('notices'),
+              style: TextStyle(color: widget.textColor),
+            ),
+            inactiveTrackColor: widget.switchColor,
             onChanged: (value) {
               setState(() {
                 _noticesNotifications = value;
@@ -129,7 +155,11 @@ class _NotificationsSettingsDialogState
             activeColor: Colors.red,
             contentPadding: EdgeInsets.zero,
             value: _finalGradesNotifications,
-            title: Text(AppLocalizations.of(context).translate('scrutini')),
+            title: Text(
+              AppLocalizations.of(context).translate('scrutini'),
+              style: TextStyle(color: widget.textColor),
+            ),
+            inactiveTrackColor: widget.switchColor,
             onChanged: (value) {
               setState(() {
                 _finalGradesNotifications = value;

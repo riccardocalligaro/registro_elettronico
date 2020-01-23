@@ -191,5 +191,19 @@
   "not_conntected_snackbar": "You are not conntected to the internet.",
   "logout_message": "All your data will be deleted and you'll need to log in again",
   "all_fields_message": "You must compile all forms",
-  "secure": "Secure"
+  "secure": "Secure",
+  "get_started_button": "Get started",
+  "slide_1_title": "Registro elettronico",
+  "slide_2_title": "Grafici e statistiche",
+  "slide_3_title": "Notifiche",
+  "slide_4_title": "Theme",
+  "slide_1_subtitle": "Fai uno swipe a sinistra per una breve introduzione\nApplicazione sviluppata da studenti.",
+  "slide_2_subtitle": "Comprendi al meglio il tuo rendimento grazie alle 50+ statistiche presenti",
+  "slide_3_subtitle": "Resta sempre aggiornato.\n Ricevi notifiche su voti, comunicazioni e molto altro.",
+  "slide_4_subtitle": "Choose a theme\nDark is better.",
+  "loading_subtitle_data": "This data is vital for the correct functioning of the application",
+  "loading_1_subtitle": "You can set a custom objective by holding a subject in the grades tab",
+  "loading_2_subtitle": "You can locally delete a grade and see what your average is without it.",
+  "loading_3_subtitle": "You can see a custom school report in the report section",
+  "loading_4_subtitle": "You can set custom notifications"
 }
