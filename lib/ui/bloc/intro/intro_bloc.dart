@@ -40,6 +40,7 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
     this.noticesRepository,
     this.didacticsRepository,
     this.documentsRepository,
+    this.timetableRepository,
   );
   @override
   IntroState get initialState => IntroInitial();
