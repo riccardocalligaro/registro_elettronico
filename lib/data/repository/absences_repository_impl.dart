@@ -40,7 +40,7 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
 
       absenceDao.insertEvents(absencesList);
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 

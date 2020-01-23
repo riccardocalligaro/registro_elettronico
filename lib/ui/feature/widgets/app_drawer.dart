@@ -95,9 +95,32 @@ class _AppDrawerState extends State<AppDrawer>
                 icon: Icons.exit_to_app,
                 text: "Logout",
                 onTap: () {
-                  BlocProvider.of<IntroBloc>(context).add(Reset());
-                  BlocProvider.of<AuthBloc>(context).add(SignOut());
-                  AppNavigator.instance.navToLogin(context);
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text(
+                        AppLocalizations.of(context)
+                            .translate('reset_db_alert'),
+                      ),
+                      content: Text(AppLocalizations.of(context).translate('logout_message')),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text(AppLocalizations.of(context).translate('no')),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        FlatButton(
+                          child: Text(AppLocalizations.of(context).translate('yes')),
+                          onPressed: () {
+                            BlocProvider.of<IntroBloc>(context).add(Reset());
+                            BlocProvider.of<AuthBloc>(context).add(SignOut());
+                            AppNavigator.instance.navToLogin(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  );
                 },
                 pos: 0,
                 isAccount: true)
@@ -165,20 +188,20 @@ class _AppDrawerState extends State<AppDrawer>
                 });
               },
             ),
-            _createDrawerItem(
-              icon: Icons.assignment_late,
-              text: trans.translate("next_tests"),
-              pos: DrawerConstants.NEXT_TESTS,
-              onTap: () {
-                Navigator.pop(context);
+            // _createDrawerItem(
+            //   icon: Icons.assignment_late,
+            //   text: trans.translate("next_tests"),
+            //   pos: DrawerConstants.NEXT_TESTS,
+            //   onTap: () {
+            //     // Navigator.pop(context);
 
-                Navigator.pushNamedAndRemoveUntil(context, Routes.NEXT_TESTS, (
-                  Route<dynamic> route,
-                ) {
-                  return route.isActive;
-                });
-              },
-            ),
+            //     // Navigator.pushNamedAndRemoveUntil(context, Routes.NEXT_TESTS, (
+            //     //   Route<dynamic> route,
+            //     // ) {
+            //     //   return route.isActive;
+            //     // });
+            //   },
+            // ),
             _createDrawerItem(
               icon: Icons.assessment,
               text: trans.translate("absences"),

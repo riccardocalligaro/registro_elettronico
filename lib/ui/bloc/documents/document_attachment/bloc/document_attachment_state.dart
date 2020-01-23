@@ -15,6 +15,8 @@ class DocumentLoadedLocally extends DocumentAttachmentState {
 
 class DocumentNotAvailable extends DocumentAttachmentState {}
 
+class DocumentLoadNotConnected extends DocumentAttachmentState {}
+
 class DocumentLoadSuccess extends DocumentAttachmentState {
   final String path;
 

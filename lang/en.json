@@ -188,5 +188,8 @@
   "no": "No",
   "unknown_subject": "Unknown subject",
   "next_tests": "Next tests",
-  "not_conntected_snackbar":"You are not conntected to the internet."
+  "not_conntected_snackbar": "You are not conntected to the internet.",
+  "logout_message": "All your data will be deleted and you'll need to log in again",
+  "all_fields_message": "You must compile all forms",
+  "secure": "Secure"
 }

@@ -14,6 +14,8 @@ class NoticesUpdateLoading extends NoticesState {}
 
 class NoticesUpdateLoaded extends NoticesState {}
 
+class NoticesLoadNotConnected extends NoticesState {}
+
 class NoticesUpdateError extends NoticesState {
   final String error;
 

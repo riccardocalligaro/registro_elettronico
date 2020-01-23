@@ -49,7 +49,7 @@ class NoticesRepositoryImpl implements NoticesRepository {
       noticeDao.insertNotices(notices);
       noticeDao.insertAttachments(attachments);
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 
@@ -83,18 +83,22 @@ class NoticesRepositoryImpl implements NoticesRepository {
     @required Notice notice,
     @required int attachNumber,
   }) async {
-    final profile = await profileDao.getProfile();
+    if (await networkInfo.isConnected) {
+      final profile = await profileDao.getProfile();
 
-    await spaggiariClient.readNotice(
-        profile.studentId, notice.eventCode, notice.pubId.toString(), "");
+      await spaggiariClient.readNotice(
+          profile.studentId, notice.eventCode, notice.pubId.toString(), "");
 
-    noticeDao.updateNotice(notice.copyWith(readStatus: true));
-    final file = spaggiariClient.getNotice(
-      profile.studentId,
-      notice.eventCode,
-      notice.pubId.toString(),
-      attachNumber.toString(),
-    );
-    return file;
+      noticeDao.updateNotice(notice.copyWith(readStatus: true));
+      final file = spaggiariClient.getNotice(
+        profile.studentId,
+        notice.eventCode,
+        notice.pubId.toString(),
+        attachNumber.toString(),
+      );
+      return file;
+    } else {
+      throw NotConntectedException();
+    }
   }
 }

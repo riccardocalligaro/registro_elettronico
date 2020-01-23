@@ -97,7 +97,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
       FLog.info(text: 'Got attachment for $fileID!');
       return res;
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 
@@ -110,7 +110,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
       FLog.info(text: 'Got text attachment for $fileID!');
       return res;
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 
@@ -123,7 +123,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
       FLog.info(text: 'Got URL attachment for $fileID!');
       return res;
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 

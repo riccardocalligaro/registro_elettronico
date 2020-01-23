@@ -38,7 +38,7 @@ class GradesRepositoryImpl implements GradesRepository {
       await gradeDao.deleteAllGrades();
       gradeDao.insertGrades(grades);
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 

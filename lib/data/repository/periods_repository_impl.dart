@@ -1,4 +1,5 @@
 import 'package:f_logs/f_logs.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
@@ -36,6 +37,8 @@ class PeriodsRepositoryImpl implements PeriodsRepository {
       await periodDao.deleteAllPeriods();
 
       periodDao.insertPeriods(periodsList);
+    } else {
+      throw NotConntectedException();
     }
   }
 

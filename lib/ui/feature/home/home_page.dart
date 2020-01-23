@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -178,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                         child: LastGradesSection(),
                       ),
                       SizedBox(
-                        height: 4,
+                        height: 10,
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -186,11 +187,11 @@ class _HomePageState extends State<HomePage> {
                             .translate('last_lessons')),
                       ),
                       SizedBox(
-                        height: 8,
+                        height: 10,
                       ),
                       LastLessonsSection(),
                       SizedBox(
-                        height: 8,
+                        height: 10,
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -242,8 +243,18 @@ class _HomePageState extends State<HomePage> {
                   initialData: GlobalUtils.getMockProfile(),
                   builder: (context, snapshot) {
                     final Profile profile = snapshot.data;
+                    if (profile != null) {
+                      return Text(
+                        '${AppLocalizations.of(context).translate('welcome_message')}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      );
+                    }
                     return Text(
-                      '${AppLocalizations.of(context).translate('welcome_message')}, ${StringUtils.titleCase(profile.firstName)}.',
+                      '${AppLocalizations.of(context).translate('welcome_message')}}.',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,

@@ -52,6 +52,7 @@ class AppBlocDelegate {
           i.getDependency(),
           i.getDependency(),
           i.getDependency(),
+          i.getDependency(),
         ),
       ),
       RepositoryProvider<GradesRepository>(

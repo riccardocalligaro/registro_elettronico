@@ -1,9 +1,11 @@
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_event.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_state.dart';
+import 'package:registro_elettronico/ui/feature/widgets/gradient_red_button.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 
@@ -17,15 +19,21 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   static const double LEFT_LOGIN_PADDING = 80.0;
   static const double TOP_FIELDS_PADDING = 32.0;
+
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  /// This becomes `true` when a login error is thrown
+  bool _invalid = false;
+
+  /// Text that changes in case of a login [error]
+  String _erorrMessage = "";
+
   bool _valide = false;
   String _errorMessage = "";
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations trans = AppLocalizations.of(context);
-
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
@@ -73,6 +81,34 @@ class _LoginPageState extends State<LoginPage> {
                 },
               );
             }
+
+            if (state is SignInSuccess) {
+              AppNavigator.instance.navToIntro(context);
+
+              /// If the sign in is successful then navigate to the home page
+              //AppNavigator.instance.navToHome(context);
+            }
+
+            /// Sets the valide data to true
+            if (state is SignInNetworkError) {
+              setState(() {
+                _valide = true;
+                if (state.error.messageCode ==
+                    RegistroConstants.USERNAME_PASSWORD_NOT_MATCHING) {
+                  _erorrMessage = AppLocalizations.of(context)
+                      .translate('username_password_doesent_match');
+                } else {
+                  _erorrMessage = state.error.message;
+                }
+              });
+            }
+
+            if (state is SignInError) {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(
+                    "🤔 ${AppLocalizations.of(context).translate('unexcepted_error')}"),
+              ));
+            }
           },
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
@@ -82,37 +118,39 @@ class _LoginPageState extends State<LoginPage> {
                   child: CircularProgressIndicator(),
                 );
               }
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
-                child: Column(
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        // Welcome, login with Classeviva
-                        _buildWelcomeText(trans.translate('welcome')),
-                        _buildLoginMessageText(trans.translate('login_with')),
-                        _buildLoginForm(context),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: RaisedButton(
-                            child: Text(
-                              trans.translate('log_in'),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            color: Theme.of(context).accentColor,
-                            onPressed: () {
-                              _signIn(context);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
+
+              return _buildInitial();
+              // return Padding(
+              //   padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
+              //   child: Column(
+              //     children: <Widget>[
+              //       Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: <Widget>[
+              //           // Welcome, login with Classeviva
+              //           _buildWelcomeText(trans.translate('welcome')),
+              //           _buildLoginMessageText(trans.translate('login_with')),
+              //           _buildLoginForm(context),
+              //           Padding(
+              //             padding: const EdgeInsets.symmetric(vertical: 16.0),
+              //             child: RaisedButton(
+              //               child: Text(
+              //                 trans.translate('log_in'),
+              //                 style: TextStyle(
+              //                     color: Colors.white,
+              //                     fontWeight: FontWeight.bold),
+              //               ),
+              //               color: Theme.of(context).accentColor,
+              //               onPressed: () {
+              //                 _signIn(context);
+              //               },
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // );
             },
           ),
         ),
@@ -120,9 +158,155 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _buildInitial() {
+    return Stack(
+      children: <Widget>[
+        SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: 90,
+                ),
+                _buildHeaderText(),
+                _buildLoginInput(),
+              ],
+            ),
+          ),
+        ),
+        // Align(
+        //   alignment: Alignment.bottomCenter,
+        //   child: SvgPicture.asset(
+        //     'assets/images/green_waves.svg',
+        //   ),
+        // ),
+      ],
+    );
+  }
+
+  /// Builds the login with argo [title]
+  Widget _buildHeaderText() {
+    return Column(
+      children: <Widget>[
+        _buildWelcomeText(AppLocalizations.of(context).translate('welcome')),
+        _buildLoginMessageText(
+            AppLocalizations.of(context).translate('login_with')),
+      ],
+    );
+    return Row(
+      children: <Widget>[
+        Text(
+          'Login with',
+          style: TextStyle(fontSize: 24),
+        ),
+        SizedBox(
+          width: 7,
+        ),
+        Text(
+          'Classeviva',
+          style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColor),
+        )
+      ],
+    );
+  }
+
+  Widget _buildLoginInput() {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: 30,
+        ),
+        TextField(
+          controller: _usernameController,
+          decoration: InputDecoration(
+              hintText: 'Username', errorText: _invalid ? _erorrMessage : null),
+        ),
+        SizedBox(
+          height: 30,
+        ),
+        TextField(
+          controller: _passwordController,
+          obscureText: true,
+          decoration: InputDecoration(
+            hintText: 'Password',
+            errorText: _invalid ? _erorrMessage : null,
+          ),
+        ),
+        SizedBox(
+          height: 30,
+        ),
+        GradientRedButton(
+          center: Text(
+            AppLocalizations.of(context).translate('log_in'),
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 19),
+          ),
+          onTap: () {
+            FLog.info(text: 'Sign in button pressed');
+
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+
+            final username = _usernameController.text;
+            final password = _passwordController.text;
+
+            if (username != '' && password != '') {
+              FLog.info(
+                text: 'Got valid input, proceeding to adding event to bloc',
+              );
+
+              BlocProvider.of<AuthBloc>(context).add(SignIn(
+                username: username,
+                password: password,
+              ));
+            } else {
+              FLog.info(text: 'Got empty input');
+              setState(() {
+                _invalid = true;
+                _erorrMessage = AppLocalizations.of(context)
+                    .translate('all_fields_message');
+              });
+            }
+          },
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              '${AppLocalizations.of(context).translate('secure')}. ',
+              style: TextStyle(color: Colors.grey),
+            ),
+            GestureDetector(
+              onTap: () {
+                // todo: navigate to repository
+              },
+              child: Text(
+                'Open source.',
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            )
+          ],
+        )
+      ],
+    );
+  }
+
   Container _buildWelcomeText(String welcomeMessage) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+      //padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
       child: Align(
         alignment: Alignment.bottomLeft,
         child: Text(

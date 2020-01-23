@@ -23,7 +23,7 @@ class Routes {
   static const LESSONS = '/lessons';
   static const GRADES = '/grades';
   static const AGENDA = '/agenda';
-  static const NEXT_TESTS = '/next-tests';
+  //static const NEXT_TESTS = '/next-tests';
   static const ABSENCES = '/absences';
   static const SCHOOL_MATERIAL = '/school-material';
   static const NOTES = '/notes';
@@ -41,7 +41,7 @@ class Routes {
     LESSONS: (ctx) => LessonsPage(),
     GRADES: (ctx) => GradesPage(),
     AGENDA: (ctx) => AgendaPage(),
-    NEXT_TESTS: (ctx) => NextTestsPage(),
+    //NEXT_TESTS: (ctx) => NextTestsPage(),
     ABSENCES: (ctx) => AbsencesPage(),
     NOTES: (ctx) => NotesPage(),
     SCHOOL_MATERIAL: (ctx) => SchoolMaterialPage(),

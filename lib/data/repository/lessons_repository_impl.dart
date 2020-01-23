@@ -44,7 +44,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
       lessonDao.insertLessons(lessonsList);
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 
@@ -67,7 +67,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
       lessonDao.insertLessons(lessonsInsertable);
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 
