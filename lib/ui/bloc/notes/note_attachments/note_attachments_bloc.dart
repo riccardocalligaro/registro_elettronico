@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/domain/repository/notes_repository.dart';
+
 import './bloc.dart';
 
 class NoteAttachmentsBloc
@@ -28,7 +30,7 @@ class NoteAttachmentsBloc
       final attachment = await notesRepository.getAttachmentForNote(type, id);
       FLog.info(text: 'Got attachment ${attachment.id}');
       yield NoteAttachmentsLoadSuccess(attachment: attachment);
-    } on Exception catch (e, s) {
+    } catch (e, s) {
       FLog.error(
         text: 'Error reading note',
         exception: e,

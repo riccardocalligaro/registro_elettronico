@@ -1,6 +1,8 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injector/injector.dart';
+import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
@@ -157,7 +159,11 @@ class AppInjector {
   static void injectRepository() {
     Injector.appInstance.registerSingleton((i) {
       LoginRepository loginRepository = LoginRepositoryImpl(
-          i.getDependency(), i.getDependency(), i.getDependency());
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
       return loginRepository;
     });
 
@@ -169,6 +175,7 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton((i) {
       LessonsRepository lessonsRepository = LessonsRepositoryImpl(
+        i.getDependency(),
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
@@ -203,12 +210,14 @@ class AppInjector {
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
+        i.getDependency(),
       );
       return agendaRepository;
     });
 
     Injector.appInstance.registerSingleton((i) {
       AbsencesRepository absencesRepository = AbsencesRepositoryImpl(
+        i.getDependency(),
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
@@ -231,21 +240,20 @@ class AppInjector {
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
+        i.getDependency(),
       );
       return noticesRepository;
     });
 
     Injector.appInstance.registerSingleton((i) {
-      NotesRepository notesRepository = NotesRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
+      NotesRepository notesRepository = NotesRepositoryImpl(i.getDependency(),
+          i.getDependency(), i.getDependency(), i.getDependency());
       return notesRepository;
     });
 
     Injector.appInstance.registerSingleton((i) {
       DidacticsRepository didacticsRepository = DidacticsRepositoryImpl(
+        i.getDependency(),
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
@@ -266,12 +274,14 @@ class AppInjector {
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
+        i.getDependency(),
       );
       return documentsRepository;
     });
 
     Injector.appInstance.registerSingleton((i) {
       ScrutiniRepository scrutiniRepository = ScrutiniRepositoryImpl(
+        i.getDependency(),
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
@@ -311,6 +321,14 @@ class AppInjector {
 
     Injector.appInstance.registerSingleton<NoteMapper>((injector) {
       return NoteMapper();
+    });
+
+    Injector.appInstance.registerSingleton<DataConnectionChecker>((i) {
+      return DataConnectionChecker();
+    });
+
+    Injector.appInstance.registerSingleton<NetworkInfo>((i) {
+      return NetworkInfoImpl(i.getDependency());
     });
   }
 

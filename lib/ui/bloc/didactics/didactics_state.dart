@@ -37,6 +37,9 @@ class DidacticsUpdateLoading extends DidacticsState {}
 
 class DidacticsUpdateLoaded extends DidacticsState {}
 
+class DidacticsErrorNotConnected extends DidacticsState {}
+
+
 class DidacticsUpdateError extends DidacticsState {
   final String error;
 

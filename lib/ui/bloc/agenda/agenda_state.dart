@@ -24,6 +24,8 @@ class AgendaLoadSuccess extends AgendaState {
   const AgendaLoadSuccess({@required this.events});
 }
 
+class AgendaLoadErrorNotConnected extends AgendaState {}
+
 class AgendaLoadError extends AgendaState {
   final String error;
   const AgendaLoadError({@required this.error});

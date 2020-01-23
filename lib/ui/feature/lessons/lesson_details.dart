@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_event.dart';
@@ -72,15 +73,7 @@ class _LessonDetailsState extends State<LessonDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LessonsBloc, LessonsState>(
-      listener: (context, state) {
-        if (state is LessonsUpdateLoadSuccess) {
-          setState(() {
-            _lastUpdate = DateTime.now().millisecondsSinceEpoch;
-          });
-        }
-      },
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
@@ -97,37 +90,51 @@ class _LessonDetailsState extends State<LessonDetails> {
         bottomSheet: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _lastUpdate,
         ),
-        body: Container(
-          child: BlocBuilder<LessonsBloc, LessonsState>(
-            builder: (context, state) {
-              if (state is LessonsUpdateLoadInProgress ||
-                  state is LessonsLoadInProgress) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state is LessonsLoadSuccess) {
-                return _buildLessonsList(state.lessons);
-              } else if (state is LessonsLoadServerError ||
-                  state is LessonsLoadError) {
-                return CustomPlaceHolder(
-                  text: AppLocalizations.of(context).translate('error'),
-                  icon: Icons.error,
-                  showUpdate: true,
-                  onTap: () {
-                    BlocProvider.of<LessonsBloc>(context)
-                        .add(UpdateAllLessons());
-                    BlocProvider.of<LessonsBloc>(context)
-                        .add(GetLessonsForSubject(subjectId: widget.subjectId));
-                  },
-                );
-              }
+        body: BlocListener<LessonsBloc, LessonsState>(
+          listener: (context, state) {
+            if (state is LessonsUpdateLoadSuccess) {
+              setState(() {
+                _lastUpdate = DateTime.now().millisecondsSinceEpoch;
+              });
+            }
 
-              return Text(state.toString());
-            },
+            if (state is LessonsLoadErrorNotConnected) {
+              Scaffold.of(context)
+                ..removeCurrentSnackBar()
+                ..showSnackBar(
+                    AppNavigator.instance.getNetworkErrorSnackBar(context));
+            }
+          },
+          child: Container(
+            child: BlocBuilder<LessonsBloc, LessonsState>(
+              builder: (context, state) {
+                if (state is LessonsUpdateLoadInProgress ||
+                    state is LessonsLoadInProgress) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is LessonsLoadSuccess) {
+                  return _buildLessonsList(state.lessons);
+                } else if (state is LessonsLoadServerError ||
+                    state is LessonsLoadError) {
+                  return CustomPlaceHolder(
+                    text: AppLocalizations.of(context).translate('error'),
+                    icon: Icons.error,
+                    showUpdate: true,
+                    onTap: () {
+                      BlocProvider.of<LessonsBloc>(context)
+                          .add(UpdateAllLessons());
+                      BlocProvider.of<LessonsBloc>(context).add(
+                          GetLessonsForSubject(subjectId: widget.subjectId));
+                    },
+                  );
+                }
+
+                return Text(state.toString());
+              },
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   void _searchPressed() {

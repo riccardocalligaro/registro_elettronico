@@ -3874,7 +3874,6 @@ class Notice extends DataClass implements Insertable<Notice> {
   final bool needJoin;
   final bool needReply;
   final bool needFile;
-  final String eventId;
   Notice(
       {@required this.pubId,
       @required this.pubDate,
@@ -3891,8 +3890,7 @@ class Notice extends DataClass implements Insertable<Notice> {
       @required this.contentHasAttach,
       @required this.needJoin,
       @required this.needReply,
-      @required this.needFile,
-      @required this.eventId});
+      @required this.needFile});
   factory Notice.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -3932,8 +3930,6 @@ class Notice extends DataClass implements Insertable<Notice> {
           .mapFromDatabaseResponse(data['${effectivePrefix}need_reply']),
       needFile:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}need_file']),
-      eventId: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}event_id']),
     );
   }
   factory Notice.fromJson(Map<String, dynamic> json,
@@ -3956,7 +3952,6 @@ class Notice extends DataClass implements Insertable<Notice> {
       needJoin: serializer.fromJson<bool>(json['needJoin']),
       needReply: serializer.fromJson<bool>(json['needReply']),
       needFile: serializer.fromJson<bool>(json['needFile']),
-      eventId: serializer.fromJson<String>(json['eventId']),
     );
   }
   @override
@@ -3979,7 +3974,6 @@ class Notice extends DataClass implements Insertable<Notice> {
       'needJoin': serializer.toJson<bool>(needJoin),
       'needReply': serializer.toJson<bool>(needReply),
       'needFile': serializer.toJson<bool>(needFile),
-      'eventId': serializer.toJson<String>(eventId),
     };
   }
 
@@ -4033,9 +4027,6 @@ class Notice extends DataClass implements Insertable<Notice> {
       needFile: needFile == null && nullToAbsent
           ? const Value.absent()
           : Value(needFile),
-      eventId: eventId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(eventId),
     );
   }
 
@@ -4055,8 +4046,7 @@ class Notice extends DataClass implements Insertable<Notice> {
           bool contentHasAttach,
           bool needJoin,
           bool needReply,
-          bool needFile,
-          String eventId}) =>
+          bool needFile}) =>
       Notice(
         pubId: pubId ?? this.pubId,
         pubDate: pubDate ?? this.pubDate,
@@ -4074,7 +4064,6 @@ class Notice extends DataClass implements Insertable<Notice> {
         needJoin: needJoin ?? this.needJoin,
         needReply: needReply ?? this.needReply,
         needFile: needFile ?? this.needFile,
-        eventId: eventId ?? this.eventId,
       );
   @override
   String toString() {
@@ -4094,8 +4083,7 @@ class Notice extends DataClass implements Insertable<Notice> {
           ..write('contentHasAttach: $contentHasAttach, ')
           ..write('needJoin: $needJoin, ')
           ..write('needReply: $needReply, ')
-          ..write('needFile: $needFile, ')
-          ..write('eventId: $eventId')
+          ..write('needFile: $needFile')
           ..write(')'))
         .toString();
   }
@@ -4132,11 +4120,8 @@ class Notice extends DataClass implements Insertable<Notice> {
                                                           $mrjc(
                                                               needReply
                                                                   .hashCode,
-                                                              $mrjc(
-                                                                  needFile
-                                                                      .hashCode,
-                                                                  eventId
-                                                                      .hashCode)))))))))))))))));
+                                                              needFile
+                                                                  .hashCode))))))))))))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -4156,8 +4141,7 @@ class Notice extends DataClass implements Insertable<Notice> {
           other.contentHasAttach == this.contentHasAttach &&
           other.needJoin == this.needJoin &&
           other.needReply == this.needReply &&
-          other.needFile == this.needFile &&
-          other.eventId == this.eventId);
+          other.needFile == this.needFile);
 }
 
 class NoticesCompanion extends UpdateCompanion<Notice> {
@@ -4177,7 +4161,6 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
   final Value<bool> needJoin;
   final Value<bool> needReply;
   final Value<bool> needFile;
-  final Value<String> eventId;
   const NoticesCompanion({
     this.pubId = const Value.absent(),
     this.pubDate = const Value.absent(),
@@ -4195,7 +4178,6 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
     this.needJoin = const Value.absent(),
     this.needReply = const Value.absent(),
     this.needFile = const Value.absent(),
-    this.eventId = const Value.absent(),
   });
   NoticesCompanion.insert({
     @required int pubId,
@@ -4214,7 +4196,6 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
     @required bool needJoin,
     @required bool needReply,
     @required bool needFile,
-    @required String eventId,
   })  : pubId = Value(pubId),
         pubDate = Value(pubDate),
         readStatus = Value(readStatus),
@@ -4230,8 +4211,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
         contentHasAttach = Value(contentHasAttach),
         needJoin = Value(needJoin),
         needReply = Value(needReply),
-        needFile = Value(needFile),
-        eventId = Value(eventId);
+        needFile = Value(needFile);
   NoticesCompanion copyWith(
       {Value<int> pubId,
       Value<DateTime> pubDate,
@@ -4248,8 +4228,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
       Value<bool> contentHasAttach,
       Value<bool> needJoin,
       Value<bool> needReply,
-      Value<bool> needFile,
-      Value<String> eventId}) {
+      Value<bool> needFile}) {
     return NoticesCompanion(
       pubId: pubId ?? this.pubId,
       pubDate: pubDate ?? this.pubDate,
@@ -4267,7 +4246,6 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
       needJoin: needJoin ?? this.needJoin,
       needReply: needReply ?? this.needReply,
       needFile: needFile ?? this.needFile,
-      eventId: eventId ?? this.eventId,
     );
   }
 }
@@ -4484,18 +4462,6 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
     );
   }
 
-  final VerificationMeta _eventIdMeta = const VerificationMeta('eventId');
-  GeneratedTextColumn _eventId;
-  @override
-  GeneratedTextColumn get eventId => _eventId ??= _constructEventId();
-  GeneratedTextColumn _constructEventId() {
-    return GeneratedTextColumn(
-      'event_id',
-      $tableName,
-      false,
-    );
-  }
-
   @override
   List<GeneratedColumn> get $columns => [
         pubId,
@@ -4513,8 +4479,7 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
         contentHasAttach,
         needJoin,
         needReply,
-        needFile,
-        eventId
+        needFile
       ];
   @override
   $NoticesTable get asDslTable => this;
@@ -4638,12 +4603,6 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
     } else if (needFile.isRequired && isInserting) {
       context.missing(_needFileMeta);
     }
-    if (d.eventId.present) {
-      context.handle(_eventIdMeta,
-          eventId.isAcceptableValue(d.eventId.value, _eventIdMeta));
-    } else if (eventId.isRequired && isInserting) {
-      context.missing(_eventIdMeta);
-    }
     return context;
   }
 
@@ -4712,9 +4671,6 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
     }
     if (d.needFile.present) {
       map['need_file'] = Variable<bool, BoolType>(d.needFile.value);
-    }
-    if (d.eventId.present) {
-      map['event_id'] = Variable<String, StringType>(d.eventId.value);
     }
     return map;
   }

@@ -150,7 +150,7 @@ class GlobalUtils {
     if (stringToCompare.contains(RegExp(r'(RELIGIONE|ALTERNATIVA)'))) {
       return SubjectsConstants.RELIGIONE;
     }
-    if (stringToCompare.contains("INGLESE")) {
+    if (stringToCompare.contains(RegExp(r'(INGLESE|STRANIERA)'))) {
       return SubjectsConstants.INGLESE;
     }
     if (stringToCompare.contains(RegExp(r'(ITALIANA|ITALIANO)'))) {
@@ -180,7 +180,7 @@ class GlobalUtils {
       return SubjectsConstants.CHIMICA;
     }
     if (stringToCompare.contains(RegExp(
-        r'("LINGUA STRANIERA"|RUSSO|CINESE|TEDESCO|TEDESCA|SPAGNOLO|FRANCESE)'))) {
+        r'(LINGUA STRANIERA|RUSSO|CINESE|TEDESCO|TEDESCA|SPAGNOLO|FRANCESE)'))) {
       return SubjectsConstants.LINGUE;
     }
     if (stringToCompare.contains(RegExp(r'(ELETTRONICA)'))) {
@@ -190,7 +190,7 @@ class GlobalUtils {
       return SubjectsConstants.ARTE;
     }
     if (stringToCompare
-        .contains(RegExp(r'("DISEGNO TECNICO"|TECNICHE|GRAFICHE|GRAFICA)'))) {
+        .contains(RegExp(r'(DISEGNO TECNICO|TECNICHE|GRAFICHE|GRAFICA)'))) {
       return SubjectsConstants.DISEGNO_TECNICO;
     }
     if (stringToCompare.contains(RegExp(r'(BIOLOGIA)'))) {

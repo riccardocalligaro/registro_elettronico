@@ -2,6 +2,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/didactics_attachments/bloc.dart';
@@ -45,62 +46,81 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-    return BlocListener<DidacticsBloc, DidacticsState>(
-      listener: (context, state) {
-        if (state is DidacticsUpdateLoaded) {
-          setState(() {
-            _schoolMaterialLastUpdate = DateTime.now().millisecondsSinceEpoch;
-          });
-        }
-      },
-      child: Scaffold(
-        key: _drawerKey,
-        appBar: CustomAppBar(
-          title:
-              Text(AppLocalizations.of(context).translate('school_material')),
-          scaffoldKey: _drawerKey,
-        ),
-        drawer: AppDrawer(
-          position: DrawerConstants.SCHOOL_MATERIAL,
-        ),
-        bottomSheet: LastUpdateBottomSheet(
-          millisecondsSinceEpoch: _schoolMaterialLastUpdate,
-        ),
-        body: BlocListener<DidacticsAttachmentsBloc, DidacticsAttachmentsState>(
-            listener: (context, state) {
-        if (state is DidacticsAttachmentsLoading) {
-          Scaffold.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                behavior: SnackBarBehavior.floating,
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(AppLocalizations.of(context)
-                        .translate('downloading')),
-                    Container(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.red,
-                      ),
-                    )
-                  ],
-                ),
-                duration: Duration(minutes: 10),
-              ),
-            );
-        }
 
-        if (state is DidacticsAttachmentsFileLoaded) {
-          OpenFile.open(state.path);
-          Scaffold.of(context)..removeCurrentSnackBar();
-        }
-        //if(state is DidacticsAttachments)
+    return Scaffold(
+      key: _drawerKey,
+      appBar: CustomAppBar(
+        title: Text(AppLocalizations.of(context).translate('school_material')),
+        scaffoldKey: _drawerKey,
+      ),
+      drawer: AppDrawer(
+        position: DrawerConstants.SCHOOL_MATERIAL,
+      ),
+      bottomSheet: LastUpdateBottomSheet(
+        millisecondsSinceEpoch: _schoolMaterialLastUpdate,
+      ),
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<DidacticsBloc, DidacticsState>(
+            listener: (context, state) {
+              if (state is DidacticsErrorNotConnected) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    AppNavigator.instance.getNetworkErrorSnackBar(context),
+                  );
+              }
+              if (state is DidacticsUpdateLoaded) {
+                setState(() {
+                  _schoolMaterialLastUpdate =
+                      DateTime.now().millisecondsSinceEpoch;
+                });
+              }
             },
-            child: _buildBlocBuilder(),
           ),
+          BlocListener<DidacticsAttachmentsBloc, DidacticsAttachmentsState>(
+            listener: (context, state) {
+              if (state is DidacticsAttachmentsErrorNotConnected) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    AppNavigator.instance.getNetworkErrorSnackBar(context),
+                  );
+              }
+              if (state is DidacticsAttachmentsLoading) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(AppLocalizations.of(context)
+                              .translate('downloading')),
+                          Container(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.red,
+                            ),
+                          )
+                        ],
+                      ),
+                      duration: Duration(minutes: 10),
+                    ),
+                  );
+              }
+
+              if (state is DidacticsAttachmentsFileLoaded) {
+                OpenFile.open(state.path);
+                Scaffold.of(context)..removeCurrentSnackBar();
+              }
+              //if(state is DidacticsAttachments)
+            },
+          ),
+        ],
+        child: _buildBlocBuilder(),
       ),
     );
   }

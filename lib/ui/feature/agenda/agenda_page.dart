@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
@@ -88,42 +89,45 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AgendaBloc, AgendaState>(
-      listener: (context, state) {
-        if (state is AgendaUpdateLoadSuccess) {
-          _refreshController.refreshCompleted();
+    return Scaffold(
+      key: _drawerKey,
+      appBar: CustomAppBar(
+        scaffoldKey: _drawerKey,
+        title: Text(AppLocalizations.of(context).translate('agenda')),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: _refreshAgenda,
+          )
+        ],
+      ),
+      drawer: AppDrawer(
+        position: DrawerConstants.AGENDA,
+      ),
+      bottomSheet: LastUpdateBottomSheet(
+        millisecondsSinceEpoch: _agendaLastUpdate,
+      ),
+      body: BlocListener<AgendaBloc, AgendaState>(
+        listener: (context, state) {
+          if (state is AgendaUpdateLoadSuccess) {
+            _refreshController.refreshCompleted();
 
-          setState(() {
-            _agendaLastUpdate = DateTime.now().millisecondsSinceEpoch;
-          });
-        } else if (state is AgendaLoadSuccess) {
-          setState(() {
-            _selectedEvents = state.events
-                .where((d) => DateUtils.areSameDay(d.begin, DateTime.now()))
-                .toSet()
-                .toList();
-          });
-        }
-      },
-      child: Scaffold(
-        key: _drawerKey,
-        appBar: CustomAppBar(
-          scaffoldKey: _drawerKey,
-          title: Text(AppLocalizations.of(context).translate('agenda')),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: _refreshAgenda,
-            )
-          ],
-        ),
-        drawer: AppDrawer(
-          position: DrawerConstants.AGENDA,
-        ),
-        bottomSheet: LastUpdateBottomSheet(
-          millisecondsSinceEpoch: _agendaLastUpdate,
-        ),
-        body: CustomRefresher(
+            setState(() {
+              _agendaLastUpdate = DateTime.now().millisecondsSinceEpoch;
+            });
+          } else if (state is AgendaLoadSuccess) {
+            setState(() {
+              _selectedEvents = state.events
+                  .where((d) => DateUtils.areSameDay(d.begin, DateTime.now()))
+                  .toSet()
+                  .toList();
+            });
+          } else if (state is AgendaLoadErrorNotConnected) {
+            Scaffold.of(context).showSnackBar(
+                AppNavigator.instance.getNetworkErrorSnackBar(context));
+          }
+        },
+        child: CustomRefresher(
           controller: _refreshController,
           onRefresh: _refreshAgenda,
           child: SingleChildScrollView(
@@ -380,13 +384,13 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     }
 
     return Padding(
-        padding: const EdgeInsets.only(top: 64.0),
-        child: CustomPlaceHolder(
-          icon: Icons.event,
-          text: '',
-          showUpdate: false,
-        ),
-      );
+      padding: const EdgeInsets.only(top: 64.0),
+      child: CustomPlaceHolder(
+        icon: Icons.event,
+        text: '',
+        showUpdate: false,
+      ),
+    );
   }
 
   Future _refreshAgenda() async {

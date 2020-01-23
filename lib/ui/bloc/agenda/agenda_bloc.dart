@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,7 +28,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     } else if (event is GetAllAgenda) {
       yield* _mapGetAllAgendaToState();
     } else if (event is GetNextEvents) {
-      yield* _mapGetNextEventsToState(event.dateTime, event.numberOfevents);
+      yield* _mapGetNextEventsToState(event.dateTime);
     } else if (event is UpdateFromDate) {
       yield* _mapUpdateFronDateToState(event.date);
     }
@@ -36,6 +37,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
   Stream<AgendaState> _mapUpdateAllAgendaToState() async* {
     yield AgendaUpdateLoadInProgress();
     try {
+      FLog.info(text: 'updating here');
       await agendaRepository.updateAllAgenda();
       final prefs = await SharedPreferences.getInstance();
 
@@ -47,8 +49,9 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       );
 
       yield AgendaUpdateLoadSuccess();
+    } on NotConntectedException catch (_) {
+      yield AgendaLoadErrorNotConnected();
     } on DioError catch (e) {
-      FLog.error(text: 'Updating all agenda server error ${e.toString()}');
       yield AgendaLoadError(error: e.response.statusMessage.toString());
     } catch (e, s) {
       Crashlytics.instance.recordError(e, s);
@@ -73,13 +76,11 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     }
   }
 
-  Stream<AgendaState> _mapGetNextEventsToState(
-      DateTime dateTime, int numberOfevents) async* {
+  Stream<AgendaState> _mapGetNextEventsToState(DateTime dateTime) async* {
     yield AgendaLoadInProgress();
     try {
       final events = await agendaRepository.getLastEvents(
         dateTime,
-        numbersOfEvents: numberOfevents,
       );
       yield AgendaLoadSuccess(events: events);
     } catch (e, s) {
@@ -94,6 +95,8 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     try {
       await agendaRepository.updateAgendaStartingFromDate(date);
       yield AgendaUpdateLoadSuccess();
+    } on NotConntectedException catch (_) {
+      yield AgendaLoadErrorNotConnected();
     } on DioError catch (e, s) {
       Crashlytics.instance.recordError(e, s);
       yield AgendaLoadError(error: e.response.statusMessage.toString());

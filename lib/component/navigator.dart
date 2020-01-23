@@ -80,7 +80,7 @@ class AppNavigator {
         content: Text(message),
         actions: <Widget>[
           FlatButton(
-            child: Text('OK'),
+            child: Text(AppLocalizations.of(context).translate('ok')),
             onPressed: () => Navigator.of(bCtx).pop(),
           )
         ],
@@ -90,6 +90,18 @@ class AppNavigator {
 
   void showSnackBar(BuildContext context, String content) {
     Scaffold.of(context).showSnackBar(SnackBar(content: Text(content)));
+  }
+
+  void showNotConnectedSnackbar(BuildContext context) {
+    Scaffold.of(context).showSnackBar(SnackBar(content: Text('Not connected')));
+  }
+
+  SnackBar getNetworkErrorSnackBar(BuildContext context) {
+    return SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: Text(
+          AppLocalizations.of(context).translate('not_conntected_snackbar')),
+    );
   }
 
   SnackBar getLeaveSnackBar(BuildContext context) {

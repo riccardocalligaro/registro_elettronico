@@ -23,6 +23,8 @@ class AbsencesUpdateError extends AbsencesState {
 
 class AbsencesLoading extends AbsencesState {}
 
+class AbsencesLoadErrorNotConnected extends AbsencesState {}
+
 class AbsencesLoaded extends AbsencesState {
   final List<Absence> absences;
 

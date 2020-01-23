@@ -28,11 +28,7 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
       yield* _mapUpdateGradesToState();
     } else if (event is GetGrades) {
       yield* _mapGetGradesToState(event.limit ?? -1, event.ordered ?? false);
-    } 
-    
-    // else if (event is ResetGrades) {
-    //   yield GradesInitial();
-    // }
+    }
   }
 
   Stream<GradesState> _mapUpdateGradesToState() async* {

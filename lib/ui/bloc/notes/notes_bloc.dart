@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/notes_repository.dart';
 import './bloc.dart';
 
@@ -31,12 +32,9 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       await notesRepository.deleteAllNotes();
       await notesRepository.updateNotes();
       FLog.info(text: 'Updated notes');
-    } on Exception catch (e, s) {
-      FLog.error(
-        text: 'Error updating lessons',
-        exception: e,
-        stacktrace: s,
-      );
+    } on NotConntectedException {
+      yield NotesLoadErrorNotConnected();
+    } catch (e, s) {
       Crashlytics.instance.recordError(e, s);
       yield NotesUpdateError(e.toString());
     }

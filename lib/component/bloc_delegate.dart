@@ -52,6 +52,7 @@ class AppBlocDelegate {
           i.getDependency(),
           i.getDependency(),
           i.getDependency(),
+          i.getDependency(),
         ),
       ),
       RepositoryProvider<GradesRepository>(
@@ -71,6 +72,7 @@ class AppBlocDelegate {
       ),
       BlocProvider<IntroBloc>(
         create: (ctx) => IntroBloc(
+          i.getDependency(),
           i.getDependency(),
           i.getDependency(),
           i.getDependency(),

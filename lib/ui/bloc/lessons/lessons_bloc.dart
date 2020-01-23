@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -96,12 +97,13 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
   Stream<LessonsState> _mapUpdateAllLessonsToState() async* {
     yield LessonsUpdateLoadInProgress();
     try {
-      await lessonsRepository.deleteAllLessons();
       await lessonsRepository.updateAllLessons();
       final prefs = await SharedPreferences.getInstance();
       prefs.setInt(PrefsConstants.LAST_UPDATE_LESSONS,
           DateTime.now().millisecondsSinceEpoch);
       yield LessonsUpdateLoadSuccess();
+    } on NotConntectedException catch (_) {
+      yield LessonsLoadErrorNotConnected();
     } on DioError catch (e, s) {
       FLog.info(text: 'Server - Error updating absences');
       Crashlytics.instance.recordError(e, s);
@@ -122,6 +124,8 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     try {
       await lessonsRepository.upadateTodayLessons();
       yield LessonsUpdateLoadSuccess();
+    } on NotConntectedException catch (_) {
+      yield LessonsLoadErrorNotConnected();
     } on DioError catch (e, s) {
       FLog.error(
         text: 'Other - Error updating today lessons',

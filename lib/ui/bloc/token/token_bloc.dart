@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/entity/login_token.dart';
 import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
 
@@ -30,18 +31,22 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
           schoolReport: event.schoolReport,
         );
       } else {
-        final res = await scrutiniRepository.getLoginToken();
-        FLog.info(text: 'Got token from Spaggiari');
+        try {
+          final res = await scrutiniRepository.getLoginToken();
+          FLog.info(text: 'Got token from Spaggiari');
 
-        yield* res.fold((failure) async* {
-          yield TokenLoadError();
-        }, (token) async* {
-          loginToken = LoginToken(token);
-          yield TokenSchoolReportLoadSuccess(
-            token: token.split(';')[0],
-            schoolReport: event.schoolReport,
-          );
-        });
+          yield* res.fold((failure) async* {
+            yield TokenLoadError();
+          }, (token) async* {
+            loginToken = LoginToken(token);
+            yield TokenSchoolReportLoadSuccess(
+              token: token.split(';')[0],
+              schoolReport: event.schoolReport,
+            );
+          });
+        } on NotConntectedException {
+          yield TokenLoadNotConnected();
+        }
       }
     } else if (event is GetLoginToken) {
       FLog.info(text: 'Getting login token');

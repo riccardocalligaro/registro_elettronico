@@ -33,6 +33,11 @@ class DateUtils {
     return formatter.format(date);
   }
 
+  static String convertSingleDayShortForDisplay(DateTime date, String locale) {
+    final formatter = DateFormat.E(locale);
+    return formatter.format(date);
+  }
+
   static String convertMonthLocale(DateTime date, String locale) {
     final formatter = DateFormat.MMMM(locale);
     return formatter.format(date);
@@ -43,7 +48,7 @@ class DateUtils {
     return formatter.format(date);
   }
 
-  /// The spaggiari API returns the date in the following 
+  /// The spaggiari API returns the date in the following
   /// format: [20191112], this function converts this [string] into a [date]
   static DateTime getDateFromApiString(String date) {
     final parts = date.split('-');

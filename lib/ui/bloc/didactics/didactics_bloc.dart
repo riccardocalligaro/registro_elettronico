@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,8 +36,7 @@ class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
           folders: folders,
           contents: contents,
         );
-      } catch (e, s) {
-        Crashlytics.instance.recordError(e, s);
+      } catch (e) {
         yield DidacticsError(e.toString());
       }
     }
@@ -44,7 +44,6 @@ class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
     if (event is UpdateDidactics) {
       yield DidacticsUpdateLoading();
       try {
-        await didacticsRepository.deleteAllDidactics();
         await didacticsRepository.updateDidactics();
 
         final prefs = await SharedPreferences.getInstance();
@@ -53,8 +52,11 @@ class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
             DateTime.now().millisecondsSinceEpoch);
 
         yield DidacticsUpdateLoaded();
+      } on NotConntectedException catch(_) {
+        yield DidacticsErrorNotConnected();
       } catch (e, s) {
         Crashlytics.instance.recordError(e, s);
+
         yield DidacticsError(e.toString());
       }
     }

@@ -4,6 +4,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/feature/home/widgets/timeline.dart';
+import 'package:registro_elettronico/ui/feature/home/widgets/week_summary_chart.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -36,7 +37,14 @@ class NextEventsSection extends StatelessWidget {
           return BlocBuilder<AgendaDashboardBloc, AgendaDashboardState>(
             builder: (context, state) {
               if (state is AgendaDashboardLoadSuccess) {
-                return _buildAgenda(context, state.events);
+                return Column(
+                  children: <Widget>[
+                    WeekSummaryChart(
+                      events: state.events,
+                    ),
+                    _buildAgenda(context, state.events),
+                  ],
+                );
               } else if (state is AgendaDashboardLoadError) {
                 return CustomPlaceHolder(
                   text: AppLocalizations.of(context).translate('erorr'),
@@ -92,7 +100,9 @@ class NextEventsSection extends StatelessWidget {
                     '${e.notes ?? ''}',
                     style: TextStyle(fontSize: 15.0),
                   ),
-                  SizedBox(height: 2.5,),
+                  SizedBox(
+                    height: 2.5,
+                  ),
                   Text(
                     '${StringUtils.titleCase(e.authorName)} - ${GlobalUtils.getEventDateMessage(context, e.begin)}',
                     style: TextStyle(fontSize: 12.0),

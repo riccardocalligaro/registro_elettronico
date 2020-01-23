@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:injector/injector.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
+import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -14,12 +16,15 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   SpaggiariClient spaggiariClient;
   DidacticsDao didacticsDao;
   ProfileDao profileDao;
+  NetworkInfo networkInfo;
 
   DidacticsRepositoryImpl(
     this.spaggiariClient,
     this.didacticsDao,
     this.profileDao,
+    this.networkInfo,
   );
+
   @override
   Future<List<int>> getDidacticsFile() {
     return null;
@@ -27,37 +32,45 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
 
   @override
   Future updateDidactics() async {
-    final profile = await profileDao.getProfile();
+    if (await networkInfo.isConnected) {
+      final profile = await profileDao.getProfile();
 
-    FLog.info(text: 'Updating didactics');
+      FLog.info(text: 'Updating didactics');
 
-    final didactics = await spaggiariClient.getDidactics(profile.studentId);
-    List<DidacticsTeacher> teachers = [];
-    didactics.teachers.forEach((teacher) {
-      List<DidacticsFolder> folders = [];
-      final teacherDb =
-          DidacticsMapper.convertTeacherEntityToInsertable(teacher);
-      teacher.folders.forEach((folder) {
-        folders.add(
-          DidacticsMapper.convertFolderEntityToInsertable(folder, teacherDb.id),
-        );
-        List<DidacticsContent> contents = [];
-        folder.contents.forEach((content) {
-          contents.add(DidacticsMapper.convertContentEntityToInsertable(
-              content, folder.folderId));
+      final didactics = await spaggiariClient.getDidactics(profile.studentId);
+
+      await deleteAllDidactics();
+
+      List<DidacticsTeacher> teachers = [];
+      didactics.teachers.forEach((teacher) {
+        List<DidacticsFolder> folders = [];
+        final teacherDb =
+            DidacticsMapper.convertTeacherEntityToInsertable(teacher);
+        teacher.folders.forEach((folder) {
+          folders.add(
+            DidacticsMapper.convertFolderEntityToInsertable(
+                folder, teacherDb.id),
+          );
+          List<DidacticsContent> contents = [];
+          folder.contents.forEach((content) {
+            contents.add(DidacticsMapper.convertContentEntityToInsertable(
+                content, folder.folderId));
+          });
+          didacticsDao.insertContents(contents);
         });
-        didacticsDao.insertContents(contents);
+
+        didacticsDao.insertFolders(folders);
+        teachers.add(teacherDb);
       });
 
-      didacticsDao.insertFolders(folders);
-      teachers.add(teacherDb);
-    });
-
-    FLog.info(
-      text:
-          'Got ${didactics.teachers} teachers events from server, procceding to insert in database',
-    );
-    didacticsDao.insertTeachers(teachers);
+      FLog.info(
+        text:
+            'Got ${didactics.teachers} teachers events from server, procceding to insert in database',
+      );
+      didacticsDao.insertTeachers(teachers);
+    } else {
+      throw NotConntectedException();
+    }
   }
 
   @override
@@ -77,29 +90,41 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
 
   @override
   Future<Response> getFileAttachment(int fileID) async {
-    final profile = await profileDao.getProfile();
-    FLog.info(text: 'Getting attachment for $fileID!');
-    final res = await _getAttachmentFile(profile.studentId, fileID);
-    FLog.info(text: 'Got attachment for $fileID!');
-    return res;
+    if (await networkInfo.isConnected) {
+      final profile = await profileDao.getProfile();
+      FLog.info(text: 'Getting attachment for $fileID!');
+      final res = await _getAttachmentFile(profile.studentId, fileID);
+      FLog.info(text: 'Got attachment for $fileID!');
+      return res;
+    } else {
+      throw NotConntectedException();
+    }
   }
 
   @override
   Future<DownloadAttachmentTextResponse> getTextAtachment(int fileID) async {
-    final profile = await profileDao.getProfile();
-    FLog.info(text: 'Getting text attachment for $fileID!');
-    final res = spaggiariClient.getAttachmentText(profile.studentId, fileID);
-    FLog.info(text: 'Got text attachment for $fileID!');
-    return res;
+    if (await networkInfo.isConnected) {
+      final profile = await profileDao.getProfile();
+      FLog.info(text: 'Getting text attachment for $fileID!');
+      final res = spaggiariClient.getAttachmentText(profile.studentId, fileID);
+      FLog.info(text: 'Got text attachment for $fileID!');
+      return res;
+    } else {
+      throw NotConntectedException();
+    }
   }
 
   @override
   Future<DownloadAttachmentURLResponse> getURLAtachment(int fileID) async {
-    final profile = await profileDao.getProfile();
-    FLog.info(text: 'Getting URL attachment for $fileID!');
-    final res = spaggiariClient.getAttachmentUrl(profile.studentId, fileID);
-    FLog.info(text: 'Got URL attachment for $fileID!');
-    return res;
+    if (await networkInfo.isConnected) {
+      final profile = await profileDao.getProfile();
+      FLog.info(text: 'Getting URL attachment for $fileID!');
+      final res = spaggiariClient.getAttachmentUrl(profile.studentId, fileID);
+      FLog.info(text: 'Got URL attachment for $fileID!');
+      return res;
+    } else {
+      throw NotConntectedException();
+    }
   }
 
   Future<Response> _getAttachmentFile(String studentId, int fileId) async {

@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
+import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/document_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
@@ -15,47 +16,53 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   ProfileRepository profileRepository;
   SpaggiariClient spaggiariClient;
   DocumentsDao documentsDao;
+  NetworkInfo networkInfo;
 
   DocumentsRepositoryImpl(
     this.spaggiariClient,
     this.profileRepository,
     this.documentsDao,
+    this.networkInfo,
   );
 
   @override
   Future updateDocuments() async {
-    final profile = await profileRepository.getDbProfile();
-    FLog.info(text: 'Got profile');
+    if (await networkInfo.isConnected) {
+      final profile = await profileRepository.getDbProfile();
+      final documents = await spaggiariClient.getDocuments(profile.studentId);
 
-    await documentsDao.deeteAllDocuments();
-    await documentsDao.deeteAllSchoolReports();
+      List<Document> documentsList = [];
+      List<SchoolReport> reportsList = [];
 
-    final documents = await spaggiariClient.getDocuments(profile.studentId);
+      documents.documents.forEach((document) {
+        documentsList
+            .add(DocumentMapper.convertApiDocumentToInsertable(document));
+      });
 
-    List<Document> documentsList = [];
-    List<SchoolReport> reportsList = [];
+      documents.schoolReports.forEach((report) {
+        reportsList
+            .add(DocumentMapper.convertApiSchoolReportToInsertable(report));
+      });
 
-    documents.documents.forEach((document) {
-      documentsList
-          .add(DocumentMapper.convertApiDocumentToInsertable(document));
-    });
+      FLog.info(
+        text:
+            'Got ${documents.documents.length} documents from server, procceding to insert in database',
+      );
 
-    documents.schoolReports.forEach((report) {
-      reportsList
-          .add(DocumentMapper.convertApiSchoolReportToInsertable(report));
-    });
+      FLog.info(
+        text:
+            'Got ${documents.schoolReports.length} school reports from server, procceding to insert in database',
+      );
 
-    FLog.info(
-      text:
-          'Got ${documents.documents.length} documents from server, procceding to insert in database',
-    );
+      // Delete the documents
+      await documentsDao.deeteAllDocuments();
+      await documentsDao.deeteAllSchoolReports();
 
-    FLog.info(
-      text:
-          'Got ${documents.schoolReports.length} school reports from server, procceding to insert in database',
-    );
-    await documentsDao.insertDocuments(documentsList);
-    await documentsDao.insertSchoolReports(reportsList);
+      await documentsDao.insertDocuments(documentsList);
+      await documentsDao.insertSchoolReports(reportsList);
+    } else {
+      throw NotConntectedException();
+    }
   }
 
   @override
@@ -68,52 +75,60 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
 
   @override
   Future<Either<Failure, bool>> checkDocument(String documentHash) async {
-    final profile = await profileRepository.getDbProfile();
-    FLog.info(text: 'Got profile');
+    if (await networkInfo.isConnected) {
+      final profile = await profileRepository.getDbProfile();
 
-    try {
-      final available = await spaggiariClient.checkDocumentAvailability(
-        profile.studentId,
-        documentHash,
-      );
+      try {
+        final available = await spaggiariClient.checkDocumentAvailability(
+          profile.studentId,
+          documentHash,
+        );
 
-      return Right(available);
-    } catch (e) {
-      return Left(ServerFailure());
+        return Right(available);
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      throw NotConntectedException();
     }
   }
 
   @override
   Future<Either<Failure, String>> readDocument(String documentHash) async {
-    try {
-      final profile = await profileRepository.getDbProfile();
-      FLog.info(text: 'Got profile');
+    if (await networkInfo.isConnected) {
+      try {
+        final profile = await profileRepository.getDbProfile();
+        FLog.info(text: 'Got profile');
 
-      final document = await spaggiariClient.readDocument(
-        profile.studentId,
-        documentHash,
-      );
-      String filename = document.value2;
-      filename = filename.replaceAll('attachment; filename=', '');
-      filename = filename.replaceAll(RegExp('\"'), '');
-      filename = filename.trim();
-      FLog.info(text: 'Filename -> $filename');
-      final path = await _localPath;
-      String filePath = '$path/$filename';
-      File file = File(filePath);
-      var raf = file.openSync(mode: FileMode.write);
-      raf.writeFromSync(document.value1);
-      await raf.close();
+        final document = await spaggiariClient.readDocument(
+          profile.studentId,
+          documentHash,
+        );
+        String filename = document.value2;
+        filename = filename.replaceAll('attachment; filename=', '');
+        filename = filename.replaceAll(RegExp('\"'), '');
+        filename = filename.trim();
 
-      await documentsDao.insertDownloadedDocument(DownloadedDocument(
-        path: filePath,
-        filename: filename,
-        hash: documentHash,
-      ));
+        FLog.info(text: 'Filename -> $filename');
+        final path = await _localPath;
+        String filePath = '$path/$filename';
+        File file = File(filePath);
+        var raf = file.openSync(mode: FileMode.write);
+        raf.writeFromSync(document.value1);
+        await raf.close();
 
-      return Right(filePath);
-    } catch (e) {
-      return Left(ServerFailure());
+        await documentsDao.insertDownloadedDocument(DownloadedDocument(
+          path: filePath,
+          filename: filename,
+          hash: documentHash,
+        ));
+
+        return Right(filePath);
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      throw NotConntectedException();
     }
   }
 
@@ -129,7 +144,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
 
   @override
   Future deleteDownloadedDocument(String hash) async {
-    FLog.info(text: 'Checking downloaded');
+    FLog.info(text: 'Checking downloaded with hash');
     final fileDb = await documentsDao.getDownloadedDocumentFromHash(hash);
     if (fileDb != null) {
       File file = File(fileDb.path);

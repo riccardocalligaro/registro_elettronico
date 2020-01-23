@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/notices_repository.dart';
 import './bloc.dart';
 
@@ -43,9 +44,11 @@ class AttachmentDownloadBloc
         raf.writeFromSync(response);
         await raf.close();
         yield AttachmentDownloadLoaded(filePath);
+      } on NotConntectedException {
+        yield AttachmentDownloadLoadNotConnected();
       } on DioError catch (e) {
         yield AttachmentDownloadError(e.toString());
-      } on Exception catch (e, s) {
+      } catch (e, s) {
         FLog.error(
           text: 'Error downloading attachment',
           exception: e,
