@@ -75,7 +75,7 @@ class NotesRepositoryImpl implements NotesRepository {
 
       await noteDao.insertNotes(notes);
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 
@@ -88,7 +88,7 @@ class NotesRepositoryImpl implements NotesRepository {
           await spaggiariClient.markNote(profile.studentId, type, eventId, "");
       return res;
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 
@@ -117,7 +117,7 @@ class NotesRepositoryImpl implements NotesRepository {
 
       return insertable;
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 }

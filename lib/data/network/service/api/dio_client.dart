@@ -57,7 +57,7 @@ class DioClient {
           });
 
           if (res.statusCode != 200) {
-            throw new ServerException.fromJson(res.data);
+            throw ServerException.fromJson(res.data);
           }
 
           // this converts the response data to a login response

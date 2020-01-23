@@ -14,6 +14,8 @@ class NotesUpdateLoading extends NotesState {}
 
 class NotesUpdateLoaded extends NotesState {}
 
+class NotesLoadErrorNotConnected extends NotesState {}
+
 class NotesUpdateError extends NotesState {
   final String error;
 

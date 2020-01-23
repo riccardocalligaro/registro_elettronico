@@ -184,9 +184,12 @@
   "never": "Mai",
   "delete_grade_title_cancel": "Vuoi eliminare questo voto dalla media?",
   "delete_grade_title_restore": "Vuoi ripristinare questo voto?",
-  "yes": "Yes",
-  "no": "Si",
+  "yes": "Si",
+  "no": "No",
   "unknown_subject": "Materia sconosciuta",
   "next_tests": "Prossime verifiche",
-  "not_conntected_snackbar": "Connessione a internet assente."
+  "not_conntected_snackbar": "Connessione a internet assente.",
+  "logout_message": "Tutti i dati e preferenze verrano eliminati. Ti dovrai loggare di nuovo.",
+  "all_fields_message":"You must compile all forms",
+  "secure":"Sicuro"
 }

@@ -33,7 +33,7 @@ class LoginRepositoryImpl implements LoginRepository {
       final res = await spaggiariClient.loginUser(loginRequest);
       return res;
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 }

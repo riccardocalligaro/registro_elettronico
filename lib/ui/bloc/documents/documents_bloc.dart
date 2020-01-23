@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,9 +46,10 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
         documents: data.value2,
       );
     } catch (e, s) {
-      FLog.error(text: 'Got erorr ${e.toString()}');
-
-      // FLog.error(text: 'Got erorr', exception: e, stacktrace: s);
+      FLog.error(
+          text: 'Got error while getting documents',
+          exception: e,
+          stacktrace: s);
       Crashlytics.instance.recordError(e, s);
       yield DocumentsLoadError();
     }
@@ -60,6 +62,8 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
       await documentsRepository.updateDocuments();
       FLog.info(text: 'Successfully updated documents and school reports');
       yield DocumentsUpdateLoadSuccess();
+    } on NotConntectedException {
+      yield DocumentsLoadNotConnected();
     } catch (e, s) {
       FLog.error(
           text: 'Got erorr updating documents', exception: e, stacktrace: s);

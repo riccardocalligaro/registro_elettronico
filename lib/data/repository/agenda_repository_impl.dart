@@ -46,7 +46,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
 
       agendaDao.insertEvents(events);
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 
@@ -67,7 +67,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
       await agendaDao.deleteEventsFromDate(DateTime.now());
       agendaDao.insertEvents(events);
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 
@@ -85,7 +85,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
       });
       agendaDao.insertEvents(events);
     } else {
-      throw new NotConntectedException();
+      throw NotConntectedException();
     }
   }
 

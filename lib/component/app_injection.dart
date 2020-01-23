@@ -274,12 +274,14 @@ class AppInjector {
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
+        i.getDependency(),
       );
       return documentsRepository;
     });
 
     Injector.appInstance.registerSingleton((i) {
       ScrutiniRepository scrutiniRepository = ScrutiniRepositoryImpl(
+        i.getDependency(),
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),

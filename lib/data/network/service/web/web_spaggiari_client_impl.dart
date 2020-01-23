@@ -36,7 +36,7 @@ class WebSpaggiariClientImpl implements WebSpaggiariClient {
       return ssid;
     } else {
       FLog.info(text: 'Erorr');
-      throw new ServerFailure();
+      throw ServerFailure();
     }
   }
 }
