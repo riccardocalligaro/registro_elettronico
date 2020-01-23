@@ -33,8 +33,8 @@ class _SplashScreenState extends State<SplashScreen> {
           if (state is AutoSignInResult) {
             FLog.info(text: "Auto sign in resulted -> Home screen");
 
-            AppNavigator.instance.navToIntro(context);
-            //AppNavigator.instance.navToHome(context);
+            //AppNavigator.instance.navToIntro(context);
+            AppNavigator.instance.navToHome(context);
           }
 
           /// If the auto sign in returns an error the user
