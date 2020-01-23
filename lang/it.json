@@ -191,5 +191,6 @@
   "not_conntected_snackbar": "Connessione a internet assente.",
   "logout_message": "Tutti i dati e preferenze verrano eliminati. Ti dovrai loggare di nuovo.",
   "all_fields_message":"You must compile all forms",
-  "secure":"Sicuro"
+  "secure":"Sicuro",
+  "ok":"Ok"
 }

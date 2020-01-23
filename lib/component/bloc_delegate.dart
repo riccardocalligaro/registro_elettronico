@@ -82,6 +82,7 @@ class AppBlocDelegate {
           i.getDependency(),
           i.getDependency(),
           i.getDependency(),
+          i.getDependency(),
         ),
       ),
       BlocProvider<LessonsBloc>(
