@@ -206,5 +206,12 @@
   "loading_2_subtitle": "Puoi eliminare un voto in locale e scoprire come sarebbe la tua media senza di esso.",
   "loading_3_subtitle": "Puoi vedere un resoconto scolastico personalizzato nella sezione statistiche",
   "loading_4_subtitle": "Puoi impostare le notifiche a tuo piacimento",
-  "this_week_section_title" : "Questa settimana"
+  "this_week_section_title" : "Questa settimana",
+  "not_connected" : "Not connected",
+  "ok" : "OK",
+  "scegli_un_profilo" : "Scegli un profilo",
+  "riccardo_calligaro" : "Riccardo Calligaro",
+  "filippo_veggo" : "Filippo Veggo",
+  "design" : "Design",
+  "jacopo_ferian_samuele_zanella" :"Jacopo Ferian, Samuele Zanella, Andrea Nocco"
 }

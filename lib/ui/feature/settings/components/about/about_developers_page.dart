@@ -32,7 +32,7 @@ class AboutDevelopersPage extends StatelessWidget {
                 ),
                 backgroundColor: Colors.transparent,
               ),
-              title: Text('Riccardo Calligaro'),
+              title: Text(AppLocalizations.of(context).translate('riccardo_calligaro')),
               subtitle: Text(trans.translate('riccardo_calligaro_description')),
               trailing: IconButton(
                 icon: Icon(Icons.send),
@@ -54,8 +54,8 @@ class AboutDevelopersPage extends StatelessWidget {
                 ),
                 backgroundColor: Colors.transparent,
               ),
-              title: Text('Filippo Veggo'),
-              subtitle: Text('Design'),
+              title: Text(AppLocalizations.of(context).translate('filippo_veggo')),
+              subtitle: Text(AppLocalizations.of(context).translate('design')),
               trailing: IconButton(
                 icon: Icon(Icons.send),
                 onPressed: () async {
