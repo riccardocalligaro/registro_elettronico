@@ -39,7 +39,7 @@ class _GeneralObjectiveSettingsDialogState
             },
           ),
           FlatButton(
-            child: Text('OK'),
+            child: Text(AppLocalizations.of(context).translate('ok')),
             onPressed: () {
               Navigator.pop(context, _objective);
             },
