@@ -24,7 +24,7 @@ class ContentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.center,
+      alignment: Alignment.bottomCenter,
       fit: StackFit.expand,
       children: <Widget>[
         Container(
@@ -33,13 +33,13 @@ class ContentCard extends StatelessWidget {
           ),
         ),
         Container(
-          alignment: Alignment.center,
+          alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.only(top: 129.0, bottom: 25.0),
+            padding: const EdgeInsets.only(top: 100.0, bottom: 25.0),
             child: Column(
               children: <Widget>[
                 Expanded(
-                  flex: 3,
+                  flex: 4,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: centerWidget,
@@ -48,7 +48,7 @@ class ContentCard extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: _buildBottomContent(context),
                   ),
                 ),

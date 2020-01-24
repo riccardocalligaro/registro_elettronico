@@ -36,9 +36,6 @@ class _GradientRedButtonState extends State<GradientRedButton> {
             colors: [
               Colors.red[600],
               Colors.red[800],
-
-              // Color.fromRGBO(101, 184, 147, 1),
-              // Color.fromRGBO(186, 237, 136, 1)
             ],
           ),
           borderRadius: BorderRadius.all(
