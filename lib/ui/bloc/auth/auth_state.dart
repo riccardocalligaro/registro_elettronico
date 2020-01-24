@@ -46,4 +46,7 @@ class AutoSignInLoading extends AuthState {}
 
 class AutoSignInError extends AuthState {}
 
+class AutoSignInNeedDownloadData extends AuthState {}
+
+
 class AutoSignInResult extends AuthState {}

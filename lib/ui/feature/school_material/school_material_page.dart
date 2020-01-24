@@ -6,13 +6,10 @@ import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/didactics_attachments/bloc.dart';
-import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,17 +42,17 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+    //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
     return Scaffold(
-      key: _drawerKey,
-      appBar: CustomAppBar(
+      //key: _drawerKey,
+      appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('school_material')),
-        scaffoldKey: _drawerKey,
+        //scaffoldKey: _drawerKey,
       ),
-      drawer: AppDrawer(
-        position: DrawerConstants.SCHOOL_MATERIAL,
-      ),
+      // drawer: AppDrawer(
+      //   position: DrawerConstants.SCHOOL_MATERIAL,
+      // ),
       bottomSheet: LastUpdateBottomSheet(
         millisecondsSinceEpoch: _schoolMaterialLastUpdate,
       ),

@@ -24,7 +24,7 @@ class AppNavigator {
   }
 
   void navToLogin(BuildContext context) {
-    Navigator.pushNamed(context, Routes.LOGIN);
+    Navigator.pushReplacementNamed(context, Routes.LOGIN);
   }
 
   void navToLessons(BuildContext context) {
@@ -68,7 +68,7 @@ class AppNavigator {
   }
 
   void navToSettings(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.SETTINGS);
+    Navigator.pushNamed(context, Routes.SETTINGS);
   }
 
   Future showMessageDialog(

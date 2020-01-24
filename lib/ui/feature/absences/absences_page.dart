@@ -7,13 +7,10 @@ import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_event.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_state.dart';
 import 'package:registro_elettronico/ui/feature/absences/components/absence_card.dart';
-import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,17 +44,17 @@ class _AbsencesPageState extends State<AbsencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+    //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
     return Scaffold(
-      key: _drawerKey,
-      appBar: CustomAppBar(
-        scaffoldKey: _drawerKey,
+      //key: _drawerKey,
+      appBar: AppBar(
+        //scaffoldKey: _drawerKey,
         title: Text(AppLocalizations.of(context).translate('absences')),
       ),
-      drawer: AppDrawer(
-        position: DrawerConstants.ABSENCES,
-      ),
+      // drawer: AppDrawer(
+      //   position: DrawerConstants.ABSENCES,
+      // ),
       bottomSheet: LastUpdateBottomSheet(
         millisecondsSinceEpoch: _absencesLastUpdate,
       ),

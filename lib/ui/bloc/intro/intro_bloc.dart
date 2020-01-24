@@ -126,6 +126,7 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
 
         await timetableRepository.updateTimeTable();
 
+        prefs.setBool(PrefsConstants.VITAL_DATA_DOWNLOADED, true);
         FLog.info(text: 'Updated timetable');
 
         yield IntroLoaded();

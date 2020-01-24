@@ -7,12 +7,9 @@ import 'package:registro_elettronico/ui/bloc/notes/note_attachments/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notes/notes_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notes/notes_event.dart';
 import 'package:registro_elettronico/ui/bloc/notes/notes_state.dart';
-import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 
 class NotesPage extends StatefulWidget {
@@ -31,16 +28,16 @@ class _NotesPageState extends State<NotesPage> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+    //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
     return Scaffold(
-      key: _drawerKey,
-      appBar: CustomAppBar(
-        scaffoldKey: _drawerKey,
+      //key: _drawerKey,
+      appBar: AppBar(
+        //scaffoldKey: _drawerKey,
         title: Text(AppLocalizations.of(context).translate('notes')),
       ),
-      drawer: AppDrawer(
-        position: DrawerConstants.NOTES,
-      ),
+      // drawer: AppDrawer(
+      //   position: DrawerConstants.NOTES,
+      // ),
       body: MultiBlocListener(
         listeners: [
           BlocListener<NotesBloc, NotesState>(

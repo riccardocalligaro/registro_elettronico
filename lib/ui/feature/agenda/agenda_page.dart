@@ -7,13 +7,10 @@ import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
-import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
@@ -28,7 +25,7 @@ class AgendaPage extends StatefulWidget {
 }
 
 class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  // GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   RefreshController _refreshController = RefreshController();
 
   List _selectedEvents;
@@ -90,9 +87,9 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _drawerKey,
-      appBar: CustomAppBar(
-        scaffoldKey: _drawerKey,
+      //key: _drawerKey,
+      appBar: AppBar(
+        //scaffoldKey: _drawerKey,
         title: Text(AppLocalizations.of(context).translate('agenda')),
         actions: <Widget>[
           IconButton(
@@ -101,9 +98,9 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
           )
         ],
       ),
-      drawer: AppDrawer(
-        position: DrawerConstants.AGENDA,
-      ),
+      // drawer: AppDrawer(
+      //   position: DrawerConstants.AGENDA,
+      // ),
       bottomSheet: LastUpdateBottomSheet(
         millisecondsSinceEpoch: _agendaLastUpdate,
       ),

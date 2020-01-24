@@ -95,13 +95,14 @@ class ContentCard extends StatelessWidget {
             color: textColor,
           ),
         ),
-        Padding(
+
+        index == 3 ? Padding(
           padding: const EdgeInsets.symmetric(horizontal: 36.0),
           child: MaterialButton(
             elevation: 0,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-            color: backgroundColor,
+            color: Colors.red,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Text(
@@ -127,7 +128,7 @@ class ContentCard extends StatelessWidget {
               );
             },
           ),
-        )
+        ) : SizedBox(height: 72,)
       ],
     );
   }

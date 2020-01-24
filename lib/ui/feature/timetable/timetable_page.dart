@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/timetable/bloc.dart';
-import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 
 import '../../bloc/timetable/timetable_event.dart';
@@ -30,12 +27,12 @@ class _TimetablePageState extends State<TimetablePage> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+    //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
     return Scaffold(
-      key: _drawerKey,
-      appBar: CustomAppBar(
-        scaffoldKey: _drawerKey,
+      //key: _drawerKey,
+      appBar: AppBar(
+        //scaffoldKey: _drawerKey,
         title: Text(
           AppLocalizations.of(context).translate('timetable'),
         ),
@@ -49,9 +46,9 @@ class _TimetablePageState extends State<TimetablePage> {
           ),
         ],
       ),
-      drawer: AppDrawer(
-        position: DrawerConstants.TIMETABLE,
-      ),
+      // drawer: AppDrawer(
+      //   position: DrawerConstants.TIMETABLE,
+      // ),
       body: Container(
         child: BlocBuilder<TimetableBloc, TimetableState>(
           builder: (context, state) {

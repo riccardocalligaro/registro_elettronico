@@ -14,6 +14,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   Future<bool> isLoggedIn() async {
     final profiles = await profileDao.getAllProfiles();
+ 
+
     return (profiles.length >= 1);
   }
 

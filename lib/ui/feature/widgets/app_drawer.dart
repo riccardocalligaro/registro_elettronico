@@ -101,19 +101,24 @@ class _AppDrawerState extends State<AppDrawer>
                         AppLocalizations.of(context)
                             .translate('reset_db_alert'),
                       ),
-                      content: Text(AppLocalizations.of(context).translate('logout_message')),
+                      content: Text(AppLocalizations.of(context)
+                          .translate('logout_message')),
                       actions: <Widget>[
                         FlatButton(
-                          child: Text(AppLocalizations.of(context).translate('no')),
+                          child: Text(
+                              AppLocalizations.of(context).translate('no')),
                           onPressed: () {
                             Navigator.pop(context);
                           },
                         ),
                         FlatButton(
-                          child: Text(AppLocalizations.of(context).translate('yes')),
+                          child: Text(
+                              AppLocalizations.of(context).translate('yes')),
                           onPressed: () {
+                            Navigator.pop(context);
                             BlocProvider.of<IntroBloc>(context).add(Reset());
                             BlocProvider.of<AuthBloc>(context).add(SignOut());
+
                             AppNavigator.instance.navToLogin(context);
                           },
                         ),
@@ -143,7 +148,8 @@ class _AppDrawerState extends State<AppDrawer>
               pos: DrawerConstants.HOME,
               onTap: () {
                 //Navigator.pop(context);
-                Navigator.pushReplacementNamed(context, Routes.HOME);
+                //Navigator.pushReplacementNamed(context, Routes.HOME);
+                AppNavigator.instance.navToHome(context);
               },
             ),
             _createDrawerItem(
@@ -152,11 +158,9 @@ class _AppDrawerState extends State<AppDrawer>
               pos: DrawerConstants.LESSONS,
               onTap: () {
                 Navigator.pop(context);
-
-                Navigator.pushNamedAndRemoveUntil(context, Routes.LESSONS,
-                    (Route<dynamic> route) {
-                  return route.isActive;
-                });
+                AppNavigator.instance.navToLessons(context);
+                // Navigator.pushNamedAndRemoveUntil(
+                //     context, Routes.LESSONS, (Route<dynamic> route) => false);
               },
             ),
             _createDrawerItem(
@@ -165,12 +169,10 @@ class _AppDrawerState extends State<AppDrawer>
               pos: DrawerConstants.GRADES,
               onTap: () {
                 Navigator.pop(context);
+                AppNavigator.instance.navToGrades(context);
 
-                Navigator.pushNamedAndRemoveUntil(context, Routes.GRADES, (
-                  Route<dynamic> route,
-                ) {
-                  return route.isActive;
-                });
+                // Navigator.pushNamedAndRemoveUntil(
+                //     context, Routes.GRADES, ((Route<dynamic> route) => false));
               },
             ),
             _createDrawerItem(
