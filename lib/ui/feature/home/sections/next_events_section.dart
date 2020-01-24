@@ -38,9 +38,18 @@ class NextEventsSection extends StatelessWidget {
             builder: (context, state) {
               if (state is AgendaDashboardLoadSuccess) {
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     WeekSummaryChart(
                       events: state.events,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(AppLocalizations.of(context)
+                            .translate('next_events')),
+                    SizedBox(
+                      height: 10,
                     ),
                     _buildAgenda(context, state.events),
                   ],

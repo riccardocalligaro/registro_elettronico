@@ -4,6 +4,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/feature/home/widgets/lesson_card.dart';
+import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -58,23 +59,26 @@ class LastLessonsSection extends StatelessWidget {
   Widget _buildLessonsCardsList(List<Lesson> lessons, BuildContext context) {
     if (lessons.length > 0) {
       final lessonsGrouped = GlobalUtils.getGroupedLessonsMap(lessons);
-      return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: lessonsGrouped.keys.length,
-        itemBuilder: (context, index) {
-          final lessonKey = lessonsGrouped.keys.elementAt(index);
-          final duration = lessonsGrouped[lessonKey];
-          final lesson = lessons
-              .where((l) =>
-                  l.lessonArg == lessonKey.item2 &&
-                  l.subjectId == lessonKey.item1)
-              .elementAt(0);
-          return LessonCard(
-            lesson: lesson,
-            duration: duration,
-            position: index,
-          );
-        },
+      return ScrollConfiguration(
+        behavior: NoGlowBehavior(),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: lessonsGrouped.keys.length,
+          itemBuilder: (context, index) {
+            final lessonKey = lessonsGrouped.keys.elementAt(index);
+            final duration = lessonsGrouped[lessonKey];
+            final lesson = lessons
+                .where((l) =>
+                    l.lessonArg == lessonKey.item2 &&
+                    l.subjectId == lessonKey.item1)
+                .elementAt(0);
+            return LessonCard(
+              lesson: lesson,
+              duration: duration,
+              position: index,
+            );
+          },
+        ),
       );
     }
 

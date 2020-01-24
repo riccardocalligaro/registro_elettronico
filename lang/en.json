@@ -182,8 +182,8 @@
   "update_week": "A week ago",
   "last_update": "Last update",
   "never": "Never",
-  "delete_grade_title_cancel": "Do you wish to remove this grade from the school average?",
-  "delete_grade_title_restore": "Do you wish to restore this grade?",
+  "delete_grade_title_cancel": "Do you want to remove this grade from the school average?",
+  "delete_grade_title_restore": "Do you want to restore this grade?",
   "yes": "Yes",
   "no": "No",
   "unknown_subject": "Unknown subject",
@@ -197,13 +197,14 @@
   "slide_2_title": "Graphs and statistics",
   "slide_3_title": "Notifications",
   "slide_4_title": "Theme",
-  "slide_1_subtitle": "Slide to your left for a brief introduction\nApplication developed by students.",
-  "slide_2_subtitle": "Discover more about your performance thanks to more than 50 statistics",
+  "slide_1_subtitle": "Swipe left for a brief introduction\nApplication developed by students.",
+  "slide_2_subtitle": "Get the most out of your performance thanks to 50+ statistics",
   "slide_3_subtitle": "Be always updated.\n Receive notifications about grades, communications and much more.",
   "slide_4_subtitle": "Choose a theme\nDark is better.",
   "loading_subtitle_data": "This data is vital for the correct functioning of the application",
   "loading_1_subtitle": "You can set a custom objective by holding a subject on the grades tab",
   "loading_2_subtitle": "You can locally delete a grade and see what your average is without it.",
   "loading_3_subtitle": "You can see a custom school report in the report section",
-  "loading_4_subtitle": "You can set custom notifications"
+  "loading_4_subtitle": "You can set custom notifications",
+  "this_week_section_title" : "This week"
 }
