@@ -88,6 +88,8 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.4.0):
     - GoogleUtilities/Logger
+  - liquid_swipe (0.0.1):
+    - Flutter
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
@@ -125,6 +127,7 @@ DEPENDENCIES:
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
+  - liquid_swipe (from `.symlinks/plugins/liquid_swipe/ios`)
   - open_file (from `.symlinks/plugins/open_file/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
@@ -172,6 +175,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   flutter_webview_plugin:
     :path: ".symlinks/plugins/flutter_webview_plugin/ios"
+  liquid_swipe:
+    :path: ".symlinks/plugins/liquid_swipe/ios"
   open_file:
     :path: ".symlinks/plugins/open_file/ios"
   path_provider:
@@ -216,6 +221,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 8e9b210c97d55fbff306cc5468ff91b9cb32dcf5
   GoogleDataTransportCCTSupport: 202d7cdf9c4a7d81a2bb7f7e7e1ba6faa421b1f2
   GoogleUtilities: 29bd0d8f850efbd28cff6d99e8b7da1f8d236bcf
+  liquid_swipe: d3dbe523989a927528e7e7d2d0fc674da90cbbf7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d

@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
@@ -80,6 +81,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             yield SignInParent(parentsLoginResponse);
           },
         );
+      } on NotConntectedException {
+        yield SignInNotConnected();
       } on DioError catch (e) {
         FLog.error(text: 'Error while logging in user: ${e.response.data}');
         yield SignInNetworkError(ServerException.fromJson(e.response.data));

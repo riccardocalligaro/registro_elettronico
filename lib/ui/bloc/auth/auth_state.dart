@@ -38,15 +38,14 @@ class SignInNetworkError extends AuthState {
   SignInNetworkError(this.error);
 }
 
-class SignOutSuccess extends AuthState {
-  SignOutSuccess();
-}
+class SignInNotConnected extends AuthState {}
+
+class SignOutSuccess extends AuthState {}
 
 class AutoSignInLoading extends AuthState {}
 
 class AutoSignInError extends AuthState {}
 
 class AutoSignInNeedDownloadData extends AuthState {}
-
 
 class AutoSignInResult extends AuthState {}
