@@ -10,13 +10,10 @@ import 'package:registro_elettronico/ui/bloc/documents/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/documents/document_attachment/bloc/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/token/bloc.dart';
 import 'package:registro_elettronico/ui/feature/scrutini/web/spaggiari_web_view.dart';
-import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,7 +25,7 @@ class ScrutiniPage extends StatefulWidget {
 }
 
 class _ScrutiniPageState extends State<ScrutiniPage> {
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   int _scrutiniLastUpdate;
 
   @override
@@ -50,9 +47,9 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _drawerKey,
-        appBar: CustomAppBar(
-          scaffoldKey: _drawerKey,
+        //key: _drawerKey,
+        appBar: AppBar(
+          //scaffoldKey: _drawerKey,
           title: Text(AppLocalizations.of(context).translate('scrutini')),
           actions: <Widget>[
             IconButton(
@@ -66,9 +63,9 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
             )
           ],
         ),
-        drawer: AppDrawer(
-          position: DrawerConstants.SCRUTINI,
-        ),
+        // drawer: AppDrawer(
+        //   position: DrawerConstants.SCRUTINI,
+        // ),
         bottomSheet: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _scrutiniLastUpdate,
         ),

@@ -11,6 +11,7 @@ import 'package:registro_elettronico/domain/entity/api_responses/login_response.
 import 'package:registro_elettronico/domain/entity/api_responses/parent_response.dart';
 import 'package:registro_elettronico/domain/repository/login_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './bloc.dart';
@@ -38,7 +39,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final isUserLoggedIn = await profileRepository.isLoggedIn();
       FLog.info(text: 'Auto sign in result: $isUserLoggedIn');
       if (isUserLoggedIn) {
-        yield AutoSignInResult();
+        final prefs = await SharedPreferences.getInstance();
+        if (prefs.getBool(PrefsConstants.VITAL_DATA_DOWNLOADED) ?? false) {
+          yield AutoSignInNeedDownloadData();
+        } else {
+          yield AutoSignInResult();
+        }
       } else {
         yield AutoSignInError();
       }

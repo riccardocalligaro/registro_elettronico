@@ -11,10 +11,7 @@ import 'package:registro_elettronico/ui/feature/settings/components/customizatio
 import 'package:registro_elettronico/ui/feature/settings/components/general/general_settings.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/notifications/notifications_interval_settings_dialog.dart';
-import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
-import 'package:registro_elettronico/ui/feature/widgets/custom_app_bar.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +27,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
   int _updateInterval = 30;
   SharedPreferences sharedPrefs;
@@ -59,16 +56,16 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _drawerKey,
-      appBar: CustomAppBar(
-        scaffoldKey: _drawerKey,
+      //key: _drawerKey,
+      appBar: AppBar(
+        //scaffoldKey: _drawerKey,
         title: Text(
           AppLocalizations.of(context).translate('settings'),
         ),
       ),
-      drawer: AppDrawer(
-        position: DrawerConstants.SETTINGS,
-      ),
+      // drawer: AppDrawer(
+      //   position: DrawerConstants.SETTINGS,
+      // ),
       body: SingleChildScrollView(
         child: Container(
           child: Column(

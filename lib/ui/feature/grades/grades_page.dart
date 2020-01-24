@@ -62,59 +62,88 @@ class _GradesPageState extends State<GradesPage> {
               bottomSheet: LastUpdateBottomSheet(
                 millisecondsSinceEpoch: _lastUpdateGrades,
               ),
-              drawer: AppDrawer(
-                position: DrawerConstants.GRADES,
-              ),
+              // drawer: AppDrawer(
+              //   position: DrawerConstants.GRADES,
+              // ),
               body: BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
-                  listener: (context, state) {
-                    if (state is SubjectsGradesUpdateLoadSuccess) {
-                      setState(() {
-                        _lastUpdateGrades =
-                            DateTime.now().millisecondsSinceEpoch;
-                      });
-                    }
+                listener: (context, state) {
+                  if (state is SubjectsGradesUpdateLoadSuccess) {
+                    setState(() {
+                      _lastUpdateGrades = DateTime.now().millisecondsSinceEpoch;
+                    });
+                  }
 
-                    if (state is SubjectsGradesLoadNotConnected) {
-                      Scaffold.of(context)
-                        ..removeCurrentSnackBar()
-                        ..showSnackBar(AppNavigator.instance
-                            .getNetworkErrorSnackBar(context));
-                    }
-                  },
-                  child: TabBarView(
-                    children: <Widget>[
-                      LastGradesPage(
-                        grades: state.grades,
-                      ),
-                      TermGradesPage(
-                        grades: state.grades,
-                        subjects: state.subjects,
-                        objectives: state.objectives,
-                        periodPosition: state.periods
-                            .where((p) => p.periodIndex == 1)
-                            .single
-                            .position,
-                        generalObjective: state.generalObjective,
-                      ),
-                      TermGradesPage(
-                        grades: state.grades,
-                        subjects: state.subjects,
-                        objectives: state.objectives,
-                        periodPosition: state.periods
-                            .where((p) => p.periodIndex == 2)
-                            .single
-                            .position,
-                        generalObjective: state.generalObjective,
-                      ),
-                      TermGradesPage(
-                        grades: state.grades,
-                        subjects: state.subjects,
-                        objectives: state.objectives,
-                        periodPosition: TabsConstants.GENERALE,
-                        generalObjective: state.generalObjective,
+                  if (state is SubjectsGradesLoadNotConnected) {
+                    Scaffold.of(context)
+                      ..removeCurrentSnackBar()
+                      ..showSnackBar(AppNavigator.instance
+                          .getNetworkErrorSnackBar(context));
+                  }
+                },
+                child: state.periods.length > 0
+                    ? TabBarView(
+                        children: <Widget>[
+                          LastGradesPage(
+                            grades: state.grades,
+                          ),
+                          TermGradesPage(
+                            grades: state.grades,
+                            subjects: state.subjects,
+                            objectives: state.objectives,
+                            periodPosition: state.periods
+                                .where((p) => p.periodIndex == 1)
+                                .single
+                                .position,
+                            generalObjective: state.generalObjective,
+                          ),
+                          TermGradesPage(
+                            grades: state.grades,
+                            subjects: state.subjects,
+                            objectives: state.objectives,
+                            periodPosition: state.periods
+                                .where((p) => p.periodIndex == 2)
+                                .single
+                                .position,
+                            generalObjective: state.generalObjective,
+                          ),
+                          TermGradesPage(
+                            grades: state.grades,
+                            subjects: state.subjects,
+                            objectives: state.objectives,
+                            periodPosition: TabsConstants.GENERALE,
+                            generalObjective: state.generalObjective,
+                          )
+                        ],
                       )
-                    ],
-                  )),
+                    : TabBarView(
+                        children: <Widget>[
+                          LastGradesPage(
+                            grades: state.grades,
+                          ),
+                          TermGradesPage(
+                            grades: state.grades,
+                            subjects: state.subjects,
+                            objectives: state.objectives,
+                            periodPosition: 1,
+                            generalObjective: state.generalObjective,
+                          ),
+                          TermGradesPage(
+                            grades: state.grades,
+                            subjects: state.subjects,
+                            objectives: state.objectives,
+                            periodPosition: 2,
+                            generalObjective: state.generalObjective,
+                          ),
+                          TermGradesPage(
+                            grades: state.grades,
+                            subjects: state.subjects,
+                            objectives: state.objectives,
+                            periodPosition: TabsConstants.GENERALE,
+                            generalObjective: state.generalObjective,
+                          )
+                        ],
+                      ),
+              ),
             ),
           );
         } else {
