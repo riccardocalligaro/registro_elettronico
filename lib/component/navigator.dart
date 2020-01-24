@@ -93,7 +93,7 @@ class AppNavigator {
   }
 
   void showNotConnectedSnackbar(BuildContext context) {
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text('Not connected')));
+    Scaffold.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).translate('not connected'))));
   }
 
   SnackBar getNetworkErrorSnackBar(BuildContext context) {
