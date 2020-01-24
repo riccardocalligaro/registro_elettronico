@@ -45,7 +45,7 @@ class LessonCard extends StatelessWidget {
               ),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('OK'),
+                  child: Text(AppLocalizations.of(context).translate('ok')),
                   onPressed: () => Navigator.of(bCtx).pop(),
                 )
               ],

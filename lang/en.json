@@ -206,5 +206,12 @@
   "loading_2_subtitle": "You can locally delete a grade and see what your average is without it.",
   "loading_3_subtitle": "You can see a custom school report in the report section",
   "loading_4_subtitle": "You can set custom notifications",
-  "this_week_section_title" : "This week"
+  "this_week_section_title" : "This week",
+  "not_connected" : "Not connected",
+  "ok" : "OK",
+  "scegli_un_profilo" : "Scegli un profilo",
+  "riccardo_calligaro" : "Riccardo Calligaro",
+  "filippo_veggo" : "Filippo Veggo",
+  "design" : "Design",
+  "jacopo_ferian_samuele_zanella" :"Jacopo Ferian, Samuele Zanella"
 }
