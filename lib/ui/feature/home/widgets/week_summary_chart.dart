@@ -27,6 +27,39 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
 
   LineChartData mainData() {
     return LineChartData(
+      lineTouchData: LineTouchData(
+        touchTooltipData: LineTouchTooltipData(
+            tooltipBgColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.grey[900].withOpacity(0.9),
+            getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
+              return touchedBarSpots.map((barSpot) {
+                final flSpot = barSpot;
+                String text;
+                // This also checks if the event is only one and in case changes the text to singular
+                if (flSpot.barIndex == 0) {
+                  text = AppLocalizations.of(context)
+                      .translate('absences')
+                      .toLowerCase();
+                  if (flSpot.y == 1) {
+                    text = AppLocalizations.of(context)
+                        .translate('absence')
+                        .toLowerCase();
+                  }
+                }
+                
+
+                return LineTooltipItem(
+                  "${flSpot.y.toStringAsFixed(0)} $text",
+                  TextStyle(
+                    color: flSpot.bar.colors.first,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }).toList();
+            }),
+        handleBuiltInTouches: true,
+      ),
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,

@@ -8,6 +8,9 @@ class NoteAttachmentsInitial extends NoteAttachmentsState {}
 
 class NoteAttachmentsLoadInProgress extends NoteAttachmentsState {}
 
+class NoteAttachmentsLoadNotConnected extends NoteAttachmentsState {}
+
+
 class NoteAttachmentsLoadSuccess extends NoteAttachmentsState {
   final NotesAttachment attachment;
 
