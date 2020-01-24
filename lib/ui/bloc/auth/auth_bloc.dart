@@ -40,7 +40,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       FLog.info(text: 'Auto sign in result: $isUserLoggedIn');
       if (isUserLoggedIn) {
         final prefs = await SharedPreferences.getInstance();
-        if (prefs.getBool(PrefsConstants.VITAL_DATA_DOWNLOADED) ?? false) {
+        final vitalDataDownloaded =
+            prefs.getBool(PrefsConstants.VITAL_DATA_DOWNLOADED) ?? false;
+        if (!vitalDataDownloaded) {
           yield AutoSignInNeedDownloadData();
         } else {
           yield AutoSignInResult();

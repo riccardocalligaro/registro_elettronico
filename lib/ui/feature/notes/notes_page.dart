@@ -53,7 +53,13 @@ class _NotesPageState extends State<NotesPage> {
           ),
           BlocListener<NoteAttachmentsBloc, NoteAttachmentsState>(
             listener: (context, state) {
-              // TODO: implement listener
+              if (state is NoteAttachmentsLoadNotConnected) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    AppNavigator.instance.getNetworkErrorSnackBar(context),
+                  );
+              }
             },
           ),
         ],
