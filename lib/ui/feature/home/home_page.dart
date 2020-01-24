@@ -195,7 +195,7 @@ class _HomePageState extends State<HomePage> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
                         child: Text(AppLocalizations.of(context)
-                            .translate('next_events')),
+                            .translate('this_week_section_title')),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),

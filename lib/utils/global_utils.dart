@@ -482,7 +482,7 @@ class GlobalUtils {
   /// `venerdi alla 4 ora`
   /// `friday at the 4 hour`
   static String getEventDateMessage(BuildContext context, DateTime date) {
-    final String dateString = DateUtils.convertDateLocale(
+    final String dateString = DateUtils.convertDateLocaleDashboard(
         date, AppLocalizations.of(context).locale.toString());
     return AppLocalizations.of(context)
         .translate('event_hour_day')
