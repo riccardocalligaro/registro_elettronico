@@ -92,10 +92,6 @@ class AppNavigator {
     Scaffold.of(context).showSnackBar(SnackBar(content: Text(content)));
   }
 
-  void showNotConnectedSnackbar(BuildContext context) {
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text('Not connected')));
-  }
-
   SnackBar getNetworkErrorSnackBar(BuildContext context) {
     return SnackBar(
       behavior: SnackBarBehavior.floating,

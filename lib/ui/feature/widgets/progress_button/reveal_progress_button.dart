@@ -8,9 +8,9 @@ class RevealProgressButton extends StatefulWidget {
 
 class _RevealProgressButtonState extends State<RevealProgressButton>
     with TickerProviderStateMixin {
-  Animation<double> _animation;
+  //Animation<double> _animation;
   AnimationController _controller;
-  double _fraction = 0.0;
+  //double _fraction = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +32,21 @@ class _RevealProgressButtonState extends State<RevealProgressButton>
   void reveal() {
     _controller = AnimationController(
         duration: const Duration(milliseconds: 200), vsync: this);
-    _animation = Tween(begin: 0.0, end: 1.0).animate(_controller)
-      ..addListener(() {
-        setState(() {
-          _fraction = _animation.value;
-        });
-      })
-      ..addStatusListener((AnimationStatus state) {
-        if (state == AnimationStatus.completed) {
-          print("finished");
-        }
-      });
+    // _animation = Tween(begin: 0.0, end: 1.0).animate(_controller)
+    //   ..addListener(() {
+    //     setState(() {
+    //       //_fraction = _animation.value;
+    //     });
+    //   })
+    //   ..addStatusListener((AnimationStatus state) {
+    //     if (state == AnimationStatus.completed) {
+    //       print("finished");
+    //     }
+    //   });
     _controller.forward();
   }
 
   void reset() {
-    _fraction = 0.0;
+    //_fraction = 0.0;
   }
 }

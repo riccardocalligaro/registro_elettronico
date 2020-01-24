@@ -1,3 +1,26 @@
+Version 0.0.3-dev.1
+
+New features:
+
+* New navigation system
+
+* Added translations
+
+* Changed text in home screen
+
+Fixes:
+
+* Fixed the bug where the login error was not shown
+
+* Fixed intro bugs
+
+* When a user closes the application during the intro process now it keeps asking to download the 'vital' data
+
+* Fixed gray screen when user has no periods
+
+
+---
+
 Version 0.0.2-dev.1
 
 New features:

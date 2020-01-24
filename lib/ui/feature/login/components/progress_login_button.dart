@@ -5,9 +5,22 @@ import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 enum LoadingState { initial, loading, loaded, error, success }
 
 class ProgressLoginButton extends StatefulWidget {
-  final Function callback;
+  /// Username for login
+  final String username;
 
-  ProgressLoginButton(this.callback);
+  /// Password that
+  final String password;
+
+  final Function onSuccess;
+
+  final Function onError;
+
+  ProgressLoginButton({
+    @required this.username,
+    @required this.password,
+    @required this.onSuccess,
+    @required this.onError,
+  });
 
   @override
   State<StatefulWidget> createState() => _ProgressLoginButtonState();
@@ -25,6 +38,7 @@ class _ProgressLoginButtonState extends State<ProgressLoginButton>
   Animation _animation;
   GlobalKey _globalKey = GlobalKey();
   AnimationController _controller;
+
   static bool _isPressed = false, _animatingReveal = false;
 
   @override
@@ -43,6 +57,7 @@ class _ProgressLoginButtonState extends State<ProgressLoginButton>
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
+        print(state);
         if (state is SignInLoading) {
           _loginState = LoadingState.loading;
           _controller.forward();
@@ -50,11 +65,12 @@ class _ProgressLoginButtonState extends State<ProgressLoginButton>
           setState(() {
             _loginState = LoadingState.success;
           });
-          widget.callback();
-        } else if (state is SignInError) {
+          widget.onSuccess();
+        } else if (state is SignInNetworkError) {
           setState(() {
             _loginState = LoadingState.error;
           });
+          widget.onError();
         }
       },
       child: PhysicalModel(
@@ -67,14 +83,19 @@ class _ProgressLoginButtonState extends State<ProgressLoginButton>
           width: _width,
           child: RaisedButton(
             shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(30.0),
             ),
             padding: EdgeInsets.all(0.0),
             color: _getColorFromLoadingState(),
             child: buildButtonChild(),
             onPressed: () {
-              BlocProvider.of<AuthBloc>(context)
-                  .add(SignIn(username: 'q', password: '2'));
+              print(widget.username);
+              print(widget.password);
+
+              BlocProvider.of<AuthBloc>(context).add(SignIn(
+                username: widget.username,
+                password: widget.password,
+              ));
             },
             onHighlightChanged: (isPressed) {
               setState(() {
@@ -93,7 +114,7 @@ class _ProgressLoginButtonState extends State<ProgressLoginButton>
   Color _getColorFromLoadingState() {
     if (_loginState == LoadingState.success) {
       return Colors.green;
-    } else {  
+    } else {
       return Colors.red;
     }
   }
@@ -122,7 +143,7 @@ class _ProgressLoginButtonState extends State<ProgressLoginButton>
         height: 36.0,
         width: 36.0,
         decoration: BoxDecoration(
-          borderRadius: new BorderRadius.circular(18.0),
+          borderRadius: BorderRadius.circular(18.0),
         ),
         child: CircularProgressIndicator(
           value: null,
@@ -132,7 +153,8 @@ class _ProgressLoginButtonState extends State<ProgressLoginButton>
     } else if (_loginState == LoadingState.success) {
       return Icon(Icons.check, color: Colors.white);
     } else {
-      return Icon(Icons.cancel, color: Colors.white);
+      print(_loginState);
+      return Icon(Icons.clear, color: Colors.white);
     }
   }
 

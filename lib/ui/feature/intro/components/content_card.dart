@@ -35,11 +35,12 @@ class ContentCard extends StatelessWidget {
         Container(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.only(top: 100.0, bottom: 25.0),
+            padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height / 20, bottom: 25.0),
             child: Column(
               children: <Widget>[
                 Expanded(
-                  flex: 4,
+                  flex: 3,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: centerWidget,
@@ -95,40 +96,44 @@ class ContentCard extends StatelessWidget {
             color: textColor,
           ),
         ),
-
-        index == 3 ? Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 36.0),
-          child: MaterialButton(
-            elevation: 0,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-            color: Colors.red,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Text(
-                AppLocalizations.of(context).translate('get_started_button'),
-                style: TextStyle(
-                  fontSize: 16,
-                  letterSpacing: .8,
-                  fontWeight: FontWeight.w600,
-                  color: textColor ?? Colors.white,
-                ),
-              ),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                CircularRevealRoute(
-                  page: IntroDownloadPage(
-                    color: backgroundColor,
+        index == 3
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 36.0),
+                child: MaterialButton(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50)),
+                  color: Colors.red,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text(
+                      AppLocalizations.of(context)
+                          .translate('get_started_button'),
+                      style: TextStyle(
+                        fontSize: 16,
+                        letterSpacing: .8,
+                        fontWeight: FontWeight.w600,
+                        color: textColor ?? Colors.white,
+                      ),
+                    ),
                   ),
-                  maxRadius: 800,
-                  centerAlignment: Alignment.center,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CircularRevealRoute(
+                        page: IntroDownloadPage(
+                          color: backgroundColor,
+                        ),
+                        maxRadius: 800,
+                        centerAlignment: Alignment.center,
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-        ) : SizedBox(height: 72,)
+              )
+            : SizedBox(
+                height: 72,
+              )
       ],
     );
   }

@@ -5,11 +5,7 @@ import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_event.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_state.dart';
-import 'package:registro_elettronico/ui/feature/intro/intro_slideshow_page.dart';
-import 'package:registro_elettronico/ui/feature/login/components/progress_login_button.dart';
-import 'package:registro_elettronico/ui/feature/widgets/circle_page_transition/circular_reveal_route.dart';
 import 'package:registro_elettronico/ui/feature/widgets/gradient_red_button.dart';
-import 'package:registro_elettronico/ui/feature/widgets/progress_button/progress_button.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 
@@ -99,10 +95,18 @@ class _LoginPageState extends State<LoginPage> {
                 //_valide = true;
                 if (state.error.messageCode ==
                     RegistroConstants.USERNAME_PASSWORD_NOT_MATCHING) {
-                  _erorrMessage = AppLocalizations.of(context)
-                      .translate('username_password_doesent_match');
+                  setState(() {
+                    _invalid = true;
+
+                    _erorrMessage = AppLocalizations.of(context)
+                        .translate('username_password_doesent_match');
+                  });
                 } else {
-                  _erorrMessage = state.error.message;
+                  setState(() {
+                    _invalid = true;
+
+                    _erorrMessage = state.error.message;
+                  });
                 }
               });
             }
@@ -110,18 +114,19 @@ class _LoginPageState extends State<LoginPage> {
             if (state is SignInError) {
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(
-                    "🤔 ${AppLocalizations.of(context).translate('unexcepted_error')}"),
+                  "🤔 ${AppLocalizations.of(context).translate('unexcepted_error')}",
+                ),
               ));
             }
           },
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
               //return Text(state.toString());
-              // if (state is SignInLoading) {
-              //   return Center(
-              //     child: CircularProgressIndicator(),
-              //   );
-              // }
+              if (state is SignInLoading) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
 
               return _buildInitial();
               // return Padding(
@@ -245,52 +250,70 @@ class _LoginPageState extends State<LoginPage> {
         SizedBox(
           height: 30,
         ),
-        // GradientRedButton(
-        //   center: Text(
-        //     AppLocalizations.of(context).translate('log_in'),
-        //     textAlign: TextAlign.center,
-        //     style: TextStyle(fontSize: 19),
-        //   ),
-        //   onTap: () {
-        //     FLog.info(text: 'Sign in button pressed');
+        GradientRedButton(
+          center: Text(
+            AppLocalizations.of(context).translate('log_in'),
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 19),
+          ),
+          onTap: () {
+            FLog.info(text: 'Sign in button pressed');
 
-        //     FocusScopeNode currentFocus = FocusScope.of(context);
-        //     if (!currentFocus.hasPrimaryFocus) {
-        //       currentFocus.unfocus();
-        //     }
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
 
-        //     final username = _usernameController.text;
-        //     final password = _passwordController.text;
+            final username = _usernameController.text;
+            final password = _passwordController.text;
 
-        //     if (username != '' && password != '') {
-        //       FLog.info(
-        //         text: 'Got valid input, proceeding to adding event to bloc',
-        //       );
+            if (username != '' && password != '') {
+              FLog.info(
+                text: 'Got valid input, proceeding to adding event to bloc',
+              );
 
-        //       BlocProvider.of<AuthBloc>(context).add(SignIn(
-        //         username: username,
-        //         password: password,
-        //       ));
-        //     } else {
-        //       FLog.info(text: 'Got empty input');
-        //       setState(() {
-        //         _invalid = true;
-        //         _erorrMessage = AppLocalizations.of(context)
-        //             .translate('all_fields_message');
-        //       });
-        //     }
+              BlocProvider.of<AuthBloc>(context).add(
+                SignIn(
+                  username: username,
+                  password: password,
+                ),
+              );
+            } else {
+              FLog.info(text: 'Got empty input');
+              setState(() {
+                _invalid = true;
+                _erorrMessage = AppLocalizations.of(context)
+                    .translate('all_fields_message');
+              });
+            }
+          },
+        ),
+        // ProgressLoginButton(() {
+        //   // Navigator.pushReplacement(
+        //   //   context,
+        //   //   CircularRevealRoute(
+        //   //     page: IntroSlideshowPage(),
+        //   //     maxRadius: 800,
+        //   //     centerAlignment: Alignment.center,
+        //   //   ),
+        //   // );
+        // }),
+
+        // ProgressLoginButton(
+        //   username: _usernameController.text,
+        //   password: _passwordController.text,
+        //   onSuccess: () {
+        //     Navigator.pushReplacement(
+        //       context,
+        //       CircularRevealRoute(
+        //         page: IntroSlideshowPage(),
+        //         maxRadius: 800,
+        //         centerAlignment: Alignment.center,
+        //       ),
+        //     );
         //   },
+        //   onError: () {},
         // ),
-        ProgressLoginButton(() {
-          // Navigator.pushReplacement(
-          //   context,
-          //   CircularRevealRoute(
-          //     page: IntroSlideshowPage(),
-          //     maxRadius: 800,
-          //     centerAlignment: Alignment.center,
-          //   ),
-          // );
-        }),
         SizedBox(
           height: 20,
         ),

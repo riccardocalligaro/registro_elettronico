@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
-import 'package:registro_elettronico/component/routes.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
@@ -181,12 +180,7 @@ class _AppDrawerState extends State<AppDrawer>
               pos: DrawerConstants.AGENDA,
               onTap: () {
                 Navigator.pop(context);
-
-                Navigator.pushNamedAndRemoveUntil(context, Routes.AGENDA, (
-                  Route<dynamic> route,
-                ) {
-                  return route.isActive;
-                });
+                AppNavigator.instance.navToAgenda(context);
               },
             ),
             // _createDrawerItem(
@@ -210,11 +204,7 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () {
                 Navigator.pop(context);
 
-                Navigator.pushNamedAndRemoveUntil(context, Routes.ABSENCES, (
-                  Route<dynamic> route,
-                ) {
-                  return route.isActive;
-                });
+                AppNavigator.instance.navToAbsences(context);
               },
             ),
             _createDrawerItem(
@@ -223,13 +213,14 @@ class _AppDrawerState extends State<AppDrawer>
               pos: DrawerConstants.SCHOOL_MATERIAL,
               onTap: () {
                 Navigator.pop(context);
+                AppNavigator.instance.navToSchoolMaterial(context);
 
-                Navigator.pushNamedAndRemoveUntil(
-                    context, Routes.SCHOOL_MATERIAL, (
-                  Route<dynamic> route,
-                ) {
-                  return route.isActive;
-                });
+                // Navigator.pushNamedAndRemoveUntil(
+                //     context, Routes.SCHOOL_MATERIAL, (
+                //   Route<dynamic> route,
+                // ) {
+                //   return route.isActive;
+                // });
               },
             ),
             _createDrawerItem(
@@ -238,12 +229,13 @@ class _AppDrawerState extends State<AppDrawer>
               pos: DrawerConstants.NOTES,
               onTap: () {
                 Navigator.pop(context);
+                AppNavigator.instance.navToNotes(context);
 
-                Navigator.pushNamedAndRemoveUntil(context, Routes.NOTES, (
-                  Route<dynamic> route,
-                ) {
-                  return route.isActive;
-                });
+                // Navigator.pushNamedAndRemoveUntil(context, Routes.NOTES, (
+                //   Route<dynamic> route,
+                // ) {
+                //   return route.isActive;
+                // });
               },
             ),
             _createDrawerItem(
@@ -251,11 +243,14 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("notice_board"),
               pos: DrawerConstants.NOTICE_BOARD,
               onTap: () {
-                Navigator.pushNamedAndRemoveUntil(context, Routes.NOTICEBOARD, (
-                  Route<dynamic> route,
-                ) {
-                  return route.isActive;
-                });
+                Navigator.pop(context);
+                AppNavigator.instance.navToNoticeboard(context);
+
+                // Navigator.pushNamedAndRemoveUntil(context, Routes.NOTICEBOARD, (
+                //   Route<dynamic> route,
+                // ) {
+                //   return route.isActive;
+                // });
               },
             ),
             _createDrawerItem(
@@ -264,12 +259,12 @@ class _AppDrawerState extends State<AppDrawer>
               pos: DrawerConstants.TIMETABLE,
               onTap: () {
                 Navigator.pop(context);
-
-                Navigator.pushNamedAndRemoveUntil(context, Routes.TIMETABLE, (
-                  Route<dynamic> route,
-                ) {
-                  return route.isFirst;
-                });
+                AppNavigator.instance.navToTimetable(context);
+                // Navigator.pushNamedAndRemoveUntil(context, Routes.TIMETABLE, (
+                //   Route<dynamic> route,
+                // ) {
+                //   return route.isFirst;
+                // });
               },
             ),
             _createDrawerItem(
@@ -278,12 +273,12 @@ class _AppDrawerState extends State<AppDrawer>
               pos: DrawerConstants.SCRUTINI,
               onTap: () {
                 Navigator.pop(context);
-
-                Navigator.pushNamedAndRemoveUntil(context, Routes.SCRUTINI, (
-                  Route<dynamic> route,
-                ) {
-                  return route.isActive;
-                });
+                AppNavigator.instance.navToScrutini(context);
+                // Navigator.pushNamedAndRemoveUntil(context, Routes.SCRUTINI, (
+                //   Route<dynamic> route,
+                // ) {
+                //   return route.isActive;
+                // });
               },
             ),
             // _createDrawerItem(
@@ -312,12 +307,12 @@ class _AppDrawerState extends State<AppDrawer>
               pos: DrawerConstants.SETTINGS,
               onTap: () {
                 Navigator.pop(context);
-
-                Navigator.pushNamedAndRemoveUntil(context, Routes.SETTINGS, (
-                  Route<dynamic> route,
-                ) {
-                  return route.isActive;
-                });
+                AppNavigator.instance.navToSettings(context);
+                // Navigator.pushNamedAndRemoveUntil(context, Routes.SETTINGS, (
+                //   Route<dynamic> route,
+                // ) {
+                //   return route.isActive;
+                // });
               },
             ),
             _createDrawerItem(

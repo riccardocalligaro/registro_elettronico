@@ -75,7 +75,7 @@ class AboutDevelopersPage extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text('Jacopo Ferian, Samuele Zanella'),
+              title: Text('Jacopo Ferian, Samuele Zanella, Andrea Nocco'),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
