@@ -21,6 +21,25 @@
 - [Design](#design)
 - [API Documentation](#classeviva-api-documentation)
 
+<<<<<<< HEAD
+|                         Home Page 1                         |                         Home Page 2                          |                           Lessons                           |
+|:-----------------------------------------------------------:|:------------------------------------------------------------:|:-----------------------------------------------------------:|
+| <img src="https://i.imgur.com/bVkuG8Y.png" height="400px" > | <img src="https://i.imgur.com/B24gPrs.png"  height="400px" > | <img src="https://i.imgur.com/VzlGctu.png" height="400px" > |
+
+|                       Lessons details                       |                         Last grades                         |                           Grades                            |
+|:-----------------------------------------------------------:|:-----------------------------------------------------------:|:-----------------------------------------------------------:|
+| <img src="https://i.imgur.com/Q4lZGyF.png" height="400px" > | <img src="https://i.imgur.com/Ne1KmZr.png" height="400px" > | <img src="https://i.imgur.com/kYjm6JG.png" height="400px" > |
+
+|                           Agenda                            |                          Absences                           |                         Noticeboard                         |
+|:-----------------------------------------------------------:|:-----------------------------------------------------------:|:-----------------------------------------------------------:|
+| <img src="https://i.imgur.com/SWp4dJ5.png" height="400px" > | <img src="https://i.imgur.com/JkVKOXK.png" height="400px" > | <img src="https://i.imgur.com/61uQrX9.png" height="400px" > |
+
+[![Preview](https://i.ibb.co/pbnPKdF/https-i-ytimg-com-vi-LVk-FTSKe-Rl-M-maxresdefault.jpg)](https://youtu.be/LVkFTSKeRlM "Preview")
+
+If you want to try the app (still alpha and a lot to do) feel free to contact [me.](mailto:riccardocalligaro@gmail.com)
+
+=======
+>>>>>>> 8ee7c24cf105f2478d7f853e9d2628e614221039
 ## Overview of the project
 
 Flutter client for eletronic school register (Classeviva) management using clean architecture.
@@ -76,7 +95,7 @@ If you want to try the app (still alpha and a lot to do) feel free to contact [m
 ## Developers:
 
 | Name               |            Email            |                                       Role |
-| ------------------ | :-------------------------: | -----------------------------------------: |
+|--------------------|:---------------------------:|-------------------------------------------:|
 | Riccardo Calligaro | riccardocalligaro@gmail.com | Project manager, app architecture, API, UI |
 | Filippo Veggo      |   filippoveggo@gmail.com    |                                Design & UI |
 
@@ -85,12 +104,28 @@ If you want to try the app (still alpha and a lot to do) feel free to contact [m
 These group members haven't developed the app but are learning flutter.
 
 | Name            |           Email            |
-| --------------- | :------------------------: |
+|-----------------|:--------------------------:|
 | Jacopo Ferian   |    jacopo893@gmail.com     |
 | Samuele Zanella | samuelezanella02@gmail.com |
 
 ## Current state of the project
 
+<<<<<<< HEAD
+| Function           | State | Made by |  Design by  |
+|--------------------|:-----:|:-------:|:-----------:|
+| Login              |   ✔️   |  R.C.   |    F.V.     |
+| Home Page          |   ✔️   |  R.C.   | F.V + R.C.  |
+| Lessons            |   ✔️   |  R.C.   |    R.C.     |
+| Agenda             |   ✔️   |  R.C.   | F.V. + R.C. |
+| Marks              |   ✔️   |  R.C.   |    R.C.     |
+| Noticeboard        |   ✔️   |  R.C.   |    R.C.     |
+| Absences           |   ✔️   |  R.C.   |    R.C.     |
+| School material    |   ✔️   |  R.C.   |    R.C.     |
+| Notes              |   ✔️   |  R.C.   |    R.C.     |
+| Intitial slideshow |   ✔️   |  R.C.   |      -      |
+| Dark theme         |   ✔️   |  R.C.   |      -      |
+| Settings           |   ¼   |  R.C.   |    R.C.     |
+=======
 | Function           | State | Made by |  Design by   |
 | ------------------ | :---: | :-----: | :----------: |
 | Login              |  ✔️   |  R. C.  |    F. V.     |
@@ -105,15 +140,24 @@ These group members haven't developed the app but are learning flutter.
 | Intitial slideshow |  ✔️   |  R. C.  |    R. C.     |
 | Dark theme         |  ✔️   |  R. C.  |    R. C.     |
 | Settings           |  ✔️   |  R. C.  |    R. C.     |
+>>>>>>> 8ee7c24cf105f2478d7f853e9d2628e614221039
 
 Additional features that will be implemented
 
 | Function                | State | Made by | Design by |
+<<<<<<< HEAD
+|-------------------------|:-----:|:-------:|:---------:|
+| Local grades and agenda |   ½   |    -    |     -     |
+| Timetable               |   ✔️   |    -    |     -     |
+| Notifications           |   ✔️   |    -    |     -     |
+| Summary page            |   ❌   |    -    |     -     |
+=======
 | ----------------------- | :---: | :-----: | :-------: |
 | Local grades and agenda |   ½   |    -    |     -     |
 | Timetable               |  ✔️   |  R. C.  |     -     |
 | Notifications           |   ½   |  R. C.  |     -     |
 | Summary page            |  ❌   |    -    |     -     |
+>>>>>>> 8ee7c24cf105f2478d7f853e9d2628e614221039
 
 ## Project structure
 
