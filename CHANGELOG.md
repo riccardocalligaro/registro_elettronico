@@ -1,3 +1,31 @@
+Version 0.0.4-dev.1
+
+New features:
+
+* Added #16 - Stats section where you can see useful stats about grades and school
+
+* Added about dialog where you can see the link to the github repo and the website
+
+Fixes:
+
+* Fixed #26 - the touch tip data in the week summary graph was showing 'absences'
+
+* Fixed ascending / descending order in grades page
+
+* Changed absence card color
+
+* Fixed update loop in lessons
+
+Other:
+
+* Partially changed the intro page, removed the notifications dialog (didnt work in smaller devices)
+
+
+
+
+
+---
+
 Version 0.0.3-dev.1
 
 New features:

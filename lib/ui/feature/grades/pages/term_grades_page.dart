@@ -11,8 +11,10 @@ import 'package:registro_elettronico/ui/feature/grades/components/grade_subject_
 import 'package:registro_elettronico/ui/feature/grades/components/overall_stats_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TermGradesPage extends StatefulWidget {
   final List<Grade> grades;
@@ -36,12 +38,21 @@ class TermGradesPage extends StatefulWidget {
 
 class _TermGradesPageState extends State<TermGradesPage> {
   Completer<void> _refreshCompleter;
+  bool showAsending = false;
 
   @override
   void initState() {
     super.initState();
-
+    restore();
     _refreshCompleter = Completer<void>();
+  }
+
+  void restore() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      showAsending =
+          sharedPreferences.getBool(PrefsConstants.SORTING_ASCENDING) ?? false;
+    });
   }
 
   @override
@@ -118,7 +129,7 @@ class _TermGradesPageState extends State<TermGradesPage> {
     List<Grade> grades,
     List<Subject> subjects,
   ) {
-    final sortedMap = _getGradesOrderedByAverage(grades, subjects, false);
+    final sortedMap = _getGradesOrderedByAverage(grades, subjects, showAsending);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ListView.builder(

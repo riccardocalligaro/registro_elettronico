@@ -39,15 +39,14 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
                 // This also checks if the event is only one and in case changes the text to singular
                 if (flSpot.barIndex == 0) {
                   text = AppLocalizations.of(context)
-                      .translate('absences')
+                      .translate('events')
                       .toLowerCase();
                   if (flSpot.y == 1) {
                     text = AppLocalizations.of(context)
-                        .translate('absence')
+                        .translate('event')
                         .toLowerCase();
                   }
                 }
-                
 
                 return LineTooltipItem(
                   "${flSpot.y.toStringAsFixed(0)} $text",
@@ -114,7 +113,7 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
           ],
           preventCurveOverShooting: true,
 
-          // curveSmoothness: 0.20,
+          curveSmoothness: 0.50,
           barWidth: 1,
           isStrokeCapRound: true,
           dotData: const FlDotData(
@@ -141,7 +140,15 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
   List<FlSpot> _getEventsSpots() {
     List<FlSpot> spots = [];
     DateTime today = DateTime.now();
-    DateTime firstDay = today.subtract(Duration(days: today.weekday - 1));
+    DateTime firstDay;
+
+    if (today.weekday == DateTime.saturday) {
+      firstDay = today.add(Duration(days: 2));
+    } else if (today.weekday == DateTime.sunday) {
+      firstDay = today.add(Duration(days: 1));
+    } else {
+      firstDay = today.subtract(Duration(days: today.weekday - 1));
+    }
 
     DateTime dayOfWeek = DateTime.utc(today.year, today.month, firstDay.day);
 

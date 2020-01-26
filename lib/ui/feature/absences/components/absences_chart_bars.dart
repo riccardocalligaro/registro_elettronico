@@ -152,7 +152,7 @@ class AbsencesChartBarsState extends State<AbsencesChartBars> {
       final data = BarChartRodData(
         y: 0,
         width: barWidth,
-        isRound: false,
+        //isRound: false,
         rodStackItem: [BarChartRodStackItem(0, 0, Colors.transparent)],
       );
       return [
@@ -165,7 +165,7 @@ class AbsencesChartBarsState extends State<AbsencesChartBars> {
         BarChartRodData(
           y: events.length.toDouble(),
           width: barWidth,
-          isRound: false,
+          //isRound: false,
           rodStackItem: events,
         )
       ];

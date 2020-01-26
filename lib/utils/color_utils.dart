@@ -14,7 +14,7 @@ class ColorUtils {
     } else if (code == RegistroConstants.RITARDO_BREVE) {
       return Colors.blue;
     } else if (code == RegistroConstants.USCITA) {
-      return Colors.yellow[600];
+      return Colors.yellow[700];
     } else {
       return Colors.blue;
     }

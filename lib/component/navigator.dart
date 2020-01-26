@@ -63,6 +63,10 @@ class AppNavigator {
     Navigator.pushNamed(context, Routes.SCRUTINI);
   }
 
+  void navToStats(BuildContext context) {
+    Navigator.pushNamed(context, Routes.STATS);
+  }
+
   void navToWebView(BuildContext context, String url) {
     Navigator.pushNamed(context, Routes.WEB_VIEW, arguments: url);
   }

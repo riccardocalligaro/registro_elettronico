@@ -27,6 +27,10 @@ class PrefsConstants {
   static const DIRECTORY_NAME = 'FLogs';
   static const SHOW_OUTDATED_NOTICES = 'show_outdated_notices';
   static const UPDATE_ONLY_WIFI = 'update_only_wifi';
-
   static const VITAL_DATA_DOWNLOADED = 'vita_data_downloaded';
+  static const STUDENT_YEAR = 'student_year';
+
+  static const TERZA_SUPERIORE = 3;
+  static const QUARTA_SUPERIORE = 4;
+  static const QUINTA_SUPERIORE = 5;
 }

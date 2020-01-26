@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
-import 'package:registro_elettronico/ui/feature/settings/components/notifications/notifications_type_settings_dialog.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 import 'components/content_card.dart';
@@ -58,9 +57,10 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
                 index: 2,
                 title: trans.translate('slide_3_title'),
                 subtitle: trans.translate('slide_3_subtitle'),
-                centerWidget: NotificationsSettingsDialog(
-                  switchColor: Colors.white,
-                  textColor: Colors.white,
+                centerWidget: Icon(
+                  Icons.notifications,
+                  color: Colors.white,
+                  size: 150,
                 ),
                 backgroundColor: Colors.indigo,
                 textColor: Colors.white,

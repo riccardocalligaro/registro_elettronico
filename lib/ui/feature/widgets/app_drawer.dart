@@ -281,6 +281,21 @@ class _AppDrawerState extends State<AppDrawer>
                 // });
               },
             ),
+
+            _createDrawerItem(
+              icon: Icons.pie_chart,
+              text: AppLocalizations.of(context).translate('statitics'),
+              pos: DrawerConstants.STATS,
+              onTap: () {
+                Navigator.pop(context);
+                AppNavigator.instance.navToStats(context);
+                // Navigator.pushNamedAndRemoveUntil(context, Routes.SCRUTINI, (
+                //   Route<dynamic> route,
+                // ) {
+                //   return route.isActive;
+                // });
+              },
+            ),
             // _createDrawerItem(
             //   icon: Icons.archive,
             //   text: trans.translate('last_year'),

@@ -32,39 +32,28 @@ class ContentCard extends StatelessWidget {
             color: backgroundColor,
           ),
         ),
-        Container(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height / 20, bottom: 25.0),
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: centerWidget,
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: _buildBottomContent(context),
-                  ),
-                ),
-              ],
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: centerWidget,
+          ),
+        ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: _buildBottomContent(context),
             ),
           ),
-        )
+        ),
       ],
     );
   }
 
   Widget _buildBottomContent(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Container(
           margin: EdgeInsets.only(bottom: 35),
@@ -132,7 +121,7 @@ class ContentCard extends StatelessWidget {
                 ),
               )
             : SizedBox(
-                height: 72,
+                height: 80,
               )
       ],
     );

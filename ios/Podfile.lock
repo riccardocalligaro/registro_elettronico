@@ -97,6 +97,8 @@ PODS:
   - nanopb/encode (0.3.9011)
   - open_file (0.0.1):
     - Flutter
+  - package_info (0.0.1):
+    - Flutter
   - path_provider (0.0.1):
     - Flutter
   - permission_handler (4.1.0):
@@ -129,6 +131,7 @@ DEPENDENCIES:
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
   - liquid_swipe (from `.symlinks/plugins/liquid_swipe/ios`)
   - open_file (from `.symlinks/plugins/open_file/ios`)
+  - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - share (from `.symlinks/plugins/share/ios`)
@@ -179,6 +182,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/liquid_swipe/ios"
   open_file:
     :path: ".symlinks/plugins/open_file/ios"
+  package_info:
+    :path: ".symlinks/plugins/package_info/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
@@ -224,6 +229,7 @@ SPEC CHECKSUMS:
   liquid_swipe: d3dbe523989a927528e7e7d2d0fc674da90cbbf7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
+  package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   permission_handler: b41310bab60fffbf8b5732cd9b4f565671d14762
   share: bae0a282aab4483288913fc4dc0b935d4b491f2e

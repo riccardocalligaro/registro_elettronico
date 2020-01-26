@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/main.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/about/about_developers_page.dart';
@@ -11,6 +12,7 @@ import 'package:registro_elettronico/ui/feature/settings/components/customizatio
 import 'package:registro_elettronico/ui/feature/settings/components/general/general_settings.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/notifications/notifications_interval_settings_dialog.dart';
+import 'package:registro_elettronico/ui/feature/widgets/about_app_dialog.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -242,6 +244,19 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text(trans.translate('about_donate_title')),
           subtitle: Text(trans.translate('about_donate_subtitle')),
         ),
+        ListTile(
+          title: Text(trans.translate('info_app_title')),
+          subtitle: Text(trans.translate('info_app_subtitle')),
+          onTap: () async {
+            PackageInfo packageInfo = await PackageInfo.fromPlatform();
+            showDialog(
+              context: context,
+              builder: (context) => AboutAppDialog(
+                packageInfo: packageInfo,
+              ),
+            );
+          },
+        ),
       ],
     );
   }
@@ -287,7 +302,7 @@ class _SettingsPageState extends State<SettingsPage> {
       await Workmanager.initialize(
         callbackDispatcher,
         //! set to false in production
-        isInDebugMode: true,
+        isInDebugMode: false,
       );
 
       await Workmanager.registerPeriodicTask(

@@ -11,6 +11,7 @@ import 'package:registro_elettronico/ui/feature/school_material/school_material_
 import 'package:registro_elettronico/ui/feature/scrutini/scrutini_page.dart';
 import 'package:registro_elettronico/ui/feature/settings/settings_page.dart';
 import 'package:registro_elettronico/ui/feature/splash_screen/splash_screen.dart';
+import 'package:registro_elettronico/ui/feature/stats/stats_page.dart';
 import 'package:registro_elettronico/ui/feature/timetable/timetable_page.dart';
 import 'package:registro_elettronico/ui/feature/web/web_view_loading_page.dart';
 
@@ -28,6 +29,7 @@ class Routes {
   static const NOTICEBOARD = '/noticeboard';
   static const TIMETABLE = '/timetable';
   static const SCRUTINI = '/scrutini';
+  static const STATS = '/stats';
   static const WEB_VIEW = '/web-view';
   static const SETTINGS = '/settings';
 
@@ -46,6 +48,7 @@ class Routes {
     NOTICEBOARD: (ctx) => NoticeboardPage(),
     TIMETABLE: (ctx) => TimetablePage(),
     SCRUTINI: (ctx) => ScrutiniPage(),
+    STATS: (ctx) => StatsPage(),
     WEB_VIEW: (ctx) => WebViewLoadingPage(),
     SETTINGS: (ctx) => SettingsPage()
   };

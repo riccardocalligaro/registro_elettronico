@@ -50,24 +50,26 @@ class _LessonsPageState extends State<LessonsPage> {
                   AppNavigator.instance.getNetworkErrorSnackBar(context));
           }
           if (state is LessonsUpdateLoadInProgress) {
-            Scaffold.of(context).showSnackBar(SnackBar(
-              behavior: SnackBarBehavior.floating,
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(AppLocalizations.of(context)
-                      .translate('updating_lessons')),
-                  Container(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.red,
-                    ),
-                  )
-                ],
-              ),
-              duration: Duration(minutes: 2),
-            ));
+            Scaffold.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(AppLocalizations.of(context)
+                        .translate('updating_lessons')),
+                    Container(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.red,
+                      ),
+                    )
+                  ],
+                ),
+                duration: Duration(minutes: 2),
+              ));
           }
           if (state is LessonsUpdateLoadSuccess) {
             Scaffold.of(context)

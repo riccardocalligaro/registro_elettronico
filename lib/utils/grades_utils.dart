@@ -2,6 +2,7 @@ import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 
 import 'constants/registro_constants.dart';
 import 'constants/tabs_constants.dart';
@@ -54,14 +55,40 @@ class GradesUtils {
     int count = 0;
 
     grades.forEach((grade) {
-      if (grade.subjectId == subjectId &&
-          isValidGrade(grade)) {
+      if (grade.subjectId == subjectId && isValidGrade(grade)) {
         sum += grade.decimalValue;
 
         count++;
       }
     });
     return sum / count;
+  }
+
+  static int getMinSchoolCredits(double average, int year) {
+    if (year == PrefsConstants.TERZA_SUPERIORE) {
+      if (average < 6) return 0;
+      if (average == 6) return 7;
+      if (average > 6 && average <= 7) return 8;
+      if (average > 7 && average <= 8) return 9;
+      if (average > 8 && average <= 9) return 10;
+      if (average > 9 && average <= 10) return 11;
+    } else if (year == PrefsConstants.QUARTA_SUPERIORE) {
+      if (average < 6) return 0;
+      if (average == 6) return 8;
+      if (average > 6 && average <= 7) return 9;
+      if (average > 7 && average <= 8) return 10;
+      if (average > 8 && average <= 9) return 11;
+      if (average > 9 && average <= 10) return 12;
+    } else if (year == PrefsConstants.QUINTA_SUPERIORE) {
+      if (average < 6) return 7;
+      if (average == 6) return 9;
+      if (average > 6 && average <= 7) return 10;
+      if (average > 7 && average <= 8) return 11;
+      if (average > 8 && average <= 9) return 13;
+      if (average > 9 && average <= 10) return 14;
+    }
+
+    return 0;
   }
 
   static double getAverageWithoutSubjectId(List<Grade> grades) {
@@ -211,7 +238,8 @@ class GradesUtils {
   /// Taken from registro elettroncio github by Simone Luconi, thanks
   static String getGradeMessage(
       double obj, double average, int numberOfGrades, BuildContext context) {
-    if(average.isNaN) return AppLocalizations.of(context).translate('dont_worry');
+    if (average.isNaN)
+      return AppLocalizations.of(context).translate('dont_worry');
     if (obj > 10 || average > 10) {
       return AppLocalizations.of(context).translate('calculation_error');
     }
