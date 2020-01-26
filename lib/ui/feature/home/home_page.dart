@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                       //     await Workmanager.initialize(
                       //       callbackDispatcher,
                       //       //! set to false in production
-                      //       isInDebugMode: true,
+                      //       isInDebugMode: false,
                       //     );
                       //     Workmanager.registerOneOffTask('checkContent', 'checkContent');
                       //   },

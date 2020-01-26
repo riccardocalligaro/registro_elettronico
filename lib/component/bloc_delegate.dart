@@ -28,6 +28,7 @@ import 'package:registro_elettronico/ui/bloc/notices/attachments/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/notices/notices_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/periods/periods_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/professors/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/stats/stats_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/timetable/timetable_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/token/token_bloc.dart';
@@ -157,6 +158,9 @@ class AppBlocDelegate {
       ),
       BlocProvider<GradesDashboardBloc>(
         create: (ctx) => GradesDashboardBloc(i.getDependency()),
+      ),
+      BlocProvider<StatsBloc>(
+        create: (ctx) => StatsBloc(i.getDependency()),
       ),
     ];
   }

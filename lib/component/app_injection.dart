@@ -33,6 +33,7 @@ import 'package:registro_elettronico/data/repository/notices_repository_impl.dar
 import 'package:registro_elettronico/data/repository/periods_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
 import 'package:registro_elettronico/data/repository/scrutini_repository_impl.dart';
+import 'package:registro_elettronico/data/repository/stats_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/timetable_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
@@ -42,6 +43,7 @@ import 'package:registro_elettronico/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
 import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
+import 'package:registro_elettronico/domain/repository/stats_repository.dart';
 import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 
@@ -287,6 +289,18 @@ class AppInjector {
         i.getDependency(),
       );
       return scrutiniRepository;
+    });
+
+    Injector.appInstance.registerSingleton((i) {
+      StatsRepository statsRepository = StatsRepositoryImpl(
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+        i.getDependency(),
+      );
+      return statsRepository;
     });
   }
 

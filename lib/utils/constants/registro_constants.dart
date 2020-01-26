@@ -24,4 +24,9 @@ abstract class RegistroConstants {
   static const RECALL = 'NTWN';
   static const TEACHER_NOTE = 'NTTE';
   static const DISCIPLINARY_NOTE = 'NTST';
+
+  static const GITHUB_REPOSITORY =
+      'https://github.com/riccardocalligaro/registro_elettronico';
+  static const WEBSITE =
+      'https://riccardocalligaro.github.io/registroelettronico-website/';
 }

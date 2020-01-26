@@ -19,6 +19,8 @@ class ServerFailure extends Failure {
 
 class DatabaseFailure extends Failure {}
 
+class GenericFailure extends Failure {}
+
 class NotConntectedException implements Exception {
   String errorMessage() {
     return 'User is not conntected to the internet';

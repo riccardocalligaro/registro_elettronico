@@ -108,7 +108,7 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                       Workmanager.initialize(
                         callbackDispatcher,
                         //! set to false in production
-                        isInDebugMode: true,
+                        isInDebugMode: false,
                       );
 
                       Workmanager.registerPeriodicTask(
