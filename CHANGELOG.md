@@ -1,5 +1,41 @@
 Version 0.0.4-dev.1
 
+Bug fixes, minor changes
+
+New features:
+
+* Added share option to stats page
+
+Bug fixes:
+
+* Fixed absences graph bugs
+
+* Fixed circular indicator in absences
+
+* Changed input field text
+
+* Changes to notifications, now when a user installs the
+application the refresh status is set to 360 minutes
+
+* Removed all injection to static mappers
+
+* Converted all mappers to static
+
+* Fixed minor paddings in lists
+
+* The absence graph now shows also ritardi (previously
+only ritardi brevi)
+
+* Added gravemente insufficienti subjects count to
+score calculation
+
+* Fixed 'FlutterError' is not of type 'Exception' for FLogs
+ master
+
+---
+
+Version 0.0.4-dev.1
+
 New features:
 
 * Added #16 - Stats section where you can see useful stats about grades and school
