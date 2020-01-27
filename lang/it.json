@@ -219,7 +219,7 @@
   "general_average": "Media generale {average}",
   "credits": "Crediti: {credits}",
   "best_subject": "Miglior materia: {subject}",
-  "worst_subject": "Peggior materia {subject}",
+  "worst_subject": "Peggior materia: {subject}",
   "days_to_school_end": "Giorni alla fine della scuola: {days}",
   "sufficienti_subjects": "Materie sufficienti: {number}",
   "insufficient_subjects": "Materie insufficienti: {number}",

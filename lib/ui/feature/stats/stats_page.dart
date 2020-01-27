@@ -151,7 +151,7 @@ class _StatsPageState extends State<StatsPage> {
             CircularPercentIndicator(
               radius: 70.0,
               lineWidth: 6.0,
-              percent: report.average.isNaN ? 1 : report.average / 10,
+              percent: report.score.isNaN ? 1 : report.score / 100,
               backgroundColor: Colors.white,
               animation: true,
               animationDuration: 300,
@@ -285,7 +285,7 @@ class _StatsPageState extends State<StatsPage> {
     @required StudentReport report,
   }) {
     return GradesBarChart(
-      grades: report.grades..sort((b, a) => a.eventDate.compareTo(b.eventDate)),
+      grades: report.grades..sort((a, b) => a.eventDate.compareTo(b.eventDate)),
     );
   }
 

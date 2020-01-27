@@ -156,6 +156,14 @@ class GradesBarChartState extends State<GradesBarChart> {
   }
 
   List<BarChartGroupData> showingGroups() => List.generate(8, (i) {
+        return makeGroupData(
+            i,
+            widget.grades
+                .where((g) => g.decimalValue >= i + 3 && g.decimalValue < i + 4)
+                .length
+                .toDouble(),
+            isTouched: i == touchedIndex);
+
         if (i == 0) {
           return makeGroupData(
             i,

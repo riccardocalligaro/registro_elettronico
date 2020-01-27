@@ -219,7 +219,7 @@
   "general_average": "General average {average}",
   "credits": "Credits: {credits}",
   "best_subject": "Best subject: {subject}",
-  "worst_subject": "Worst subject {subject}",
+  "worst_subject": "Worst subject: {subject}",
   "days_to_school_end": "Days to school finish: {days}",
   "sufficienti_subjects": "Sufficient subjects: {number}",
   "insufficient_subjects": "Insufficient subjects: {number}",
