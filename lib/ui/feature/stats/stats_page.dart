@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/domain/entity/student_report.dart';
 import 'package:registro_elettronico/ui/bloc/stats/bloc.dart';
@@ -7,7 +12,9 @@ import 'package:registro_elettronico/ui/feature/stats/charts/grades_bar_chart.da
 import 'package:registro_elettronico/ui/feature/stats/charts/grades_pie_chart.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:screenshot/screenshot.dart';
 
 class StatsPage extends StatefulWidget {
   StatsPage({Key key}) : super(key: key);
@@ -17,6 +24,8 @@ class StatsPage extends StatefulWidget {
 }
 
 class _StatsPageState extends State<StatsPage> {
+  ScreenshotController screenshotController = ScreenshotController();
+
   @override
   void initState() {
     super.initState();
@@ -30,6 +39,40 @@ class _StatsPageState extends State<StatsPage> {
         title: Text(
           AppLocalizations.of(context).translate('statitics'),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.share),
+            onPressed: () async {
+              final directory = (await getApplicationDocumentsDirectory()).path;
+              String fileName = AppLocalizations.of(context)
+                      .translate('statitics')
+                      .toLowerCase() +
+                  DateTime.now().toIso8601String();
+
+              var path = '$directory/$fileName.png';
+
+              screenshotController
+                  .capture(
+                path: path,
+                pixelRatio: 2,
+              )
+                  .then((File image) async {
+                print('ok');
+                var bytes = await image.readAsBytes();
+                await Share.file(
+                  AppLocalizations.of(context).translate('statistics'),
+                  '$fileName.png',
+                  bytes.buffer.asUint8List(),
+                  'image/png',
+                  text:
+                      '${AppLocalizations.of(context).translate('statitics')} ${DateUtils.convertDateLocaleDashboard(DateTime.now(), AppLocalizations.of(context).locale.toString())}',
+                );
+              }).catchError((onError) {
+                FLog.info(text: 'Coudlnt create stats image file for sharing');
+              });
+            },
+          )
+        ],
       ),
       body: BlocBuilder<StatsBloc, StatsState>(
         builder: (context, state) {
@@ -62,14 +105,23 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildSuccess(StudentReport studentReport) {
-    return ListView(
-      padding: EdgeInsets.all(8.0),
-      children: <Widget>[
-        _buildOverallStatsCard(report: studentReport),
-        _buildSecondRowGraphs(report: studentReport),
-        _buildThirdRowCard(report: studentReport),
-        //_buildFourthRowCard(report: studentReport),
-      ],
+    return SingleChildScrollView(
+      child: Screenshot(
+        controller: screenshotController,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            // shrinkWrap: true,
+            // padding: EdgeInsets.all(8.0),
+            children: <Widget>[
+              _buildOverallStatsCard(report: studentReport),
+              _buildSecondRowGraphs(report: studentReport),
+              _buildThirdRowCard(report: studentReport),
+              //_buildFourthRowCard(report: studentReport),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -145,6 +197,15 @@ class _StatsPageState extends State<StatsPage> {
                       .translate('best_term')
                       .replaceAll('{number}',
                           '${report.mostProfitablePeriod.periodIndex}° ${AppLocalizations.of(context).translate('term')}')),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(AppLocalizations.of(context)
+                      .translate('skipped_tests')
+                      .replaceAll(
+                        '{number}',
+                        report.skippedTestsForAbsences.toString(),
+                      ))
                 ],
               ),
             ),
@@ -163,7 +224,7 @@ class _StatsPageState extends State<StatsPage> {
                     builder: (context) {
                       return AlertDialog(
                         title: Text(
-                            '${AppLocalizations.of(context).translate('score')}: ${report.score}'),
+                            '${AppLocalizations.of(context).translate('score')}: ${report.score.toStringAsFixed(2)}'),
                         content: Text(AppLocalizations.of(context)
                             .translate('score_description')),
                         actions: <Widget>[
@@ -226,9 +287,17 @@ class _StatsPageState extends State<StatsPage> {
                       backgroundColor: Colors.white,
                       animation: true,
                       animationDuration: 300,
-                      center: Text(
-                        'Q1',
-                        style: TextStyle(fontSize: 12),
+                      center: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(report.firstTermAverage.isNaN
+                              ? '-'
+                              : report.firstTermAverage.toStringAsFixed(2)),
+                          Text(
+                            'Q1',
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ],
                       ),
                       progressColor: GlobalUtils.getColorFromAverage(
                         report.firstTermAverage,
@@ -246,9 +315,17 @@ class _StatsPageState extends State<StatsPage> {
                       backgroundColor: Colors.white,
                       animation: true,
                       animationDuration: 300,
-                      center: Text(
-                        'Q2',
-                        style: TextStyle(fontSize: 12),
+                      center: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(report.secondTermAverage.isNaN
+                              ? '-'
+                              : report.secondTermAverage.toStringAsFixed(2)),
+                          Text(
+                            'Q2',
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ],
                       ),
                       progressColor: GlobalUtils.getColorFromAverage(
                           report.secondTermAverage),
@@ -263,9 +340,17 @@ class _StatsPageState extends State<StatsPage> {
                       backgroundColor: Colors.white,
                       animation: true,
                       animationDuration: 300,
-                      center: Text(
-                        AppLocalizations.of(context).translate('year'),
-                        style: TextStyle(fontSize: 12),
+                      center: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(report.average.isNaN
+                              ? '-'
+                              : report.average.toStringAsFixed(2)),
+                          Text(
+                            AppLocalizations.of(context).translate('year'),
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
                       ),
                       progressColor: GlobalUtils.getColorFromAverage(
                         report.average,

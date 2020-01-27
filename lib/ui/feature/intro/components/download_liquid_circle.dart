@@ -85,47 +85,42 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
 
-                    final notifyGrades =
-                        prefs.getBool(PrefsConstants.GRADES_NOTIFICATIONS) ??
-                            false;
-                    final notifyAgenda =
-                        prefs.getBool(PrefsConstants.AGENDA_NOTIFICATIONS) ??
-                            false;
-                    final notifyAbsenes =
-                        prefs.getBool(PrefsConstants.AGENDA_NOTIFICATIONS) ??
-                            false;
-                    final notifyNotes =
-                        prefs.getBool(PrefsConstants.NOTES_NOTIFICATIONS) ??
-                            false;
+                    // final notifyGrades =
+                    //     prefs.getBool(PrefsConstants.GRADES_NOTIFICATIONS) ??
+                    //         false;
+                    // final notifyAgenda =
+                    //     prefs.getBool(PrefsConstants.AGENDA_NOTIFICATIONS) ??
+                    //         false;
+                    // final notifyAbsenes =
+                    //     prefs.getBool(PrefsConstants.AGENDA_NOTIFICATIONS) ??
+                    //         false;
+                    // final notifyNotes =
+                    //     prefs.getBool(PrefsConstants.NOTES_NOTIFICATIONS) ??
+                    //         false;
 
-                    if (notifyGrades ||
-                        notifyNotes ||
-                        notifyAgenda ||
-                        notifyAbsenes) {
-                      prefs.setBool(PrefsConstants.NOTIFICATIONS, true);
-                      WidgetsFlutterBinding.ensureInitialized();
-                      Workmanager.cancelAll();
-                      Workmanager.initialize(
-                        callbackDispatcher,
-                        //! set to false in production
-                        isInDebugMode: false,
-                      );
+                    prefs.setBool(PrefsConstants.NOTIFICATIONS, true);
+                    prefs.setBool(PrefsConstants.GRADES_NOTIFICATIONS, true);
+                    prefs.setBool(PrefsConstants.NOTICES_NOTIFICATIONS, true);
 
-                      Workmanager.registerPeriodicTask(
-                        'checkForNewContent', 'checkForNewContent',
-                        initialDelay: Duration(minutes: 60),
-                        // minimum frequency for android is 15 minutes
-                        frequency: Duration(minutes: 30),
-                        constraints: Constraints(
-                          networkType: NetworkType.unmetered,
-                          requiresBatteryNotLow: true,
-                        ),
-                      );
-                      FLog.info(text: 'Set everything for periodic task!');
-                    } else {
-                      prefs.setBool(PrefsConstants.NOTIFICATIONS, false);
-                      FLog.info(text: 'No notifications set!');
-                    }
+                    prefs.setInt(PrefsConstants.UPDATE_INTERVAL, 360);
+
+                    WidgetsFlutterBinding.ensureInitialized();
+                    Workmanager.cancelAll();
+                    Workmanager.initialize(
+                      callbackDispatcher,
+                      isInDebugMode: false,
+                    );
+
+                    Workmanager.registerPeriodicTask(
+                      'checkForNewContent',
+                      'checkForNewContent',
+                      initialDelay: Duration(minutes: 60),
+                      frequency: Duration(minutes: 360),
+                      constraints: Constraints(
+                        networkType: NetworkType.connected,
+                      ),
+                    );
+                    FLog.info(text: 'Set everything for periodic task!');
 
                     AppNavigator.instance.navToHome(context);
                   },

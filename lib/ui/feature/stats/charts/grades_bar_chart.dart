@@ -163,26 +163,6 @@ class GradesBarChartState extends State<GradesBarChart> {
                 .length
                 .toDouble(),
             isTouched: i == touchedIndex);
-
-        if (i == 0) {
-          return makeGroupData(
-            i,
-            widget.grades
-                .where((g) => g.decimalValue >= 1 && g.decimalValue <= 3)
-                .length
-                .toDouble(),
-            isTouched: i == touchedIndex,
-          );
-        } else {
-          return makeGroupData(
-            i,
-            widget.grades
-                .where((g) => g.decimalValue >= i + 3 && g.decimalValue < i + 4)
-                .length
-                .toDouble(),
-            isTouched: i == touchedIndex,
-          );
-        }
       });
 
   BarChartGroupData makeGroupData(

@@ -1,9 +1,5 @@
 # Uncomment this line to define a global platform for your project
-<<<<<<< HEAD
-# platform :ios, '9.0'
-=======
 platform :ios, '12.4'
->>>>>>> 8ee7c24cf105f2478d7f853e9d2628e614221039
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -88,10 +84,7 @@ install! 'cocoapods', :disable_input_output_paths => true
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-<<<<<<< HEAD
-=======
       config.build_settings['SWIFT_VERSION'] = '4.2'  # required by work manager
->>>>>>> 8ee7c24cf105f2478d7f853e9d2628e614221039
       config.build_settings['ENABLE_BITCODE'] = 'NO'
     end
   end

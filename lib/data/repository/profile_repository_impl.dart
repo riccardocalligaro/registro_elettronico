@@ -8,25 +8,23 @@ import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 class ProfileRepositoryImpl implements ProfileRepository {
   ProfileDao profileDao;
   FlutterSecureStorage flutterSecureStorage;
-  ProfileMapper profileMapper;
 
-  ProfileRepositoryImpl(this.profileDao, this.profileMapper);
+  ProfileRepositoryImpl(this.profileDao, this.flutterSecureStorage);
 
   Future<bool> isLoggedIn() async {
     final profiles = await profileDao.getAllProfiles();
- 
 
     return (profiles.length >= 1);
   }
 
   @override
   Future deleteProfile({Profile profile}) => profileDao.deleteProfile(
-      profileMapper.mapProfileEntityToProfileInsertable(profile));
+      ProfileMapper.mapProfileEntityToProfileInsertable(profile));
 
   @override
   Future insertProfile({Profile profile}) {
     final convertedProfile =
-        profileMapper.mapProfileEntityToProfileInsertable(profile);
+        ProfileMapper.mapProfileEntityToProfileInsertable(profile);
     return profileDao.insertProfile(convertedProfile);
   }
 
@@ -48,6 +46,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future updateProfile(Profile profile) {
     return profileDao.updateProfile(
-        profileMapper.mapProfileEntityToProfileInsertable(profile));
+      ProfileMapper.mapProfileEntityToProfileInsertable(profile),
+    );
   }
 }

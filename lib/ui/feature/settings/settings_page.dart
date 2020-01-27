@@ -315,7 +315,6 @@ class _SettingsPageState extends State<SettingsPage> {
           networkType: _onlyOnWifiActivated
               ? NetworkType.unmetered
               : NetworkType.connected,
-          requiresBatteryNotLow: true,
         ),
       );
 

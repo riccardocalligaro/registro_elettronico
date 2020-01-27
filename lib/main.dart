@@ -31,8 +31,7 @@ void main() {
     runApp(MyApp());
   }, onError: (Object error, Object stackTrace) {
     FLog.error(
-      text: 'Exception',
-      exception: error,
+      text: error.toString(),
       stacktrace: stackTrace,
     );
 
@@ -78,7 +77,8 @@ class MyApp extends StatelessWidget {
 
   _setSystemUI(Brightness brightness) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarBrightness: Brightness.dark));
+      statusBarColor: Colors.transparent,
+      statusBarBrightness: Brightness.dark,
+    ));
   }
 }

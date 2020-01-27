@@ -11,12 +11,10 @@ import 'package:registro_elettronico/domain/entity/api_responses/login_response.
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 
 class DioClient {
-  final ProfileMapper profileMapper;
   final ProfileRepository profileRepository;
   final FlutterSecureStorage flutterSecureStorage;
 
-  DioClient(
-      this.profileMapper, this.profileRepository, this.flutterSecureStorage);
+  DioClient(this.profileRepository, this.flutterSecureStorage);
 
   Dio createDio() {
     final dio = Dio();
@@ -64,7 +62,7 @@ class DioClient {
           final loginResponse = LoginResponse.fromJson(res.data);
 
           // finally we update the db with the new token
-          profileRepository.updateProfile(profileMapper
+          profileRepository.updateProfile(ProfileMapper
               .mapLoginResponseProfileToProfileEntity(loginResponse));
 
           //profileRepository.updateProfile();

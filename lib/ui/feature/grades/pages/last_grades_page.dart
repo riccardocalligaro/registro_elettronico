@@ -50,32 +50,32 @@ class _LastGradesPageState extends State<LastGradesPage> {
   }
 
   Widget _buildGradesList() {
-
-    if(widget.grades.length > 0) {
- return ListView.builder(
-      itemCount: widget.grades.length,
-      itemBuilder: (context, index) {
-        if (index == 0) {
+    if (widget.grades.length > 0) {
+      return ListView.builder(
+        padding: EdgeInsets.only(bottom: 16.0),
+        itemCount: widget.grades.length,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+              child: GradeCard(
+                grade: widget.grades[index],
+              ),
+            );
+          }
           return Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+            padding: const EdgeInsets.only(bottom: 8.0),
             child: GradeCard(
               grade: widget.grades[index],
             ),
           );
-        }
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: GradeCard(
-            grade: widget.grades[index],
-          ),
-        );
-      },
-    );
+        },
+      );
     } else {
       return CustomPlaceHolder(
         icon: Icons.timeline,
         showUpdate: true,
-        onTap:  () {
+        onTap: () {
           BlocProvider.of<SubjectsGradesBloc>(context)
               .add(UpdateSubjectGrades());
           BlocProvider.of<SubjectsGradesBloc>(context)
@@ -85,6 +85,5 @@ class _LastGradesPageState extends State<LastGradesPage> {
         text: AppLocalizations.of(context).translate('no_grades'),
       );
     }
-   
   }
 }

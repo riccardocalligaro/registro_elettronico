@@ -8,6 +8,7 @@ import 'package:registro_elettronico/ui/bloc/auth/auth_state.dart';
 import 'package:registro_elettronico/ui/feature/widgets/gradient_red_button.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -52,7 +53,8 @@ class _LoginPageState extends State<LoginPage> {
                 context: context,
                 builder: (context) {
                   return SimpleDialog(
-                    title: Text(AppLocalizations.of(context).translate('scegli_un_profilo')),
+                    title: Text(AppLocalizations.of(context)
+                        .translate('scegli_un_profilo')),
                     children: <Widget>[
                       Container(
                         width: double.maxFinite,
@@ -80,6 +82,13 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 },
               );
+            }
+
+            if (state is SignInNotConnected) {
+              Scaffold.of(context)
+                ..removeCurrentSnackBar()
+                ..showSnackBar(
+                    AppNavigator.instance.getNetworkErrorSnackBar(context));
             }
 
             if (state is SignInSuccess) {
@@ -234,7 +243,9 @@ class _LoginPageState extends State<LoginPage> {
         TextField(
           controller: _usernameController,
           decoration: InputDecoration(
-              hintText: 'Username', errorText: _invalid ? _erorrMessage : null),
+              hintText: AppLocalizations.of(context)
+                  .translate('login_username_input_field'),
+              errorText: _invalid ? _erorrMessage : null),
         ),
         SizedBox(
           height: 30,
@@ -328,10 +339,20 @@ class _LoginPageState extends State<LoginPage> {
               onTap: () {
                 // todo: navigate to repository
               },
-              child: Text(
-                'Open source.',
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
+              child: GestureDetector(
+                onTap: () async {
+                  final url = RegistroConstants.WEBSITE;
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                child: Text(
+                  'Open source.',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
             )

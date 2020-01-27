@@ -15,8 +15,7 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 ///"lessonArg": ""
 
 class LessonMapper {
-  const LessonMapper();
-  db.Lesson mapLessonEntityToLessoneInsertable(e) {
+  static db.Lesson mapLessonEntityToLessoneInsertable(e) {
     return db.Lesson(
       eventId: e.evtId ?? -1,
       date: DateUtils.getDateFromApiString(e.evtDate) ?? DateTime.now(),

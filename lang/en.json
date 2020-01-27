@@ -238,5 +238,7 @@
   "score_description": "This score is calculated by various factors.\nIt depends on grades, disciplinary notes, absences. A score that is less than 60 is considered bad.\n\nDo not take this seriously.",
   "info_app_title": "About",
   "info_app_subtitle": "Info about licenses and build number",
-  "statitics": "Statistics"
+  "statitics": "Statistics",
+  "skipped_tests": "Skipped tests due to absences (estimate): {number}",
+  "login_username_input_field": "Email or ident"
 }

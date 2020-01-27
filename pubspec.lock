@@ -211,6 +211,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  esys_flutter_share:
+    dependency: "direct main"
+    description:
+      name: esys_flutter_share
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   expandable:
     dependency: "direct main"
     description:
@@ -756,6 +763,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.23.1"
+  screenshot:
+    dependency: "direct main"
+    description:
+      name: screenshot
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   sembast:
     dependency: transitive
     description:
@@ -763,13 +777,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2+3"
-  share:
-    dependency: "direct main"
-    description:
-      name: share
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.3+5"
   shared_preferences:
     dependency: "direct main"
     description:

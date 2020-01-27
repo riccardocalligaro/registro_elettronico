@@ -71,8 +71,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             _saveProfileInDb(loginReponse, event.password);
             FLog.info(text: 'Log in success');
 
-            yield SignInSuccess(ProfileMapper()
-                .mapLoginResponseProfileToProfileEntity(loginReponse));
+            yield SignInSuccess(
+                ProfileMapper.mapLoginResponseProfileToProfileEntity(
+                    loginReponse));
           },
           (parentsLoginResponse) async* {
             FLog.info(text: 'Got parents response');
@@ -106,7 +107,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   _saveProfileInDb(LoginResponse returnedProfile, String userPassword) {
     FLog.info(text: 'Saving profile in database');
     final profileEntity =
-        ProfileMapper().mapLoginResponseProfileToProfileEntity(returnedProfile);
+        ProfileMapper.mapLoginResponseProfileToProfileEntity(returnedProfile);
     profileRepository.insertProfile(profile: profileEntity);
     flutterSecureStorage.write(key: profileEntity.ident, value: userPassword);
   }

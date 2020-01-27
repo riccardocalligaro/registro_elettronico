@@ -129,10 +129,12 @@ class _TermGradesPageState extends State<TermGradesPage> {
     List<Grade> grades,
     List<Subject> subjects,
   ) {
-    final sortedMap = _getGradesOrderedByAverage(grades, subjects, showAsending);
+    final sortedMap =
+        _getGradesOrderedByAverage(grades, subjects, showAsending);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ListView.builder(
+        padding: EdgeInsets.only(bottom: 16.0),
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: sortedMap.keys.length,

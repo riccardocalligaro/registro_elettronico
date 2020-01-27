@@ -200,8 +200,9 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
       ),
     );
     final LineChartBarData lineChartBarRitardi = LineChartBarData(
-      spots: _getSposts(RegistroConstants.RITARDO_BREVE),
-       isCurved: true,
+      spots: _getSpostsDoubleCode(
+          RegistroConstants.RITARDO_BREVE, RegistroConstants.RITARDO),
+      isCurved: true,
       preventCurveOverShooting: true,
       colors: [Colors.blue],
       barWidth: 6,
@@ -215,7 +216,7 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
     );
     LineChartBarData lineChartBarUscite = LineChartBarData(
       spots: _getSposts(RegistroConstants.USCITA),
-        isCurved: true,
+      isCurved: true,
       preventCurveOverShooting: true,
       colors: [
         Colors.yellow[600],
@@ -236,7 +237,7 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
     ];
   }
 
-  FlSpot _getSpotForMonth(double month, String code) {
+  FlSpot _getSpotForMonth(double month, String code, {String code2}) {
     final absences = widget.absences[month];
     double monthGraph;
     if (month >= 9.0 && month <= 12.0) {
@@ -250,7 +251,7 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
         monthGraph,
         absences
             .where((absence) =>
-                absence.evtCode == code &&
+                (absence.evtCode == code || absence.evtCode == code2 ?? '') &&
                 absence.evtDate.month == month.toInt())
             .length
             .toDouble(),
@@ -272,6 +273,21 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
       _getSpotForMonth(4, code),
       _getSpotForMonth(5, code),
       _getSpotForMonth(6, code),
+    ];
+  }
+
+  List<FlSpot> _getSpostsDoubleCode(String code1, String code2) {
+    return [
+      _getSpotForMonth(9, code1, code2: code2),
+      _getSpotForMonth(10, code1, code2: code2),
+      _getSpotForMonth(11, code1, code2: code2),
+      _getSpotForMonth(12, code1, code2: code2),
+      _getSpotForMonth(1, code1, code2: code2),
+      _getSpotForMonth(2, code1, code2: code2),
+      _getSpotForMonth(3, code1, code2: code2),
+      _getSpotForMonth(4, code1, code2: code2),
+      _getSpotForMonth(5, code1, code2: code2),
+      _getSpotForMonth(6, code1, code2: code2),
     ];
   }
 }
