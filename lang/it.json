@@ -238,7 +238,7 @@
   "score_description": "Questo punteggio viene calcolato tenendo conto di diversi fattori.\nDipende da voti, note disciplinari e assenze. Un punteggio minore di 60 viene considerato negativo.\n\nNon prendere questo numero troppo seriamente.",
   "info_app_title": "Informazioni",
   "info_app_subtitle": "Informazioni sulle licenze e sulla versione dell'applicazione",
-  "statitics": "Statistiche",
+  "statistics": "Statistiche",
   "skipped_tests": "Verifiche saltate per assenze (stima): {number}",
   "login_username_input_field": "Email o ident"
 }

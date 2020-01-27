@@ -284,7 +284,7 @@ class _AppDrawerState extends State<AppDrawer>
 
             _createDrawerItem(
               icon: Icons.pie_chart,
-              text: AppLocalizations.of(context).translate('statitics'),
+              text: AppLocalizations.of(context).translate('statistics'),
               pos: DrawerConstants.STATS,
               onTap: () {
                 Navigator.pop(context);

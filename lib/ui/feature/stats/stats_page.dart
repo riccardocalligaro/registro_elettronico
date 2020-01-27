@@ -37,7 +37,7 @@ class _StatsPageState extends State<StatsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context).translate('statitics'),
+          AppLocalizations.of(context).translate('statistics'),
         ),
         actions: <Widget>[
           IconButton(
@@ -45,7 +45,7 @@ class _StatsPageState extends State<StatsPage> {
             onPressed: () async {
               final directory = (await getApplicationDocumentsDirectory()).path;
               String fileName = AppLocalizations.of(context)
-                      .translate('statitics')
+                      .translate('statistics')
                       .toLowerCase() +
                   DateTime.now().toIso8601String();
 
@@ -65,7 +65,7 @@ class _StatsPageState extends State<StatsPage> {
                   bytes.buffer.asUint8List(),
                   'image/png',
                   text:
-                      '${AppLocalizations.of(context).translate('statitics')} ${DateUtils.convertDateLocaleDashboard(DateTime.now(), AppLocalizations.of(context).locale.toString())}',
+                      '${AppLocalizations.of(context).translate('statistics')} ${DateUtils.convertDateLocaleDashboard(DateTime.now(), AppLocalizations.of(context).locale.toString())}',
                 );
               }).catchError((onError) {
                 FLog.info(text: 'Coudlnt create stats image file for sharing');
