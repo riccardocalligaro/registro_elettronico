@@ -476,7 +476,9 @@ class GlobalUtils {
     event = event.toLowerCase();
     return (event.contains('compito') ||
         event.contains('verifica') ||
-        event.contains('interrogazione'));
+        event.contains('interrogazione') ||
+        event.contains('interrogazioni') ||
+        event.contains('test'));
   }
 
   /// `venerdi alla 4 ora`

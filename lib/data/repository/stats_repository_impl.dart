@@ -14,6 +14,7 @@ import 'package:registro_elettronico/domain/repository/stats_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,8 +52,6 @@ class StatsRepositoryImpl implements StatsRepository {
       final year = prefs.getInt(PrefsConstants.STUDENT_YEAR) ?? 3;
 
       if (periods.length >= 2) {
-        final score = _getUserScore(grades: grades, notes: notes);
-
         double average = 0;
         double firstTermAverage = 0;
         double secondTermAverage = 0;
@@ -73,6 +72,7 @@ class StatsRepositoryImpl implements StatsRepository {
         int insufficienzeGraviCount = 0;
         int sufficienzeCount = 0;
         int insufficienzeLieviCount = 0;
+        int insufficienzeCount = 0;
 
         List<Subject> insufficientiSubjects = [];
         List<Subject> sufficientiSubjects = [];
@@ -86,7 +86,8 @@ class StatsRepositoryImpl implements StatsRepository {
           if (subjectAverage > maxAverage) {
             bestSubject = subject;
             maxAverage = subjectAverage;
-          } else if (subjectAverage < minAverage) {
+          }
+          if (subjectAverage < minAverage) {
             worstSubject = subject;
             minAverage = subjectAverage;
           }
@@ -120,6 +121,8 @@ class StatsRepositoryImpl implements StatsRepository {
               sufficienzeCount++;
             } else if (grade.decimalValue >= 5.5 && grade.decimalValue < 6) {
               insufficienzeLieviCount++;
+            } else if (grade.decimalValue >= 4.5) {
+              insufficienzeCount++;
             } else {
               insufficienzeGraviCount++;
             }
@@ -145,6 +148,20 @@ class StatsRepositoryImpl implements StatsRepository {
             periods.elementAt(1).end.difference(DateTime.now());
 
         final schoolCredits = GradesUtils.getMinSchoolCredits(average, year);
+        final score = _getUserScore(
+          grades: grades,
+          notes: notes,
+          skippedTests: skippedTestsForAbsences,
+          average: average,
+          nearlySufficientSubjects: nearlySufficientiSubjectsCount,
+          insufficientSubjects: insufficientiSubjectsCount,
+          events: events,
+          nearlySufficientGrades: insufficienzeLieviCount,
+          insufficientGrades: insufficienzeCount,
+          sufficientGrades: sufficienzeCount,
+          gravementeInsufficientGrades: insufficienzeGraviCount,
+          totalGrades: gradesCount,
+        );
 
         return Right(
           StudentReport(
@@ -155,7 +172,7 @@ class StatsRepositoryImpl implements StatsRepository {
             mostProfitablePeriod: mostProfitablePeriod,
             bestSubject: bestSubject,
             worstSubject: worstSubject,
-            insufficienzeGraviCount: insufficienzeGraviCount,
+            insufficienzeGraviCount: insufficienzeGraviCount + insufficienzeCount,
             insufficienzeLieviCount: insufficienzeLieviCount,
             sufficienzeCount: sufficienzeCount,
             skippedTestsForAbsences: skippedTestsForAbsences,
@@ -188,17 +205,33 @@ class StatsRepositoryImpl implements StatsRepository {
   double _getUserScore({
     @required List<Grade> grades,
     @required List<Note> notes,
+    @required int skippedTests,
+    @required List<AgendaEvent> events,
+    @required int nearlySufficientSubjects,
+    @required int insufficientSubjects,
+    @required double average,
+    @required int sufficientGrades,
+    @required int nearlySufficientGrades,
+    @required int insufficientGrades,
+    @required int gravementeInsufficientGrades,
+    @required int totalGrades,
   }) {
     // TODO: better algorithm
 
-    double initialScore = 100.0;
+    double initialScore = sufficientGrades / totalGrades * 100.0;
 
-    notes.forEach((note) => initialScore -= 2.50);
+    notes.forEach((note) => initialScore -= 10.0);
 
-    grades
-        .where((g) => g.decimalValue < 5)
-        .forEach((g) => initialScore -= 2.50);
-
+    for (var i = 0; i < nearlySufficientSubjects; i++) {
+      initialScore -= 1.50;
+    }
+    for (var i = 0; i < insufficientSubjects; i++) {
+      initialScore -= 2.50;
+    }
+//    for (var i = 0; i < gravementeInsufficientGrades; i++) {
+//      initialScore -= 3.50;
+//    }
+//
     return initialScore;
   }
 
@@ -216,15 +249,17 @@ class StatsRepositoryImpl implements StatsRepository {
       // If there are events in the day of the event
       // TODO: test
       absenceDayEvents.forEach((dayEvent) {
-        if (absence.evtCode == RegistroConstants.ASSENZA) {
-          days++;
-        } else if (absence.evtCode == RegistroConstants.RITARDO) {
-          if (absence.evtHPos > dayEvent.begin.hour - 8) {
+        if (GlobalUtils.isVerificaOrInterrogazione(dayEvent.notes)) {
+          if (absence.evtCode == RegistroConstants.ASSENZA) {
             days++;
-          }
-        } else if (absence.evtCode == RegistroConstants.USCITA) {
-          if (absence.evtHPos < dayEvent.begin.hour - 8) {
-            days++;
+          } else if (absence.evtCode == RegistroConstants.RITARDO) {
+            if (absence.evtHPos > dayEvent.begin.hour - 8) {
+              days++;
+            }
+          } else if (absence.evtCode == RegistroConstants.USCITA) {
+            if (absence.evtHPos < dayEvent.begin.hour - 8) {
+              days++;
+            }
           }
         }
       });

@@ -101,17 +101,14 @@ class _GradesPieChartState extends State<GradesPieChart> {
   }
 
   List<PieChartSectionData> showingSections() {
-    String insuffPercentage =
-        ((widget.insufficientiCount / widget.totalGrades) * 100)
-            .toStringAsFixed(0);
+    double insuffPercentage =
+        ((widget.insufficientiCount / widget.totalGrades) * 100);
 
-    String nearlySuffPercentage =
-        ((widget.nearlySufficientiCount / widget.totalGrades) * 100)
-            .toStringAsFixed(0);
+    double nearlySuffPercentage =
+        ((widget.nearlySufficientiCount / widget.totalGrades) * 100);
 
-    String suffPercentage =
-        ((widget.sufficientiCount / widget.totalGrades) * 100)
-            .toStringAsFixed(0);
+    double suffPercentage =
+        ((widget.sufficientiCount / widget.totalGrades) * 100);
 
     return List.generate(
       3,
@@ -119,11 +116,12 @@ class _GradesPieChartState extends State<GradesPieChart> {
         final isTouched = i == touchedIndex;
         final double fontSize = isTouched ? 14 : 12;
         final double radius = isTouched ? 70 : 65;
+
         switch (i) {
           case 0:
             return PieChartSectionData(
               color: Colors.red,
-              title: '$insuffPercentage%',
+              title: '${insuffPercentage > 0 ? '${insuffPercentage.toStringAsFixed(0)}%' : ''}',
               value: widget.insufficientiCount.toDouble(),
               radius: radius,
               titleStyle:
@@ -132,7 +130,7 @@ class _GradesPieChartState extends State<GradesPieChart> {
           case 1:
             return PieChartSectionData(
               color: Colors.green,
-              title: '$suffPercentage%',
+              title: '${suffPercentage > 0 ? '${suffPercentage.toStringAsFixed(0)}%' : ''}',
               value: widget.sufficientiCount.toDouble(),
               radius: radius,
               titleStyle:
@@ -141,7 +139,7 @@ class _GradesPieChartState extends State<GradesPieChart> {
           case 2:
             return PieChartSectionData(
               color: Colors.yellow[700],
-              title: '$nearlySuffPercentage%',
+              title: '${nearlySuffPercentage > 0 ? '${nearlySuffPercentage.toStringAsFixed(0)}%' : ''}',
               value: widget.nearlySufficientiCount.toDouble(),
               radius: radius,
               titleStyle:
