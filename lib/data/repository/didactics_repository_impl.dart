@@ -131,9 +131,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
     FLog.info(text: 'Getting attachment file for $fileId!');
 
     String baseUrl = 'https://web.spaggiari.eu/rest/v1';
-    final _dio = DioClient(
-        Injector.appInstance.getDependency(),
-        Injector.appInstance.getDependency(),
+    final _dio = DioClient(Injector.appInstance.getDependency(),
         Injector.appInstance.getDependency());
     ArgumentError.checkNotNull(studentId, 'studentId');
     ArgumentError.checkNotNull(fileId, 'fileId');

@@ -4,11 +4,9 @@ import 'package:registro_elettronico/domain/entity/entities.dart' as entity;
 import 'package:registro_elettronico/utils/profile_utils.dart';
 
 class ProfileMapper {
-  const ProfileMapper();
-
   /// Transorms the profile from an entity to an object that can be
   /// inserted in the database
-  db.Profile mapProfileEntityToProfileInsertable(entity.Profile e) {
+  static db.Profile mapProfileEntityToProfileInsertable(entity.Profile e) {
     return db.Profile(
       id: -1,
       ident: e.ident,
@@ -23,7 +21,7 @@ class ProfileMapper {
   }
 
   /// Converts the login response that we get from calsseviva into a profile entity
-  entity.Profile mapLoginResponseProfileToProfileEntity(
+  static entity.Profile mapLoginResponseProfileToProfileEntity(
       LoginResponse resProfile) {
     return entity.Profile(
       firstName: resProfile.firstName ?? "",

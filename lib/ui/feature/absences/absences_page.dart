@@ -44,17 +44,10 @@ class _AbsencesPageState extends State<AbsencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-
     return Scaffold(
-      //key: _drawerKey,
       appBar: AppBar(
-        //scaffoldKey: _drawerKey,
         title: Text(AppLocalizations.of(context).translate('absences')),
       ),
-      // drawer: AppDrawer(
-      //   position: DrawerConstants.ABSENCES,
-      // ),
       bottomSheet: LastUpdateBottomSheet(
         millisecondsSinceEpoch: _absencesLastUpdate,
       ),
@@ -167,7 +160,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
                     numberOfAbsences,
                     Colors.red,
                     true,
-                    numberOfUscite / 50,
+                    numberOfAbsences / 50,
                   ),
                   _buildStatsCircle(trans.translate('early_exits'),
                       numberOfUscite, Colors.yellow[700], false, 1.0),
@@ -202,6 +195,9 @@ class _AbsencesPageState extends State<AbsencesPage> {
             ),
           ),
           progressColor: color,
+        ),
+        SizedBox(
+          height: 4,
         ),
         Text(typeOfEvent)
       ],
@@ -263,6 +259,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
           ),
           IgnorePointer(
             child: ListView.builder(
+              padding: EdgeInsets.only(bottom: 8.0),
               itemCount: justifiedAbsences.keys.length,
               shrinkWrap: true,
               itemBuilder: (ctx, index) {

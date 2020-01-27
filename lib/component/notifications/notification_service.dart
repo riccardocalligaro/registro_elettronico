@@ -18,7 +18,6 @@ import 'package:registro_elettronico/data/repository/absences_repository_impl.da
 import 'package:registro_elettronico/data/repository/agenda_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/documents_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/grades_repository_impl.dart';
-import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/data/repository/notes_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/notices_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/profile_repository_impl.dart';
@@ -40,12 +39,12 @@ class NotificationService {
     final AppDatabase appDatabase = AppDatabase();
     final GradeDao gradeDao = GradeDao(appDatabase);
     final ProfileDao profileDao = ProfileDao(AppDatabase());
-    final ProfileMapper profileMapper = ProfileMapper();
-    final ProfileRepository profileRepository =
-        ProfileRepositoryImpl(profileDao, profileMapper);
     final FlutterSecureStorage flutterSecureStorage = FlutterSecureStorage();
+
+    final ProfileRepository profileRepository =
+        ProfileRepositoryImpl(profileDao, flutterSecureStorage);
     final DioClient dioClient =
-        DioClient(ProfileMapper(), profileRepository, flutterSecureStorage);
+        DioClient(profileRepository, flutterSecureStorage);
     final SpaggiariClient spaggiariClient =
         SpaggiariClient(dioClient.createDio());
 

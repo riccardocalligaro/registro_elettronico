@@ -11,7 +11,6 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 import 'mapper/lesson_mapper.dart';
 
 class LessonsRepositoryImpl implements LessonsRepository {
-  LessonMapper lessonMapper;
   SpaggiariClient spaggiariClient;
   LessonDao lessonDao;
   ProfileDao profileDao;
@@ -19,7 +18,6 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
   LessonsRepositoryImpl(
     this.spaggiariClient,
-    this.lessonMapper,
     this.lessonDao,
     this.profileDao,
     this.networkInfo,
@@ -34,7 +32,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
       List<Lesson> lessonsList = [];
       lessons.lessons.forEach((lesson) {
         lessonsList
-            .add(lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
+            .add(LessonMapper.mapLessonEntityToLessoneInsertable(lesson));
       });
 
       FLog.info(
@@ -61,7 +59,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
       List<Lesson> lessonsInsertable = [];
       lessons.lessons.forEach((lesson) {
         lessonsInsertable
-            .add(lessonMapper.mapLessonEntityToLessoneInsertable(lesson));
+            .add(LessonMapper.mapLessonEntityToLessoneInsertable(lesson));
       });
       await lessonDao.deleteLessons();
 

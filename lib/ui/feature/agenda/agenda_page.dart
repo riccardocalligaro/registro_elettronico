@@ -301,37 +301,35 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       );
     }
     return IgnorePointer(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: lessons.length,
-          itemBuilder: (ctx, index) {
-            final lesson = lessons[index];
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 6.0, 16.0, 0.0),
-              child: Card(
-                child: ListTile(
-                  title: Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-                    child: Text(
-                      StringUtils.titleCase(lesson.author),
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
+      child: ListView.builder(
+        padding: EdgeInsets.only(bottom: 24.0),
+        shrinkWrap: true,
+        itemCount: lessons.length,
+        itemBuilder: (ctx, index) {
+          final lesson = lessons[index];
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 6.0, 16.0, 0.0),
+            child: Card(
+              child: ListTile(
+                title: Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                  child: Text(
+                    StringUtils.titleCase(lesson.author),
+                    style: TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-                    child: Text(
-                      lesson.lessonArg != ""
-                          ? lesson.lessonArg
-                          : lesson.lessonType,
-                    ),
+                ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                  child: Text(
+                    lesson.lessonArg != ""
+                        ? lesson.lessonArg
+                        : lesson.lessonType,
                   ),
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

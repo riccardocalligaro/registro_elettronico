@@ -24,10 +24,6 @@ import 'package:registro_elettronico/data/network/service/web/web_spaggiari_clie
 import 'package:registro_elettronico/data/repository/absences_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/didactics_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/documents_repository_impl.dart';
-import 'package:registro_elettronico/data/repository/mapper/absence_mapper.dart';
-import 'package:registro_elettronico/data/repository/mapper/mappers_export.dart';
-import 'package:registro_elettronico/data/repository/mapper/note_mapper.dart';
-import 'package:registro_elettronico/data/repository/mapper/period_mapper.dart';
 import 'package:registro_elettronico/data/repository/notes_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/notices_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/periods_repository_impl.dart';
@@ -61,12 +57,12 @@ class AppInjector {
     injectService();
     // Inject all the repositories
     injectRepository();
-    // Inject all the mappers to convert db objects -> entity and vice versa
-    injectMapper();
+    //// Inject all the mappers to convert db objects -> entity and vice versa
+    //injectMapper();
     // Only authbloc for now
     injectBloc();
-    // Inject shared preferences
-    injectSharedPreferences();
+    //// Inject shared preferences
+    //injectSharedPreferences();
   }
 
   static void injectDatabase() {
@@ -132,6 +128,14 @@ class AppInjector {
   }
 
   static void injectMisc() {
+    Injector.appInstance.registerSingleton<DataConnectionChecker>((i) {
+      return DataConnectionChecker();
+    });
+
+    Injector.appInstance.registerSingleton<NetworkInfo>((i) {
+      return NetworkInfoImpl(i.getDependency());
+    });
+
     // This is for storing the user credentials
     Injector.appInstance.registerSingleton<FlutterSecureStorage>((i) {
       return FlutterSecureStorage();
@@ -140,8 +144,7 @@ class AppInjector {
 
   static void injectService() {
     Injector.appInstance.registerSingleton<Dio>((i) {
-      return DioClient(i.getDependency(), i.getDependency(), i.getDependency())
-          .createDio();
+      return DioClient(i.getDependency(), i.getDependency()).createDio();
     });
 
     Injector.appInstance.registerSingleton<Dio>((i) {
@@ -164,20 +167,20 @@ class AppInjector {
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
-        i.getDependency(),
       );
       return loginRepository;
     });
 
     Injector.appInstance.registerSingleton((i) {
-      ProfileRepository profileRepository =
-          ProfileRepositoryImpl(i.getDependency(), i.getDependency());
+      ProfileRepository profileRepository = ProfileRepositoryImpl(
+        i.getDependency(),
+        i.getDependency(),
+      );
       return profileRepository;
     });
 
     Injector.appInstance.registerSingleton((i) {
       LessonsRepository lessonsRepository = LessonsRepositoryImpl(
-        i.getDependency(),
         i.getDependency(),
         i.getDependency(),
         i.getDependency(),
@@ -304,47 +307,39 @@ class AppInjector {
     });
   }
 
-  static void injectMapper() {
-    // mappers to convert the response to db object
-    Injector.appInstance.registerSingleton<ProfileMapper>((injector) {
-      return ProfileMapper();
-    });
-    Injector.appInstance.registerSingleton<LessonMapper>((injector) {
-      return LessonMapper();
-    });
+  // static void injectMapper() {
+  //   // mappers to convert the response to db object
+  //   Injector.appInstance.registerSingleton<ProfileMapper>((injector) {
+  //     return ProfileMapper();
+  //   });
+  //   Injector.appInstance.registerSingleton<LessonMapper>((injector) {
+  //     return LessonMapper();
+  //   });
 
-    Injector.appInstance.registerSingleton<SubjectMapper>((injector) {
-      return SubjectMapper();
-    });
+  //   Injector.appInstance.registerSingleton<SubjectMapper>((injector) {
+  //     return SubjectMapper();
+  //   });
 
-    Injector.appInstance.registerSingleton<GradeMapper>((injector) {
-      return GradeMapper();
-    });
+  //   Injector.appInstance.registerSingleton<GradeMapper>((injector) {
+  //     return GradeMapper();
+  //   });
 
-    Injector.appInstance.registerSingleton<EventMapper>((injector) {
-      return EventMapper();
-    });
+  //   Injector.appInstance.registerSingleton<EventMapper>((injector) {
+  //     return EventMapper();
+  //   });
 
-    Injector.appInstance.registerSingleton<AbsenceMapper>((injector) {
-      return AbsenceMapper();
-    });
+  //   Injector.appInstance.registerSingleton<AbsenceMapper>((injector) {
+  //     return AbsenceMapper();
+  //   });
 
-    Injector.appInstance.registerSingleton<PeriodMapper>((injector) {
-      return PeriodMapper();
-    });
+  //   Injector.appInstance.registerSingleton<PeriodMapper>((injector) {
+  //     return PeriodMapper();
+  //   });
 
-    Injector.appInstance.registerSingleton<NoteMapper>((injector) {
-      return NoteMapper();
-    });
-
-    Injector.appInstance.registerSingleton<DataConnectionChecker>((i) {
-      return DataConnectionChecker();
-    });
-
-    Injector.appInstance.registerSingleton<NetworkInfo>((i) {
-      return NetworkInfoImpl(i.getDependency());
-    });
-  }
+  //   Injector.appInstance.registerSingleton<NoteMapper>((injector) {
+  //     return NoteMapper();
+  //   });
+  // }
 
   static void injectBloc() {
     Injector.appInstance.registerSingleton((i) {
@@ -352,5 +347,5 @@ class AppInjector {
     });
   }
 
-  static void injectSharedPreferences() async {}
+  //static void injectSharedPreferences() async {}
 }

@@ -80,6 +80,7 @@ class StatsRepositoryImpl implements StatsRepository {
         int nearlySufficientiSubjectsCount = 0;
         int sufficientiSubjectsCount = 0;
         int insufficientiSubjectsCount = 0;
+        int gravementeInsufficientiSubjectsCount = 0;
 
         subjects.forEach((subject) {
           subjectAverage = GradesUtils.getAverage(subject.id, grades);
@@ -98,9 +99,11 @@ class StatsRepositoryImpl implements StatsRepository {
           } else if (subjectAverage >= 5.5 && subjectAverage < 6) {
             nearlySufficientiSubjectsCount++;
             insufficientiSubjects.add(subject);
+          } else if (subjectAverage >= 4.5) {
+            insufficientiSubjectsCount;
           } else if (!subjectAverage.isNaN) {
             insufficientiSubjects.add(subject);
-            insufficientiSubjectsCount++;
+            gravementeInsufficientiSubjectsCount++;
           }
         });
 
@@ -147,8 +150,17 @@ class StatsRepositoryImpl implements StatsRepository {
         final daysRemaining =
             periods.elementAt(1).end.difference(DateTime.now());
 
-        final schoolCredits = GradesUtils.getMinSchoolCredits(average, year);
+        int schoolCredits;
+        if (periods.elementAt(0).end.isAfter(DateTime.now())) {
+          schoolCredits =
+              GradesUtils.getMinSchoolCredits(firstTermAverage, year);
+        } else {
+          schoolCredits =
+              GradesUtils.getMinSchoolCredits(secondTermAverage, year);
+        }
+
         final score = _getUserScore(
+          absences: absences,
           grades: grades,
           notes: notes,
           skippedTests: skippedTestsForAbsences,
@@ -161,6 +173,7 @@ class StatsRepositoryImpl implements StatsRepository {
           sufficientGrades: sufficienzeCount,
           gravementeInsufficientGrades: insufficienzeGraviCount,
           totalGrades: gradesCount,
+          gravementeInsufficientSubjects: gravementeInsufficientiSubjectsCount,
         );
 
         return Right(
@@ -172,7 +185,8 @@ class StatsRepositoryImpl implements StatsRepository {
             mostProfitablePeriod: mostProfitablePeriod,
             bestSubject: bestSubject,
             worstSubject: worstSubject,
-            insufficienzeGraviCount: insufficienzeGraviCount + insufficienzeCount,
+            insufficienzeGraviCount:
+                insufficienzeGraviCount + insufficienzeCount,
             insufficienzeLieviCount: insufficienzeLieviCount,
             sufficienzeCount: sufficienzeCount,
             skippedTestsForAbsences: skippedTestsForAbsences,
@@ -187,7 +201,8 @@ class StatsRepositoryImpl implements StatsRepository {
             agendaEvents: events,
             schoolCredits: schoolCredits,
             sufficientiSubjectsCount: sufficientiSubjectsCount,
-            insufficientiSubjectsCount: insufficientiSubjectsCount,
+            insufficientiSubjectsCount: insufficientiSubjectsCount +
+                gravementeInsufficientiSubjectsCount,
             nearlySufficientiSubjectsCount: nearlySufficientiSubjectsCount,
           ),
         );
@@ -204,6 +219,7 @@ class StatsRepositoryImpl implements StatsRepository {
 
   double _getUserScore({
     @required List<Grade> grades,
+    @required List<Absence> absences,
     @required List<Note> notes,
     @required int skippedTests,
     @required List<AgendaEvent> events,
@@ -215,9 +231,8 @@ class StatsRepositoryImpl implements StatsRepository {
     @required int insufficientGrades,
     @required int gravementeInsufficientGrades,
     @required int totalGrades,
+    @required int gravementeInsufficientSubjects,
   }) {
-    // TODO: better algorithm
-
     double initialScore = sufficientGrades / totalGrades * 100.0;
 
     notes.forEach((note) => initialScore -= 10.0);
@@ -228,11 +243,24 @@ class StatsRepositoryImpl implements StatsRepository {
     for (var i = 0; i < insufficientSubjects; i++) {
       initialScore -= 2.50;
     }
-//    for (var i = 0; i < gravementeInsufficientGrades; i++) {
-//      initialScore -= 3.50;
-//    }
-//
-    return initialScore;
+    for (var i = 0; i < gravementeInsufficientSubjects; i++) {
+      initialScore -= 3.50;
+    }
+
+    grades.forEach((g) {
+      if (g.displayValue == '+') initialScore += 0.25;
+      if (g.displayValue == '-') initialScore -= 0.25;
+      if (g.displayValue == 'impr') initialScore -= 1;
+    });
+
+    absences.forEach((e) {
+      if (e.evtCode == RegistroConstants.RITARDO_BREVE) initialScore -= 0.25;
+      if (!e.isJustified) {
+        initialScore -= 3.00;
+      }
+    });
+
+    return initialScore >= 100 ? 100 : initialScore;
   }
 
   int _getSkippedTests({
@@ -247,7 +275,6 @@ class StatsRepositoryImpl implements StatsRepository {
           .toList();
 
       // If there are events in the day of the event
-      // TODO: test
       absenceDayEvents.forEach((dayEvent) {
         if (GlobalUtils.isVerificaOrInterrogazione(dayEvent.notes)) {
           if (absence.evtCode == RegistroConstants.ASSENZA) {

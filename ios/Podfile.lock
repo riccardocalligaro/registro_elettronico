@@ -1,6 +1,8 @@
 PODS:
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
+  - esys_flutter_share (0.0.1):
+    - Flutter
   - Fabric (1.10.2)
   - Firebase/Analytics (6.14.0):
     - Firebase/Core
@@ -120,6 +122,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - esys_flutter_share (from `.symlinks/plugins/esys_flutter_share/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_core_web (from `.symlinks/plugins/firebase_core_web/ios`)
@@ -160,6 +163,8 @@ SPEC REPOS:
     - nanopb
 
 EXTERNAL SOURCES:
+  esys_flutter_share:
+    :path: ".symlinks/plugins/esys_flutter_share/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_core:
@@ -205,6 +210,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
+  esys_flutter_share: 403498dab005b36ce1f8d7aff377e81f0621b0b4
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Firebase: 0219bb4782eb1406f1b9b0628a2e625484ce910d
   firebase_analytics: d83001d25b9a58ca5eda8db0ef566c02d7af5258

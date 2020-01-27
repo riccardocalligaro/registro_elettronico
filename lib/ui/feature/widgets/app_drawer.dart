@@ -1,3 +1,4 @@
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
@@ -7,7 +8,6 @@ import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
-import 'package:share/share.dart';
 
 class AppDrawer extends StatefulWidget {
   final int position;
@@ -335,10 +335,17 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("share"),
               pos: DrawerConstants.SHARE,
               onTap: () {
-                Share.share(AppLocalizations.of(context)
-                    .translate('share_message')
-                    .replaceAll('{download_url}',
-                        'https://riccardocalligaro.github.io/registroelettronico-website/'));
+                Share.text(
+                    trans.translate('share'),
+                    trans.translate('share_message').replaceAll(
+                        '{download_url}',
+                        'https://riccardocalligaro.github.io/registroelettronico-website/'),
+                    'text/plain');
+
+                // Share.share(AppLocalizations.of(context)
+                //     .translate('share_message')
+                //     .replaceAll('{download_url}',
+                //         'https://riccardocalligaro.github.io/registroelettronico-website/'));
               },
             ),
           ],
