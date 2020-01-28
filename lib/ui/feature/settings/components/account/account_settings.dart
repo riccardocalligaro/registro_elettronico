@@ -43,14 +43,14 @@ class _AccountSettingsState extends State<AccountSettings> {
                   actions: <Widget>[
                     FlatButton(
                       child: Text(
-                          AppLocalizations.of(context).translate('cancel')),
+                          AppLocalizations.of(context).translate('no')),
                       onPressed: () {
                         Navigator.pop(context);
                       },
                     ),
                     FlatButton(
                       child: Text(
-                          AppLocalizations.of(context).translate('delete')),
+                          AppLocalizations.of(context).translate('yes')),
                       onPressed: () {
                         AppDatabase().resetDbWithoutProfile();
                         BlocProvider.of<IntroBloc>(context).add(FetchAllData());
