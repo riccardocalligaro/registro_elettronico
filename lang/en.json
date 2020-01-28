@@ -198,7 +198,7 @@
   "slide_3_title": "Notifications",
   "slide_4_title": "Theme",
   "slide_1_subtitle": "Swipe left for a brief introduction\nApplication developed by students.",
-  "slide_2_subtitle": "Get the most out of your performance thanks to 50+ statistics",
+  "slide_2_subtitle": "Get the most out of your performance thanks to a lot of statistics",
   "slide_3_subtitle": "Stay always updated.\nSet the notifications in the settings page.",
   "slide_4_subtitle": "Choose a theme\nDark is just better.",
   "loading_subtitle_data": "This data is vital for the correct functioning of the application",
@@ -240,5 +240,6 @@
   "info_app_subtitle": "Info about licenses and build number",
   "statistics": "Statistics",
   "skipped_tests": "Skipped tests due to absences (estimate): {number}",
-  "login_username_input_field": "Email or ident"
+  "login_username_input_field": "Email or ident",
+  "stats_timeline_graph_average": "Average over time"
 }

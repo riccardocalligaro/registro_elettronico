@@ -198,7 +198,7 @@
   "slide_3_title": "Notifiche",
   "slide_4_title": "Tema",
   "slide_1_subtitle": "Trascina verso sinistra per una breve introduzione\nApplicazione sviluppata da studenti.",
-  "slide_2_subtitle": "Scopri di più sul tuo rendimento grazie a più di 50 statistiche presenti",
+  "slide_2_subtitle": "Scopri di più sul tuo rendimento grazie a svariate statistiche presenti",
   "slide_3_subtitle": "Resta sempre aggiornato.\n Ricevi notifiche su voti, comunicazioni e molto altro.",
   "slide_4_subtitle": "Scegli un tema\n(Dark è meglio).",
   "loading_subtitle_data": "Questi dati sono essenziali per il corretto funzionamento dell'applicazione",
@@ -240,5 +240,6 @@
   "info_app_subtitle": "Informazioni sulle licenze e sulla versione dell'applicazione",
   "statistics": "Statistiche",
   "skipped_tests": "Verifiche saltate per assenze (stima): {number}",
-  "login_username_input_field": "Email o ident"
+  "login_username_input_field": "Email o ident",
+  "stats_timeline_graph_average": "Media nel tempo"
 }

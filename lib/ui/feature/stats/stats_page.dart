@@ -6,15 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/entity/student_report.dart';
 import 'package:registro_elettronico/ui/bloc/stats/bloc.dart';
+import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.dart';
 import 'package:registro_elettronico/ui/feature/stats/charts/grades_bar_chart.dart';
 import 'package:registro_elettronico/ui/feature/stats/charts/grades_pie_chart.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StatsPage extends StatefulWidget {
   StatsPage({Key key}) : super(key: key);
@@ -25,11 +29,17 @@ class StatsPage extends StatefulWidget {
 
 class _StatsPageState extends State<StatsPage> {
   ScreenshotController screenshotController = ScreenshotController();
-
+  int objective;
   @override
   void initState() {
     super.initState();
+    restore();
     BlocProvider.of<StatsBloc>(context).add(GetStudentStats());
+  }
+
+  void restore() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    objective = _prefs.getInt(PrefsConstants.OVERALL_OBJECTIVE);
   }
 
   @override
@@ -57,7 +67,6 @@ class _StatsPageState extends State<StatsPage> {
                 pixelRatio: 2,
               )
                   .then((File image) async {
-                print('ok');
                 var bytes = await image.readAsBytes();
                 await Share.file(
                   AppLocalizations.of(context).translate('statistics'),
@@ -115,8 +124,16 @@ class _StatsPageState extends State<StatsPage> {
             // padding: EdgeInsets.all(8.0),
             children: <Widget>[
               _buildOverallStatsCard(report: studentReport),
+
+              _buildAverageChart(
+                grades: studentReport.grades,
+                objective: objective,
+              ),
+
               _buildSecondRowGraphs(report: studentReport),
+
               _buildThirdRowCard(report: studentReport),
+
               //_buildFourthRowCard(report: studentReport),
             ],
           ),
@@ -243,6 +260,31 @@ class _StatsPageState extends State<StatsPage> {
                 },
               ),
               progressColor: GlobalUtils.getColorFromAverage(report.average),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAverageChart({
+    @required List<Grade> grades,
+    int objective,
+  }) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              AppLocalizations.of(context)
+                  .translate('stats_timeline_graph_average'),
+            ),
+            GradesChart(
+              showAverageFirst: true,
+              grades: grades,
+              objective: objective,
             )
           ],
         ),

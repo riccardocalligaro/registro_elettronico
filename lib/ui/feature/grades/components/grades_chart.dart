@@ -6,11 +6,13 @@ import 'package:registro_elettronico/ui/global/localizations/app_localizations.d
 class GradesChart extends StatefulWidget {
   final List<Grade> grades;
   final int objective;
+  final bool showAverageFirst;
 
   const GradesChart({
     Key key,
     @required this.grades,
     this.objective,
+    this.showAverageFirst,
   }) : super(key: key);
 
   @override
@@ -25,6 +27,12 @@ class _GradesChartState extends State<GradesChart> {
   ];
   // by defualt we want to show the average
   bool showAvg = false;
+
+  @override
+  void initState() {
+    showAvg = widget.showAverageFirst ?? false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
