@@ -1465,7 +1465,7 @@ class $ProfessorsTable extends Professors
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Professor map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -2918,7 +2918,7 @@ class $AgendaEventsTable extends AgendaEvents
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {evtId};
   @override
   AgendaEvent map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;

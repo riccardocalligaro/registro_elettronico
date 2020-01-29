@@ -116,7 +116,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
             setState(() {
               _selectedEvents = state.events
                   .where((d) => DateUtils.areSameDay(d.begin, DateTime.now()))
-                  .toSet()
+                 
                   .toList();
             });
           } else if (state is AgendaLoadErrorNotConnected) {
@@ -197,7 +197,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       key: (e) => e.begin,
       value: (e) => events
           .where((event) => DateUtils.areSameDay(event.begin, e.begin))
-          .toSet()
           .toList(),
     );
 

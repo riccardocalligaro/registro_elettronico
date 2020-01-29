@@ -21,4 +21,7 @@ class AgendaEvents extends Table {
   TextColumn get classDesc => text()();
   IntColumn get subjectId => integer()();
   TextColumn get subjectDesc => text()();
+
+  @override
+  Set<Column> get primaryKey => {evtId};
 }
