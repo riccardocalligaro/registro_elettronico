@@ -41,13 +41,12 @@ class NextEventsSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     WeekSummaryChart(
-                      events: state.events,
+                      events: state.events.toList(),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text(AppLocalizations.of(context)
-                            .translate('next_events')),
+                    Text(AppLocalizations.of(context).translate('next_events')),
                     SizedBox(
                       height: 10,
                     ),
@@ -76,7 +75,7 @@ class NextEventsSection extends StatelessWidget {
     BuildContext context,
     List<db.AgendaEvent> events,
   ) {
-    events = events.toSet().toList();
+    events = events.toList();
 
     if (events.length == 0) {
       return Padding(

@@ -25,6 +25,7 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
   Future updateAbsences() async {
     if (await networkInfo.isConnected) {
       FLog.info(text: 'Updating absences');
+      
       final profile = await profileDao.getProfile();
       final absences = await spaggiariClient.getAbsences(profile.studentId);
       List<Absence> absencesList = [];
