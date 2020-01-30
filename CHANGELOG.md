@@ -1,4 +1,37 @@
-Version 0.0.4-dev.1
+Version 0.0.6-dev.1
+
+Bug fixes, minor changes
+
+* Changed 'average' font size in grades chart
+
+* Fixed navigation errror after going to intro from
+intro
+
+* Added chart to stats
+
+* Fixed duplicate agenda events
+
+🛑 Aggiornamenti:
+
+L'applicazione al momento come funzioni fondamentali é praticamente finita, per ora é sono solo miglioramenti, devo settare l'account di google play developers e a breve (max 1/2 settimane) sará pubblicata in modalitá preview / internal testing sul play store.
+
+Al momento stiamo pensando di inserire una modalitá PRO con qualche funzione in piú (niente di quello che c'é giá) e senza pubblicitá, ma niente é confermato
+
+Prossimo obiettivo: 
+
+🔹 Supporto widget nativi in Android, a causa del framework flutter che usiamo questo richiederá del tempo
+
+🔹 Statistiche, statistiche e statistiche
+
+🔹 Nuova pagina orario 
+
+
+
+Se avete altri suggerimenti scrivetemi pure! @R1CCARD0
+
+---
+
+Version 0.0.5-dev.1
 
 Bug fixes, minor changes
 

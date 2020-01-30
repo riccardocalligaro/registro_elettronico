@@ -241,5 +241,8 @@
   "statistics": "Statistics",
   "skipped_tests": "Skipped tests due to absences (estimate): {number}",
   "login_username_input_field": "Email or ident",
-  "stats_timeline_graph_average": "Average over time"
+  "stats_timeline_graph_average": "Average over time",
+  "memo": "Memo",
+  "test": "Test",
+  "homework": "Assignment"
 }

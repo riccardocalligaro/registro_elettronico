@@ -3,7 +3,7 @@ description: >-
   A beautiful and simple school register app for Spaggiari.
   Made by students.
 
-version: 0.0.5-dev.1
+version: 0.0.6-dev.1
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -67,6 +67,8 @@ dependencies:
   screenshot: ^0.1.1
   # share screenshot
   esys_flutter_share: ^1.0.2
+  flutter_speed_dial: ^1.2.5
+  # unicorndial: ^1.1.5
 
   # firebase
   firebase_core: ^0.4.3+1

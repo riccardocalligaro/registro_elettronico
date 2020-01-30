@@ -272,6 +272,10 @@ class GlobalUtils {
     }
   }
 
+  static bool isDark(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark;
+  }
+
   static String reduceLessonArgument(String argument) {
     String reducedName = argument.substring(0, 25);
     reducedName += "...";
