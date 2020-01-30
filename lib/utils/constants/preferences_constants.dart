@@ -30,6 +30,8 @@ class PrefsConstants {
   static const VITAL_DATA_DOWNLOADED = 'vita_data_downloaded';
   static const STUDENT_YEAR = 'student_year';
 
+  static const LAST_UPDATE_VITAL_DATA = 'last_update_vital_data';
+
   static const TERZA_SUPERIORE = 3;
   static const QUARTA_SUPERIORE = 4;
   static const QUINTA_SUPERIORE = 5;
