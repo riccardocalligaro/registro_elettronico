@@ -13,7 +13,7 @@ final material = ThemeData(
     color: Colors.white,
   ),
   primaryIconTheme: IconThemeData(
-    color: Colors.black,
+    color: Colors.grey[800],
   ),
   primaryTextTheme: TextTheme(
     title: TextStyle(color: Colors.black),

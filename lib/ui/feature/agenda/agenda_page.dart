@@ -7,12 +7,15 @@ import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
+import 'package:registro_elettronico/ui/feature/agenda/views/new_test_page.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
+import 'package:registro_elettronico/ui/feature/widgets/unicorn_dialer.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -32,6 +35,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   AnimationController _animationController;
   CalendarController _calendarController;
   int _agendaLastUpdate;
+  bool _dialVisible = true;
 
   @override
   void initState() {
@@ -86,6 +90,89 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    var childButtons = List<UnicornButton>();
+    final trans = AppLocalizations.of(context);
+
+    childButtons.add(
+      UnicornButton(
+        hasLabel: true,
+        labelFontSize: 12,
+        labelText: 'Promemoria',
+        labelHasShadow: false,
+        labelColor:
+            GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
+        labelBackgroundColor:
+            GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
+        currentButton: FloatingActionButton(
+          heroTag: "memo_fab",
+          backgroundColor: Colors.white,
+          mini: true,
+          child: Icon(
+            Icons.notifications,
+            color: Colors.grey[700],
+            size: 17,
+          ),
+          onPressed: () {
+            // Go to dialog
+          },
+        ),
+      ),
+    );
+
+    childButtons.add(
+      UnicornButton(
+        hasLabel: true,
+        labelFontSize: 12,
+        labelText: 'Verifica',
+        labelHasShadow: false,
+        labelColor:
+            GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
+        labelBackgroundColor:
+            GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
+        currentButton: FloatingActionButton(
+          heroTag: "test_fab",
+          backgroundColor: Colors.white,
+          mini: true,
+          child: Icon(
+            Icons.assignment,
+            color: Colors.grey[700],
+            size: 17,
+          ),
+          onPressed: () {
+            // Go to dialog
+          },
+        ),
+      ),
+    );
+    childButtons.add(
+      UnicornButton(
+        hasLabel: true,
+        labelFontSize: 12,
+        labelText: 'Compito',
+        labelHasShadow: false,
+        labelColor:
+            GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
+        labelBackgroundColor:
+            GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
+        currentButton: FloatingActionButton(
+          heroTag: "assignment_fab",
+          backgroundColor: Colors.white,
+          mini: true,
+          child: Icon(
+            Icons.import_contacts,
+            color: Colors.grey[700],
+            size: 17,
+          ),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => NewTestPage(),
+            ));
+            // Go to dialog
+          },
+        ),
+      ),
+    );
+
     return Scaffold(
       //key: _drawerKey,
       appBar: AppBar(
@@ -101,6 +188,13 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       // drawer: AppDrawer(
       //   position: DrawerConstants.AGENDA,
       // ),
+      floatingActionButton: UnicornDialer(
+        parentButtonBackground: Colors.redAccent,
+        orientation: UnicornOrientation.VERTICAL,
+        parentButton: Icon(Icons.add),
+        childButtons: childButtons,
+        hasBackground: false,
+      ),
       bottomSheet: LastUpdateBottomSheet(
         millisecondsSinceEpoch: _agendaLastUpdate,
       ),
@@ -116,7 +210,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
             setState(() {
               _selectedEvents = state.events
                   .where((d) => DateUtils.areSameDay(d.begin, DateTime.now()))
-                 
                   .toList();
             });
           } else if (state is AgendaLoadErrorNotConnected) {

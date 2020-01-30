@@ -241,5 +241,8 @@
   "statistics": "Statistiche",
   "skipped_tests": "Verifiche saltate per assenze (stima): {number}",
   "login_username_input_field": "Email o ident",
-  "stats_timeline_graph_average": "Media nel tempo"
+  "stats_timeline_graph_average": "Media nel tempo",
+  "memo": "Promemoria",
+  "test": "Verifica",
+  "homework": "Compito"
 }
