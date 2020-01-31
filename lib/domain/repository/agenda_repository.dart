@@ -18,4 +18,10 @@ abstract class AgendaRepository {
 
   ///Delete all events
   Future deleteAllEvents();
+
+  Future insertLocalEvent(AgendaEvent event);
+
+  Future deleteEvent(AgendaEvent event);
+
+  Future updateEvent(AgendaEvent event);
 }

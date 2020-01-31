@@ -1,3 +1,12 @@
+Version 0.0.6-dev.2
+
+* Closed #30 - Implemented custom events 
+
+* Changed icon color in light mode to gray
+
+
+---
+
 Version 0.0.6-dev.1
 
 Bug fixes, minor changes
@@ -15,13 +24,11 @@ intro
 
 L'applicazione al momento come funzioni fondamentali é praticamente finita, per ora é sono solo miglioramenti, devo settare l'account di google play developers e a breve (max 1/2 settimane) sará pubblicata in modalitá preview / internal testing sul play store.
 
-Al momento stiamo pensando di inserire una modalitá PRO con qualche funzione in piú (niente di quello che c'é giá) e senza pubblicitá, ma niente é confermato
-
-Prossimo obiettivo: 
+Prossimo obiettivi: 
 
 🔹 Supporto widget nativi in Android, a causa del framework flutter che usiamo questo richiederá del tempo
 
-🔹 Statistiche, statistiche e statistiche
+🔹 Statistiche, statistiche e tante statistiche
 
 🔹 Nuova pagina orario 
 

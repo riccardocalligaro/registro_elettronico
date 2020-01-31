@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/domain/entity/api_responses/agenda_response.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 
 /// IntColumn get evtId => integer()();
 /// TextColumn get evtCode => text()();
@@ -13,8 +15,11 @@ import 'package:registro_elettronico/domain/entity/api_responses/agenda_response
 /// TextColumn get subjectDesc => text()();
 
 class EventMapper {
-
-  static db.AgendaEvent convertEventEntityToInsertable(Event event) {
+  static db.AgendaEvent convertEventEntityToInsertable(
+    Event event,
+    Color color, {
+    String title,
+  }) {
     return db.AgendaEvent(
       evtId: event.evtId ?? -1,
       evtCode: event.evtCode ?? "",
@@ -26,6 +31,9 @@ class EventMapper {
       classDesc: event.classDesc ?? "",
       subjectId: event.subjectId ?? 0,
       subjectDesc: event.subjectDesc ?? "",
+      isLocal: false,
+      labelColor: GlobalUtils.getColorCode(color),
+      title: title ?? '',
     );
   }
 }

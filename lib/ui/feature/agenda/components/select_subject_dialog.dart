@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
-import 'package:registro_elettronico/utils/string_utils.dart';
 
 class SelectSubjectDialog extends StatefulWidget {
-  SelectSubjectDialog({Key key}) : super(key: key);
+  final Subject selectedSubject;
+  SelectSubjectDialog({Key key, this.selectedSubject}) : super(key: key);
 
   @override
   _SelectSubjectDialogState createState() => _SelectSubjectDialogState();
@@ -31,64 +32,33 @@ class _SelectSubjectDialogState extends State<SelectSubjectDialog> {
               ),
             );
           } else if (state is SubjectsAndProfessorsLoadSuccess) {
-            final professors = state.professors;
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: state.subjects.length,
-                    itemBuilder: (context, index) {
-                      final subject = state.subjects[index];
-
-                      final professorsForSubject = professors
-                          .where((prof) => prof.subjectId == subject.id)
-                          .toList();
-                      String professorsText = "";
-                      professorsForSubject.forEach((prof) {
-                        String name = StringUtils.titleCase(prof.name);
-                        if (!professorsText.contains(name))
-                          professorsText +=
-                              "${StringUtils.titleCase(prof.name)}, ";
-                      });
-                      professorsText =
-                          StringUtils.removeLastChar(professorsText);
-                      return ListTile(
-                        title: Text(subject.name),
-                        subtitle: Text(professorsText),
+            return Container(
+              height: 350,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List<Widget>.generate(
+                    state.subjects.length,
+                    (int index) {
+                      return RadioListTile(
+                        title: Text(
+                          state.subjects[index].name,
+                          style: TextStyle(fontSize: 13),
+                        ),
+                        value: state.subjects[index],
+                        groupValue: widget.selectedSubject,
+                        onChanged: (Subject subj) {
+                          Navigator.pop(context, subj);
+                        },
+                        //groupValue: 312,
                       );
                     },
                   ),
-                )
-              ],
-            );
-            return Container(
-              width: double.maxFinite,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: state.subjects.length,
-                itemBuilder: (context, index) {
-                  final subject = state.subjects[index];
-
-                  final professorsForSubject = professors
-                      .where((prof) => prof.subjectId == subject.id)
-                      .toList();
-                  String professorsText = "";
-                  professorsForSubject.forEach((prof) {
-                    String name = StringUtils.titleCase(prof.name);
-                    if (!professorsText.contains(name))
-                      professorsText += "${StringUtils.titleCase(prof.name)}, ";
-                  });
-                  professorsText = StringUtils.removeLastChar(professorsText);
-                  return ListTile(
-                    title: Text(subject.name),
-                    subtitle: Text(professorsText),
-                  );
-                },
+                ),
               ),
             );
           }
+          return Container();
         },
       ),
     );

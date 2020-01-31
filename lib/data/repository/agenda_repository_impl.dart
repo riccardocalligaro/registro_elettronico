@@ -1,4 +1,5 @@
 import 'package:f_logs/f_logs.dart';
+import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
@@ -8,6 +9,7 @@ import 'package:registro_elettronico/data/network/service/api/spaggiari_client.d
 import 'package:registro_elettronico/data/repository/mapper/event_mapper.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 
 class AgendaRepositoryImpl implements AgendaRepository {
   SpaggiariClient spaggiariClient;
@@ -34,8 +36,14 @@ class AgendaRepositoryImpl implements AgendaRepository {
       final agenda = await spaggiariClient.getAgenda(
           profile.studentId, beginDate, endDate);
 
+      Color color;
       agenda.events.forEach((event) {
-        events.add(EventMapper.convertEventEntityToInsertable(event));
+        if (GlobalUtils.isVerificaOrInterrogazione(event.notes)) {
+          color = Colors.red;
+        } else {
+          color = Colors.white;
+        }
+        events.add(EventMapper.convertEventEntityToInsertable(event, color));
       });
 
       FLog.info(
@@ -61,8 +69,15 @@ class AgendaRepositoryImpl implements AgendaRepository {
           await spaggiariClient.getAgenda(profile.studentId, now, interval.end);
       List<AgendaEvent> events = [];
 
+      Color color;
+
       agenda.events.forEach((event) {
-        events.add(EventMapper.convertEventEntityToInsertable(event));
+        if (GlobalUtils.isVerificaOrInterrogazione(event.notes)) {
+          color = Colors.red;
+        } else {
+          color = Colors.white;
+        }
+        events.add(EventMapper.convertEventEntityToInsertable(event, color));
       });
       await agendaDao.deleteEventsFromDate(DateTime.now());
       agendaDao.insertEvents(events);
@@ -80,8 +95,15 @@ class AgendaRepositoryImpl implements AgendaRepository {
       final agenda = await spaggiariClient.getAgenda(
           profile.studentId, interval.begin, interval.end);
       List<AgendaEvent> events = [];
+      Color color;
+
       agenda.events.forEach((event) {
-        events.add(EventMapper.convertEventEntityToInsertable(event));
+        if (GlobalUtils.isVerificaOrInterrogazione(event.notes)) {
+          color = Colors.red;
+        } else {
+          color = Colors.white;
+        }
+        events.add(EventMapper.convertEventEntityToInsertable(event, color));
       });
       agendaDao.insertEvents(events);
     } else {
@@ -113,5 +135,20 @@ class AgendaRepositoryImpl implements AgendaRepository {
       date,
       numbersOfEvents: numbersOfEvents,
     );
+  }
+
+  @override
+  Future deleteEvent(AgendaEvent event) {
+    return agendaDao.deleteEvent(event);
+  }
+
+  @override
+  Future insertLocalEvent(AgendaEvent event) {
+    return agendaDao.insertEvent(event);
+  }
+
+  @override
+  Future updateEvent(AgendaEvent event) {
+    return agendaDao.updateEvent(event);
   }
 }

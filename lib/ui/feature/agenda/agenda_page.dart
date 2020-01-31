@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
+import 'package:registro_elettronico/domain/entity/event_type.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/agenda_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
-import 'package:registro_elettronico/ui/feature/agenda/views/new_test_page.dart';
+import 'package:registro_elettronico/ui/feature/agenda/views/new_event_page.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
@@ -35,7 +36,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   AnimationController _animationController;
   CalendarController _calendarController;
   int _agendaLastUpdate;
-  bool _dialVisible = true;
 
   @override
   void initState() {
@@ -91,7 +91,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var childButtons = List<UnicornButton>();
-    final trans = AppLocalizations.of(context);
 
     childButtons.add(
       UnicornButton(
@@ -113,7 +112,13 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
             size: 17,
           ),
           onPressed: () {
-            // Go to dialog
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NewEventPage(
+                  eventType: EventType.memo,
+                ),
+              ),
+            );
           },
         ),
       ),
@@ -139,7 +144,13 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
             size: 17,
           ),
           onPressed: () {
-            // Go to dialog
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NewEventPage(
+                  eventType: EventType.test,
+                ),
+              ),
+            );
           },
         ),
       ),
@@ -164,9 +175,13 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
             size: 17,
           ),
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => NewTestPage(),
-            ));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NewEventPage(
+                  eventType: EventType.assigment,
+                ),
+              ),
+            );
             // Go to dialog
           },
         ),
@@ -319,51 +334,96 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       ),
       onDaySelected: _onDaySelected,
       onVisibleDaysChanged: _onVisibleDaysChanged,
-      // builders: CalendarBuilders(
-      //   markersBuilder: this.markersBuilder,
-      // ),
+      builders: CalendarBuilders(
+        singleMarkerBuilder: (context, date, event) {
+          Color cor = Color(int.parse(event.labelColor));
+          return Container(
+            decoration: BoxDecoration(shape: BoxShape.circle, color: cor),
+            width: 7.0,
+            height: 7.0,
+            margin: const EdgeInsets.symmetric(horizontal: 1.5),
+          );
+        },
+      ),
     );
   }
 
   List<Widget> markersBuilder(context, date, events, holidays) {
     final children = <Widget>[];
+
     if (events.isNotEmpty) {
       children.add(
-        Positioned(right: 1, bottom: 1, child: buildEventsMarker(date, events)),
+        Positioned(
+          // top: widget.calendarStyle.markersPositionTop,
+          // bottom: widget.calendarStyle.markersPositionBottom,
+          // left: widget.calendarStyle.markersPositionLeft,
+          // right: widget.calendarStyle.markersPositionRight,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: events
+                //.take(widget.calendarStyle.markersMaxAmount)
+                .map((event) => _buildMarker())
+                .toList(),
+          ),
+        ),
       );
+      // children.add(
+      //   Positioned(right: 1, bottom: 1, child: buildEventsMarker(date, events)),
+      // );
     }
-    if (holidays.isNotEmpty) {
-      children.add(
-        Positioned(right: 1, bottom: 1, child: buildEventsMarker(date, events)),
-      );
-    }
+    // if (holidays.isNotEmpty) {
+    //   children.add(
+    //     Positioned(right: 1, bottom: 1, child: _buildMarker(date, events)),
+    //   );
+    // }
     return children;
   }
 
-  Widget buildEventsMarker(DateTime date, List events) {
-    //final eventevents.where((e)=>e.begin.day == date.day).forEach(f)
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
+  Widget _buildMarker() {
+    return Container(
+      width: 8.0,
+      height: 8.0,
+      margin: const EdgeInsets.symmetric(horizontal: 0.3),
       decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        color: _calendarController.isSelected(date)
-            ? Colors.brown[500]
-            : this._calendarController.isToday(date)
-                ? Colors.brown[300]
-                : Colors.blue[400],
-      ),
-      width: 16.0,
-      height: 16.0,
-      child: Center(
-        child: Text(
-          '${events.length}',
-          style: TextStyle().copyWith(
-            color: Colors.white,
-            fontSize: 12.0,
-          ),
-        ),
+        shape: BoxShape.circle,
+        color: Colors.red,
       ),
     );
+  }
+
+  Widget _buildMarker2(DateTime date, db.AgendaEvent events) {
+    //final eventevents.where((e)=>e.begin.day == date.day).forEach(f)
+    return Container(
+      width: 8.0,
+      height: 8.0,
+      margin: const EdgeInsets.symmetric(horizontal: 0.3),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.red,
+      ),
+    );
+    // return AnimatedContainer(
+    //   duration: const Duration(milliseconds: 300),
+    //   decoration: BoxDecoration(
+    //     shape: BoxShape.rectangle,
+    //     color: _calendarController.isSelected(date)
+    //         ? Colors.brown[500]
+    //         : this._calendarController.isToday(date)
+    //             ? Colors.brown[300]
+    //             : Colors.blue[400],
+    //   ),
+    //   width: 16.0,
+    //   height: 16.0,
+    //   child: Center(
+    //     child: Text(
+    //       '${events.length}',
+    //       style: TextStyle().copyWith(
+    //         color: Colors.white,
+    //         fontSize: 12.0,
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   Widget _buildLessonsBlocBuilder() {
@@ -433,39 +493,63 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
             shrinkWrap: true,
             children: _selectedEvents.map((e) {
               final db.AgendaEvent event = e;
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
-                child: Card(
-                  color: Colors.red[400],
-                  child: ListTile(
-                    leading: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(AppLocalizations.of(context)
-                            .translate('hour')
-                            .toLowerCase()),
-                        Text(
-                            '${event.begin.hour.toString()} - ${event.end.hour.toString()}')
-                      ],
-                    ),
-                    title: Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-                      child: Text(
-                        '${StringUtils.titleCase(event.authorName)}',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w600),
+
+              if (event.isLocal) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
+                  child: Card(
+                    color: Color(int.parse(event.labelColor)),
+                    child: ListTile(
+                      title: Padding(
+                        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                        child: Text(
+                          '${event.title} - ${event.subjectDesc.toLowerCase()}',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w600),
+                        ),
                       ),
-                    ),
-                    subtitle: Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-                      child: Text(
+                      subtitle: Text(
                         '${event.notes} ${event.isFullDay ? " - (Tutto il giorno)" : ""}',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
-                ),
-              );
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
+                  child: Card(
+                    color: Colors.red[400],
+                    child: ListTile(
+                      leading: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(AppLocalizations.of(context)
+                              .translate('hour')
+                              .toLowerCase()),
+                          Text(
+                              '${event.begin.hour.toString()} - ${event.end.hour.toString()}')
+                        ],
+                      ),
+                      title: Padding(
+                        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                        child: Text(
+                          '${event.authorName.length > 0 ? StringUtils.titleCase(event.authorName) : 'No name'}',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                        child: Text(
+                          '${event.notes} ${event.isFullDay ? " - (Tutto il giorno)" : ""}',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
             }).toList()),
       );
     }
