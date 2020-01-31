@@ -30,6 +30,10 @@ class GlobalUtils {
     );
   }
 
+  static String getColorCode(Color color) {
+    return color.value.toString();
+  }
+
   static String getLastUpdateMessage(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);

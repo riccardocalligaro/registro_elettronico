@@ -2458,6 +2458,9 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
   final String classDesc;
   final int subjectId;
   final String subjectDesc;
+  final bool isLocal;
+  final String labelColor;
+  final String title;
   AgendaEvent(
       {@required this.evtId,
       @required this.evtCode,
@@ -2468,7 +2471,10 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
       @required this.authorName,
       @required this.classDesc,
       @required this.subjectId,
-      @required this.subjectDesc});
+      @required this.subjectDesc,
+      @required this.isLocal,
+      @required this.labelColor,
+      @required this.title});
   factory AgendaEvent.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -2495,6 +2501,12 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
           intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
       subjectDesc: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}subject_desc']),
+      isLocal:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}is_local']),
+      labelColor: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}label_color']),
+      title:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}title']),
     );
   }
   factory AgendaEvent.fromJson(Map<String, dynamic> json,
@@ -2510,6 +2522,9 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
       classDesc: serializer.fromJson<String>(json['classDesc']),
       subjectId: serializer.fromJson<int>(json['subjectId']),
       subjectDesc: serializer.fromJson<String>(json['subjectDesc']),
+      isLocal: serializer.fromJson<bool>(json['isLocal']),
+      labelColor: serializer.fromJson<String>(json['labelColor']),
+      title: serializer.fromJson<String>(json['title']),
     );
   }
   @override
@@ -2526,6 +2541,9 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
       'classDesc': serializer.toJson<String>(classDesc),
       'subjectId': serializer.toJson<int>(subjectId),
       'subjectDesc': serializer.toJson<String>(subjectDesc),
+      'isLocal': serializer.toJson<bool>(isLocal),
+      'labelColor': serializer.toJson<String>(labelColor),
+      'title': serializer.toJson<String>(title),
     };
   }
 
@@ -2557,6 +2575,14 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
       subjectDesc: subjectDesc == null && nullToAbsent
           ? const Value.absent()
           : Value(subjectDesc),
+      isLocal: isLocal == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isLocal),
+      labelColor: labelColor == null && nullToAbsent
+          ? const Value.absent()
+          : Value(labelColor),
+      title:
+          title == null && nullToAbsent ? const Value.absent() : Value(title),
     );
   }
 
@@ -2570,7 +2596,10 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
           String authorName,
           String classDesc,
           int subjectId,
-          String subjectDesc}) =>
+          String subjectDesc,
+          bool isLocal,
+          String labelColor,
+          String title}) =>
       AgendaEvent(
         evtId: evtId ?? this.evtId,
         evtCode: evtCode ?? this.evtCode,
@@ -2582,6 +2611,9 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
         classDesc: classDesc ?? this.classDesc,
         subjectId: subjectId ?? this.subjectId,
         subjectDesc: subjectDesc ?? this.subjectDesc,
+        isLocal: isLocal ?? this.isLocal,
+        labelColor: labelColor ?? this.labelColor,
+        title: title ?? this.title,
       );
   @override
   String toString() {
@@ -2595,7 +2627,10 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
           ..write('authorName: $authorName, ')
           ..write('classDesc: $classDesc, ')
           ..write('subjectId: $subjectId, ')
-          ..write('subjectDesc: $subjectDesc')
+          ..write('subjectDesc: $subjectDesc, ')
+          ..write('isLocal: $isLocal, ')
+          ..write('labelColor: $labelColor, ')
+          ..write('title: $title')
           ..write(')'))
         .toString();
   }
@@ -2617,8 +2652,14 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
                               authorName.hashCode,
                               $mrjc(
                                   classDesc.hashCode,
-                                  $mrjc(subjectId.hashCode,
-                                      subjectDesc.hashCode))))))))));
+                                  $mrjc(
+                                      subjectId.hashCode,
+                                      $mrjc(
+                                          subjectDesc.hashCode,
+                                          $mrjc(
+                                              isLocal.hashCode,
+                                              $mrjc(labelColor.hashCode,
+                                                  title.hashCode)))))))))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -2632,7 +2673,10 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
           other.authorName == this.authorName &&
           other.classDesc == this.classDesc &&
           other.subjectId == this.subjectId &&
-          other.subjectDesc == this.subjectDesc);
+          other.subjectDesc == this.subjectDesc &&
+          other.isLocal == this.isLocal &&
+          other.labelColor == this.labelColor &&
+          other.title == this.title);
 }
 
 class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
@@ -2646,6 +2690,9 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
   final Value<String> classDesc;
   final Value<int> subjectId;
   final Value<String> subjectDesc;
+  final Value<bool> isLocal;
+  final Value<String> labelColor;
+  final Value<String> title;
   const AgendaEventsCompanion({
     this.evtId = const Value.absent(),
     this.evtCode = const Value.absent(),
@@ -2657,6 +2704,9 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
     this.classDesc = const Value.absent(),
     this.subjectId = const Value.absent(),
     this.subjectDesc = const Value.absent(),
+    this.isLocal = const Value.absent(),
+    this.labelColor = const Value.absent(),
+    this.title = const Value.absent(),
   });
   AgendaEventsCompanion.insert({
     @required int evtId,
@@ -2669,6 +2719,9 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
     @required String classDesc,
     @required int subjectId,
     @required String subjectDesc,
+    @required bool isLocal,
+    @required String labelColor,
+    @required String title,
   })  : evtId = Value(evtId),
         evtCode = Value(evtCode),
         begin = Value(begin),
@@ -2678,7 +2731,10 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
         authorName = Value(authorName),
         classDesc = Value(classDesc),
         subjectId = Value(subjectId),
-        subjectDesc = Value(subjectDesc);
+        subjectDesc = Value(subjectDesc),
+        isLocal = Value(isLocal),
+        labelColor = Value(labelColor),
+        title = Value(title);
   AgendaEventsCompanion copyWith(
       {Value<int> evtId,
       Value<String> evtCode,
@@ -2689,7 +2745,10 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
       Value<String> authorName,
       Value<String> classDesc,
       Value<int> subjectId,
-      Value<String> subjectDesc}) {
+      Value<String> subjectDesc,
+      Value<bool> isLocal,
+      Value<String> labelColor,
+      Value<String> title}) {
     return AgendaEventsCompanion(
       evtId: evtId ?? this.evtId,
       evtCode: evtCode ?? this.evtCode,
@@ -2701,6 +2760,9 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
       classDesc: classDesc ?? this.classDesc,
       subjectId: subjectId ?? this.subjectId,
       subjectDesc: subjectDesc ?? this.subjectDesc,
+      isLocal: isLocal ?? this.isLocal,
+      labelColor: labelColor ?? this.labelColor,
+      title: title ?? this.title,
     );
   }
 }
@@ -2832,6 +2894,42 @@ class $AgendaEventsTable extends AgendaEvents
     );
   }
 
+  final VerificationMeta _isLocalMeta = const VerificationMeta('isLocal');
+  GeneratedBoolColumn _isLocal;
+  @override
+  GeneratedBoolColumn get isLocal => _isLocal ??= _constructIsLocal();
+  GeneratedBoolColumn _constructIsLocal() {
+    return GeneratedBoolColumn(
+      'is_local',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _labelColorMeta = const VerificationMeta('labelColor');
+  GeneratedTextColumn _labelColor;
+  @override
+  GeneratedTextColumn get labelColor => _labelColor ??= _constructLabelColor();
+  GeneratedTextColumn _constructLabelColor() {
+    return GeneratedTextColumn(
+      'label_color',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _titleMeta = const VerificationMeta('title');
+  GeneratedTextColumn _title;
+  @override
+  GeneratedTextColumn get title => _title ??= _constructTitle();
+  GeneratedTextColumn _constructTitle() {
+    return GeneratedTextColumn(
+      'title',
+      $tableName,
+      false,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         evtId,
@@ -2843,7 +2941,10 @@ class $AgendaEventsTable extends AgendaEvents
         authorName,
         classDesc,
         subjectId,
-        subjectDesc
+        subjectDesc,
+        isLocal,
+        labelColor,
+        title
       ];
   @override
   $AgendaEventsTable get asDslTable => this;
@@ -2914,6 +3015,24 @@ class $AgendaEventsTable extends AgendaEvents
     } else if (subjectDesc.isRequired && isInserting) {
       context.missing(_subjectDescMeta);
     }
+    if (d.isLocal.present) {
+      context.handle(_isLocalMeta,
+          isLocal.isAcceptableValue(d.isLocal.value, _isLocalMeta));
+    } else if (isLocal.isRequired && isInserting) {
+      context.missing(_isLocalMeta);
+    }
+    if (d.labelColor.present) {
+      context.handle(_labelColorMeta,
+          labelColor.isAcceptableValue(d.labelColor.value, _labelColorMeta));
+    } else if (labelColor.isRequired && isInserting) {
+      context.missing(_labelColorMeta);
+    }
+    if (d.title.present) {
+      context.handle(
+          _titleMeta, title.isAcceptableValue(d.title.value, _titleMeta));
+    } else if (title.isRequired && isInserting) {
+      context.missing(_titleMeta);
+    }
     return context;
   }
 
@@ -2957,6 +3076,15 @@ class $AgendaEventsTable extends AgendaEvents
     }
     if (d.subjectDesc.present) {
       map['subject_desc'] = Variable<String, StringType>(d.subjectDesc.value);
+    }
+    if (d.isLocal.present) {
+      map['is_local'] = Variable<bool, BoolType>(d.isLocal.value);
+    }
+    if (d.labelColor.present) {
+      map['label_color'] = Variable<String, StringType>(d.labelColor.value);
+    }
+    if (d.title.present) {
+      map['title'] = Variable<String, StringType>(d.title.value);
     }
     return map;
   }

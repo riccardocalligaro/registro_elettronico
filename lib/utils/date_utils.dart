@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
 
@@ -51,6 +52,37 @@ class DateUtils {
   static String convertDateLocaleDashboard(DateTime date, String locale) {
     final formatter = DateFormat.MMMMEEEEd(locale);
     return formatter.format(date);
+  }
+
+  static String getNewEventDateMessage(DateTime date, String locale) {
+    final formatter = DateFormat.MMMMEEEEd(locale);
+
+    final today = DateTime.now();
+
+    final diff = date.difference(today);
+
+    if (diff.inHours < 23) {
+      return 'Oggi';
+    } else if (diff.inHours == 23 || diff.inHours == 24) {
+      return 'Domani';
+    } else {
+      return formatter.format(date);
+    }
+  }
+
+  static String getBeforeNotifyTimeMessage(Duration d, BuildContext context) {
+    if (d.inMilliseconds == 0) {
+      return 'Al momento dell\'evento';
+    } else if (d.inMinutes < 60) {
+      return '${d.inMinutes} minuti prima';
+    } else if (d.inHours < 24) {
+      if (d.inHours == 1) {
+        return '${d.inHours} ora prima';
+      }
+      return '${d.inHours} ore prima';
+    } else {
+      return '1 giorno prima';
+    }
   }
 
   /// The spaggiari API returns the date in the following

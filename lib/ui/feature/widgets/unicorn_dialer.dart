@@ -107,6 +107,21 @@ class _UnicornDialer extends State<UnicornDialer>
     this._parentController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
 
+    if (!this._parentController.isAnimating) {
+      if (this._parentController.isCompleted) {
+        this._parentController.forward().then((s) {
+          this._parentController.reverse().then((e) {
+            this._parentController.forward();
+          });
+        });
+      }
+      if (this._parentController.isDismissed) {
+        this._parentController.reverse().then((s) {
+          this._parentController.forward();
+        });
+      }
+    }
+
     super.initState();
   }
 
@@ -131,21 +146,6 @@ class _UnicornDialer extends State<UnicornDialer>
 
     var hasChildButtons =
         widget.childButtons != null && widget.childButtons.length > 0;
-
-    if (!this._parentController.isAnimating) {
-      if (this._parentController.isCompleted) {
-        this._parentController.forward().then((s) {
-          this._parentController.reverse().then((e) {
-            this._parentController.forward();
-          });
-        });
-      }
-      if (this._parentController.isDismissed) {
-        this._parentController.reverse().then((s) {
-          this._parentController.forward();
-        });
-      }
-    }
 
     var mainFAB = AnimatedBuilder(
         animation: this._parentController,
@@ -277,18 +277,20 @@ class _UnicornDialer extends State<UnicornDialer>
                     right: null, bottom: null, child: mainFloatingButton))));
 
       var modal = ScaleTransition(
-          scale: CurvedAnimation(
-            parent: this._animationController,
-            curve: Interval(1.0, 1.0, curve: Curves.linear),
+        scale: CurvedAnimation(
+          parent: this._animationController,
+          curve: Interval(1.0, 1.0, curve: Curves.linear),
+        ),
+        alignment: FractionalOffset.center,
+        child: GestureDetector(
+          onTap: mainActionButtonOnPressed,
+          child: Container(
+            color: widget.backgroundColor,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
           ),
-          alignment: FractionalOffset.center,
-          child: GestureDetector(
-              onTap: mainActionButtonOnPressed,
-              child: Container(
-                color: widget.backgroundColor,
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-              )));
+        ),
+      );
 
       return widget.hasBackground
           ? Stack(

@@ -75,7 +75,7 @@ class NextEventsSection extends StatelessWidget {
     BuildContext context,
     List<db.AgendaEvent> events,
   ) {
-    events = events.toList();
+    events = events.toList()..sort((a, b) => a.begin.compareTo(b.begin));
 
     if (events.length == 0) {
       return Padding(
@@ -98,6 +98,29 @@ class NextEventsSection extends StatelessWidget {
     } else {
       return Timeline(
         children: events.map((e) {
+          if (e.isLocal) {
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      '${e.title ?? ''}',
+                      style: TextStyle(fontSize: 15.0),
+                    ),
+                    SizedBox(
+                      height: 2.5,
+                    ),
+                    Text(
+                      '${e.notes ?? ''} - ${GlobalUtils.getEventDateMessage(context, e.begin)}',
+                      style: TextStyle(fontSize: 12.0),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
           return Card(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
