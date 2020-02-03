@@ -1,10 +1,8 @@
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injector/injector.dart';
 import 'package:open_file/open_file.dart';
 import 'package:registro_elettronico/component/navigator.dart';
-import 'package:registro_elettronico/data/db/dao/document_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/documents/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/documents/document_attachment/bloc/bloc.dart';
@@ -51,17 +49,17 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
         appBar: AppBar(
           //scaffoldKey: _drawerKey,
           title: Text(AppLocalizations.of(context).translate('scrutini')),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                DocumentsDao documentsDao =
-                    DocumentsDao(Injector.appInstance.getDependency());
-                documentsDao.deeteAllDocuments();
-                documentsDao.deeteAllDocuments();
-              },
-            )
-          ],
+          // actions: <Widget>[
+          //   IconButton(
+          //     icon: Icon(Icons.delete),
+          //     onPressed: () {
+          //       DocumentsDao documentsDao =
+          //           DocumentsDao(Injector.appInstance.getDependency());
+          //       documentsDao.deeteAllDocuments();
+          //       documentsDao.deeteAllDocuments();
+          //     },
+          //   )
+          // ],
         ),
         // drawer: AppDrawer(
         //   position: DrawerConstants.SCRUTINI,

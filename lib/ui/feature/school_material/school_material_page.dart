@@ -24,12 +24,50 @@ class SchoolMaterialPage extends StatefulWidget {
 class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
   int _schoolMaterialLastUpdate;
 
+  // Search box
+  final TextEditingController _filter = TextEditingController();
+
+  String _searchText = "";
+
+  // List<DidacticsContent> content = List();
+
+  // List<DidacticsContent> filteredContent = List();
+
+  Icon _searchIcon = Icon(Icons.search);
+
+  Widget _appBarTitle;
+
+  bool _showResearch = false;
+
+  _SchoolMaterialPageState() {
+    _filter.addListener(() {
+      if (_filter.text.isEmpty) {
+        setState(() {
+          _searchText = "";
+          _showResearch = false;
+        });
+      } else {
+        setState(() {
+          _searchText = _filter.text;
+          _showResearch = true;
+        });
+      }
+    });
+  }
+
   @override
   void initState() {
     restore();
-    BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
 
+    BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _appBarTitle =
+        Text(AppLocalizations.of(context).translate('school_material'));
+    super.didChangeDependencies();
   }
 
   void restore() async {
@@ -40,6 +78,29 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
     });
   }
 
+  void _searchPressed() {
+    setState(() {
+      if (this._searchIcon.icon == Icons.search) {
+        this._searchIcon = Icon(Icons.close);
+        this._appBarTitle = TextField(
+          controller: _filter,
+          autofocus: true,
+          decoration: InputDecoration(
+            prefixIcon: Icon(Icons.search),
+            hintText: "${AppLocalizations.of(context).translate('search')}...",
+            border: InputBorder.none,
+          ),
+        );
+      } else {
+        this._searchIcon = Icon(Icons.search);
+        this._appBarTitle =
+            Text(AppLocalizations.of(context).translate('school_material'));
+        //filteredNames = names;
+        _filter.clear();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
@@ -47,9 +108,21 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
     return Scaffold(
       //key: _drawerKey,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate('school_material')),
-        //scaffoldKey: _drawerKey,
+        elevation: 0.0,
+        title: _appBarTitle,
+        actions: <Widget>[
+          IconButton(
+            icon: _searchIcon,
+            onPressed: () {
+              _searchPressed();
+            },
+          )
+        ],
       ),
+      // appBar: AppBar(
+      //   title: Text(AppLocalizations.of(context).translate('school_material')),
+      //   //scaffoldKey: _drawerKey,
+      // ),
       // drawer: AppDrawer(
       //   position: DrawerConstants.SCHOOL_MATERIAL,
       // ),
@@ -161,6 +234,16 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
     List<DidacticsFolder> folders,
     List<DidacticsContent> contents,
   }) {
+    List<DidacticsFolder> foldersResult;
+    if (_showResearch) {
+      foldersResult = folders
+          .where(
+              (f) => f.name.toLowerCase().contains(_searchText.toLowerCase()))
+          .toList();
+    } else {
+      foldersResult = folders;
+    }
+
     if (teachers.length > 0) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 16.0),
@@ -171,21 +254,25 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
             itemCount: teachers.length,
             itemBuilder: (ctx, index) {
               final teacher = teachers[index];
-              final List<DidacticsFolder> foldersList = folders
+              final List<DidacticsFolder> foldersList = foldersResult
                   .where((folder) => folder.teacherId == teacher.id)
                   .toList();
 
-              return Column(
-                children: <Widget>[
-                  ListTile(
-                    title: Text(
-                      teacher.name,
-                      style: TextStyle(color: Colors.red),
+              if (foldersList.length > 0) {
+                return Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: Text(
+                        teacher.name,
+                        style: TextStyle(color: Colors.red),
+                      ),
                     ),
-                  ),
-                  _buildFolderList(foldersList, contents)
-                ],
-              );
+                    _buildFolderList(foldersList, contents)
+                  ],
+                );
+              } else {
+                return Container();
+              }
             },
           ),
         ),

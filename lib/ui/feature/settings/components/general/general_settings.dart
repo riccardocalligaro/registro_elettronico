@@ -20,6 +20,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
   int _sliderValue = 6;
   //int _periodAveragesHomeScreen;
   bool _ascending = false;
+  bool _updateAtStart = false;
 
   @override
   void initState() {
@@ -37,6 +38,8 @@ class _GeneralSettingsState extends State<GeneralSettings> {
       //     (sharedPrefs.getInt(PrefsConstants.PERIOD_TO_SHOW)) ??
       //         TabsConstants.GENERALE;
 
+      _updateAtStart =
+          (sharedPrefs.getBool(PrefsConstants.UPDATE_AT_START) ?? false);
       _ascending =
           (sharedPrefs.getBool(PrefsConstants.SORTING_ASCENDING)) ?? false;
     });
@@ -136,6 +139,21 @@ class _GeneralSettingsState extends State<GeneralSettings> {
             });
           },
         ),
+        ListTile(
+          title: Text(
+              AppLocalizations.of(context).translate('update_at_start_title')),
+          trailing: Checkbox(
+            value: _updateAtStart ?? false,
+            onChanged: (value) async {
+              setState(() {
+                _updateAtStart = value;
+              });
+
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool(PrefsConstants.UPDATE_AT_START, value);
+            },
+          ),
+        )
       ],
     );
   }

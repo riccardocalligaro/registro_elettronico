@@ -247,5 +247,7 @@
   "homework": "Assignment",
   "notes_event": "Notes {name}",
   "date_event": "Date: {date}",
-  "subject_event": "Subject: {subject}"
+  "subject_event": "Subject: {subject}",
+  "update_at_start_title": "Update at start",
+  "confirm": "Confirm"
 }
