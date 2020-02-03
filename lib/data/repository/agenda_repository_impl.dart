@@ -50,7 +50,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
         text:
             'Got ${agenda.events.length} events from server, procceding to insert in database',
       );
-      await agendaDao.deleteAllEvents();
+      await agendaDao.deleteAllEventsWithoutLocal();
 
       agendaDao.insertEvents(events);
     } else {
@@ -105,6 +105,9 @@ class AgendaRepositoryImpl implements AgendaRepository {
         }
         events.add(EventMapper.convertEventEntityToInsertable(event, color));
       });
+
+      await agendaDao.deleteAllEventsWithoutLocal();
+
       agendaDao.insertEvents(events);
     } else {
       throw NotConntectedException();

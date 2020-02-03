@@ -244,5 +244,8 @@
   "stats_timeline_graph_average": "Average over time",
   "memo": "Memo",
   "test": "Test",
-  "homework": "Assignment"
+  "homework": "Assignment",
+  "notes_event": "Notes {name}",
+  "date_event": "Date: {date}",
+  "subject_event": "Subject: {subject}"
 }

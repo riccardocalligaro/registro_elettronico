@@ -10,7 +10,7 @@ class AgendaDao extends DatabaseAccessor<AppDatabase> with _$AgendaDaoMixin {
   AgendaDao(this.db) : super(db);
 
   Future insertEvent(AgendaEvent event) =>
-      into(agendaEvents).insert(event, orReplace: true);
+      into(agendaEvents).insert(event, orReplace: false);
 
   Future insertEvents(List<AgendaEvent> events) =>
       into(agendaEvents).insertAll(events, orReplace: true);
@@ -35,9 +35,13 @@ class AgendaDao extends DatabaseAccessor<AppDatabase> with _$AgendaDaoMixin {
 
   Future deleteAllEvents() => delete(agendaEvents).go();
 
+  Future deleteAllEventsWithoutLocal() {
+    return (delete(agendaEvents)..where((a) => a.isLocal.equals(false))).go();
+  }
+
   Future deleteEventsFromDate(DateTime date) {
     return (delete(agendaEvents)
-          ..where((a) => a.begin.isSmallerOrEqualValue(date)))
+          ..where((a) => and(a.begin.isSmallerOrEqualValue(date), a.isLocal.equals(false))))
         .go();
   }
 

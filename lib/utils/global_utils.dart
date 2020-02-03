@@ -463,7 +463,7 @@ class GlobalUtils {
 
   static int getRandomNumber() {
     Random random = new Random();
-    int randomNumber = random.nextInt(99999);
+    int randomNumber = random.nextInt(999999);
     return randomNumber;
   }
 
