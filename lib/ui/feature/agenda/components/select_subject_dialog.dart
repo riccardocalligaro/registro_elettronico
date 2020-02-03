@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class SelectSubjectDialog extends StatefulWidget {
   final Subject selectedSubject;
@@ -21,7 +22,7 @@ class _SelectSubjectDialogState extends State<SelectSubjectDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Select a subject'),
+      title: Text(AppLocalizations.of(context).translate('select_a_subject')),
       content: BlocBuilder<SubjectsBloc, SubjectsState>(
         builder: (context, state) {
           if (state is SubjectsAndProfessorsLoadInProgress) {

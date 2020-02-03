@@ -247,5 +247,20 @@
   "homework": "Compito",
   "notes_event": "Note: {name}",
   "date_event": "Data: {date}",
-  "subject_event": "Materia: {subject}"
+  "subject_event": "Materia: {subject}",
+  "select_a_date": "Select a date",
+  "oggi": "Oggi",
+  "domani": "Domani",
+  "prossima:settimana": "Prossima settimana",
+  "scegli_data": "Scegli data",
+  "seleziona": "Seleziona",
+  "select_a_subject": "Select a subject",
+  "edit_event": "Edit event",
+  "etichetta": "Etichetta",
+  "al_momento": "Al momento",
+  "30_minuti_prima": "30 minuti prima",
+  "1_ora_prima": "1 ora prima",
+  "2_ore_prima": "2 ore prima",
+  "12_ore_prima": "12 ore prima",
+  "un_giorno_prima": "Un giorno prima"
 }
