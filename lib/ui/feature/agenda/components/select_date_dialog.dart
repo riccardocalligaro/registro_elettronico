@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class SelectDateDialog extends StatefulWidget {
   SelectDateDialog({Key key}) : super(key: key);
@@ -11,7 +12,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Select a date'),
+      title: Text(AppLocalizations.of(context).translate('select_a_date')),
       content: Container(
         height: 240,
         child: SingleChildScrollView(
@@ -19,7 +20,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.today),
-                title: Text('Oggi'),
+                title: Text(AppLocalizations.of(context).translate('oggi')),
                 onTap: () {
                   Navigator.pop(
                     context,
@@ -31,7 +32,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
               ),
               ListTile(
                 leading: Icon(Icons.arrow_forward),
-                title: Text('Domani'),
+                title: Text(AppLocalizations.of(context).translate('domani')),
                 onTap: () {
                   Navigator.pop(
                     context,
@@ -43,7 +44,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
               ),
               ListTile(
                 leading: Icon(Icons.next_week),
-                title: Text('Prossima settimana'),
+                title: Text(AppLocalizations.of(context).translate('prossima_settimana')),
                 onTap: () {
                   Navigator.pop(
                     context,
@@ -55,7 +56,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
               ),
               ListTile(
                 leading: Icon(Icons.date_range),
-                title: Text('Scegli data'),
+                title: Text(AppLocalizations.of(context).translate('scegli_data')),
                 onTap: () async {
                   await showDatePicker(
                     context: context,

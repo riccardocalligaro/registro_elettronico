@@ -64,7 +64,7 @@ class _EditEventPageState extends State<EditEventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit event'),
+        title: Text(AppLocalizations.of(context).translate('edit_event')),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
@@ -298,7 +298,7 @@ class _EditEventPageState extends State<EditEventPage> {
                           SizedBox(
                             width: 30,
                           ),
-                          Text('Etichetta'),
+                          Text(AppLocalizations.of(context).translate('etichetta')),
                         ],
                       ),
                       ClipOval(
