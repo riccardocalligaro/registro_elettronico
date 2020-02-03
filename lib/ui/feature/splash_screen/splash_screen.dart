@@ -2,7 +2,10 @@ import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
+import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/periods/periods_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
@@ -38,6 +41,16 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       FLog.info(
           text: 'Last update vital data is null, no need to check last update');
+    }
+
+    final _updateAtStart =
+        prefs.getBool(PrefsConstants.UPDATE_AT_START) ?? false;
+
+    if (_updateAtStart) {
+      BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
+      BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
+      BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
+      BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
     }
   }
 

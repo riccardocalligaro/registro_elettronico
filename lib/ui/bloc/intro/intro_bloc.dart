@@ -119,6 +119,9 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
         yield IntroLoading(90);
         await documentsRepository.updateDocuments();
 
+        prefs.setInt(PrefsConstants.LAST_UPDATE_SCRUTINI,
+            DateTime.now().millisecondsSinceEpoch);
+
         FLog.info(text: 'Updated documents');
 
         final difference = start.difference(DateTime.now());
