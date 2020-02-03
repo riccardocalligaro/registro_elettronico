@@ -1,12 +1,9 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 
-abstract class AgendaState extends Equatable {
+abstract class AgendaState {
   const AgendaState();
 
-  @override
-  List<Object> get props => [];
 }
 
 class AgendaInitial extends AgendaState {}

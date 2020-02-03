@@ -62,7 +62,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
 
   Stream<AgendaState> _mapGetAllAgendaToState() async* {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    yield AgendaLoadInProgress();
+    //yield AgendaLoadInProgress();
     try {
       final events = await agendaRepository.getAllEvents();
       prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,

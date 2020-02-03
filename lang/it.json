@@ -244,5 +244,8 @@
   "stats_timeline_graph_average": "Media nel tempo",
   "memo": "Promemoria",
   "test": "Verifica",
-  "homework": "Compito"
+  "homework": "Compito",
+  "notes_event": "Note: {name}",
+  "date_event": "Data: {date}",
+  "subject_event": "Materia: {subject}"
 }

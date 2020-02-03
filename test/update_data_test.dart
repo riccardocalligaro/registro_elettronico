@@ -2,8 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Getting new vital data', () {
-    final today = DateTime.now();
-
     bool updateData(DateTime lastUpdate) {
       final now = DateTime.now();
       int yearBegin = now.year;

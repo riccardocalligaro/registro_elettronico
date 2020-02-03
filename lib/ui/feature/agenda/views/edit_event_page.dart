@@ -3,57 +3,60 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/material_picker.dart';
 import 'package:registro_elettronico/component/navigator.dart';
-import 'package:registro_elettronico/component/notifications/local_notification.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/entity/event_type.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/ui/feature/agenda/components/select_date_dialog.dart';
-import 'package:registro_elettronico/ui/feature/agenda/components/select_notifications_time_alert.dart';
 import 'package:registro_elettronico/ui/feature/agenda/components/select_subject_dialog.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
-class NewEventPage extends StatefulWidget {
-  final EventType eventType;
-  final DateTime initialDate;
+class EditEventPage extends StatefulWidget {
+  final AgendaEvent event;
+  final EventType type;
 
-  NewEventPage({
+  EditEventPage({
     Key key,
-    this.eventType,
-    this.initialDate,
+    this.type,
+    this.event,
   }) : super(key: key);
 
   @override
-  _NewEventPageState createState() => _NewEventPageState();
+  _EditEventPageState createState() => _EditEventPageState();
 }
 
-class _NewEventPageState extends State<NewEventPage> {
+class _EditEventPageState extends State<EditEventPage> {
+  AgendaEvent event;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
   Color _labelColor = null;
   DateTime _selectedDate;
-  // Duration _repeat = Duration(milliseconds: 0);
 
+  String _initialSubject;
   Subject _selectedSubject;
 
-  bool _notifyEvent = false;
-  Duration _beforeNotify = Duration(minutes: 30);
+  // bool _notifyEvent = false;
+  // Duration _beforeNotify = Duration(minutes: 30);
 
   bool _missingSubject = false;
 
   @override
   void initState() {
-    _selectedDate = widget.initialDate;
-    if (widget.eventType == EventType.test) {
+    _initialSubject = widget.event.subjectDesc;
+    _selectedDate = widget.event.begin;
+    if (widget == EventType.test) {
       _labelColor = Colors.orange;
-    } else if (widget.eventType == EventType.assigment) {
+    } else if (widget.type == EventType.assigment) {
       _labelColor = Colors.blue;
     } else {
       _labelColor = Colors.green;
     }
+    _descriptionController.text = widget.event.notes;
+    _titleController.text = widget.event.title;
+    _labelColor = Color(int.parse(widget.event.labelColor));
     super.initState();
   }
 
@@ -61,12 +64,12 @@ class _NewEventPageState extends State<NewEventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New event'),
+        title: Text('Edit event'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () {
-              _insertEventInDb();
+              _updateEventInDb();
             },
           )
         ],
@@ -76,10 +79,8 @@ class _NewEventPageState extends State<NewEventPage> {
         child: Column(
           children: <Widget>[
             _buildTopCard(),
-            widget.eventType != EventType.memo
-                ? _buildSubjectCard()
-                : Container(),
-            _buildNotificationCard(),
+            widget.type != EventType.memo ? _buildSubjectCard() : Container(),
+            //_buildNotificationCard(),
             _buildDescriptionCard(),
           ],
         ),
@@ -87,65 +88,55 @@ class _NewEventPageState extends State<NewEventPage> {
     );
   }
 
-  void _insertEventInDb() async {
+  void _updateEventInDb() async {
     AgendaEvent event;
-    if (widget.eventType == EventType.memo) {
+    final eventOriginal = widget.event;
+    if (widget.type == EventType.memo) {
       event = AgendaEvent(
         subjectId: -1,
         isLocal: true,
         isFullDay: false,
         evtCode: "",
-        begin: _selectedDate,
-        end: _selectedDate,
-        subjectDesc: '',
+        begin: _selectedDate ?? eventOriginal.begin,
+        end: _selectedDate ?? eventOriginal.begin,
+        subjectDesc: _selectedSubject != null
+            ? _selectedSubject.name
+            : eventOriginal.subjectDesc,
         authorName: "",
         classDesc: "",
-        evtId: DateTime.now().millisecondsSinceEpoch,
+        evtId: eventOriginal.evtId,
         notes: _descriptionController.text,
         labelColor: _labelColor.value.toString(),
         title: _titleController.text,
       );
     } else {
-      if (_selectedSubject != null) {
-        event = AgendaEvent(
-          subjectId: _selectedSubject.id,
-          isLocal: true,
-          isFullDay: false,
-          evtCode: "",
-          begin: _selectedDate,
-          end: _selectedDate,
-          subjectDesc: _selectedSubject.name,
-          authorName: "",
-          classDesc: "",
-          evtId: DateTime.now().millisecondsSinceEpoch,
-          notes: _descriptionController.text,
-          labelColor: _labelColor.value.toString(),
-          title: _titleController.text,
-        );
-      } else {
-        setState(() {
-          _missingSubject = true;
-        });
-        return;
-      }
+      print(eventOriginal.subjectId);
+      event = AgendaEvent(
+        subjectId: _selectedSubject != null
+            ? _selectedSubject.id
+            : eventOriginal.subjectId,
+        isLocal: true,
+        isFullDay: false,
+        evtCode: "",
+        begin: _selectedDate ?? eventOriginal.begin,
+        end: _selectedDate ?? eventOriginal.begin,
+        subjectDesc: _selectedSubject != null
+            ? _selectedSubject.name
+            : eventOriginal.subjectDesc,
+        authorName: "",
+        classDesc: "",
+        evtId: eventOriginal.evtId,
+        notes: _descriptionController.text,
+        labelColor: _labelColor.value.toString(),
+        title: _titleController.text,
+      );
     }
 
-    FLog.info(text: 'Added event');
+    FLog.info(text: 'Updated events');
 
-    await RepositoryProvider.of<AgendaRepository>(context)
-        .insertLocalEvent(event);
+    await RepositoryProvider.of<AgendaRepository>(context).updateEvent(event);
 
-    final LocalNotification localNotification =
-        LocalNotification(onSelectNotification);
-
-    localNotification.scheduleNotification(
-      title: 'New event',
-      message: _titleController.text,
-      scheduledTime: _selectedDate,
-      eventId: GlobalUtils.getRandomNumber(),
-    );
-
-    Navigator.pop(context, _selectedDate);
+    Navigator.pop(context, _selectedDate ?? eventOriginal.begin);
   }
 
   Card _buildDescriptionCard() {
@@ -167,83 +158,83 @@ class _NewEventPageState extends State<NewEventPage> {
     );
   }
 
-  Card _buildNotificationCard() {
-    return Card(
-      child: Column(
-        children: <Widget>[
-          SwitchListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-            title: const Text('Notifica evento'),
-            value: _notifyEvent,
-            onChanged: (bool value) {
-              if (value != null) {
-                setState(() {
-                  _notifyEvent = value;
-                });
-              }
-            },
-          ),
-          if (_notifyEvent)
-            _buildNotifyOptions()
-          else
-            Opacity(
-              opacity: 0.50,
-              child: IgnorePointer(
-                child: _buildNotifyOptions(),
-              ),
-            )
-        ],
-      ),
-    );
-  }
+  // Card _buildNotificationCard() {
+  //   return Card(
+  //     child: Column(
+  //       children: <Widget>[
+  //         SwitchListTile(
+  //           contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+  //           title: const Text('Notifica evento'),
+  //           value: _notifyEvent,
+  //           onChanged: (bool value) {
+  //             if (value != null) {
+  //               setState(() {
+  //                 _notifyEvent = value;
+  //               });
+  //             }
+  //           },
+  //         ),
+  //         if (_notifyEvent)
+  //           _buildNotifyOptions()
+  //         else
+  //           Opacity(
+  //             opacity: 0.50,
+  //             child: IgnorePointer(
+  //               child: _buildNotifyOptions(),
+  //             ),
+  //           )
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget _buildNotifyOptions() {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            children: <Widget>[
-              Icon(
-                Icons.notifications_none,
-              ),
-              SizedBox(
-                width: 30.0,
-              ),
-              Text(
-                  DateUtils.getBeforeNotifyTimeMessage(_beforeNotify, context)),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 8,
-        ),
-        InkWell(
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) => SelectNotificationsTimeAlertDialog(
-                beforeNotification: _beforeNotify,
-              ),
-            ).then((duration) {
-              if (duration != null) {
-                setState(() {
-                  _beforeNotify = duration;
-                });
-              }
-            });
-          },
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(71, 8, 16, 16),
-              child: Text('Aggiungi notifica'),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildNotifyOptions() {
+  //   return Column(
+  //     children: <Widget>[
+  //       Padding(
+  //         padding: const EdgeInsets.symmetric(horizontal: 16.0),
+  //         child: Row(
+  //           children: <Widget>[
+  //             Icon(
+  //               Icons.notifications_none,
+  //             ),
+  //             SizedBox(
+  //               width: 30.0,
+  //             ),
+  //             Text(
+  //                 DateUtils.getBeforeNotifyTimeMessage(_beforeNotify, context)),
+  //           ],
+  //         ),
+  //       ),
+  //       SizedBox(
+  //         height: 8,
+  //       ),
+  //       InkWell(
+  //         onTap: () {
+  //           showDialog(
+  //             context: context,
+  //             builder: (context) => SelectNotificationsTimeAlertDialog(
+  //               beforeNotification: _beforeNotify,
+  //             ),
+  //           ).then((duration) {
+  //             if (duration != null) {
+  //               setState(() {
+  //                 _beforeNotify = duration;
+  //               });
+  //             }
+  //           });
+  //         },
+  //         child: Container(
+  //           width: MediaQuery.of(context).size.width,
+  //           child: Padding(
+  //             padding: const EdgeInsets.fromLTRB(71, 8, 16, 16),
+  //             child: Text('Aggiungi notifica'),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Card _buildTopCard() {
     return Card(
@@ -377,7 +368,7 @@ class _NewEventPageState extends State<NewEventPage> {
         title: Text(
           _selectedSubject != null
               ? _getReducedName(_selectedSubject.name)
-              : 'Choose a subject',
+              : _getReducedName(_initialSubject),
           style: TextStyle(
             color: _getColorForMissingSubject(),
           ),
