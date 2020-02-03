@@ -116,10 +116,10 @@ Additional features that will be implemented
 
 | Function                | State | Made by | Design by |
 |-------------------------|:-----:|:-------:|:---------:|
-| Local grades and agenda |   ½   |    -    |     -     |
+| Local grades and agenda |   ✔️   |    -    |     -     |
 | Timetable               |   ✔️   |  R. C.  |     -     |
 | Notifications           |   ✔️   |  R. C.  |     -     |
-| Summary page            |   ❌   |    -    |     -     |
+| Summary page            |   ✔️   |    -    |     -     |
 
 ## Project structure
 
