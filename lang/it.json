@@ -247,5 +247,7 @@
   "homework": "Compito",
   "notes_event": "Note: {name}",
   "date_event": "Data: {date}",
-  "subject_event": "Materia: {subject}"
+  "subject_event": "Materia: {subject}",
+  "update_at_start_title": "Aggiorna all'avvio",
+  "confirm": "Confirm"
 }

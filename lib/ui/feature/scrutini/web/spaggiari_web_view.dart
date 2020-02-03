@@ -35,7 +35,7 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
     return Scaffold(
       key: _scaffoldkey,
       body: WebviewScaffold(
-        debuggingEnabled: true,
+        debuggingEnabled: false,
         userAgent:
             'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:37.0) Gecko/20100101 Firefox/37.0',
         withZoom: true,
@@ -50,12 +50,13 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
           title: Text(
             widget.appBarTitle ?? '',
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.check),
-              onPressed: () {},
-            )
-          ],
+          // actions: <Widget>[
+          //   IconButton(
+          //     // tooltip: AppLocalizations.of(context).translate('confirm'),
+          //     icon: Icon(Icons.check),
+          //     onPressed: () {},
+          //   )
+          // ],
         ),
       ),
     );
