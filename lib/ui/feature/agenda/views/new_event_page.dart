@@ -88,6 +88,7 @@ class _NewEventPageState extends State<NewEventPage> {
   }
 
   void _insertEventInDb() async {
+    final id = DateTime.now().millisecondsSinceEpoch;
     AgendaEvent event;
     if (widget.eventType == EventType.memo) {
       event = AgendaEvent(
@@ -100,7 +101,7 @@ class _NewEventPageState extends State<NewEventPage> {
         subjectDesc: '',
         authorName: "",
         classDesc: "",
-        evtId: DateTime.now().millisecondsSinceEpoch,
+        evtId: id,
         notes: _descriptionController.text,
         labelColor: _labelColor.value.toString(),
         title: _titleController.text,
@@ -117,7 +118,7 @@ class _NewEventPageState extends State<NewEventPage> {
           subjectDesc: _selectedSubject.name,
           authorName: "",
           classDesc: "",
-          evtId: DateTime.now().millisecondsSinceEpoch,
+          evtId: id,
           notes: _descriptionController.text,
           labelColor: _labelColor.value.toString(),
           title: _titleController.text,
@@ -142,7 +143,7 @@ class _NewEventPageState extends State<NewEventPage> {
       title: 'New event',
       message: _titleController.text,
       scheduledTime: _selectedDate,
-      eventId: GlobalUtils.getRandomNumber(),
+      eventId: id,
     );
 
     Navigator.pop(context, _selectedDate);
