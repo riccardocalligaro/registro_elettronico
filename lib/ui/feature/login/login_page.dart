@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                 builder: (context) {
                   return SimpleDialog(
                     title: Text(AppLocalizations.of(context)
-                        .translate('scegli_un_profilo')),
+                        .translate('select_a_profile')),
                     children: <Widget>[
                       Container(
                         width: double.maxFinite,
