@@ -88,7 +88,8 @@ class _NewEventPageState extends State<NewEventPage> {
   }
 
   void _insertEventInDb() async {
-    final id = DateTime.now().millisecondsSinceEpoch;
+    final id = DateTime.now().millisecondsSinceEpoch.toSigned(32);
+    
     AgendaEvent event;
     if (widget.eventType == EventType.memo) {
       event = AgendaEvent(
