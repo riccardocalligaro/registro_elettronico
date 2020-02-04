@@ -24,6 +24,8 @@ class AgendaEvents extends Table {
   BoolColumn get isLocal => boolean()();
   TextColumn get labelColor => text()();
   TextColumn get title => text()();
+  // Id for the notification
+  IntColumn get notificationId => integer()();
 
   @override
   Set<Column> get primaryKey => {evtId};
