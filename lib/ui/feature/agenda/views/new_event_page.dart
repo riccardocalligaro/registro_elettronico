@@ -324,8 +324,7 @@ class _NewEventPageState extends State<NewEventPage> {
                           SizedBox(
                             width: 30,
                           ),
-                          Text(AppLocalizations.of(context)
-                              .translate('label')),
+                          Text(AppLocalizations.of(context).translate('label')),
                         ],
                       ),
                       ClipOval(
@@ -371,6 +370,7 @@ class _NewEventPageState extends State<NewEventPage> {
                       Text(DateUtils.getNewEventDateMessage(
                         _selectedDate,
                         AppLocalizations.of(context).locale.toString(),
+                        context,
                       )),
                     ],
                   ),
@@ -402,7 +402,9 @@ class _NewEventPageState extends State<NewEventPage> {
                           SizedBox(
                             width: 30,
                           ),
-                          Text('Ora'),
+                          Text(
+                            AppLocalizations.of(context).translate('time'),
+                          ),
                         ],
                       ),
                       Text(_timeOfDay.format(context)),

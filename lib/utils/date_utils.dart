@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
 
 class DateUtils {
@@ -54,7 +55,8 @@ class DateUtils {
     return formatter.format(date);
   }
 
-  static String getNewEventDateMessage(DateTime date, String locale) {
+  static String getNewEventDateMessage(
+      DateTime date, String locale, BuildContext context) {
     final formatter = DateFormat.MMMMEEEEd(locale);
 
     final today = DateTime.now();
@@ -62,26 +64,33 @@ class DateUtils {
     final diff = date.difference(today);
 
     if (diff.inHours < 23) {
-      return 'Oggi';
+      return AppLocalizations.of(context).translate('today');
     } else if (diff.inHours == 23 || diff.inHours == 24) {
-      return 'Domani';
+      return AppLocalizations.of(context).translate('tomorrow');
     } else {
       return formatter.format(date);
     }
   }
 
   static String getBeforeNotifyTimeMessage(Duration d, BuildContext context) {
+    final trans = AppLocalizations.of(context);
     if (d.inMilliseconds == 0) {
-      return 'Al momento dell\'evento';
+      return trans.translate('moment_of_event');
+    } else if (d.inMinutes == 1) {
+      return trans.translate('minute_before').replaceAll('{m}', '1');
     } else if (d.inMinutes < 60) {
-      return '${d.inMinutes} minuti prima';
+      return trans
+          .translate('minutes_before')
+          .replaceAll('{m}', d.inMinutes.toString());
     } else if (d.inHours < 24) {
       if (d.inHours == 1) {
-        return '${d.inHours} ora prima';
+        return trans.translate('hour_before').replaceAll('{m}', '1');
       }
-      return '${d.inHours} ore prima';
+      return trans
+          .translate('hours_before')
+          .replaceAll('{m}', d.inHours.toString());
     } else {
-      return '1 giorno prima';
+      return trans.translate('one_day_before');
     }
   }
 

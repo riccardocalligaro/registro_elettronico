@@ -549,7 +549,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                     onTap: () async {
                       await _showBottomSheet(event);
                     },
-                    // onLongPress: () {},
                     title: Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                       child: Text(
@@ -574,7 +573,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                   color: Colors.red[400],
                   child: ListTile(
                     onTap: () async {
-                      await _showBottomSheet(event);
+                      await _showLocalBoottomSheet(event);
                     },
                     leading: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -615,6 +614,59 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         text: '',
         showUpdate: false,
       ),
+    );
+  }
+
+  Future _showLocalBoottomSheet(db.AgendaEvent event) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              onTap: () {
+                final trans = AppLocalizations.of(context);
+
+                String message = "";
+                message +=
+                    '${trans.translate('event')}: ${event.title != '' ? event.title : event.notes}';
+
+                if (event.notes != '') {
+                  message += '\n';
+                  message += trans
+                      .translate('notes_event')
+                      .replaceAll('{name}', event.notes);
+                }
+
+                if (event.begin != null) {
+                  message += '\n';
+
+                  message += trans.translate('date_event').replaceAll(
+                        '{date}',
+                        DateUtils.convertDateLocaleDashboard(
+                          event.begin,
+                          AppLocalizations.of(context).locale.toString(),
+                        ),
+                      );
+                }
+
+                if (event.subjectId != -1) {
+                  message += '\n';
+
+                  message += trans.translate('subject_event').replaceAll(
+                      '{subject}', StringUtils.titleCase(event.subjectDesc));
+                }
+                Navigator.pop(context);
+
+                Share.text('Condividi', message, 'text/plain');
+              },
+              leading: Icon(Icons.share),
+              title: Text(AppLocalizations.of(context).translate('share')),
+            )
+          ],
+        );
+      },
     );
   }
 

@@ -270,5 +270,8 @@
   "notify_event": "Notifica evento",
   "add_notification": "Aggiungi notifica",
   "choose_subject": "Scegli una materia",
-  "modify": "Modifica"
+  "modify": "Modifica",
+  "time": "Ora",
+  "moment_of_event": "Al momento dell'evento",
+  "minute_before": "{m} minuti prima"
 }
