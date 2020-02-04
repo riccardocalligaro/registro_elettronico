@@ -105,7 +105,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       UnicornButton(
         hasLabel: true,
         labelFontSize: 12,
-        labelText: 'Promemoria',
+        labelText: AppLocalizations.of(context).translate('memo'),
         labelHasShadow: false,
         labelColor:
             GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
@@ -149,7 +149,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       UnicornButton(
         hasLabel: true,
         labelFontSize: 12,
-        labelText: 'Verifica',
+        labelText: AppLocalizations.of(context).translate('test'),
         labelHasShadow: false,
         labelColor:
             GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
@@ -192,7 +192,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       UnicornButton(
         hasLabel: true,
         labelFontSize: 12,
-        labelText: 'Compito',
+        labelText: AppLocalizations.of(context).translate('homework'),
         labelHasShadow: false,
         labelColor:
             GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
@@ -330,7 +330,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
           return _buildTableCalendar(state.events);
         } else if (state is AgendaLoadError) {
           return CustomPlaceHolder(
-            text: AppLocalizations.of(context).translate('erorr'),
+            text: AppLocalizations.of(context).translate('error'),
             icon: Icons.error,
             showUpdate: true,
             onTap: () {
@@ -627,7 +627,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
           children: <Widget>[
             ListTile(
               leading: Icon(Icons.delete),
-              title: Text('Elimina'),
+              title: Text(AppLocalizations.of(context).translate('delete')),
               onTap: () async {
                 await RepositoryProvider.of<AgendaRepository>(context)
                     .deleteEvent(event);
@@ -673,7 +673,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                 });
               },
               leading: Icon(Icons.edit),
-              title: Text('Modifica'),
+              title: Text(AppLocalizations.of(context).translate('modify')),
             ),
             ListTile(
               onTap: () {
@@ -713,7 +713,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                 Share.text('Condividi', message, 'text/plain');
               },
               leading: Icon(Icons.share),
-              title: Text('Condividi'),
+              title: Text(AppLocalizations.of(context).translate('share')),
             )
           ],
         );

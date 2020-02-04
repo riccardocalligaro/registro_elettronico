@@ -61,7 +61,7 @@ class _NewEventPageState extends State<NewEventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New event'),
+        title: Text(AppLocalizations.of(context).translate('new_event')),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
@@ -89,7 +89,7 @@ class _NewEventPageState extends State<NewEventPage> {
 
   void _insertEventInDb() async {
     final id = DateTime.now().millisecondsSinceEpoch.toSigned(32);
-    
+
     AgendaEvent event;
     if (widget.eventType == EventType.memo) {
       event = AgendaEvent(
@@ -141,7 +141,7 @@ class _NewEventPageState extends State<NewEventPage> {
         LocalNotification(onSelectNotification);
 
     localNotification.scheduleNotification(
-      title: 'New event',
+      title: AppLocalizations.of(context).translate('new_event'),
       message: _titleController.text,
       scheduledTime: _selectedDate,
       eventId: id,
@@ -162,7 +162,7 @@ class _NewEventPageState extends State<NewEventPage> {
           maxLines: null,
           decoration: InputDecoration(
             border: InputBorder.none,
-            hintText: 'Aggiungi descrizione',
+            hintText: AppLocalizations.of(context).translate('add_description'),
           ),
         ),
       ),
@@ -175,7 +175,7 @@ class _NewEventPageState extends State<NewEventPage> {
         children: <Widget>[
           SwitchListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-            title: const Text('Notifica evento'),
+            title: Text(AppLocalizations.of(context).translate('notify_event')),
             value: _notifyEvent,
             onChanged: (bool value) {
               if (value != null) {
@@ -239,7 +239,8 @@ class _NewEventPageState extends State<NewEventPage> {
             width: MediaQuery.of(context).size.width,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(71, 8, 16, 16),
-              child: Text('Aggiungi notifica'),
+              child: Text(
+                  AppLocalizations.of(context).translate('add_notification')),
             ),
           ),
         ),
@@ -264,7 +265,7 @@ class _NewEventPageState extends State<NewEventPage> {
                 maxLines: null,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Aggiungi titolo',
+                  hintText: AppLocalizations.of(context).translate('add_title'),
                 ),
               ),
             ),
@@ -309,7 +310,8 @@ class _NewEventPageState extends State<NewEventPage> {
                           SizedBox(
                             width: 30,
                           ),
-                          Text('Etichetta'),
+                          Text(AppLocalizations.of(context)
+                              .translate('label')),
                         ],
                       ),
                       ClipOval(
@@ -349,7 +351,7 @@ class _NewEventPageState extends State<NewEventPage> {
                           SizedBox(
                             width: 30,
                           ),
-                          Text('Data'),
+                          Text(AppLocalizations.of(context).translate('date')),
                         ],
                       ),
                       Text(
@@ -379,7 +381,7 @@ class _NewEventPageState extends State<NewEventPage> {
         title: Text(
           _selectedSubject != null
               ? _getReducedName(_selectedSubject.name)
-              : 'Choose a subject',
+              : AppLocalizations.of(context).translate('choose_subject'),
           style: TextStyle(
             color: _getColorForMissingSubject(),
           ),
