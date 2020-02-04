@@ -71,7 +71,7 @@ dependencies:
   # unicorndial: ^1.1.5
   flutter_colorpicker: ^0.2.6
   # date time picker
-  datetime_picker_formfield: ^1.0.0
+  # datetime_picker_formfield: ^1.0.0
 
   # firebase
   firebase_core: ^0.4.3+1
