@@ -151,7 +151,7 @@ class _EditEventPageState extends State<EditEventPage> {
           maxLines: null,
           decoration: InputDecoration(
             border: InputBorder.none,
-            hintText: 'Aggiungi descrizione',
+            hintText: AppLocalizations.of(context).translate('add_description'),
           ),
         ),
       ),
@@ -253,7 +253,7 @@ class _EditEventPageState extends State<EditEventPage> {
                 maxLines: null,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Aggiungi titolo',
+                  hintText: AppLocalizations.of(context).translate('add_title'),
                 ),
               ),
             ),
@@ -298,7 +298,7 @@ class _EditEventPageState extends State<EditEventPage> {
                           SizedBox(
                             width: 30,
                           ),
-                          Text(AppLocalizations.of(context).translate('etichetta')),
+                          Text(AppLocalizations.of(context).translate('label')),
                         ],
                       ),
                       ClipOval(
@@ -338,7 +338,7 @@ class _EditEventPageState extends State<EditEventPage> {
                           SizedBox(
                             width: 30,
                           ),
-                          Text('Data'),
+                          Text(AppLocalizations.of(context).translate('date')),
                         ],
                       ),
                       Text(

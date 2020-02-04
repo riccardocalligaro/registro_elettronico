@@ -20,7 +20,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.today),
-                title: Text(AppLocalizations.of(context).translate('oggi')),
+                title: Text(AppLocalizations.of(context).translate('today')),
                 onTap: () {
                   Navigator.pop(
                     context,
@@ -32,7 +32,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
               ),
               ListTile(
                 leading: Icon(Icons.arrow_forward),
-                title: Text(AppLocalizations.of(context).translate('domani')),
+                title: Text(AppLocalizations.of(context).translate('tomorrow')),
                 onTap: () {
                   Navigator.pop(
                     context,
@@ -44,7 +44,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
               ),
               ListTile(
                 leading: Icon(Icons.next_week),
-                title: Text(AppLocalizations.of(context).translate('prossima_settimana')),
+                title: Text(AppLocalizations.of(context).translate('next_week')),
                 onTap: () {
                   Navigator.pop(
                     context,
@@ -56,7 +56,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
               ),
               ListTile(
                 leading: Icon(Icons.date_range),
-                title: Text(AppLocalizations.of(context).translate('scegli_data')),
+                title: Text(AppLocalizations.of(context).translate('select_date')),
                 onTap: () async {
                   await showDatePicker(
                     context: context,

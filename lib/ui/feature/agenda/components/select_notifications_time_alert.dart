@@ -19,14 +19,15 @@ class _SelectNotificationsTimeAlertDialogState
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).translate('seleziona')),
+      title: Text(AppLocalizations.of(context).translate('select')),
       content: Container(
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               RadioListTile(
-                title: Text(AppLocalizations.of(context).translate('al_momento'),
+                title: Text(
+                  AppLocalizations.of(context).translate('at_the_moment'),
                   style: TextStyle(fontSize: 13),
                 ),
                 value: Duration(milliseconds: 0),
@@ -36,7 +37,10 @@ class _SelectNotificationsTimeAlertDialogState
                 },
               ),
               RadioListTile(
-                title: Text(AppLocalizations.of(context).translate('30_minuti_prima'),
+                title: Text(
+                  AppLocalizations.of(context)
+                      .translate('minutes_before')
+                      .replaceAll('{m}', '30'),
                   style: TextStyle(fontSize: 13),
                 ),
                 value: Duration(minutes: 30),
@@ -46,7 +50,10 @@ class _SelectNotificationsTimeAlertDialogState
                 },
               ),
               RadioListTile(
-                title: Text(AppLocalizations.of(context).translate('1_ora_prima'),
+                title: Text(
+                  AppLocalizations.of(context)
+                      .translate('hour_before')
+                      .replaceAll('{m}', '1'),
                   style: TextStyle(fontSize: 13),
                 ),
                 value: Duration(minutes: 60),
@@ -56,7 +63,10 @@ class _SelectNotificationsTimeAlertDialogState
                 },
               ),
               RadioListTile(
-                title: Text(AppLocalizations.of(context).translate('2_ore_prima'),
+                title: Text(
+                  AppLocalizations.of(context)
+                      .translate('hours_before')
+                      .replaceAll('{m}', '2'),
                   style: TextStyle(fontSize: 13),
                 ),
                 value: Duration(minutes: 120),
@@ -66,7 +76,10 @@ class _SelectNotificationsTimeAlertDialogState
                 },
               ),
               RadioListTile(
-                title: Text(AppLocalizations.of(context).translate('12_ore_prima'),
+                title: Text(
+                  AppLocalizations.of(context)
+                      .translate('hours_before')
+                      .replaceAll('{m}', '12'),
                   style: TextStyle(fontSize: 13),
                 ),
                 value: Duration(hours: 12),
@@ -76,7 +89,8 @@ class _SelectNotificationsTimeAlertDialogState
                 },
               ),
               RadioListTile(
-                title: Text(AppLocalizations.of(context).translate('un_giorno_prima'),
+                title: Text(
+                  AppLocalizations.of(context).translate('one_day_before'),
                   style: TextStyle(fontSize: 13),
                 ),
                 value: Duration(hours: 24),

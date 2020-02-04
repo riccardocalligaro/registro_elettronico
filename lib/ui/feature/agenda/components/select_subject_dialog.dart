@@ -22,7 +22,7 @@ class _SelectSubjectDialogState extends State<SelectSubjectDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).translate('select_a_subject')),
+      title: Text(AppLocalizations.of(context).translate('select_subject')),
       content: BlocBuilder<SubjectsBloc, SubjectsState>(
         builder: (context, state) {
           if (state is SubjectsAndProfessorsLoadInProgress) {
