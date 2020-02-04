@@ -35,6 +35,8 @@ class _NewEventPageState extends State<NewEventPage> {
 
   Color _labelColor = null;
   DateTime _selectedDate;
+
+  TimeOfDay _timeOfDay = TimeOfDay(hour: 9, minute: 0);
   // Duration _repeat = Duration(milliseconds: 0);
 
   Subject _selectedSubject;
@@ -47,6 +49,10 @@ class _NewEventPageState extends State<NewEventPage> {
   @override
   void initState() {
     _selectedDate = widget.initialDate;
+    if (DateUtils.areSameDay(_selectedDate, DateTime.now())) {
+      final addedHour = DateTime.now().add(Duration(hours: 2));
+      _timeOfDay = TimeOfDay(hour: addedHour.hour, minute: 0);
+    }
     if (widget.eventType == EventType.test) {
       _labelColor = Colors.orange;
     } else if (widget.eventType == EventType.assigment) {
@@ -73,7 +79,7 @@ class _NewEventPageState extends State<NewEventPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
+        child: ListView(
           children: <Widget>[
             _buildTopCard(),
             widget.eventType != EventType.memo
@@ -89,7 +95,15 @@ class _NewEventPageState extends State<NewEventPage> {
 
   void _insertEventInDb() async {
     final id = DateTime.now().millisecondsSinceEpoch.toSigned(32);
-    
+
+    final DateTime _date = DateTime(
+      _selectedDate.year,
+      _selectedDate.month,
+      _selectedDate.day,
+      _timeOfDay.hour,
+      _timeOfDay.minute,
+    );
+
     AgendaEvent event;
     if (widget.eventType == EventType.memo) {
       event = AgendaEvent(
@@ -97,8 +111,8 @@ class _NewEventPageState extends State<NewEventPage> {
         isLocal: true,
         isFullDay: false,
         evtCode: "",
-        begin: _selectedDate,
-        end: _selectedDate,
+        begin: _date,
+        end: _date,
         subjectDesc: '',
         authorName: "",
         classDesc: "",
@@ -114,8 +128,8 @@ class _NewEventPageState extends State<NewEventPage> {
           isLocal: true,
           isFullDay: false,
           evtCode: "",
-          begin: _selectedDate,
-          end: _selectedDate,
+          begin: _date,
+          end: _date,
           subjectDesc: _selectedSubject.name,
           authorName: "",
           classDesc: "",
@@ -143,7 +157,7 @@ class _NewEventPageState extends State<NewEventPage> {
     localNotification.scheduleNotification(
       title: 'New event',
       message: _titleController.text,
-      scheduledTime: _selectedDate,
+      scheduledTime: _date,
       eventId: id,
     );
 
@@ -247,7 +261,7 @@ class _NewEventPageState extends State<NewEventPage> {
     );
   }
 
-  Card _buildTopCard() {
+  Widget _buildTopCard() {
     return Card(
       child: Container(
         child: Column(
@@ -352,12 +366,44 @@ class _NewEventPageState extends State<NewEventPage> {
                           Text('Data'),
                         ],
                       ),
-                      Text(
-                        DateUtils.getNewEventDateMessage(
-                          _selectedDate,
-                          AppLocalizations.of(context).locale.toString(),
-                        ),
+                      Text(DateUtils.getNewEventDateMessage(
+                        _selectedDate,
+                        AppLocalizations.of(context).locale.toString(),
+                      )),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                showTimePicker(
+                  context: context,
+                  initialTime: _timeOfDay,
+                ).then((time) {
+                  if (time != null) {
+                    setState(() {
+                      _timeOfDay = time;
+                    });
+                  }
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.access_time),
+                          SizedBox(
+                            width: 30,
+                          ),
+                          Text('Ora'),
+                        ],
                       ),
+                      Text(_timeOfDay.format(context)),
                     ],
                   ),
                 ),
