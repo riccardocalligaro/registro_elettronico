@@ -7,8 +7,8 @@ class NotificationMessage {
   /// Gets the [title]
   static String getGradeNotificationTitle({@required double grade}) {
     if (grade == -1.00) return '📝 Nuovo voto (in blu)!';
-    if (grade >= 8) return '👌 Novo voto!';
-    if (grade >= 6) return '👍 Novo voto!';
+    if (grade >= 8) return '👌 Nuovo voto!';
+    if (grade >= 6) return '👍 Nuovo voto!';
     if (grade >= 5.5) return '🤔 Nuovo voto!';
     if (grade < 5.5) return '👎 Nuovo voto!';
     return '👍 Nuovo voto!';
@@ -19,7 +19,7 @@ class NotificationMessage {
   }
 
   static String getAbsenceNotificationTitle(String code) {
-    if (code == RegistroConstants.ASSENZA) return "🔴 Nuova assenza";
+    if (code == RegistroConstants.ASSENZA)  return "🔴 Nuova assenza";
     if (code == RegistroConstants.RITARDO) return "🔵 Nuovo ritardo";
     if (code == RegistroConstants.RITARDO_BREVE)
       return "🔵 Nuovo ritardo breve";
