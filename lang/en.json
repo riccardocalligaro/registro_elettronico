@@ -256,7 +256,7 @@
   "select": "Select",
   "select_subject": "Select a subject",
   "edit_event": "Edit event",
-  "label": "label",
+  "label": "Label",
   "at_the_moment": "At the moment",
   "minutes_before": "{m} minutes before",
   "hour_before": "{m} hour before",
@@ -270,5 +270,8 @@
   "notify_event": "Notify event",
   "add_notification": "Add notification",
   "choose_subject": "Choose a subject",
-  "modify": "Modify"
+  "modify": "Modify",
+  "time": "Time",
+  "moment_of_event": "Moment of the event",
+  "minute_before": "{m} minute before"
 }

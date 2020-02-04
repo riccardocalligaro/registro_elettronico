@@ -37,7 +37,7 @@ class _EditEventPageState extends State<EditEventPage> {
 
   String _initialSubject;
   Subject _selectedSubject;
-
+  TimeOfDay _timeOfDay;
   // bool _notifyEvent = false;
   // Duration _beforeNotify = Duration(minutes: 30);
 
@@ -47,6 +47,11 @@ class _EditEventPageState extends State<EditEventPage> {
   void initState() {
     _initialSubject = widget.event.subjectDesc;
     _selectedDate = widget.event.begin;
+
+    _timeOfDay = TimeOfDay(
+      hour: _selectedDate.hour,
+      minute: _selectedDate.hour,
+    );
     if (widget == EventType.test) {
       _labelColor = Colors.orange;
     } else if (widget.type == EventType.assigment) {
@@ -91,14 +96,23 @@ class _EditEventPageState extends State<EditEventPage> {
   void _updateEventInDb() async {
     AgendaEvent event;
     final eventOriginal = widget.event;
+
+    final DateTime _date = DateTime(
+      _selectedDate.year,
+      _selectedDate.month,
+      _selectedDate.day,
+      _timeOfDay.hour,
+      _timeOfDay.minute,
+    );
+
     if (widget.type == EventType.memo) {
       event = AgendaEvent(
         subjectId: -1,
         isLocal: true,
         isFullDay: false,
         evtCode: "",
-        begin: _selectedDate ?? eventOriginal.begin,
-        end: _selectedDate ?? eventOriginal.begin,
+        begin: _date ?? eventOriginal.begin,
+        end: _date ?? eventOriginal.begin,
         subjectDesc: _selectedSubject != null
             ? _selectedSubject.name
             : eventOriginal.subjectDesc,
@@ -118,8 +132,8 @@ class _EditEventPageState extends State<EditEventPage> {
         isLocal: true,
         isFullDay: false,
         evtCode: "",
-        begin: _selectedDate ?? eventOriginal.begin,
-        end: _selectedDate ?? eventOriginal.begin,
+        begin: _date ?? eventOriginal.begin,
+        end: _date ?? eventOriginal.begin,
         subjectDesc: _selectedSubject != null
             ? _selectedSubject.name
             : eventOriginal.subjectDesc,
@@ -136,7 +150,7 @@ class _EditEventPageState extends State<EditEventPage> {
 
     await RepositoryProvider.of<AgendaRepository>(context).updateEvent(event);
 
-    Navigator.pop(context, _selectedDate ?? eventOriginal.begin);
+    Navigator.pop(context, _date ?? eventOriginal.begin);
   }
 
   Card _buildDescriptionCard() {
@@ -345,8 +359,45 @@ class _EditEventPageState extends State<EditEventPage> {
                         DateUtils.getNewEventDateMessage(
                           _selectedDate,
                           AppLocalizations.of(context).locale.toString(),
+                          context
                         ),
                       ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                showTimePicker(
+                  context: context,
+                  initialTime: _timeOfDay,
+                ).then((time) {
+                  if (time != null) {
+                    setState(() {
+                      _timeOfDay = time;
+                    });
+                  }
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.access_time),
+                          SizedBox(
+                            width: 30,
+                          ),
+                          Text(
+                            AppLocalizations.of(context).translate('time'),
+                          ),
+                        ],
+                      ),
+                      Text(_timeOfDay.format(context)),
                     ],
                   ),
                 ),
