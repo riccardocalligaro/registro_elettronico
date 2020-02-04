@@ -19,7 +19,7 @@ class NotificationMessage {
   }
 
   static String getAbsenceNotificationTitle(String code) {
-    if (code == RegistroConstants.ASSENZA) return "🔴 Nuova assenza";
+    if (code == RegistroConstants.ASSENZA)  return "🔴 Nuova assenza";
     if (code == RegistroConstants.RITARDO) return "🔵 Nuovo ritardo";
     if (code == RegistroConstants.RITARDO_BREVE)
       return "🔵 Nuovo ritardo breve";
