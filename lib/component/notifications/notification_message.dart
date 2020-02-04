@@ -7,8 +7,8 @@ class NotificationMessage {
   /// Gets the [title]
   static String getGradeNotificationTitle({@required double grade}) {
     if (grade == -1.00) return '📝 Nuovo voto (in blu)!';
-    if (grade >= 8) return '👌 Novo voto!';
-    if (grade >= 6) return '👍 Novo voto!';
+    if (grade >= 8) return '👌 Nuovo voto!';
+    if (grade >= 6) return '👍 Nuovo voto!';
     if (grade >= 5.5) return '🤔 Nuovo voto!';
     if (grade < 5.5) return '👎 Nuovo voto!';
     return '👍 Nuovo voto!';
