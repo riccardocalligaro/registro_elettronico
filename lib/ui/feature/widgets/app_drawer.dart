@@ -2,6 +2,7 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
+import 'package:registro_elettronico/component/routes.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
@@ -90,43 +91,59 @@ class _AppDrawerState extends State<AppDrawer>
           padding: EdgeInsets.zero,
           children: <Widget>[
             _createDrawerItem(
-                icon: Icons.exit_to_app,
-                text: "Logout",
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text(
-                        AppLocalizations.of(context)
-                            .translate('reset_db_alert'),
-                      ),
-                      content: Text(AppLocalizations.of(context)
-                          .translate('logout_message')),
-                      actions: <Widget>[
-                        FlatButton(
-                          child: Text(
-                              AppLocalizations.of(context).translate('no')),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        FlatButton(
-                          child: Text(
-                              AppLocalizations.of(context).translate('yes')),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            BlocProvider.of<IntroBloc>(context).add(Reset());
-                            BlocProvider.of<AuthBloc>(context).add(SignOut());
-
-                            AppNavigator.instance.navToLogin(context);
-                          },
-                        ),
-                      ],
+              icon: Icons.person_add,
+              text: "Add account",
+              onTap: () {
+                Navigator.of(context).pushNamed(Routes.LOGIN);
+              },
+              pos: 0,
+              isAccount: true,
+            ),
+            _createDrawerItem(
+              icon: Icons.settings_backup_restore,
+              text: "Reset",
+              onTap: () {},
+              pos: 1,
+              isAccount: true,
+            ),
+            _createDrawerItem(
+              icon: Icons.exit_to_app,
+              text: "Logout",
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(
+                      AppLocalizations.of(context).translate('reset_db_alert'),
                     ),
-                  );
-                },
-                pos: 0,
-                isAccount: true)
+                    content: Text(AppLocalizations.of(context)
+                        .translate('logout_message')),
+                    actions: <Widget>[
+                      FlatButton(
+                        child:
+                            Text(AppLocalizations.of(context).translate('no')),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      FlatButton(
+                        child:
+                            Text(AppLocalizations.of(context).translate('yes')),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          BlocProvider.of<IntroBloc>(context).add(Reset());
+                          BlocProvider.of<AuthBloc>(context).add(SignOut());
+
+                          AppNavigator.instance.navToLogin(context);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+              pos: 2,
+              isAccount: true,
+            )
           ],
         ),
       ),

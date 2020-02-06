@@ -6,6 +6,7 @@ import 'package:registro_elettronico/ui/bloc/timetable/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 
 import '../../bloc/timetable/timetable_event.dart';
 
@@ -62,6 +63,8 @@ class _TimetablePageState extends State<TimetablePage> {
 
             if (state is TimetableLoaded) {
               if (state.timetableEntries.length > 0) {
+                // return _buildTimetableGridView(
+                //     state.timetableEntries, state.subjects);
                 return _buildTimetableList(
                     state.timetableEntries, state.subjects);
               }
@@ -87,6 +90,55 @@ ${AppLocalizations.of(context).translate('no_timetable_message')}""",
         ),
       ),
     );
+  }
+
+  Widget _buildTimetableGridView(
+      List<TimetableEntry> timetable, List<Subject> subjects) {
+    // return ListView.builder(
+    //   scrollDirection: Axis.horizontal,
+    //   itemCount: 7,
+    //   itemBuilder: (context, index) {
+    //     if (index == 0) return Container();
+
+    //     final List<TimetableEntry> entries =
+    //         timetable.where((t) => t.dayOfWeek == index).toList();
+    //     entries.sort((a, b) => a.start.compareTo(b.start));
+
+    //     return Column(
+    //       children: <Widget>[],
+    //     )
+    //     //return Text(entries[entries.length - 1].end.toString());
+    //     return GridView.count(
+    //       shrinkWrap: true,
+    //       scrollDirection: Axis.horizontal,
+    //       // crossAxisCount is the number of columns
+    //       crossAxisCount: 2,
+    //       // This creates two columns with two items in each column
+    //       children: List.generate(5, (index) {
+    //         return Center(
+    //           child: Text(
+    //             'Item $index',
+    //             style: Theme.of(context).textTheme.headline,
+    //           ),
+    //         );
+    //       }),
+    //     );
+        // return ListView.builder(
+        //   scrollDirection: Axis.horizontal,
+        //   physics: ClampingScrollPhysics(),
+        //   shrinkWrap: true,
+        //   itemCount: entries[entries.length - 1].end,
+        //   itemBuilder: (context, index) {
+        //     return Container(
+        //       height: 50,
+        //       width: 50,
+        //       color: GlobalUtils.generateRandomColor(),
+        //       child: Text(index.toString()),
+        //     );
+        //   },
+        // );
+    //   },
+    // );
   }
 
   Widget _buildTimetableList(

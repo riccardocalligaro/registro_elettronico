@@ -9,7 +9,7 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
   AppDatabase db;
   ProfileDao(this.db) : super(db);
 
-  Future<List<Insertable<Profile>>> getAllProfiles() => select(profiles).get();
+  Future<List<Profile>> getAllProfiles() => select(profiles).get();
 
   Future<Profile> getProfile() => select(profiles).getSingle();
 

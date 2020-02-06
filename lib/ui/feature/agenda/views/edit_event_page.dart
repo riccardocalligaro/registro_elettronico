@@ -50,7 +50,7 @@ class _EditEventPageState extends State<EditEventPage> {
 
     _timeOfDay = TimeOfDay(
       hour: _selectedDate.hour,
-      minute: _selectedDate.hour,
+      minute: _selectedDate.minute,
     );
     if (widget == EventType.test) {
       _labelColor = Colors.orange;
