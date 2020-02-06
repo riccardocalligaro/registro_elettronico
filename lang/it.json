@@ -273,5 +273,6 @@
   "yes": "Si",
   "you_entered_at": "Sei entrato alla {hour} ora",
   "your_average": "La tua media",
-  "your_objective": "Il tuo obiettivo"
+  "your_objective": "Il tuo obiettivo",
+  "logout": "Esci"
 }

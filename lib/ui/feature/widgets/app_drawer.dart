@@ -7,6 +7,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
+import 'package:registro_elettronico/ui/feature/settings/components/account/account_settings.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 
@@ -90,25 +91,28 @@ class _AppDrawerState extends State<AppDrawer>
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            _createDrawerItem(
-              icon: Icons.person_add,
-              text: "Add account",
-              onTap: () {
-                Navigator.of(context).pushNamed(Routes.LOGIN);
-              },
-              pos: 0,
-              isAccount: true,
-            ),
+            // _createDrawerItem(
+            //   icon: Icons.person_add,
+            //   text: "Add account",
+            //   onTap: () {
+            //     Navigator.of(context).pushNamed(Routes.LOGIN);
+            //   },
+            //   pos: 0,
+            //   isAccount: true,
+            // ),
             _createDrawerItem(
               icon: Icons.settings_backup_restore,
               text: "Reset",
-              onTap: () {},
+              onTap: () {
+                showDialog(
+                    context: context, builder: (context) => ResetDialog());
+              },
               pos: 1,
               isAccount: true,
             ),
             _createDrawerItem(
               icon: Icons.exit_to_app,
-              text: "Logout",
+              text: AppLocalizations.of(context).translate('logout'),
               onTap: () {
                 showDialog(
                   context: context,
