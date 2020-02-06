@@ -273,5 +273,6 @@
   "yes": "Yes",
   "you_entered_at": "You entered at the {hour} hour",
   "your_average": "Your average",
-  "your_objective": "Your objective"
+  "your_objective": "Your objective",
+  "logout":"Logout"
 }
