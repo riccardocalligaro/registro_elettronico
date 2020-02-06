@@ -17,6 +17,7 @@ class ProfileMapper {
       token: e.token ?? "",
       release: DateTime.parse(e.release) ?? DateTime.now(),
       expire: DateTime.parse(e.expire) ?? DateTime.now(),
+      // isActive: true
     );
   }
 

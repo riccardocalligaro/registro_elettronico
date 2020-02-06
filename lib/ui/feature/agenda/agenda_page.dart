@@ -549,18 +549,38 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                     onTap: () async {
                       await _showBottomSheet(event);
                     },
+                    leading: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('hour')
+                              .toLowerCase(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          DateUtils.convertTimeForDisplay(event.begin,
+                              AppLocalizations.of(context).locale.toString()),
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ],
+                    ),
                     title: Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                       child: Text(
-                        '${event.title} - ${event.subjectDesc.toLowerCase()}',
+                        '${event.title.trim()} - ${event.subjectDesc.toLowerCase()}',
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.w600),
                       ),
                     ),
                     subtitle: event.notes != ''
-                        ? Text(
-                            '${event.notes} ${event.isFullDay ? " - (Tutto il giorno)" : ""}',
-                            style: TextStyle(color: Colors.white),
+                        ? Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                            child: Text(
+                              '${event.notes} ${event.isFullDay ? " - (Tutto il giorno)" : ""}',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           )
                         : null,
                   ),
@@ -578,11 +598,16 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                     leading: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text(AppLocalizations.of(context)
-                            .translate('hour')
-                            .toLowerCase()),
                         Text(
-                            '${event.begin.hour.toString()} - ${event.end.hour.toString()}')
+                          AppLocalizations.of(context)
+                              .translate('hour')
+                              .toLowerCase(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          '${event.begin.hour.toString()} - ${event.end.hour.toString()}',
+                          style: TextStyle(color: Colors.white),
+                        )
                       ],
                     ),
                     title: Padding(

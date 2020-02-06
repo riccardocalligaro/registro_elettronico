@@ -30,6 +30,12 @@ class DateUtils {
     return formatter.format(date);
   }
 
+  /// [Hm] format
+  static String convertTimeForDisplay(DateTime date, String locale) {
+    final formatter = DateFormat.Hm(locale);
+    return formatter.format(date);
+  }
+
   static String convertSingleDayForDisplay(DateTime date, String locale) {
     final formatter = DateFormat.EEEE(locale);
     return formatter.format(date);
@@ -63,13 +69,24 @@ class DateUtils {
 
     final diff = date.difference(today);
 
-    if (diff.inHours < 23) {
+    final tomorrow = today.add(Duration(days: 1));
+
+    if (areSameDay(today, date)) {
       return AppLocalizations.of(context).translate('today');
-    } else if (diff.inHours == 23 || diff.inHours == 24) {
+    } else if (areSameDay(tomorrow, date)) {
       return AppLocalizations.of(context).translate('tomorrow');
     } else {
       return formatter.format(date);
     }
+
+    // if (diff.inHours < 23) {
+    //   return AppLocalizations.of(context).translate('today');
+    // } else if (diff.inHours == 23 || diff.inHours == 24) {
+    //   return 'dOmani';
+    //   return AppLocalizations.of(context).translate('tomorrow');
+    // } else {
+    //   return formatter.format(date);
+    // }
   }
 
   static String getBeforeNotifyTimeMessage(Duration d, BuildContext context) {

@@ -96,6 +96,8 @@ class _NewEventPageState extends State<NewEventPage> {
   void _insertEventInDb() async {
     final id = DateTime.now().millisecondsSinceEpoch.toSigned(32);
 
+    FLog.info(text: 'Set new event id to $id');
+
     final DateTime _date = DateTime(
       _selectedDate.year,
       _selectedDate.month,
@@ -103,6 +105,8 @@ class _NewEventPageState extends State<NewEventPage> {
       _timeOfDay.hour,
       _timeOfDay.minute,
     );
+
+    FLog.info(text: 'Date of the new event $_date');
 
     AgendaEvent event;
     if (widget.eventType == EventType.memo) {

@@ -18,6 +18,7 @@ import 'constants/subjects_constants.dart';
 class GlobalUtils {
   static Profile getMockProfile() {
     return Profile(
+      //isActive: false,
       id: -1,
       ident: '32',
       firstName: 'x',
