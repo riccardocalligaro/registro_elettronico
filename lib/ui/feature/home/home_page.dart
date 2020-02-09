@@ -193,11 +193,11 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(
                         height: 10,
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(AppLocalizations.of(context)
-                            .translate('this_week_section_title')),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      //   child: Text(AppLocalizations.of(context)
+                      //       .translate('this_week_section_title')),
+                      // ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
                         child: NextEventsSection(),
@@ -360,7 +360,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _refreshHome() async {
-    BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
+    BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
     BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
     BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
     BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));

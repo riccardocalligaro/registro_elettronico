@@ -28,6 +28,16 @@ class ColorUtils {
   }
 
   static Color getColorFromIndex(int index) {
+    if (index > 16) {
+      try {
+        Random random = Random();
+        int indexMaterial = random.nextInt(Colors.accents.length - 1);
+        return Colors.accents[indexMaterial];
+      } catch (_) {
+        return Colors.red;
+      }
+    }
+    
     switch (index) {
       case 0:
         return Colors.red;
@@ -60,7 +70,7 @@ class ColorUtils {
         return Colors.orange;
         break;
       case 10:
-        return Colors.deepPurple;
+        return Colors.blue[900];
         break;
       case 11:
         return Colors.lightGreen;
@@ -68,6 +78,15 @@ class ColorUtils {
         return Colors.lightBlue;
       case 13:
         return Colors.yellow[700];
+        break;
+      case 14:
+        return Colors.teal;
+        break;
+      case 15:
+        return Colors.teal;
+        break;
+      case 16:
+        return Colors.redAccent;
         break;
       default:
         return Colors.red;

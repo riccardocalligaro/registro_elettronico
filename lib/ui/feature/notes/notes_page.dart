@@ -128,9 +128,9 @@ class _NotesPageState extends State<NotesPage> {
 
                   //   noteDao.deleteAllNotes();
                   // },
-                  title: Text("${note.author}"),
+                  title: Text('${note.author}'),
                   subtitle: Text(
-                      "${AppLocalizations.of(context).translate(note.type.toLowerCase()) ?? ""} - ${DateUtils.convertDateLocale(note.date, AppLocalizations.of(context).locale.toString())}"),
+                      '${AppLocalizations.of(context).translate(note.type.toLowerCase()) ?? ""} - ${DateUtils.convertDateLocale(note.date, AppLocalizations.of(context).locale.toString())}'),
                 ),
                 expanded: ExpandedNote(
                   note: note,

@@ -33,7 +33,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   List<Lesson> lessons = List();
   List<Lesson> filteredLessons = List();
   Icon _searchIcon = Icon(Icons.search);
-  Widget _appBarTitle = Text("Comunicazioni");
+  Widget _appBarTitle = Text('Comunicazioni');
   int _noticeboardLastUpdate;
   bool _showOutdatedNotices = false;
 
@@ -156,11 +156,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
             },
           ),
         ],
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-          child: Container(
-            child: _buildNoticeBoard(),
-          ),
+        child: Container(
+          child: _buildNoticeBoard(),
         ),
       ),
     );
@@ -284,16 +281,17 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         child: CustomRefresher(
           onRefresh: _refreshNoticeBoard,
           child: ListView.builder(
+            padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 24),
             itemCount: notices.length,
             itemBuilder: (context, index) {
               final notice = notices[index];
 
-              if (index == 0) {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: _buildNoticeCard(notice, context),
-                );
-              }
+              // if (index == 0) {
+              //   return Padding(
+              //     padding: const EdgeInsets.only(top: 8.0),
+              //     child: _buildNoticeCard(notice, context),
+              //   );
+              // }
               return _buildNoticeCard(notice, context);
             },
           ),

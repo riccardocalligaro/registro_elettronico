@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
+import 'package:tuple/tuple.dart';
 
 class DateUtils {
   /// Gives the date in the format [yyyyMMdd], no locale ->
@@ -59,6 +60,18 @@ class DateUtils {
   static String convertDateLocaleDashboard(DateTime date, String locale) {
     final formatter = DateFormat.MMMMEEEEd(locale);
     return formatter.format(date);
+  }
+
+  /// Returns [Date] and [Time]
+  static Tuple2<String, String> convertDateAndTimeLocale(
+      DateTime date, String locale) {
+    final formatter = DateFormat.MMMMEEEEd(locale);
+    final dateMonth = formatter.format(date);
+
+    final formatterTime = DateFormat.Hm(locale);
+    final time = formatterTime.format(date);
+
+    return Tuple2(dateMonth, time);
   }
 
   static String getNewEventDateMessage(

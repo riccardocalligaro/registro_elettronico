@@ -279,5 +279,7 @@
   "duration": "Duratation",
   "press_to_retry": "Press to retry",
   "data_download_message": "Press here",
-  "data_not_downloaded_message": "Some data hasn't been downloaded so the app might be not work correctly."
+  "data_not_downloaded_message": "Some data hasn't been downloaded so the app might be not work correctly.",
+  "all_day": "All day",
+  "no_name_author": "No name"
 }

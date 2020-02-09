@@ -26,7 +26,7 @@ class _GeneralObjectiveSettingsDialogState
     return Container(
       child: Column(
         children: <Widget>[
-          Text("${AppLocalizations.of(context).translate('objective')}: ${_objective.toString()}"),
+          Text('${AppLocalizations.of(context).translate('objective')}: ${_objective.toString()}'),
           Slider(
             value: _objective.toDouble(),
             max: 10,

@@ -279,5 +279,7 @@
   "duration": "Durata",
   "press_to_retry": "Premi per riprovare",
   "data_download_message": "Premi qui",
-  "data_not_downloaded_message": "Alcuni dati non disponibili, l'app potrebbe non funzionare 100% correttamente"
+  "data_not_downloaded_message": "Alcuni dati non disponibili, l'app potrebbe non funzionare 100% correttamente",
+  "all_day": "Tutto il giorno",
+  "no_name_author": "Nessun nome"
 }

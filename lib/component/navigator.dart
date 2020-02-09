@@ -115,7 +115,7 @@ class AppNavigator {
 
   BuildContext showAlertDialog(BuildContext context,
       {@required Widget content,
-      Widget title = const Text("Attention"),
+      Widget title = const Text('Attention'),
       List<Widget> actions}) {
     if (actions == null) {
       actions = [];

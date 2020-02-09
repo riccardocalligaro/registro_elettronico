@@ -1,7 +1,6 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:injector/injector.dart';
 import 'package:registro_elettronico/component/notifications/local_notification.dart';
 import 'package:registro_elettronico/component/notifications/notification_message.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
@@ -60,7 +59,7 @@ class NotificationService {
 
     FLog.info(
         text: '${DateTime.now().toString()} - checking for new contnet...');
-    SharedPreferences prefs = Injector.appInstance.getDependency();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final LocalNotification localNotification =
         LocalNotification(onSelectNotification);

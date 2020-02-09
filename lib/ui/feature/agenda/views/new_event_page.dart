@@ -161,17 +161,19 @@ class _NewEventPageState extends State<NewEventPage> {
 
     FLog.info(text: 'Added event');
 
-    FLog.info(text: 'Setting up notifications');
+    if (_notifyEvent) {
+      FLog.info(text: 'Setting up notifications');
 
-    final LocalNotification localNotification =
-        LocalNotification(onSelectNotification);
+      final LocalNotification localNotification =
+          LocalNotification(onSelectNotification);
 
-    localNotification.scheduleNotification(
-      title: AppLocalizations.of(context).translate('new_event') ?? '',
-      message: _titleController.text ?? '',
-      scheduledTime: _date ?? DateTime.now().add(Duration(hours: 1)),
-      eventId: id,
-    );
+      localNotification.scheduleNotification(
+        title: AppLocalizations.of(context).translate('new_event') ?? '',
+        message: _titleController.text ?? '',
+        scheduledTime: _date.subtract(_beforeNotify) ?? DateTime.now().add(Duration(hours: 1)),
+        eventId: id,
+      );
+    }
   }
 
   Card _buildDescriptionCard() {
