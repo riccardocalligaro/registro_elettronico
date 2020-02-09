@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
@@ -46,13 +47,13 @@ class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
       try {
         await didacticsRepository.updateDidactics();
 
-        final prefs = await SharedPreferences.getInstance();
+        SharedPreferences prefs = Injector.appInstance.getDependency();
 
         prefs.setInt(PrefsConstants.LAST_UPDATE_SCHOOL_MATERIAL,
             DateTime.now().millisecondsSinceEpoch);
 
         yield DidacticsUpdateLoaded();
-      } on NotConntectedException catch(_) {
+      } on NotConntectedException catch (_) {
         yield DidacticsErrorNotConnected();
       } catch (e, s) {
         Crashlytics.instance.recordError(e, s);

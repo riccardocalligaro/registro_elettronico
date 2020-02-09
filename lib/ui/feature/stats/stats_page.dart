@@ -4,6 +4,7 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -38,7 +39,7 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   void restore() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    SharedPreferences _prefs = Injector.appInstance.getDependency();
     objective = _prefs.getInt(PrefsConstants.OVERALL_OBJECTIVE);
   }
 

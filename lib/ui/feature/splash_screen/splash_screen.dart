@@ -1,7 +1,9 @@
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/component/navigator.dart';
+import 'package:registro_elettronico/domain/repository/preferences_repository.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
@@ -30,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void restore() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = Injector.appInstance.getDependency();
     _lastUpdateVitalData = prefs.getInt(PrefsConstants.LAST_UPDATE_VITAL_DATA);
 
     if (_lastUpdateVitalData != null) {
@@ -126,9 +128,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
       FLog.info(text: 'Updated vital data (subjects & periods)');
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      prefs.setInt(PrefsConstants.LAST_UPDATE_VITAL_DATA,
+      RepositoryProvider.of<PreferencesRepository>(context).setInt(
+          PrefsConstants.LAST_UPDATE_VITAL_DATA,
           DateTime.now().millisecondsSinceEpoch);
     } else {
       FLog.info(text: 'No need to update');

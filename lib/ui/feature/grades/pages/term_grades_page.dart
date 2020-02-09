@@ -3,6 +3,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/entity/subject_objective.dart';
@@ -48,7 +49,7 @@ class _TermGradesPageState extends State<TermGradesPage> {
   }
 
   void restore() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    SharedPreferences sharedPreferences = Injector.appInstance.getDependency();
     setState(() {
       showAsending =
           sharedPreferences.getBool(PrefsConstants.SORTING_ASCENDING) ?? false;

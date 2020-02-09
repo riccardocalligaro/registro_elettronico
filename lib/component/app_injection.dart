@@ -1,5 +1,6 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
@@ -42,6 +43,7 @@ import 'package:registro_elettronico/domain/repository/scrutini_repository.dart'
 import 'package:registro_elettronico/domain/repository/stats_repository.dart';
 import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Compile-time dependency injection for Dart and Flutter, similar to Dagger.
 
@@ -61,6 +63,8 @@ class AppInjector {
     //injectMapper();
     // Only authbloc for now
     injectBloc();
+
+    injectSharedPreferences();
     //// Inject shared preferences
     //injectSharedPreferences();
   }
@@ -347,5 +351,10 @@ class AppInjector {
     });
   }
 
-  //static void injectSharedPreferences() async {}
+  static void injectSharedPreferences() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+
+    Injector.appInstance.registerDependency<SharedPreferences>((_) => _prefs);
+  }
 }

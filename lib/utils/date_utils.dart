@@ -67,8 +67,6 @@ class DateUtils {
 
     final today = DateTime.now();
 
-    final diff = date.difference(today);
-
     final tomorrow = today.add(Duration(days: 1));
 
     if (areSameDay(today, date)) {

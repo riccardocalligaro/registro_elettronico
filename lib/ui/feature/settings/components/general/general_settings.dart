@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/general/general_sorting_settings_dialog.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
@@ -29,7 +30,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
   }
 
   restore() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
+    SharedPreferences sharedPrefs = Injector.appInstance.getDependency();
     setState(() {
       _sliderValue =
           (sharedPrefs.getInt(PrefsConstants.OVERALL_OBJECTIVE)) ?? 6;
@@ -72,7 +73,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
             ).then((value) async {
               if (value != null) {
                 SharedPreferences preferences =
-                    await SharedPreferences.getInstance();
+                    Injector.appInstance.getDependency();
                 setState(() {
                   _sliderValue = value;
                   preferences.setInt(PrefsConstants.OVERALL_OBJECTIVE, value);
@@ -133,7 +134,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
               }
 
               SharedPreferences sharedPreferences =
-                  await SharedPreferences.getInstance();
+                  Injector.appInstance.getDependency();
               sharedPreferences.setBool(
                   PrefsConstants.SORTING_ASCENDING, value);
             });
@@ -149,7 +150,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
                 _updateAtStart = value;
               });
 
-              SharedPreferences prefs = await SharedPreferences.getInstance();
+              SharedPreferences prefs = Injector.appInstance.getDependency();
               prefs.setBool(PrefsConstants.UPDATE_AT_START, value);
             },
           ),

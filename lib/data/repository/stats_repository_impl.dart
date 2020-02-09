@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
@@ -47,7 +48,7 @@ class StatsRepositoryImpl implements StatsRepository {
       final notes = await noteDao.getAllNotes();
       final events = await agendaDao.getAllEvents();
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+      SharedPreferences prefs = Injector.appInstance.getDependency();
 
       final year = prefs.getInt(PrefsConstants.STUDENT_YEAR) ?? 3;
 

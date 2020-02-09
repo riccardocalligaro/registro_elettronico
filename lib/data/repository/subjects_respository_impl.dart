@@ -32,8 +32,11 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
 
       List<Subject> subjects = [];
       List<Professor> teachers = [];
+      int index = 0;
       res.subjects.forEach((subject) {
-        subjects.add(SubjectMapper.convertSubjectEntityToInsertable(subject));
+        subjects.add(
+            SubjectMapper.convertSubjectEntityToInsertable(subject, index));
+        index++;
         subject.teachers.forEach((professor) {
           teachers.add(
             SubjectMapper.convertProfessorEntityToInsertable(

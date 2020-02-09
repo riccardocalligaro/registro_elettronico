@@ -10,8 +10,12 @@ class LessonCard extends StatelessWidget {
   final int position;
   final int duration;
 
-  const LessonCard({Key key, this.lesson, this.position, this.duration})
-      : super(key: key);
+  const LessonCard({
+    Key key,
+    this.lesson,
+    this.position,
+    this.duration,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +43,7 @@ class LessonCard extends StatelessWidget {
                       """${trans.translate('author')}: ${StringUtils.titleCase(lesson.author)}
                       \n${trans.translate('argument')}: ${lesson.lessonArg}
                       \n${trans.translate('date')}: ${DateUtils.convertDateLocale(lesson.date, AppLocalizations.of(context).locale.toString())}
-                      \n${trans.translate('type')}: ${lesson.lessonType}
-                      """),
+                      \n${trans.translate('type')}: ${lesson.lessonType}"""),
                 ],
               ),
               actions: <Widget>[
@@ -51,12 +54,6 @@ class LessonCard extends StatelessWidget {
               ],
             ),
           );
-          // showDialog(
-          //   context: context,
-          //   builder: (context) {
-          //     return Text(lesson.author);
-          //   }
-          // );
         },
         child: Container(
           width: 220.0,

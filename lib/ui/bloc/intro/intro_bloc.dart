@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:injector/injector.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
@@ -54,7 +56,7 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
       FLog.info(text: 'Getting all data');
       yield IntroLoading(0);
       try {
-        final prefs = await SharedPreferences.getInstance();
+        SharedPreferences prefs = Injector.appInstance.getDependency();
         await absencesRepository.updateAbsences();
         prefs.setInt(PrefsConstants.LAST_UPDATE_ABSENCES,
             DateTime.now().millisecondsSinceEpoch);
@@ -133,6 +135,8 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
         FLog.info(text: 'Updated timetable');
 
         yield IntroLoaded();
+      } on NotConntectedException {
+        yield IntroNotConnected();
       } on Exception catch (e, s) {
         FLog.error(
           text: 'Error getting data necessary for the app',
@@ -140,6 +144,8 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
           stacktrace: s,
         );
         Crashlytics.instance.recordError(e, s);
+        yield IntroError(e.toString());
+      } catch (e) {
         yield IntroError(e.toString());
       }
     } else if (event is Reset) {

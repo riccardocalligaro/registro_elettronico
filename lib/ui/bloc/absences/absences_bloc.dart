@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
@@ -31,7 +33,7 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
       yield AbsencesUpdateLoading();
       try {
         await absencesRepository.updateAbsences();
-        final prefs = await SharedPreferences.getInstance();
+        SharedPreferences prefs = Injector.appInstance.getDependency();
         prefs.setInt(
           PrefsConstants.LAST_UPDATE_ABSENCES,
           DateTime.now().millisecondsSinceEpoch,

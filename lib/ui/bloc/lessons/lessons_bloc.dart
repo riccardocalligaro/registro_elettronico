@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
@@ -98,7 +99,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     yield LessonsUpdateLoadInProgress();
     try {
       await lessonsRepository.updateAllLessons();
-      final prefs = await SharedPreferences.getInstance();
+      SharedPreferences prefs = Injector.appInstance.getDependency();
       prefs.setInt(PrefsConstants.LAST_UPDATE_LESSONS,
           DateTime.now().millisecondsSinceEpoch);
       yield LessonsUpdateLoadSuccess();

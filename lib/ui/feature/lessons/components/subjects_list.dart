@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/subjects_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/subjects_event.dart';
 import 'package:registro_elettronico/ui/feature/lessons/lesson_details.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -22,6 +24,9 @@ class SubjectsList extends StatelessWidget {
       controller: _refreshController,
       onRefresh: () async {
         BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
+        BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
+        BlocProvider.of<SubjectsBloc>(context).add(GetSubjectsAndProfessors());
+
         _refreshController.refreshCompleted();
       },
       child: ListView.builder(

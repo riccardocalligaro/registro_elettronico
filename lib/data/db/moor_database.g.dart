@@ -1094,7 +1094,12 @@ class Subject extends DataClass implements Insertable<Subject> {
   final int id;
   final String name;
   final int orderNumber;
-  Subject({@required this.id, @required this.name, @required this.orderNumber});
+  final String color;
+  Subject(
+      {@required this.id,
+      @required this.name,
+      @required this.orderNumber,
+      @required this.color});
   factory Subject.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -1105,6 +1110,8 @@ class Subject extends DataClass implements Insertable<Subject> {
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       orderNumber: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}order_number']),
+      color:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}color']),
     );
   }
   factory Subject.fromJson(Map<String, dynamic> json,
@@ -1113,6 +1120,7 @@ class Subject extends DataClass implements Insertable<Subject> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       orderNumber: serializer.fromJson<int>(json['orderNumber']),
+      color: serializer.fromJson<String>(json['color']),
     );
   }
   @override
@@ -1122,6 +1130,7 @@ class Subject extends DataClass implements Insertable<Subject> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'orderNumber': serializer.toJson<int>(orderNumber),
+      'color': serializer.toJson<String>(color),
     };
   }
 
@@ -1133,58 +1142,72 @@ class Subject extends DataClass implements Insertable<Subject> {
       orderNumber: orderNumber == null && nullToAbsent
           ? const Value.absent()
           : Value(orderNumber),
+      color:
+          color == null && nullToAbsent ? const Value.absent() : Value(color),
     );
   }
 
-  Subject copyWith({int id, String name, int orderNumber}) => Subject(
+  Subject copyWith({int id, String name, int orderNumber, String color}) =>
+      Subject(
         id: id ?? this.id,
         name: name ?? this.name,
         orderNumber: orderNumber ?? this.orderNumber,
+        color: color ?? this.color,
       );
   @override
   String toString() {
     return (StringBuffer('Subject(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('orderNumber: $orderNumber')
+          ..write('orderNumber: $orderNumber, ')
+          ..write('color: $color')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(name.hashCode, orderNumber.hashCode)));
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(name.hashCode, $mrjc(orderNumber.hashCode, color.hashCode))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
       (other is Subject &&
           other.id == this.id &&
           other.name == this.name &&
-          other.orderNumber == this.orderNumber);
+          other.orderNumber == this.orderNumber &&
+          other.color == this.color);
 }
 
 class SubjectsCompanion extends UpdateCompanion<Subject> {
   final Value<int> id;
   final Value<String> name;
   final Value<int> orderNumber;
+  final Value<String> color;
   const SubjectsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.orderNumber = const Value.absent(),
+    this.color = const Value.absent(),
   });
   SubjectsCompanion.insert({
     @required int id,
     @required String name,
     @required int orderNumber,
+    @required String color,
   })  : id = Value(id),
         name = Value(name),
-        orderNumber = Value(orderNumber);
+        orderNumber = Value(orderNumber),
+        color = Value(color);
   SubjectsCompanion copyWith(
-      {Value<int> id, Value<String> name, Value<int> orderNumber}) {
+      {Value<int> id,
+      Value<String> name,
+      Value<int> orderNumber,
+      Value<String> color}) {
     return SubjectsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       orderNumber: orderNumber ?? this.orderNumber,
+      color: color ?? this.color,
     );
   }
 }
@@ -1231,8 +1254,20 @@ class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
     );
   }
 
+  final VerificationMeta _colorMeta = const VerificationMeta('color');
+  GeneratedTextColumn _color;
   @override
-  List<GeneratedColumn> get $columns => [id, name, orderNumber];
+  GeneratedTextColumn get color => _color ??= _constructColor();
+  GeneratedTextColumn _constructColor() {
+    return GeneratedTextColumn(
+      'color',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, name, orderNumber, color];
   @override
   $SubjectsTable get asDslTable => this;
   @override
@@ -1260,6 +1295,12 @@ class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
     } else if (orderNumber.isRequired && isInserting) {
       context.missing(_orderNumberMeta);
     }
+    if (d.color.present) {
+      context.handle(
+          _colorMeta, color.isAcceptableValue(d.color.value, _colorMeta));
+    } else if (color.isRequired && isInserting) {
+      context.missing(_colorMeta);
+    }
     return context;
   }
 
@@ -1282,6 +1323,9 @@ class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
     }
     if (d.orderNumber.present) {
       map['order_number'] = Variable<int, IntType>(d.orderNumber.value);
+    }
+    if (d.color.present) {
+      map['color'] = Variable<String, StringType>(d.color.value);
     }
     return map;
   }

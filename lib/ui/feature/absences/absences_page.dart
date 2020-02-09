@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -35,7 +36,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
   }
 
   void restore() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    SharedPreferences sharedPreferences = Injector.appInstance.getDependency();
     setState(() {
       _absencesLastUpdate =
           sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_ABSENCES);

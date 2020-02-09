@@ -1,12 +1,15 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import './bloc.dart';
 
 class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
@@ -27,7 +30,7 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
       FLog.info(text: 'Updating noticeboard');
       try {
         await noticesRepository.updateNotices();
-        final prefs = await SharedPreferences.getInstance();
+        SharedPreferences prefs = Injector.appInstance.getDependency();
         prefs.setInt(PrefsConstants.LAST_UPDATE_NOTICEBOARD,
             DateTime.now().millisecondsSinceEpoch);
         yield NoticesUpdateLoaded();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
 import 'package:registro_elettronico/ui/feature/intro/components/download_liquid_circle.dart';
@@ -61,7 +62,7 @@ class ResetDialog extends StatelessWidget {
           child: Text(AppLocalizations.of(context).translate('yes')),
           onPressed: () async {
             AppDatabase().resetDbWithoutProfile();
-            SharedPreferences prefs = await SharedPreferences.getInstance();
+            SharedPreferences prefs = Injector.appInstance.getDependency();
             prefs.setBool(PrefsConstants.VITAL_DATA_DOWNLOADED, false);
             BlocProvider.of<IntroBloc>(context).add(FetchAllData());
             Navigator.push(

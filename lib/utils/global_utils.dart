@@ -266,13 +266,14 @@ class GlobalUtils {
   static String reduceSubjectTitleWithLength(String subjectTitle, int length) {
     String reducedName;
     final subjId = getSubjectConstFromName(subjectTitle);
-
     reducedName = translateSubject(subjId);
     if (reducedName != "") {
       return reducedName;
     } else {
-      reducedName = subjectTitle.substring(0, length);
-      reducedName += "...";
+      if (length < subjectTitle.length) {
+        reducedName = subjectTitle.substring(0, length - 1);
+        reducedName += "...";
+      }
       return reducedName;
     }
   }

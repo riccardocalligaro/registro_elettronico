@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:injector/injector.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/main.dart';
@@ -43,7 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   restore() async {
-    sharedPrefs = await SharedPreferences.getInstance();
+    sharedPrefs = Injector.appInstance.getDependency();
     setState(() {
       _updateInterval =
           (sharedPrefs.getInt(PrefsConstants.UPDATE_INTERVAL)) ?? 30;
@@ -273,7 +274,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   static save(String key, dynamic value) async {
     FLog.info(text: 'Changed value $key -> $value');
-    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    SharedPreferences sharedPrefs = Injector.appInstance.getDependency();
     if (value is bool) {
       sharedPrefs.setBool(key, value);
     } else if (value is String) {
@@ -290,7 +291,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void _setWorkmanager(bool value) async {
     if (value) {
       SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
+          Injector.appInstance.getDependency();
       final refreshInterval =
           sharedPreferences.getInt(PrefsConstants.UPDATE_INTERVAL) ?? 60;
 

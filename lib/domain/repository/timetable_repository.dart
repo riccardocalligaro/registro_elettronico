@@ -18,4 +18,8 @@ abstract class TimetableRepository {
 
   /// Updates an entry looking at the [eventId]
   Future updateTimetableEntry(TimetableEntry entry);
+
+  Future deleteTimetableEntry(TimetableEntry entry);
+
+  Future deleteTimetableEntryWithDate(int dayOfWeek, int begin, int end);
 }

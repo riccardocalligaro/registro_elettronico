@@ -13,6 +13,9 @@ class IntroLoading extends IntroState {
 
 class IntroLoaded extends IntroState {}
 
+class IntroNotConnected extends IntroState {}
+
+
 class IntroError extends IntroState {
   final String error;
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
@@ -59,7 +60,7 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
             ),
           ).then((value) async {
             if (value != null) {
-              SharedPreferences pres = await SharedPreferences.getInstance();
+              SharedPreferences pres = Injector.appInstance.getDependency();
               pres.setInt('${widget.subject.id}_objective', value);
               BlocProvider.of<SubjectsGradesBloc>(context)
                   .add(GetGradesAndSubjects());
@@ -101,7 +102,7 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
                           average,
                           widget.grades
                               .where((grade) =>
-                                  grade.subjectId == widget.subject.id)
+                                  grade.subjectId == widget.subject.id && GradesUtils.isValidGrade(grade))
                               .toList()
                               .length,
                           context),
