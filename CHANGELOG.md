@@ -1,3 +1,29 @@
+Version 0.0.7-dev.1
+
+Main new features:
+
+* New timetable view, a grid that you can personalize as you like
+
+* Create personalized events
+
+Minor features and bug fixes:
+
+* Now you can still go to the home screen if you get errors during the vital data download
+
+* SharedPreferences instances with dependency injection
+
+* Added no internet message in intro
+
+* Fixed wrong objective message
+
+* Fixed edit time event and day in new event
+
+* Search in school material
+
+* Fixed documents last update
+
+---
+
 Version 0.0.6-dev.2
 
 * Closed #30 - Implemented custom events 

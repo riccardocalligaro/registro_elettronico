@@ -71,8 +71,11 @@ class _NewEventPageState extends State<NewEventPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
-            onPressed: () {
-              _insertEventInDb();
+            onPressed: () async {
+              FLog.info(text: 'Pressed the check button');
+              await _insertEventInDb();
+              FLog.info(text: 'Inserted the element, popping the navigator');
+              Navigator.pop(context, _selectedDate);
             },
           )
         ],
@@ -94,6 +97,8 @@ class _NewEventPageState extends State<NewEventPage> {
   }
 
   void _insertEventInDb() async {
+    FLog.info(text: 'Pressed the insert event button');
+
     final id = DateTime.now().millisecondsSinceEpoch.toSigned(32);
 
     FLog.info(text: 'Set new event id to $id');
@@ -164,8 +169,6 @@ class _NewEventPageState extends State<NewEventPage> {
       scheduledTime: _date,
       eventId: id,
     );
-
-    Navigator.pop(context, _selectedDate);
   }
 
   Card _buildDescriptionCard() {
