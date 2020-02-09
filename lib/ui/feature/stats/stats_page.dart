@@ -146,6 +146,7 @@ class _StatsPageState extends State<StatsPage> {
   Widget _buildOverallStatsCard({@required StudentReport report}) {
     final insufficientiTotal = report.insufficientiSubjectsCount +
         report.nearlySufficientiSubjectsCount;
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),

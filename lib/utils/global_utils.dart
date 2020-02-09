@@ -18,7 +18,6 @@ import 'constants/subjects_constants.dart';
 class GlobalUtils {
   static Profile getMockProfile() {
     return Profile(
-      //isActive: false,
       id: -1,
       ident: '32',
       firstName: 'x',
@@ -214,10 +213,16 @@ class GlobalUtils {
         break;
       case SubjectsConstants.TPSIT:
         return "TPSIT";
+        break;
       case SubjectsConstants.ITALIANO:
         return "ITALIANO";
+        break;
       case SubjectsConstants.RELIGIONE:
         return "RELIGIONE";
+        break;
+      case SubjectsConstants.INGLESE:
+        return "INGLESE";
+        break;
       default:
         return "";
     }
@@ -234,47 +239,56 @@ class GlobalUtils {
   }
 
   static String reduceSubjectGridTitle(String subjectName) {
-    String reducedName;
-    final subjId = getSubjectConstFromName(subjectName);
-    reducedName = translateSubject(subjId);
-    if (reducedName != "") {
-      return reducedName;
-    } else {
-      reducedName = subjectName.substring(0, 13);
-      reducedName += "...";
-      return reducedName;
+    try {
+      String reducedName;
+      final subjId = getSubjectConstFromName(subjectName);
+      reducedName = translateSubject(subjId);
+      if (reducedName != "") {
+        return reducedName;
+      } else {
+        reducedName = subjectName.substring(0, 13);
+        reducedName += "...";
+        return reducedName;
+      }
+    } catch (_) {
+      return subjectName;
     }
   }
 
   static String reduceSubjectTitle(String subjectTitle) {
-    String reducedName;
-    final subjId = getSubjectConstFromName(subjectTitle);
-    // int possibleReduce = subjectTitle.length - 20;
-    // possibleReduce > 0
-    //     ? possibleReduce = 20 - possibleReduce
-    //     : possibleReduce *= -1;
-    reducedName = translateSubject(subjId);
-    if (reducedName != "") {
-      return reducedName;
-    } else {
-      reducedName = subjectTitle.substring(0, 20);
-      reducedName += "...";
-      return reducedName;
+    try {
+      String reducedName;
+      final subjId = getSubjectConstFromName(subjectTitle);
+
+      reducedName = translateSubject(subjId);
+      if (reducedName != "") {
+        return reducedName;
+      } else {
+        reducedName = subjectTitle.substring(0, 20);
+        reducedName += "...";
+        return reducedName;
+      }
+    } catch (_) {
+      return subjectTitle;
     }
   }
 
   static String reduceSubjectTitleWithLength(String subjectTitle, int length) {
-    String reducedName;
-    final subjId = getSubjectConstFromName(subjectTitle);
-    reducedName = translateSubject(subjId);
-    if (reducedName != "") {
-      return reducedName;
-    } else {
-      if (length < subjectTitle.length) {
-        reducedName = subjectTitle.substring(0, length - 1);
-        reducedName += "...";
+    try {
+      String reducedName;
+      final subjId = getSubjectConstFromName(subjectTitle);
+      reducedName = translateSubject(subjId);
+      if (reducedName != "") {
+        return reducedName;
+      } else {
+        if (length < subjectTitle.length) {
+          reducedName = subjectTitle.substring(0, length - 1);
+          reducedName += "...";
+        }
+        return reducedName;
       }
-      return reducedName;
+    } catch (_) {
+      return subjectTitle;
     }
   }
 
@@ -283,9 +297,13 @@ class GlobalUtils {
   }
 
   static String reduceLessonArgument(String argument) {
-    String reducedName = argument.substring(0, 25);
-    reducedName += "...";
-    return reducedName;
+    try {
+      String reducedName = argument.substring(0, 25);
+      reducedName += "...";
+      return reducedName;
+    } catch (_) {
+      return argument;
+    }
   }
 
   static Color generateRandomColor() {
@@ -410,7 +428,7 @@ class GlobalUtils {
 
   /// This function returns the color of a grade, it checks if it is because grades
   /// that are null are stored in the database with -1 value, so if it is -1 it must be
-  /// canelled or
+  /// canelled or an annotation
   static Color getColorFromGrade(Grade grade) {
     if (grade.cancelled ||
         grade.decimalValue == -1.00 ||
@@ -451,10 +469,6 @@ class GlobalUtils {
     }
   }
 
-  //// static String getPeriodName(int index, BuildContext context) {
-  ////   return "$index° ${AppLocalizations.of(context).translate('term').toUpperCase()}";
-  //// }
-
   static String getPeriodName(int index, BuildContext context) {
     final trans = AppLocalizations.of(context);
     if (index == TabsConstants.GENERALE)
@@ -488,6 +502,12 @@ class GlobalUtils {
         event.contains('verifica') ||
         event.contains('interrogazione') ||
         event.contains('interrogazioni') ||
+        event.contains('prova scritta') ||
+        event.contains('prova orale') ||
+        event.contains('contrôle') ||
+        event.contains('esame') ||
+        event.contains('examen') ||
+        event.contains('debito') ||
         event.contains('test'));
   }
 

@@ -66,7 +66,7 @@ class _AppDrawerState extends State<AppDrawer>
                   .primaryTextTheme
                   .body1
                   .copyWith(color: Colors.white)),
-          accountName: Text("$firstName $lastName"),
+          accountName: Text('$firstName $lastName'),
           currentAccountPicture: CircleAvatar(
             child: Text(firstName[0] + lastName[0]),
             backgroundColor: Colors.white,

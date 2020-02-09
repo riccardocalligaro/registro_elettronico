@@ -380,12 +380,12 @@ class _LoginPageState extends State<LoginPage> {
       children: <Widget>[
         Container(
           child: Text(
-            "$loginMessage ",
+            '$loginMessage ',
             style: Theme.of(context).textTheme.body1,
           ),
         ),
         Container(
-          child: Text("Classeviva",
+          child: Text('Classeviva',
               style: TextStyle(color: Theme.of(context).accentColor)),
         ),
       ],

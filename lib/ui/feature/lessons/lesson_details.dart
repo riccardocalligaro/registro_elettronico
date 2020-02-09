@@ -36,7 +36,7 @@ class _LessonDetailsState extends State<LessonDetails> {
   List<Lesson> lessons = List();
   List<Lesson> filteredLessons = List();
   Icon _searchIcon = Icon(Icons.search);
-  Widget _appBarTitle = Text("padding");
+  Widget _appBarTitle = Text('padding');
   RefreshController _refreshController = RefreshController();
 
   _LessonDetailsState() {
@@ -180,7 +180,7 @@ class _LessonDetailsState extends State<LessonDetails> {
         ),
         onRefresh: _refreshLessons,
         child: ListView.builder(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 21),
           itemCount: lessons.length,
           itemBuilder: (context, index) {
             final lesson = lessons[index];

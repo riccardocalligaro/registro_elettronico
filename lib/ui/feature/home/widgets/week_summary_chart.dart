@@ -13,16 +13,47 @@ class WeekSummaryChart extends StatefulWidget {
 }
 
 class _WeekSummaryChartState extends State<WeekSummaryChart> {
+  int _weekEvents = 0;
+
+  @override
+  void initState() {
+    _getEventsSpots();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 2.30,
-      child: Padding(
-        padding:
-            const EdgeInsets.only(right: 18.0, left: 18.0, top: 24, bottom: 12),
-        child: LineChart(mainData()),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+            '${AppLocalizations.of(context).translate('this_week_section_title')} - ${_getEventsMessage(_weekEvents)}'),
+        SizedBox(
+          height: 10,
+        ),
+        AspectRatio(
+          aspectRatio: 2.30,
+          child: Padding(
+            padding: const EdgeInsets.only(
+                right: 18.0, left: 0.0, top: 10, bottom: 12),
+            child: LineChart(mainData()),
+          ),
+        )
+      ],
     );
+  }
+
+  String _getEventsMessage(int events) {
+    if (events == 0) {
+      return AppLocalizations.of(context).translate('no_events').toLowerCase();
+    } else if (events == 1) {
+      return '$events ${AppLocalizations.of(context).translate('event').toLowerCase()}';
+    } else {
+      return '$events ${AppLocalizations.of(context).translate('events').toLowerCase()}';
+    }
   }
 
   LineChartData mainData() {
@@ -85,15 +116,16 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
           margin: 8,
         ),
         leftTitles: SideTitles(
-          showTitles: false,
+          showTitles: true,
           textStyle: TextStyle(
-            fontSize: 12,
+            fontSize: 11,
           ),
           getTitles: (value) {
             return value.toStringAsFixed(0);
           },
-          reservedSize: 28,
-          margin: 12,
+          //margin: 3,
+          //reservedSize: 28,
+          // margin: 12,
         ),
       ),
       borderData: FlBorderData(
@@ -152,13 +184,19 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
 
     DateTime dayOfWeek = DateTime.utc(today.year, today.month, firstDay.day);
 
+    int countEvents = 0;
     for (var i = 1; i <= 6; i++) {
       final numberOfEvents = widget.events.where((e) {
         return e.begin.day == dayOfWeek.day;
       }).length;
       spots.add(FlSpot(i.toDouble(), numberOfEvents.toDouble()));
+      countEvents += numberOfEvents;
       dayOfWeek = dayOfWeek.add(Duration(days: 1));
     }
+
+    setState(() {
+      _weekEvents = countEvents;
+    });
     return spots;
   }
 

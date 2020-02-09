@@ -122,7 +122,7 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
                   initialIntegerValue: _durationHours,
                   minValue: 1,
                   maxValue: 18 - _start.hour,
-                  title: Text('Duration'),
+                  title: Text(AppLocalizations.of(context).translate('duration')),
                   cancelWidget: Text(AppLocalizations.of(context)
                       .translate('cancel')
                       .toUpperCase()),

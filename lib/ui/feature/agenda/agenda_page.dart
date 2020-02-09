@@ -567,7 +567,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                       ],
                     ),
                     title: Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                      padding: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
                       child: Text(
                         '${event.title.trim()} - ${event.subjectDesc.toLowerCase()}',
                         style: TextStyle(
@@ -577,9 +577,9 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                     subtitle: event.notes != ''
                         ? Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                                const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
                             child: Text(
-                              '${event.notes} ${event.isFullDay ? " - (Tutto il giorno)" : ""}',
+                              '${event.notes} ${event.isFullDay ? AppLocalizations.of(context).translate('all_day').toLowerCase() : ""}',
                               style: TextStyle(color: Colors.white),
                             ),
                           )
@@ -614,15 +614,15 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                     title: Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                       child: Text(
-                        '${event.authorName.length > 0 ? StringUtils.titleCase(event.authorName) : 'No name'}',
+                        '${event.authorName.length > 0 ? StringUtils.titleCase(event.authorName) : AppLocalizations.of(context).translate('no_name_author')}',
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.w600),
                       ),
                     ),
                     subtitle: Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
                       child: Text(
-                        '${event.notes} ${event.isFullDay ? " - (Tutto il giorno)" : ""}',
+                        '${event.notes}${event.isFullDay ? ", ${AppLocalizations.of(context).translate('all_day').toLowerCase()}" : ""}',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -655,37 +655,46 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                 final trans = AppLocalizations.of(context);
 
                 String message = "";
-                message +=
-                    '${trans.translate('event')}: ${event.title != '' ? event.title : event.notes}';
 
-                if (event.notes != '') {
-                  message += '\n';
-                  message += trans
-                      .translate('notes_event')
-                      .replaceAll('{name}', event.notes);
-                }
+                message +=
+                    '${trans.translate('author')}: ${StringUtils.titleCase(event.authorName)}';
+                message += '\n${trans.translate('event')}: ${event.notes}';
+
+                // if (event.notes != '') {
+                //   message += '\n';
+                //   message += trans
+                //       .translate('notes_event')
+                //       .replaceAll('{name}', event.notes);
+                // }
 
                 if (event.begin != null) {
                   message += '\n';
 
+                  final date = DateUtils.convertDateAndTimeLocale(event.begin,
+                      AppLocalizations.of(context).locale.toString());
+
                   message += trans.translate('date_event').replaceAll(
                         '{date}',
-                        DateUtils.convertDateLocaleDashboard(
-                          event.begin,
-                          AppLocalizations.of(context).locale.toString(),
-                        ),
+                        date.item1,
                       );
+
+                  if (event.isFullDay) {
+                  } else {
+                    message +=
+                        ' ${AppLocalizations.of(context).translate('hour').toLowerCase()} - ${event.begin.hour.toString()}-${event.end.hour.toString()}';
+                  }
                 }
 
-                if (event.subjectId != -1) {
+                if (event.subjectDesc != '') {
                   message += '\n';
-
                   message += trans.translate('subject_event').replaceAll(
-                      '{subject}', StringUtils.titleCase(event.subjectDesc));
+                      '{subject}', StringUtils.titleCase(event?.subjectDesc));
                 }
+
                 Navigator.pop(context);
 
-                Share.text('Condividi', message, 'text/plain');
+                Share.text(AppLocalizations.of(context).translate('share'),
+                    message, 'text/plain');
               },
               leading: Icon(Icons.share),
               title: Text(AppLocalizations.of(context).translate('share')),
@@ -788,7 +797,8 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                 }
                 Navigator.pop(context);
 
-                Share.text('Condividi', message, 'text/plain');
+                Share.text(AppLocalizations.of(context).translate('share'),
+                    message, 'text/plain');
               },
               leading: Icon(Icons.share),
               title: Text(AppLocalizations.of(context).translate('share')),

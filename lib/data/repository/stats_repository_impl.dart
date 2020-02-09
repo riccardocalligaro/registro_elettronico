@@ -101,7 +101,7 @@ class StatsRepositoryImpl implements StatsRepository {
             nearlySufficientiSubjectsCount++;
             insufficientiSubjects.add(subject);
           } else if (subjectAverage >= 4.5) {
-            insufficientiSubjectsCount;
+            insufficientiSubjectsCount++;
           } else if (!subjectAverage.isNaN) {
             insufficientiSubjects.add(subject);
             gravementeInsufficientiSubjectsCount++;

@@ -104,20 +104,6 @@ class StudentReport {
     @required this.sufficientiSubjectsCount,
   });
 
-  // /// The weekday that [averagely] has more tests
-  // final int weekDayWithMostTests;
-
-  // /// Number of grades where `grade == 10`
-  // final int grades10Count;
-  // final int grades9Count;
-  // final int 8grades8Count;
-  // final int 7grades7Count;
-  // final int 6grades6Count;
-  // final int 5grades5Count;
-  // final int 4grades5Count;
-  // final int 3Grades3Count;
-  // final int lessGradesCount;
-
   @override
   String toString() {
     return 'StudentReport score: $score, average: $average, firstTermAverage: $firstTermAverage, secondTermAverage: $secondTermAverage, mostProfitablePeriod: $mostProfitablePeriod, bestSubject: $bestSubject, worstSubject: $worstSubject, insufficienzeGraviCount: $insufficienzeGraviCount, insufficienzeLieviCount: $insufficienzeLieviCount, sufficienzeCount: $sufficienzeCount, skippedTestsForAbsences: $skippedTestsForAbsences, insufficientiSubjectsCount: $insufficientiSubjectsCount, nearlySufficientiSubjectsCount: $nearlySufficientiSubjectsCount, sufficientiSubjectsCount: $sufficientiSubjectsCount, insufficientiSubjects: $insufficientiSubjects, sufficientiSubjects: $sufficientiSubjects, totalGrades: $totalGrades, grades: $grades, absences: $absences, subjects: $subjects, periods: $periods, agendaEvents: $agendaEvents, timeRemainingToSchoolFinish: $timeRemainingToSchoolFinish, schoolCredits: $schoolCredits';
