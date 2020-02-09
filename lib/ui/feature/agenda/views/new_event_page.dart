@@ -2,11 +2,11 @@ import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/material_picker.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/component/notifications/local_notification.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/entity/event_type.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
+import 'package:registro_elettronico/ui/feature/agenda/agenda_page.dart';
 import 'package:registro_elettronico/ui/feature/agenda/components/select_date_dialog.dart';
 import 'package:registro_elettronico/ui/feature/agenda/components/select_notifications_time_alert.dart';
 import 'package:registro_elettronico/ui/feature/agenda/components/select_subject_dialog.dart';
@@ -73,11 +73,10 @@ class _NewEventPageState extends State<NewEventPage> {
             icon: Icon(Icons.check),
             onPressed: () async {
               FLog.info(text: 'Pressed the check button');
-              await _insertEventInDb();
+              _insertEventInDb();
               FLog.info(text: 'Inserted the element, popping the navigator');
-              Navigator.pop(context, _selectedDate);
             },
-          )
+          ),
         ],
       ),
       body: Padding(
@@ -97,7 +96,7 @@ class _NewEventPageState extends State<NewEventPage> {
   }
 
   void _insertEventInDb() async {
-    FLog.info(text: 'Pressed the insert event button');
+    FLog.info(text: 'Inside the insert event button');
 
     final id = DateTime.now().millisecondsSinceEpoch.toSigned(32);
 
@@ -155,18 +154,22 @@ class _NewEventPageState extends State<NewEventPage> {
       }
     }
 
-    FLog.info(text: 'Added event');
-
     await RepositoryProvider.of<AgendaRepository>(context)
         .insertLocalEvent(event);
+
+    Navigator.pop(context, _selectedDate);
+
+    FLog.info(text: 'Added event');
+
+    FLog.info(text: 'Setting up notifications');
 
     final LocalNotification localNotification =
         LocalNotification(onSelectNotification);
 
     localNotification.scheduleNotification(
-      title: AppLocalizations.of(context).translate('new_event'),
-      message: _titleController.text,
-      scheduledTime: _date,
+      title: AppLocalizations.of(context).translate('new_event') ?? '',
+      message: _titleController.text ?? '',
+      scheduledTime: _date ?? DateTime.now().add(Duration(hours: 1)),
       eventId: id,
     );
   }
@@ -471,7 +474,13 @@ class _NewEventPageState extends State<NewEventPage> {
   }
 
   Future onSelectNotification(String payload) async {
-    AppNavigator.instance.navToAgenda(context);
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AgendaPage()),
+    );
   }
 
   Color _getColorForMissingSubject() {
