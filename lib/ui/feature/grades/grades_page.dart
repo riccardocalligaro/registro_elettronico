@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
 import 'package:registro_elettronico/ui/feature/grades/pages/last_grades_page.dart';
@@ -30,7 +31,7 @@ class _GradesPageState extends State<GradesPage> {
   }
 
   getPreferences() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    SharedPreferences sharedPreferences = Injector.appInstance.getDependency();
     setState(() {
       _lastUpdateGrades =
           sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_GRADES);

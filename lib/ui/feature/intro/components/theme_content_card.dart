@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/ui/feature/intro/intro_download_page.dart';
 import 'package:registro_elettronico/ui/feature/widgets/circle_page_transition/circular_reveal_route.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
@@ -35,7 +36,7 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
   }
 
   void restore() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    SharedPreferences sharedPreferences = Injector.appInstance.getDependency();
     final theme = sharedPreferences.getBool(PrefsConstants.DARK_THEME) ?? true;
     if (mounted) {
       setState(() {
@@ -73,7 +74,7 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
                     BlocProvider.of<ThemeBloc>(context)
                         .add(ThemeChanged(theme: AppTheme.values.elementAt(0)));
                     SharedPreferences sharedPreferences =
-                        await SharedPreferences.getInstance();
+                        Injector.appInstance.getDependency();
                     sharedPreferences.setBool(PrefsConstants.DARK_THEME, true);
                     setState(() {
                       _lightHeight = 60;
@@ -98,7 +99,7 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
                     BlocProvider.of<ThemeBloc>(context)
                         .add(ThemeChanged(theme: AppTheme.values.elementAt(1)));
                     SharedPreferences sharedPreferences =
-                        await SharedPreferences.getInstance();
+                        Injector.appInstance.getDependency();
                     sharedPreferences.setBool(PrefsConstants.DARK_THEME, false);
                     setState(() {
                       _lightHeight = 90;

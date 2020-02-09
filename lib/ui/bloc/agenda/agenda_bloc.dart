@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
@@ -39,7 +40,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     try {
       FLog.info(text: 'updating here');
       await agendaRepository.updateAllAgenda();
-      final prefs = await SharedPreferences.getInstance();
+      SharedPreferences prefs = Injector.appInstance.getDependency();
 
       prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
           DateTime.now().millisecondsSinceEpoch);
@@ -61,7 +62,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
   }
 
   Stream<AgendaState> _mapGetAllAgendaToState() async* {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = Injector.appInstance.getDependency();
     //yield AgendaLoadInProgress();
     try {
       final events = await agendaRepository.getAllEvents();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -65,7 +66,7 @@ class _LessonDetailsState extends State<LessonDetails> {
   }
 
   void restore() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = Injector.appInstance.getDependency();
     setState(() {
       _lastUpdate = prefs.getInt(PrefsConstants.LAST_UPDATE_LESSONS);
     });

@@ -29,6 +29,8 @@ class PrefsConstants {
   static const UPDATE_ONLY_WIFI = 'update_only_wifi';
   static const VITAL_DATA_DOWNLOADED = 'vita_data_downloaded';
   static const STUDENT_YEAR = 'student_year';
+  static const SCROLL_AT_START = 'scroll_at_start';
+  static const DEFAULT_GRID_VIEW = 'default_grid_view';
 
   static const UPDATE_AT_START = 'update_at_start';
 

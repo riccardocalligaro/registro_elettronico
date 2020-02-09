@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
+import 'package:registro_elettronico/data/repository/preferences_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
 import 'package:registro_elettronico/data/repository/scrutini_repository_impl.dart';
+import 'package:registro_elettronico/data/repository/timetable_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
+import 'package:registro_elettronico/domain/repository/preferences_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/domain/repository/repositories_export.dart';
 import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
+import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
@@ -67,6 +72,26 @@ class AppBlocDelegate {
       ),
       RepositoryProvider<AgendaRepository>(
         create: (ctx) => AgendaRepositoryImpl(
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+          i.getDependency(),
+        ),
+      ),
+      RepositoryProvider<TimetableRepository>(
+        create: (ctx) => TimetableRepositoryImpl(
+          i.getDependency(),
+          i.getDependency(),
+        ),
+      ),
+      RepositoryProvider<PreferencesRepository>(
+        create: (ctx) => PreferencesRepositoryImpl(
+          i.getDependency(),
+        ),
+      ),
+      RepositoryProvider<SubjectsRepository>(
+        create: (ctx) => SubjectsRepositoryImpl(
+          i.getDependency(),
           i.getDependency(),
           i.getDependency(),
           i.getDependency(),

@@ -12,13 +12,22 @@ class TimetableDao extends DatabaseAccessor<AppDatabase>
 
   //Future<List<TimetableEntry>> getTimetable() => select(timetableEntries).get();
   Future<List<TimetableEntry>> getTimetable() {
-    return customSelectQuery(
-            'SELECT * FROM timetable_entries')
+    return customSelectQuery('SELECT * FROM timetable_entries')
         .map((row) => TimetableEntry.fromData(row.data, db))
         .get();
   }
 
   Future deleteTimetable() => delete(timetableEntries).go();
+
+  Future deleteTimetableEntry(TimetableEntry entry) =>
+      delete(timetableEntries).delete(entry);
+
+  Future deleteTimetableEntryWithInfo(int dayOfWeek, int begin, int end) {
+    return (delete(timetableEntries)
+          ..where((t) => and(t.dayOfWeek.equals(dayOfWeek),
+              and(t.start.equals(begin), t.end.equals(end)))))
+        .go();
+  }
 
   Future insertTimetableEntries(List<TimetableEntry> entries) =>
       into(timetableEntries).insertAll(entries, orReplace: true);

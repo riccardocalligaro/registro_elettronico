@@ -153,7 +153,7 @@
   "no_subjects_to_show": "Nessuna materia da mostrare",
   "no_timetable": "Nessun orario",
   "no_timetable_message": "L'orario viene calcolato analizzando le lezioni, se non sono presenti non riusciamo a generarlo.",
-  "not_connected": "Not connected",
+  "not_connected": "Non connesso",
   "not_conntected_snackbar": "Connessione a internet assente.",
   "not_justified": "Non giustificate",
   "not_presents": "Non presenti",
@@ -274,5 +274,10 @@
   "you_entered_at": "Sei entrato alla {hour} ora",
   "your_average": "La tua media",
   "your_objective": "Il tuo obiettivo",
-  "logout": "Esci"
+  "logout": "Esci",
+  "new_entry": "Nuova lezione",
+  "duration": "Durata",
+  "press_to_retry": "Premi per riprovare",
+  "data_download_message": "Premi qui",
+  "data_not_downloaded_message": "Alcuni dati non disponibili, l'app potrebbe non funzionare 100% correttamente"
 }

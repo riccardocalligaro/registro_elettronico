@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
@@ -34,7 +35,7 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
   Stream<GradesState> _mapUpdateGradesToState() async* {
     yield GradesUpdateLoading();
     try {
-      final prefs = await SharedPreferences.getInstance();
+      SharedPreferences prefs = Injector.appInstance.getDependency();
       await gradesRepository.updateGrades();
       prefs.setInt(
         PrefsConstants.LAST_UPDATE_GRADES,

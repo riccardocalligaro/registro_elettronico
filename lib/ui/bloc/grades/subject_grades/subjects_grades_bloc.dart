@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/entity/subject_objective.dart';
 import 'package:registro_elettronico/domain/repository/periods_repository.dart';
@@ -42,7 +43,7 @@ class SubjectsGradesBloc
       final grades = await gradesRepository.getAllGrades();
       final periods = await periodsRepository.getAllPeriods();
 
-      final prefs = await SharedPreferences.getInstance();
+      SharedPreferences prefs = Injector.appInstance.getDependency();
       final generalObjective =
           prefs.getInt(PrefsConstants.OVERALL_OBJECTIVE) ?? 6;
 
@@ -75,7 +76,7 @@ class SubjectsGradesBloc
     yield SubjectsGradesUpdateLoadInProgress();
     try {
       await gradesRepository.updateGrades();
-      final prefs = await SharedPreferences.getInstance();
+      SharedPreferences prefs = Injector.appInstance.getDependency();
 
       await prefs.setInt(
         PrefsConstants.LAST_UPDATE_GRADES,

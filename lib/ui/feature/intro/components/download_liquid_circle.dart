@@ -1,7 +1,9 @@
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/component/routes.dart';
 import 'package:registro_elettronico/main.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
@@ -31,8 +33,8 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
           builder: (context, state) {
             if (state is IntroInitial) {
               return Container(
-                height: 250,
-                width: 250,
+                height: 300,
+                width: 300,
                 child: GestureDetector(
                   onTap: () async {
                     BlocProvider.of<IntroBloc>(context).add(FetchAllData());
@@ -62,10 +64,11 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                 ),
               );
             }
+
             if (state is IntroLoading) {
               return Container(
-                height: 250,
-                width: 250,
+                height: 300,
+                width: 300,
                 child: LiquidCircularProgressIndicator(
                   value: state.progress / 100,
                   valueColor: AlwaysStoppedAnimation(Colors.red),
@@ -76,27 +79,14 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
             }
             if (state is IntroLoaded) {
               return Container(
-                height: 250,
-                width: 250,
+                height: 300,
+                width: 300,
                 child: GestureDetector(
                   onTap: () async {
                     FLog.info(
                         text: 'Checking shared prefrences for notifications!');
                     SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-
-                    // final notifyGrades =
-                    //     prefs.getBool(PrefsConstants.GRADES_NOTIFICATIONS) ??
-                    //         false;
-                    // final notifyAgenda =
-                    //     prefs.getBool(PrefsConstants.AGENDA_NOTIFICATIONS) ??
-                    //         false;
-                    // final notifyAbsenes =
-                    //     prefs.getBool(PrefsConstants.AGENDA_NOTIFICATIONS) ??
-                    //         false;
-                    // final notifyNotes =
-                    //     prefs.getBool(PrefsConstants.NOTES_NOTIFICATIONS) ??
-                    //         false;
+                        Injector.appInstance.getDependency();
 
                     prefs.setBool(PrefsConstants.NOTIFICATIONS, true);
                     prefs.setBool(PrefsConstants.GRADES_NOTIFICATIONS, true);
@@ -147,6 +137,87 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                         )
                       ],
                     ),
+                  ),
+                ),
+              );
+            }
+            if (state is IntroError) {
+              return Container(
+                height: 300,
+                width: 300,
+                child: GestureDetector(
+                  onTap: () {
+                    AppNavigator.instance.navToHome(context);
+                  },
+                  child: LiquidCircularProgressIndicator(
+                    value: 0.0,
+                    valueColor: AlwaysStoppedAnimation(Colors.red),
+                    backgroundColor: Colors.white,
+                    center: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.arrow_forward,
+                          size: 84,
+                          color: Colors.black,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('data_download_message'),
+                          style: TextStyle(fontSize: 21, color: Colors.black),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate('data_not_downloaded_message'),
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }
+
+            if (state is IntroNotConnected) {
+              return Container(
+                height: 300,
+                width: 300,
+                child: GestureDetector(
+                  onTap: () async {
+                    BlocProvider.of<IntroBloc>(context).add(FetchAllData());
+                  },
+                  child: LiquidCircularProgressIndicator(
+                    value: 0.0,
+                    valueColor: AlwaysStoppedAnimation(Colors.red),
+                    backgroundColor: Colors.white,
+                    center: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.error,
+                          size: 84,
+                          color: Colors.black,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          '${AppLocalizations.of(context).translate('not_connected')}\n${AppLocalizations.of(context).translate('press_to_retry')}',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        )
+                      ],
+                    ), // Defaults to the current Theme's backgroundColor.
                   ),
                 ),
               );

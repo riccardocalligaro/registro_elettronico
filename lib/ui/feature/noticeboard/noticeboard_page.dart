@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/component/navigator.dart';
@@ -62,7 +63,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   }
 
   void restore() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    SharedPreferences sharedPreferences = Injector.appInstance.getDependency();
 
     _appBarTitle = Text(
       AppLocalizations.of(context).translate('notice_board'),
@@ -99,7 +100,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                 _showOutdatedNotices = result;
               });
               SharedPreferences sharedPreferences =
-                  await SharedPreferences.getInstance();
+                  Injector.appInstance.getDependency();
               sharedPreferences.setBool(
                 PrefsConstants.SHOW_OUTDATED_NOTICES,
                 result,
@@ -113,7 +114,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                 checked: _showOutdatedNotices,
               ),
             ],
-          )
+          ),
         ],
       ),
       bottomSheet: LastUpdateBottomSheet(

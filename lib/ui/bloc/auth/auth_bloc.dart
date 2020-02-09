@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:injector/injector.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
@@ -40,7 +41,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final isUserLoggedIn = await profileRepository.isLoggedIn();
       FLog.info(text: 'Auto sign in result: $isUserLoggedIn');
       if (isUserLoggedIn) {
-        final prefs = await SharedPreferences.getInstance();
+        SharedPreferences prefs = Injector.appInstance.getDependency();
         final vitalDataDownloaded =
             prefs.getBool(PrefsConstants.VITAL_DATA_DOWNLOADED) ?? false;
         if (!vitalDataDownloaded) {
@@ -98,7 +99,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await flutterSecureStorage.deleteAll();
       AppDatabase().resetDb();
       SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
+          Injector.appInstance.getDependency();
       sharedPreferences.clear();
       yield SignOutSuccess();
     }

@@ -2,11 +2,17 @@ import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/domain/repository/preferences_repository.dart';
+import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/ui/bloc/timetable/bloc.dart';
+import 'package:registro_elettronico/ui/feature/timetable/components/timetable_card.dart';
+import 'package:registro_elettronico/ui/feature/timetable/views/new_timetable_entry.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/constants/general_constants.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../bloc/timetable/timetable_event.dart';
 
@@ -18,22 +24,26 @@ class TimetablePage extends StatefulWidget {
 }
 
 class _TimetablePageState extends State<TimetablePage> {
+  static double cellHeight = 80.0;
+
   PageController pageController = PageController(viewportFraction: 0.85);
+
+  bool _defaultGridView = true;
+  IconData _timetableIcon = Icons.view_agenda;
 
   @override
   void initState() {
+    _defaultGridView = RepositoryProvider.of<PreferencesRepository>(context)
+            .getBool(PrefsConstants.DEFAULT_GRID_VIEW) ??
+        true;
     BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-
     return Scaffold(
-      //key: _drawerKey,
       appBar: AppBar(
-        //scaffoldKey: _drawerKey,
         title: Text(
           AppLocalizations.of(context).translate('timetable'),
         ),
@@ -45,11 +55,23 @@ class _TimetablePageState extends State<TimetablePage> {
               BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
             },
           ),
+          IconButton(
+            icon: Icon(_timetableIcon),
+            onPressed: () {
+              setState(() {
+                _defaultGridView = !_defaultGridView;
+                if (_defaultGridView) {
+                  _timetableIcon = Icons.view_agenda;
+                } else {
+                  _timetableIcon = Icons.grid_on;
+                }
+              });
+              RepositoryProvider.of<PreferencesRepository>(context)
+                  .setBool(PrefsConstants.DEFAULT_GRID_VIEW, _defaultGridView);
+            },
+          ),
         ],
       ),
-      // drawer: AppDrawer(
-      //   position: DrawerConstants.TIMETABLE,
-      // ),
       body: Container(
         child: BlocBuilder<TimetableBloc, TimetableState>(
           builder: (context, state) {
@@ -63,10 +85,13 @@ class _TimetablePageState extends State<TimetablePage> {
 
             if (state is TimetableLoaded) {
               if (state.timetableEntries.length > 0) {
-                // return _buildTimetableGridView(
-                //     state.timetableEntries, state.subjects);
-                return _buildTimetableList(
-                    state.timetableEntries, state.subjects);
+                if (_defaultGridView) {
+                  return _buildTimetableGridView(
+                      state.timetableEntries, state.subjects);
+                } else {
+                  return _buildTimetableList(
+                      state.timetableEntries, state.subjects);
+                }
               }
 
               return CustomPlaceHolder(
@@ -92,53 +117,187 @@ ${AppLocalizations.of(context).translate('no_timetable_message')}""",
     );
   }
 
+  // Future<String> _getTimetableSummaryMessage() async {
+  //   final List<TimetableEntry> entries =
+  //       await RepositoryProvider.of<TimetableRepository>(context)
+  //           .getTimetable();
+  // }
+
   Widget _buildTimetableGridView(
       List<TimetableEntry> timetable, List<Subject> subjects) {
-    // return ListView.builder(
-    //   scrollDirection: Axis.horizontal,
-    //   itemCount: 7,
-    //   itemBuilder: (context, index) {
-    //     if (index == 0) return Container();
+    final Map<int, Tuple2<String, Color>> subjectsMap =
+        Map.fromIterable(subjects,
+            key: (e) => e.id,
+            value: (e) {
+              final subject = subjects.where((s) => s.id == e.id);
+              return Tuple2(subject.elementAt(0).name,
+                  Color(int.parse(subject.elementAt(0).color)));
+            });
 
-    //     final List<TimetableEntry> entries =
-    //         timetable.where((t) => t.dayOfWeek == index).toList();
-    //     entries.sort((a, b) => a.start.compareTo(b.start));
+    final Map<int, List<TimetableEntry>> timetableMap = Map.fromIterable(
+        timetable,
+        key: (e) => e.start,
+        value: (e) => timetable.where((s) => s.start == e.start).toList());
 
-    //     return Column(
-    //       children: <Widget>[],
-    //     )
-    //     //return Text(entries[entries.length - 1].end.toString());
-    //     return GridView.count(
-    //       shrinkWrap: true,
-    //       scrollDirection: Axis.horizontal,
-    //       // crossAxisCount is the number of columns
-    //       crossAxisCount: 2,
-    //       // This creates two columns with two items in each column
-    //       children: List.generate(5, (index) {
-    //         return Center(
-    //           child: Text(
-    //             'Item $index',
-    //             style: Theme.of(context).textTheme.headline,
-    //           ),
-    //         );
-    //       }),
-    //     );
-        // return ListView.builder(
-        //   scrollDirection: Axis.horizontal,
-        //   physics: ClampingScrollPhysics(),
-        //   shrinkWrap: true,
-        //   itemCount: entries[entries.length - 1].end,
-        //   itemBuilder: (context, index) {
-        //     return Container(
-        //       height: 50,
-        //       width: 50,
-        //       color: GlobalUtils.generateRandomColor(),
-        //       child: Text(index.toString()),
-        //     );
-        //   },
-        // );
-    //   },
-    // );
+    return Scrollbar(
+      child: ListView(
+        // controller: _controller,
+        children: <Widget>[
+          SingleChildScrollView(
+            //controller: _horizontalController,
+            scrollDirection: Axis.horizontal,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Table(
+                defaultColumnWidth: IntrinsicColumnWidth(),
+                children: List.generate(12, (start) {
+                  if (start == 0) {
+                    return TableRow(
+                        children: List.generate(8, (index) {
+                      if (index == 0) return Container();
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          DateUtils.convertSingleDayShortForDisplay(
+                              DateTime.utc(2000, 1, 2)
+                                  .add(Duration(days: index)),
+                              AppLocalizations.of(context).locale.toString()),
+                        ),
+                      );
+                    }));
+                  }
+                  return TableRow(
+                    children: List.generate(8, (day) {
+                      if (day == 0)
+                        return Text(
+                            (start + GeneralConstants.PADDING_DATE).toString());
+                      final entriesMap = timetableMap[start];
+
+                      if (entriesMap != null) {
+                        final entry = entriesMap
+                            .where((t) => t.dayOfWeek == day)
+                            .toList();
+                        if (entry.length > 0) {
+                          return Column(
+                            children: <Widget>[
+                              _getSubjectBox(
+                                entry[0],
+                                subjectsMap,
+                                dayOfWeek: day + 1,
+                                begin: start,
+                                end: start + 1,
+                              ),
+                              Divider()
+                            ],
+                          );
+                        }
+                      }
+                      return Column(
+                        children: <Widget>[
+                          _getSubjectBox(null, subjectsMap,
+                              dayOfWeek: day + 1, begin: start, end: start + 1),
+                          Divider()
+                        ],
+                      );
+                    }),
+                  );
+                }),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _getSubjectBox(
+    TimetableEntry timetableEntry,
+    Map<int, Tuple2<String, Color>> subjectsMap, {
+    int dayOfWeek,
+    int begin,
+    int end,
+  }) {
+    if (timetableEntry == null) {
+      return TimetableCard(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => NewTimetableEntry(
+              startHour: begin + GeneralConstants.PADDING_DATE,
+              dayOfWeek: dayOfWeek,
+            ),
+          ));
+        },
+      );
+    }
+
+    final subject = subjectsMap[timetableEntry?.subject];
+
+    if (subject == null) {
+      return TimetableCard(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => NewTimetableEntry(
+              startHour: begin + GeneralConstants.PADDING_DATE,
+              dayOfWeek: dayOfWeek,
+            ),
+          ));
+        },
+      );
+    }
+
+    return TimetableCard(
+      timetableEntry: timetableEntry,
+      subject: subject?.item1,
+      color: subject?.item2,
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(subject.item1),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.calendar_today),
+                  title: Text(
+                    DateUtils.convertSingleDayForDisplay(
+                        DateTime.utc(2000, 1, 2)
+                            .add(Duration(days: dayOfWeek - 1)),
+                        AppLocalizations.of(context).locale.toString()),
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(Icons.access_time),
+                  title: Text(
+                      '${begin + GeneralConstants.PADDING_DATE}:00-${end + GeneralConstants.PADDING_DATE}:00'),
+                )
+              ],
+            ),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () async {
+                  await RepositoryProvider.of<TimetableRepository>(context)
+                      .deleteTimetableEntry(timetableEntry);
+                  BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
+                  Navigator.pop(context);
+                },
+                child: Text(AppLocalizations.of(context)
+                    .translate('delete')
+                    .toUpperCase()),
+              ),
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                    AppLocalizations.of(context).translate('ok').toUpperCase()),
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildTimetableList(

@@ -1,6 +1,7 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:open_file/open_file.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -71,7 +72,8 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
   }
 
   void restore() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    SharedPreferences sharedPreferences = Injector.appInstance.getDependency();
+
     setState(() {
       _schoolMaterialLastUpdate =
           sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_SCHOOL_MATERIAL);

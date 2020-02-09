@@ -274,5 +274,10 @@
   "you_entered_at": "You entered at the {hour} hour",
   "your_average": "Your average",
   "your_objective": "Your objective",
-  "logout":"Logout"
+  "logout": "Logout",
+  "new_entry": "New entry",
+  "duration": "Duratation",
+  "press_to_retry": "Press to retry",
+  "data_download_message": "Press here",
+  "data_not_downloaded_message": "Some data hasn't been downloaded so the app might be not work correctly."
 }
