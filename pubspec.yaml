@@ -14,14 +14,15 @@ dependencies:
   # Dependency Injection
   injector: ^1.0.8
   # Object comparison
-  equatable: ^1.0.1
+  equatable: ^1.0.3
   # BloC
-  flutter_bloc: ^3.1.0
+  flutter_bloc: ^3.2.0
   # Database
-  moor_flutter: ^2.0.0
+  moor_flutter: ^2.1.0
   # Api
-  dio: ^3.0.7
-  retrofit: ^1.0.1+1
+  dio: ^3.0.8
+
+  retrofit: ^1.2.0
   # Use svg icons
   flutter_svg: ^0.15.0
   # Launcher icon
@@ -31,10 +32,10 @@ dependencies:
   # for files
   path_provider: ^1.5.1
   #open downloaded file
-  open_file: ^2.1.1
+  open_file: ^3.0.1
   # notifications
-  workmanager: ^0.1.5
-  flutter_local_notifications: ^0.8.4
+  workmanager: ^0.2.0
+
   # expandable school material
   expandable: ^4.0.1
   # open urls for school material
@@ -72,9 +73,10 @@ dependencies:
   flutter_colorpicker: ^0.2.6
   # date time picker
   # datetime_picker_formfield: ^1.0.0
+  flutter_local_notifications: ^1.1.5+1
 
   # firebase
-  firebase_core: ^0.4.3+1
+  firebase_core: ^0.4.3+3
   # analytics
   firebase_analytics: ^5.0.2
   # crashalitycs

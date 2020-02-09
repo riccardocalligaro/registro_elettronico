@@ -4,7 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 class LocalNotification {
   static const CHANNEL_ID = "com.registroelettronico/notification";
   static const CHANNEL_NAME = "Registro elettronico";
-  static const CHANNEL_DESCRIPTION = "Send and receiver notifications";
+  static const CHANNEL_DESCRIPTION = "Send and receive notifications";
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
