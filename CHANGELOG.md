@@ -1,3 +1,24 @@
+Version 0.0.7-dev.2
+
+Bug fixes, changed home screen graph, ui minor fixes
+
+* Fixed paddings in some lists
+
+* Added numbers in home screen chart
+
+* Fixed #39, inusfficienti subjects count
+
+* Added more colors to subjects - Close #38
+
+* Fixed severe bug for notifications
+
+* Added some translations
+
+* Added string manipolation try catch security
+
+* Chaned agenda card paddings
+
+---
 Version 0.0.7-dev.1
 
 Main new features:
