@@ -1,3 +1,19 @@
+Version 0.0.7-dev.3
+
+Added notifications, settings, bug fixes, show more events
+
+* Added option to change school year (for different credits)
+
+* Added show more events button in home page
+
+* Fixed paddings
+
+* Added school material notifications
+
+* Fixed credits system bug
+
+--- 
+
 Version 0.0.7-dev.2
 
 Bug fixes, changed home screen graph, ui minor fixes
