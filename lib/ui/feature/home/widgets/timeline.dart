@@ -7,6 +7,7 @@ class Timeline extends StatelessWidget {
     this.isLeftAligned = true,
     this.itemGap = 12.0,
     this.gutterSpacing = 4.0,
+    this.itemCount,
     this.padding = const EdgeInsets.all(8),
     this.controller,
     this.lineColor = Colors.grey,
@@ -21,8 +22,7 @@ class Timeline extends StatelessWidget {
     this.strokeCap = StrokeCap.butt,
     this.strokeWidth = 2.0,
     this.style = PaintingStyle.stroke,
-  })  : itemCount = children.length,
-        assert(itemGap >= 0),
+  })  : assert(itemGap >= 0),
         assert(lineGap >= 0),
         assert(indicators == null || children.length == indicators.length);
 

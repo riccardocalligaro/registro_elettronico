@@ -92,7 +92,7 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
                   fillColor: Colors.grey[900],
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
                 RawMaterialButton(
                   onPressed: () async {
@@ -138,12 +138,12 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(bottom: 32),
+          margin: EdgeInsets.only(bottom: 45),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              for (int i = 0; i < 4; i++)
+              for (int i = 0; i < 5; i++)
                 if (i == widget.index) ...[circleBar(true, context)] else
                   circleBar(false, context),
             ],
@@ -166,17 +166,17 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
           ),
         ),
         SizedBox(
-          height: 16,
+          height: 30,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 36.0),
+          padding: const EdgeInsets.symmetric(horizontal: 40.0),
           child: MaterialButton(
             elevation: 0,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
             color: _getBrightnessColor(context),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              padding: const EdgeInsets.symmetric(vertical: 0.0),
               child: Text(
                 AppLocalizations.of(context).translate('get_started_button'),
                 style: TextStyle(
@@ -201,7 +201,7 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
           ),
         ),
         SizedBox(
-          height: 16,
+          height: 40,
         ),
       ],
     );

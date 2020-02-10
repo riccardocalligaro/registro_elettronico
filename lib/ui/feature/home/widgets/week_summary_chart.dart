@@ -32,7 +32,7 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
         Text(
             '${AppLocalizations.of(context).translate('this_week_section_title')} - ${_getEventsMessage(_weekEvents)}'),
         SizedBox(
-          height: 10,
+          height: 16,
         ),
         AspectRatio(
           aspectRatio: 2.30,
@@ -145,7 +145,7 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
           ],
           preventCurveOverShooting: true,
 
-          curveSmoothness: 0.50,
+          //curveSmoothness: 0.60,
           barWidth: 1,
           isStrokeCapRound: true,
           dotData: const FlDotData(

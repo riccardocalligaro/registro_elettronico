@@ -6,6 +6,7 @@ import 'package:registro_elettronico/component/notifications/notification_messag
 import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
+import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
 import 'package:registro_elettronico/data/db/dao/document_dao.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/note_dao.dart';
@@ -16,6 +17,7 @@ import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/data/repository/absences_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/agenda_repository_impl.dart';
+import 'package:registro_elettronico/data/repository/didactics_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/documents_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/grades_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/notes_repository_impl.dart';
@@ -23,6 +25,7 @@ import 'package:registro_elettronico/data/repository/notices_repository_impl.dar
 import 'package:registro_elettronico/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
+import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/notes_repository.dart';
@@ -77,6 +80,23 @@ class NotificationService {
         prefs.getBool(PrefsConstants.FINAL_GRADES_NOTIFICATIONS) ?? false;
     final notifyNotices =
         prefs.getBool(PrefsConstants.NOTICES_NOTIFICATIONS) ?? false;
+
+    final notifySchoolMaterial =
+        prefs.getBool(PrefsConstants.SCHOOL_MATERIAL_NOTIFICATIONS) ?? false;
+
+    if (notifySchoolMaterial) {
+      final DidacticsDao didacticsDao = DidacticsDao(appDatabase);
+      final DidacticsRepository didacticsRepository = DidacticsRepositoryImpl(
+          spaggiariClient, didacticsDao, profileDao, networkInfo);
+      FLog.info(text: 'Checking for new content in school material!');
+      final materialsToNotify =
+          await _getMaterialsToNotify(didacticsRepository, prefs);
+
+      materialsToNotify.forEach((material) {
+        localNotification.showNotificationWithDefaultSound(
+            material.objectId, '📂 Nuovo materiale condiviso', material.name);
+      });
+    }
 
     // Send grades notifications
     if (notifyGrades) {
@@ -267,6 +287,26 @@ class NotificationService {
     );
 
     return gradesToNotify;
+  }
+
+  Future<List<DidacticsContent>> _getMaterialsToNotify(
+      DidacticsRepository didacticsRepository, SharedPreferences prefs) async {
+    List<DidacticsContent> materialsToNotify = [];
+
+    final beforeUpdate = await didacticsRepository.getContents();
+    didacticsRepository.updateDidactics();
+    final afterUpdate = await didacticsRepository.getContents();
+
+    prefs.setInt(PrefsConstants.LAST_UPDATE_SCHOOL_MATERIAL,
+        DateTime.now().millisecondsSinceEpoch);
+
+    afterUpdate.forEach(
+      (material) => {
+        if (!beforeUpdate.contains(material)) materialsToNotify.add(material)
+      },
+    );
+
+    return materialsToNotify;
   }
 
   Future<Tuple2<List<SchoolReport>, List<Document>>> _getDocumentsToNotify(

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/agenda/bloc.dart';
+import 'package:registro_elettronico/ui/feature/home/pages/next_events_page.dart';
 import 'package:registro_elettronico/ui/feature/home/widgets/timeline.dart';
 import 'package:registro_elettronico/ui/feature/home/widgets/week_summary_chart.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
@@ -43,13 +44,7 @@ class NextEventsSection extends StatelessWidget {
                     WeekSummaryChart(
                       events: state.events.toList(),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
                     Text(AppLocalizations.of(context).translate('next_events')),
-                    SizedBox(
-                      height: 10,
-                    ),
                     _buildAgenda(context, state.events),
                   ],
                 );
@@ -96,90 +91,95 @@ class NextEventsSection extends StatelessWidget {
         ),
       );
     } else {
-      return Timeline(
-        children: events.map((e) {
-          if (e.isLocal) {
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      '${e.title ?? ''}',
-                      style: TextStyle(fontSize: 15.0),
+      return Column(
+        children: <Widget>[
+          Timeline(
+            itemCount: 3,
+            children: events.map((e) {
+              if (e.isLocal) {
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          '${e.title ?? ''}',
+                          style: TextStyle(fontSize: 15.0),
+                        ),
+                        SizedBox(
+                          height: 2.5,
+                        ),
+                        Text(
+                          '${e.notes ?? ''} - ${GlobalUtils.getEventDateMessage(context, e.begin)}',
+                          style: TextStyle(fontSize: 12.0),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: 2.5,
-                    ),
-                    Text(
-                      '${e.notes ?? ''} - ${GlobalUtils.getEventDateMessage(context, e.begin)}',
-                      style: TextStyle(fontSize: 12.0),
-                    ),
-                  ],
+                  ),
+                );
+              }
+              return Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        '${e.notes ?? ''}',
+                        style: TextStyle(fontSize: 15.0),
+                      ),
+                      SizedBox(
+                        height: 2.5,
+                      ),
+                      Text(
+                        '${StringUtils.titleCase(e.authorName)} - ${GlobalUtils.getEventDateMessage(context, e.begin)}',
+                        style: TextStyle(fontSize: 12.0),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }
-          return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    '${e.notes ?? ''}',
-                    style: TextStyle(fontSize: 15.0),
-                  ),
-                  SizedBox(
-                    height: 2.5,
-                  ),
-                  Text(
-                    '${StringUtils.titleCase(e.authorName)} - ${GlobalUtils.getEventDateMessage(context, e.begin)}',
-                    style: TextStyle(fontSize: 12.0),
-                  ),
-                ],
+              );
+            }).toList(),
+            indicators: events.map((e) {
+              if (GlobalUtils.isCompito(e.notes))
+                return Icon(
+                  Icons.assignment,
+                  color: Colors.grey[700],
+                );
+              if (GlobalUtils.isVerificaOrInterrogazione(e.notes))
+                return Icon(
+                  Icons.assignment_late,
+                  color: Colors.grey[700],
+                );
+              return Icon(
+                Icons.calendar_today,
+                color: Colors.grey[700],
+              );
+            }).toList(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: FlatButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => NextEventsPage(
+                        events: events,
+                      ),
+                    ),
+                  );
+                },
+                child: Text(AppLocalizations.of(context)
+                    .translate('show_others')
+                    .toUpperCase()),
               ),
             ),
-          );
-        }).toList(),
-        indicators: events.map((e) {
-          if (GlobalUtils.isCompito(e.notes))
-            return Icon(
-              Icons.assignment,
-              color: Colors.grey[700],
-            );
-          if (GlobalUtils.isVerificaOrInterrogazione(e.notes))
-            return Icon(
-              Icons.assignment_late,
-              color: Colors.grey[700],
-            );
-          return Icon(
-            Icons.calendar_today,
-            color: Colors.grey[700],
-          );
-        }).toList(),
+          )
+        ],
       );
     }
   }
-
-  // Widget _buildPoint(bool isLast) {
-  //   return Stack(
-  //     children: <Widget>[
-  //       Container(
-  //         width: 5,
-  //         height: 100,
-  //         color: Colors.green,
-  //       ),
-  //       Positioned(
-  //         top: 25,
-  //         child: Container(
-  //           height: 20,
-  //           width: 30,
-  //           color: Colors.red,
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 }

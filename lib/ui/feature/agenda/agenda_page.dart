@@ -235,20 +235,19 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     );
 
     return Scaffold(
-      //key: _drawerKey,
       appBar: AppBar(
-        //scaffoldKey: _drawerKey,
         title: Text(AppLocalizations.of(context).translate('agenda')),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: _refreshAgenda,
-          )
+          ),
+          // IconButton(
+          //   icon: Icon(Icons.calendar_view_day),
+          //   onPressed: () {},
+          // )
         ],
       ),
-      // drawer: AppDrawer(
-      //   position: DrawerConstants.AGENDA,
-      // ),
       floatingActionButton: UnicornDialer(
         parentButtonBackground: Colors.redAccent,
         orientation: UnicornOrientation.VERTICAL,
@@ -278,6 +277,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                 AppNavigator.instance.getNetworkErrorSnackBar(context));
           }
         },
+        //child: _buildAgendaBlocBuilder(),
         child: CustomRefresher(
           controller: _refreshController,
           onRefresh: _refreshAgenda,
@@ -287,33 +287,65 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 _buildAgendaBlocBuilder(),
-                const SizedBox(height: 8.0),
-                const SizedBox(height: 8.0),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
-                  child: Text(
-                    AppLocalizations.of(context).translate('events'),
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ),
-                Container(
-                  child: _buildEventsMap(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
-                  child: Text(
-                    AppLocalizations.of(context).translate('lessons'),
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ),
-                SingleChildScrollView(
-                  child: _buildLessonsBlocBuilder(),
-                )
+                _buildColumnContent()
+                // const SizedBox(height: 8.0),
+                // const SizedBox(height: 8.0),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
+                //   child: Text(
+                //     AppLocalizations.of(context).translate('events'),
+                //     style: TextStyle(fontWeight: FontWeight.w500),
+                //   ),
+                // ),
+                // Container(
+                //   child: _buildEventsMap(),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
+                //   child: Text(
+                //     AppLocalizations.of(context).translate('lessons'),
+                //     style: TextStyle(fontWeight: FontWeight.w500),
+                //   ),
+                // ),
+                // SingleChildScrollView(
+                //   child: _buildLessonsBlocBuilder(),
+                // )
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildColumnContent() {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
+          child: Text(
+            AppLocalizations.of(context).translate('events'),
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+        ),
+        Container(
+          child: _buildEventsMap(),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
+          child: Text(
+            AppLocalizations.of(context).translate('lessons'),
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+        ),
+        SingleChildScrollView(
+          child: _buildLessonsBlocBuilder(),
+        )
+      ],
     );
   }
 
@@ -328,6 +360,10 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
             ),
           );
         } else if (state is AgendaLoadSuccess) {
+          // state.events.sort((a, b) => a.begin.compareTo(b.begin));
+          // return AgendaListView(
+          //   events: state.events,
+          // );
           return _buildTableCalendar(state.events);
         } else if (state is AgendaLoadError) {
           return CustomPlaceHolder(
@@ -596,21 +632,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                     onTap: () async {
                       await _showLocalBoottomSheet(event);
                     },
-                    leading: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          AppLocalizations.of(context)
-                              .translate('hour')
-                              .toLowerCase(),
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Text(
-                          '${event.begin.hour.toString()} - ${event.end.hour.toString()}',
-                          style: TextStyle(color: Colors.white),
-                        )
-                      ],
-                    ),
+                    leading: _buildEventLeading(event),
                     title: Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                       child: Text(
@@ -622,7 +644,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                     subtitle: Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
                       child: Text(
-                        '${event.notes}${event.isFullDay ? ", ${AppLocalizations.of(context).translate('all_day').toLowerCase()}" : ""}',
+                        '${event.notes}',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -643,6 +665,32 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     );
   }
 
+  Widget _buildEventLeading(db.AgendaEvent event) {
+    if (event.isFullDay) {
+      return Column(
+        children: <Widget>[
+          Text(
+            AppLocalizations.of(context).translate('all_day_card'),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
+    }
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          AppLocalizations.of(context).translate('hour').toLowerCase(),
+          style: TextStyle(color: Colors.white),
+        ),
+        Text(
+          '${event.begin.hour.toString()} - ${event.end.hour.toString()}',
+          style: TextStyle(color: Colors.white),
+        )
+      ],
+    );
+  }
+
   Future _showLocalBoottomSheet(db.AgendaEvent event) {
     return showModalBottomSheet(
       context: context,
@@ -659,13 +707,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                 message +=
                     '${trans.translate('author')}: ${StringUtils.titleCase(event.authorName)}';
                 message += '\n${trans.translate('event')}: ${event.notes}';
-
-                // if (event.notes != '') {
-                //   message += '\n';
-                //   message += trans
-                //       .translate('notes_event')
-                //       .replaceAll('{name}', event.notes);
-                // }
 
                 if (event.begin != null) {
                   message += '\n';

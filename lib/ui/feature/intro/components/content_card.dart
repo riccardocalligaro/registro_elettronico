@@ -56,12 +56,12 @@ class ContentCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(bottom: 35),
+          margin: EdgeInsets.only(bottom: 45),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              for (int i = 0; i < 4; i++)
+              for (int i = 0; i < 5; i++)
                 if (i == index) ...[circleBar(true, context)] else
                   circleBar(false, context),
             ],
@@ -85,9 +85,9 @@ class ContentCard extends StatelessWidget {
             color: textColor,
           ),
         ),
-        index == 3
+        index == 4
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 36.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: MaterialButton(
                   elevation: 0,
                   shape: RoundedRectangleBorder(
@@ -121,7 +121,7 @@ class ContentCard extends StatelessWidget {
                 ),
               )
             : SizedBox(
-                height: 80,
+                height: 117,
               )
       ],
     );

@@ -250,12 +250,6 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () {
                 Navigator.pop(context);
                 AppNavigator.instance.navToNotes(context);
-
-                // Navigator.pushNamedAndRemoveUntil(context, Routes.NOTES, (
-                //   Route<dynamic> route,
-                // ) {
-                //   return route.isActive;
-                // });
               },
             ),
             _createDrawerItem(
@@ -265,12 +259,6 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () {
                 Navigator.pop(context);
                 AppNavigator.instance.navToNoticeboard(context);
-
-                // Navigator.pushNamedAndRemoveUntil(context, Routes.NOTICEBOARD, (
-                //   Route<dynamic> route,
-                // ) {
-                //   return route.isActive;
-                // });
               },
             ),
             _createDrawerItem(
@@ -280,11 +268,6 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () {
                 Navigator.pop(context);
                 AppNavigator.instance.navToTimetable(context);
-                // Navigator.pushNamedAndRemoveUntil(context, Routes.TIMETABLE, (
-                //   Route<dynamic> route,
-                // ) {
-                //   return route.isFirst;
-                // });
               },
             ),
             _createDrawerItem(
@@ -294,11 +277,6 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () {
                 Navigator.pop(context);
                 AppNavigator.instance.navToScrutini(context);
-                // Navigator.pushNamedAndRemoveUntil(context, Routes.SCRUTINI, (
-                //   Route<dynamic> route,
-                // ) {
-                //   return route.isActive;
-                // });
               },
             ),
 
@@ -309,17 +287,12 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () {
                 Navigator.pop(context);
                 AppNavigator.instance.navToStats(context);
-                // Navigator.pushNamedAndRemoveUntil(context, Routes.SCRUTINI, (
-                //   Route<dynamic> route,
-                // ) {
-                //   return route.isActive;
-                // });
               },
             ),
             // _createDrawerItem(
             //   icon: Icons.archive,
             //   text: trans.translate('last_year'),
-            //   pos: DrawerConstants.ANNO_PRECEDENTE,
+            //   pos: 11,
             //   onTap: () {
             //     AppNavigator.instance.navToWebView(
             //       context,
@@ -330,7 +303,7 @@ class _AppDrawerState extends State<AppDrawer>
             // _createDrawerItem(
             //   icon: Icons.web,
             //   text: trans.translate('web'),
-            //   pos: DrawerConstants.WEB,
+            //   pos: 12,
             //   onTap: () {
             //     AppNavigator.instance.navToScrutini(context);
             //   },

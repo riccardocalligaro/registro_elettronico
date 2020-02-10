@@ -67,10 +67,24 @@ class _IntroSlideshowPageState extends State<IntroSlideshowPage> {
               ),
             ),
             Container(
+              child: ContentCard(
+                index: 3,
+                title: 'Da studenti',
+                subtitle: 'Siamo un gruppo di pochi studenti.\nLe donazioni ci aiutano a mantenere l\'app.',
+                centerWidget: Icon(
+                  Icons.group,
+                  color: Colors.white,
+                  size: 150,
+                ),
+                backgroundColor: Colors.purple,
+                textColor: Colors.white,
+              ),
+            ),
+            Container(
               child: ThemeContentCard(
                 title: trans.translate('slide_4_title'),
                 subtitle: trans.translate('slide_4_subtitle'),
-                index: 3,
+                index: 4,
               ),
             ),
           ],

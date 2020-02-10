@@ -83,7 +83,7 @@ class ColorUtils {
         return Colors.teal;
         break;
       case 15:
-        return Colors.teal;
+        return Colors.tealAccent;
         break;
       case 16:
         return Colors.redAccent;
