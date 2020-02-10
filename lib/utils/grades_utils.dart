@@ -65,6 +65,7 @@ class GradesUtils {
   }
 
   static int getMinSchoolCredits(double average, int year) {
+    if (year < 3) return 0;
     if (year == PrefsConstants.TERZA_SUPERIORE) {
       if (average < 6) return 0;
       if (average == 6) return 7;

@@ -28,6 +28,7 @@ class _NotificationsSettingsDialogState
   bool _notesNotifications = false;
   bool _absencesNotifications = false;
   bool _noticesNotifications = false;
+  bool _schoolMaterialNotifications = false;
 
   @override
   void initState() {
@@ -51,9 +52,14 @@ class _NotificationsSettingsDialogState
           (sharedPrefs.getBool(PrefsConstants.ABSENCES_NOTIFICATIONS) ?? false);
       _noticesNotifications =
           (sharedPrefs.getBool(PrefsConstants.NOTICES_NOTIFICATIONS) ?? false);
+
+      _schoolMaterialNotifications =
+          (sharedPrefs.getBool(PrefsConstants.SCHOOL_MATERIAL_NOTIFICATIONS) ??
+              false);
     });
   }
 
+// material_short
   @override
   Widget build(BuildContext context) {
     return _buildNotificationsSection();
@@ -150,6 +156,22 @@ class _NotificationsSettingsDialogState
                 _noticesNotifications = value;
               });
               save(PrefsConstants.NOTICES_NOTIFICATIONS, value);
+            },
+          ),
+          SwitchListTile(
+            activeColor: Colors.red,
+            contentPadding: EdgeInsets.zero,
+            value: _schoolMaterialNotifications,
+            title: Text(
+              AppLocalizations.of(context).translate('material_short'),
+              style: TextStyle(color: widget.textColor),
+            ),
+            inactiveTrackColor: widget.switchColor,
+            onChanged: (value) {
+              setState(() {
+                _schoolMaterialNotifications= value;
+              });
+              save(PrefsConstants.SCHOOL_MATERIAL_NOTIFICATIONS, value);
             },
           ),
           SwitchListTile(

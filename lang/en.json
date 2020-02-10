@@ -281,5 +281,10 @@
   "data_download_message": "Press here",
   "data_not_downloaded_message": "Some data hasn't been downloaded so the app might be not work correctly.",
   "all_day": "All day",
-  "no_name_author": "No name"
+  "no_name_author": "No name",
+  "show_others": "Show others",
+  "all_day_card": "All\nday",
+  "material_short": "Material",
+  "class_title": "Year",
+  "class_subtitle": "Select your school year"
 }

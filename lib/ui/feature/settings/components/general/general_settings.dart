@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/general/general_sorting_settings_dialog.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
@@ -22,6 +23,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
   //int _periodAveragesHomeScreen;
   bool _ascending = false;
   bool _updateAtStart = false;
+  int _class = 3;
 
   @override
   void initState() {
@@ -32,17 +34,13 @@ class _GeneralSettingsState extends State<GeneralSettings> {
   restore() async {
     SharedPreferences sharedPrefs = Injector.appInstance.getDependency();
     setState(() {
-      _sliderValue =
-          (sharedPrefs.getInt(PrefsConstants.OVERALL_OBJECTIVE)) ?? 6;
-
-      // _periodAveragesHomeScreen =
-      //     (sharedPrefs.getInt(PrefsConstants.PERIOD_TO_SHOW)) ??
-      //         TabsConstants.GENERALE;
+      _sliderValue = sharedPrefs.getInt(PrefsConstants.OVERALL_OBJECTIVE) ?? 6;
 
       _updateAtStart =
-          (sharedPrefs.getBool(PrefsConstants.UPDATE_AT_START) ?? false);
+          sharedPrefs.getBool(PrefsConstants.UPDATE_AT_START ?? false);
       _ascending =
-          (sharedPrefs.getBool(PrefsConstants.SORTING_ASCENDING)) ?? false;
+          sharedPrefs.getBool(PrefsConstants.SORTING_ASCENDING) ?? false;
+      _class = sharedPrefs.getInt(PrefsConstants.STUDENT_YEAR) ?? 3;
     });
   }
 
@@ -154,6 +152,36 @@ class _GeneralSettingsState extends State<GeneralSettings> {
               prefs.setBool(PrefsConstants.UPDATE_AT_START, value);
             },
           ),
+        ),
+        ListTile(
+          title: Text(AppLocalizations.of(context).translate('class_title')),
+          subtitle: Text(AppLocalizations.of(context).translate('class_subtitle')),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return NumberPickerDialog.integer(
+                  initialIntegerValue: _class,
+                  minValue: 1,
+                  maxValue: 5,
+                  title:
+                      Text(AppLocalizations.of(context).translate('class_title')),
+                  cancelWidget: Text(AppLocalizations.of(context)
+                      .translate('cancel')
+                      .toUpperCase()),
+                );
+              },
+            ).then((value) {
+              if (value != null) {
+                setState(() {
+                  _class = value;
+                });
+
+                SharedPreferences prefs = Injector.appInstance.getDependency();
+                prefs.setInt(PrefsConstants.STUDENT_YEAR, value);
+              }
+            });
+          },
         )
       ],
     );

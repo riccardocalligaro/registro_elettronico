@@ -161,6 +161,9 @@ class _LessonDetailsState extends State<LessonDetails> {
   }
 
   Widget _buildLessonsList(List<Lesson> lessons) {
+    int currentMonth = -1;
+    bool showMonth;
+
     if (_searchText.isNotEmpty) {
       lessons = lessons
           .where((lesson) => lesson.lessonArg
@@ -184,22 +187,36 @@ class _LessonDetailsState extends State<LessonDetails> {
           itemCount: lessons.length,
           itemBuilder: (context, index) {
             final lesson = lessons[index];
-            return Padding(
-              padding: const EdgeInsets.only(top: 4.0),
-              child: Card(
-                  child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: ListTile(
-                  title: Text(DateUtils.convertDateLocale(lesson.date,
-                      AppLocalizations.of(context).locale.toString())),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: _buildDescription(lesson),
+
+            if (lesson.date.month != currentMonth) {
+              showMonth = true;
+            } else {
+              showMonth = false;
+            }
+            currentMonth = lesson.date.month;
+
+            if (showMonth) {
+              var convertMonthLocale = DateUtils.convertMonthLocale(
+                  lesson.date, AppLocalizations.of(context).locale.toString());
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4.0,
+                      vertical: 8.0,
+                    ),
+                    child: Text(
+                      convertMonthLocale,
+                      style: TextStyle(color: Colors.red),
+                    ),
                   ),
-                  isThreeLine: false,
-                ),
-              )),
-            );
+                  _buildLessonCard(lesson)
+                ],
+              );
+            } else {
+              return _buildLessonCard(lesson);
+            }
           },
         ),
       );
@@ -221,6 +238,25 @@ class _LessonDetailsState extends State<LessonDetails> {
         showUpdate: true,
       );
     }
+  }
+
+  Widget _buildLessonCard(Lesson lesson) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4.0),
+      child: Card(
+          child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: ListTile(
+          title: Text(DateUtils.convertDateLocale(
+              lesson.date, AppLocalizations.of(context).locale.toString())),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: _buildDescription(lesson),
+          ),
+          isThreeLine: false,
+        ),
+      )),
+    );
   }
 
   /// With this method we can show the lesson argument if present otherwise we show only the lesson type

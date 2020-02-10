@@ -205,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  /// Builds the login with argo [title]
+  /// Builds the login with classeviva [title]
   Widget _buildHeaderText() {
     return Column(
       children: <Widget>[

@@ -21,6 +21,7 @@ dependencies:
   moor_flutter: ^2.1.0
   # Api
   dio: ^3.0.8
+  indexed_list_view: ^1.0.8
 
   retrofit: ^1.2.0
   # Use svg icons

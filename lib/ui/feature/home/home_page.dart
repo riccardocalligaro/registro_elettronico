@@ -151,18 +151,6 @@ class _HomePageState extends State<HomePage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      // RaisedButton(
-                      //   child: Text('Notifications'),
-                      //   onPressed: () async {
-                      //     await Workmanager.cancelAll();
-                      //     await Workmanager.initialize(
-                      //       callbackDispatcher,
-                      //       //! set to false in production
-                      //       isInDebugMode: false,
-                      //     );
-                      //     Workmanager.registerOneOffTask('checkContent', 'checkContent');
-                      //   },
-                      // ),
                       SizedBox(
                         height: 10,
                       ),
@@ -170,9 +158,6 @@ class _HomePageState extends State<HomePage> {
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
                         child: Text(AppLocalizations.of(context)
                             .translate('last_grades')),
-                      ),
-                      SizedBox(
-                        height: 4,
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),

@@ -62,12 +62,16 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
     super.initState();
   }
 
-  void restore() async {
-    SharedPreferences sharedPreferences = Injector.appInstance.getDependency();
-
+  @override
+  void didChangeDependencies() {
     _appBarTitle = Text(
       AppLocalizations.of(context).translate('notice_board'),
     );
+    super.didChangeDependencies();
+  }
+
+  void restore() async {
+    SharedPreferences sharedPreferences = Injector.appInstance.getDependency();
 
     setState(() {
       _noticeboardLastUpdate =
