@@ -218,8 +218,8 @@
   "slide_2_title": "Graphs and statistics",
   "slide_3_subtitle": "Stay always updated.\nSet the notifications in the settings page.",
   "slide_3_title": "Notifications",
-  "slide_4_subtitle": "Choose a theme\nDark is just better.",
-  "slide_4_title": "Theme",
+  "slide_5_subtitle": "Choose a theme\nDark is just better.",
+  "slide_5_title": "Theme",
   "sort_averages_by": "Sort averages by",
   "statistics": "Statistics",
   "stats_app_bar_title": "Stats",
@@ -286,5 +286,7 @@
   "all_day_card": "All\nday",
   "material_short": "Material",
   "class_title": "Year",
-  "class_subtitle": "Select your school year"
+  "class_subtitle": "Select your school year",
+  "slide_4_subtitle": "We are a small group of students.\nDontanions help us improve the app.",
+  "slide_4_title": "From students"
 }

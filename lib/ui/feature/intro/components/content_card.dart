@@ -121,7 +121,7 @@ class ContentCard extends StatelessWidget {
                 ),
               )
             : SizedBox(
-                height: 117,
+                height: 70,
               )
       ],
     );

@@ -47,25 +47,10 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        //key: _drawerKey,
         appBar: AppBar(
-          //scaffoldKey: _drawerKey,
+          brightness: Theme.of(context).brightness,
           title: Text(AppLocalizations.of(context).translate('scrutini')),
-          // actions: <Widget>[
-          //   IconButton(
-          //     icon: Icon(Icons.delete),
-          //     onPressed: () {
-          //       DocumentsDao documentsDao =
-          //           DocumentsDao(Injector.appInstance.getDependency());
-          //       documentsDao.deeteAllDocuments();
-          //       documentsDao.deeteAllDocuments();
-          //     },
-          //   )
-          // ],
         ),
-        // drawer: AppDrawer(
-        //   position: DrawerConstants.SCRUTINI,
-        // ),
         bottomSheet: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _scrutiniLastUpdate,
         ),

@@ -37,8 +37,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   int _noticeboardLastUpdate;
   bool _showOutdatedNotices = false;
 
-  //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-
   _NoticeboardPageState() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
@@ -86,9 +84,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //key: _drawerKey,
       appBar: AppBar(
-        //scaffoldKey: _drawerKey,
+        brightness: Theme.of(context).brightness,
         title: _appBarTitle,
         actions: <Widget>[
           IconButton(
@@ -99,7 +96,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           ),
           PopupMenuButton(
             onSelected: (bool result) async {
-              print(result);
               setState(() {
                 _showOutdatedNotices = result;
               });

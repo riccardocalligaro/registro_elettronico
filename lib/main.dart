@@ -31,7 +31,8 @@ void main() {
     runApp(MyApp());
   }, onError: (Object error, Object stackTrace) {
     FLog.error(
-      text: error.toString(),
+      text: 'Error!',
+      exception: Exception(error.toString()),
       stacktrace: stackTrace,
     );
 
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Application(
       builder: (bCtx, initData) {
-        _setSystemUI(initData.materialThemeData.brightness);
+        _setSystemUI(initData.overlayStyle);
         return MaterialApp(
           title: 'Registro elettronico',
           locale: initData.locale,
@@ -75,22 +76,24 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  _setSystemUI(Brightness brightness) {
-    Color navBarColor;
-    if (brightness == Brightness.dark) {
-      navBarColor = Colors.grey[900];
-    } else {
-      navBarColor = Colors.white;
-    }
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      //statusBarBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.grey[900],
-      systemNavigationBarDividerColor: null,
-      //statusBarColor: null,
-      systemNavigationBarIconBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.light,
-    ));
+  _setSystemUI(SystemUiOverlayStyle overlayStyle) {
+    SystemChrome.setSystemUIOverlayStyle(overlayStyle);
   }
+  //   Color navBarColor;
+  //   if (brightness == Brightness.dark) {
+  //     navBarColor = Colors.grey[900];
+  //   } else {
+  //     navBarColor = Colors.white;
+  //   }
+  //   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  //     statusBarColor: Colors.transparent,
+  //     //statusBarBrightness: Brightness.dark,
+  //     systemNavigationBarColor: Colors.grey[900],
+  //     systemNavigationBarDividerColor: null,
+  //     //statusBarColor: null,
+  //     systemNavigationBarIconBrightness: Brightness.light,
+  //     statusBarIconBrightness: Brightness.light,
+  //     statusBarBrightness: Brightness.light,
+  //   ));
+  // }
 }

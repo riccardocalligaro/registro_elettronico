@@ -236,6 +236,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
 
     return Scaffold(
       appBar: AppBar(
+        brightness: Theme.of(context).brightness,
         title: Text(AppLocalizations.of(context).translate('agenda')),
         actions: <Widget>[
           IconButton(

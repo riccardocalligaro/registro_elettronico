@@ -47,6 +47,7 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
         hidden: true,
         headers: headers,
         appBar: AppBar(
+          brightness: Theme.of(context).brightness,
           title: Text(
             widget.appBarTitle ?? '',
           ),
@@ -54,7 +55,7 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
           //   IconButton(
           //     // tooltip: AppLocalizations.of(context).translate('confirm'),
           //     icon: Icon(Icons.check),
-          //     onPressed: () {},
+          //  1   onPressed: () {},
           //   )
           // ],
         ),
