@@ -76,9 +76,21 @@ class MyApp extends StatelessWidget {
   }
 
   _setSystemUI(Brightness brightness) {
+    Color navBarColor;
+    if (brightness == Brightness.dark) {
+      navBarColor = Colors.grey[900];
+    } else {
+      navBarColor = Colors.white;
+    }
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.dark,
+      //statusBarBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.grey[900],
+      systemNavigationBarDividerColor: null,
+      //statusBarColor: null,
+      systemNavigationBarIconBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.light,
     ));
   }
 }
