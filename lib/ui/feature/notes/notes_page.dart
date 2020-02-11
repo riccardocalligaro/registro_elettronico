@@ -28,16 +28,11 @@ class _NotesPageState extends State<NotesPage> {
 
   @override
   Widget build(BuildContext context) {
-    //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
     return Scaffold(
-      //key: _drawerKey,
       appBar: AppBar(
-        //scaffoldKey: _drawerKey,
+        brightness: Theme.of(context).brightness,
         title: Text(AppLocalizations.of(context).translate('notes')),
       ),
-      // drawer: AppDrawer(
-      //   position: DrawerConstants.NOTES,
-      // ),
       body: MultiBlocListener(
         listeners: [
           BlocListener<NotesBloc, NotesState>(

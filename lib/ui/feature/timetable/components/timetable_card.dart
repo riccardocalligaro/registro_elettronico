@@ -38,7 +38,7 @@ class TimetableCard extends StatelessWidget {
                           ? StringUtils.titleCase(
                               GlobalUtils.reduceSubjectTitle(subject))
                           : StringUtils.titleCase(subject)
-                      : '')
+                      : '', style: TextStyle(color: Colors.white),)
                   : Icon(Icons.add),
             ),
           ),

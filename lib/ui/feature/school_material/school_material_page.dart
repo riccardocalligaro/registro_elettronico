@@ -105,13 +105,11 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
 
   @override
   Widget build(BuildContext context) {
-    //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-
     return Scaffold(
-      //key: _drawerKey,
       appBar: AppBar(
         elevation: 0.0,
         title: _appBarTitle,
+        brightness: Theme.of(context).brightness,
         actions: <Widget>[
           IconButton(
             icon: _searchIcon,
@@ -121,13 +119,6 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
           )
         ],
       ),
-      // appBar: AppBar(
-      //   title: Text(AppLocalizations.of(context).translate('school_material')),
-      //   //scaffoldKey: _drawerKey,
-      // ),
-      // drawer: AppDrawer(
-      //   position: DrawerConstants.SCHOOL_MATERIAL,
-      // ),
       bottomSheet: LastUpdateBottomSheet(
         millisecondsSinceEpoch: _schoolMaterialLastUpdate,
       ),

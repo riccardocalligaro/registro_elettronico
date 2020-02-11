@@ -92,7 +92,7 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
                   fillColor: Colors.grey[900],
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 15,
                 ),
                 RawMaterialButton(
                   onPressed: () async {
@@ -138,7 +138,7 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(bottom: 45),
+          margin: EdgeInsets.only(bottom: 40),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -157,19 +157,19 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
             fontSize: 30.0,
           ),
         ),
-        Text(
-          widget.subtitle,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.w300,
-          ),
-        ),
+        // Text(
+        //   widget.subtitle,
+        //   textAlign: TextAlign.center,
+        //   style: TextStyle(
+        //     fontSize: 14.0,
+        //     fontWeight: FontWeight.w300,
+        //   ),
+        // ),
         SizedBox(
-          height: 30,
+          height: 20,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: MaterialButton(
             elevation: 0,
             shape:
@@ -201,7 +201,7 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
           ),
         ),
         SizedBox(
-          height: 40,
+          height: 35,
         ),
       ],
     );

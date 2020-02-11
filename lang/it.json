@@ -218,8 +218,8 @@
   "slide_2_title": "Grafici e statistiche",
   "slide_3_subtitle": "Resta sempre aggiornato.\n Ricevi notifiche su voti, comunicazioni e molto altro.",
   "slide_3_title": "Notifiche",
-  "slide_4_subtitle": "Scegli un tema\n(Dark è meglio).",
-  "slide_4_title": "Tema",
+  "slide_5_subtitle": "Scegli un tema\n(Dark è meglio).",
+  "slide_5_title": "Tema",
   "sort_averages_by": "Ordina medie per",
   "statistics": "Statistiche",
   "stats_app_bar_title": "Statistiche",
@@ -286,5 +286,7 @@
   "all_day_card": "Tutto il\ngiorno",
   "material_short": "Materiale",
   "class_title": "Classe",
-  "class_subtitle": "Seleziona la tua classe"
+  "class_subtitle": "Seleziona la tua classe",
+  "slide_4_subtitle": "Siamo un gruppo di pochi studenti.\nLe donazioni ci aiutano a mantenere l'app.",
+  "slide_4_title": "Da studenti"
 }

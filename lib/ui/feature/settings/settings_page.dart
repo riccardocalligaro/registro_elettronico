@@ -59,16 +59,12 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //key: _drawerKey,
       appBar: AppBar(
-        //scaffoldKey: _drawerKey,
+        brightness: Theme.of(context).brightness,
         title: Text(
           AppLocalizations.of(context).translate('settings'),
         ),
       ),
-      // drawer: AppDrawer(
-      //   position: DrawerConstants.SETTINGS,
-      // ),
       body: SingleChildScrollView(
         child: Container(
           child: Column(

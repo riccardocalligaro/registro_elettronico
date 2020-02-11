@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/bloc_delegate.dart';
 
@@ -24,18 +25,42 @@ class Application extends StatelessWidget {
             return ThemeBlocBuilder(
               builder: (tBBContext, materialThemeData, cupertinoThemeData) {
                 InitData initData = InitData(
-                    materialThemeData,
-                    cupertinoThemeData,
-                    locale,
-                    supportedLocales,
-                    localizationsDelegates,
-                    localeResolutionCallback);
+                  materialThemeData,
+                  cupertinoThemeData,
+                  locale,
+                  supportedLocales,
+                  localizationsDelegates,
+                  localeResolutionCallback,
+                  _getOverlayStile(materialThemeData.brightness),
+                );
                 return builder(tBBContext, initData);
               },
             );
           },
         ),
       ),
+    );
+  }
+}
+
+SystemUiOverlayStyle _getOverlayStile(Brightness brightness) {
+  if (brightness == Brightness.dark) {
+    return SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.black,
+      systemNavigationBarDividerColor: null,
+      systemNavigationBarIconBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
+    );
+  } else {
+    return SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarDividerColor: Colors.black,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.dark,
     );
   }
 }
@@ -47,12 +72,15 @@ class InitData {
   List<Locale> supportedLocales;
   List<LocalizationsDelegate> localizationsDelegates;
   Function localeResolutionCallback;
+  SystemUiOverlayStyle overlayStyle;
 
   InitData(
-      this.materialThemeData,
-      this.cupertinoThemeData,
-      this.locale,
-      this.supportedLocales,
-      this.localizationsDelegates,
-      this.localeResolutionCallback);
+    this.materialThemeData,
+    this.cupertinoThemeData,
+    this.locale,
+    this.supportedLocales,
+    this.localizationsDelegates,
+    this.localeResolutionCallback,
+    this.overlayStyle,
+  );
 }
