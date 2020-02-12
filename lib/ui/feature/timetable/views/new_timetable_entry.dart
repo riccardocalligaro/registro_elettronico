@@ -6,6 +6,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/ui/bloc/timetable/bloc.dart';
 import 'package:registro_elettronico/ui/feature/agenda/components/select_subject_dialog.dart';
+import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -48,6 +49,7 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        brightness: Theme.of(context).brightness,
         title: Text(AppLocalizations.of(context).translate('new_entry')),
         actions: <Widget>[
           IconButton(
@@ -56,14 +58,17 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
           )
         ],
       ),
-      body: ListView(
-        padding: EdgeInsets.all(8.0),
-        children: <Widget>[
-          _buildSubjectCard(),
-          _buildTimeCard(),
-          _buildDurationCard(),
-          _buildDayCard(),
-        ],
+      body: ScrollConfiguration(
+        behavior: NoGlowBehavior(),
+        child: ListView(
+          padding: EdgeInsets.all(8.0),
+          children: <Widget>[
+            _buildSubjectCard(),
+            _buildTimeCard(),
+            _buildDurationCard(),
+            _buildDayCard(),
+          ],
+        ),
       ),
     );
   }
@@ -110,7 +115,9 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
   Widget _buildDurationCard() {
     return Card(
       child: ListTile(
-        leading: Icon(Icons.timelapse),
+        leading: Icon(
+          Icons.timelapse,
+        ),
         title: Text(AppLocalizations.of(context).translate('duration')),
         trailing: Text('$_durationHours H'),
         onTap: () {
@@ -122,7 +129,8 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
                   initialIntegerValue: _durationHours,
                   minValue: 1,
                   maxValue: 18 - _start.hour,
-                  title: Text(AppLocalizations.of(context).translate('duration')),
+                  title:
+                      Text(AppLocalizations.of(context).translate('duration')),
                   cancelWidget: Text(AppLocalizations.of(context)
                       .translate('cancel')
                       .toUpperCase()),
@@ -142,6 +150,29 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
   }
 
   Widget _buildTimeCard() {
+    return Card(
+      child: ListTile(
+        leading: Icon(
+          Icons.access_time,
+        ),
+        title: Text(AppLocalizations.of(context).translate('time')),
+        trailing: Text(_start.format(context)),
+        onTap: () {
+          showTimePicker(
+            context: context,
+            initialTime: _start,
+          ).then((time) {
+            if (time != null) {
+              setState(() {
+                if (time.hour >= 7 && time.hour <= 18) {
+                  _start = time;
+                }
+              });
+            }
+          });
+        },
+      ),
+    );
     return Card(
       child: InkWell(
         onTap: () {
@@ -166,7 +197,11 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Icon(Icons.access_time),
+                    Icon(
+                      Icons.access_time,
+                      color: Theme.of(context).iconTheme.color.withOpacity(
+                          Theme.of(context).iconTheme.color.opacity * 0.60),
+                    ),
                     SizedBox(
                       width: 30,
                     ),
@@ -263,7 +298,7 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
     if (_missingSubject) {
       return Colors.red;
     } else {
-      return GlobalUtils.isDark(context) ? Colors.white : Colors.black;
+      return null;
     }
   }
 
@@ -271,7 +306,7 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
     if (_missingSubject) {
       return Colors.red;
     } else {
-      return GlobalUtils.isDark(context) ? Colors.white : Colors.grey[900];
+      return null;
     }
   }
 }

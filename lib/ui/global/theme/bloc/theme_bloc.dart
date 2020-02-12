@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:registro_elettronico/ui/global/theme/app_themes.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,6 +37,13 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ) async* {
     if (event is ThemeChanged) {
       bool darkTheme = event.theme == AppTheme.Dark;
+   // if (darkTheme) {
+   //   SystemChrome.setSystemUIOverlayStyle(
+   //       SystemUiOverlayStyle(systemNavigationBarColor: Colors.grey));
+   // } else {
+   //   SystemChrome.setSystemUIOverlayStyle(
+   //       SystemUiOverlayStyle(systemNavigationBarColor: Colors.white));
+   // }
       await _saveSettings(darkTheme);
       yield ThemeState(
           materialThemeData: materialThemeData[event.theme],
