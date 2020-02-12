@@ -10,6 +10,7 @@ import 'package:registro_elettronico/ui/feature/agenda/agenda_page.dart';
 import 'package:registro_elettronico/ui/feature/agenda/components/select_date_dialog.dart';
 import 'package:registro_elettronico/ui/feature/agenda/components/select_notifications_time_alert.dart';
 import 'package:registro_elettronico/ui/feature/agenda/components/select_subject_dialog.dart';
+import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -68,6 +69,7 @@ class _NewEventPageState extends State<NewEventPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('new_event')),
+        brightness: Theme.of(context).brightness,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
@@ -79,9 +81,10 @@ class _NewEventPageState extends State<NewEventPage> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
+      body: ScrollConfiguration(
+        behavior: NoGlowBehavior(),
         child: ListView(
+          padding: const EdgeInsets.all(8.0),
           children: <Widget>[
             _buildTopCard(),
             widget.eventType != EventType.memo
@@ -170,7 +173,8 @@ class _NewEventPageState extends State<NewEventPage> {
       localNotification.scheduleNotification(
         title: AppLocalizations.of(context).translate('new_event') ?? '',
         message: _titleController.text ?? '',
-        scheduledTime: _date.subtract(_beforeNotify) ?? DateTime.now().add(Duration(hours: 1)),
+        scheduledTime: _date.subtract(_beforeNotify) ??
+            DateTime.now().add(Duration(hours: 1)),
         eventId: id,
       );
     }
@@ -181,7 +185,6 @@ class _NewEventPageState extends State<NewEventPage> {
       child: ListTile(
         leading: Icon(
           Icons.subject,
-          color: GlobalUtils.isDark(context) ? Colors.white : Colors.grey[900],
         ),
         title: TextField(
           controller: _descriptionController,
@@ -282,9 +285,6 @@ class _NewEventPageState extends State<NewEventPage> {
             ListTile(
               leading: Icon(
                 Icons.title,
-                color: GlobalUtils.isDark(context)
-                    ? Colors.white
-                    : Colors.grey[900],
               ),
               title: TextField(
                 controller: _titleController,
@@ -295,7 +295,7 @@ class _NewEventPageState extends State<NewEventPage> {
                 ),
               ),
             ),
-            InkWell(
+            ListTile(
               onTap: () {
                 showDialog(
                   context: context,
@@ -321,37 +321,28 @@ class _NewEventPageState extends State<NewEventPage> {
                   },
                 );
               },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+              leading: Icon(
+                Icons.label,
+              ),
+              title: Text(
+                AppLocalizations.of(context).translate('label'),
+              ),
+              trailing: ClipOval(
                 child: Container(
-                  child: Row(
-                    //  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.label,
-                          ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Text(AppLocalizations.of(context).translate('label')),
-                        ],
-                      ),
-                      ClipOval(
-                        child: Container(
-                          height: 20,
-                          width: 20,
-                          color: _labelColor,
-                        ),
-                      )
-                    ],
-                  ),
+                  height: 20,
+                  width: 20,
+                  color: _labelColor,
                 ),
               ),
             ),
-            InkWell(
+            ListTile(
+              leading: Icon(Icons.today),
+              title: Text(AppLocalizations.of(context).translate('date')),
+              trailing: Text(DateUtils.getNewEventDateMessage(
+                _selectedDate,
+                AppLocalizations.of(context).locale.toString(),
+                context,
+              )),
               onTap: () {
                 showDialog(
                   context: context,
@@ -364,32 +355,13 @@ class _NewEventPageState extends State<NewEventPage> {
                   }
                 });
               },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Icon(Icons.today),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Text(AppLocalizations.of(context).translate('date')),
-                        ],
-                      ),
-                      Text(DateUtils.getNewEventDateMessage(
-                        _selectedDate,
-                        AppLocalizations.of(context).locale.toString(),
-                        context,
-                      )),
-                    ],
-                  ),
-                ),
-              ),
             ),
-            InkWell(
+            ListTile(
+              leading: Icon(Icons.access_time),
+              title: Text(
+                AppLocalizations.of(context).translate('time'),
+              ),
+              trailing: Text(_timeOfDay.format(context)),
               onTap: () {
                 showTimePicker(
                   context: context,
@@ -402,28 +374,6 @@ class _NewEventPageState extends State<NewEventPage> {
                   }
                 });
               },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Icon(Icons.access_time),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Text(
-                            AppLocalizations.of(context).translate('time'),
-                          ),
-                        ],
-                      ),
-                      Text(_timeOfDay.format(context)),
-                    ],
-                  ),
-                ),
-              ),
             ),
           ],
         ),

@@ -79,126 +79,123 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _lastUpdate,
         ),
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.light,
-          child: MultiBlocListener(
-            listeners: [
-              BlocListener<AgendaBloc, AgendaState>(
-                listener: (context, state) {
-                  if (state is AgendaUpdateLoadSuccess) {
-                    BlocProvider.of<AgendaDashboardBloc>(context)
-                        .add(GetEvents());
-                  }
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<AgendaBloc, AgendaState>(
+              listener: (context, state) {
+                if (state is AgendaUpdateLoadSuccess) {
+                  BlocProvider.of<AgendaDashboardBloc>(context)
+                      .add(GetEvents());
+                }
 
-                  if (state is AgendaLoadErrorNotConnected) {
-                    Scaffold.of(context)
-                      ..removeCurrentSnackBar()
-                      ..showSnackBar(
-                        AppNavigator.instance.getNetworkErrorSnackBar(context),
-                      );
-                  }
-                },
-              ),
-              BlocListener<GradesBloc, GradesState>(
-                listener: (context, state) {
-                  if (state is GradesUpdateLoaded) {
-                    BlocProvider.of<GradesDashboardBloc>(context)
-                        .add(GetDashboardGrades());
-                  }
-                },
-              ),
-              BlocListener<LessonsBloc, LessonsState>(
-                listener: (context, state) {
-                  if (state is LessonsUpdateLoadSuccess) {
-                    BlocProvider.of<LessonsDashboardBloc>(context)
-                        .add(dash.GetLastLessons());
-                    setState(() {
-                      _lastUpdate = DateTime.now().millisecondsSinceEpoch;
-                    });
-                  }
-                },
-              ),
-            ],
-            child: SmartRefresher(
-              controller: _refreshController,
-              header: MaterialClassicHeader(
-                backgroundColor: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.grey[900]
-                    : Colors.white,
-                color: Colors.red,
-              ),
-              onRefresh: _refreshHome,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          height: 220,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              stops: [0.4, 1],
-                              colors: <Color>[Colors.red[400], Colors.red[900]],
-                              begin: Alignment(-1.0, -2.0),
-                              end: Alignment(1.0, 2.0),
-                            ),
+                if (state is AgendaLoadErrorNotConnected) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                      AppNavigator.instance.getNetworkErrorSnackBar(context),
+                    );
+                }
+              },
+            ),
+            BlocListener<GradesBloc, GradesState>(
+              listener: (context, state) {
+                if (state is GradesUpdateLoaded) {
+                  BlocProvider.of<GradesDashboardBloc>(context)
+                      .add(GetDashboardGrades());
+                }
+              },
+            ),
+            BlocListener<LessonsBloc, LessonsState>(
+              listener: (context, state) {
+                if (state is LessonsUpdateLoadSuccess) {
+                  BlocProvider.of<LessonsDashboardBloc>(context)
+                      .add(dash.GetLastLessons());
+                  setState(() {
+                    _lastUpdate = DateTime.now().millisecondsSinceEpoch;
+                  });
+                }
+              },
+            ),
+          ],
+          child: SmartRefresher(
+            controller: _refreshController,
+            header: MaterialClassicHeader(
+              backgroundColor: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.grey[900]
+                  : Colors.white,
+              color: Colors.red,
+            ),
+            onRefresh: _refreshHome,
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Stack(
+                    children: <Widget>[
+                      Container(
+                        height: 220,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            stops: [0.4, 1],
+                            colors: <Color>[Colors.red[400], Colors.red[900]],
+                            begin: Alignment(-1.0, -2.0),
+                            end: Alignment(1.0, 2.0),
                           ),
                         ),
-                        _buildWelcomeSection(),
-                        Positioned(
-                          top: 150,
-                          left: 16,
-                          right: 16,
-                          child: _buildQuickShortcutsSection(),
-                        ),
-                        Container(
-                          height: 280,
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(AppLocalizations.of(context)
-                              .translate('last_grades')),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: LastGradesSection(),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(AppLocalizations.of(context)
-                              .translate('last_lessons')),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        LastLessonsSection(),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        // Padding(
-                        //   padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        //   child: Text(AppLocalizations.of(context)
-                        //       .translate('this_week_section_title')),
-                        // ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: NextEventsSection(),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      _buildWelcomeSection(),
+                      Positioned(
+                        top: 150,
+                        left: 16,
+                        right: 16,
+                        child: _buildQuickShortcutsSection(),
+                      ),
+                      Container(
+                        height: 280,
+                      )
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(AppLocalizations.of(context)
+                            .translate('last_grades')),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: LastGradesSection(),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(AppLocalizations.of(context)
+                            .translate('last_lessons')),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      LastLessonsSection(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      //   child: Text(AppLocalizations.of(context)
+                      //       .translate('this_week_section_title')),
+                      // ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: NextEventsSection(),
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

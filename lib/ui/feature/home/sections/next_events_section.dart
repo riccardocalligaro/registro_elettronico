@@ -94,7 +94,7 @@ class NextEventsSection extends StatelessWidget {
       return Column(
         children: <Widget>[
           Timeline(
-            itemCount: 3,
+            itemCount: events.length > 3 ? 3 : events.length,
             children: events.map((e) {
               if (e.isLocal) {
                 return Card(

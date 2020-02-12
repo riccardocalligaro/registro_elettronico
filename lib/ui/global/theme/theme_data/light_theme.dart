@@ -14,6 +14,7 @@ final material = ThemeData(
   ),
   primaryIconTheme: IconThemeData(
     color: Colors.grey[900],
+    opacity: 0.50
   ),
   primaryTextTheme: TextTheme(
     title: TextStyle(color: Colors.grey[900]),

@@ -77,6 +77,7 @@ class _LessonDetailsState extends State<LessonDetails> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
+          brightness: Theme.of(context).brightness,
           elevation: 0.0,
           title: _appBarTitle,
           actions: <Widget>[
