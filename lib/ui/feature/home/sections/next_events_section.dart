@@ -133,7 +133,7 @@ class NextEventsSection extends StatelessWidget {
                         height: 2.5,
                       ),
                       Text(
-                        '${StringUtils.titleCase(e.authorName)} - ${GlobalUtils.getEventDateMessage(context, e.begin)}',
+                        '${StringUtils.titleCase(e.authorName)} - ${_getDateMessage(e, context)}',
                         style: TextStyle(fontSize: 12.0),
                       ),
                     ],
@@ -181,5 +181,12 @@ class NextEventsSection extends StatelessWidget {
         ],
       );
     }
+  }
+
+  String _getDateMessage(db.AgendaEvent agendaEvent, BuildContext context) {
+    if (agendaEvent.isFullDay) {
+      return AppLocalizations.of(context).translate('all_day_inline').toLowerCase();
+    }
+    return GlobalUtils.getEventDateMessage(context, agendaEvent.begin);
   }
 }

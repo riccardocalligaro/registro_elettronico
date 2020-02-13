@@ -12,4 +12,7 @@ class GetLoginTokenForSchoolReport extends TokenEvent {
   });
 }
 
-class GetLoginToken extends TokenEvent {}
+class GetLoginToken extends TokenEvent {
+  final bool lastYear;
+  GetLoginToken(this.lastYear);
+}

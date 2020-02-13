@@ -74,7 +74,7 @@
   "error_download": "Couldn't download the file!",
   "error_emoji": "Error ❌",
   "event": "Event",
-  "event_hour_day": "{date} at {hour}",
+  "event_hour_day": "{date} at {hour} ({days} days)",
   "events": "Events",
   "every_hours": "Every {h} hours",
   "every_minutes": "Every {m} minutes",
@@ -288,5 +288,7 @@
   "class_title": "Year",
   "class_subtitle": "Select your school year",
   "slide_4_subtitle": "We are a small group of students.\nDontanions help us improve the app.",
-  "slide_4_title": "From students"
+  "slide_4_title": "From students",
+  "all_day_inline": "All day",
+  "school_and_territory": "School and territory"
 }

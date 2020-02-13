@@ -13,7 +13,6 @@ import 'package:registro_elettronico/ui/feature/settings/settings_page.dart';
 import 'package:registro_elettronico/ui/feature/splash_screen/splash_screen.dart';
 import 'package:registro_elettronico/ui/feature/stats/stats_page.dart';
 import 'package:registro_elettronico/ui/feature/timetable/timetable_page.dart';
-import 'package:registro_elettronico/ui/feature/web/web_view_loading_page.dart';
 
 class Routes {
   static const MAIN = '/';
@@ -49,7 +48,6 @@ class Routes {
     TIMETABLE: (ctx) => TimetablePage(),
     SCRUTINI: (ctx) => ScrutiniPage(),
     STATS: (ctx) => StatsPage(),
-    WEB_VIEW: (ctx) => WebViewLoadingPage(),
     SETTINGS: (ctx) => SettingsPage()
   };
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:registro_elettronico/component/routes.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:tuple/tuple.dart';
 
 class AppNavigator {
   static AppNavigator _instance;
@@ -68,8 +68,8 @@ class AppNavigator {
     Navigator.pushNamed(context, Routes.STATS);
   }
 
-  void navToWebView(BuildContext context, String url) {
-    Navigator.pushNamed(context, Routes.WEB_VIEW, arguments: url);
+  void navToWebView(BuildContext context, Tuple2<String, bool> data) {
+    Navigator.pushNamed(context, Routes.WEB_VIEW, arguments: data);
   }
 
   void navToSettings(BuildContext context) {

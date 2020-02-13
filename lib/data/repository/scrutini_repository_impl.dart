@@ -22,7 +22,9 @@ class ScrutiniRepositoryImpl implements ScrutiniRepository {
   );
 
   @override
-  Future<Either<Failure, String>> getLoginToken() async {
+  Future<Either<Failure, String>> getLoginToken({
+    bool lastYear,
+  }) async {
     if (await networkInfo.isConnected) {
       final profile = await profileRepository.getDbProfile();
       final password = await flutterSecureStorage.read(key: profile.ident);
@@ -31,13 +33,17 @@ class ScrutiniRepositoryImpl implements ScrutiniRepository {
         final resToken = await webSpaggiariClient.getPHPToken(
           username: profile.ident,
           password: password,
+          lastYear: lastYear ?? false,
         );
 
         return Right(resToken);
       } catch (e, s) {
         Crashlytics.instance.recordError(e, s);
         FLog.error(
-            exception: e, stacktrace: s, text: 'Error getting login token');
+          exception: Exception(e.toString()),
+          stacktrace: s,
+          text: 'Error getting login token',
+        );
         return Left(ServerFailure());
       }
     } else {

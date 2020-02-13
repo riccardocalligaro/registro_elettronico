@@ -9,11 +9,21 @@ class WebSpaggiariClientImpl implements WebSpaggiariClient {
   WebSpaggiariClientImpl(this._dio);
 
   @override
-  Future<String> getPHPToken({String username, String password}) async {
+  Future<String> getPHPToken({
+    String username,
+    String password,
+    bool lastYear,
+  }) async {
     FLog.info(text: 'Requesting new PHP Token');
 
-    final loginPage =
-        'https://web.spaggiari.eu/auth-p7/app/default/AuthApi4.php?a=aLoginPwd';
+    String loginPage;
+    if (lastYear ?? false) {
+      loginPage =
+          'https://web18.spaggiari.eu/auth-p7/app/default/AuthApi4.php?a=aLoginPwd';
+    } else {
+      loginPage =
+          'https://web.spaggiari.eu/auth-p7/app/default/AuthApi4.php?a=aLoginPwd';
+    }
 
     Map<String, String> bodyParams = new Map();
     bodyParams["uid"] = username;

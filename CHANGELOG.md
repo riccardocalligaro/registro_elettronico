@@ -1,3 +1,30 @@
+Version 0.0.7-dev.4
+
+Added scuola & territorio, web view, fixed cookies, more
+* Added web view of registro elettronico
+
+* Added web view of scuola & territorio
+
+* Fixed cookies issues! FINALLY 
+
+* Now you have to long-press to delete a grade and if you press it one time it shows useful info
+
+* Fixed icons color 
+
+* Removed glow in lists
+
+* Fixed ligth/dark nav, status bar behavior
+
+* Fixed paddings in intro
+
+* Added translation to slide 4
+
+* Fixed text color in timetable page
+
+* Changed button color in intro
+
+--- 
+
 Version 0.0.7-dev.3
 
 Added notifications, settings, bug fixes, show more events

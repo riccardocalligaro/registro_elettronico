@@ -7,6 +7,7 @@ import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/account/account_settings.dart';
+import 'package:registro_elettronico/ui/feature/web/web_view_loading_page.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 
@@ -289,25 +290,57 @@ class _AppDrawerState extends State<AppDrawer>
                 AppNavigator.instance.navToStats(context);
               },
             ),
+            Divider(),
+
             // _createDrawerItem(
             //   icon: Icons.archive,
             //   text: trans.translate('last_year'),
             //   pos: 11,
             //   onTap: () {
-            //     AppNavigator.instance.navToWebView(
-            //       context,
-            //       'https://web18.spaggiari.eu/home/app/default/menu_webinfoschool_studenti.php?custcode=',
-            //     );
+            //     final url =
+            //         'https://web18.spaggiari.eu/home/app/default/menu_webinfoschool_studenti.php';
+            //     Navigator.of(context).push(MaterialPageRoute(
+            //       builder: (context) => WebViewLoadingPage(
+            //         title: trans.translate('last_year'),
+            //         url: url,
+            //         lastYear: true,
+            //       ),
+            //     ));
             //   },
             // ),
-            // _createDrawerItem(
-            //   icon: Icons.web,
-            //   text: trans.translate('web'),
-            //   pos: 12,
-            //   onTap: () {
-            //     AppNavigator.instance.navToScrutini(context);
-            //   },
-            // ),
+            _createDrawerItem(
+              icon: Icons.web,
+              text: trans.translate('web'),
+              pos: 12,
+              onTap: () {
+                final url =
+                    'https://web.spaggiari.eu/home/app/default/menu_webinfoschool_studenti.php';
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => WebViewLoadingPage(
+                    title: trans.translate('web'),
+                    url: url,
+                    lastYear: false,
+                  ),
+                ));
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.work,
+              text: trans.translate('school_and_territory'),
+              pos: 13,
+              onTap: () {
+                final url =
+                    'https://web.spaggiari.eu/home/app/default/menu_set_st.php';
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => WebViewLoadingPage(
+                    title: trans.translate('school_and_territory'),
+                    url: url,
+                    lastYear: false,
+                  ),
+                ));
+              },
+            ),
+
             Divider(),
             _createDrawerItem(
               icon: Icons.settings,

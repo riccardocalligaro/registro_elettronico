@@ -4,7 +4,6 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_event.dart';
 import 'package:registro_elettronico/ui/bloc/grades/grades_state.dart';
@@ -379,60 +378,12 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
         shrinkWrap: true,
         itemCount: grades.length,
         itemBuilder: (context, index) {
-          final grade = grades[index];
           return Padding(
             padding: index == 0
                 ? EdgeInsets.only(top: 2.0, bottom: 8.0)
                 : EdgeInsets.only(bottom: 8.0),
-            child: InkWell(
-              onTap: () {
-                if (grade.decimalValue != -1.00 && grade.cancelled == false) {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text(grade.localllyCancelled
-                          ? AppLocalizations.of(context)
-                              .translate('delete_grade_title_restore')
-                          : AppLocalizations.of(context)
-                              .translate('delete_grade_title_cancel')),
-                      //content: Text(grades[index].localllyCancelled.toString()),
-                      actions: <Widget>[
-                        FlatButton(
-                          child: Text(AppLocalizations.of(context).translate('no').toUpperCase()),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        FlatButton(
-                          child: Text(AppLocalizations.of(context).translate('yes').toUpperCase()),
-                          onPressed: () async {
-                            if (grade.localllyCancelled) {
-                              await RepositoryProvider.of<GradesRepository>(
-                                      context)
-                                  .updateGrade(
-                                      grade.copyWith(localllyCancelled: false));
-                              BlocProvider.of<GradesBloc>(context)
-                                  .add(GetGrades());
-                            } else {
-                              await RepositoryProvider.of<GradesRepository>(
-                                      context)
-                                  .updateGrade(
-                                      grade.copyWith(localllyCancelled: true));
-                              BlocProvider.of<GradesBloc>(context)
-                                  .add(GetGrades());
-                            }
-
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
-                    ),
-                  );
-                }
-              },
-              child: GradeCard(
-                grade: grades[index],
-              ),
+            child: GradeCard(
+              grade: grades[index],
             ),
           );
         },

@@ -521,10 +521,19 @@ class GlobalUtils {
   static String getEventDateMessage(BuildContext context, DateTime date) {
     final String dateString = DateUtils.convertDateLocaleDashboard(
         date, AppLocalizations.of(context).locale.toString());
+
+    final diff = date.difference(DateTime.now());
     return AppLocalizations.of(context)
         .translate('event_hour_day')
         .replaceAll('{date}', dateString)
-        .replaceAll('{hour}', date.hour.toString());
+        .replaceAll(
+          '{hour}',
+          date.hour.toString(),
+        )
+        .replaceAll(
+          '{days}',
+          diff.inDays.toString(),
+        );
   }
 
   // static void initialFetch(BuildContext context) {
