@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/domain/repository/grades_repository.dart';
+import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -13,50 +17,215 @@ class GradeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4.0),
-          color: GlobalUtils.getColorFromGrade(grade)),
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: <Widget>[
-          ClipOval(
-            child: Container(
-              height: 55,
-              width: 55,
-              color: Colors.white,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
-              child: Text(grade.displayValue,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 20)),
+        borderRadius: BorderRadius.circular(4.0),
+        color: GlobalUtils.getColorFromGrade(grade),
+      ),
+      child: Material(
+        child: InkWell(
+          borderRadius: BorderRadius.all(
+            Radius.circular(4.0),
+          ),
+          onTap: () {
+            _showGradeInfoDialog(context);
+          },
+          onLongPress: () {
+            _showDeleteGradeDialog(context);
+          },
+          child: Container(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: <Widget>[
+                  ClipOval(
+                    child: Container(
+                      height: 55,
+                      width: 55,
+                      color: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 15.0),
+                      child: Text(grade.displayValue,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20)),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          //grade.localllyCancelled.toString(),
+                          grade.subjectDesc.length > 20
+                              ? GlobalUtils.reduceSubjectTitle(
+                                  grade.subjectDesc)
+                              : grade.subjectDesc,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        _buildLessonArgument(grade),
+                        Text(
+                          DateUtils.convertDateLocale(grade.eventDate,
+                              AppLocalizations.of(context).locale.toString()),
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  //grade.localllyCancelled.toString(),
-                  grade.subjectDesc.length > 20
-                      ? GlobalUtils.reduceSubjectTitle(grade.subjectDesc)
-                      : grade.subjectDesc,
-                  style: TextStyle(color: Colors.white),
-                ),
-                _buildLessonArgument(grade),
-                Text(
-                  DateUtils.convertDateLocale(grade.eventDate,
-                      AppLocalizations.of(context).locale.toString()),
-                  style: TextStyle(color: Colors.white),
-                )
-              ],
-            ),
+        ),
+        color: Colors.transparent,
+      ),
+    );
+    // return Material(
+    //   child: InkWell(
+    //     onTap: () {},
+    //     child: Container(
+    //       decoration: BoxDecoration(
+    //           borderRadius: BorderRadius.circular(4.0),
+    //           color: GlobalUtils.getColorFromGrade(grade)),
+    //       padding: const EdgeInsets.all(16.0),
+    //       child: Row(
+    //         children: <Widget>[
+    //           ClipOval(
+    //             child: Container(
+    //               height: 55,
+    //               width: 55,
+    //               color: Colors.white,
+    //               padding: const EdgeInsets.symmetric(
+    //                   horizontal: 8.0, vertical: 15.0),
+    //               child: Text(grade.displayValue,
+    //                   textAlign: TextAlign.center,
+    //                   style: TextStyle(
+    //                       color: Colors.black,
+    //                       fontWeight: FontWeight.w500,
+    //                       fontSize: 20)),
+    //             ),
+    //           ),
+    //           Padding(
+    //             padding: const EdgeInsets.only(left: 8.0),
+    //             child: Column(
+    //               crossAxisAlignment: CrossAxisAlignment.start,
+    //               children: <Widget>[
+    //                 Text(
+    //                   //grade.localllyCancelled.toString(),
+    //                   grade.subjectDesc.length > 20
+    //                       ? GlobalUtils.reduceSubjectTitle(grade.subjectDesc)
+    //                       : grade.subjectDesc,
+    //                   style: TextStyle(color: Colors.white),
+    //                 ),
+    //                 _buildLessonArgument(grade),
+    //                 Text(
+    //                   DateUtils.convertDateLocale(grade.eventDate,
+    //                       AppLocalizations.of(context).locale.toString()),
+    //                   style: TextStyle(color: Colors.white),
+    //                 )
+    //               ],
+    //             ),
+    //           )
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
+  }
+
+  void _showGradeInfoDialog(BuildContext context) {
+    final trans = AppLocalizations.of(context);
+    String valueRow;
+    if (grade.localllyCancelled) {
+      valueRow = 'Valore: ${grade.decimalValue} (voto cancellato localmente)';
+    } else if (grade.cancelled) {
+      valueRow = 'Valore: voto cancellato';
+    } else if (grade.decimalValue == -1) {
+      valueRow = 'Valore che non fa media (voto in blu): ${grade.displayValue}';
+    } else {
+      valueRow =
+          '${trans.translate('decimal_value')}: ${grade.decimalValue.toString()}';
+    }
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "${trans.translate('notes')}: ${grade.notesForFamily.length > 0 ? grade.notesForFamily : trans.translate('not_presents').toLowerCase()}",
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(valueRow),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                  '${trans.translate('date')}: ${DateUtils.convertDateLocale(grade.eventDate, trans.locale.toString())}'),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                  '${trans.translate('term')}: ${grade.periodDesc.toLowerCase()}'),
+              SizedBox(
+                height: 5,
+              ),
+            ],
           )
         ],
       ),
     );
+  }
+
+  void _showDeleteGradeDialog(BuildContext context) {
+    if (grade.decimalValue != -1.00 && grade.cancelled == false) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(grade.localllyCancelled
+              ? AppLocalizations.of(context)
+                  .translate('delete_grade_title_restore')
+              : AppLocalizations.of(context)
+                  .translate('delete_grade_title_cancel')),
+          //content: Text(grades[index].localllyCancelled.toString()),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                  AppLocalizations.of(context).translate('no').toUpperCase()),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            FlatButton(
+              child: Text(
+                  AppLocalizations.of(context).translate('yes').toUpperCase()),
+              onPressed: () async {
+                if (grade.localllyCancelled) {
+                  await RepositoryProvider.of<GradesRepository>(context)
+                      .updateGrade(grade.copyWith(localllyCancelled: false));
+                  BlocProvider.of<GradesBloc>(context).add(GetGrades());
+                  BlocProvider.of<SubjectsGradesBloc>(context)
+                      .add(GetGradesAndSubjects());
+                } else {
+                  await RepositoryProvider.of<GradesRepository>(context)
+                      .updateGrade(grade.copyWith(localllyCancelled: true));
+                  BlocProvider.of<GradesBloc>(context).add(GetGrades());
+                  BlocProvider.of<SubjectsGradesBloc>(context)
+                      .add(GetGradesAndSubjects());
+                }
+
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ),
+      );
+    }
   }
 
   Widget _buildLessonArgument(Grade grade) {

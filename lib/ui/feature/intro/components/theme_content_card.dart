@@ -138,7 +138,7 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(bottom: 40),
+          margin: EdgeInsets.only(bottom: 30),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -153,8 +153,7 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
           widget.title,
           textAlign: TextAlign.center,
           style: TextStyle(
-            height: 1.2,
-            fontSize: 30.0,
+            fontSize: 20.0,
           ),
         ),
         // Text(
@@ -166,7 +165,7 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
         //   ),
         // ),
         SizedBox(
-          height: 20,
+          height: 30,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -174,15 +173,16 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
             elevation: 0,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-            color: _getBrightnessColor(context),
+            color: Colors.red,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
               child: Text(
                 AppLocalizations.of(context).translate('get_started_button'),
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 20,
                   letterSpacing: .8,
-                  fontWeight: FontWeight.w600,
+                  color: Colors.white
                 ),
               ),
             ),
@@ -201,7 +201,7 @@ class _ThemeContentCardState extends State<ThemeContentCard> {
           ),
         ),
         SizedBox(
-          height: 35,
+          height: 52,
         ),
       ],
     );

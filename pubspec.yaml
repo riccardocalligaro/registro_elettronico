@@ -3,7 +3,7 @@ description: >-
   A beautiful and simple school register app for Spaggiari.
   Made by students.
 
-version: 0.0.7-dev.3
+version: 0.0.7-dev.4
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -18,10 +18,14 @@ dependencies:
   # BloC
   flutter_bloc: ^3.2.0
   # Database
-  moor_flutter: ^2.1.0
   # Api
   dio: ^3.0.8
   indexed_list_view: ^1.0.8
+  flutter_inappwebview:
+    git:
+      url: https://github.com/pichillilorenzo/flutter_inappwebview.git
+      ref: master
+  moor_flutter: ^2.1.0
 
   retrofit: ^1.2.0
   # Use svg icons

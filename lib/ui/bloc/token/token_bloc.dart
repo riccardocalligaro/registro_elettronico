@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
+import 'package:registro_elettronico/domain/entity/last_year_token.dart';
 import 'package:registro_elettronico/domain/entity/login_token.dart';
 import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
 
@@ -14,6 +15,7 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
 
   TokenBloc(this.scrutiniRepository);
   LoginToken loginToken;
+  LastYearToken lastYearToken;
 
   @override
   TokenState get initialState => TokenInitial();
@@ -24,6 +26,7 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
   ) async* {
     if (event is GetLoginTokenForSchoolReport) {
       yield TokenLoadInProgress();
+
       if (loginToken != null) {
         FLog.info(text: 'Got token from singleton');
         yield TokenSchoolReportLoadSuccess(
@@ -51,26 +54,51 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
     } else if (event is GetLoginToken) {
       FLog.info(text: 'Getting login token');
       yield TokenLoadInProgress();
-      if (loginToken != null) {
-        FLog.info(text: 'Got token from singleton');
-        yield TokenLoadSuccess(
-          token: loginToken.token.split(';')[0],
-        );
-      } else {
-        final res = await scrutiniRepository.getLoginToken();
-        FLog.info(text: 'Got token from Spaggiari');
-        yield* res.fold((failure) async* {
-          FLog.error(
-            text: 'Error getting token from spaggiari',
-          );
-          Crashlytics.instance.log('Error getting token from spaggiari');
-          yield TokenLoadError();
-        }, (token) async* {
-          loginToken = LoginToken(token);
+
+      if (event.lastYear) {
+        if (lastYearToken != null) {
+          FLog.info(text: 'Got token from singleton');
           yield TokenLoadSuccess(
-            token: token.split(';')[0],
+            token: loginToken.token.split(';')[0],
           );
-        });
+        } else {
+          final res = await scrutiniRepository.getLoginToken(lastYear: true);
+          FLog.info(text: 'Got token from Spaggiari');
+          yield* res.fold((failure) async* {
+            FLog.error(
+              text: 'Error getting token from spaggiari',
+            );
+            Crashlytics.instance.log('Error getting token from spaggiari');
+            yield TokenLoadError();
+          }, (token) async* {
+            loginToken = LoginToken(token);
+            yield TokenLoadSuccess(
+              token: token.split(';')[0],
+            );
+          });
+        }
+      } else {
+        if (loginToken != null) {
+          FLog.info(text: 'Got token from singleton');
+          yield TokenLoadSuccess(
+            token: loginToken.token.split(';')[0],
+          );
+        } else {
+          final res = await scrutiniRepository.getLoginToken();
+          FLog.info(text: 'Got token from Spaggiari');
+          yield* res.fold((failure) async* {
+            FLog.error(
+              text: 'Error getting token from spaggiari',
+            );
+            Crashlytics.instance.log('Error getting token from spaggiari');
+            yield TokenLoadError();
+          }, (token) async* {
+            loginToken = LoginToken(token);
+            yield TokenLoadSuccess(
+              token: token.split(';')[0],
+            );
+          });
+        }
       }
     }
   }

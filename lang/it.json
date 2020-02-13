@@ -74,7 +74,7 @@
   "error_download": "Errore nello scaricamento del file!",
   "error_emoji": "Errore ❌",
   "event": "Evento",
-  "event_hour_day": "{date} alle {hour}",
+  "event_hour_day": "{date} alle {hour} ({days} giorni)",
   "events": "Eventi",
   "every_hours": "Ogni {h} ore",
   "every_minutes": "Ogni {m} minuti",
@@ -288,5 +288,8 @@
   "class_title": "Classe",
   "class_subtitle": "Seleziona la tua classe",
   "slide_4_subtitle": "Siamo un gruppo di pochi studenti.\nLe donazioni ci aiutano a mantenere l'app.",
-  "slide_4_title": "Da studenti"
+  "slide_4_title": "Da studenti",
+  "all_day_inline": "Tutto il giorno",
+  "school_and_territory": "Scuola e territorio"
+
 }
