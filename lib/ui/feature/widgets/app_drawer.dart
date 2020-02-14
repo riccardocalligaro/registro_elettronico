@@ -7,6 +7,7 @@ import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/account/account_settings.dart';
+import 'package:registro_elettronico/ui/feature/web/spaggiari_web_view.dart';
 import 'package:registro_elettronico/ui/feature/web/web_view_loading_page.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
@@ -314,32 +315,32 @@ class _AppDrawerState extends State<AppDrawer>
               pos: 12,
               onTap: () {
                 final url =
-                    'https://web.spaggiari.eu/home/app/default/menu_webinfoschool_studenti.php';
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => WebViewLoadingPage(
-                    title: trans.translate('web'),
-                    url: url,
-                    lastYear: false,
+                    'https://web.spaggiari.eu/home/app/default/login.php?index.php';
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SpaggiariWebView(
+                      appBarTitle: trans.translate('web'),
+                      url: url,
+                    ),
                   ),
-                ));
+                );
               },
             ),
-            _createDrawerItem(
-              icon: Icons.work,
-              text: trans.translate('school_and_territory'),
-              pos: 13,
-              onTap: () {
-                final url =
-                    'https://web.spaggiari.eu/home/app/default/menu_set_st.php';
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => WebViewLoadingPage(
-                    title: trans.translate('school_and_territory'),
-                    url: url,
-                    lastYear: false,
-                  ),
-                ));
-              },
-            ),
+            // _createDrawerItem(
+            //   icon: Icons.work,
+            //   text: trans.translate('school_and_territory'),
+            //   pos: 13,
+            //   onTap: () {
+            //     final url =
+            //         'https://web.spaggiari.eu/home/app/default/login.php?target=sct';
+            //     Navigator.of(context).push(MaterialPageRoute(
+            //       builder: (context) => SpaggiariWebView(
+            //         appBarTitle: trans.translate('school_and_territory'),
+            //         url: url,
+            //       ),
+            //     ));
+            //   },
+            // ),
 
             Divider(),
             _createDrawerItem(

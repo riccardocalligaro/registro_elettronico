@@ -8,7 +8,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/documents/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/documents/document_attachment/bloc/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/token/bloc.dart';
-import 'package:registro_elettronico/ui/feature/scrutini/web/spaggiari_web_view.dart';
+import 'package:registro_elettronico/ui/feature/web/spaggiari_web_view_no_persistency.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
@@ -83,7 +83,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                   Scaffold.of(context)..removeCurrentSnackBar();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => SpaggiariWebView(
+                      builder: (context) => SpaggiariWebViewNoPersistency(
                         phpSessid: state.token,
                         url: state.schoolReport.viewLink,
                         appBarTitle: state.schoolReport.description,

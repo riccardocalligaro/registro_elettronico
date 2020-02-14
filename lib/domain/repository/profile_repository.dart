@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/domain/entity/entities.dart';
+import 'package:tuple/tuple.dart';
 
 abstract class ProfileRepository {
   /// Returns true if the user is logged in
@@ -22,4 +23,6 @@ abstract class ProfileRepository {
   Future getToken();
 
   Future<db.Profile> getDbProfile();
+
+  Future<Tuple2<db.Profile, String>> getUserAndPassword();
 }

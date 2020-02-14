@@ -68,7 +68,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             FLog.info(text: loginReponse.toJson().toString());
 
             await flutterSecureStorage.write(
-                key: event.username, value: event.password);
+              key: loginReponse.ident,
+              value: event.password,
+            );
             _saveProfileInDb(loginReponse, event.password);
             FLog.info(text: 'Log in success');
 
