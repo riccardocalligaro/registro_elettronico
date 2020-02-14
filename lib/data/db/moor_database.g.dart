@@ -16,7 +16,6 @@ class Profile extends DataClass implements Insertable<Profile> {
   final String token;
   final DateTime release;
   final DateTime expire;
-  final String passwordKey;
   Profile(
       {@required this.id,
       @required this.studentId,
@@ -25,8 +24,7 @@ class Profile extends DataClass implements Insertable<Profile> {
       @required this.lastName,
       @required this.token,
       @required this.release,
-      @required this.expire,
-      @required this.passwordKey});
+      @required this.expire});
   factory Profile.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -49,8 +47,6 @@ class Profile extends DataClass implements Insertable<Profile> {
           .mapFromDatabaseResponse(data['${effectivePrefix}release']),
       expire: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}expire']),
-      passwordKey: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}password_key']),
     );
   }
   factory Profile.fromJson(Map<String, dynamic> json,
@@ -64,7 +60,6 @@ class Profile extends DataClass implements Insertable<Profile> {
       token: serializer.fromJson<String>(json['token']),
       release: serializer.fromJson<DateTime>(json['release']),
       expire: serializer.fromJson<DateTime>(json['expire']),
-      passwordKey: serializer.fromJson<String>(json['passwordKey']),
     );
   }
   @override
@@ -79,7 +74,6 @@ class Profile extends DataClass implements Insertable<Profile> {
       'token': serializer.toJson<String>(token),
       'release': serializer.toJson<DateTime>(release),
       'expire': serializer.toJson<DateTime>(expire),
-      'passwordKey': serializer.toJson<String>(passwordKey),
     };
   }
 
@@ -105,9 +99,6 @@ class Profile extends DataClass implements Insertable<Profile> {
           : Value(release),
       expire:
           expire == null && nullToAbsent ? const Value.absent() : Value(expire),
-      passwordKey: passwordKey == null && nullToAbsent
-          ? const Value.absent()
-          : Value(passwordKey),
     );
   }
 
@@ -119,8 +110,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           String lastName,
           String token,
           DateTime release,
-          DateTime expire,
-          String passwordKey}) =>
+          DateTime expire}) =>
       Profile(
         id: id ?? this.id,
         studentId: studentId ?? this.studentId,
@@ -130,7 +120,6 @@ class Profile extends DataClass implements Insertable<Profile> {
         token: token ?? this.token,
         release: release ?? this.release,
         expire: expire ?? this.expire,
-        passwordKey: passwordKey ?? this.passwordKey,
       );
   @override
   String toString() {
@@ -142,8 +131,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           ..write('lastName: $lastName, ')
           ..write('token: $token, ')
           ..write('release: $release, ')
-          ..write('expire: $expire, ')
-          ..write('passwordKey: $passwordKey')
+          ..write('expire: $expire')
           ..write(')'))
         .toString();
   }
@@ -159,12 +147,8 @@ class Profile extends DataClass implements Insertable<Profile> {
                   firstName.hashCode,
                   $mrjc(
                       lastName.hashCode,
-                      $mrjc(
-                          token.hashCode,
-                          $mrjc(
-                              release.hashCode,
-                              $mrjc(expire.hashCode,
-                                  passwordKey.hashCode)))))))));
+                      $mrjc(token.hashCode,
+                          $mrjc(release.hashCode, expire.hashCode))))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -176,8 +160,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           other.lastName == this.lastName &&
           other.token == this.token &&
           other.release == this.release &&
-          other.expire == this.expire &&
-          other.passwordKey == this.passwordKey);
+          other.expire == this.expire);
 }
 
 class ProfilesCompanion extends UpdateCompanion<Profile> {
@@ -189,7 +172,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<String> token;
   final Value<DateTime> release;
   final Value<DateTime> expire;
-  final Value<String> passwordKey;
   const ProfilesCompanion({
     this.id = const Value.absent(),
     this.studentId = const Value.absent(),
@@ -199,7 +181,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.token = const Value.absent(),
     this.release = const Value.absent(),
     this.expire = const Value.absent(),
-    this.passwordKey = const Value.absent(),
   });
   ProfilesCompanion.insert({
     this.id = const Value.absent(),
@@ -210,15 +191,13 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     @required String token,
     @required DateTime release,
     @required DateTime expire,
-    @required String passwordKey,
   })  : studentId = Value(studentId),
         ident = Value(ident),
         firstName = Value(firstName),
         lastName = Value(lastName),
         token = Value(token),
         release = Value(release),
-        expire = Value(expire),
-        passwordKey = Value(passwordKey);
+        expire = Value(expire);
   ProfilesCompanion copyWith(
       {Value<int> id,
       Value<String> studentId,
@@ -227,8 +206,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<String> lastName,
       Value<String> token,
       Value<DateTime> release,
-      Value<DateTime> expire,
-      Value<String> passwordKey}) {
+      Value<DateTime> expire}) {
     return ProfilesCompanion(
       id: id ?? this.id,
       studentId: studentId ?? this.studentId,
@@ -238,7 +216,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       token: token ?? this.token,
       release: release ?? this.release,
       expire: expire ?? this.expire,
-      passwordKey: passwordKey ?? this.passwordKey,
     );
   }
 }
@@ -340,32 +317,9 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     );
   }
 
-  final VerificationMeta _passwordKeyMeta =
-      const VerificationMeta('passwordKey');
-  GeneratedTextColumn _passwordKey;
   @override
-  GeneratedTextColumn get passwordKey =>
-      _passwordKey ??= _constructPasswordKey();
-  GeneratedTextColumn _constructPasswordKey() {
-    return GeneratedTextColumn(
-      'password_key',
-      $tableName,
-      false,
-    );
-  }
-
-  @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        studentId,
-        ident,
-        firstName,
-        lastName,
-        token,
-        release,
-        expire,
-        passwordKey
-      ];
+  List<GeneratedColumn> get $columns =>
+      [id, studentId, ident, firstName, lastName, token, release, expire];
   @override
   $ProfilesTable get asDslTable => this;
   @override
@@ -423,12 +377,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     } else if (expire.isRequired && isInserting) {
       context.missing(_expireMeta);
     }
-    if (d.passwordKey.present) {
-      context.handle(_passwordKeyMeta,
-          passwordKey.isAcceptableValue(d.passwordKey.value, _passwordKeyMeta));
-    } else if (passwordKey.isRequired && isInserting) {
-      context.missing(_passwordKeyMeta);
-    }
     return context;
   }
 
@@ -466,9 +414,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     }
     if (d.expire.present) {
       map['expire'] = Variable<DateTime, DateTimeType>(d.expire.value);
-    }
-    if (d.passwordKey.present) {
-      map['password_key'] = Variable<String, StringType>(d.passwordKey.value);
     }
     return map;
   }

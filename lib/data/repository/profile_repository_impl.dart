@@ -23,7 +23,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
       ProfileMapper.mapProfileEntityToProfileInsertable(profile));
 
   @override
-  Future insertProfile({Profile profile}) {
+  Future insertProfile({
+    Profile profile,
+  }) {
     final convertedProfile =
         ProfileMapper.mapProfileEntityToProfileInsertable(profile);
     return profileDao.insertProfile(convertedProfile);

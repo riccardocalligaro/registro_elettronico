@@ -290,5 +290,7 @@
   "slide_4_subtitle": "We are a small group of students.\nDontanions help us improve the app.",
   "slide_4_title": "From students",
   "all_day_inline": "All day",
-  "school_and_territory": "School and territory"
+  "school_and_territory": "School and territory",
+  "delete_notice_alert_title": "Are you sure to delete this attachment?",
+  "delete_notice_snackbar_info": "To delete a notice you have to long press on the single attachment"
 }

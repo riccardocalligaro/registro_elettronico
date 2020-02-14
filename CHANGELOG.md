@@ -1,3 +1,12 @@
+Version 0.0.7-dev.5
+
+Added scuola & territorio, web view, fixed cookies, more
+* Added web view of registro elettronico
+
+
+
+--- 
+
 Version 0.0.7-dev.4
 
 Added scuola & territorio, web view, fixed cookies, more

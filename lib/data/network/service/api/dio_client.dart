@@ -62,8 +62,10 @@ class DioClient {
           final loginResponse = LoginResponse.fromJson(res.data);
 
           // finally we update the db with the new token
-          profileRepository.updateProfile(ProfileMapper
-              .mapLoginResponseProfileToProfileEntity(loginResponse));
+          profileRepository.updateProfile(
+              ProfileMapper.mapLoginResponseProfileToProfileEntity(
+            loginResponse,
+          ));
 
           //profileRepository.updateProfile();
           FLog.info(

@@ -3,7 +3,7 @@ description: >-
   A beautiful and simple school register app for Spaggiari.
   Made by students.
 
-version: 0.0.7-dev.4
+version: 0.0.7-dev.5
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -18,20 +18,16 @@ dependencies:
   # BloC
   flutter_bloc: ^3.2.0
   # Database
+  moor_flutter: ^2.1.0
   # Api
   dio: ^3.0.8
-  indexed_list_view: ^1.0.8
-  #flutter_inappwebview:
-  #  git:
-  #    url: https://github.com/pichillilorenzo/flutter_inappwebview.git
-  #    ref: master
-  moor_flutter: ^2.1.0
-
   retrofit: ^1.2.0
-  # Use svg icons
+
+  # Use svg icons in home
   flutter_svg: ^0.15.0
   # Launcher icon
   flutter_launcher_icons: ^0.7.4
+
   # for percentage
   percent_indicator: ^2.1.1+1
   # for files
@@ -47,10 +43,7 @@ dependencies:
   url_launcher: ^5.4.1
   # pick a grade
   numberpicker: ^1.1.0
-  # initial slideshow
-  flutter_swiper: ^1.1.6
-  # intro page aligment
-  align_positioned: ^1.2.5
+
   # download indicator
   liquid_progress_indicator: ^0.3.2
   tuple: ^1.0.3
@@ -73,7 +66,6 @@ dependencies:
   screenshot: ^0.1.1
   # share screenshot
   esys_flutter_share: ^1.0.2
-  flutter_speed_dial: ^1.2.5
   # unicorndial: ^1.1.5
   flutter_colorpicker: ^0.2.6
   # date time picker
@@ -98,6 +90,11 @@ dependencies:
   table_calendar: ^2.2.1
 
   fl_chart: ^0.7.0
+
+  # indexed_list_view: ^1.0.8
+  # flutter_swiper: ^1.1.6
+  # align_positioned: ^1.2.5
+  # flutter_speed_dial: ^1.2.5
 
   flutter_localizations:
     sdk: flutter

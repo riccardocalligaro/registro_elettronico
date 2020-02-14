@@ -31,6 +31,7 @@ class PrefsConstants {
   static const STUDENT_YEAR = 'student_year';
   static const SCROLL_AT_START = 'scroll_at_start';
   static const DEFAULT_GRID_VIEW = 'default_grid_view';
+  static const USER_EMAIL = 'user_email';
 
   static const UPDATE_AT_START = 'update_at_start';
 

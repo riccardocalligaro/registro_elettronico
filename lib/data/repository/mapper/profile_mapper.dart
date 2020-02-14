@@ -11,7 +11,6 @@ class ProfileMapper {
       id: -1,
       ident: e.ident,
       studentId: ProfileUtils.getIdFromIdent(e.ident),
-      passwordKey: ProfileUtils.createCryptoRandomString(),
       firstName: e.firstName ?? "",
       lastName: e.lastName ?? "",
       token: e.token ?? "",
@@ -23,7 +22,8 @@ class ProfileMapper {
 
   /// Converts the login response that we get from calsseviva into a profile entity
   static entity.Profile mapLoginResponseProfileToProfileEntity(
-      LoginResponse resProfile) {
+    LoginResponse resProfile,
+  ) {
     return entity.Profile(
       firstName: resProfile.firstName ?? "",
       lastName: resProfile.lastName ?? "",

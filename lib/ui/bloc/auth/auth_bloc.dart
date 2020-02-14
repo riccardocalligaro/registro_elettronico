@@ -65,13 +65,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         yield* responseProfile.fold(
           (loginReponse) async* {
-            FLog.info(text: loginReponse.toJson().toString());
-
             await flutterSecureStorage.write(
               key: loginReponse.ident,
               value: event.password,
             );
-            _saveProfileInDb(loginReponse, event.password);
+
+            String regEx =
+                r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+            String email = '';
+            if (event.username.contains(RegExp(regEx))) {
+              email = event.username;
+            }
+            _saveProfileInDb(loginReponse, event.password, email);
             FLog.info(text: 'Log in success');
 
             yield SignInSuccess(
@@ -107,10 +112,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  _saveProfileInDb(LoginResponse returnedProfile, String userPassword) {
+  _saveProfileInDb(
+      LoginResponse returnedProfile, String userPassword, String email) {
     FLog.info(text: 'Saving profile in database');
-    final profileEntity =
-        ProfileMapper.mapLoginResponseProfileToProfileEntity(returnedProfile);
+    final profileEntity = ProfileMapper.mapLoginResponseProfileToProfileEntity(
+      returnedProfile,
+    );
     profileRepository.insertProfile(profile: profileEntity);
     flutterSecureStorage.write(key: profileEntity.ident, value: userPassword);
   }

@@ -9,7 +9,6 @@ class Profiles extends Table {
   TextColumn get token => text()();
   DateTimeColumn get release => dateTime()();
   DateTimeColumn get expire => dateTime()();
-  TextColumn get email => text()();
 
   @override
   Set<Column> get primaryKey => {id, ident};
