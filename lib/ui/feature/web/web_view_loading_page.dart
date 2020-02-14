@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/token/bloc.dart';
-import 'package:registro_elettronico/ui/feature/scrutini/web/spaggiari_web_view.dart';
+import 'package:registro_elettronico/ui/feature/web/spaggiari_web_view_no_persistency.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 
 /// A page where there is a [circular progress] loading bar
@@ -43,7 +43,7 @@ class _WebViewLoadingPageState extends State<WebViewLoadingPage> {
           Navigator.pop(context);
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => SpaggiariWebView(
+              builder: (context) => SpaggiariWebViewNoPersistency(
                 phpSessid: state.token,
                 url: url,
                 appBarTitle: widget.title,

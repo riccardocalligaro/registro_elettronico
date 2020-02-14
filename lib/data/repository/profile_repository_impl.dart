@@ -4,6 +4,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
 import 'package:registro_elettronico/domain/entity/entities.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
+import 'package:tuple/tuple.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   ProfileDao profileDao;
@@ -48,5 +49,12 @@ class ProfileRepositoryImpl implements ProfileRepository {
     return profileDao.updateProfile(
       ProfileMapper.mapProfileEntityToProfileInsertable(profile),
     );
+  }
+
+  @override
+  Future<Tuple2<db.Profile, String>> getUserAndPassword() async {
+    final profile = await profileDao.getProfile();
+    final password = await flutterSecureStorage.read(key: profile.ident);
+    return Tuple2(profile, password);
   }
 }
