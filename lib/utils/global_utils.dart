@@ -28,7 +28,6 @@ class GlobalUtils {
       firstName: 'x',
       lastName: '',
       release: DateTime.now(),
-      passwordKey: '',
       token: '',
       studentId: '',
       expire: DateTime.now(),

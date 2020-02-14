@@ -6,11 +6,13 @@ import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 class SpaggiariWebView extends StatefulWidget {
   final String url;
   final String appBarTitle;
+  final String email;
 
   const SpaggiariWebView({
     Key key,
     @required this.url,
     @required this.appBarTitle,
+    this.email,
   }) : super(key: key);
 
   @override
@@ -34,8 +36,8 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
         final userInfo = await RepositoryProvider.of<ProfileRepository>(context)
             .getUserAndPassword();
         print(userInfo.item2);
-        await flutterWebviewPlugin
-            .evalJavascript('\$("#login").val("${userInfo.item1.ident}");');
+        await flutterWebviewPlugin.evalJavascript(
+            '\$("#login").val("${widget.email ?? userInfo.item1.ident}");');
         await flutterWebviewPlugin
             .evalJavascript('\$("#password").val("${userInfo.item2}");');
 
@@ -51,7 +53,7 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
     GlobalKey _scaffoldkey;
 
     return WebviewScaffold(
-      debuggingEnabled: true,
+      debuggingEnabled: false,
       key: _scaffoldkey,
       userAgent:
           'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:37.0) Gecko/20100101 Firefox/37.0',

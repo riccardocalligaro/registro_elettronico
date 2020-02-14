@@ -290,6 +290,7 @@
   "slide_4_subtitle": "Siamo un gruppo di pochi studenti.\nLe donazioni ci aiutano a mantenere l'app.",
   "slide_4_title": "Da studenti",
   "all_day_inline": "Tutto il giorno",
-  "school_and_territory": "Scuola e territorio"
-
+  "school_and_territory": "Scuola e territorio",
+  "delete_notice_alert_title": "Sei sicuro di voler eliminare questo file?",
+  "delete_notice_snackbar_info": "Per eliminare una circolare devi tener premuto sul singolo allegato"
 }

@@ -133,6 +133,12 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                   ..showSnackBar(
                       AppNavigator.instance.getNetworkErrorSnackBar(context));
               }
+
+              if (state is NoticesUpdateLoaded) {
+                setState(() {
+                  _noticeboardLastUpdate = DateTime.now().millisecondsSinceEpoch;
+                });
+              }
             },
           ),
           BlocListener<AttachmentDownloadBloc, AttachmentDownloadState>(
@@ -285,13 +291,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
             itemCount: notices.length,
             itemBuilder: (context, index) {
               final notice = notices[index];
-
-              // if (index == 0) {
-              //   return Padding(
-              //     padding: const EdgeInsets.only(top: 8.0),
-              //     child: _buildNoticeCard(notice, context),
-              //   );
-              // }
               return _buildNoticeCard(notice, context);
             },
           ),
@@ -338,6 +337,15 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           onTap: () async {
             _downloadAttachments(context, notice);
           },
+          onLongPress: () {
+            Scaffold.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text(AppLocalizations.of(context)
+                    .translate('delete_notice_snackbar_info')),
+              ));
+          },
         ),
       ),
     );
@@ -372,9 +380,39 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                         final attachment = state.attachments[index];
                         return ListTile(
                           title: Text(attachment.fileName),
+                          onLongPress: () async {
+                            final file = await _localFile(notice, attachment);
+                            if (file.existsSync()) {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text(AppLocalizations.of(context)
+                                      .translate('delete_notice_alert_title')),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text(AppLocalizations.of(context)
+                                          .translate('no')
+                                          .toUpperCase()),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text(AppLocalizations.of(context)
+                                          .translate('yes')
+                                          .toUpperCase()),
+                                      onPressed: () async {
+                                        file.deleteSync();
+                                        Navigator.pop(context);
+                                      },
+                                    )
+                                  ],
+                                ),
+                              );
+                            }
+                          },
                           onTap: () async {
                             final file = await _localFile(notice, attachment);
-                            print(await file.exists());
                             if (file.existsSync()) {
                               await OpenFile.open(file.path);
                               BlocProvider.of<NoticesBloc>(context)
@@ -386,8 +424,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                                       notice: notice, attachment: attachment));
 
                               await Navigator.pop(context);
-                              BlocProvider.of<NoticesBloc>(context)
-                                  .add(GetNoticeboard());
+                              // BlocProvider.of<NoticesBloc>(context)
+                              //     .add(GetNoticeboard());
                             }
                           },
                         );
