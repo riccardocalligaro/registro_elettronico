@@ -195,7 +195,7 @@
   "riccardo_calligaro_description": "Project manager & Codice",
   "school_material": "Materiale didattico",
   "score": "Punteggio",
-  "score_description": "Questo punteggio viene calcolato tenendo conto di diversi fattori.\nDipende da voti, note disciplinari e assenze. Un punteggio minore di 60 viene considerato negativo.\n\nNon prendere questo numero troppo seriamente.",
+  "score_description": "Questo punteggio viene calcolato tenendo conto di diversi fattori.\nDipende da voti, note disciplinari e assenze. Un punteggio minore di 60 viene considerato negativo.\nQuesto punteggio viene calcolato da un nostro algorimo.\nNon prenderlo troppo seriamente.",
   "scrutini": "Scrutini",
   "scrutini_documents": "Documenti finali",
   "scrutini_school_reports": "Allegati",
@@ -292,5 +292,7 @@
   "all_day_inline": "Tutto il giorno",
   "school_and_territory": "Scuola e territorio",
   "delete_notice_alert_title": "Sei sicuro di voler eliminare questo file?",
-  "delete_notice_snackbar_info": "Per eliminare una circolare devi tener premuto sul singolo allegato"
+  "delete_notice_snackbar_info": "Per eliminare una circolare devi tener premuto sul singolo allegato",
+  "event_hour_day_single": "{date} alle {hour} ({day} giorno)"
+
 }

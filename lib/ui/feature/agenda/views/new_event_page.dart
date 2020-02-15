@@ -447,7 +447,7 @@ class _NewEventPageState extends State<NewEventPage> {
     if (_missingSubject) {
       return Colors.red;
     } else {
-      return GlobalUtils.isDark(context) ? Colors.white : Colors.grey[900];
+      return null;
     }
   }
 }

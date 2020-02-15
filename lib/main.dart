@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Application(
       builder: (bCtx, initData) {
-        _setSystemUI(initData.overlayStyle);
+        // _setSystemUI(initData.overlayStyle);
         return MaterialApp(
           title: 'Registro elettronico',
           locale: initData.locale,
@@ -76,9 +76,10 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  _setSystemUI(SystemUiOverlayStyle overlayStyle) {
-    SystemChrome.setSystemUIOverlayStyle(overlayStyle);
-  }
+  // _setSystemUI(SystemUiOverlayStyle overlayStyle) {
+  //   SystemChrome.setSystemUIOverlayStyle(overlayStyle);
+  //   SystemChrome.setEnabledSystemUIOverlays([]);
+  // }
   //   Color navBarColor;
   //   if (brightness == Brightness.dark) {
   //     navBarColor = Colors.grey[900];

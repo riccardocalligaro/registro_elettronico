@@ -12,12 +12,11 @@ final material = ThemeData(
     elevation: 1,
     color: Colors.white,
   ),
-  primaryIconTheme: IconThemeData(
-    color: Colors.grey[900],
-    opacity: 0.50
-  ),
+  primaryIconTheme: IconThemeData(color: Colors.grey[900], opacity: 0.50),
   primaryTextTheme: TextTheme(
-    title: TextStyle(color: Colors.grey[900]),
+    title: TextStyle(
+      color: Colors.grey[900],
+    ),
     headline: HeadingSmall.copyWith(color: Colors.grey[900]),
     body1: BodyStyle1.copyWith(color: Colors.grey[900]),
   ),

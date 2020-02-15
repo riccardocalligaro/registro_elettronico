@@ -36,10 +36,13 @@ class SubjectsList extends StatelessWidget {
           final professorsForSubject =
               professors.where((prof) => prof.subjectId == subject.id).toList();
           String professorsText = "";
+          // professorsText +=
+          //     "${StringUtils.titleCase(GlobalUtils.getMockupName(index: index))}, ";
           professorsForSubject.forEach((prof) {
             String name = StringUtils.titleCase(prof.name);
-            if (!professorsText.contains(name))
+            if (!professorsText.contains(name)) {
               professorsText += "${StringUtils.titleCase(prof.name)}, ";
+            }
           });
           professorsText = StringUtils.removeLastChar(professorsText);
           return Column(

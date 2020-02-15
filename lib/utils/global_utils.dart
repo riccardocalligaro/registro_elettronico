@@ -522,6 +522,20 @@ class GlobalUtils {
         date, AppLocalizations.of(context).locale.toString());
 
     final diff = date.difference(DateTime.now());
+
+    if (diff.inDays == 1) {
+      return AppLocalizations.of(context)
+          .translate('event_hour_day_single')
+          .replaceAll('{date}', dateString)
+          .replaceAll(
+            '{hour}',
+            date.hour.toString(),
+          )
+          .replaceAll(
+            '{day}',
+            diff.inDays.toString(),
+          );
+    }
     return AppLocalizations.of(context)
         .translate('event_hour_day')
         .replaceAll('{date}', dateString)
@@ -533,6 +547,39 @@ class GlobalUtils {
           '{days}',
           diff.inDays.toString(),
         );
+  }
+
+  static String getMockupName({int index}) {
+    final List<String> names = [
+      'Anna Maria Panicucci',
+      'Licia Zito',
+      'Cristiano Capon',
+      'Vittoria Bianchi',
+      'Prisco Capon',
+      'Danilo Marchesi',
+      'Marco Lombardi',
+      'Adelia Marcelo',
+      'Bettino Donati',
+      'Gianni Moretti',
+      'Rita Parisi',
+      'Vinicio Bellini',
+      'Filomena Longo',
+      'Fiorenzo Bianco',
+      'Leone Basile'
+    ];
+
+    if (index == null) {
+      Random random = new Random();
+      int randomNumber = random.nextInt(names.length - 1);
+
+      return names[randomNumber];
+    }
+
+    if (index > names.length - 1) {
+      return 'Mario Rossi';
+    }
+
+    return names[index];
   }
 
   // static void initialFetch(BuildContext context) {

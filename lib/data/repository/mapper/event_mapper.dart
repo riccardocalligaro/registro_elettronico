@@ -32,7 +32,7 @@ class EventMapper {
       subjectId: event.subjectId ?? 0,
       subjectDesc: event.subjectDesc ?? "",
       isLocal: false,
-      labelColor: GlobalUtils.getColorCode(color),
+      labelColor: GlobalUtils.getColorCode(color) ?? Colors.green,
       title: title ?? '',
     );
   }
