@@ -107,13 +107,14 @@ class NotificationService {
       if (gradesToNotify.length < 5) {
         gradesToNotify.forEach(
           (grade) => localNotification.showNotificationWithDefaultSound(
-              grade.evtId,
-              NotificationMessage.getGradeNotificationTitle(
-                grade: grade.decimalValue,
-              ),
-              NotificationMessage.getGradeNotificationSubtitle(
-                grade: grade,
-              )),
+            grade.evtId,
+            NotificationMessage.getGradeNotificationTitle(
+              grade: grade.decimalValue,
+            ),
+            NotificationMessage.getGradeNotificationSubtitle(
+              grade: grade,
+            ),
+          ),
         );
       }
     }

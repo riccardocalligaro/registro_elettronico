@@ -356,7 +356,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         if (state is AgendaUpdateLoadInProgress) {
           return Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 140),
+              padding: const EdgeInsets.symmetric(vertical: 170),
               child: CircularProgressIndicator(),
             ),
           );
@@ -420,7 +420,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       onVisibleDaysChanged: _onVisibleDaysChanged,
       builders: CalendarBuilders(
         singleMarkerBuilder: (context, date, event) {
-          Color cor = Color(int.parse(event.labelColor));
+          Color cor = _getLabelColor(event.labelColor);
           return Container(
             decoration: BoxDecoration(shape: BoxShape.circle, color: cor),
             width: 7.0,
@@ -430,6 +430,16 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         },
       ),
     );
+  }
+
+  Color _getLabelColor(String eventColor) {
+    final color = Color(int.parse(eventColor));
+    // if (GlobalUtils.isDark(context)) {
+    //   return color;
+    // } else {
+    //   if (color == Colors.white) return Colors.green;
+    // }
+    return color;
   }
 
   List<Widget> markersBuilder(context, date, events, holidays) {
@@ -628,7 +638,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
               return Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
                 child: Card(
-                  color: Colors.red[400],
+                  color: Color(int.parse(event.labelColor)) ?? Colors.red,
                   child: ListTile(
                     onTap: () async {
                       await _showLocalBoottomSheet(event);
@@ -673,6 +683,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
           Text(
             AppLocalizations.of(context).translate('all_day_card'),
             textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white),
           ),
         ],
       );

@@ -41,7 +41,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
         if (GlobalUtils.isVerificaOrInterrogazione(event.notes)) {
           color = Colors.red;
         } else {
-          color = Colors.white;
+          color = Colors.green;
         }
         events.add(EventMapper.convertEventEntityToInsertable(event, color));
       });
@@ -75,7 +75,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
         if (GlobalUtils.isVerificaOrInterrogazione(event.notes)) {
           color = Colors.red;
         } else {
-          color = Colors.white;
+          color = Colors.green;
         }
         events.add(EventMapper.convertEventEntityToInsertable(event, color));
       });
@@ -101,7 +101,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
         if (GlobalUtils.isVerificaOrInterrogazione(event.notes)) {
           color = Colors.red;
         } else {
-          color = Colors.white;
+          color = Colors.green;
         }
         events.add(EventMapper.convertEventEntityToInsertable(event, color));
       });

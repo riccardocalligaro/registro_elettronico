@@ -158,7 +158,6 @@ class _EditEventPageState extends State<EditEventPage> {
       child: ListTile(
         leading: Icon(
           Icons.subject,
-          color: GlobalUtils.isDark(context) ? Colors.white : Colors.grey[900],
         ),
         title: TextField(
           controller: _descriptionController,
@@ -258,9 +257,6 @@ class _EditEventPageState extends State<EditEventPage> {
             ListTile(
               leading: Icon(
                 Icons.title,
-                color: GlobalUtils.isDark(context)
-                    ? Colors.white
-                    : Colors.grey[900],
               ),
               title: TextField(
                 controller: _titleController,
@@ -271,7 +267,16 @@ class _EditEventPageState extends State<EditEventPage> {
                 ),
               ),
             ),
-            InkWell(
+            ListTile(
+              leading: Icon(Icons.label),
+              title: Text(AppLocalizations.of(context).translate('label')),
+              trailing: ClipOval(
+                child: Container(
+                  height: 20,
+                  width: 20,
+                  color: _labelColor,
+                ),
+              ),
               onTap: () {
                 showDialog(
                   context: context,
@@ -297,37 +302,14 @@ class _EditEventPageState extends State<EditEventPage> {
                   },
                 );
               },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  child: Row(
-                    //  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.label,
-                          ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Text(AppLocalizations.of(context).translate('label')),
-                        ],
-                      ),
-                      ClipOval(
-                        child: Container(
-                          height: 20,
-                          width: 20,
-                          color: _labelColor,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
             ),
-            InkWell(
+            ListTile(
+              leading: Icon(Icons.today),
+              title: Text(AppLocalizations.of(context).translate('date')),
+              trailing: Text(
+                DateUtils.getNewEventDateMessage(_selectedDate,
+                    AppLocalizations.of(context).locale.toString(), context),
+              ),
               onTap: () {
                 showDialog(
                   context: context,
@@ -340,34 +322,11 @@ class _EditEventPageState extends State<EditEventPage> {
                   }
                 });
               },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Icon(Icons.today),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Text(AppLocalizations.of(context).translate('date')),
-                        ],
-                      ),
-                      Text(
-                        DateUtils.getNewEventDateMessage(
-                          _selectedDate,
-                          AppLocalizations.of(context).locale.toString(),
-                          context
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ),
-            InkWell(
+            ListTile(
+              leading: Icon(Icons.access_time),
+              title: Text(AppLocalizations.of(context).translate('time')),
+              trailing: Text(_timeOfDay.format(context)),
               onTap: () {
                 showTimePicker(
                   context: context,
@@ -380,29 +339,7 @@ class _EditEventPageState extends State<EditEventPage> {
                   }
                 });
               },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Icon(Icons.access_time),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Text(
-                            AppLocalizations.of(context).translate('time'),
-                          ),
-                        ],
-                      ),
-                      Text(_timeOfDay.format(context)),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            )
           ],
         ),
       ),
@@ -469,7 +406,7 @@ class _EditEventPageState extends State<EditEventPage> {
     if (_missingSubject) {
       return Colors.red;
     } else {
-      return GlobalUtils.isDark(context) ? Colors.white : Colors.grey[900];
+      return null;
     }
   }
 }

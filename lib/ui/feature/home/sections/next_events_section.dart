@@ -31,7 +31,8 @@ class NextEventsSection extends StatelessWidget {
             child: CustomPlaceHolder(
               icon: Icons.error,
               showUpdate: false,
-              text: 'Erorr',
+              text: AppLocalizations.of(context)
+                  .translate('unexcepted_error_single'),
             ),
           );
         } else {
@@ -50,7 +51,8 @@ class NextEventsSection extends StatelessWidget {
                 );
               } else if (state is AgendaDashboardLoadError) {
                 return CustomPlaceHolder(
-                  text: AppLocalizations.of(context).translate('erorr'),
+                  text: AppLocalizations.of(context)
+                      .translate('unexcepted_error_single'),
                   icon: Icons.error,
                   showUpdate: true,
                   onTap: () {
@@ -132,6 +134,10 @@ class NextEventsSection extends StatelessWidget {
                       SizedBox(
                         height: 2.5,
                       ),
+                      // Text(
+                      //   '${StringUtils.titleCase(GlobalUtils.getMockupName())} - ${_getDateMessage(e, context)}',
+                      //   style: TextStyle(fontSize: 12.0),
+                      // ),
                       Text(
                         '${StringUtils.titleCase(e.authorName)} - ${_getDateMessage(e, context)}',
                         style: TextStyle(fontSize: 12.0),
@@ -158,26 +164,28 @@ class NextEventsSection extends StatelessWidget {
               );
             }).toList(),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: FlatButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => NextEventsPage(
-                        events: events,
-                      ),
+          events.length > 3
+              ? Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => NextEventsPage(
+                              events: events,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text(AppLocalizations.of(context)
+                          .translate('show_others')
+                          .toUpperCase()),
                     ),
-                  );
-                },
-                child: Text(AppLocalizations.of(context)
-                    .translate('show_others')
-                    .toUpperCase()),
-              ),
-            ),
-          )
+                  ),
+                )
+              : Container()
         ],
       );
     }
@@ -185,7 +193,9 @@ class NextEventsSection extends StatelessWidget {
 
   String _getDateMessage(db.AgendaEvent agendaEvent, BuildContext context) {
     if (agendaEvent.isFullDay) {
-      return AppLocalizations.of(context).translate('all_day_inline').toLowerCase();
+      return AppLocalizations.of(context)
+          .translate('all_day_inline')
+          .toLowerCase();
     }
     return GlobalUtils.getEventDateMessage(context, agendaEvent.begin);
   }

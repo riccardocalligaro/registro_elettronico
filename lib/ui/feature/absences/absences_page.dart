@@ -190,10 +190,17 @@ class _AbsencesPageState extends State<AbsencesPage> {
           percent: percent,
           animation: withAnimation,
           animationDuration: 300,
-          center: Text(
-            numberOfEvent.toString(),
-            style: TextStyle(
-              fontSize: 18,
+          center: InkWell(
+            radius: 65,
+            // borderRadius: BorderRadius.all(
+            //   Radius.circular(65.0),
+            // ),
+            onTap: () {},
+            child: Text(
+              numberOfEvent.toString(),
+              style: TextStyle(
+                fontSize: 18,
+              ),
             ),
           ),
           progressColor: color,

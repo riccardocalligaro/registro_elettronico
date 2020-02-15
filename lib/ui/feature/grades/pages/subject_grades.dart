@@ -334,6 +334,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
         if (state is ProfessorsLoadSuccess) {
           String professorsText;
           if (state.professors.length > 0) {
+            // professorsText = GlobalUtils.getMockupName(index: 2);
             professorsText = _getProfessorsText(state.professors
                 .where((professor) => professor.subjectId == widget.subject.id)
                 .toList());

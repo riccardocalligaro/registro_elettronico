@@ -177,6 +177,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildInitial() {
+    // return Padding(
+    //   padding: const EdgeInsets.all(32.0),
+    //   child: Column(
+    //     mainAxisAlignment: MainAxisAlignment.center,
+    //     children: <Widget>[
+    //       _buildHeaderText(),
+    //       _buildLoginInput(),
+    //     ],
+    //   ),
+    // );
     return Stack(
       children: <Widget>[
         SingleChildScrollView(
