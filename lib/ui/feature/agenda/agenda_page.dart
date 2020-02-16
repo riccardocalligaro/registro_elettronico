@@ -154,7 +154,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         labelHasShadow: false,
         labelColor:
             GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
-        labelBackgroundColor:
+      labelBackgroundColor:
             GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
         currentButton: FloatingActionButton(
           heroTag: "test_fab",
