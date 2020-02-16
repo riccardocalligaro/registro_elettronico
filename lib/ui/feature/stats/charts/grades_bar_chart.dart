@@ -130,7 +130,11 @@ class GradesBarChartState extends State<GradesBarChart> {
         show: true,
         bottomTitles: SideTitles(
           showTitles: true,
-          textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          textStyle: TextStyle(
+              fontSize: 14,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black),
           margin: 14,
           getTitles: (double value) {
             if (value == 0) return '<3';
@@ -215,7 +219,11 @@ class GradesBarChartState extends State<GradesBarChart> {
           show: true,
           bottomTitles: SideTitles(
             showTitles: true,
-            textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            textStyle: TextStyle(
+                fontSize: 14,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black),
             margin: 14,
             getTitles: (double value) {
               if (value == 0) return '<3';
