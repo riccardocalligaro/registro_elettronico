@@ -1,4 +1,5 @@
 import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
@@ -6,6 +7,7 @@ import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
+import 'package:registro_elettronico/ui/feature/debug/debug_page.dart';
 import 'package:registro_elettronico/ui/feature/settings/components/account/account_settings.dart';
 import 'package:registro_elettronico/ui/feature/web/spaggiari_web_view.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
@@ -162,6 +164,17 @@ class _AppDrawerState extends State<AppDrawer>
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
+            !kReleaseMode
+                ? _createDrawerItem(
+                    icon: Icons.bug_report,
+                    text: 'Debug',
+                    pos: 13,
+                    onTap: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => DebugPage()));
+                    },
+                  )
+                : Container(),
             _createDrawerItem(
               icon: Icons.home,
               text: trans.translate("home"),
