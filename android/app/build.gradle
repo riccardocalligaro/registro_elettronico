@@ -26,6 +26,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 apply plugin: 'io.fabric'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
