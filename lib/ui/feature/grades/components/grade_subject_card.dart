@@ -77,13 +77,12 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
                 child: CircularPercentIndicator(
                   radius: 60.0,
                   lineWidth: 6.0,
-                  percent: average.isNaN ? 1 : average / 10,
+                  percent: _getPercentAverage(average),
                   backgroundColor: Colors.white,
                   animation: true,
                   animationDuration: 300,
-                  center:
-                      Text(average.isNaN ? '-' : average.toStringAsFixed(2)),
-                  progressColor: GlobalUtils.getColorFromAverage(average),
+                  center: Text(average <= 0 ? '-' : average.toStringAsFixed(2)),
+                  progressColor: _getColorFromAverage(average),
                 ),
               ),
               Padding(
@@ -102,7 +101,8 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
                           average,
                           widget.grades
                               .where((grade) =>
-                                  grade.subjectId == widget.subject.id && GradesUtils.isValidGrade(grade))
+                                  grade.subjectId == widget.subject.id &&
+                                  GradesUtils.isValidGrade(grade))
                               .toList()
                               .length,
                           context),
@@ -119,5 +119,24 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
         ),
       ),
     );
+  }
+
+  double _getPercentAverage(double average) {
+    if (average == -1) return 1.0;
+    return average / 10;
+  }
+
+  Color _getColorFromAverage(double value) {
+    if (value == -1.00) {
+      return Colors.white;
+    } else if (value == 0.00) {
+      return Colors.blue;
+    } else if (value >= 6) {
+      return Colors.green;
+    } else if (value >= 5.5 && value < 6) {
+      return Colors.yellow[700];
+    } else {
+      return Colors.red;
+    }
   }
 }

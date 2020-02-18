@@ -131,12 +131,13 @@ class NotificationService {
       final eventsToNotify =
           await _getAgendaEventsToNotify(agendaRepository, prefs);
       FLog.info(text: 'Found ${eventsToNotify.length} NEW events in AGENDA!');
+      
       if (eventsToNotify.length < 5) {
         eventsToNotify.forEach(
           (event) => localNotification.showNotificationWithDefaultSound(
             event.evtId,
             '📅 Nuovo evento',
-            '${event.notes} il ${DateUtils.convertDateForDisplay(event.begin)}',
+            '${event.notes} il ${DateUtils.convertDateLocale(event.begin, 'it_IT')}',
           ),
         );
       }

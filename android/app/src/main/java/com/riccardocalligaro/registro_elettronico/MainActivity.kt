@@ -31,14 +31,12 @@ class MainActivity : FlutterActivity() {
 
                 if (cursor!!.moveToFirst()) {
                     while (!cursor.isAfterLast) {
-
                         name = cursor.getString(cursor.getColumnIndex("author"))
-
                         cursor.moveToNext()
                     }
                 }
 
-                cursor.close();
+                cursor.close()
 
                 remoteViews.setTextViewText(R.id.appwidget_text, "Author: $name")
                 appWidgetManager.updateAppWidget(thisWidget, remoteViews)
