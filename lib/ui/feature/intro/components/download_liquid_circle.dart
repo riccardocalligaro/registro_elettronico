@@ -43,6 +43,14 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                     value: 0.0,
                     valueColor: AlwaysStoppedAnimation(Colors.red),
                     backgroundColor: Colors.white,
+                    borderWidth: 2.0,
+                    borderColor:
+                        (Theme.of(context).brightness == Brightness.light
+                            ? Colors.grey[900]
+                            : Colors.white),
+                    //  (Theme.of(context).brightness == Brightness.dark
+                    //      ? Colors.white
+                    //      : Colors.grey[900]),
                     center: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -74,6 +82,10 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                   valueColor: AlwaysStoppedAnimation(Colors.red),
                   backgroundColor: Colors
                       .white, // Defaults to the current Theme's backgroundColor.
+                  borderWidth: 2.0,
+                  borderColor: (Theme.of(context).brightness == Brightness.light
+                      ? Colors.grey[900]
+                      : Colors.white),
                 ),
               );
             }
@@ -121,19 +133,28 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                     value: 1.0,
                     valueColor: AlwaysStoppedAnimation(Colors.green),
                     backgroundColor: Colors.white,
+                    borderWidth: 2.0,
+                    borderColor:
+                        (Theme.of(context).brightness == Brightness.light
+                            ? Colors.grey[900]
+                            : Colors.white),
                     center: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
                           Icons.check,
                           size: 84,
+                          color: Colors.black,
                         ),
                         SizedBox(
                           height: 20,
                         ),
                         Text(
                           AppLocalizations.of(context).translate('press_here'),
-                          style: TextStyle(fontSize: 24),
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.black,
+                          ),
                         )
                       ],
                     ),
