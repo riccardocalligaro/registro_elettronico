@@ -7,6 +7,7 @@ import android.database.Cursor
 import android.widget.RemoteViews
 import androidx.annotation.NonNull
 import com.riccardocalligaro.registro_elettronico.data.DBHelper
+import com.riccardocalligaro.registro_elettronico.widgets.TimetableWidget
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -38,7 +39,7 @@ class MainActivity : FlutterActivity() {
 
                 cursor.close()
 
-                remoteViews.setTextViewText(R.id.appwidget_text, "Author: $name")
+                //remoteViews.setTextViewText(R.id.appwidget_text, "Author: $name")
                 appWidgetManager.updateAppWidget(thisWidget, remoteViews)
                 result.success("Success")
             }

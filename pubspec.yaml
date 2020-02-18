@@ -3,7 +3,7 @@ description: >-
   A beautiful and simple school register app for Spaggiari.
   Made by students.
 
-version: 0.0.7-dev.6
+version: 0.0.7-dev.6 
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
