@@ -120,14 +120,14 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
         title: Text(AppLocalizations.of(context).translate('duration')),
         trailing: Text('$_durationHours H'),
         onTap: () {
-          if (18 - _start.hour > 1) {
+          if (18 - _start.hour >= 1) {
             showDialog(
               context: context,
               builder: (context) {
                 return NumberPickerDialog.integer(
                   initialIntegerValue: _durationHours,
                   minValue: 1,
-                  maxValue: 18 - _start.hour,
+                  maxValue: 18 - _start.hour + 1,
                   title:
                       Text(AppLocalizations.of(context).translate('duration')),
                   cancelWidget: Text(AppLocalizations.of(context)
