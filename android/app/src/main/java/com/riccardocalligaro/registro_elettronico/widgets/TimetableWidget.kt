@@ -1,11 +1,11 @@
-package com.riccardocalligaro.registro_elettronico
+package com.riccardocalligaro.registro_elettronico.widgets
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.RemoteViews
+import com.riccardocalligaro.registro_elettronico.R
 
 /**
  * Implementation of App Widget functionality.

@@ -18,7 +18,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="Registro"
         tools:ignore="GoogleAppIndexingWarning">
-        <receiver android:name=".TimetableWidget">
+        <receiver android:name=".widgets.TimetableWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -55,6 +55,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <service android:name=".widgets.TimetableService" />
     </application>
 
 </manifest>
