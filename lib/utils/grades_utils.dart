@@ -54,14 +54,24 @@ class GradesUtils {
     double sum = 0;
     int count = 0;
 
+    int countAnnotaions = 0;
     grades.forEach((grade) {
+      if (grade.decimalValue == -1.00 && grade.subjectId == subjectId)
+        countAnnotaions++;
       if (grade.subjectId == subjectId && isValidGrade(grade)) {
         sum += grade.decimalValue;
-
         count++;
       }
     });
-    return sum / count;
+    final double avg = sum / count;
+
+    if (countAnnotaions == 0 && avg.isNaN) {
+      return -1.00;
+    } else if (countAnnotaions > 0 && avg.isNaN) {
+      return 0.0;
+    }
+
+    return avg;
   }
 
   static int getMinSchoolCredits(double average, int year) {

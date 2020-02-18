@@ -82,7 +82,11 @@ class _TermGradesPageState extends State<TermGradesPage> {
           return _refreshCompleter.future;
         },
         child: _buildStatsAndAverages(
-            gradesForThisPeriod, widget.subjects, widget.objectives, context));
+          gradesForThisPeriod,
+          widget.subjects,
+          widget.objectives,
+          context,
+        ));
   }
 
   Widget _buildStatsAndAverages(
@@ -166,16 +170,21 @@ class _TermGradesPageState extends State<TermGradesPage> {
     Map<Subject, double> subjectsValues = Map.fromIterable(subjects,
         key: (e) => e, value: (e) => GradesUtils.getAverage(e.id, grades));
 
-    var sortedKeys = subjectsValues.keys.toList()
-      ..removeWhere((subject) {
-        bool contains = true;
-        grades.forEach((grade) {
-          if (grade.subjectId == subject.id) {
-            contains = false;
-          }
-        });
-        return contains;
-      });
+    var sortedKeys = subjectsValues.keys.toList();
+    // var sortedKeys = subjectsValues.keys.toList()
+    //   ..removeWhere((subject) {
+    //     bool contains = true;
+    //     grades.forEach((grade) {
+    //       if (grade.subjectId == subject.id) {
+    //         contains = false;
+    //       }
+    //     });
+    //     return contains;
+    //   });
+
+    subjectsValues.values.forEach((double v) {
+      print(v);
+    });
 
     if (ascending) {
       sortedKeys = sortedKeys
