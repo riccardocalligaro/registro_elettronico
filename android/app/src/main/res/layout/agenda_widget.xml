@@ -1,22 +1,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent"
+    android:background="@drawable/card_bg"
+
     android:padding="@dimen/widget_margin">
 
-    <ListView
 
-        android:id="@+id/timetable_remote_list"
+    <ListView
+        android:id="@+id/agenda_remote_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:listSelector="@android:color/transparent" />
 
     <TextView
-        android:id="@+id/timetable_empty"
+        android:id="@+id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="@string/no_lessons"
+        android:text="@string/no_events"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="#ffff" />
 

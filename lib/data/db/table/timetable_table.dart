@@ -7,6 +7,7 @@ class TimetableEntries extends Table {
   IntColumn get end => integer()();
   IntColumn get dayOfWeek => integer()();
   IntColumn get subject => integer()();
+  TextColumn get subjectName => text()();
 
   @override
   Set<Column> get primaryKey => {id};

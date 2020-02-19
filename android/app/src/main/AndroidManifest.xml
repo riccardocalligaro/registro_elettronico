@@ -18,7 +18,16 @@
         android:icon="@mipmap/ic_launcher"
         android:label="Registro"
         tools:ignore="GoogleAppIndexingWarning">
-        <receiver android:name=".widgets.TimetableWidget">
+        <receiver android:name=".widgets.agenda.AgendaWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/agenda_widget_info" />
+        </receiver>
+        <receiver android:name=".widgets.timetable.TimetableWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -49,14 +58,23 @@
         </receiver>
         <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
 
-        <meta-data
-            android:name="io.flutter.embedding.android.SplashScreenDrawable"
-            android:resource="@drawable/launch_background" />
+<!--        <meta-data-->
+<!--            android:name="io.flutter.embedding.android.SplashScreenDrawable"-->
+<!--            android:resource="@drawable/launch_background" />-->
+
+
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
 
-        <service android:name=".widgets.TimetableService" />
+        <service
+            android:name=".widgets.agenda.AgendaWidgetService"
+            android:label="@string/agenda"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <service
+            android:name=".widgets.timetable.TimetableWidgetService"
+            android:label="@string/timetable"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

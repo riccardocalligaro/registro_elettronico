@@ -5,40 +5,42 @@ import android.database.sqlite.SQLiteDatabase
 import io.flutter.Log
 import java.io.File
 
-class DBHelper(private val context: Context) {
+class DBHelper private constructor(private val context: Context) {
 
-    var database: SQLiteDatabase
+    lateinit var database: SQLiteDatabase
 
 
-    init {
-        database = open()
-    }
+    companion object {
 
-    private fun open(): SQLiteDatabase {
-        val folder = context.applicationInfo.dataDir
-        val file = "$folder/databases/db.sqlite"
+        @Volatile
+        private var INSTANCE: SQLiteDatabase? = null
 
-        val folderFile = File(folder)
+        fun getInstance(context: Context): SQLiteDatabase =
+                INSTANCE ?: synchronized(this) {
+                    INSTANCE ?: open(context).also { INSTANCE = it }
+                }
 
-        folderFile.walk().forEach {
-            Log.i("File", it.path)
+        private fun open(context: Context): SQLiteDatabase {
+            Log.i("DBHelper", "Opening database")
+            // We go to the moor db path
+            val folder = context.applicationInfo.dataDir
+            val file = "$folder/databases/db.sqlite"
+
+            val dbFile = File(file)
+
+
+            Log.i("Database exists", dbFile.exists().toString())
+            Log.i("Database exists", dbFile.path)
+
+            if (!dbFile.exists()) {
+                Log.e("DBHelper", "Database doesent'exist, throwing runtime exception")
+                throw RuntimeException("Error opening db")
+            }
+
+            Log.i("DBHelper", "DB Exists, returning the SQLITEDatabase")
+
+
+            return SQLiteDatabase.openDatabase(dbFile.path, null, SQLiteDatabase.OPEN_READONLY)
         }
-
-
-        val dbFile = File(file)
-
-
-        Log.i("Database exists", dbFile.exists().toString())
-        Log.i("Database exists", dbFile.path)
-
-        if (!dbFile.exists()) {
-            throw RuntimeException("Error opening db")
-        }
-        return SQLiteDatabase.openDatabase(dbFile.path, null, SQLiteDatabase.OPEN_READONLY)
-    }
-
-
-    fun close() {
-        database.close()
     }
 }

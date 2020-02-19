@@ -6,6 +6,7 @@ class GeniusTimetable {
   String teacher;
   int start;
   int end;
+  String subjectName;
 
   GeniusTimetable(
     this.dayOfWeek,
@@ -13,6 +14,7 @@ class GeniusTimetable {
     this.subject,
     this.end,
     this.start,
+    this.subjectName
   );
 
   factory GeniusTimetable.fromData(
@@ -28,6 +30,7 @@ class GeniusTimetable {
       intType.mapFromDatabaseResponse(data['${effectivePrefix}subject']),
       intType.mapFromDatabaseResponse(data['${effectivePrefix}start']),
       intType.mapFromDatabaseResponse(data['${effectivePrefix}end']),
+      stringType.mapFromDatabaseResponse(data['${effectivePrefix}subject_name']),
     );
   }
 

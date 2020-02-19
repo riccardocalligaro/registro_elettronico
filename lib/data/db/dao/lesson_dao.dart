@@ -88,9 +88,10 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
 
   // Thanks to Registro elettronico android by simone luconi
   Future<List<GeniusTimetable>> getGeniusTimetable() {
-    return customSelectQuery(""" SELECT `dayOfWeek`,`teacher`,`subject`,`start`,`end` FROM
+    return customSelectQuery(""" SELECT `dayOfWeek`,`teacher`,`subject`, `subject_name`,`start`,`end` FROM
       (select strftime('%w', date, 'unixepoch') as `dayOfWeek`,
       `subject_id` as `subject`,
+      `subject_description` as `subject_name`,
       (position) as `start`,
       (position) as `end`,
       author as `teacher`,

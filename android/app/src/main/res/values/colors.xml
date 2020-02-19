@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="grey_900">#212121</color>
+    <color name="red_500">#f44336</color>
     <color name="transparent">#00000000</color>
     <color name="card_background">#ffffff</color>
     <color name="card_shadow_1">#d4d4d4</color>
