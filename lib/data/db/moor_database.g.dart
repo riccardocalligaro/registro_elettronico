@@ -7078,17 +7078,20 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
   final int end;
   final int dayOfWeek;
   final int subject;
+  final String subjectName;
   TimetableEntry(
       {this.id,
       @required this.start,
       @required this.end,
       @required this.dayOfWeek,
-      @required this.subject});
+      @required this.subject,
+      @required this.subjectName});
   factory TimetableEntry.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
     return TimetableEntry(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       start: intType.mapFromDatabaseResponse(data['${effectivePrefix}start']),
@@ -7097,6 +7100,8 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
           .mapFromDatabaseResponse(data['${effectivePrefix}day_of_week']),
       subject:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}subject']),
+      subjectName: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}subject_name']),
     );
   }
   factory TimetableEntry.fromJson(Map<String, dynamic> json,
@@ -7107,6 +7112,7 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
       end: serializer.fromJson<int>(json['end']),
       dayOfWeek: serializer.fromJson<int>(json['dayOfWeek']),
       subject: serializer.fromJson<int>(json['subject']),
+      subjectName: serializer.fromJson<String>(json['subjectName']),
     );
   }
   @override
@@ -7118,6 +7124,7 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
       'end': serializer.toJson<int>(end),
       'dayOfWeek': serializer.toJson<int>(dayOfWeek),
       'subject': serializer.toJson<int>(subject),
+      'subjectName': serializer.toJson<String>(subjectName),
     };
   }
 
@@ -7134,17 +7141,26 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
       subject: subject == null && nullToAbsent
           ? const Value.absent()
           : Value(subject),
+      subjectName: subjectName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(subjectName),
     );
   }
 
   TimetableEntry copyWith(
-          {int id, int start, int end, int dayOfWeek, int subject}) =>
+          {int id,
+          int start,
+          int end,
+          int dayOfWeek,
+          int subject,
+          String subjectName}) =>
       TimetableEntry(
         id: id ?? this.id,
         start: start ?? this.start,
         end: end ?? this.end,
         dayOfWeek: dayOfWeek ?? this.dayOfWeek,
         subject: subject ?? this.subject,
+        subjectName: subjectName ?? this.subjectName,
       );
   @override
   String toString() {
@@ -7153,7 +7169,8 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
           ..write('start: $start, ')
           ..write('end: $end, ')
           ..write('dayOfWeek: $dayOfWeek, ')
-          ..write('subject: $subject')
+          ..write('subject: $subject, ')
+          ..write('subjectName: $subjectName')
           ..write(')'))
         .toString();
   }
@@ -7161,8 +7178,12 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
   @override
   int get hashCode => $mrjf($mrjc(
       id.hashCode,
-      $mrjc(start.hashCode,
-          $mrjc(end.hashCode, $mrjc(dayOfWeek.hashCode, subject.hashCode)))));
+      $mrjc(
+          start.hashCode,
+          $mrjc(
+              end.hashCode,
+              $mrjc(dayOfWeek.hashCode,
+                  $mrjc(subject.hashCode, subjectName.hashCode))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -7171,7 +7192,8 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
           other.start == this.start &&
           other.end == this.end &&
           other.dayOfWeek == this.dayOfWeek &&
-          other.subject == this.subject);
+          other.subject == this.subject &&
+          other.subjectName == this.subjectName);
 }
 
 class TimetableEntriesCompanion extends UpdateCompanion<TimetableEntry> {
@@ -7180,12 +7202,14 @@ class TimetableEntriesCompanion extends UpdateCompanion<TimetableEntry> {
   final Value<int> end;
   final Value<int> dayOfWeek;
   final Value<int> subject;
+  final Value<String> subjectName;
   const TimetableEntriesCompanion({
     this.id = const Value.absent(),
     this.start = const Value.absent(),
     this.end = const Value.absent(),
     this.dayOfWeek = const Value.absent(),
     this.subject = const Value.absent(),
+    this.subjectName = const Value.absent(),
   });
   TimetableEntriesCompanion.insert({
     this.id = const Value.absent(),
@@ -7193,22 +7217,26 @@ class TimetableEntriesCompanion extends UpdateCompanion<TimetableEntry> {
     @required int end,
     @required int dayOfWeek,
     @required int subject,
+    @required String subjectName,
   })  : start = Value(start),
         end = Value(end),
         dayOfWeek = Value(dayOfWeek),
-        subject = Value(subject);
+        subject = Value(subject),
+        subjectName = Value(subjectName);
   TimetableEntriesCompanion copyWith(
       {Value<int> id,
       Value<int> start,
       Value<int> end,
       Value<int> dayOfWeek,
-      Value<int> subject}) {
+      Value<int> subject,
+      Value<String> subjectName}) {
     return TimetableEntriesCompanion(
       id: id ?? this.id,
       start: start ?? this.start,
       end: end ?? this.end,
       dayOfWeek: dayOfWeek ?? this.dayOfWeek,
       subject: subject ?? this.subject,
+      subjectName: subjectName ?? this.subjectName,
     );
   }
 }
@@ -7275,8 +7303,23 @@ class $TimetableEntriesTable extends TimetableEntries
     );
   }
 
+  final VerificationMeta _subjectNameMeta =
+      const VerificationMeta('subjectName');
+  GeneratedTextColumn _subjectName;
   @override
-  List<GeneratedColumn> get $columns => [id, start, end, dayOfWeek, subject];
+  GeneratedTextColumn get subjectName =>
+      _subjectName ??= _constructSubjectName();
+  GeneratedTextColumn _constructSubjectName() {
+    return GeneratedTextColumn(
+      'subject_name',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, start, end, dayOfWeek, subject, subjectName];
   @override
   $TimetableEntriesTable get asDslTable => this;
   @override
@@ -7315,6 +7358,12 @@ class $TimetableEntriesTable extends TimetableEntries
     } else if (subject.isRequired && isInserting) {
       context.missing(_subjectMeta);
     }
+    if (d.subjectName.present) {
+      context.handle(_subjectNameMeta,
+          subjectName.isAcceptableValue(d.subjectName.value, _subjectNameMeta));
+    } else if (subjectName.isRequired && isInserting) {
+      context.missing(_subjectNameMeta);
+    }
     return context;
   }
 
@@ -7343,6 +7392,9 @@ class $TimetableEntriesTable extends TimetableEntries
     }
     if (d.subject.present) {
       map['subject'] = Variable<int, IntType>(d.subject.value);
+    }
+    if (d.subjectName.present) {
+      map['subject_name'] = Variable<String, StringType>(d.subjectName.value);
     }
     return map;
   }

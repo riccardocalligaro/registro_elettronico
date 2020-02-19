@@ -1,9 +1,10 @@
-package com.riccardocalligaro.registro_elettronico.widgets
+package com.riccardocalligaro.registro_elettronico.widgets.timetable
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import android.widget.ArrayAdapter
+import android.content.Intent
+import android.net.Uri
 import android.widget.RemoteViews
 import com.riccardocalligaro.registro_elettronico.R
 
@@ -28,28 +29,17 @@ class TimetableWidget : AppWidgetProvider() {
 }
 
 internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
-    val widgetText = context.getString(R.string.appwidget_text)
-    // Construct the RemoteViews object
-    val views = RemoteViews(context.packageName, R.layout.timetable_widget)
-    //views.setTextViewText(R.id.appwidget_text, widgetText)
-
-
-
-//    val listView = R.id.timetable_list
-
-    val words = listOf("Test1", "Test2")
-
-
-    val listItems = arrayOfNulls<String>(words.size)
-
-    for (i in words.indices) {
-        val word = words[i]
-        listItems[i] = words[i]
+    val intent = Intent(context, TimetableWidgetService::class.java).apply {
+        putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+        data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
     }
 
 
-    val adapter = ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, listItems)
+    val rv = RemoteViews(context.packageName, R.layout.timetable_widget).apply {
+        setRemoteAdapter(R.id.timetable_remote_list, intent)
+        setEmptyView(R.id.timetable_remote_list, R.id.timetable_empty)
+    }
 
-    // Instruct the widget manager to update the widget
-    appWidgetManager.updateAppWidget(appWidgetId, views)
+    appWidgetManager.updateAppWidget(appWidgetId, rv)
+    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.timetable_remote_list)
 }

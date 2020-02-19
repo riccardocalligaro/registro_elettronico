@@ -265,6 +265,7 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
           dayOfWeek: _dayOfWeek.weekday,
           start: start,
           end: start,
+          subjectName: _selectedSubject.name
         ));
       }
       FLog.info(

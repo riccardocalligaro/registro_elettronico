@@ -48,6 +48,7 @@ class TimetableRepositoryImpl implements TimetableRepository {
         dayOfWeek: int.parse(t.dayOfWeek),
         id: null,
         subject: t.subject,
+        subjectName: t.subjectName
       ));
     });
   }
