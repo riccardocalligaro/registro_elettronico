@@ -75,6 +75,7 @@ class TimetableWidgetFactory(val context: Context, val intent: Intent) : RemoteV
 
             cursor.close()
 
+            timetableEntries.sortBy { it.start }
 
         } catch (e: RuntimeException) {
             Log.e("TimetableWidgetFactory", "Database runtime exception, pronbably it doesent exist", e)
