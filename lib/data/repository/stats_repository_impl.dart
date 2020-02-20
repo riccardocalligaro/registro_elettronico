@@ -89,7 +89,7 @@ class StatsRepositoryImpl implements StatsRepository {
             bestSubject = subject;
             maxAverage = subjectAverage;
           }
-          if (subjectAverage < minAverage) {
+          if (subjectAverage < minAverage && subjectAverage != -1.0) {
             worstSubject = subject;
             minAverage = subjectAverage;
           }
@@ -102,7 +102,7 @@ class StatsRepositoryImpl implements StatsRepository {
             insufficientiSubjects.add(subject);
           } else if (subjectAverage >= 4.5) {
             insufficientiSubjectsCount++;
-          } else if (!subjectAverage.isNaN) {
+          } else if (!subjectAverage.isNaN && subjectAverage != -1.0) {
             insufficientiSubjects.add(subject);
             gravementeInsufficientiSubjectsCount++;
           }
