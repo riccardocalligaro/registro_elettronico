@@ -1,29 +1,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/card_bg"
-
+    android:background="@color/transparent"
     android:padding="@dimen/widget_margin">
 
-
-    <LinearLayout
+    <ListView
+        android:id="@+id/grades_remote_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ListView
-            android:id="@+id/agenda_remote_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:listSelector="@android:color/transparent" />
-    </LinearLayout>
-
+        android:layout_height="match_parent"
+        android:listSelector="@android:color/transparent" />
 
     <TextView
-        android:id="@+id/empty"
+        android:id="@+id/grades_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="@string/no_events"
+        android:text="@string/no_grades"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="#ffff" />
 

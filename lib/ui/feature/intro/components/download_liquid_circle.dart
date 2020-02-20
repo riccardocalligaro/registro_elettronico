@@ -144,7 +144,7 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                         Icon(
                           Icons.check,
                           size: 84,
-                          color: Colors.black,
+                          color: Colors.white,
                         ),
                         SizedBox(
                           height: 20,
@@ -153,7 +153,7 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                           AppLocalizations.of(context).translate('press_here'),
                           style: TextStyle(
                             fontSize: 24,
-                            color: Colors.black,
+                            color: Colors.white,
                           ),
                         )
                       ],
