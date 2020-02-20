@@ -6,6 +6,8 @@
     <string name="no_lessons">No lessons</string>
     <string name="agenda">Agenda</string>
     <string name="timetable">Timetable</string>
+    <string name="next_events">Next events</string>
+
     <plurals name="days">
         <item quantity="one">%d day</item>
         <item quantity="other">%d days</item>
