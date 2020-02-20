@@ -33,12 +33,14 @@ class AgendaWidgetFactory(val context: Context, val intent: Intent) : RemoteView
 
         // val diff = current.date.time - todayTime
 
+
         val subtitle = "${current.author} - ${dateFormat.format(current.date)}"
 
 
         //val songsFound = getQuantityString(R.plurals.numberOfSongsAvailable, count, count)
         rv.setTextViewText(R.id.title, current.notes)
         rv.setTextViewText(R.id.subtitle, subtitle)
+
 
         val shape = getDrawable(context, R.drawable.card_bg) as GradientDrawable
         shape.setColor(Color.RED)
