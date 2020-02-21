@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_widget">Aggiungi iwidget</string>
+    <string name="agenda">Agenda</string>
+    <string name="appwidget_text">Esempio</string>
+    <string name="grades">Voti</string>
+    <string name="next_events">Prossimi eventi</string>
+    <string name="no_events">No eventi</string>
+    <string name="no_grades">Niente voti</string>
+    <string name="no_lessons">Niente lezioni</string>
+    <string name="timetable">Orario</string>
+</resources>
