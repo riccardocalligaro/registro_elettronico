@@ -136,7 +136,7 @@ class AbsencesChartBarsState extends State<AbsencesChartBars> {
     List<BarChartRodStackItem> items = [];
     double count = 1;
     events.forEach((event) {
-      print("x" + (count - 1).toString() + " y " + count.toString());
+      // print("x" + (count - 1).toString() + " y " + count.toString());
       items.add(BarChartRodStackItem(count - 1.1, count + 0.1,
           ColorUtils.getColorFromCode(event.evtCode)));
       count += 1;

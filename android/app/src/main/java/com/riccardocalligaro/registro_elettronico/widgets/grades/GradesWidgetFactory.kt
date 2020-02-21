@@ -1,5 +1,6 @@
 package com.riccardocalligaro.registro_elettronico.widgets.grades
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -29,17 +30,38 @@ class GradesWidgetFactory(val context: Context, val intent: Intent) : RemoteView
         val current = grades[i]
         val rv = RemoteViews(context.packageName, R.layout.grades_widget_grade)
 
-        rv.setTextViewText(R.id.grade_subject, current.subject)
+        rv.setTextViewText(R.id.grade_subject, capitalizeFirst(current.subject))
+        rv.setTextViewText(R.id.grade_date, dateFormat.format(current.date))
 
-        if (current.decimalValue >= 6) {
-            rv.setTextViewText(R.id.grade_value_green, current.displayValue)
-            rv.setViewVisibility(R.id.grade_value_green, View.VISIBLE)
-        } else if (current.decimalValue > 5.5 && current.decimalValue < 6) {
-            rv.setTextViewText(R.id.grade_value_yellow, current.displayValue)
-            rv.setViewVisibility(R.id.grade_value_yellow, View.VISIBLE)
-        } else {
-            rv.setTextViewText(R.id.grade_value_red, current.displayValue)
-            rv.setViewVisibility(R.id.grade_value_red, View.VISIBLE)
+        rv.setTextViewText(R.id.grade_value, current.displayValue)
+
+
+        if (current.decimalValue == -1.00) {
+            rv.setViewVisibility(R.id.blue_circle, View.VISIBLE)
+
+            rv.setViewVisibility(R.id.red_circle, View.GONE)
+            rv.setViewVisibility(R.id.yellow_circle, View.GONE)
+            rv.setViewVisibility(R.id.green_circle, View.GONE)
+
+        } else if (current.decimalValue >= 6) {
+            rv.setViewVisibility(R.id.green_circle, View.VISIBLE)
+
+            rv.setViewVisibility(R.id.red_circle, View.GONE)
+            rv.setViewVisibility(R.id.yellow_circle, View.GONE)
+            rv.setViewVisibility(R.id.blue_circle, View.GONE)
+        } else if (current.decimalValue >= 5.5 && current.decimalValue < 6) {
+            rv.setViewVisibility(R.id.yellow_circle, View.VISIBLE)
+
+            rv.setViewVisibility(R.id.red_circle, View.GONE)
+            rv.setViewVisibility(R.id.blue_circle, View.GONE)
+            rv.setViewVisibility(R.id.green_circle, View.GONE)
+        } else if (current.decimalValue < 5.5) {
+            rv.setViewVisibility(R.id.red_circle, View.VISIBLE)
+
+            rv.setViewVisibility(R.id.blue_circle, View.GONE)
+            rv.setViewVisibility(R.id.yellow_circle, View.GONE)
+            rv.setViewVisibility(R.id.green_circle, View.GONE)
+
         }
 
         //rv.setInt(R.id.grade_value, "setBackgroundTint", R.color.red_500)
@@ -81,7 +103,6 @@ class GradesWidgetFactory(val context: Context, val intent: Intent) : RemoteView
 
             cursor = db.rawQuery("select * from grades", null)
 
-            val today = Date()
 
             if (cursor!!.moveToFirst()) {
                 while (!cursor.isAfterLast) {
@@ -123,6 +144,8 @@ class GradesWidgetFactory(val context: Context, val intent: Intent) : RemoteView
 
     }
 
+    @SuppressLint("DefaultLocale")
+    fun capitalizeFirst(a: String) = if (a.isNotEmpty()) a.substring(0, 1).toUpperCase() + a.substring(1).toLowerCase() else a
 
     override fun hasStableIds() = false
     override fun getCount() = grades.size

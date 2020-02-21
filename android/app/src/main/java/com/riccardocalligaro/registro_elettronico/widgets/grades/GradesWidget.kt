@@ -1,11 +1,13 @@
 package com.riccardocalligaro.registro_elettronico.widgets.grades
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.RemoteViews
+import com.riccardocalligaro.registro_elettronico.MainActivity
 import com.riccardocalligaro.registro_elettronico.R
 
 /**
@@ -34,10 +36,14 @@ internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManage
         data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
     }
 
+//    val intentMainActivity = Intent(context, MainActivity::class.java)
+//    val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intentMainActivity, 0)
+
 
     val rv = RemoteViews(context.packageName, R.layout.grades_widget).apply {
         setRemoteAdapter(R.id.grades_remote_list, intent)
         setEmptyView(R.id.grades_remote_list, R.id.grades_empty)
+        //   setOnClickPendingIntent(R.id.grades_layout, pendingIntent)
     }
 
     appWidgetManager.updateAppWidget(appWidgetId, rv)

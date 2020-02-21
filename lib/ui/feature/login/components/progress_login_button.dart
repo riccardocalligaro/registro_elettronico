@@ -57,7 +57,6 @@ class _ProgressLoginButtonState extends State<ProgressLoginButton>
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        print(state);
         if (state is SignInLoading) {
           _loginState = LoadingState.loading;
           _controller.forward();
@@ -89,9 +88,6 @@ class _ProgressLoginButtonState extends State<ProgressLoginButton>
             color: _getColorFromLoadingState(),
             child: buildButtonChild(),
             onPressed: () {
-              print(widget.username);
-              print(widget.password);
-
               BlocProvider.of<AuthBloc>(context).add(SignIn(
                 username: widget.username,
                 password: widget.password,
@@ -153,7 +149,6 @@ class _ProgressLoginButtonState extends State<ProgressLoginButton>
     } else if (_loginState == LoadingState.success) {
       return Icon(Icons.check, color: Colors.white);
     } else {
-      print(_loginState);
       return Icon(Icons.clear, color: Colors.white);
     }
   }

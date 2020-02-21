@@ -182,10 +182,6 @@ class _TermGradesPageState extends State<TermGradesPage> {
     //     return contains;
     //   });
 
-    subjectsValues.values.forEach((double v) {
-      print(v);
-    });
-
     if (ascending) {
       sortedKeys = sortedKeys
         ..sort((k1, k2) => subjectsValues[k1].compareTo(subjectsValues[k2]));

@@ -4,7 +4,6 @@ package com.riccardocalligaro.registro_elettronico
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.util.Log
-import android.widget.RemoteViews
 import androidx.annotation.NonNull
 import com.riccardocalligaro.registro_elettronico.widgets.timetable.TimetableWidget
 import io.flutter.embedding.android.FlutterActivity
