@@ -5,8 +5,10 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.widget.RemoteViews
+import androidx.annotation.RequiresApi
 import com.riccardocalligaro.registro_elettronico.R
 
 /**
@@ -27,9 +29,13 @@ class TimetableWidget : AppWidgetProvider() {
     override fun onDisabled(context: Context) {
         // Enter relevant functionality for when the last widget is disabled
     }
+
+
 }
 
+
 internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
+
 
     Log.i("TimetableWidget", "Update the widget")
 

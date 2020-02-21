@@ -124,7 +124,6 @@ class _EditEventPageState extends State<EditEventPage> {
         title: _titleController.text,
       );
     } else {
-      print(eventOriginal.subjectId);
       event = AgendaEvent(
         subjectId: _selectedSubject != null
             ? _selectedSubject.id

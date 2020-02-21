@@ -314,7 +314,6 @@ class GradesUtils {
         return returnString.substring(0, returnString.length - 2);
       }
     } catch (e) {
-      print(e);
       return AppLocalizations.of(context).translate('objective_unreacheable');
     }
   }

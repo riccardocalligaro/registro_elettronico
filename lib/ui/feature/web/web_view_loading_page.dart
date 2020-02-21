@@ -38,7 +38,6 @@ class _WebViewLoadingPageState extends State<WebViewLoadingPage> {
 
     return BlocListener<TokenBloc, TokenState>(
       listener: (context, state) {
-        print(state.toString());
         if (state is TokenLoadSuccess) {
           Navigator.pop(context);
           Navigator.of(context).push(

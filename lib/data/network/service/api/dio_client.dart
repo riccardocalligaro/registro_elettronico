@@ -76,7 +76,7 @@ class DioClient {
         } else {
           FLog.info(
             text:
-                "${DateTime.now().toString()} no need for token - proceeding with request",
+                "No need for token - proceeding with request",
           );
           // If the token is still vaid we just use the one we got from the database
           options.headers["Z-Auth-Token"] = profile.token;

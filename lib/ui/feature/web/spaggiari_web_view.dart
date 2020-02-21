@@ -35,7 +35,6 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
       if (state.type == WebViewState.finishLoad && !loggedIn) {
         final userInfo = await RepositoryProvider.of<ProfileRepository>(context)
             .getUserAndPassword();
-        print(userInfo.item2);
         await flutterWebviewPlugin.evalJavascript(
             '\$("#login").val("${widget.email ?? userInfo.item1.ident}");');
         await flutterWebviewPlugin

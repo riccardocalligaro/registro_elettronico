@@ -2,9 +2,10 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialKeyguardLayout="@layout/agenda_widget"
     android:initialLayout="@layout/agenda_widget"
-    android:minWidth="120dp"
+    android:minWidth="200dp"
     android:minHeight="60dp"
-
+    android:minResizeWidth="100dp"
+    android:minResizeHeight="30dp"
     android:previewImage="@drawable/widget_agenda"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="43200000"
