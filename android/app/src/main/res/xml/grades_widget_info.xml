@@ -3,7 +3,7 @@
     android:initialKeyguardLayout="@layout/grades_widget"
     android:initialLayout="@layout/grades_widget"
     android:minWidth="220dp"
-    android:minHeight="60dp"
+    android:minHeight="75dp"
     android:previewImage="@drawable/widget_grades"
     android:resizeMode="vertical|horizontal"
     android:updatePeriodMillis="86400000"
