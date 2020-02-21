@@ -131,7 +131,7 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
                   title:
                       Text(AppLocalizations.of(context).translate('duration')),
                   cancelWidget: Text(AppLocalizations.of(context)
-                      .translate('cancel')
+                      .translate('delete')
                       .toUpperCase()),
                 );
               },
