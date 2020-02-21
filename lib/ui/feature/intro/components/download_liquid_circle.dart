@@ -167,28 +167,31 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                 height: 300,
                 width: 300,
                 child: GestureDetector(
-                  onTap: () {
+                  onDoubleTap: () {
                     AppNavigator.instance.navToHome(context);
+                  },
+                  onTap: () {
+                    BlocProvider.of<IntroBloc>(context).add(FetchAllData());
                   },
                   child: LiquidCircularProgressIndicator(
                     value: 0.0,
                     valueColor: AlwaysStoppedAnimation(Colors.red),
                     backgroundColor: Colors.white,
+                    borderWidth: 2.0,
+                    borderColor:
+                        (Theme.of(context).brightness == Brightness.light
+                            ? Colors.grey[900]
+                            : Colors.white),
                     center: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.arrow_forward,
+                          Icons.sync_problem,
                           size: 84,
                           color: Colors.black,
                         ),
                         SizedBox(
                           height: 20,
-                        ),
-                        Text(
-                          AppLocalizations.of(context)
-                              .translate('data_download_message'),
-                          style: TextStyle(fontSize: 21, color: Colors.black),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -203,7 +206,7 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                           ),
                         )
                       ],
-                    ),
+                    ), // Defaults to the current Theme's backgroundColor.
                   ),
                 ),
               );
@@ -221,6 +224,11 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                     value: 0.0,
                     valueColor: AlwaysStoppedAnimation(Colors.red),
                     backgroundColor: Colors.white,
+                    borderWidth: 2.0,
+                    borderColor:
+                        (Theme.of(context).brightness == Brightness.light
+                            ? Colors.grey[900]
+                            : Colors.white),
                     center: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -250,6 +258,10 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
                 value: 0.0,
                 valueColor: AlwaysStoppedAnimation(Colors.red),
                 backgroundColor: Colors.white,
+                borderWidth: 2.0,
+                borderColor: (Theme.of(context).brightness == Brightness.light
+                    ? Colors.grey[900]
+                    : Colors.white),
               ),
             );
           },

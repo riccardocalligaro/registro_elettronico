@@ -65,7 +65,7 @@ class ResetDialog extends StatelessWidget {
             SharedPreferences prefs = Injector.appInstance.getDependency();
             prefs.setBool(PrefsConstants.VITAL_DATA_DOWNLOADED, false);
             BlocProvider.of<IntroBloc>(context).add(FetchAllData());
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => Scaffold(
