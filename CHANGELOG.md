@@ -1,9 +1,23 @@
+Version 0.0.8-dev.1
+
+Added grades widget, minor fixes
+
+* Fixed stats bug
+
+* All subjects now appear in grades page
+
+* Added grades widget
+
+* Added widgets labels
+
+* Cleaned logs
+
+--- 
+
 Version 0.0.7-dev.5
 
 Added scuola & territorio, web view, fixed cookies, more
 * Added web view of registro elettronico
-
-
 
 --- 
 
