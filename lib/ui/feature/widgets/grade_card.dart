@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
@@ -43,34 +44,40 @@ class GradeCard extends StatelessWidget {
                       color: Colors.white,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8.0, vertical: 15.0),
-                      child: Text(grade.displayValue,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 20)),
+                      child: AutoSizeText(
+                        grade.displayValue,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20,
+                        ),
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          //grade.localllyCancelled.toString(),
-                          grade.subjectDesc.length > 20
-                              ? GlobalUtils.reduceSubjectTitle(
-                                  grade.subjectDesc)
-                              : grade.subjectDesc,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        _buildLessonArgument(grade),
-                        Text(
-                          DateUtils.convertDateLocale(grade.eventDate,
-                              AppLocalizations.of(context).locale.toString()),
-                          style: TextStyle(color: Colors.white),
-                        )
-                      ],
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          AutoSizeText(
+                            grade.subjectDesc.length > 20
+                                ? GlobalUtils.reduceSubjectTitle(
+                                    grade.subjectDesc)
+                                : grade.subjectDesc,
+                            style: TextStyle(color: Colors.white),
+                            maxLines: 1,
+                          ),
+                          _buildLessonArgument(grade),
+                          AutoSizeText(
+                            DateUtils.convertDateLocale(grade.eventDate,
+                                AppLocalizations.of(context).locale.toString()),
+                            style: TextStyle(color: Colors.white),
+                            maxLines: 1,
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],
@@ -151,31 +158,42 @@ class GradeCard extends StatelessWidget {
       context: context,
       builder: (context) => SimpleDialog(
         children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "${trans.translate('notes')}: ${grade.notesForFamily.length > 0 ? grade.notesForFamily : trans.translate('not_presents').toLowerCase()}",
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(valueRow),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                  '${trans.translate('date')}: ${DateUtils.convertDateLocale(grade.eventDate, trans.locale.toString())}'),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                  '${trans.translate('term')}: ${grade.periodDesc.toLowerCase()}'),
-              SizedBox(
-                height: 5,
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "${trans.translate('notes')}: ${grade.notesForFamily.length > 0 ? grade.notesForFamily : trans.translate('not_presents').toLowerCase()}",
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  valueRow,
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  '${trans.translate('date')}: ${DateUtils.convertDateLocale(grade.eventDate, trans.locale.toString())}',
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  '${trans.translate('term')}: ${grade.periodDesc.toLowerCase()}',
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+              ],
+            ),
           )
         ],
       ),
@@ -235,9 +253,10 @@ class GradeCard extends StatelessWidget {
         text = text.substring(0, 30);
         text += "...";
       }
-      return Text(
+      return AutoSizeText(
         text,
         style: TextStyle(color: Colors.white),
+        overflow: TextOverflow.ellipsis,
       );
     }
     return Container();

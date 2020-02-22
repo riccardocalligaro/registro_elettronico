@@ -190,17 +190,10 @@ class _AbsencesPageState extends State<AbsencesPage> {
           percent: percent,
           animation: withAnimation,
           animationDuration: 300,
-          center: InkWell(
-            radius: 65,
-            // borderRadius: BorderRadius.all(
-            //   Radius.circular(65.0),
-            // ),
-            onTap: () {},
-            child: Text(
-              numberOfEvent.toString(),
-              style: TextStyle(
-                fontSize: 18,
-              ),
+          center: Text(
+            numberOfEvent.toString(),
+            style: TextStyle(
+              fontSize: 18,
             ),
           ),
           progressColor: color,
@@ -228,11 +221,10 @@ class _AbsencesPageState extends State<AbsencesPage> {
             child:
                 Text(AppLocalizations.of(context).translate('not_justified')),
           ),
-          IgnorePointer(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: notJustifiedAbsences.keys.length,
-              itemBuilder: (ctx, index) {
+          Column(
+            children: List.generate(
+              notJustifiedAbsences.keys.length,
+              (index) {
                 final absence = notJustifiedAbsences.keys.elementAt(index);
                 final days = notJustifiedAbsences[absence];
                 return Padding(
@@ -244,7 +236,23 @@ class _AbsencesPageState extends State<AbsencesPage> {
                 );
               },
             ),
-          )
+          ),
+          // ListView.builder(
+          //   physics: NeverScrollableScrollPhysics(),
+          //   shrinkWrap: true,
+          //   itemCount: notJustifiedAbsences.keys.length,
+          //   itemBuilder: (ctx, index) {
+          //     final absence = notJustifiedAbsences.keys.elementAt(index);
+          //     final days = notJustifiedAbsences[absence];
+          //     return Padding(
+          //       padding: const EdgeInsets.only(bottom: 8.0),
+          //       child: AbsenceCard(
+          //         absence: absence,
+          //         days: days,
+          //       ),
+          //     );
+          //   },
+          // )
         ],
       );
     }
@@ -264,14 +272,14 @@ class _AbsencesPageState extends State<AbsencesPage> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(AppLocalizations.of(context).translate('justified')),
+            child: Text(
+              AppLocalizations.of(context).translate('justified'),
+            ),
           ),
-          IgnorePointer(
-            child: ListView.builder(
-              padding: EdgeInsets.only(bottom: 8.0),
-              itemCount: justifiedAbsences.keys.length,
-              shrinkWrap: true,
-              itemBuilder: (ctx, index) {
+          Column(
+            children: List.generate(
+              justifiedAbsences.keys.length,
+              (index) {
                 final absence = justifiedAbsences.keys.elementAt(index);
                 final days = justifiedAbsences[absence];
 
@@ -284,6 +292,9 @@ class _AbsencesPageState extends State<AbsencesPage> {
                 );
               },
             ),
+          ),
+          SizedBox(
+            height: 8,
           )
         ],
       );

@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/component/notifications/notification_service.dart';
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Application(
       builder: (bCtx, initData) {
-        // _setSystemUI(initData.overlayStyle);
+        _setSystemUI(initData.overlayStyle);
         return MaterialApp(
           title: 'Registro elettronico',
           locale: initData.locale,
@@ -75,10 +76,14 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  // _setSystemUI(SystemUiOverlayStyle overlayStyle) {
-  //   SystemChrome.setSystemUIOverlayStyle(overlayStyle);
-  //   SystemChrome.setEnabledSystemUIOverlays([]);
-  // }
+  _setSystemUI(SystemUiOverlayStyle overlayStyle) {
+    //SystemChrome.setSystemUIOverlayStyle(overlayStyle);
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //   statusBarColor: Colors.transparent,
+    //   systemNavigationBarColor: Colors.transparent,
+    //   systemNavigationBarDividerColor: Colors.transparent,
+    // ));
+  }
   //   Color navBarColor;
   //   if (brightness == Brightness.dark) {
   //     navBarColor = Colors.grey[900];

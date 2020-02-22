@@ -293,5 +293,9 @@
   "school_and_territory": "Scuola e territorio",
   "delete_notice_alert_title": "Sei sicuro di voler eliminare questo file?",
   "delete_notice_snackbar_info": "Per eliminare una circolare devi tener premuto sul singolo allegato",
-  "event_hour_day_single": "{date} alle {hour} ({day} giorno)"
+  "event_hour_day_single": "{date} alle {hour} ({day} giorno)",
+  "justified_singular": "Giustificata",
+  "not_justified_singular": "Non giustificata",
+  "justify_code": "Codice giustifica: {code}",
+  "justify_description": "Descrizione giustifica: {desc}"
 }
