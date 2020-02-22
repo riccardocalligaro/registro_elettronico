@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
@@ -191,25 +192,34 @@ class _StatsPageState extends State<StatsPage> {
                   SizedBox(
                     height: 4,
                   ),
-                  Text(AppLocalizations.of(context)
-                      .translate('days_to_school_end')
-                      .replaceAll(
-                          '{days}',
-                          report.timeRemainingToSchoolFinish.inDays
-                              .toString())),
+                  AutoSizeText(
+                    AppLocalizations.of(context)
+                        .translate('days_to_school_end')
+                        .replaceAll(
+                            '{days}',
+                            report.timeRemainingToSchoolFinish.inDays
+                                .toString()),
+                    maxLines: 1,
+                  ),
                   SizedBox(
                     height: 4,
                   ),
-                  Text(AppLocalizations.of(context)
-                      .translate('sufficienti_subjects')
-                      .replaceAll('{number}',
-                          report.sufficientiSubjectsCount.toString())),
+                  AutoSizeText(
+                    AppLocalizations.of(context)
+                        .translate('sufficienti_subjects')
+                        .replaceAll('{number}',
+                            report.sufficientiSubjectsCount.toString()),
+                    maxLines: 1,
+                  ),
                   SizedBox(
                     height: 4,
                   ),
-                  Text(AppLocalizations.of(context)
-                      .translate('insufficient_subjects')
-                      .replaceAll('{number}', insufficientiTotal.toString())),
+                  AutoSizeText(
+                    AppLocalizations.of(context)
+                        .translate('insufficient_subjects')
+                        .replaceAll('{number}', insufficientiTotal.toString()),
+                    maxLines: 1,
+                  ),
                   SizedBox(
                     height: 4,
                   ),
@@ -220,12 +230,15 @@ class _StatsPageState extends State<StatsPage> {
                   SizedBox(
                     height: 4,
                   ),
-                  Text(AppLocalizations.of(context)
-                      .translate('skipped_tests')
-                      .replaceAll(
-                        '{number}',
-                        report.skippedTestsForAbsences.toString(),
-                      ))
+                  AutoSizeText(
+                    AppLocalizations.of(context)
+                        .translate('skipped_tests')
+                        .replaceAll(
+                          '{number}',
+                          report.skippedTestsForAbsences.toString(),
+                        ),
+                    maxLines: 2,
+                  )
                 ],
               ),
             ),
@@ -319,7 +332,11 @@ class _StatsPageState extends State<StatsPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: <Widget>[
-                    Text(AppLocalizations.of(context).translate('averages')),
+                    AutoSizeText(
+                      AppLocalizations.of(context).translate('averages'),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -335,12 +352,13 @@ class _StatsPageState extends State<StatsPage> {
                       center: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text(report.firstTermAverage.isNaN
+                          AutoSizeText(report.firstTermAverage.isNaN
                               ? '-'
                               : report.firstTermAverage.toStringAsFixed(2)),
-                          Text(
+                          AutoSizeText(
                             'Q1',
                             style: TextStyle(fontSize: 12),
+                            textScaleFactor: 1.0,
                           )
                         ],
                       ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,11 +72,34 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // return Scaffold(
+    //   body: CustomScrollView(
+    //     slivers: <Widget>[
+    //       SliverPersistentHeader(
+
+    //       ),
+    //     ],
+    //   ),
+    // );
     return Scaffold(
+        // extendBodyBehindAppBar: ,
         key: _drawerKey,
         drawer: AppDrawer(
           position: DrawerConstants.HOME,
         ),
+        // appBar: AppBar(
+        //   // elevation: 0.0,
+
+        //   //bottomOpacity: 0.0,
+        //   // flexibleSpace: Container(
+        //   //   decoration: BoxDecoration(
+        //   //     gradient: LinearGradient(
+        //   //       stops: [0.4, 1],
+        //   //       colors: <Color>[Colors.red[400], Colors.red[900]],
+        //   //     ),
+        //   //   ),
+        //   // ),
+        // ),
         bottomNavigationBar: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _lastUpdate,
         ),
@@ -128,6 +152,7 @@ class _HomePageState extends State<HomePage> {
             onRefresh: _refreshHome,
             child: SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Stack(
                     children: <Widget>[
@@ -137,29 +162,24 @@ class _HomePageState extends State<HomePage> {
                           gradient: LinearGradient(
                             stops: [0.4, 1],
                             colors: <Color>[Colors.red[400], Colors.red[900]],
-                            begin: Alignment(-1.0, -2.0),
-                            end: Alignment(1.0, 2.0),
                           ),
                         ),
                       ),
-                      _buildWelcomeSection(),
-                      Positioned(
-                        top: 150,
-                        left: 16,
-                        right: 16,
-                        child: _buildQuickShortcutsSection(),
-                      ),
-                      Container(
-                        height: 280,
-                      )
+                      // Positioned(
+                      //   left: 10,
+                      //   top: 20,
+                      //   child: IconButton(
+                      //       icon: Icon(Icons.menu), onPressed: () => {}),
+                      // ),
+                      _buildTopSection()
                     ],
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(
-                        height: 10,
-                      ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
                         child: Text(AppLocalizations.of(context)
@@ -200,7 +220,68 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ));
-    // return ;
+  }
+
+  Widget _buildTopSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 30, left: 5),
+          child: IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              _drawerKey.currentState.openDrawer();
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildNameText(),
+              Text(
+                DateUtils.convertDateLocale(DateTime.now(),
+                    AppLocalizations.of(context).locale.toString()),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              _buildQuickShortcutsSection()
+            ],
+          ),
+        )
+      ],
+    );
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        // mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _buildNameText(),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            DateUtils.convertDateLocale(
+                DateTime.now(), AppLocalizations.of(context).locale.toString()),
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          _buildQuickShortcutsSection()
+        ],
+      ),
+    );
   }
 
   Widget _buildWelcomeSection() {
@@ -272,36 +353,76 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildNameText() {
+    return FutureBuilder(
+      future: RepositoryProvider.of<ProfileRepository>(context).getDbProfile(),
+      initialData: GlobalUtils.getMockProfile(),
+      builder: (context, snapshot) {
+        final Profile profile = snapshot.data;
+        if (profile != null) {
+          return Text(
+            '${AppLocalizations.of(context).translate('welcome_message')}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.w400,
+            ),
+          );
+        }
+        return Text(
+          '${AppLocalizations.of(context).translate('welcome_message')}}.',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.w400,
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildQuickShortcutsSection() {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
+      margin: const EdgeInsets.all(0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(_borderRadiusCard),
       ),
       elevation: 2,
       child: Container(
         height: 120,
+        // width: MediaQuery.of(context).size.width,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
+          // crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            _buildSectionIcon(
-                AppLocalizations.of(context).translate('agenda'), Icons.event,
-                () {
-              AppNavigator.instance.navToAgenda(context);
-            }),
-            _buildSectionIcon(AppLocalizations.of(context).translate('grades'),
-                Icons.timeline, () {
-              AppNavigator.instance.navToGrades(context);
-            }),
-            _buildSectionIcon(
-                AppLocalizations.of(context).translate('timetable'),
-                Icons.access_time, () {
-              AppNavigator.instance.navToTimetable(context);
-            }),
-            _buildSectionIcon(AppLocalizations.of(context).translate('notices'),
-                Icons.assignment, () {
-              AppNavigator.instance.navToNoticeboard(context);
-            }),
+            Flexible(
+              child: _buildSectionIcon(
+                  AppLocalizations.of(context).translate('agenda'), Icons.event,
+                  () {
+                AppNavigator.instance.navToAgenda(context);
+              }),
+            ),
+            Flexible(
+              child: _buildSectionIcon(
+                  AppLocalizations.of(context).translate('grades'),
+                  Icons.timeline, () {
+                AppNavigator.instance.navToGrades(context);
+              }),
+            ),
+            Flexible(
+              child: _buildSectionIcon(
+                  AppLocalizations.of(context).translate('timetable'),
+                  Icons.access_time, () {
+                AppNavigator.instance.navToTimetable(context);
+              }),
+            ),
+            Flexible(
+              child: _buildSectionIcon(
+                  AppLocalizations.of(context).translate('notices'),
+                  Icons.assignment, () {
+                AppNavigator.instance.navToNoticeboard(context);
+              }),
+            ),
           ],
         ),
       ),
@@ -340,9 +461,11 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 8,
             ),
-            Text(
+            AutoSizeText(
               name,
               style: TextStyle(fontSize: 12),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             )
           ],
         ),

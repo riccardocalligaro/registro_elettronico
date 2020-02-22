@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
@@ -85,33 +86,36 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
                   progressColor: _getColorFromAverage(average),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      widget.subject.name.length < 20
-                          ? widget.subject.name
-                          : GlobalUtils.reduceSubjectTitle(widget.subject.name),
-                    ),
-                    Text(
-                      GradesUtils.getGradeMessage(
-                          objective.toDouble(),
-                          average,
-                          widget.grades
-                              .where((grade) =>
-                                  grade.subjectId == widget.subject.id &&
-                                  GradesUtils.isValidGrade(grade))
-                              .toList()
-                              .length,
-                          context),
-                      style: Theme.of(context)
-                          .primaryTextTheme
-                          .body1
-                          .copyWith(fontSize: 12),
-                    )
-                  ],
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      AutoSizeText(
+                        widget.subject.name.length < 20
+                            ? widget.subject.name
+                            : GlobalUtils.reduceSubjectTitle(widget.subject.name),
+                        maxLines: 1,
+                      ),
+                      Text(
+                        GradesUtils.getGradeMessage(
+                            objective.toDouble(),
+                            average,
+                            widget.grades
+                                .where((grade) =>
+                                    grade.subjectId == widget.subject.id &&
+                                    GradesUtils.isValidGrade(grade))
+                                .toList()
+                                .length,
+                            context),
+                        style: Theme.of(context)
+                            .primaryTextTheme
+                            .body1
+                            .copyWith(fontSize: 12),
+                      )
+                    ],
+                  ),
                 ),
               )
             ],

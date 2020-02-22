@@ -15,8 +15,9 @@ class SubjectAverages {
     @required this.average,
   });
 
-  String get averageValue =>
-      !this.average.isNaN ? this.average.toStringAsFixed(2) : "";
+  String get averageValue => (!this.average.isNaN || this.average > 0)
+      ? this.average.toStringAsFixed(2)
+      : "-";
   String get praticoAverageValue =>
       !this.praticoAverage.isNaN ? this.praticoAverage.toStringAsFixed(2) : "";
   String get scrittoAverageValue =>

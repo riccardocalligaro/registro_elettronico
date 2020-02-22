@@ -31,9 +31,11 @@ class Indicator extends StatelessWidget {
         const SizedBox(
           width: 4,
         ),
-        Text(
-          text,
-          style: TextStyle(fontSize: 12),
+        Flexible(
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 12),
+          ),
         )
       ],
     );

@@ -582,6 +582,60 @@ class GlobalUtils {
     return names[index];
   }
 
+  static String getAbsenceMessage(BuildContext context, Absence absence) {
+    final code = absence.evtCode;
+    if (code == RegistroConstants.ASSENZA &&
+        absence.isJustified == true &&
+        absence.justifReasonDesc.length > 0) {
+      return absence.justifReasonDesc;
+    } else if (code == RegistroConstants.ASSENZA) {
+      return AppLocalizations.of(context).translate('absent_all_day');
+    } else if (code == RegistroConstants.RITARDO) {
+      return AppLocalizations.of(context)
+          .translate('you_entered_at')
+          .replaceAll('{hour}', "${absence.evtHPos}°");
+    } else if (code == RegistroConstants.RITARDO_BREVE) {
+      return AppLocalizations.of(context).translate('little_bit_late');
+    } else if (code == RegistroConstants.USCITA) {
+      return AppLocalizations.of(context)
+          .translate('exit_at_hour')
+          .replaceAll('{hour}', "${absence.evtHPos}°");
+    } else {
+      return AppLocalizations.of(context).translate('unricognised_event');
+    }
+  }
+
+  static String getAbsenceLetterFromCode(BuildContext context, String code) {
+    if (code == RegistroConstants.ASSENZA) {
+      return AppLocalizations.of(context).translate('absence')[0];
+    } else if (code == RegistroConstants.RITARDO) {
+      return AppLocalizations.of(context).translate('late')[0];
+    } else if (code == RegistroConstants.RITARDO_BREVE) {
+      return AppLocalizations.of(context).translate('rb_code');
+    } else if (code == RegistroConstants.USCITA) {
+      return AppLocalizations.of(context).translate('early_exit')[0];
+    } else {
+      return AppLocalizations.of(context).translate('unricognised_event')[0];
+    }
+  }
+
+  static String getDateOfAbsence(
+      BuildContext context, int days, Absence absence) {
+    if (days > 1) {
+      final startDateOfAbsence =
+          absence.evtDate.subtract(Duration(days: days - 1));
+      if (startDateOfAbsence.month != absence.evtDate.month) {
+        return "${startDateOfAbsence.day}/${startDateOfAbsence.month} to ${absence.evtDate.day}";
+      } else {
+        final from = AppLocalizations.of(context).translate('from_absences');
+        final to = AppLocalizations.of(context).translate('to_absences');
+        return "$from ${startDateOfAbsence.day} $to ${absence.evtDate.day} ${DateUtils.convertMonthLocale(absence.evtDate, AppLocalizations.of(context).locale.toString())}";
+      }
+    }
+    return DateUtils.convertDateLocale(
+        absence.evtDate, AppLocalizations.of(context).locale.toString());
+  }
+
   // static void initialFetch(BuildContext context) {
   //   BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
   //   BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());

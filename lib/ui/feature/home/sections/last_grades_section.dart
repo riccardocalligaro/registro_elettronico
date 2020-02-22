@@ -79,6 +79,50 @@ class LastGradesSection extends StatelessWidget {
 
   Widget _buildListViewCard(Grade grade, BuildContext context) {
     return Card(
+      child: ListTile(
+        // contentPadding: EdgeInsets.all(0),
+        leading: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),
+          child: Container(
+            height: 20,
+            width: 20,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: GlobalUtils.getColorFromGrade(grade),
+            ),
+          ),
+        ),
+        title: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                grade.subjectDesc.length > 35
+                    ? StringUtils.titleCase(
+                        GlobalUtils.reduceSubjectTitleWithLength(
+                            grade.subjectDesc, 34))
+                    : StringUtils.titleCase(grade.subjectDesc),
+                style: TextStyle(fontSize: 15),
+              ),
+              Text(
+                DateUtils.convertDateLocale(grade.eventDate,
+                    AppLocalizations.of(context).locale.toString()),
+                style: TextStyle(fontSize: 11),
+              )
+            ],
+          ),
+        ),
+        trailing: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            grade.displayValue,
+            style: TextStyle(fontSize: 18),
+          ),
+        ),
+      ),
+    );
+    return Card(
       margin: EdgeInsets.symmetric(vertical: 4.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -118,9 +162,11 @@ class LastGradesSection extends StatelessWidget {
                 )
               ],
             ),
-            Text(
-              grade.displayValue,
-              style: TextStyle(fontSize: 18),
+            Flexible(
+              child: Text(
+                grade.displayValue,
+                style: TextStyle(fontSize: 18),
+              ),
             )
           ],
         ),
