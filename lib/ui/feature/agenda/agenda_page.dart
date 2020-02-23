@@ -154,7 +154,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         labelHasShadow: false,
         labelColor:
             GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
-      labelBackgroundColor:
+        labelBackgroundColor:
             GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
         currentButton: FloatingActionButton(
           heroTag: "test_fab",
@@ -564,6 +564,13 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ),
+                // title: Padding(
+                //   padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                //   child: Text(
+                //     GlobalUtils.getMockupName(),
+                //     style: TextStyle(fontWeight: FontWeight.w600),
+                //   ),
+                // ),
                 subtitle: Padding(
                   padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
                   child: Text(
@@ -644,6 +651,14 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                       await _showLocalBoottomSheet(event);
                     },
                     leading: _buildEventLeading(event),
+                    // title: Padding(
+                    //   padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                    //   child: Text(
+                    //     '${GlobalUtils.getMockupName()}',
+                    //     style: TextStyle(
+                    //         color: Colors.white, fontWeight: FontWeight.w600),
+                    //   ),
+                    // ),
                     title: Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                       child: Text(

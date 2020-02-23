@@ -16,6 +16,7 @@ class MainActivity : FlutterActivity() {
     private val CHANNEL_WIDGET = "com.riccardocalligaro.registro_elettronico/home_widget"
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
+
         GeneratedPluginRegistrant.registerWith(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL_WIDGET).setMethodCallHandler { call, result ->
 

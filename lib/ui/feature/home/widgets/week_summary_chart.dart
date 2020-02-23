@@ -60,34 +60,38 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
-            tooltipBgColor: Theme.of(context).brightness == Brightness.dark
-                ? Colors.white
-                : Colors.grey[900].withOpacity(0.9),
-            getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
-              return touchedBarSpots.map((barSpot) {
-                final flSpot = barSpot;
-                String text;
-                // This also checks if the event is only one and in case changes the text to singular
-                if (flSpot.barIndex == 0) {
+          tooltipBottomMargin: 23,
+          tooltipBgColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.grey[900].withOpacity(0.9),
+          getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
+            return touchedBarSpots.map((barSpot) {
+              final flSpot = barSpot;
+              String text;
+              // This also checks if the event is only one and in case changes the text to singular
+              if (flSpot.barIndex == 0) {
+                text = AppLocalizations.of(context)
+                    .translate('events')
+                    .toLowerCase();
+                if (flSpot.y == 1) {
                   text = AppLocalizations.of(context)
-                      .translate('events')
+                      .translate('event')
                       .toLowerCase();
-                  if (flSpot.y == 1) {
-                    text = AppLocalizations.of(context)
-                        .translate('event')
-                        .toLowerCase();
-                  }
                 }
+              }
 
-                return LineTooltipItem(
-                  "${flSpot.y.toStringAsFixed(0)} $text",
-                  TextStyle(
-                    color: flSpot.bar.colors.first,
-                    fontWeight: FontWeight.bold,
-                  ),
-                );
-              }).toList();
-            }),
+              return LineTooltipItem(
+                "${flSpot.y.toStringAsFixed(0)} $text",
+                TextStyle(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? flSpot.bar.colors.first
+                      : Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              );
+            }).toList();
+          },
+        ),
         handleBuiltInTouches: true,
       ),
       gridData: FlGridData(
@@ -101,8 +105,7 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
           showTitles: true,
           reservedSize: 22,
           textStyle: TextStyle(
-            fontSize: 12,
-          ),
+              fontSize: 12, color: Theme.of(context).textTheme.title.color),
           getTitles: (value) {
             if (value <= 7) {
               final locale = AppLocalizations.of(context).locale.toString();

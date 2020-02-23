@@ -72,34 +72,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   body: CustomScrollView(
-    //     slivers: <Widget>[
-    //       SliverPersistentHeader(
-
-    //       ),
-    //     ],
-    //   ),
-    // );
     return Scaffold(
-        // extendBodyBehindAppBar: ,
         key: _drawerKey,
         drawer: AppDrawer(
           position: DrawerConstants.HOME,
         ),
-        // appBar: AppBar(
-        //   // elevation: 0.0,
-
-        //   //bottomOpacity: 0.0,
-        //   // flexibleSpace: Container(
-        //   //   decoration: BoxDecoration(
-        //   //     gradient: LinearGradient(
-        //   //       stops: [0.4, 1],
-        //   //       colors: <Color>[Colors.red[400], Colors.red[900]],
-        //   //     ),
-        //   //   ),
-        //   // ),
-        // ),
         bottomNavigationBar: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _lastUpdate,
         ),
@@ -162,15 +139,11 @@ class _HomePageState extends State<HomePage> {
                           gradient: LinearGradient(
                             stops: [0.4, 1],
                             colors: <Color>[Colors.red[400], Colors.red[900]],
+                            begin: Alignment(-1.0, -2.0),
+                            end: Alignment(1.0, 2.0),
                           ),
                         ),
                       ),
-                      // Positioned(
-                      //   left: 10,
-                      //   top: 20,
-                      //   child: IconButton(
-                      //       icon: Icon(Icons.menu), onPressed: () => {}),
-                      // ),
                       _buildTopSection()
                     ],
                   ),
@@ -204,11 +177,6 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(
                         height: 10,
                       ),
-                      // Padding(
-                      //   padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      //   child: Text(AppLocalizations.of(context)
-                      //       .translate('this_week_section_title')),
-                      // ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
                         child: NextEventsSection(),
@@ -229,7 +197,10 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: const EdgeInsets.only(top: 30, left: 5),
           child: IconButton(
-            icon: Icon(Icons.menu),
+            icon: Icon(
+              Icons.menu,
+              color: Colors.white,
+            ),
             onPressed: () {
               _drawerKey.currentState.openDrawer();
             },
@@ -258,100 +229,76 @@ class _HomePageState extends State<HomePage> {
         )
       ],
     );
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildNameText(),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            DateUtils.convertDateLocale(
-                DateTime.now(), AppLocalizations.of(context).locale.toString()),
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          _buildQuickShortcutsSection()
-        ],
-      ),
-    );
   }
 
-  Widget _buildWelcomeSection() {
-    return Positioned(
-      top: 40,
-      left: -16,
-      right: 0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              RawMaterialButton(
-                onPressed: () {
-                  _drawerKey.currentState.openDrawer();
-                },
-                child: Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                ),
-                shape: CircleBorder(),
-                elevation: 2.0,
-                padding: const EdgeInsets.all(15.0),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: FutureBuilder(
-                  future: RepositoryProvider.of<ProfileRepository>(context)
-                      .getDbProfile(),
-                  initialData: GlobalUtils.getMockProfile(),
-                  builder: (context, snapshot) {
-                    final Profile profile = snapshot.data;
-                    if (profile != null) {
-                      return Text(
-                        '${AppLocalizations.of(context).translate('welcome_message')}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      );
-                    }
-                    return Text(
-                      '${AppLocalizations.of(context).translate('welcome_message')}}.',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: Text(
-                  DateUtils.convertDateLocale(DateTime.now(),
-                      AppLocalizations.of(context).locale.toString()),
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildWelcomeSection() {
+  //   return Positioned(
+  //     top: 40,
+  //     left: -16,
+  //     right: 0,
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: <Widget>[
+  //         Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: <Widget>[
+  //             RawMaterialButton(
+  //               onPressed: () {
+  //                 _drawerKey.currentState.openDrawer();
+  //               },
+  //               child: Icon(
+  //                 Icons.menu,
+  //                 color: Colors.white,
+  //               ),
+  //               shape: CircleBorder(),
+  //               elevation: 2.0,
+  //               padding: const EdgeInsets.all(15.0),
+  //             ),
+  //             Padding(
+  //               padding: const EdgeInsets.symmetric(horizontal: 32.0),
+  //               child: FutureBuilder(
+  //                 future: RepositoryProvider.of<ProfileRepository>(context)
+  //                     .getDbProfile(),
+  //                 initialData: GlobalUtils.getMockProfile(),
+  //                 builder: (context, snapshot) {
+  //                   final Profile profile = snapshot.data;
+  //                   if (profile != null) {
+  //                     return Text(
+  //                       '${AppLocalizations.of(context).translate('welcome_message')}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
+  //                       style: TextStyle(
+  //                         color: Colors.white,
+  //                         fontSize: 24,
+  //                         fontWeight: FontWeight.w400,
+  //                       ),
+  //                     );
+  //                   }
+  //                   return Text(
+  //                     '${AppLocalizations.of(context).translate('welcome_message')}}.',
+  //                     style: TextStyle(
+  //                       color: Colors.white,
+  //                       fontSize: 24,
+  //                       fontWeight: FontWeight.w400,
+  //                     ),
+  //                   );
+  //                 },
+  //               ),
+  //             ),
+  //             Padding(
+  //               padding: const EdgeInsets.symmetric(horizontal: 32.0),
+  //               child: Text(
+  //                 DateUtils.convertDateLocale(DateTime.now(),
+  //                     AppLocalizations.of(context).locale.toString()),
+  //                 style: TextStyle(
+  //                   color: Colors.white,
+  //                 ),
+  //               ),
+  //             )
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildNameText() {
     return FutureBuilder(
