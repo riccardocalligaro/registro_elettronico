@@ -79,7 +79,9 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
                   radius: 60.0,
                   lineWidth: 6.0,
                   percent: _getPercentAverage(average),
-                  backgroundColor: Colors.white,
+                  backgroundColor: GlobalUtils.isDark(context)
+                      ? Colors.white
+                      : Colors.grey.withOpacity(0.3),
                   animation: true,
                   animationDuration: 300,
                   center: Text(average <= 0 ? '-' : average.toStringAsFixed(2)),
@@ -95,7 +97,8 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
                       AutoSizeText(
                         widget.subject.name.length < 20
                             ? widget.subject.name
-                            : GlobalUtils.reduceSubjectTitle(widget.subject.name),
+                            : GlobalUtils.reduceSubjectTitle(
+                                widget.subject.name),
                         maxLines: 1,
                       ),
                       Text(

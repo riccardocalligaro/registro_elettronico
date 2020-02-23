@@ -23,6 +23,7 @@ dependencies:
   dio: ^3.0.8
   retrofit: ^1.2.0
   auto_size_text: ^2.1.0
+  # firebase_messaging: ^6.0.9
 
   # Use svg icons in home
   flutter_svg: ^0.15.0
