@@ -1,5 +1,6 @@
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
@@ -52,7 +53,11 @@ class AgendaRepositoryImpl implements AgendaRepository {
       );
       await agendaDao.deleteAllEventsWithoutLocal();
 
-      agendaDao.insertEvents(events);
+      await agendaDao.insertEvents(events);
+
+      const platform = const MethodChannel(
+          'com.riccardocalligaro.registro_elettronico/home_widget');
+      platform.invokeMethod('updateAgendaWidget');
     } else {
       throw NotConntectedException();
     }
@@ -80,7 +85,12 @@ class AgendaRepositoryImpl implements AgendaRepository {
         events.add(EventMapper.convertEventEntityToInsertable(event, color));
       });
       await agendaDao.deleteEventsFromDate(DateTime.now());
-      agendaDao.insertEvents(events);
+
+      await agendaDao.insertEvents(events);
+
+      const platform = const MethodChannel(
+          'com.riccardocalligaro.registro_elettronico/home_widget');
+      platform.invokeMethod('updateAgendaWidget');
     } else {
       throw NotConntectedException();
     }
@@ -108,15 +118,22 @@ class AgendaRepositoryImpl implements AgendaRepository {
 
       await agendaDao.deleteAllEventsWithoutLocal();
 
-      agendaDao.insertEvents(events);
+      await agendaDao.insertEvents(events);
+
+      const platform = const MethodChannel(
+          'com.riccardocalligaro.registro_elettronico/home_widget');
+      platform.invokeMethod('updateAgendaWidget');
     } else {
       throw NotConntectedException();
     }
   }
 
   @override
-  Future insertEvent(AgendaEvent event) {
-    return agendaDao.insertEvent(event);
+  Future insertEvent(AgendaEvent event) async {
+    await agendaDao.insertEvent(event);
+    const platform = const MethodChannel(
+        'com.riccardocalligaro.registro_elettronico/home_widget');
+    platform.invokeMethod('updateAgendaWidget');
   }
 
   @override
@@ -141,17 +158,26 @@ class AgendaRepositoryImpl implements AgendaRepository {
   }
 
   @override
-  Future deleteEvent(AgendaEvent event) {
-    return agendaDao.deleteEvent(event);
+  Future deleteEvent(AgendaEvent event) async {
+    await agendaDao.deleteEvent(event);
+    const platform = const MethodChannel(
+        'com.riccardocalligaro.registro_elettronico/home_widget');
+    platform.invokeMethod('updateAgendaWidget');
   }
 
   @override
-  Future insertLocalEvent(AgendaEvent event) {
-    return agendaDao.insertEvent(event);
+  Future insertLocalEvent(AgendaEvent event) async {
+    await agendaDao.insertEvent(event);
+    const platform = const MethodChannel(
+        'com.riccardocalligaro.registro_elettronico/home_widget');
+    platform.invokeMethod('updateAgendaWidget');
   }
 
   @override
-  Future updateEvent(AgendaEvent event) {
-    return agendaDao.updateEvent(event);
+  Future updateEvent(AgendaEvent event) async {
+    await agendaDao.updateEvent(event);
+    const platform = const MethodChannel(
+        'com.riccardocalligaro.registro_elettronico/home_widget');
+    platform.invokeMethod('updateAgendaWidget');
   }
 }

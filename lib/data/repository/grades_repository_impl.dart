@@ -1,4 +1,5 @@
 import 'package:f_logs/model/flog/flog.dart';
+import 'package:flutter/services.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';
@@ -36,20 +37,30 @@ class GradesRepositoryImpl implements GradesRepository {
             'Got ${gradesResponse.grades.length} grades from server, procceding to insert in database',
       );
       await gradeDao.deleteAllGrades();
-      gradeDao.insertGrades(grades);
+      await gradeDao.insertGrades(grades);
+
+      const platform = const MethodChannel(
+          'com.riccardocalligaro.registro_elettronico/home_widget');
+      platform.invokeMethod('updateGradesWidget');
     } else {
       throw NotConntectedException();
     }
   }
 
   @override
-  Future insertGrade(Grade grade) {
-    return gradeDao.insertGrade(grade);
+  Future insertGrade(Grade grade) async {
+    await gradeDao.insertGrade(grade);
+    const platform = const MethodChannel(
+        'com.riccardocalligaro.registro_elettronico/home_widget');
+    platform.invokeMethod('updateGradesWidget');
   }
 
   @override
-  Future insertGrades(List<Grade> gradesData) {
-    return gradeDao.insertGrades(gradesData);
+  Future insertGrades(List<Grade> gradesData) async {
+    gradeDao.insertGrades(gradesData);
+    const platform = const MethodChannel(
+        'com.riccardocalligaro.registro_elettronico/home_widget');
+    platform.invokeMethod('updateGradesWidget');
   }
 
   @override
@@ -73,8 +84,12 @@ class GradesRepositoryImpl implements GradesRepository {
   }
 
   @override
-  Future insertLocalGrade(LocalGrade localGrade) {
-    return gradeDao.insertLocalGrade(localGrade);
+  Future insertLocalGrade(LocalGrade localGrade) async {
+    await gradeDao.insertLocalGrade(localGrade);
+
+    const platform = const MethodChannel(
+        'com.riccardocalligaro.registro_elettronico/home_widget');
+    platform.invokeMethod('updateGradesWidget');
   }
 
   @override
