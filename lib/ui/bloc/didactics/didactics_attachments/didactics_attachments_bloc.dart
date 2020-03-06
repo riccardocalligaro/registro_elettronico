@@ -83,7 +83,7 @@ class DidacticsAttachmentsBloc
         } else if (content.type == 'link') {
           try {
             final res = await didacticsRepository.getURLAtachment(content.id);
-            yield DidacticsAttachmentsURLLoaded(url: res.item);
+            yield DidacticsAttachmentsURLLoaded(url: res.item.link);
           } on DidacticsAttachmentsErrorNotConnected {
             yield DidacticsAttachmentsErrorNotConnected();
           } catch (e) {
