@@ -436,6 +436,8 @@ class _SpaggiariClient implements SpaggiariClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
+
+    print(_result);
     final value = DownloadAttachmentURLResponse.fromJson(_result.data);
     return Future.value(value);
   }

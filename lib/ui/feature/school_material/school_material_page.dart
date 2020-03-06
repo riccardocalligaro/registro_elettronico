@@ -7,6 +7,7 @@ import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/didactics_attachments/bloc.dart';
+import 'package:registro_elettronico/ui/feature/school_material/text_view_page.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
@@ -14,6 +15,7 @@ import 'package:registro_elettronico/ui/global/localizations/app_localizations.d
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SchoolMaterialPage extends StatefulWidget {
   const SchoolMaterialPage({Key key}) : super(key: key);
@@ -142,7 +144,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
             },
           ),
           BlocListener<DidacticsAttachmentsBloc, DidacticsAttachmentsState>(
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state is DidacticsAttachmentsErrorNotConnected) {
                 Scaffold.of(context)
                   ..removeCurrentSnackBar()
@@ -177,6 +179,25 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
 
               if (state is DidacticsAttachmentsFileLoaded) {
                 OpenFile.open(state.path);
+                Scaffold.of(context)..removeCurrentSnackBar();
+              }
+
+              if (state is DidacticsAttachmentsURLLoaded) {
+                final url = state.url;
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
+                Scaffold.of(context)..removeCurrentSnackBar();
+              }
+
+              if (state is DidacticsAttachmentsTextLoaded) {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => TextViewPage(
+                    text: state.text,
+                  ),
+                ));
                 Scaffold.of(context)..removeCurrentSnackBar();
               }
               //if(state is DidacticsAttachments)

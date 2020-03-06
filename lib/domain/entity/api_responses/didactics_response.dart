@@ -127,19 +127,35 @@ class Content {
 }
 
 class DownloadAttachmentURLResponse {
-  String item;
+  Item item;
 
   DownloadAttachmentURLResponse({this.item});
 
   DownloadAttachmentURLResponse.fromJson(Map<String, dynamic> json) {
-    item = json['item'] != null ? json['item'] : null;
+    item = json['item'] != null ? new Item.fromJson(json['item']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.item != null) {
-      data['item'] = this.item;
+      data['item'] = this.item.toJson();
     }
+    return data;
+  }
+}
+
+class Item {
+  String link;
+
+  Item({this.link});
+
+  Item.fromJson(Map<String, dynamic> json) {
+    link = json['link'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['link'] = this.link;
     return data;
   }
 }
