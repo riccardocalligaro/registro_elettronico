@@ -43,6 +43,8 @@ class _GradesChartState extends State<GradesChart> {
   Widget _buildChart(BuildContext context) {
     // we take the grades from the state
     final grades = widget.grades;
+
+    grades.sort((a, b) => a.eventDate.compareTo(b.eventDate));
     // spots for the graph
     List<FlSpot> spots = List<FlSpot>();
 
@@ -63,6 +65,9 @@ class _GradesChartState extends State<GradesChart> {
           spots
               .add(FlSpot(i.toDouble(), num.parse(average.toStringAsFixed(2))));
         }
+        if (spots.length == 1) {
+          spots.add(FlSpot(spots[0].x + 1, spots[0].y));
+        }
       }
     } else {
       // if we don't want to see the average we want to see the single grades during that time
@@ -70,6 +75,10 @@ class _GradesChartState extends State<GradesChart> {
         if (grades[i].decimalValue != -1.00) {
           spots.add(FlSpot(i.toDouble(), grades[i].decimalValue));
         }
+      }
+
+      if (spots.length == 1) {
+        spots.add(FlSpot(spots[0].x + 1, spots[0].y));
       }
     }
 
