@@ -9,6 +9,7 @@
     <string name="next_events">Next events</string>
     <string name="grades">Grades</string>
     <string name="no_grades">No grades</string>
+    <string name="app_name">School record</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>
