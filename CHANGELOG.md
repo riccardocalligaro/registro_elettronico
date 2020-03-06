@@ -1,3 +1,14 @@
+Version 0.0.9-alpha 
+
+* Fixed #42 - fixed opening of text and links in school material
+
+* Fixed #41 - fixed grades order in graph & charts where there is only 1 grade
+
+* Fixed #40 - Added update to agenda and grades widgets
+
+
+--- 
+
 Version 0.0.8-dev.1
 
 Added grades widget, minor fixes
