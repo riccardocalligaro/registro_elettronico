@@ -113,7 +113,7 @@ class NextEventsSection extends StatelessWidget {
                           height: 2.5,
                         ),
                         Text(
-                          '${e.notes ?? ''} - ${GlobalUtils.getEventDateMessage(context, e.begin)}',
+                          '${e.notes ?? ''} - ${GlobalUtils.getEventDateMessage(context, e.begin, e.isFullDay)}',
                           style: TextStyle(fontSize: 12.0),
                         ),
                       ],
@@ -192,11 +192,6 @@ class NextEventsSection extends StatelessWidget {
   }
 
   String _getDateMessage(db.AgendaEvent agendaEvent, BuildContext context) {
-    if (agendaEvent.isFullDay) {
-      return AppLocalizations.of(context)
-          .translate('all_day_inline')
-          .toLowerCase();
-    }
-    return GlobalUtils.getEventDateMessage(context, agendaEvent.begin);
+    return GlobalUtils.getEventDateMessage(context, agendaEvent.begin, agendaEvent.isFullDay);
   }
 }

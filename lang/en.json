@@ -297,5 +297,6 @@
   "justified_singular": "Justified",
   "not_justified_singular": "Not justified",
   "justify_code": "Justify code: {code}",
-  "justify_description": "Justify description: {desc}"
+  "justify_description": "Justify description: {desc}",
+  "tomorrow_at": "tomorrow at {hour}"
 }

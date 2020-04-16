@@ -56,6 +56,10 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
   Widget build(BuildContext context) {
     final subject = widget.subject;
 
+    // return Center(
+    //   child: Text(widget.grades.length.toString()),
+    // );
+
     return BlocBuilder<GradesBloc, GradesState>(
       builder: (context, state) {
         if (state is GradesLoading) {

@@ -12,87 +12,86 @@ dependencies:
   flutter:
     sdk: flutter
   # Dependency Injection
-  injector: ^1.0.8
+  injector:
   # Object comparison
-  equatable: ^1.0.3
+  equatable: 
   # BloC
-  flutter_bloc: ^3.2.0
+  flutter_bloc:
   # Database
-  moor_flutter: ^2.1.0
+  moor_flutter: ^2.1.1
   # Api
-  dio: ^3.0.8
-  retrofit: ^1.2.0
-  auto_size_text: ^2.1.0
+  dio:
+  retrofit:
+  auto_size_text:
   # firebase_messaging: ^6.0.9
 
   # Use svg icons in home
-  flutter_svg: ^0.15.0
+  flutter_svg:
   # Launcher icon
-  flutter_launcher_icons: ^0.7.4
+  flutter_launcher_icons:
 
   # for percentage
-  percent_indicator: ^2.1.1+1
+  percent_indicator:
   # for files
-  path_provider: ^1.5.1
+  path_provider:
   #open downloaded file
-  open_file: ^3.0.1
+  open_file:
   # notifications
-  workmanager: ^0.2.0
+  workmanager:
 
   # expandable school material
-  expandable: ^4.0.1
+  expandable:
   # open urls for school material
-  url_launcher: ^5.4.1
+  url_launcher:
   # pick a grade
-  numberpicker: ^1.1.0
+  numberpicker:
 
   # download indicator
-  liquid_progress_indicator: ^0.3.2
-  tuple: ^1.0.3
+  liquid_progress_indicator:
+  tuple:
   # advanced logging
-  f_logs: ^1.2.2
+  f_logs:
   # email
-  flutter_email_sender: ^2.2.2
+  flutter_email_sender:
   #flutter_mailer: ^0.4.2
-  dartz: ^0.8.9
-  flutter_webview_plugin: ^0.3.10+1
+  dartz:
+  flutter_webview_plugin:
   #webview_flutter: ^0.3.19+4
-  pull_to_refresh: ^1.5.8
+  pull_to_refresh:
   # check if user is conntected
-  data_connection_checker: ^0.3.4
-  liquid_swipe: ^1.3.1
-  rxdart: ^0.23.1
+  data_connection_checker:
+  liquid_swipe:
+  rxdart:
   # chart in stats page
-  flutter_circular_chart: ^0.1.0
-  package_info: ^0.4.0+13
-  screenshot: ^0.1.1
+  flutter_circular_chart:
+  package_info:
+  screenshot:
   # share screenshot
-  esys_flutter_share: ^1.0.2
+  esys_flutter_share:
   # unicorndial: ^1.1.5
-  flutter_colorpicker: ^0.2.6
+  flutter_colorpicker:
   # date time picker
   # datetime_picker_formfield: ^1.0.0
-  flutter_local_notifications: ^1.1.5+1
+  flutter_local_notifications:
 
   # firebase
-  firebase_core: ^0.4.3+3
+  firebase_core:
   # analytics
-  firebase_analytics: ^5.0.2
+  firebase_analytics:
   # crashalitycs
-  firebase_crashlytics: ^0.1.2+4
+  firebase_crashlytics:
 
   # Storing user password
-  shared_preferences: ^0.5.4+8
-  flutter_secure_storage: ^3.3.1+1
+  shared_preferences:
+  flutter_secure_storage:
   # random string for flutter secure storage key generator
-  random_string: ^1.1.0
+  random_string:
   # for date time
-  intl: ^0.16.0
+  intl:
   # calendar in agenda page
-  table_calendar: ^2.2.1
+  table_calendar:
 
-  fl_chart: ^0.7.0
-
+  fl_chart:
   # indexed_list_view: ^1.0.8
   # flutter_swiper: ^1.1.6
   # align_positioned: ^1.2.5
