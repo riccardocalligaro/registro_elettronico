@@ -167,20 +167,10 @@ class _TermGradesPageState extends State<TermGradesPage> {
     List<Subject> subjects,
     bool ascending,
   ) {
-    Map<Subject, double> subjectsValues = Map.fromIterable(subjects,
+        Map<Subject, double> subjectsValues = Map.fromIterable(subjects,
         key: (e) => e, value: (e) => GradesUtils.getAverage(e.id, grades));
 
     var sortedKeys = subjectsValues.keys.toList();
-    // var sortedKeys = subjectsValues.keys.toList()
-    //   ..removeWhere((subject) {
-    //     bool contains = true;
-    //     grades.forEach((grade) {
-    //       if (grade.subjectId == subject.id) {
-    //         contains = false;
-    //       }
-    //     });
-    //     return contains;
-    //   });
 
     if (ascending) {
       sortedKeys = sortedKeys
@@ -190,10 +180,11 @@ class _TermGradesPageState extends State<TermGradesPage> {
         ..sort((k2, k1) => subjectsValues[k1].compareTo(subjectsValues[k2]));
     }
 
-    LinkedHashMap<Subject, double> sortedMap = new LinkedHashMap.fromIterable(
+    LinkedHashMap<Subject, double> sortedMap = LinkedHashMap.fromIterable(
         sortedKeys,
         key: (k) => k,
         value: (k) => subjectsValues[k]);
+
     return sortedMap;
   }
 }

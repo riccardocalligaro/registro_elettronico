@@ -82,7 +82,7 @@ class NextEventsPage extends StatelessWidget {
                   height: 2.5,
                 ),
                 Text(
-                  '${e.notes ?? ''} - ${GlobalUtils.getEventDateMessage(context, e.begin)}',
+                  '${e.notes ?? ''} - ${GlobalUtils.getEventDateMessage(context, e.begin, e.isFullDay)}',
                   style: TextStyle(fontSize: 12.0),
                 ),
               ],
@@ -108,7 +108,7 @@ class NextEventsPage extends StatelessWidget {
                 height: 2.5,
               ),
               Text(
-                '${StringUtils.titleCase(e.authorName)} - ${GlobalUtils.getEventDateMessage(context, e.begin)}',
+                '${StringUtils.titleCase(e.authorName)} - ${GlobalUtils.getEventDateMessage(context, e.begin, e.isFullDay)}',
                 style: TextStyle(fontSize: 12.0),
               ),
             ],

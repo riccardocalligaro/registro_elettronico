@@ -297,5 +297,7 @@
   "justified_singular": "Giustificata",
   "not_justified_singular": "Non giustificata",
   "justify_code": "Codice giustifica: {code}",
-  "justify_description": "Descrizione giustifica: {desc}"
+  "justify_description": "Descrizione giustifica: {desc}",
+  "tomorrow_at": "Domani alle {hour}"
+
 }
