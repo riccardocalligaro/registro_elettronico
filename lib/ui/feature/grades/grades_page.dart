@@ -1,3 +1,4 @@
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
@@ -68,14 +69,14 @@ class _GradesPageState extends State<GradesPage> {
               //   position: DrawerConstants.GRADES,
               // ),
               body: BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
-                listener: (context, state) {
-                  if (state is SubjectsGradesUpdateLoadSuccess) {
+                listener: (context, state2) {
+                  if (state2 is SubjectsGradesUpdateLoadSuccess) {
                     setState(() {
                       _lastUpdateGrades = DateTime.now().millisecondsSinceEpoch;
                     });
                   }
 
-                  if (state is SubjectsGradesLoadNotConnected) {
+                  if (state2 is SubjectsGradesLoadNotConnected) {
                     Scaffold.of(context)
                       ..removeCurrentSnackBar()
                       ..showSnackBar(AppNavigator.instance

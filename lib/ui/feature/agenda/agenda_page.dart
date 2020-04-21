@@ -40,6 +40,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   List _selectedEvents;
   AnimationController _animationController;
   CalendarController _calendarController;
+
   int _agendaLastUpdate;
   DateTime _selectedDay = DateTime.now();
   DateTime _initialDay = DateTime.now();
@@ -365,7 +366,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
           // return AgendaListView(
           //   events: state.events,
           // );
-          return _buildTableCalendar(state.events);
+          return _buildTableCalendar(state.eventsMap, state.events);
         } else if (state is AgendaLoadError) {
           return CustomPlaceHolder(
             text: AppLocalizations.of(context).translate('error'),
@@ -382,14 +383,17 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildTableCalendar(List<db.AgendaEvent> events) {
-    final Map<DateTime, List<db.AgendaEvent>> eventsMap = Map.fromIterable(
-      events,
-      key: (e) => e.begin,
-      value: (e) => events
-          .where((event) => DateUtils.areSameDay(event.begin, e.begin))
-          .toList(),
-    );
+  Widget _buildTableCalendar(Map<DateTime, List<db.AgendaEvent>> eventsMap,
+      List<db.AgendaEvent> events) {
+    // final Map<DateTime, List<db.AgendaEvent>> eventsMap2 = Map.fromIterable(
+    //   events,
+    //   key: (e) => e.begin,
+    //   value: (e) => events
+    //       .where((event) => DateUtils.areSameDay(event.begin, e.begin))
+    //       .toList(),
+    // );
+
+    // final Map<DateTime, List<db.AgendaEvent>> eventsMap = Map();
 
     return TableCalendar(
       calendarController: _calendarController,
@@ -484,41 +488,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       ),
     );
   }
-
-  // Widget _buildMarker2(DateTime date, db.AgendaEvent events) {
-  //   //final eventevents.where((e)=>e.begin.day == date.day).forEach(f)
-  //   return Container(
-  //     width: 8.0,
-  //     height: 8.0,
-  //     margin: const EdgeInsets.symmetric(horizontal: 0.3),
-  //     decoration: BoxDecoration(
-  //       shape: BoxShape.circle,
-  //       color: Colors.red,
-  //     ),
-  //   );
-  //   // return AnimatedContainer(
-  //   //   duration: const Duration(milliseconds: 300),
-  //   //   decoration: BoxDecoration(
-  //   //     shape: BoxShape.rectangle,
-  //   //     color: _calendarController.isSelected(date)
-  //   //         ? Colors.brown[500]
-  //   //         : this._calendarController.isToday(date)
-  //   //             ? Colors.brown[300]
-  //   //             : Colors.blue[400],
-  //   //   ),
-  //   //   width: 16.0,
-  //   //   height: 16.0,
-  //   //   child: Center(
-  //   //     child: Text(
-  //   //       '${events.length}',
-  //   //       style: TextStyle().copyWith(
-  //   //         color: Colors.white,
-  //   //         fontSize: 12.0,
-  //   //       ),
-  //   //     ),
-  //   //   ),
-  //   // );
-  // }
 
   Widget _buildLessonsBlocBuilder() {
     return BlocBuilder<LessonsBloc, LessonsState>(

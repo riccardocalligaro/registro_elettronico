@@ -69,19 +69,21 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
         }
         if (state is GradesLoaded) {
           List<Grade> grades;
-          if (widget.period != TabsConstants.GENERALE) {
-            grades = state.grades
-                .where((grade) =>
-                    grade.subjectId == subject.id &&
-                    grade.periodPos == widget.period)
-                .toList()
-                  ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
-          } else {
-            grades = state.grades
-                .where((grade) => grade.subjectId == subject.id)
-                .toList()
-                  ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
-          }
+
+          grades = state.grades;
+          // if (widget.period != TabsConstants.GENERALE) {
+          //   grades = state.grades
+          //       .where((grade) =>
+          //           grade.subjectId == subject.id &&
+          //           grade.periodPos == widget.period)
+          //       .toList()
+          //         ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
+          // } else {
+          //   grades = state.grades
+          //       .where((grade) => grade.subjectId == subject.id)
+          //       .toList()
+          //         ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
+          // }
 
           final averages =
               GradesUtils.getSubjectAveragesFromGrades(grades, subject.id);
@@ -115,7 +117,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
 
                       _buildLocalGrades(averages, grades),
 
-                      // Last grades
+                      // // Last grades
                       _buildLastGrades(grades),
                     ],
                   ),
@@ -382,12 +384,13 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
       child: ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: grades.length,
+        itemCount: 3,
         itemBuilder: (context, index) {
           return Padding(
             padding: index == 0
                 ? EdgeInsets.only(top: 2.0, bottom: 8.0)
                 : EdgeInsets.only(bottom: 8.0),
+            //    child: Text('Hello'),
             child: GradeCard(
               grade: grades[index],
             ),

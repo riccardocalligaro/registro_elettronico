@@ -8,7 +8,10 @@ import 'package:injector/injector.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 
 import './bloc.dart';
 
@@ -69,7 +72,15 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
           DateTime.now().millisecondsSinceEpoch);
       FLog.info(text: 'BloC -> Got ${events.length} events');
-      yield AgendaLoadSuccess(events: events);
+
+      final Map<DateTime, List<db.AgendaEvent>> eventsMap = Map.fromIterable(
+        events,
+        key: (e) => e.begin,
+        value: (e) => events
+            .where((event) => DateUtils.areSameDay(event.begin, e.begin))
+            .toList(),
+      );
+      yield AgendaLoadSuccess(events: events, eventsMap: eventsMap);
     } catch (e, s) {
       Crashlytics.instance.recordError(e, s);
       FLog.error(text: 'Getting agenda error ${e.toString()}');
@@ -83,7 +94,15 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       final events = await agendaRepository.getLastEvents(
         dateTime,
       );
-      yield AgendaLoadSuccess(events: events);
+
+      final Map<DateTime, List<db.AgendaEvent>> eventsMap = Map.fromIterable(
+        events,
+        key: (e) => e.begin,
+        value: (e) => events
+            .where((event) => DateUtils.areSameDay(event.begin, e.begin))
+            .toList(),
+      );
+      yield AgendaLoadSuccess(events: events, eventsMap: eventsMap);
     } catch (e, s) {
       Crashlytics.instance.recordError(e, s);
       FLog.error(text: 'Getting agenda error ${e.toString()}');

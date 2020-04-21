@@ -17,8 +17,11 @@ class AgendaUpdateLoadSuccess extends AgendaState {}
 class AgendaLoadInProgress extends AgendaState {}
 
 class AgendaLoadSuccess extends AgendaState {
+
+  final Map<DateTime, List<AgendaEvent>> eventsMap;
   final List<AgendaEvent> events;
-  const AgendaLoadSuccess({@required this.events});
+  
+  const AgendaLoadSuccess({@required this.events, @required this.eventsMap});
 }
 
 class AgendaLoadErrorNotConnected extends AgendaState {}

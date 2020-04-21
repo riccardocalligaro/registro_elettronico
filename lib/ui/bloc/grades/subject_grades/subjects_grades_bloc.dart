@@ -82,6 +82,7 @@ class SubjectsGradesBloc
         PrefsConstants.LAST_UPDATE_GRADES,
         DateTime.now().millisecondsSinceEpoch,
       );
+      
       yield SubjectsGradesUpdateLoadSuccess();
     } on NotConntectedException catch (_) {
       yield SubjectsGradesLoadNotConnected();
