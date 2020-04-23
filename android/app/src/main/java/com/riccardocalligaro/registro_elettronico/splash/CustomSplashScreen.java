@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import io.flutter.embedding.android.SplashScreen;
 
+
 public class CustomSplashScreen implements SplashScreen {
     private CustomSplashScreenView splashView;
 

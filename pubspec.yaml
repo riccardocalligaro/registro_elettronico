@@ -12,105 +12,101 @@ dependencies:
   flutter:
     sdk: flutter
   # Dependency Injection
-  injector:
+  injector: ^1.0.8
   # Object comparison
-  equatable: 
+  equatable: ^1.1.1
   # BloC
-  flutter_bloc:
+  flutter_bloc: ^4.0.0
   # Database
   moor_flutter: ^2.1.1
   # Api
-  dio:
-  retrofit:
-  auto_size_text:
+  dio: ^3.0.9
+  retrofit: ^1.3.4
+  auto_size_text: ^2.1.0
   # firebase_messaging: ^6.0.9
 
   # Use svg icons in home
-  flutter_svg:
+  flutter_svg: ^0.17.4
   # Launcher icon
   flutter_launcher_icons:
 
   # for percentage
-  percent_indicator:
+  percent_indicator: ^2.1.3
   # for files
-  path_provider:
+  path_provider: ^1.6.7
   #open downloaded file
-  open_file:
+  open_file: ^3.0.1
   # notifications
-  workmanager:
+  workmanager: ^0.2.2
 
   # expandable school material
-  expandable:
+  expandable: ^4.1.3
   # open urls for school material
-  url_launcher:
+  url_launcher: ^5.4.5
   # pick a grade
   numberpicker:
 
   # download indicator
-  liquid_progress_indicator:
-  tuple:
+  liquid_progress_indicator: ^0.3.2
+  tuple: ^1.0.3
   # advanced logging
-  f_logs:
+  f_logs: ^1.2.2
   # email
-  flutter_email_sender:
+  flutter_email_sender: ^2.2.2
   #flutter_mailer: ^0.4.2
-  dartz:
-  flutter_webview_plugin:
+  dartz: ^0.8.9
+  flutter_webview_plugin: ^0.3.11
   #webview_flutter: ^0.3.19+4
-  pull_to_refresh:
+  pull_to_refresh: ^1.5.8
   # check if user is conntected
-  data_connection_checker:
-  liquid_swipe:
-  rxdart:
+  data_connection_checker: ^0.3.4
+  liquid_swipe: ^1.4.3
+  rxdart: ^0.24.0
   # chart in stats page
-  flutter_circular_chart:
-  package_info:
-  screenshot:
+  flutter_circular_chart: ^0.1.0
+  package_info: ^0.4.0+17
+  screenshot: ^0.1.1
   # share screenshot
   esys_flutter_share:
   # unicorndial: ^1.1.5
   flutter_colorpicker:
   # date time picker
   # datetime_picker_formfield: ^1.0.0
-  flutter_local_notifications:
+  flutter_local_notifications: ^1.4.1
 
   # firebase
-  firebase_core:
+  firebase_core: ^0.4.4+3
   # analytics
-  firebase_analytics:
+  firebase_analytics: ^5.0.11
   # crashalitycs
-  firebase_crashlytics:
+  firebase_crashlytics: ^0.1.3+3
 
   # Storing user password
-  shared_preferences:
-  flutter_secure_storage:
+  shared_preferences: ^0.5.7
+  flutter_secure_storage: ^3.3.3
   # random string for flutter secure storage key generator
   random_string:
   # for date time
-  intl:
+  intl: ^0.16.1
   # calendar in agenda page
-  table_calendar:
+  table_calendar: ^2.2.3
 
-  fl_chart:
-  # indexed_list_view: ^1.0.8
-  # flutter_swiper: ^1.1.6
-  # align_positioned: ^1.2.5
-  # flutter_speed_dial: ^1.2.5
+  fl_chart: ^0.7.0
 
   flutter_localizations:
     sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
+  cupertino_icons:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner:
-  moor_generator: ^2.1.1
+  moor_generator:
   json_serializable: ^3.2.3
-  retrofit_generator: ^1.0.2+2
+  retrofit_generator:
 
 flutter_icons:
   android: true

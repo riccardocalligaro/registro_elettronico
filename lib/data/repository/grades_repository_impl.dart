@@ -1,5 +1,4 @@
 import 'package:f_logs/model/flog/flog.dart';
-import 'package:flutter/services.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/grade_dao.dart';

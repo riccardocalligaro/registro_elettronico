@@ -14,7 +14,6 @@ import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.d
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/entity/subject_averages.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
