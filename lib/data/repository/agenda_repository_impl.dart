@@ -53,11 +53,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
       );
       await agendaDao.deleteAllEventsWithoutLocal();
 
-      await agendaDao.insertEvents(events);
-
-      const platform = const MethodChannel(
-          'com.riccardocalligaro.registro_elettronico/home_widget');
-      platform.invokeMethod('updateAgendaWidget');
+      return agendaDao.insertEvents(events);
     } else {
       throw NotConntectedException();
     }
@@ -86,11 +82,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
       });
       await agendaDao.deleteEventsFromDate(DateTime.now());
 
-      await agendaDao.insertEvents(events);
-
-      const platform = const MethodChannel(
-          'com.riccardocalligaro.registro_elettronico/home_widget');
-      platform.invokeMethod('updateAgendaWidget');
+      return agendaDao.insertEvents(events);
     } else {
       throw NotConntectedException();
     }
@@ -119,10 +111,6 @@ class AgendaRepositoryImpl implements AgendaRepository {
       await agendaDao.deleteAllEventsWithoutLocal();
 
       await agendaDao.insertEvents(events);
-
-      const platform = const MethodChannel(
-          'com.riccardocalligaro.registro_elettronico/home_widget');
-      platform.invokeMethod('updateAgendaWidget');
     } else {
       throw NotConntectedException();
     }
@@ -130,10 +118,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
 
   @override
   Future insertEvent(AgendaEvent event) async {
-    await agendaDao.insertEvent(event);
-    const platform = const MethodChannel(
-        'com.riccardocalligaro.registro_elettronico/home_widget');
-    platform.invokeMethod('updateAgendaWidget');
+    return agendaDao.insertEvent(event);
   }
 
   @override
@@ -159,25 +144,16 @@ class AgendaRepositoryImpl implements AgendaRepository {
 
   @override
   Future deleteEvent(AgendaEvent event) async {
-    await agendaDao.deleteEvent(event);
-    const platform = const MethodChannel(
-        'com.riccardocalligaro.registro_elettronico/home_widget');
-    platform.invokeMethod('updateAgendaWidget');
+    return agendaDao.deleteEvent(event);
   }
 
   @override
   Future insertLocalEvent(AgendaEvent event) async {
-    await agendaDao.insertEvent(event);
-    const platform = const MethodChannel(
-        'com.riccardocalligaro.registro_elettronico/home_widget');
-    platform.invokeMethod('updateAgendaWidget');
+    return agendaDao.insertEvent(event);
   }
 
   @override
   Future updateEvent(AgendaEvent event) async {
-    await agendaDao.updateEvent(event);
-    const platform = const MethodChannel(
-        'com.riccardocalligaro.registro_elettronico/home_widget');
-    platform.invokeMethod('updateAgendaWidget');
+    return agendaDao.updateEvent(event);
   }
 }

@@ -15,44 +15,7 @@
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
-
         android:label="@string/app_name">
-        <receiver
-            android:name=".widgets.grades.GradesWidget"
-            android:label="@string/grades">
-
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/grades_widget_info" />
-        </receiver>
-        <receiver
-            android:name=".widgets.agenda.AgendaWidget"
-            android:label="@string/agenda">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/agenda_widget_info" />
-        </receiver>
-        <receiver
-            android:name=".widgets.timetable.TimetableWidget"
-            android:label="@string/timetable">
-
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-
-                android:resource="@xml/timetable_widget_info" />
-        </receiver>
 
         <activity
             android:name=".MainActivity"
@@ -61,9 +24,20 @@
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:windowSoftInputMode="adjustResize">
+
+
+            <meta-data
+                android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
+                android:value="false" />
+
+            <meta-data
+                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+                android:resource="@drawable/launch_background" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -79,21 +53,12 @@
             </intent-filter>
         </receiver>
         <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" /> <!-- <meta-data -->
-        <!-- android:name="io.flutter.embedding.android.SplashScreenDrawable" -->
-        <!-- android:resource="@drawable/launch_background" /> -->
+
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
 
-        <service
-            android:name=".widgets.agenda.AgendaWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <service
-            android:name=".widgets.timetable.TimetableWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <service
-            android:name=".widgets.grades.GradesWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>

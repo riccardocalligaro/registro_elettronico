@@ -37,11 +37,7 @@ class GradesRepositoryImpl implements GradesRepository {
             'Got ${gradesResponse.grades.length} grades from server, procceding to insert in database',
       );
       await gradeDao.deleteAllGrades();
-      await gradeDao.insertGrades(grades);
-
-      const platform = const MethodChannel(
-          'com.riccardocalligaro.registro_elettronico/home_widget');
-      platform.invokeMethod('updateGradesWidget');
+      return gradeDao.insertGrades(grades);
     } else {
       throw NotConntectedException();
     }
@@ -49,18 +45,12 @@ class GradesRepositoryImpl implements GradesRepository {
 
   @override
   Future insertGrade(Grade grade) async {
-    await gradeDao.insertGrade(grade);
-    const platform = const MethodChannel(
-        'com.riccardocalligaro.registro_elettronico/home_widget');
-    platform.invokeMethod('updateGradesWidget');
+    return gradeDao.insertGrade(grade);
   }
 
   @override
   Future insertGrades(List<Grade> gradesData) async {
-    gradeDao.insertGrades(gradesData);
-    const platform = const MethodChannel(
-        'com.riccardocalligaro.registro_elettronico/home_widget');
-    platform.invokeMethod('updateGradesWidget');
+    return gradeDao.insertGrades(gradesData);
   }
 
   @override
@@ -85,11 +75,7 @@ class GradesRepositoryImpl implements GradesRepository {
 
   @override
   Future insertLocalGrade(LocalGrade localGrade) async {
-    await gradeDao.insertLocalGrade(localGrade);
-
-    const platform = const MethodChannel(
-        'com.riccardocalligaro.registro_elettronico/home_widget');
-    platform.invokeMethod('updateGradesWidget');
+    return gradeDao.insertLocalGrade(localGrade);
   }
 
   @override

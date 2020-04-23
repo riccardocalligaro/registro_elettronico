@@ -23,26 +23,16 @@ class TimetableRepositoryImpl implements TimetableRepository {
 
   @override
   Future insertTimetableEntries(List<TimetableEntry> entries) async {
-    await timetableDao.insertTimetableEntries(entries);
-    const platform = const MethodChannel(
-        'com.riccardocalligaro.registro_elettronico/home_widget');
-    platform.invokeMethod('updateTimetableWidget');
+    return timetableDao.insertTimetableEntries(entries);
   }
 
   @override
   Future insertTimetableEntry(TimetableEntry entry) async {
-    await timetableDao.insertTimetableEntry(entry);
-    const platform = const MethodChannel(
-        'com.riccardocalligaro.registro_elettronico/home_widget');
-    platform.invokeMethod('updateTimetableWidget');
+    return timetableDao.insertTimetableEntry(entry);
   }
 
   @override
   Future updateTimetableEntry(TimetableEntry entry) {
-    const platform = const MethodChannel(
-        'com.riccardocalligaro.registro_elettronico/home_widget');
-    platform.invokeMethod('updateTimetableWidget');
-
     return timetableDao.updateTimetableEntry(entry);
   }
 
@@ -52,7 +42,7 @@ class TimetableRepositoryImpl implements TimetableRepository {
     List<GeniusTimetable> genius = await lessonDao.getGeniusTimetable();
     await timetableDao.deleteTimetable();
 
-    await genius.forEach((t) {
+    return genius.forEach((t) {
       timetableDao.insertTimetableEntry(TimetableEntry(
           start: t.start,
           end: t.end,
@@ -61,25 +51,15 @@ class TimetableRepositoryImpl implements TimetableRepository {
           subject: t.subject,
           subjectName: t.subjectName));
     });
-
-    const platform = const MethodChannel(
-        'com.riccardocalligaro.registro_elettronico/home_widget');
-    platform.invokeMethod('updateTimetableWidget');
   }
 
   @override
   Future deleteTimetableEntry(TimetableEntry entry) async {
-    await timetableDao.deleteTimetableEntry(entry);
-    const platform = const MethodChannel(
-        'com.riccardocalligaro.registro_elettronico/home_widget');
-    platform.invokeMethod('updateTimetableWidget');
+    return timetableDao.deleteTimetableEntry(entry);
   }
 
   @override
   Future deleteTimetableEntryWithDate(int dayOfWeek, int begin, int end) async {
-    await timetableDao.deleteTimetableEntryWithInfo(dayOfWeek, begin, end);
-    const platform = const MethodChannel(
-        'com.riccardocalligaro.registro_elettronico/home_widget');
-    platform.invokeMethod('updateTimetableWidget');
+    return timetableDao.deleteTimetableEntryWithInfo(dayOfWeek, begin, end);
   }
 }

@@ -12,6 +12,7 @@ import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
 import 'package:registro_elettronico/ui/bloc/periods/periods_bloc.dart';
 import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -67,8 +68,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocListener<AuthBloc, AuthState>(
+    return Container(
+      decoration: BoxDecoration(
+          color: GlobalUtils.isDark(context) ? Colors.grey[900]: Colors.white),
+      child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           /// Checks if the autosign in returns the positive result that the user is
           /// auto signed in, so it redirects to the Home page

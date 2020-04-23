@@ -20,19 +20,15 @@ class _DebugPageState extends State<DebugPage> {
       ),
       body: Column(
         children: <Widget>[
-          ListTile(
-            title: Text('Update timetable widget'),
-            trailing: RaisedButton(
-              child: Text('Update'),
-              onPressed: _updateWidgets,
-            ),
-          )
+          // ListTile(
+          //   title: Text('Update timetable widget'),
+          //   trailing: RaisedButton(
+          //     child: Text('Update'),
+          //     onPressed: _updateWidgets,
+          //   ),
+          // )
         ],
       ),
     );
-  }
-
-  void _updateWidgets() async {
-    await platform.invokeMethod('updateWidgets');
   }
 }
