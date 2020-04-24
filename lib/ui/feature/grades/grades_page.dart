@@ -1,8 +1,10 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/subjects_state.dart';
 import 'package:registro_elettronico/ui/feature/grades/pages/last_grades_page.dart';
 import 'package:registro_elettronico/ui/feature/grades/pages/term_grades_page.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
@@ -42,6 +44,283 @@ class _GradesPageState extends State<GradesPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<SubjectsGradesBloc, SubjectsGradesState>(
       builder: (context, state) {
+        // return Text(state.toString());
+        if (state is SubjectsGradesLoadSuccess) {
+          state.grades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
+
+          return DefaultTabController(
+            length: 4,
+            child: Scaffold(
+                appBar: AppBar(
+                  brightness: Theme.of(context).brightness,
+                  elevation: 0.0,
+                  textTheme: Theme.of(context).textTheme,
+                  iconTheme: Theme.of(context).primaryIconTheme,
+                  bottom: TabBar(
+                    isScrollable: true,
+                    indicatorColor: Colors.red,
+                    labelColor:
+                        Theme.of(context).primaryTextTheme.headline.color,
+                    tabs: _getTabBar(),
+                  ),
+                  title: Text(AppLocalizations.of(context).translate('grades')),
+                ),
+                bottomSheet: LastUpdateBottomSheet(
+                  millisecondsSinceEpoch: _lastUpdateGrades,
+                ),
+                body: _buildBlocListener(
+                  state.periods.length > 0
+                      ? TabBarView(
+                          children: <Widget>[
+                            LastGradesPage(
+                              grades: state.grades,
+                            ),
+                            TermGradesPage(
+                              grades: state.grades,
+                              subjects: state.subjects,
+                              objectives: state.objectives,
+                              periodPosition: state.periods
+                                  .where((p) => p.periodIndex == 1)
+                                  .single
+                                  .position,
+                              generalObjective: state.generalObjective,
+                            ),
+                            TermGradesPage(
+                              grades: state.grades,
+                              subjects: state.subjects,
+                              objectives: state.objectives,
+                              periodPosition: state.periods
+                                  .where((p) => p.periodIndex == 2)
+                                  .single
+                                  .position,
+                              generalObjective: state.generalObjective,
+                            ),
+                            TermGradesPage(
+                              grades: state.grades,
+                              subjects: state.subjects,
+                              objectives: state.objectives,
+                              periodPosition: TabsConstants.GENERALE,
+                              generalObjective: state.generalObjective,
+                            )
+                          ],
+                        )
+                      : TabBarView(
+                          children: <Widget>[
+                            LastGradesPage(
+                              grades: state.grades,
+                            ),
+                            TermGradesPage(
+                              grades: state.grades,
+                              subjects: state.subjects,
+                              objectives: state.objectives,
+                              periodPosition: 1,
+                              generalObjective: state.generalObjective,
+                            ),
+                            TermGradesPage(
+                              grades: state.grades,
+                              subjects: state.subjects,
+                              objectives: state.objectives,
+                              periodPosition: 2,
+                              generalObjective: state.generalObjective,
+                            ),
+                            TermGradesPage(
+                              grades: state.grades,
+                              subjects: state.subjects,
+                              objectives: state.objectives,
+                              periodPosition: TabsConstants.GENERALE,
+                              generalObjective: state.generalObjective,
+                            )
+                          ],
+                        ),
+                )),
+          );
+        } else {
+          //return Text(state.toString());
+          return DefaultTabController(
+            length: 4,
+            child: Scaffold(
+                appBar: AppBar(
+                  elevation: 0.0,
+                  textTheme: Theme.of(context).textTheme,
+                  iconTheme: Theme.of(context).primaryIconTheme,
+                  bottom: TabBar(
+                    isScrollable: true,
+                    indicatorColor: Colors.red,
+                    labelColor:
+                        Theme.of(context).primaryTextTheme.headline.color,
+                    tabs: _getTabBar(),
+                  ),
+                  title: Text(AppLocalizations.of(context).translate('grades')),
+                ),
+                drawer: AppDrawer(
+                  position: DrawerConstants.GRADES,
+                ),
+                body: Center(
+                  child: CircularProgressIndicator(),
+                )),
+          );
+        }
+      },
+    );
+    return BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
+      listener: (context, stateListener) {
+        print('\n\n\n$stateListener');
+        if (stateListener is SubjectsGradesUpdateLoadSuccess) {
+          FLog.info(text: "Updating last update");
+          setState(() {
+            _lastUpdateGrades = DateTime.now().millisecondsSinceEpoch;
+          });
+        }
+
+        if (stateListener is SubjectsGradesLoadNotConnected) {
+          Scaffold.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(
+                AppNavigator.instance.getNetworkErrorSnackBar(context));
+
+          BlocProvider.of<SubjectsGradesBloc>(context)
+              .add(GetGradesAndSubjects());
+        } else if (stateListener is SubjectsGradesUpdateLoadSuccess) {
+          BlocProvider.of<SubjectsGradesBloc>(context)
+              .add(GetGradesAndSubjects());
+        } else if (stateListener is SubjectsLoadError) {
+          // show snack bar
+          Scaffold.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  content: Text(AppLocalizations.of(context)
+                      .translate('update_erorr_snackbar_grades')),
+                ),
+              ),
+            );
+        }
+      },
+      child: BlocBuilder<SubjectsGradesBloc, SubjectsGradesState>(
+        builder: (context, state) {
+          // return Text(state.toString());
+          if (state is SubjectsGradesLoadSuccess) {
+            state.grades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
+
+            return DefaultTabController(
+              length: 4,
+              child: Scaffold(
+                appBar: AppBar(
+                  brightness: Theme.of(context).brightness,
+                  elevation: 0.0,
+                  textTheme: Theme.of(context).textTheme,
+                  iconTheme: Theme.of(context).primaryIconTheme,
+                  bottom: TabBar(
+                    isScrollable: true,
+                    indicatorColor: Colors.red,
+                    labelColor:
+                        Theme.of(context).primaryTextTheme.headline.color,
+                    tabs: _getTabBar(),
+                  ),
+                  title: Text(AppLocalizations.of(context).translate('grades')),
+                ),
+                bottomSheet: LastUpdateBottomSheet(
+                  millisecondsSinceEpoch: _lastUpdateGrades,
+                ),
+                body: state.periods.length > 0
+                    ? TabBarView(
+                        children: <Widget>[
+                          LastGradesPage(
+                            grades: state.grades,
+                          ),
+                          TermGradesPage(
+                            grades: state.grades,
+                            subjects: state.subjects,
+                            objectives: state.objectives,
+                            periodPosition: state.periods
+                                .where((p) => p.periodIndex == 1)
+                                .single
+                                .position,
+                            generalObjective: state.generalObjective,
+                          ),
+                          TermGradesPage(
+                            grades: state.grades,
+                            subjects: state.subjects,
+                            objectives: state.objectives,
+                            periodPosition: state.periods
+                                .where((p) => p.periodIndex == 2)
+                                .single
+                                .position,
+                            generalObjective: state.generalObjective,
+                          ),
+                          TermGradesPage(
+                            grades: state.grades,
+                            subjects: state.subjects,
+                            objectives: state.objectives,
+                            periodPosition: TabsConstants.GENERALE,
+                            generalObjective: state.generalObjective,
+                          )
+                        ],
+                      )
+                    : TabBarView(
+                        children: <Widget>[
+                          LastGradesPage(
+                            grades: state.grades,
+                          ),
+                          TermGradesPage(
+                            grades: state.grades,
+                            subjects: state.subjects,
+                            objectives: state.objectives,
+                            periodPosition: 1,
+                            generalObjective: state.generalObjective,
+                          ),
+                          TermGradesPage(
+                            grades: state.grades,
+                            subjects: state.subjects,
+                            objectives: state.objectives,
+                            periodPosition: 2,
+                            generalObjective: state.generalObjective,
+                          ),
+                          TermGradesPage(
+                            grades: state.grades,
+                            subjects: state.subjects,
+                            objectives: state.objectives,
+                            periodPosition: TabsConstants.GENERALE,
+                            generalObjective: state.generalObjective,
+                          )
+                        ],
+                      ),
+              ),
+            );
+          } else {
+            //return Text(state.toString());
+            return DefaultTabController(
+              length: 4,
+              child: Scaffold(
+                  appBar: AppBar(
+                    elevation: 0.0,
+                    textTheme: Theme.of(context).textTheme,
+                    iconTheme: Theme.of(context).primaryIconTheme,
+                    bottom: TabBar(
+                      isScrollable: true,
+                      indicatorColor: Colors.red,
+                      labelColor:
+                          Theme.of(context).primaryTextTheme.headline.color,
+                      tabs: _getTabBar(),
+                    ),
+                    title:
+                        Text(AppLocalizations.of(context).translate('grades')),
+                  ),
+                  drawer: AppDrawer(
+                    position: DrawerConstants.GRADES,
+                  ),
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  )),
+            );
+          }
+        },
+      ),
+    );
+    return BlocBuilder<SubjectsGradesBloc, SubjectsGradesState>(
+      builder: (context, state) {
         if (state is SubjectsGradesLoadSuccess) {
           state.grades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
 
@@ -69,7 +348,10 @@ class _GradesPageState extends State<GradesPage> {
               // ),
               body: BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
                 listener: (context, state2) {
+                  FLog.info(text: "State subject grades $state2");
+
                   if (state2 is SubjectsGradesUpdateLoadSuccess) {
+                    FLog.info(text: "Updating last update");
                     setState(() {
                       _lastUpdateGrades = DateTime.now().millisecondsSinceEpoch;
                     });
@@ -174,6 +456,47 @@ class _GradesPageState extends State<GradesPage> {
           );
         }
       },
+    );
+  }
+
+  BlocListener _buildBlocListener(Widget child) {
+    return BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
+      listener: (context, stateListener) {
+        print('\n\n\n$stateListener');
+        if (stateListener is SubjectsGradesUpdateLoadSuccess) {
+          FLog.info(text: "Updating last update");
+          setState(() {
+            _lastUpdateGrades = DateTime.now().millisecondsSinceEpoch;
+          });
+        }
+
+        if (stateListener is SubjectsGradesLoadNotConnected) {
+          Scaffold.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(
+                AppNavigator.instance.getNetworkErrorSnackBar(context));
+
+          BlocProvider.of<SubjectsGradesBloc>(context)
+              .add(GetGradesAndSubjects());
+        } else if (stateListener is SubjectsGradesUpdateLoadSuccess) {
+          BlocProvider.of<SubjectsGradesBloc>(context)
+              .add(GetGradesAndSubjects());
+        } else if (stateListener is SubjectsLoadError) {
+          // show snack bar
+          Scaffold.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  content: Text(AppLocalizations.of(context)
+                      .translate('update_erorr_snackbar_grades')),
+                ),
+              ),
+            );
+        }
+      },
+      child: child,
     );
   }
 

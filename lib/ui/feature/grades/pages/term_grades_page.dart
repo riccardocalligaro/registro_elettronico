@@ -8,6 +8,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/entity/subject_objective.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/subjects_bloc.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/subjects_event.dart';
+import 'package:registro_elettronico/ui/bloc/subjects/subjects_state.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/grade_subject_card.dart';
 import 'package:registro_elettronico/ui/feature/grades/components/overall_stats_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
@@ -38,14 +41,15 @@ class TermGradesPage extends StatefulWidget {
 }
 
 class _TermGradesPageState extends State<TermGradesPage> {
-  Completer<void> _refreshCompleter;
   bool showAsending = false;
+  RefreshController _refreshController;
 
   @override
   void initState() {
-    super.initState();
+    // refresh controller for updates
+    _refreshController = RefreshController();
     restore();
-    _refreshCompleter = Completer<void>();
+    super.initState();
   }
 
   void restore() async {
@@ -66,8 +70,34 @@ class _TermGradesPageState extends State<TermGradesPage> {
     } else {
       gradesForThisPeriod = widget.grades;
     }
-    return SmartRefresher(
-        controller: RefreshController(),
+
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
+          listener: (context, state) {
+            if (state is SubjectsGradesUpdateLoadSuccess) {
+              _refreshController.refreshCompleted();
+            } else if (state is SubjectsGradesLoadError ||
+                state is SubjectsGradesLoadNotConnected) {
+              _refreshController.refreshFailed();
+            }
+          },
+        ),
+        BlocListener<SubjectsBloc, SubjectsState>(
+          listener: (context, state) {
+            if (state is SubjectsLoadSuccess) {
+              _refreshController.refreshCompleted();
+              BlocProvider.of<SubjectsGradesBloc>(context)
+                  .add(GetGradesAndSubjects());
+            } else if (state is SubjectsUpdateLoadError ||
+                state is SubjectsUpdateLoadNotConnected) {
+              _refreshController.refreshFailed();
+            }
+          },
+        ),
+      ],
+      child: SmartRefresher(
+        controller: _refreshController,
         header: WaterDropMaterialHeader(
           backgroundColor: Theme.of(context).brightness == Brightness.dark
               ? Colors.grey[900]
@@ -77,16 +107,44 @@ class _TermGradesPageState extends State<TermGradesPage> {
         onRefresh: () {
           BlocProvider.of<SubjectsGradesBloc>(context)
               .add(UpdateSubjectGrades());
-          BlocProvider.of<SubjectsGradesBloc>(context)
-              .add(GetGradesAndSubjects());
-          return _refreshCompleter.future;
         },
         child: _buildStatsAndAverages(
           gradesForThisPeriod,
           widget.subjects,
           widget.objectives,
           context,
-        ));
+        ),
+      ),
+    );
+    // return BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
+    //   listener: (context, state) {
+    //     if (state is SubjectsGradesUpdateLoadSuccess) {
+    //       _refreshController.refreshCompleted();
+    //     } else if (state is SubjectsGradesLoadError ||
+    //         state is SubjectsGradesLoadNotConnected) {
+    //       _refreshController.refreshFailed();
+    //     }
+    //   },
+    //   child: SmartRefresher(
+    //     controller: _refreshController,
+    //     header: WaterDropMaterialHeader(
+    //       backgroundColor: Theme.of(context).brightness == Brightness.dark
+    //           ? Colors.grey[900]
+    //           : Colors.white,
+    //       color: Colors.red,
+    //     ),
+    //     onRefresh: () {
+    //       BlocProvider.of<SubjectsGradesBloc>(context)
+    //           .add(UpdateSubjectGrades());
+    //     },
+    //     child: _buildStatsAndAverages(
+    //       gradesForThisPeriod,
+    //       widget.subjects,
+    //       widget.objectives,
+    //       context,
+    //     ),
+    //   ),
+    // );
   }
 
   Widget _buildStatsAndAverages(
@@ -136,30 +194,46 @@ class _TermGradesPageState extends State<TermGradesPage> {
   ) {
     final sortedMap =
         _getGradesOrderedByAverage(grades, subjects, showAsending);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: ListView.builder(
-        padding: EdgeInsets.only(bottom: 16.0),
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: sortedMap.keys.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: GradeSubjectCard(
-              subject: sortedMap.keys.elementAt(index),
-              grades: grades,
-              objective: widget.objectives
-                  .where(
-                      (o) => o.subjectId == sortedMap.keys.elementAt(index).id)
-                  .single
-                  .objective,
-              period: widget.periodPosition,
-            ),
-          );
-        },
-      ),
-    );
+
+    if (sortedMap.keys.length > 0) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: ListView.builder(
+          padding: EdgeInsets.only(bottom: 16.0),
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: sortedMap.keys.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: GradeSubjectCard(
+                subject: sortedMap.keys.elementAt(index),
+                grades: grades,
+                objective: widget.objectives
+                    .where((o) =>
+                        o.subjectId == sortedMap.keys.elementAt(index).id)
+                    .single
+                    .objective,
+                period: widget.periodPosition,
+              ),
+            );
+          },
+        ),
+      );
+    } else {
+      return Padding(
+        padding: EdgeInsets.only(top: grades.length > 0 ? 0.0 : 52.0),
+        child: CustomPlaceHolder(
+          icon: Icons.timeline,
+          showUpdate: true,
+          onTap: () {
+            BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
+            _refreshController.requestRefresh();
+          },
+          text: AppLocalizations.of(context).translate('no_subjects'),
+        ),
+      );
+    }
   }
 
   LinkedHashMap<Subject, double> _getGradesOrderedByAverage(
@@ -167,7 +241,7 @@ class _TermGradesPageState extends State<TermGradesPage> {
     List<Subject> subjects,
     bool ascending,
   ) {
-        Map<Subject, double> subjectsValues = Map.fromIterable(subjects,
+    Map<Subject, double> subjectsValues = Map.fromIterable(subjects,
         key: (e) => e, value: (e) => GradesUtils.getAverage(e.id, grades));
 
     var sortedKeys = subjectsValues.keys.toList();

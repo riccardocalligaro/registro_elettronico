@@ -30,7 +30,7 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
     AbsencesEvent event,
   ) async* {
     if (event is FetchAbsences) {
-      yield AbsencesUpdateLoading();
+      // yield AbsencesUpdateLoading();
       try {
         await absencesRepository.updateAbsences();
         SharedPreferences prefs = Injector.appInstance.getDependency();

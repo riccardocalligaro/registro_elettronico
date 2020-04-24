@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,6 +97,10 @@ class _HomePageState extends State<HomePage> {
                       .add(GetEvents());
 
                   _refreshed[2] = true;
+
+                  FLog.info(
+                      text: "Refresh agenda value: ${_refreshed.toString()}");
+
                   if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
                     _refreshController.refreshCompleted();
 
@@ -136,6 +141,8 @@ class _HomePageState extends State<HomePage> {
                       .add(GetDashboardGrades());
 
                   _refreshed[0] = true;
+                  FLog.info(
+                      text: "Refresh grades value: ${_refreshed.toString()}");
 
                   if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
                     _refreshController.refreshCompleted();
@@ -175,6 +182,8 @@ class _HomePageState extends State<HomePage> {
                       .add(dash.GetLastLessons());
 
                   _refreshed[1] = true;
+
+                  FLog.info(text: "Refresh lessons value: ${_refreshed.toString()}");
 
                   if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
                     _refreshController.refreshCompleted();

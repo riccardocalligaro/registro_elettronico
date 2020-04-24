@@ -301,6 +301,6 @@
   "tomorrow_at": "tomorrow at {hour}",
   "update_error_snackbar": "Error while updating data",
   "update_erorr_snackbar_grades": "Coudld't update grades",
-  "update_erorr_snackbar_agenda": "Coudld't update grades",
+  "update_erorr_snackbar_agenda": "Coudld't update agenda",
   "update_erorr_snackbar_lessons": "Coudld't update lessons"
 }

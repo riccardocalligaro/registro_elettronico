@@ -1,11 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
@@ -23,28 +21,42 @@ class LastGradesPage extends StatefulWidget {
 }
 
 class _LastGradesPageState extends State<LastGradesPage> {
-  Completer<void> _refreshCompleter;
+  RefreshController _refreshController;
 
   @override
   void initState() {
+    // refresh controlelr for udpading grades
+    _refreshController = RefreshController();
     super.initState();
-
-    _refreshCompleter = Completer<void>();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: CustomRefresher(
-        onRefresh: () {
-          BlocProvider.of<SubjectsGradesBloc>(context)
-              .add(UpdateSubjectGrades());
-          BlocProvider.of<SubjectsGradesBloc>(context)
-              .add(GetGradesAndSubjects());
-          return _refreshCompleter.future;
-        },
-        child: _buildGradesList(),
+    return BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
+      listener: (context, state) {
+        if (state is SubjectsGradesUpdateLoadSuccess) {
+          _refreshController.refreshCompleted();
+        } else if (state is SubjectsGradesLoadError ||
+            state is SubjectsGradesLoadNotConnected) {
+          _refreshController.refreshFailed();
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: SmartRefresher(
+          controller: _refreshController,
+          header: WaterDropMaterialHeader(
+            backgroundColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey[900]
+                : Colors.white,
+            color: Colors.red,
+          ),
+          onRefresh: () {
+            BlocProvider.of<SubjectsGradesBloc>(context)
+                .add(UpdateSubjectGrades());
+          },
+          child: _buildGradesList(),
+        ),
       ),
     );
   }
@@ -78,9 +90,7 @@ class _LastGradesPageState extends State<LastGradesPage> {
         onTap: () {
           BlocProvider.of<SubjectsGradesBloc>(context)
               .add(UpdateSubjectGrades());
-          BlocProvider.of<SubjectsGradesBloc>(context)
-              .add(GetGradesAndSubjects());
-          return _refreshCompleter.future;
+          _refreshController.requestRefresh();
         },
         text: AppLocalizations.of(context).translate('no_grades'),
       );

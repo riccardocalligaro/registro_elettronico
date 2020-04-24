@@ -17,6 +17,8 @@ class SubjectsUpdateLoadError extends SubjectsState {
 
 class SubjectsUpdateLoadSuccess extends SubjectsState {}
 
+class SubjectsUpdateLoadNotConnected extends SubjectsState {}
+
 // Subjects
 
 class SubjectsLoadInProgress extends SubjectsState {}

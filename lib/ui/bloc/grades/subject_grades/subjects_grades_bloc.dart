@@ -73,7 +73,7 @@ class SubjectsGradesBloc
   }
 
   Stream<SubjectsGradesState> _mapUpdateSubjectGradesToState() async* {
-    yield SubjectsGradesUpdateLoadInProgress();
+    // yield SubjectsGradesUpdateLoadInProgress();
     try {
       await gradesRepository.updateGrades();
       SharedPreferences prefs = Injector.appInstance.getDependency();

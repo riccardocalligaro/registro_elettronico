@@ -92,31 +92,29 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
               title: Text(subject.name),
             ),
             body: Container(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView(
-                  children: <Widget>[
-                    _buildProfessorsCard(),
+              child: ListView(
+                padding: EdgeInsets.all(8.0),
+                children: <Widget>[
+                  _buildProfessorsCard(),
 
-                    /// Pratico scritto and orale ciruclar progress widgets
-                    _buildAveragesCard(averages),
+                  /// Pratico scritto and orale ciruclar progress widgets
+                  _buildAveragesCard(averages),
 
-                    /// The chart that shows the average and grades
-                    _buildChartCard(
-                        subject,
-                        grades
-                            .where((g) => GradesUtils.isValidGrade(g))
-                            .toList()),
+                  /// The chart that shows the average and grades
+                  _buildChartCard(
+                      subject,
+                      grades
+                          .where((g) => GradesUtils.isValidGrade(g))
+                          .toList()),
 
-                    // Shots the progress bar of the obj and the avg
-                    _buildProgressBarCard(averages),
+                  // Shots the progress bar of the obj and the avg
+                  _buildProgressBarCard(averages),
 
-                    _buildLocalGrades(averages, grades),
+                  _buildLocalGrades(averages, grades),
 
-                    // // Last grades
-                    _buildLastGrades(grades),
-                  ],
-                ),
+                  // // Last grades
+                  _buildLastGrades(grades),
+                ],
               ),
             ),
           );
@@ -408,8 +406,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
           children: <Widget>[
             Container(
               child: LinearPercentIndicator(

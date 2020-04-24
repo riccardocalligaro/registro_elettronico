@@ -19,6 +19,7 @@ FlutterLocalNotificationsPlugin globalLocalNotifications;
 
 void callbackDispatcher() {
   Workmanager.executeTask((task, inputData) async {
+    FLog.info(text: "Executing task $task");
     await NotificationService().checkForNewContent();
     return Future.value(true);
   });
@@ -51,7 +52,11 @@ void initApp() {
 
   Crashlytics.instance.enableInDevMode = false;
 
-  // FirebaseNotifications().setUpFirebase();
+  Workmanager.initialize(
+      callbackDispatcher, // The top level function, aka callbackDispatcher
+      isInDebugMode:
+          true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+      );
 }
 
 /// Registro elettronico by Riccardo Calligaro

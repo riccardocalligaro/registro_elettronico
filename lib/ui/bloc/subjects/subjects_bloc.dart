@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/domain/repository/subjects_repository.dart';
 
@@ -37,10 +38,12 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
   }
 
   Stream<SubjectsState> _mapUpdateSubjectsToState() async* {
-    yield SubjectsUpdateLoadInProgress();
+    // yield SubjectsUpdateLoadInProgress();
     try {
       await subjectsRepository.updateSubjects();
       yield SubjectsUpdateLoadSuccess();
+    } on NotConntectedException catch (_) {
+      yield SubjectsUpdateLoadNotConnected();
     } on Exception catch (e, s) {
       FLog.error(
         text: 'Error updating subjects',

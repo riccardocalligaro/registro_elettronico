@@ -302,7 +302,7 @@ class _SettingsPageState extends State<SettingsPage> {
       await Workmanager.initialize(
         callbackDispatcher,
         //! set to false in production
-        isInDebugMode: false,
+        isInDebugMode: true,
       );
 
       await Workmanager.registerPeriodicTask(

@@ -18,7 +18,14 @@ class NextEventsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AgendaDashboardBloc, AgendaDashboardState>(
       builder: (context, state) {
-        if (state is AgendaDashboardLoadSuccess) {
+        if (state is AgendaLoadInProgress) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 32),
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else if (state is AgendaDashboardLoadSuccess) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

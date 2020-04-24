@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
@@ -26,13 +27,15 @@ class AbsencesPage extends StatefulWidget {
 }
 
 class _AbsencesPageState extends State<AbsencesPage> {
+  RefreshController _refreshController;
   int _absencesLastUpdate;
 
   @override
   void initState() {
     restore();
-    super.initState();
+    _refreshController = RefreshController();
     BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
+    super.initState();
   }
 
   void restore() async {
@@ -56,15 +59,27 @@ class _AbsencesPageState extends State<AbsencesPage> {
       body: BlocListener<AbsencesBloc, AbsencesState>(
         listener: (context, state) {
           if (state is AbsencesUpdateLoaded) {
+            BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
+
+            _refreshController.refreshCompleted();
+
             setState(() {
               _absencesLastUpdate = DateTime.now().millisecondsSinceEpoch;
             });
           }
 
           if (state is AbsencesLoadErrorNotConnected) {
-            Scaffold.of(context).showSnackBar(
-              AppNavigator.instance.getNetworkErrorSnackBar(context),
-            );
+            _refreshController.refreshFailed();
+
+            BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
+
+            Scaffold.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(
+                AppNavigator.instance.getNetworkErrorSnackBar(context),
+              );
+          } else if (state is AbsencesUpdateError) {
+            _refreshController.refreshFailed();
           }
         },
         child: _buildAbsences(context),
@@ -88,6 +103,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
 
           return CustomRefresher(
             onRefresh: _updateAbsences,
+            controller: _refreshController,
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -237,22 +253,6 @@ class _AbsencesPageState extends State<AbsencesPage> {
               },
             ),
           ),
-          // ListView.builder(
-          //   physics: NeverScrollableScrollPhysics(),
-          //   shrinkWrap: true,
-          //   itemCount: notJustifiedAbsences.keys.length,
-          //   itemBuilder: (ctx, index) {
-          //     final absence = notJustifiedAbsences.keys.elementAt(index);
-          //     final days = notJustifiedAbsences[absence];
-          //     return Padding(
-          //       padding: const EdgeInsets.only(bottom: 8.0),
-          //       child: AbsenceCard(
-          //         absence: absence,
-          //         days: days,
-          //       ),
-          //     );
-          //   },
-          // )
         ],
       );
     }
@@ -379,6 +379,5 @@ class _AbsencesPageState extends State<AbsencesPage> {
 
   Future _updateAbsences() async {
     BlocProvider.of<AbsencesBloc>(context).add(FetchAbsences());
-    BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
   }
 }

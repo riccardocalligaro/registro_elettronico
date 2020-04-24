@@ -9,9 +9,6 @@ class DebugPage extends StatefulWidget {
 }
 
 class _DebugPageState extends State<DebugPage> {
-  static const platform = const MethodChannel(
-      'com.riccardocalligaro.registro_elettronico/home_widget');
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

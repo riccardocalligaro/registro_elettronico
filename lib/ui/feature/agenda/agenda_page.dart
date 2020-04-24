@@ -297,34 +297,33 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   }
 
   Widget _buildColumnContent() {
-    return IgnorePointer(
-      child: ListView(
-        shrinkWrap: true,
-        children: <Widget>[
-          const SizedBox(height: 8.0),
-          const SizedBox(height: 8.0),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
-            child: Text(
-              AppLocalizations.of(context).translate('events'),
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
+    return ListView(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: <Widget>[
+        const SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
+          child: Text(
+            AppLocalizations.of(context).translate('events'),
+            style: TextStyle(fontWeight: FontWeight.w500),
           ),
-          Container(
-            child: _buildEventsMap(),
+        ),
+        Container(
+          child: _buildEventsMap(),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
+          child: Text(
+            AppLocalizations.of(context).translate('lessons'),
+            style: TextStyle(fontWeight: FontWeight.w500),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
-            child: Text(
-              AppLocalizations.of(context).translate('lessons'),
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
-          ),
-          IgnorePointer(
-            child: _buildLessonsBlocBuilder(),
-          )
-        ],
-      ),
+        ),
+        IgnorePointer(
+          child: _buildLessonsBlocBuilder(),
+        )
+      ],
     );
   }
 

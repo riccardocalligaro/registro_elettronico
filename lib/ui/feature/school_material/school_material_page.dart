@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:open_file/open_file.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/didactics/bloc.dart';
@@ -42,6 +43,8 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
 
   bool _showResearch = false;
 
+  RefreshController _refreshController;
+
   _SchoolMaterialPageState() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
@@ -62,6 +65,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
   void initState() {
     restore();
 
+    _refreshController = RefreshController();
     BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
     super.initState();
   }
@@ -134,12 +138,30 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
                   ..showSnackBar(
                     AppNavigator.instance.getNetworkErrorSnackBar(context),
                   );
+
+                _refreshController.refreshFailed();
+
+                BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
               }
+
               if (state is DidacticsUpdateLoaded) {
+                _refreshController.refreshCompleted();
+                BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
+
                 setState(() {
                   _schoolMaterialLastUpdate =
                       DateTime.now().millisecondsSinceEpoch;
                 });
+              } else if (state is DidacticsUpdateError) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    AppNavigator.instance.getFloatingSnackBar(
+                        AppLocalizations.of(context)
+                            .translate('update_error_snackbar')),
+                  );
+                _refreshController.refreshFailed();
+                BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
               }
             },
           ),
@@ -427,7 +449,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
 
   Future<void> _refreshDidactics() async {
     BlocProvider.of<DidacticsBloc>(context).add(UpdateDidactics());
-    BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
+    // BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
   }
 
   Icon _getIconFromFileType(String fileType) {

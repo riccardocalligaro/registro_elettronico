@@ -105,6 +105,13 @@ class AppNavigator {
     );
   }
 
+  SnackBar getFloatingSnackBar(String text) {
+    return SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: Text(text),
+    );
+  }
+
   SnackBar getLeaveSnackBar(BuildContext context) {
     return SnackBar(
       behavior: SnackBarBehavior.floating,

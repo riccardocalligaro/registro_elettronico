@@ -43,7 +43,7 @@ class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
     }
 
     if (event is UpdateDidactics) {
-      yield DidacticsUpdateLoading();
+      // yield DidacticsUpdateLoading();
       try {
         await didacticsRepository.updateDidactics();
 

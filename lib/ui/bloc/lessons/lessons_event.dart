@@ -1,11 +1,7 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-abstract class LessonsEvent extends Equatable {
+abstract class LessonsEvent {
   const LessonsEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class UpdateTodayLessons extends LessonsEvent {}

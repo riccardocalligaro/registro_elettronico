@@ -106,16 +106,16 @@ class _IntroDownloadLiquidCircleState extends State<IntroDownloadLiquidCircle>
 
                     prefs.setInt(PrefsConstants.UPDATE_INTERVAL, 360);
 
-                    WidgetsFlutterBinding.ensureInitialized();
-                    Workmanager.cancelAll();
-                    Workmanager.initialize(
-                      callbackDispatcher,
-                      isInDebugMode: false,
-                    );
+                    // WidgetsFlutterBinding.ensureInitialized();
+                    // Workmanager.cancelAll();
+                    // Workmanager.initialize(
+                    //   callbackDispatcher,
+                    //   isInDebugMode: false,
+                    // );
 
                     Workmanager.registerPeriodicTask(
-                      'checkForNewContent',
-                      'checkForNewContent',
+                      'checkForNewContentInitial',
+                      'checkForNewContentInitial',
                       initialDelay: Duration(minutes: 60),
                       frequency: Duration(minutes: 360),
                       constraints: Constraints(
