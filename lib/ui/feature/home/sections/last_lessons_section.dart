@@ -16,42 +16,20 @@ class LastLessonsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LessonsBloc, LessonsState>(
+    return BlocBuilder<LessonsDashboardBloc, LessonsDashboardState>(
       builder: (context, state) {
-        if (state is LessonsLoadServerError || state is LessonsLoadError) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: CustomPlaceHolder(
-              icon: Icons.error,
-              showUpdate: false,
-              text: 'Erorr',
-            ),
-          );
-        } else if (state is LessonsUpdateLoadInProgress) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50),
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else {
-          return BlocBuilder<LessonsDashboardBloc, LessonsDashboardState>(
-            builder: (context, state) {
-              if (state is LessonsDashboardLoadSuccess) {
-                return Container(
-                  height: 140,
-                  child: _buildLessonsCardsList(state.lessons, context),
-                );
-              }
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 50),
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            },
+        if (state is LessonsDashboardLoadSuccess) {
+          return Container(
+            height: 140,
+            child: _buildLessonsCardsList(state.lessons, context),
           );
         }
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 50),
+            child: CircularProgressIndicator(),
+          ),
+        );
       },
     );
   }

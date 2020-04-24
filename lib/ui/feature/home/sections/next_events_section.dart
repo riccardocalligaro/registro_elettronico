@@ -16,54 +16,31 @@ class NextEventsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AgendaBloc, AgendaState>(
+    return BlocBuilder<AgendaDashboardBloc, AgendaDashboardState>(
       builder: (context, state) {
-        if (state is AgendaUpdateLoadInProgress) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 32),
-              child: CircularProgressIndicator(),
-            ),
+        if (state is AgendaDashboardLoadSuccess) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              WeekSummaryChart(
+                events: state.events.toList(),
+              ),
+              Text(AppLocalizations.of(context).translate('next_events')),
+              _buildAgenda(context, state.events),
+            ],
           );
-        } else if (state is AgendaLoadError) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 32),
-            child: CustomPlaceHolder(
-              icon: Icons.error,
-              showUpdate: false,
-              text: AppLocalizations.of(context)
-                  .translate('unexcepted_error_single'),
-            ),
-          );
-        } else {
-          return BlocBuilder<AgendaDashboardBloc, AgendaDashboardState>(
-            builder: (context, state) {
-              if (state is AgendaDashboardLoadSuccess) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    WeekSummaryChart(
-                      events: state.events.toList(),
-                    ),
-                    Text(AppLocalizations.of(context).translate('next_events')),
-                    _buildAgenda(context, state.events),
-                  ],
-                );
-              } else if (state is AgendaDashboardLoadError) {
-                return CustomPlaceHolder(
-                  text: AppLocalizations.of(context)
-                      .translate('unexcepted_error_single'),
-                  icon: Icons.error,
-                  showUpdate: true,
-                  onTap: () {
-                    BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
-                  },
-                );
-              }
-              return Container();
+        } else if (state is AgendaDashboardLoadError) {
+          return CustomPlaceHolder(
+            text: AppLocalizations.of(context)
+                .translate('unexcepted_error_single'),
+            icon: Icons.error,
+            showUpdate: true,
+            onTap: () {
+              BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
             },
           );
         }
+        return Container();
       },
     );
   }
@@ -192,6 +169,7 @@ class NextEventsSection extends StatelessWidget {
   }
 
   String _getDateMessage(db.AgendaEvent agendaEvent, BuildContext context) {
-    return GlobalUtils.getEventDateMessage(context, agendaEvent.begin, agendaEvent.isFullDay);
+    return GlobalUtils.getEventDateMessage(
+        context, agendaEvent.begin, agendaEvent.isFullDay);
   }
 }

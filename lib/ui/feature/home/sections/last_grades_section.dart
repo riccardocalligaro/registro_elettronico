@@ -16,40 +16,27 @@ class LastGradesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GradesBloc, GradesState>(
+    return BlocBuilder<GradesDashboardBloc, GradesDashboardState>(
       builder: (context, state) {
-        if (state is GradesUpdateLoading) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 100.0),
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else {
-          return BlocBuilder<GradesDashboardBloc, GradesDashboardState>(
-            builder: (context, state) {
-              if (state is GradesDashboardLoadSuccess) {
-                return _buildLastGradesList(state.grades, context);
-              } else if (state is GradesDashboardLoadError) {
-                return CustomPlaceHolder(
-                  icon: Icons.error,
-                  text: AppLocalizations.of(context).translate('error'),
-                  showUpdate: true,
-                  onTap: () {
-                    BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
-                  },
-                );
-              }
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 100.0),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
+        if (state is GradesDashboardLoadSuccess) {
+          return _buildLastGradesList(state.grades, context);
+        } else if (state is GradesDashboardLoadError) {
+          return CustomPlaceHolder(
+            icon: Icons.error,
+            text: AppLocalizations.of(context).translate('error'),
+            showUpdate: true,
+            onTap: () {
+              BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
             },
           );
         }
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 100.0),
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
       },
     );
   }

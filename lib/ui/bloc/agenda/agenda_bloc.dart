@@ -39,7 +39,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
   }
 
   Stream<AgendaState> _mapUpdateAllAgendaToState() async* {
-    yield AgendaUpdateLoadInProgress();
+    // yield AgendaUpdateLoadInProgress();
     try {
       FLog.info(text: 'updating here');
       await agendaRepository.updateAllAgenda();
@@ -111,7 +111,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
   }
 
   Stream<AgendaState> _mapUpdateFronDateToState(DateTime date) async* {
-    yield AgendaUpdateLoadInProgress();
+    // yield AgendaUpdateLoadInProgress();
     try {
       await agendaRepository.updateAgendaStartingFromDate(date);
       yield AgendaUpdateLoadSuccess();

@@ -19,6 +19,8 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
+import '../../../../utils/constants/tabs_constants.dart';
+
 class SubjectGradesPage extends StatefulWidget {
   final List<Grade> grades;
   final Subject subject;
@@ -55,10 +57,6 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
   Widget build(BuildContext context) {
     final subject = widget.subject;
 
-    // return Center(
-    //   child: Text(widget.grades.length.toString()),
-    // );
-
     return BlocBuilder<GradesBloc, GradesState>(
       builder: (context, state) {
         if (state is GradesLoading) {
@@ -70,19 +68,19 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
           List<Grade> grades;
 
           grades = state.grades;
-          // if (widget.period != TabsConstants.GENERALE) {
-          //   grades = state.grades
-          //       .where((grade) =>
-          //           grade.subjectId == subject.id &&
-          //           grade.periodPos == widget.period)
-          //       .toList()
-          //         ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
-          // } else {
-          //   grades = state.grades
-          //       .where((grade) => grade.subjectId == subject.id)
-          //       .toList()
-          //         ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
-          // }
+          if (widget.period != TabsConstants.GENERALE) {
+            grades = state.grades
+                .where((grade) =>
+                    grade.subjectId == subject.id &&
+                    grade.periodPos == widget.period)
+                .toList()
+                  ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
+          } else {
+            grades = state.grades
+                .where((grade) => grade.subjectId == subject.id)
+                .toList()
+                  ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
+          }
 
           final averages =
               GradesUtils.getSubjectAveragesFromGrades(grades, subject.id);
@@ -93,33 +91,31 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
               elevation: 0.0,
               title: Text(subject.name),
             ),
-            body: SingleChildScrollView(
-              child: Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: <Widget>[
-                      _buildProfessorsCard(),
+            body: Container(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView(
+                  children: <Widget>[
+                    _buildProfessorsCard(),
 
-                      /// Pratico scritto and orale ciruclar progress widgets
-                      _buildAveragesCard(averages),
+                    /// Pratico scritto and orale ciruclar progress widgets
+                    _buildAveragesCard(averages),
 
-                      /// The chart that shows the average and grades
-                      _buildChartCard(
-                          subject,
-                          grades
-                              .where((g) => GradesUtils.isValidGrade(g))
-                              .toList()),
+                    /// The chart that shows the average and grades
+                    _buildChartCard(
+                        subject,
+                        grades
+                            .where((g) => GradesUtils.isValidGrade(g))
+                            .toList()),
 
-                      // Shots the progress bar of the obj and the avg
-                      _buildProgressBarCard(averages),
+                    // Shots the progress bar of the obj and the avg
+                    _buildProgressBarCard(averages),
 
-                      _buildLocalGrades(averages, grades),
+                    _buildLocalGrades(averages, grades),
 
-                      // // Last grades
-                      _buildLastGrades(grades),
-                    ],
-                  ),
+                    // // Last grades
+                    _buildLastGrades(grades),
+                  ],
                 ),
               ),
             ),
@@ -235,7 +231,8 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
       localGrades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
       return AnimatedContainer(
         duration: Duration(milliseconds: 2000),
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -383,13 +380,12 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
       child: ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: 3,
+        itemCount: grades.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: index == 0
                 ? EdgeInsets.only(top: 2.0, bottom: 8.0)
                 : EdgeInsets.only(bottom: 8.0),
-            //    child: Text('Hello'),
             child: GradeCard(
               grade: grades[index],
             ),
@@ -412,8 +408,8 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: ListView(
+          shrinkWrap: true,
           children: <Widget>[
             Container(
               child: LinearPercentIndicator(

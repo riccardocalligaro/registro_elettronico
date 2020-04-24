@@ -30,6 +30,10 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../bloc/grades/bloc.dart';
+import '../../bloc/lessons/bloc.dart';
+import '../../bloc/lessons/lessons_state.dart';
+
 /// [Dashboard] where the user first lands
 ///   - [Quick shortcuts] for changinc section
 ///   - [Last grades]
@@ -47,6 +51,8 @@ class _HomePageState extends State<HomePage> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   int _lastUpdate;
   RefreshController _refreshController = RefreshController();
+
+  List<bool> _refreshed = [false, false, false];
 
   @override
   void didChangeDependencies() {
@@ -87,6 +93,17 @@ class _HomePageState extends State<HomePage> {
                 if (state is AgendaUpdateLoadSuccess) {
                   BlocProvider.of<AgendaDashboardBloc>(context)
                       .add(GetEvents());
+
+                  _refreshed[2] = true;
+                  if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
+                    _refreshController.refreshCompleted();
+
+                    _resetRefreshed();
+
+                    setState(() {
+                      _lastUpdate = DateTime.now().millisecondsSinceEpoch;
+                    });
+                  }
                 }
 
                 if (state is AgendaLoadErrorNotConnected) {
@@ -95,6 +112,10 @@ class _HomePageState extends State<HomePage> {
                     ..showSnackBar(
                       AppNavigator.instance.getNetworkErrorSnackBar(context),
                     );
+
+                  _refreshController.refreshFailed();
+                } else if (state is AgendaLoadError) {
+                  _refreshController.refreshFailed();
                 }
               },
             ),
@@ -103,6 +124,27 @@ class _HomePageState extends State<HomePage> {
                 if (state is GradesUpdateLoaded) {
                   BlocProvider.of<GradesDashboardBloc>(context)
                       .add(GetDashboardGrades());
+
+                  _refreshed[0] = true;
+
+                  if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
+                    _refreshController.refreshCompleted();
+
+                    _resetRefreshed();
+
+                    setState(() {
+                      _lastUpdate = DateTime.now().millisecondsSinceEpoch;
+                    });
+                  }
+                } else if (state is GradesUpdateError) {
+                  _refreshController.refreshFailed();
+                } else if (state is GradesErrorNotConnected) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                      AppNavigator.instance.getNetworkErrorSnackBar(context),
+                    );
+                  _refreshController.refreshFailed();
                 }
               },
             ),
@@ -111,9 +153,26 @@ class _HomePageState extends State<HomePage> {
                 if (state is LessonsUpdateLoadSuccess) {
                   BlocProvider.of<LessonsDashboardBloc>(context)
                       .add(dash.GetLastLessons());
-                  setState(() {
-                    _lastUpdate = DateTime.now().millisecondsSinceEpoch;
-                  });
+
+                  _refreshed[1] = true;
+
+                  if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
+                    _refreshController.refreshCompleted();
+                    _resetRefreshed();
+
+                    setState(() {
+                      _lastUpdate = DateTime.now().millisecondsSinceEpoch;
+                    });
+                  }
+                } else if (state is LessonsLoadErrorNotConnected) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                      AppNavigator.instance.getNetworkErrorSnackBar(context),
+                    );
+                  _refreshController.refreshFailed();
+                } else if (state is LessonsLoadError) {
+                  _refreshController.refreshFailed();
                 }
               },
             ),
@@ -424,8 +483,11 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
     BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
     BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
-    BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
-    await Future.delayed(Duration(milliseconds: 500));
-    _refreshController.refreshCompleted();
+  }
+
+  void _resetRefreshed() {
+    _refreshed[0] = false;
+    _refreshed[1] = false;
+    _refreshed[2] = false;
   }
 }

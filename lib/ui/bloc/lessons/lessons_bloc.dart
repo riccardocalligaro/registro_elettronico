@@ -96,7 +96,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
   }
 
   Stream<LessonsState> _mapUpdateAllLessonsToState() async* {
-    yield LessonsUpdateLoadInProgress();
+    // yield LessonsUpdateLoadInProgress();
     try {
       await lessonsRepository.updateAllLessons();
       SharedPreferences prefs = Injector.appInstance.getDependency();
@@ -121,7 +121,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
   }
 
   Stream<LessonsState> _mapTodayLessonsToState() async* {
-    yield LessonsUpdateLoadInProgress();
+    // yield LessonsUpdateLoadInProgress();
     try {
       await lessonsRepository.upadateTodayLessons();
       yield LessonsUpdateLoadSuccess();
