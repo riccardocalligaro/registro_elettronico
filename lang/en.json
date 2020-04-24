@@ -298,5 +298,9 @@
   "not_justified_singular": "Not justified",
   "justify_code": "Justify code: {code}",
   "justify_description": "Justify description: {desc}",
-  "tomorrow_at": "tomorrow at {hour}"
+  "tomorrow_at": "tomorrow at {hour}",
+  "update_error_snackbar": "Error while updating data",
+  "update_erorr_snackbar_grades": "Coudld't update grades",
+  "update_erorr_snackbar_agenda": "Coudld't update grades",
+  "update_erorr_snackbar_lessons": "Coudld't update lessons"
 }

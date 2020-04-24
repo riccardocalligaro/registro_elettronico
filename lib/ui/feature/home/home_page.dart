@@ -33,6 +33,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../bloc/grades/bloc.dart';
 import '../../bloc/lessons/bloc.dart';
 import '../../bloc/lessons/lessons_state.dart';
+import '../../global/localizations/app_localizations.dart';
 
 /// [Dashboard] where the user first lands
 ///   - [Quick shortcuts] for changinc section
@@ -115,6 +116,15 @@ class _HomePageState extends State<HomePage> {
 
                   _refreshController.refreshFailed();
                 } else if (state is AgendaLoadError) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Text(
+                        AppLocalizations.of(context)
+                            .translate('update_error_snackbar'),
+                      ),
+                    ));
                   _refreshController.refreshFailed();
                 }
               },
@@ -137,6 +147,16 @@ class _HomePageState extends State<HomePage> {
                     });
                   }
                 } else if (state is GradesUpdateError) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Text(
+                        AppLocalizations.of(context)
+                            .translate('update_error_snackbar'),
+                      ),
+                    ));
+
                   _refreshController.refreshFailed();
                 } else if (state is GradesErrorNotConnected) {
                   Scaffold.of(context)
@@ -172,6 +192,15 @@ class _HomePageState extends State<HomePage> {
                     );
                   _refreshController.refreshFailed();
                 } else if (state is LessonsLoadError) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Text(
+                        AppLocalizations.of(context)
+                            .translate('update_error_snackbar'),
+                      ),
+                    ));
                   _refreshController.refreshFailed();
                 }
               },
