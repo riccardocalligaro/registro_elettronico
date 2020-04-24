@@ -37,7 +37,7 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
   }
 
   Stream<SubjectsState> _mapUpdateSubjectsToState() async* {
-    // yield SubjectsUpdateLoadInProgress();
+    yield SubjectsUpdateLoadInProgress();
     try {
       await subjectsRepository.updateSubjects();
       yield SubjectsUpdateLoadSuccess();
