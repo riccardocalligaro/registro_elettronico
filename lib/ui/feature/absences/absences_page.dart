@@ -59,27 +59,37 @@ class _AbsencesPageState extends State<AbsencesPage> {
       body: BlocListener<AbsencesBloc, AbsencesState>(
         listener: (context, state) {
           if (state is AbsencesUpdateLoaded) {
-            BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
-
             _refreshController.refreshCompleted();
 
             setState(() {
               _absencesLastUpdate = DateTime.now().millisecondsSinceEpoch;
             });
+
+            BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
           }
 
           if (state is AbsencesLoadErrorNotConnected) {
             _refreshController.refreshFailed();
-
-            BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
 
             Scaffold.of(context)
               ..removeCurrentSnackBar()
               ..showSnackBar(
                 AppNavigator.instance.getNetworkErrorSnackBar(context),
               );
+
+            BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
           } else if (state is AbsencesUpdateError) {
+            Scaffold.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(
+                AppNavigator.instance.getFloatingSnackBar(
+                    AppLocalizations.of(context)
+                        .translate('update_error_snackbar')),
+              );
+
             _refreshController.refreshFailed();
+
+            BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
           }
         },
         child: _buildAbsences(context),
@@ -308,7 +318,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
           icon: Icons.assessment,
           onTap: () {
             BlocProvider.of<AbsencesBloc>(context).add(FetchAbsences());
-            BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
+            // BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
           },
           showUpdate: true,
         ),

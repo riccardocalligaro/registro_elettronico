@@ -26,7 +26,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   }
 
   Stream<NotesState> _mapUpdateNotesToState() async* {
-    yield NotesUpdateLoading();
+    // yield NotesUpdateLoading();
     FLog.info(text: 'Updating notes');
     try {
       await notesRepository.deleteAllNotes();

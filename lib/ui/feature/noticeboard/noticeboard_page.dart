@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/notices/attachment_download/bloc.dart';
@@ -27,6 +28,7 @@ class NoticeboardPage extends StatefulWidget {
 }
 
 class _NoticeboardPageState extends State<NoticeboardPage> {
+  RefreshController _refreshController;
   final TextEditingController _filter = TextEditingController();
   String _searchText = "";
 
@@ -55,8 +57,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   @override
   void initState() {
     BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
-
     restore();
+    _refreshController = RefreshController();
     super.initState();
   }
 
@@ -120,24 +122,42 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
       bottomSheet: LastUpdateBottomSheet(
         millisecondsSinceEpoch: _noticeboardLastUpdate,
       ),
-      // drawer: AppDrawer(
-      //   position: DrawerConstants.NOTICE_BOARD,
-      // ),
       body: MultiBlocListener(
         listeners: [
           BlocListener<NoticesBloc, NoticesState>(
             listener: (context, state) {
-              if (state is NoticesAttachmentsLoadNotConnected) {
+              if (state is NoticesAttachmentsLoadNotConnected ||
+                  state is NoticesLoadNotConnected) {
                 Scaffold.of(context)
                   ..removeCurrentSnackBar()
                   ..showSnackBar(
                       AppNavigator.instance.getNetworkErrorSnackBar(context));
+
+                BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
               }
 
               if (state is NoticesUpdateLoaded) {
                 setState(() {
-                  _noticeboardLastUpdate = DateTime.now().millisecondsSinceEpoch;
+                  _noticeboardLastUpdate =
+                      DateTime.now().millisecondsSinceEpoch;
                 });
+
+                _refreshController.refreshCompleted();
+
+                BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
+              }
+
+              if (state is NoticesUpdateError) {
+                _refreshController.refreshFailed();
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    AppNavigator.instance.getFloatingSnackBar(
+                        AppLocalizations.of(context)
+                            .translate('update_error_snackbar')),
+                  );
+
+                BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
               }
             },
           ),
@@ -285,6 +305,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           }
         },
         child: CustomRefresher(
+          controller: _refreshController,
           onRefresh: _refreshNoticeBoard,
           child: ListView.builder(
             padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 24),
@@ -475,7 +496,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
 
   Future<void> _refreshNoticeBoard() async {
     BlocProvider.of<NoticesBloc>(context).add(FetchNoticeboard());
-    BlocProvider.of<NoticesBloc>(context).add(GetNoticeboard());
   }
 
   void _searchPressed(BuildContext context) {

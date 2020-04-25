@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injector/injector.dart';
 import 'package:open_file/open_file.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/documents/bloc.dart';
@@ -27,11 +28,14 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
   //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   int _scrutiniLastUpdate;
 
+  RefreshController _refreshController;
+
   @override
   void initState() {
     BlocProvider.of<DocumentsBloc>(context).add(GetDocuments());
 
     restore();
+    _refreshController = RefreshController();
     super.initState();
   }
 
@@ -206,11 +210,30 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                   setState(() {
                     _scrutiniLastUpdate = DateTime.now().millisecondsSinceEpoch;
                   });
+
+                  _refreshController.refreshCompleted();
+
+                  BlocProvider.of<DocumentsBloc>(context).add(GetDocuments());
                 } else if (state is DocumentsLoadNotConnected) {
                   Scaffold.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(
                         AppNavigator.instance.getNetworkErrorSnackBar(context));
+
+                  _refreshController.refreshFailed();
+
+                  BlocProvider.of<DocumentsBloc>(context).add(GetDocuments());
+                } else if (state is DocumentsUpdateLoadError) {
+                  Scaffold.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                      AppNavigator.instance.getFloatingSnackBar(
+                          AppLocalizations.of(context)
+                              .translate('update_error_snackbar')),
+                    );
+                  _refreshController.refreshFailed();
+
+                  BlocProvider.of<DocumentsBloc>(context).add(GetDocuments());
                 }
               },
             )
@@ -228,8 +251,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                     onTap: () {
                       BlocProvider.of<DocumentsBloc>(context)
                           .add(UpdateDocuments());
-                      BlocProvider.of<DocumentsBloc>(context)
-                          .add(GetDocuments());
+                      // BlocProvider.of<DocumentsBloc>(context)
+                      //     .add(GetDocuments());
                     },
                   );
                 }
@@ -237,7 +260,6 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                   onRefresh: () {
                     BlocProvider.of<DocumentsBloc>(context)
                         .add(UpdateDocuments());
-                    BlocProvider.of<DocumentsBloc>(context).add(GetDocuments());
                   },
                   child: SingleChildScrollView(
                     child: Padding(

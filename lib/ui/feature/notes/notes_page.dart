@@ -1,6 +1,7 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/notes/note_attachments/bloc.dart';
@@ -20,9 +21,12 @@ class NotesPage extends StatefulWidget {
 }
 
 class _NotesPageState extends State<NotesPage> {
+  RefreshController _refreshController;
+
   @override
   void initState() {
     BlocProvider.of<NotesBloc>(context).add(GetNotes());
+    _refreshController = RefreshController();
     super.initState();
   }
 
@@ -43,6 +47,25 @@ class _NotesPageState extends State<NotesPage> {
                   ..showSnackBar(
                     AppNavigator.instance.getNetworkErrorSnackBar(context),
                   );
+
+                _refreshController.refreshFailed();
+
+                BlocProvider.of<NotesBloc>(context).add(GetNotes());
+              } else if (state is NotesUpdateError) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    AppNavigator.instance.getFloatingSnackBar(
+                        AppLocalizations.of(context)
+                            .translate('update_error_snackbar')),
+                  );
+                _refreshController.refreshFailed();
+
+                BlocProvider.of<NotesBloc>(context).add(GetNotes());
+              } else if (state is NotesUpdateLoaded) {
+                _refreshController.refreshCompleted();
+
+                BlocProvider.of<NotesBloc>(context).add(GetNotes());
               }
             },
           ),
@@ -102,9 +125,9 @@ class _NotesPageState extends State<NotesPage> {
   Widget _buildNotesList(List<Note> notes, BuildContext context) {
     if (notes.length > 0) {
       return CustomRefresher(
+        controller: _refreshController,
         onRefresh: () {
           BlocProvider.of<NotesBloc>(context).add(UpdateNotes());
-          BlocProvider.of<NotesBloc>(context).add(GetNotes());
         },
         child: ListView.builder(
           itemCount: notes.length,
@@ -117,12 +140,6 @@ class _NotesPageState extends State<NotesPage> {
               ),
               child: ExpandablePanel(
                 header: ListTile(
-                  // onLongPress: () {
-                  //   final AppDatabase appDatabase = AppDatabase();
-                  //   final NoteDao noteDao = NoteDao(appDatabase);
-
-                  //   noteDao.deleteAllNotes();
-                  // },
                   title: Text('${note.author}'),
                   subtitle: Text(
                       '${AppLocalizations.of(context).translate(note.type.toLowerCase()) ?? ""} - ${DateUtils.convertDateLocale(note.date, AppLocalizations.of(context).locale.toString())}'),

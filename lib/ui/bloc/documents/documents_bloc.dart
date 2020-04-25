@@ -57,7 +57,7 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
   }
 
   Stream<DocumentsState> _mapUpdateDocumentsToState() async* {
-    yield DocumentsUpdateLoadInProgress();
+    // yield DocumentsUpdateLoadInProgress();
     try {
       FLog.info(text: 'Updating documents and school reports');
       await documentsRepository.updateDocuments();

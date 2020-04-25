@@ -26,7 +26,7 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
   ) async* {
     FLog.info(text: event.toString());
     if (event is FetchNoticeboard) {
-      yield NoticesUpdateLoading();
+      // yield NoticesUpdateLoading();
       FLog.info(text: 'Updating noticeboard');
       try {
         await noticesRepository.updateNotices();
