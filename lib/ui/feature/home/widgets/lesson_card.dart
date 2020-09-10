@@ -114,7 +114,7 @@ class LessonCard extends StatelessWidget {
                             : lesson.subjectDescription,
                         style: Theme.of(context)
                             .textTheme
-                            .headline
+                            .headline5
                             .copyWith(fontSize: 12, color: Colors.white),
                       ),
                     ),

@@ -67,7 +67,7 @@ class _AppDrawerState extends State<AppDrawer>
           accountEmail: Text(ident,
               style: Theme.of(context)
                   .primaryTextTheme
-                  .body1
+                  .bodyText2
                   .copyWith(color: Colors.white)),
           accountName: Text('$firstName $lastName'),
           currentAccountPicture: CircleAvatar(
@@ -428,7 +428,7 @@ class _AppDrawerState extends State<AppDrawer>
 
   Color _getColor(bool isAccount) {
     if (isAccount ?? false) {
-      return Theme.of(context).textTheme.body1.color;
+      return Theme.of(context).textTheme.bodyText2.color;
     } else {
       return null;
     }

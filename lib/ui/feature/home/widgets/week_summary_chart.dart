@@ -105,7 +105,7 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
           showTitles: true,
           reservedSize: 22,
           textStyle: TextStyle(
-              fontSize: 12, color: Theme.of(context).textTheme.title.color),
+              fontSize: 12, color: Theme.of(context).textTheme.headline6.color),
           getTitles: (value) {
             if (value <= 7) {
               final locale = AppLocalizations.of(context).locale.toString();

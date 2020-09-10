@@ -18,7 +18,7 @@ class SectionHeader extends StatelessWidget {
         children: <Widget>[
           Text(
             headingText,
-            style: Theme.of(context).textTheme.body1,
+            style: Theme.of(context).textTheme.bodyText2,
           ),
           onTap != null
               ? FlatButton(
@@ -32,7 +32,7 @@ class SectionHeader extends StatelessWidget {
                       AppLocalizations.of(context).translate('view_all'),
                       style: Theme.of(context)
                           .textTheme
-                          .body1
+                          .bodyText2
                           .copyWith(fontSize: 12),
                     ),
                   ),

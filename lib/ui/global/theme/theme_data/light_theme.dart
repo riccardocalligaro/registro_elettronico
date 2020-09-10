@@ -14,11 +14,11 @@ final material = ThemeData(
   ),
   primaryIconTheme: IconThemeData(color: Colors.grey[900], opacity: 0.50),
   primaryTextTheme: TextTheme(
-    title: TextStyle(
+    headline6: TextStyle(
       color: Colors.grey[900],
     ),
-    headline: HeadingSmall.copyWith(color: Colors.grey[900]),
-    body1: BodyStyle1.copyWith(color: Colors.grey[900]),
+    headline5: HeadingSmall.copyWith(color: Colors.grey[900]),
+    bodyText2: BodyStyle1.copyWith(color: Colors.grey[900]),
   ),
 );
 

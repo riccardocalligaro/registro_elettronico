@@ -123,10 +123,10 @@ class _GradesChartState extends State<GradesChart> {
                   color: showAvg
                       ? Theme.of(context)
                           .primaryTextTheme
-                          .headline
+                          .headline5
                           .color
                           .withOpacity(0.5)
-                      : Theme.of(context).primaryTextTheme.headline.color,
+                      : Theme.of(context).primaryTextTheme.headline5.color,
                 ),
               ),
             ),

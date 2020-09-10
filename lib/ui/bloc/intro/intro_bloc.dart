@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:injector/injector.dart';
@@ -65,6 +66,7 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
         FLog.info(text: 'Updated absences');
 
         await agendaRepository.updateAllAgenda();
+
         prefs.setInt(PrefsConstants.LAST_UPDATE_AGENDA,
             DateTime.now().millisecondsSinceEpoch);
 

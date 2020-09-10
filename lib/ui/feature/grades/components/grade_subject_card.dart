@@ -114,7 +114,7 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
                             context),
                         style: Theme.of(context)
                             .primaryTextTheme
-                            .body1
+                            .bodyText2
                             .copyWith(fontSize: 12),
                       )
                     ],

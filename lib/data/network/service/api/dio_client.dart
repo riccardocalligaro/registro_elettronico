@@ -75,8 +75,7 @@ class DioClient {
           options.headers["Z-Auth-Token"] = loginResponse.token;
         } else {
           FLog.info(
-            text:
-                "No need for token - proceeding with request",
+            text: "No need for token - proceeding with request",
           );
           // If the token is still vaid we just use the one we got from the database
           options.headers["Z-Auth-Token"] = profile.token;
@@ -88,8 +87,9 @@ class DioClient {
       return options;
     }, onResponse: (Response response) {
       FLog.info(
-          text:
-              'DioEND -> Response -> ${response.statusCode} [${response.request.path}] ${response.request.method}  ${response.request.responseType}');
+        text:
+            'DioEND -> Response -> ${response.statusCode} [${response.request.path}] ${response.request.method}  ${response.request.responseType}',
+      );
 
       return response; // continue
     }, onError: (DioError error) async {
@@ -97,6 +97,7 @@ class DioClient {
         text:
             'DioEND -> Error -> url:[${error.request.baseUrl}] type:${error.type} message: ${error.message}',
       );
+
       if (error != SocketException) {
         Crashlytics.instance.recordError(error, StackTrace.current);
       }

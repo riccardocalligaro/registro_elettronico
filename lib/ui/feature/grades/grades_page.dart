@@ -56,7 +56,8 @@ class _GradesPageState extends State<GradesPage> {
                 bottom: TabBar(
                   isScrollable: true,
                   indicatorColor: Colors.red,
-                  labelColor: Theme.of(context).primaryTextTheme.headline.color,
+                  labelColor:
+                      Theme.of(context).primaryTextTheme.headline5.color,
                   tabs: _getTabBar(),
                 ),
                 title: Text(AppLocalizations.of(context).translate('grades')),
@@ -160,7 +161,7 @@ class _GradesPageState extends State<GradesPage> {
                     isScrollable: true,
                     indicatorColor: Colors.red,
                     labelColor:
-                        Theme.of(context).primaryTextTheme.headline.color,
+                        Theme.of(context).primaryTextTheme.headline5.color,
                     tabs: _getTabBar(),
                   ),
                   title: Text(AppLocalizations.of(context).translate('grades')),

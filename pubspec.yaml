@@ -20,29 +20,29 @@ dependencies:
   # Database
   moor_flutter: ^2.1.1
   # Api
-  dio: ^3.0.9
+  dio: ^3.0.10
   retrofit: ^1.3.4
   auto_size_text: ^2.1.0
   # firebase_messaging: ^6.0.9
 
   # Use svg icons in home
-  flutter_svg: ^0.17.4
+  flutter_svg: ^0.18.1
   # Launcher icon
   flutter_launcher_icons:
 
   # for percentage
-  percent_indicator: ^2.1.3
+  percent_indicator: ^2.1.5
   # for files
-  path_provider: ^1.6.7
+  path_provider: ^1.6.14
   #open downloaded file
   open_file: ^3.0.1
   # notifications
-  workmanager: ^0.2.2
+  workmanager: ^0.2.3
 
   # expandable school material
-  expandable: ^4.1.3
+  expandable: ^4.1.4
   # open urls for school material
-  url_launcher: ^5.4.5
+  url_launcher: ^5.5.0
   # pick a grade
   numberpicker:
 
@@ -52,19 +52,19 @@ dependencies:
   # advanced logging
   f_logs: ^1.2.2
   # email
-  flutter_email_sender: ^2.2.2
+  flutter_email_sender: ^3.0.1
   #flutter_mailer: ^0.4.2
-  dartz: ^0.8.9
+  dartz: ^0.9.1
   flutter_webview_plugin: ^0.3.11
   #webview_flutter: ^0.3.19+4
   pull_to_refresh: ^1.5.8
   # check if user is conntected
   data_connection_checker: ^0.3.4
-  liquid_swipe: ^1.4.3
+  liquid_swipe: ^1.5.0
   rxdart: ^0.24.0
   # chart in stats page
   flutter_circular_chart: ^0.1.0
-  package_info: ^0.4.0+17
+  package_info: ^0.4.3
   screenshot: ^0.1.1
   # share screenshot
   esys_flutter_share:
@@ -72,14 +72,12 @@ dependencies:
   flutter_colorpicker:
   # date time picker
   # datetime_picker_formfield: ^1.0.0
-  flutter_local_notifications: ^1.4.1
+  flutter_local_notifications: ^1.4.4+4
 
   # firebase
-  firebase_core: ^0.4.4+3
-  # analytics
-  firebase_analytics: ^5.0.11
-  # crashalitycs
-  firebase_crashlytics: ^0.1.3+3
+  firebase_core: ^0.5.0
+  firebase_analytics: ^6.0.0
+  firebase_crashlytics: ^0.1.4+1
 
   # Storing user password
   shared_preferences: ^0.5.7

@@ -24,7 +24,7 @@ class TimetablePage extends StatefulWidget {
 }
 
 class _TimetablePageState extends State<TimetablePage> {
-  static double cellHeight = 80.0;
+  // static double cellHeight = 80.0;
 
   PageController pageController = PageController(viewportFraction: 0.85);
 

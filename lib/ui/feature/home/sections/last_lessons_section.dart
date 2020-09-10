@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/ui/bloc/dashboard/lessons/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/lessons/bloc.dart';
 import 'package:registro_elettronico/ui/feature/home/widgets/lesson_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
-import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
-
-import '../../../bloc/lessons/bloc.dart';
 
 class LastLessonsSection extends StatelessWidget {
   const LastLessonsSection({Key key}) : super(key: key);

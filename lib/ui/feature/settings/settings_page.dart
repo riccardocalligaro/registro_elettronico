@@ -232,7 +232,7 @@ class _SettingsPageState extends State<SettingsPage> {
               body: userMessage,
               subject: subject,
               recipients: ['riccardocalligaro@gmail.com'],
-              attachmentPath: '$path/flog.txt',
+              attachmentPaths: ['$path/flog.txt'],
               isHTML: false,
             );
             await FlutterEmailSender.send(reportEmail);

@@ -18,8 +18,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  static const double LEFT_LOGIN_PADDING = 80.0;
-  static const double TOP_FIELDS_PADDING = 32.0;
+  // static const double LEFT_LOGIN_PADDING = 80.0;
+  // static const double TOP_FIELDS_PADDING = 32.0;
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -379,7 +379,7 @@ class _LoginPageState extends State<LoginPage> {
         alignment: Alignment.bottomLeft,
         child: Text(
           "$welcomeMessage,",
-          style: Theme.of(context).textTheme.headline,
+          style: Theme.of(context).textTheme.headline5,
         ),
       ),
     );
@@ -391,7 +391,7 @@ class _LoginPageState extends State<LoginPage> {
         Container(
           child: Text(
             '$loginMessage ',
-            style: Theme.of(context).textTheme.body1,
+            style: Theme.of(context).textTheme.bodyText2,
           ),
         ),
         Container(
