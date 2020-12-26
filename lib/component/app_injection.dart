@@ -2,7 +2,7 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:injector/injector.dart';
+import 'package:get_it/get_it.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/agenda_dao.dart';
@@ -45,7 +45,7 @@ import 'package:registro_elettronico/domain/repository/timetable_repository.dart
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// Compile-time dependency injection for Dart and Flutter, similar to Dagger.
+final sl = GetIt.instance;
 
 class AppInjector {
   static void init() {
@@ -59,302 +59,104 @@ class AppInjector {
     injectService();
     // Inject all the repositories
     injectRepository();
-    //// Inject all the mappers to convert db objects -> entity and vice versa
-    //injectMapper();
-    // Only authbloc for now
+    // Inject all the mappers to convert db objects -> entity and vice versa
     injectBloc();
 
     injectSharedPreferences();
-    //// Inject shared preferences
-    //injectSharedPreferences();
   }
 
   static void injectDatabase() {
-    // This is the singleton for the main database of the application
-    Injector.appInstance.registerSingleton<AppDatabase>((injector) {
-      return AppDatabase();
-    });
+    sl.registerLazySingleton(() => AppDatabase());
   }
 
   // All the DAOS (Data Access Objects)
   static void injectDaos() {
-    Injector.appInstance.registerSingleton<ProfileDao>((injector) {
-      return ProfileDao(injector.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<LessonDao>((i) {
-      return LessonDao(i.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<ProfessorDao>((i) {
-      return ProfessorDao(i.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<SubjectDao>((i) {
-      return SubjectDao(i.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<GradeDao>((i) {
-      return GradeDao(i.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<AgendaDao>((i) {
-      return AgendaDao(i.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<AbsenceDao>((i) {
-      return AbsenceDao(i.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<PeriodDao>((i) {
-      return PeriodDao(i.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<NoticeDao>((i) {
-      return NoticeDao(i.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<NoteDao>((i) {
-      return NoteDao(i.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<DidacticsDao>((i) {
-      return DidacticsDao(i.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<TimetableDao>((i) {
-      return TimetableDao(i.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<DocumentsDao>((i) {
-      return DocumentsDao(i.getDependency());
-    });
+    sl.registerLazySingleton(() => ProfileDao(sl()));
+    sl.registerLazySingleton(() => LessonDao(sl()));
+    sl.registerLazySingleton(() => ProfessorDao(sl()));
+    sl.registerLazySingleton(() => SubjectDao(sl()));
+    sl.registerLazySingleton(() => GradeDao(sl()));
+    sl.registerLazySingleton(() => AgendaDao(sl()));
+    sl.registerLazySingleton(() => AbsenceDao(sl()));
+    sl.registerLazySingleton(() => PeriodDao(sl()));
+    sl.registerLazySingleton(() => NoticeDao(sl()));
+    sl.registerLazySingleton(() => NoteDao(sl()));
+    sl.registerLazySingleton(() => DidacticsDao(sl()));
+    sl.registerLazySingleton(() => TimetableDao(sl()));
+    sl.registerLazySingleton(() => DocumentsDao(sl()));
   }
 
   static void injectMisc() {
-    Injector.appInstance.registerSingleton<DataConnectionChecker>((i) {
-      return DataConnectionChecker();
-    });
-
-    Injector.appInstance.registerSingleton<NetworkInfo>((i) {
-      return NetworkInfoImpl(i.getDependency());
-    });
-
-    // This is for storing the user credentials
-    Injector.appInstance.registerSingleton<FlutterSecureStorage>((i) {
-      return FlutterSecureStorage();
-    });
+    sl.registerLazySingleton(() => DataConnectionChecker());
+    sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
+    sl.registerLazySingleton(() => FlutterSecureStorage());
   }
 
   static void injectService() {
-    Injector.appInstance.registerSingleton<Dio>((i) {
-      return DioClient(i.getDependency(), i.getDependency()).createDio();
-    });
+    sl.registerLazySingleton<Dio>(
+      () => DioClient(sl(), sl()).createDio(),
+    );
+    sl.registerLazySingleton(() => Dio(), instanceName: 'WebSpaggiariDio');
 
-    Injector.appInstance.registerSingleton<Dio>((i) {
-      return Dio();
-    }, dependencyName: 'WebSpaggiariDio');
-
-    Injector.appInstance.registerSingleton<SpaggiariClient>((i) {
-      return SpaggiariClient(i.getDependency());
-    });
-
-    Injector.appInstance.registerSingleton<WebSpaggiariClient>((i) {
-      return WebSpaggiariClientImpl(
-          i.getDependency(dependencyName: 'WebSpaggiariDio'));
-    });
+    sl.registerLazySingleton(() => SpaggiariClient(sl()));
+    sl.registerLazySingleton<WebSpaggiariClient>(() =>
+        WebSpaggiariClientImpl(sl.get<Dio>(instanceName: 'WebSpaggiariDio')));
   }
 
   static void injectRepository() {
-    Injector.appInstance.registerSingleton((i) {
-      LoginRepository loginRepository = LoginRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return loginRepository;
-    });
+    sl.registerLazySingleton<LoginRepository>(
+        () => LoginRepositoryImpl(sl(), sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      ProfileRepository profileRepository = ProfileRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return profileRepository;
-    });
+    sl.registerLazySingleton<ProfileRepository>(
+        () => ProfileRepositoryImpl(sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      LessonsRepository lessonsRepository = LessonsRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return lessonsRepository;
-    });
+    sl.registerLazySingleton<LessonsRepository>(
+        () => LessonsRepositoryImpl(sl(), sl(), sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      SubjectsRepository subjectsRepository = SubjectsRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return subjectsRepository;
-    });
+    sl.registerLazySingleton<SubjectsRepository>(
+        () => SubjectsRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      GradesRepository gradesRepository = GradesRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return gradesRepository;
-    });
+    sl.registerLazySingleton<GradesRepository>(
+        () => GradesRepositoryImpl(sl(), sl(), sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      AgendaRepository agendaRepository = AgendaRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return agendaRepository;
-    });
+    sl.registerLazySingleton<AgendaRepository>(
+        () => AgendaRepositoryImpl(sl(), sl(), sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      AbsencesRepository absencesRepository = AbsencesRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return absencesRepository;
-    });
+    sl.registerLazySingleton<AbsencesRepository>(
+        () => AbsencesRepositoryImpl(sl(), sl(), sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      PeriodsRepository periodsRepository = PeriodsRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return periodsRepository;
-    });
+    sl.registerLazySingleton<PeriodsRepository>(
+        () => PeriodsRepositoryImpl(sl(), sl(), sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      NoticesRepository noticesRepository = NoticesRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return noticesRepository;
-    });
+    sl.registerLazySingleton<NoticesRepository>(
+        () => NoticesRepositoryImpl(sl(), sl(), sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      NotesRepository notesRepository = NotesRepositoryImpl(i.getDependency(),
-          i.getDependency(), i.getDependency(), i.getDependency());
-      return notesRepository;
-    });
+    sl.registerLazySingleton<NotesRepository>(
+        () => NotesRepositoryImpl(sl(), sl(), sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      DidacticsRepository didacticsRepository = DidacticsRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return didacticsRepository;
-    });
+    sl.registerLazySingleton<DidacticsRepository>(
+        () => DidacticsRepositoryImpl(sl(), sl(), sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      TimetableRepository timetableRepository = TimetableRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return timetableRepository;
-    });
+    sl.registerLazySingleton<TimetableRepository>(
+        () => TimetableRepositoryImpl(sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      DocumentsRepository documentsRepository = DocumentsRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return documentsRepository;
-    });
+    sl.registerLazySingleton<DocumentsRepository>(
+        () => DocumentsRepositoryImpl(sl(), sl(), sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      ScrutiniRepository scrutiniRepository = ScrutiniRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return scrutiniRepository;
-    });
+    sl.registerLazySingleton<ScrutiniRepository>(
+        () => ScrutiniRepositoryImpl(sl(), sl(), sl(), sl()));
 
-    Injector.appInstance.registerSingleton((i) {
-      StatsRepository statsRepository = StatsRepositoryImpl(
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-        i.getDependency(),
-      );
-      return statsRepository;
-    });
+    sl.registerLazySingleton<StatsRepository>(
+        () => StatsRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
   }
 
-  // static void injectMapper() {
-  //   // mappers to convert the response to db object
-  //   Injector.appInstance.registerSingleton<ProfileMapper>((injector) {
-  //     return ProfileMapper();
-  //   });
-  //   Injector.appInstance.registerSingleton<LessonMapper>((injector) {
-  //     return LessonMapper();
-  //   });
-
-  //   Injector.appInstance.registerSingleton<SubjectMapper>((injector) {
-  //     return SubjectMapper();
-  //   });
-
-  //   Injector.appInstance.registerSingleton<GradeMapper>((injector) {
-  //     return GradeMapper();
-  //   });
-
-  //   Injector.appInstance.registerSingleton<EventMapper>((injector) {
-  //     return EventMapper();
-  //   });
-
-  //   Injector.appInstance.registerSingleton<AbsenceMapper>((injector) {
-  //     return AbsenceMapper();
-  //   });
-
-  //   Injector.appInstance.registerSingleton<PeriodMapper>((injector) {
-  //     return PeriodMapper();
-  //   });
-
-  //   Injector.appInstance.registerSingleton<NoteMapper>((injector) {
-  //     return NoteMapper();
-  //   });
-  // }
-
   static void injectBloc() {
-    Injector.appInstance.registerSingleton((i) {
-      return AuthBloc(i.getDependency(), i.getDependency(), i.getDependency());
-    });
+    sl.registerLazySingleton<AuthBloc>(() => AuthBloc(sl(), sl(), sl()));
   }
 
   static void injectSharedPreferences() async {
     WidgetsFlutterBinding.ensureInitialized();
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-
-    Injector.appInstance.registerDependency<SharedPreferences>((_) => _prefs);
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sl.registerLazySingleton(() => sharedPreferences);
   }
 }

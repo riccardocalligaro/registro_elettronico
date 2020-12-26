@@ -10,19 +10,11 @@ import 'package:registro_elettronico/component/notifications/notification_servic
 import 'package:registro_elettronico/component/simple_bloc_delegate.dart';
 import 'package:registro_elettronico/ui/application.dart';
 import 'package:registro_elettronico/ui/feature/splash_screen/splash_screen.dart';
-import 'package:workmanager/workmanager.dart';
 
 // import 'component/firebase_notification_handler.dart';
 import 'component/routes.dart';
 
 FlutterLocalNotificationsPlugin globalLocalNotifications;
-
-void callbackDispatcher() {
-  Workmanager.executeTask((task, inputData) async {
-    await NotificationService().checkForNewContent();
-    return Future.value(true);
-  });
-}
 
 void main() {
   initApp();
