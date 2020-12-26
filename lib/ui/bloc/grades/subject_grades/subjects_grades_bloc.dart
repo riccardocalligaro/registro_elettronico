@@ -67,7 +67,7 @@ class SubjectsGradesBloc
         generalObjective: generalObjective,
       );
     } catch (e, s) {
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield SubjectsGradesLoadError(error: e.toString());
     }
   }
@@ -82,12 +82,12 @@ class SubjectsGradesBloc
         PrefsConstants.LAST_UPDATE_GRADES,
         DateTime.now().millisecondsSinceEpoch,
       );
-      
+
       yield SubjectsGradesUpdateLoadSuccess();
     } on NotConntectedException catch (_) {
       yield SubjectsGradesLoadNotConnected();
     } catch (e, s) {
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield SubjectsGradesLoadError(error: e.toString());
     }
   }

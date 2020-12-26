@@ -99,7 +99,7 @@ class DioClient {
       );
 
       if (error != SocketException) {
-        Crashlytics.instance.recordError(error, StackTrace.current);
+        FirebaseCrashlytics.instance.recordError(error, StackTrace.current);
       }
 
       // handlError(error);

@@ -113,17 +113,19 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
             }),
         handleBuiltInTouches: true,
       ),
-      gridData: const FlGridData(
+      gridData: FlGridData(
         show: false,
       ),
       titlesData: FlTitlesData(
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          textStyle: TextStyle(
-            color: const Color(0xff72719b),
-            fontSize: 12,
-          ),
+          getTextStyles: (value) {
+            return TextStyle(
+              color: const Color(0xff72719b),
+              fontSize: 12,
+            );
+          },
           margin: 10,
           getTitles: (value) {
             final locale = AppLocalizations.of(context).locale.toString();
@@ -223,10 +225,10 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
       ],
       barWidth: 6,
       isStrokeCapRound: true,
-      dotData: const FlDotData(
+      dotData: FlDotData(
         show: false,
       ),
-      belowBarData: const BarAreaData(
+      belowBarData: BarAreaData(
         show: false,
       ),
     );

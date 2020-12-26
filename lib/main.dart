@@ -28,7 +28,7 @@ void main() {
       stacktrace: stackTrace,
     );
 
-    Crashlytics.instance.recordError(error, stackTrace);
+    FirebaseCrashlytics.instance.recordError(error, stackTrace);
   });
 }
 
@@ -41,7 +41,7 @@ void initApp() {
   // BloC supervisor delegate to show all the different states of the bloc
   BlocSupervisor.delegate = SimpleBlocDelegate();
 
-  Crashlytics.instance.enableInDevMode = false;
+  FirebaseCrashlytics.instance.enableInDevMode = false;
 
   // FirebaseNotifications().setUpFirebase();
 }

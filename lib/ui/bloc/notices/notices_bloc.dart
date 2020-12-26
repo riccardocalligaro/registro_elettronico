@@ -49,7 +49,7 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
           exception: e,
           stacktrace: s,
         );
-        Crashlytics.instance.recordError(e, s);
+        FirebaseCrashlytics.instance.recordError(e, s);
 
         yield NoticesUpdateError(e.toString());
       }
@@ -68,7 +68,7 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
           exception: e,
           stacktrace: s,
         );
-        Crashlytics.instance.recordError(e, s);
+        FirebaseCrashlytics.instance.recordError(e, s);
 
         yield NoticesError(e.toString());
       }

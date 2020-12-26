@@ -47,7 +47,7 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
         exception: e,
         stacktrace: s,
       );
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield SubjectsUpdateLoadError(error: e.toString());
     }
   }
@@ -64,7 +64,7 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
         exception: e,
         stacktrace: s,
       );
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield SubjectsLoadError(error: e.toString());
     }
   }
@@ -87,7 +87,7 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
         exception: e,
         stacktrace: s,
       );
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield SubjectsAndProfessorsLoadError(error: e.toString());
     }
   }
@@ -107,7 +107,7 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
         exception: e,
         stacktrace: s,
       );
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield ProfessorsLoadError(error: e.toString());
     }
   }

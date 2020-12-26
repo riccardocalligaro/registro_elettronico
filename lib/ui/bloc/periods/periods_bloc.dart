@@ -35,7 +35,7 @@ class PeriodsBloc extends Bloc<PeriodsEvent, PeriodsState> {
           exception: e,
           stacktrace: s,
         );
-        Crashlytics.instance.recordError(e, s);
+        FirebaseCrashlytics.instance.recordError(e, s);
       }
     }
 
@@ -51,7 +51,7 @@ class PeriodsBloc extends Bloc<PeriodsEvent, PeriodsState> {
           exception: e,
           stacktrace: s,
         );
-        Crashlytics.instance.recordError(e, s);
+        FirebaseCrashlytics.instance.recordError(e, s);
         yield PeriodsError(e.toString());
       }
     }

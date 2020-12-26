@@ -43,7 +43,7 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
       );
       yield GradesUpdateLoaded();
     } catch (e, s) {
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield GradesError(message: e.toString());
     }
   }
@@ -61,7 +61,7 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
       FLog.info(text: 'BloC -> Got ${grades.length} grades');
       yield GradesLoaded(grades);
     } catch (e, s) {
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield GradesError(message: e.toString());
     }
   }

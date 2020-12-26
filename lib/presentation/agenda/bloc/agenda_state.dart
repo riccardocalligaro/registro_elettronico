@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+part of 'agenda_bloc.dart';
 
-abstract class AgendaState {
-  const AgendaState();
-
-}
+@immutable
+abstract class AgendaState {}
 
 class AgendaInitial extends AgendaState {}
 
@@ -17,16 +14,16 @@ class AgendaUpdateLoadSuccess extends AgendaState {}
 class AgendaLoadInProgress extends AgendaState {}
 
 class AgendaLoadSuccess extends AgendaState {
+  final Map<DateTime, List<db.AgendaEvent>> eventsMap;
+  final List<db.AgendaEvent> events;
 
-  final Map<DateTime, List<AgendaEvent>> eventsMap;
-  final List<AgendaEvent> events;
-  
-  const AgendaLoadSuccess({@required this.events, @required this.eventsMap});
+  AgendaLoadSuccess({@required this.events, @required this.eventsMap});
 }
 
 class AgendaLoadErrorNotConnected extends AgendaState {}
 
 class AgendaLoadError extends AgendaState {
   final String error;
-  const AgendaLoadError({@required this.error});
+
+  AgendaLoadError({@required this.error});
 }

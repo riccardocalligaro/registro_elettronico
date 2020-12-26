@@ -68,7 +68,7 @@ class DidacticsAttachmentsBloc
           } on NotConntectedException catch (_) {
             yield DidacticsAttachmentsErrorNotConnected();
           } catch (e, s) {
-            Crashlytics.instance.recordError(e, s);
+            FirebaseCrashlytics.instance.recordError(e, s);
             yield DidacticsAttachmentsErrror(error: e.toString());
           }
         } else if (content.type == 'text') {
@@ -90,7 +90,8 @@ class DidacticsAttachmentsBloc
             yield DidacticsAttachmentsErrror(error: e.toString());
           }
         } else {
-          Crashlytics.instance.log('Unknown file type ${file.contentId}');
+          FirebaseCrashlytics.instance
+              .log('Unknown file type ${file.contentId}');
           FLog.error(
             text:
                 'Unknown file type ${file.contentId} - File name: ${file.name} - Content type: ${content.type}',

@@ -1,4 +1,4 @@
-import 'package:registro_elettronico/ui/feature/absences/absences_page.dart';
+import 'package:registro_elettronico/feature/absences/absences_page.dart';
 import 'package:registro_elettronico/ui/feature/agenda/agenda_page.dart';
 import 'package:registro_elettronico/ui/feature/grades/grades_page.dart';
 import 'package:registro_elettronico/ui/feature/home/home_page.dart';

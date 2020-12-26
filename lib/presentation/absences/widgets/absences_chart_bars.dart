@@ -38,7 +38,9 @@ class AbsencesChartBarsState extends State<AbsencesChartBars> {
             show: true,
             bottomTitles: SideTitles(
               showTitles: true,
-              textStyle: TextStyle(color: Colors.black, fontSize: 10),
+              getTextStyles: (value) {
+                return TextStyle(color: Colors.black, fontSize: 10);
+              },
               margin: 10,
               getTitles: (double value) {
                 switch (value.toInt()) {
@@ -63,7 +65,9 @@ class AbsencesChartBarsState extends State<AbsencesChartBars> {
             ),
             leftTitles: SideTitles(
               showTitles: true,
-              textStyle: TextStyle(color: Colors.white, fontSize: 10),
+              getTextStyles: (value) {
+                return TextStyle(color: Colors.white, fontSize: 10);
+              },
               rotateAngle: 45,
               getTitles: (double value) {
                 if (value == 0) {
@@ -77,7 +81,9 @@ class AbsencesChartBarsState extends State<AbsencesChartBars> {
             ),
             rightTitles: SideTitles(
               showTitles: true,
-              textStyle: TextStyle(color: Colors.white, fontSize: 10),
+              getTextStyles: (value) {
+                return TextStyle(color: Colors.white, fontSize: 10);
+              },
               rotateAngle: 90,
               getTitles: (double value) {
                 if (value == 0) {
@@ -95,9 +101,9 @@ class AbsencesChartBarsState extends State<AbsencesChartBars> {
             checkToShowHorizontalLine: (value) => value % 5 == 0,
             getDrawingHorizontalLine: (value) {
               if (value == 0) {
-                return const FlLine(color: Colors.grey, strokeWidth: 1.5);
+                return FlLine(color: Colors.grey, strokeWidth: 1.5);
               }
-              return const FlLine(
+              return FlLine(
                 color: Colors.grey,
                 strokeWidth: 0.8,
               );
@@ -153,7 +159,7 @@ class AbsencesChartBarsState extends State<AbsencesChartBars> {
         y: 0,
         width: barWidth,
         //isRound: false,
-        rodStackItem: [BarChartRodStackItem(0, 0, Colors.transparent)],
+        rodStackItems: [BarChartRodStackItem(0, 0, Colors.transparent)],
       );
       return [
         data,
@@ -166,7 +172,7 @@ class AbsencesChartBarsState extends State<AbsencesChartBars> {
           y: events.length.toDouble(),
           width: barWidth,
           //isRound: false,
-          rodStackItem: events,
+          rodStackItems: events,
         )
       ];
     }

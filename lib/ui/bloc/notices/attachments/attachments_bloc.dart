@@ -33,7 +33,7 @@ class AttachmentsBloc extends Bloc<AttachmentsEvent, AttachmentsState> {
           exception: e,
           stacktrace: s,
         );
-        Crashlytics.instance.recordError(e, s);
+        FirebaseCrashlytics.instance.recordError(e, s);
         yield NoticesAttachmentsError(e.toString());
       }
     }

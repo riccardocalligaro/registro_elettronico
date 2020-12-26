@@ -35,7 +35,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     } on NotConntectedException {
       yield NotesLoadErrorNotConnected();
     } catch (e, s) {
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield NotesUpdateError(e.toString());
     }
     yield NotesUpdateLoaded();
@@ -53,7 +53,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
         exception: e,
         stacktrace: s,
       );
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield NotesError(e.toString());
     }
   }

@@ -226,7 +226,7 @@ packages:
     source: hosted
     version: "3.0.10"
   equatable:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: equatable
       url: "https://pub.dartlang.org"
@@ -504,13 +504,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1+1"
-  injector:
-    dependency: "direct main"
-    description:
-      name: injector
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.9"
   intl:
     dependency: "direct main"
     description:

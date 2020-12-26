@@ -56,7 +56,7 @@ class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
       } on NotConntectedException catch (_) {
         yield DidacticsErrorNotConnected();
       } catch (e, s) {
-        Crashlytics.instance.recordError(e, s);
+        FirebaseCrashlytics.instance.recordError(e, s);
 
         yield DidacticsError(e.toString());
       }

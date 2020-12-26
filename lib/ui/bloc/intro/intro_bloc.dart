@@ -145,7 +145,7 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
           exception: e,
           stacktrace: s,
         );
-        Crashlytics.instance.recordError(e, s);
+        FirebaseCrashlytics.instance.recordError(e, s);
         yield IntroError(e.toString());
       } catch (e) {
         yield IntroError(e.toString());

@@ -4,7 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:injector/injector.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
@@ -13,15 +14,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
 
-import './bloc.dart';
+part 'agenda_event.dart';
+part 'agenda_state.dart';
 
 class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
-  AgendaRepository agendaRepository;
+  final AgendaRepository agendaRepository;
 
-  AgendaBloc(this.agendaRepository);
-
-  @override
-  AgendaState get initialState => AgendaInitial();
+  AgendaBloc({
+    @required this.agendaRepository,
+  }) : super(AgendaInitial());
 
   @override
   Stream<AgendaState> mapEventToState(
@@ -43,7 +44,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     try {
       FLog.info(text: 'updating here');
       await agendaRepository.updateAllAgenda();
-      SharedPreferences prefs = Injector.appInstance.getDependency();
+      SharedPreferences prefs = sl();
 
       prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
           DateTime.now().millisecondsSinceEpoch);
@@ -58,15 +59,14 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     } on DioError catch (e) {
       yield AgendaLoadError(error: e.response.statusMessage.toString());
     } catch (e, s) {
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       FLog.error(text: 'Updating all agenda  error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
   }
 
   Stream<AgendaState> _mapGetAllAgendaToState() async* {
-    SharedPreferences prefs = Injector.appInstance.getDependency();
-    //yield AgendaLoadInProgress();
+    SharedPreferences prefs = sl();
     try {
       final events = await agendaRepository.getAllEvents();
       prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
@@ -82,7 +82,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       );
       yield AgendaLoadSuccess(events: events, eventsMap: eventsMap);
     } catch (e, s) {
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       FLog.error(text: 'Getting agenda error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
@@ -104,21 +104,20 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       );
       yield AgendaLoadSuccess(events: events, eventsMap: eventsMap);
     } catch (e, s) {
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       FLog.error(text: 'Getting agenda error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
   }
 
   Stream<AgendaState> _mapUpdateFronDateToState(DateTime date) async* {
-    // yield AgendaUpdateLoadInProgress();
     try {
       await agendaRepository.updateAgendaStartingFromDate(date);
       yield AgendaUpdateLoadSuccess();
     } on NotConntectedException catch (_) {
       yield AgendaLoadErrorNotConnected();
     } on DioError catch (e, s) {
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield AgendaLoadError(error: e.response.statusMessage.toString());
     } catch (e) {
       yield AgendaLoadError(error: e.toString());

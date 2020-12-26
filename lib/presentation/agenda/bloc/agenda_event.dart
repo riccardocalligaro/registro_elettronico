@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
+part of 'agenda_bloc.dart';
 
-abstract class AgendaEvent {
-  const AgendaEvent();
-
-}
+abstract class AgendaEvent {}
 
 class UpdateAllAgenda extends AgendaEvent {}
 

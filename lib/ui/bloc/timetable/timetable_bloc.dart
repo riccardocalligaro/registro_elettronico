@@ -40,7 +40,7 @@ class TimetableBloc extends Bloc<TimetableEvent, TimetableState> {
           exception: e,
           stacktrace: s,
         );
-        Crashlytics.instance.recordError(e, s);
+        FirebaseCrashlytics.instance.recordError(e, s);
         yield TimetableError(e.toString());
       }
     }
@@ -65,7 +65,7 @@ class TimetableBloc extends Bloc<TimetableEvent, TimetableState> {
           exception: e,
           stacktrace: s,
         );
-        Crashlytics.instance.recordError(e, s);
+        FirebaseCrashlytics.instance.recordError(e, s);
         yield TimetableError(e.toString());
       }
     }

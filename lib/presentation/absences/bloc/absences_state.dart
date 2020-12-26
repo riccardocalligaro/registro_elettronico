@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+part of 'absences_bloc.dart';
 
 abstract class AbsencesState extends Equatable {
   const AbsencesState();

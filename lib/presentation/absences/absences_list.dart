@@ -1,78 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injector/injector.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/absences/absences_event.dart';
-import 'package:registro_elettronico/ui/bloc/absences/absences_state.dart';
-import 'package:registro_elettronico/ui/feature/absences/components/absence_card.dart';
+import 'package:registro_elettronico/presentation/absences/widgets/absence_card.dart';
+import 'package:registro_elettronico/presentation/absences/widgets/absences_chart_lines.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
-import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'components/absences_chart_lines.dart';
+import 'bloc/absences_bloc.dart';
 
-class AbsencesPage extends StatefulWidget {
-  const AbsencesPage({Key key}) : super(key: key);
-
-  @override
-  _AbsencesPageState createState() => _AbsencesPageState();
-}
-
-class _AbsencesPageState extends State<AbsencesPage> {
-  int _absencesLastUpdate;
-
-  @override
-  void initState() {
-    restore();
-    super.initState();
-    BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
-  }
-
-  void restore() async {
-    SharedPreferences sharedPreferences = Injector.appInstance.getDependency();
-    setState(() {
-      _absencesLastUpdate =
-          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_ABSENCES);
-    });
-  }
+class AbsencesList extends StatelessWidget {
+  const AbsencesList({
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        brightness: Theme.of(context).brightness,
-        title: Text(AppLocalizations.of(context).translate('absences')),
-      ),
-      bottomSheet: LastUpdateBottomSheet(
-        millisecondsSinceEpoch: _absencesLastUpdate,
-      ),
-      body: BlocListener<AbsencesBloc, AbsencesState>(
-        listener: (context, state) {
-          if (state is AbsencesUpdateLoaded) {
-            setState(() {
-              _absencesLastUpdate = DateTime.now().millisecondsSinceEpoch;
-            });
-          }
-
-          if (state is AbsencesLoadErrorNotConnected) {
-            Scaffold.of(context).showSnackBar(
-              AppNavigator.instance.getNetworkErrorSnackBar(context),
-            );
-          }
-        },
-        child: _buildAbsences(context),
-      ),
-    );
-  }
-
-  Widget _buildAbsences(BuildContext context) {
     return BlocBuilder<AbsencesBloc, AbsencesState>(
       builder: (context, state) {
         if (state is AbsencesLoading) {
@@ -87,7 +32,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
               absences..sort((b, a) => a.evtDate.compareTo(b.evtDate)));
 
           return CustomRefresher(
-            onRefresh: _updateAbsences,
+            onRefresh: () => _updateAbsences(context),
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -95,9 +40,9 @@ class _AbsencesPageState extends State<AbsencesPage> {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
-                      child: _buildOverallStats(absences),
+                      child: _buildOverallStats(absences, context),
                     ),
-                    _buildNotJustifiedAbsences(map),
+                    _buildNotJustifiedAbsences(map, context),
                     _buildJustifiedAbsences(map, context),
                   ],
                 ),
@@ -126,7 +71,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
   }
 
   /// Overall stat that contains all the [circles] and the [graph]
-  Widget _buildOverallStats(List<Absence> absences) {
+  Widget _buildOverallStats(List<Absence> absences, BuildContext context) {
     final Map<int, List<Absence>> absencesMonthMap = Map.fromIterable(absences,
         key: (e) => e.evtDate.month,
         value: (e) => absences
@@ -207,7 +152,8 @@ class _AbsencesPageState extends State<AbsencesPage> {
   }
 
   /// The list of absences that are not justified
-  Widget _buildNotJustifiedAbsences(Map<Absence, int> absences) {
+  Widget _buildNotJustifiedAbsences(
+      Map<Absence, int> absences, BuildContext context) {
     final notJustifiedAbsences = new Map.fromIterable(
         absences.keys.where((absence) => absence.isJustified == false),
         key: (k) => k,
@@ -237,22 +183,6 @@ class _AbsencesPageState extends State<AbsencesPage> {
               },
             ),
           ),
-          // ListView.builder(
-          //   physics: NeverScrollableScrollPhysics(),
-          //   shrinkWrap: true,
-          //   itemCount: notJustifiedAbsences.keys.length,
-          //   itemBuilder: (ctx, index) {
-          //     final absence = notJustifiedAbsences.keys.elementAt(index);
-          //     final days = notJustifiedAbsences[absence];
-          //     return Padding(
-          //       padding: const EdgeInsets.only(bottom: 8.0),
-          //       child: AbsenceCard(
-          //         absence: absence,
-          //         days: days,
-          //       ),
-          //     );
-          //   },
-          // )
         ],
       );
     }
@@ -377,7 +307,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
     return map;
   }
 
-  Future _updateAbsences() async {
+  Future _updateAbsences(BuildContext context) async {
     BlocProvider.of<AbsencesBloc>(context).add(FetchAbsences());
     BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
   }

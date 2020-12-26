@@ -51,7 +51,7 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
           text: 'Got error while getting documents',
           exception: e,
           stacktrace: s);
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield DocumentsLoadError();
     }
   }
@@ -68,7 +68,7 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
     } catch (e, s) {
       FLog.error(
           text: 'Got erorr updating documents', exception: e, stacktrace: s);
-      Crashlytics.instance.recordError(e, s);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield DocumentsUpdateLoadError();
     }
   }
