@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 import 'grades_chart.dart';
@@ -51,8 +51,8 @@ class OverallStatsCard extends StatelessWidget {
                     percent: (average / 10).isNaN ? 0.0 : average / 10,
                     animation: true,
                     backgroundColor: GlobalUtils.isDark(context)
-                      ? Colors.white
-                      : Colors.grey.withOpacity(0.3),
+                        ? Colors.white
+                        : Colors.grey.withOpacity(0.3),
                     animationDuration: 300,
                     center: new Text(average.toStringAsFixed(2)),
                     progressColor: GlobalUtils.getColorFromAverage(average),

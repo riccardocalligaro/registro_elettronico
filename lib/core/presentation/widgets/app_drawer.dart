@@ -2,15 +2,14 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/navigator.dart';
+import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
+import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
-import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
-import 'package:registro_elettronico/ui/feature/debug/debug_page.dart';
-import 'package:registro_elettronico/ui/feature/settings/components/account/account_settings.dart';
+import 'package:registro_elettronico/feature/settings/widgets/account/account_settings.dart';
 import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -137,7 +136,6 @@ class _AppDrawerState extends State<AppDrawer>
                             Text(AppLocalizations.of(context).translate('yes')),
                         onPressed: () {
                           Navigator.pop(context);
-                          BlocProvider.of<IntroBloc>(context).add(Reset());
                           BlocProvider.of<AuthBloc>(context).add(SignOut());
 
                           AppNavigator.instance.navToLogin(context);

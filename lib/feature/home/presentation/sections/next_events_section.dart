@@ -6,8 +6,8 @@ import 'package:registro_elettronico/feature/home/presentation/blocs/agenda/agen
 import 'package:registro_elettronico/feature/home/presentation/pages/next_events_page.dart';
 import 'package:registro_elettronico/feature/home/presentation/widgets/timeline.dart';
 import 'package:registro_elettronico/feature/home/presentation/widgets/week_summary_chart.dart';
-import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 

@@ -6,8 +6,8 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/widgets/select_subject_dialog.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/feature/timetable/presentation/bloc/timetable_bloc.dart';
-import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/widgets/app_drawer.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
@@ -261,12 +261,11 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
 
         await RepositoryProvider.of<TimetableRepository>(context)
             .insertTimetableEntry(TimetableEntry(
-          subject: _selectedSubject.id,
-          dayOfWeek: _dayOfWeek.weekday,
-          start: start,
-          end: start,
-          subjectName: _selectedSubject.name
-        ));
+                subject: _selectedSubject.id,
+                dayOfWeek: _dayOfWeek.weekday,
+                start: start,
+                end: start,
+                subjectName: _selectedSubject.name));
       }
       FLog.info(
           text:

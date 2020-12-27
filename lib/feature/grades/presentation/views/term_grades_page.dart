@@ -4,14 +4,14 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:registro_elettronico/component/app_injection.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/model/subject_objective.dart';
 import 'package:registro_elettronico/feature/grades/presentation/bloc/subjects_grades/subjects_grades_bloc.dart';
 import 'package:registro_elettronico/feature/grades/presentation/widgets/grade_subject_card.dart';
 import 'package:registro_elettronico/feature/grades/presentation/widgets/overall_stats_card.dart';
-import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
@@ -167,7 +167,7 @@ class _TermGradesPageState extends State<TermGradesPage> {
     List<Subject> subjects,
     bool ascending,
   ) {
-        Map<Subject, double> subjectsValues = Map.fromIterable(subjects,
+    Map<Subject, double> subjectsValues = Map.fromIterable(subjects,
         key: (e) => e, value: (e) => GradesUtils.getAverage(e.id, grades));
 
     var sortedKeys = subjectsValues.keys.toList();

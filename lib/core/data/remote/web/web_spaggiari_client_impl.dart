@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client.dart';
-import 'package:registro_elettronico/core/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 
 class WebSpaggiariClientImpl implements WebSpaggiariClient {
   Dio _dio;

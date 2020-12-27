@@ -7,6 +7,6 @@ part of 'grade_dao.dart';
 // **************************************************************************
 
 mixin _$GradeDaoMixin on DatabaseAccessor<AppDatabase> {
-  $GradesTable get grades => db.grades;
-  $LocalGradesTable get localGrades => db.localGrades;
+  $GradesTable get grades => attachedDatabase.grades;
+  $LocalGradesTable get localGrades => attachedDatabase.localGrades;
 }

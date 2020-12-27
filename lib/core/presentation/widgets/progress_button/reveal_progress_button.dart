@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/ui/feature/widgets/progress_button/progress_button.dart';
+import 'package:registro_elettronico/core/presentation/widgets/progress_button/progress_button.dart';
 
 class RevealProgressButton extends StatefulWidget {
   @override

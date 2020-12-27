@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
-import 'package:registro_elettronico/component/app_injection.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';

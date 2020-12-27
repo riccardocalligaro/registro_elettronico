@@ -31,7 +31,7 @@ import 'package:registro_elettronico/feature/profile/data/model/profile_local_mo
 import 'package:registro_elettronico/feature/subjects/data/model/subject_local_model.dart';
 import 'package:registro_elettronico/feature/timetable/data/model/timetale_local_model.dart';
 
-part '../db/moor_database.g.dart';
+part 'moor_database.g.dart';
 
 @UseMoor(tables: [
   Profiles,

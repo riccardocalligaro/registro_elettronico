@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 

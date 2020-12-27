@@ -7,5 +7,5 @@ part of 'profile_dao.dart';
 // **************************************************************************
 
 mixin _$ProfileDaoMixin on DatabaseAccessor<AppDatabase> {
-  $ProfilesTable get profiles => db.profiles;
+  $ProfilesTable get profiles => attachedDatabase.profiles;
 }

@@ -7,5 +7,5 @@ part of 'absence_dao.dart';
 // **************************************************************************
 
 mixin _$AbsenceDaoMixin on DatabaseAccessor<AppDatabase> {
-  $AbsencesTable get absences => db.absences;
+  $AbsencesTable get absences => attachedDatabase.absences;
 }

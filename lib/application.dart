@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/component/bloc_delegate.dart';
+import 'package:registro_elettronico/core/infrastructure/bloc_delegate.dart';
 
-import 'global/localizations/ui/locale_bloc_builder.dart';
-import 'global/theme/ui/theme_bloc_builder.dart';
+import 'core/infrastructure/localizations/ui/locale_bloc_builder.dart';
+import 'core/infrastructure/theme/ui/theme_bloc_builder.dart';
 
 //This widget contains  init data, theme and locale manager and provides that data to child widget
 class Application extends StatelessWidget {

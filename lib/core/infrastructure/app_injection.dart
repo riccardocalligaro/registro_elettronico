@@ -7,7 +7,6 @@ import 'package:registro_elettronico/core/data/remote/api/dio_client.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
 import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client.dart';
 import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client_impl.dart';
-import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/repository/agenda_repository_impl.dart';
@@ -54,6 +53,8 @@ import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini
 import 'package:registro_elettronico/feature/stats/domain/repository/stats_repository.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'network/network_info.dart';
 
 final sl = GetIt.instance;
 

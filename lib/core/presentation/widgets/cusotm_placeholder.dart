@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 
 class CustomPlaceHolder extends StatelessWidget {
   final String text;
@@ -41,7 +41,8 @@ class CustomPlaceHolder extends StatelessWidget {
           showUpdate
               ? FlatButton(
                   child: Text(
-                    updateMessage ?? AppLocalizations.of(context).translate('sync'),
+                    updateMessage ??
+                        AppLocalizations.of(context).translate('sync'),
                     style: TextStyle(
                       color: Colors.grey[600],
                     ),

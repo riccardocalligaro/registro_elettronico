@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/grades/presentation/bloc/subjects_grades/subjects_grades_bloc.dart';
-import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
-import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
+import 'package:registro_elettronico/core/presentation/widgets/custom_refresher.dart';
+import 'package:registro_elettronico/core/presentation/widgets/grade_card.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 
 /// Page of the [last grades]
 class LastGradesPage extends StatefulWidget {

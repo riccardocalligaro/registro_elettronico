@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 
 class SectionHeader extends StatelessWidget {
   final String headingText;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 
 class SelectDateDialog extends StatefulWidget {
   SelectDateDialog({Key key}) : super(key: key);
@@ -16,7 +16,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
       content: Container(
         height: 240,
         child: SingleChildScrollView(
-                  child: Column(
+          child: Column(
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.today),
@@ -44,7 +44,8 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
               ),
               ListTile(
                 leading: Icon(Icons.next_week),
-                title: Text(AppLocalizations.of(context).translate('next_week')),
+                title:
+                    Text(AppLocalizations.of(context).translate('next_week')),
                 onTap: () {
                   Navigator.pop(
                     context,
@@ -56,7 +57,8 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
               ),
               ListTile(
                 leading: Icon(Icons.date_range),
-                title: Text(AppLocalizations.of(context).translate('select_date')),
+                title:
+                    Text(AppLocalizations.of(context).translate('select_date')),
                 onTap: () async {
                   await showDatePicker(
                     context: context,

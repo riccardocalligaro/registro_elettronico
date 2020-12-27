@@ -9,8 +9,8 @@ import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_rep
 import 'package:registro_elettronico/feature/agenda/presentation/widgets/select_date_dialog.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/widgets/select_notifications_time_alert.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/widgets/select_subject_dialog.dart';
-import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/widgets/app_drawer.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';

@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:registro_elettronico/ui/global/theme/app_themes.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import './bloc.dart';
+import '../app_themes.dart';
+import 'bloc.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   //static const String DARK_THEME = "ThemeBloc_DARK_THEME";
@@ -16,22 +16,20 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   SharedPreferences prefs;
 
-  ThemeBloc._() {
+  ThemeBloc()
+      : super(ThemeState(
+          materialThemeData: materialThemeData[AppTheme.Dark],
+          cupertinoThemeData: cupertinoThemeData[AppTheme.Dark],
+        )) {
     _loadSettings();
   }
 
   static ThemeBloc get instance {
     if (_instance == null) {
-      _instance = ThemeBloc._();
+      _instance = ThemeBloc();
     }
     return _instance;
   }
-
-  @override
-  ThemeState get initialState => ThemeState(
-        materialThemeData: materialThemeData[AppTheme.Dark],
-        cupertinoThemeData: cupertinoThemeData[AppTheme.Dark],
-      );
 
   @override
   Stream<ThemeState> mapEventToState(

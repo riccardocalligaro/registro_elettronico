@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/feature/stats/presentation/widgets/indicator.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 
 class GradesPieChart extends StatefulWidget {
   final int sufficientiCount;
@@ -121,7 +121,8 @@ class _GradesPieChartState extends State<GradesPieChart> {
           case 0:
             return PieChartSectionData(
               color: Colors.red,
-              title: '${insuffPercentage > 0 ? '${insuffPercentage.toStringAsFixed(0)}%' : ''}',
+              title:
+                  '${insuffPercentage > 0 ? '${insuffPercentage.toStringAsFixed(0)}%' : ''}',
               value: widget.insufficientiCount.toDouble(),
               radius: radius,
               titleStyle:
@@ -130,7 +131,8 @@ class _GradesPieChartState extends State<GradesPieChart> {
           case 1:
             return PieChartSectionData(
               color: Colors.green,
-              title: '${suffPercentage > 0 ? '${suffPercentage.toStringAsFixed(0)}%' : ''}',
+              title:
+                  '${suffPercentage > 0 ? '${suffPercentage.toStringAsFixed(0)}%' : ''}',
               value: widget.sufficientiCount.toDouble(),
               radius: radius,
               titleStyle:
@@ -139,7 +141,8 @@ class _GradesPieChartState extends State<GradesPieChart> {
           case 2:
             return PieChartSectionData(
               color: Colors.yellow[700],
-              title: '${nearlySuffPercentage > 0 ? '${nearlySuffPercentage.toStringAsFixed(0)}%' : ''}',
+              title:
+                  '${nearlySuffPercentage > 0 ? '${nearlySuffPercentage.toStringAsFixed(0)}%' : ''}',
               value: widget.nearlySufficientiCount.toDouble(),
               radius: radius,
               titleStyle:

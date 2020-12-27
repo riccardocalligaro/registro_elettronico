@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' hide Headers;
-import 'package:registro_elettronico/component/api_config.dart';
+import 'package:registro_elettronico/core/data/remote/api/api_config.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_remote_model.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_request_model.dart';
 import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';
@@ -21,7 +21,6 @@ import 'package:retrofit/retrofit.dart';
 
 // part 'spaggiari_client.g.dart';
 
-@RestApi(baseUrl: '${ApiConfig.BASE_API_URL}')
 abstract class SpaggiariClient {
   factory SpaggiariClient(Dio dio) = _SpaggiariClient;
 
@@ -531,7 +530,7 @@ class _SpaggiariClient implements SpaggiariClient {
     final bytes = _result.data.cast<int>();
 
     String filename = _result.headers.value('content-disposition');
- 
+
     return Tuple2(bytes, filename);
   }
 }

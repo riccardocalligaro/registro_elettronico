@@ -7,5 +7,5 @@ part of 'agenda_dao.dart';
 // **************************************************************************
 
 mixin _$AgendaDaoMixin on DatabaseAccessor<AppDatabase> {
-  $AgendaEventsTable get agendaEvents => db.agendaEvents;
+  $AgendaEventsTable get agendaEvents => attachedDatabase.agendaEvents;
 }

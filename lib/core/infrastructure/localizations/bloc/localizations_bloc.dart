@@ -5,7 +5,7 @@ import 'dart:ui';
 import 'package:bloc/bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import './bloc.dart';
+import 'bloc.dart';
 
 class LocalizationsBloc extends Bloc<LocalizationsEvent, LocalizationsState> {
   static LocalizationsBloc _instance;
@@ -14,13 +14,13 @@ class LocalizationsBloc extends Bloc<LocalizationsEvent, LocalizationsState> {
 
   SharedPreferences prefs;
 
-  LocalizationsBloc._() {
+  LocalizationsBloc() : super(LocalizationsState(locale: ui.window.locale)) {
     _loadSettings();
   }
 
   static LocalizationsBloc get instance {
     if (_instance == null) {
-      _instance = LocalizationsBloc._();
+      _instance = LocalizationsBloc();
     }
     return _instance;
   }

@@ -1,8 +1,8 @@
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/component/app_injection.dart';
-import 'package:registro_elettronico/component/navigator.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/domain/repository/preferences_repository.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_bloc.dart';
 import 'package:registro_elettronico/feature/grades/presentation/bloc/grades_bloc.dart';

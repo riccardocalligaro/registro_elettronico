@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:registro_elettronico/component/api_config.dart';
+import 'package:registro_elettronico/core/data/remote/api/api_config.dart';
 import 'package:registro_elettronico/core/infrastructure/exception/server_exception.dart';
 import 'package:registro_elettronico/feature/profile/data/model/profile_mapper.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view_no_persistency.dart';
 import 'package:registro_elettronico/ui/bloc/token/bloc.dart';
-import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
+import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 
 /// A page where there is a [circular progress] loading bar
 /// In init state a token is requested to Spaggiari and when loaded

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 
 class GeneralSortingSettingsDialog extends StatefulWidget {
   final bool ascending;
@@ -26,8 +26,8 @@ class _GeneralSortingSettingsDialogState
     return Column(
       children: <Widget>[
         RadioListTile(
-          title: Text(
-              AppLocalizations.of(context).translate('average_ascending')),
+          title:
+              Text(AppLocalizations.of(context).translate('average_ascending')),
           value: true,
           groupValue: _ascending,
           onChanged: (value) {

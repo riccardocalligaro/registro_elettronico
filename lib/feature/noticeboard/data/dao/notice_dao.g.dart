@@ -7,6 +7,6 @@ part of 'notice_dao.dart';
 // **************************************************************************
 
 mixin _$NoticeDaoMixin on DatabaseAccessor<AppDatabase> {
-  $NoticesTable get notices => db.notices;
-  $AttachmentsTable get attachments => db.attachments;
+  $NoticesTable get notices => attachedDatabase.notices;
+  $AttachmentsTable get attachments => attachedDatabase.attachments;
 }

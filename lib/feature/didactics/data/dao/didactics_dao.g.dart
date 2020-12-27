@@ -7,9 +7,12 @@ part of 'didactics_dao.dart';
 // **************************************************************************
 
 mixin _$DidacticsDaoMixin on DatabaseAccessor<AppDatabase> {
-  $DidacticsTeachersTable get didacticsTeachers => db.didacticsTeachers;
-  $DidacticsFoldersTable get didacticsFolders => db.didacticsFolders;
-  $DidacticsContentsTable get didacticsContents => db.didacticsContents;
+  $DidacticsTeachersTable get didacticsTeachers =>
+      attachedDatabase.didacticsTeachers;
+  $DidacticsFoldersTable get didacticsFolders =>
+      attachedDatabase.didacticsFolders;
+  $DidacticsContentsTable get didacticsContents =>
+      attachedDatabase.didacticsContents;
   $DidacticsDownloadedFilesTable get didacticsDownloadedFiles =>
-      db.didacticsDownloadedFiles;
+      attachedDatabase.didacticsDownloadedFiles;
 }

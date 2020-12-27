@@ -7,5 +7,5 @@ part of 'period_dao.dart';
 // **************************************************************************
 
 mixin _$PeriodDaoMixin on DatabaseAccessor<AppDatabase> {
-  $PeriodsTable get periods => db.periods;
+  $PeriodsTable get periods => attachedDatabase.periods;
 }

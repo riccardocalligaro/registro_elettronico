@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/ui/global/theme/theme_data/text_styles.dart';
+import 'package:registro_elettronico/core/infrastructure/theme/theme_data/text_styles.dart';
 
 final material = ThemeData(
   primarySwatch: Colors.red,
