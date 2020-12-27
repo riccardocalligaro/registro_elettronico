@@ -10,10 +10,10 @@ import 'package:registro_elettronico/feature/notes/domain/repository/notes_repos
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 
 class NotesRepositoryImpl implements NotesRepository {
-  NoteDao noteDao;
-  SpaggiariClient spaggiariClient;
-  ProfileDao profileDao;
-  NetworkInfo networkInfo;
+  final NoteDao noteDao;
+  final SpaggiariClient spaggiariClient;
+  final ProfileDao profileDao;
+  final NetworkInfo networkInfo;
 
   NotesRepositoryImpl(
     this.noteDao,

@@ -11,10 +11,10 @@ import 'package:registro_elettronico/utils/constants/preferences_constants.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GradesRepositoryImpl implements GradesRepository {
-  GradeDao gradeDao;
-  SpaggiariClient spaggiariClient;
-  ProfileDao profileDao;
-  NetworkInfo networkInfo;
+  final GradeDao gradeDao;
+  final SpaggiariClient spaggiariClient;
+  final ProfileDao profileDao;
+  final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
 
   GradesRepositoryImpl(

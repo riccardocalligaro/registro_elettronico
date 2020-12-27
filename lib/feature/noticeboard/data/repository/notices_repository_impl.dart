@@ -12,10 +12,10 @@ import 'package:registro_elettronico/utils/constants/preferences_constants.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NoticesRepositoryImpl implements NoticesRepository {
-  NoticeDao noticeDao;
-  ProfileDao profileDao;
-  SpaggiariClient spaggiariClient;
-  NetworkInfo networkInfo;
+  final NoticeDao noticeDao;
+  final ProfileDao profileDao;
+  final SpaggiariClient spaggiariClient;
+  final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
 
   NoticesRepositoryImpl(

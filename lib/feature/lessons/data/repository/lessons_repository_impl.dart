@@ -13,10 +13,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../model/lesson_mapper.dart';
 
 class LessonsRepositoryImpl implements LessonsRepository {
-  SpaggiariClient spaggiariClient;
-  LessonDao lessonDao;
-  ProfileDao profileDao;
-  NetworkInfo networkInfo;
+  final SpaggiariClient spaggiariClient;
+  final LessonDao lessonDao;
+  final ProfileDao profileDao;
+  final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
 
   LessonsRepositoryImpl(

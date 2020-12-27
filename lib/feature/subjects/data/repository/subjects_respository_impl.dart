@@ -10,11 +10,11 @@ import 'package:registro_elettronico/feature/subjects/data/model/subject_mapper.
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 
 class SubjectsRepositoryImpl implements SubjectsRepository {
-  SpaggiariClient spaggiariClient;
-  ProfessorDao professorDao;
-  SubjectDao subjectDao;
-  ProfileDao profileDao;
-  NetworkInfo networkInfo;
+  final SpaggiariClient spaggiariClient;
+  final ProfessorDao professorDao;
+  final SubjectDao subjectDao;
+  final ProfileDao profileDao;
+  final NetworkInfo networkInfo;
 
   SubjectsRepositoryImpl(
     this.spaggiariClient,

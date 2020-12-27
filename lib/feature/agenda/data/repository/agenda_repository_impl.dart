@@ -14,10 +14,10 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AgendaRepositoryImpl implements AgendaRepository {
-  SpaggiariClient spaggiariClient;
-  AgendaDao agendaDao;
-  ProfileDao profileDao;
-  NetworkInfo networkInfo;
+  final SpaggiariClient spaggiariClient;
+  final AgendaDao agendaDao;
+  final ProfileDao profileDao;
+  final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
 
   AgendaRepositoryImpl(

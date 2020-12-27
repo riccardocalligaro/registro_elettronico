@@ -9,9 +9,9 @@ import 'package:registro_elettronico/feature/login/domain/repository/login_repos
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 
 class LoginRepositoryImpl implements LoginRepository {
-  ProfileDao profileDao;
-  SpaggiariClient spaggiariClient;
-  NetworkInfo networkInfo;
+  final ProfileDao profileDao;
+  final SpaggiariClient spaggiariClient;
+  final NetworkInfo networkInfo;
 
   LoginRepositoryImpl(
     this.profileDao,

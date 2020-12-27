@@ -15,10 +15,10 @@ import 'package:registro_elettronico/utils/constants/preferences_constants.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DocumentsRepositoryImpl implements DocumentsRepository {
-  ProfileRepository profileRepository;
-  SpaggiariClient spaggiariClient;
-  DocumentsDao documentsDao;
-  NetworkInfo networkInfo;
+  final ProfileRepository profileRepository;
+  final SpaggiariClient spaggiariClient;
+  final DocumentsDao documentsDao;
+  final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
 
   DocumentsRepositoryImpl(

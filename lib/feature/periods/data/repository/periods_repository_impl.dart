@@ -9,10 +9,10 @@ import 'package:registro_elettronico/feature/periods/domain/repository/periods_r
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 
 class PeriodsRepositoryImpl implements PeriodsRepository {
-  SpaggiariClient spaggiariClient;
-  PeriodDao periodDao;
-  ProfileDao profileDao;
-  NetworkInfo networkInfo;
+  final SpaggiariClient spaggiariClient;
+  final PeriodDao periodDao;
+  final ProfileDao profileDao;
+  final NetworkInfo networkInfo;
 
   PeriodsRepositoryImpl(
       this.spaggiariClient, this.periodDao, this.profileDao, this.networkInfo);

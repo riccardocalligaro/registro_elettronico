@@ -15,10 +15,10 @@ import 'package:registro_elettronico/utils/constants/preferences_constants.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DidacticsRepositoryImpl implements DidacticsRepository {
-  SpaggiariClient spaggiariClient;
-  DidacticsDao didacticsDao;
-  ProfileDao profileDao;
-  NetworkInfo networkInfo;
+  final SpaggiariClient spaggiariClient;
+  final DidacticsDao didacticsDao;
+  final ProfileDao profileDao;
+  final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
 
   DidacticsRepositoryImpl(

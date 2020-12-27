@@ -5,8 +5,8 @@ import 'package:registro_elettronico/feature/timetable/domain/repository/timetab
 import 'package:registro_elettronico/utils/entity/genius_timetable.dart';
 
 class TimetableRepositoryImpl implements TimetableRepository {
-  TimetableDao timetableDao;
-  LessonDao lessonDao;
+  final TimetableDao timetableDao;
+  final LessonDao lessonDao;
 
   TimetableRepositoryImpl(this.timetableDao, this.lessonDao);
 

@@ -8,8 +8,8 @@ import 'package:registro_elettronico/feature/profile/domain/repository/profile_r
 import 'package:tuple/tuple.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
-  ProfileDao profileDao;
-  FlutterSecureStorage flutterSecureStorage;
+  final ProfileDao profileDao;
+  final FlutterSecureStorage flutterSecureStorage;
 
   ProfileRepositoryImpl(this.profileDao, this.flutterSecureStorage);
 

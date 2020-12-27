@@ -9,10 +9,10 @@ import 'package:registro_elettronico/feature/profile/domain/repository/profile_r
 import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
 
 class ScrutiniRepositoryImpl implements ScrutiniRepository {
-  WebSpaggiariClient webSpaggiariClient;
-  ProfileRepository profileRepository;
-  FlutterSecureStorage flutterSecureStorage;
-  NetworkInfo networkInfo;
+  final WebSpaggiariClient webSpaggiariClient;
+  final ProfileRepository profileRepository;
+  final FlutterSecureStorage flutterSecureStorage;
+  final NetworkInfo networkInfo;
 
   ScrutiniRepositoryImpl(
     this.webSpaggiariClient,

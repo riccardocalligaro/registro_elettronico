@@ -11,10 +11,10 @@ import 'package:registro_elettronico/utils/constants/preferences_constants.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AbsencesRepositoryImpl implements AbsencesRepository {
-  SpaggiariClient spaggiariClient;
-  AbsenceDao absenceDao;
-  ProfileDao profileDao;
-  NetworkInfo networkInfo;
+  final SpaggiariClient spaggiariClient;
+  final AbsenceDao absenceDao;
+  final ProfileDao profileDao;
+  final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
 
   AbsencesRepositoryImpl(
