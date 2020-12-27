@@ -33,16 +33,6 @@ class UpdateUtils {
       await sharedPreferences.setInt(PrefsConstants.lastUpdateAllData,
           DateTime.now().millisecondsSinceEpoch);
     } else {
-      if (_needUpdate(sharedPreferences)) {
-        BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
-        BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
-        BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
-        BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
-
-        await sharedPreferences.setInt(
-            PrefsConstants.lastUpdate, DateTime.now().millisecondsSinceEpoch);
-      }
-
       if (_needUpdateVitalData(sharedPreferences)) {
         BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
         BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
@@ -75,14 +65,9 @@ class UpdateUtils {
             .isBefore(DateTime.now().subtract(Duration(days: 30)));
   }
 
-  static bool _needUpdate(SharedPreferences sharedPreferences) {
-    final lastUpdate = sharedPreferences.getInt(PrefsConstants.lastUpdate);
-    return lastUpdate == null ||
-        DateTime.fromMillisecondsSinceEpoch(lastUpdate)
-            .isBefore(DateTime.now().subtract(Duration(minutes: 2)));
-  }
-
-  static Future<void> updateAllData() async {
+  static Future<void> updateAllData({
+    bool fromLogin = false,
+  }) async {
     final AbsencesRepository absencesRepository = sl();
     final AgendaRepository agendaRepository = sl();
     final LessonsRepository lessonsRepository = sl();
@@ -95,12 +80,14 @@ class UpdateUtils {
     final DocumentsRepository documentsRepository = sl();
     final TimetableRepository timetableRepository = sl();
 
-    // download the agenda, lessons and grades
-    await Future.wait([
-      agendaRepository.updateAllAgenda(),
-      lessonsRepository.updateAllLessons(),
-      gradesRepository.updateGrades(),
-    ]);
+    if (!fromLogin) {
+// download the agenda, lessons and grades
+      await Future.wait([
+        agendaRepository.updateAllAgenda(),
+        lessonsRepository.updateAllLessons(),
+        gradesRepository.updateGrades(),
+      ]);
+    }
 
     // upadte the essential data
     await Future.wait([

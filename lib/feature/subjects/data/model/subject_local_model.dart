@@ -1,4 +1,4 @@
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/moor.dart';
 
 //   IntColumn get eventId => integer()();
 /// "id": 215867,

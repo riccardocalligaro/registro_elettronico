@@ -1,4 +1,4 @@
-package com.riccardocalligaro.registro_elettronico.registro_elettronico
+package com.riccardocalligaro.registro_elettronico
 
 import io.flutter.embedding.android.FlutterActivity
 

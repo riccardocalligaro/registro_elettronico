@@ -1,4 +1,4 @@
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/moor.dart';
 
 // "teacherId": "A3175375",
 // "teacherName": "CAZZIOLATO ALESSANDRO"

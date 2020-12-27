@@ -1,13 +1,18 @@
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/gradient_red_button.dart';
+import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
+import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/home/presentation/blocs/agenda/agenda_dashboard_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/blocs/grades/grades_dashboard_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/blocs/lessons/lessons_dashboard_bloc.dart'
     as dash;
+import 'package:registro_elettronico/feature/home/presentation/home_page.dart';
+import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:registro_elettronico/utils/update_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -43,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
         child: BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is SignInSuccess) {
               /// If the sign in is successful then navigate to the home page
               AppNavigator.instance.navToHome(context);
@@ -51,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
 
             if (state is SignInParent) {
               Scaffold.of(context)..removeCurrentSnackBar();
-              showDialog(
+              await showDialog(
                 context: context,
                 builder: (context) {
                   return SimpleDialog(
@@ -94,16 +99,25 @@ class _LoginPageState extends State<LoginPage> {
             }
 
             if (state is SignInSuccess) {
-              UpdateUtils.checkForUpdates(context).then((value) {
-                BlocProvider.of<dash.LessonsDashboardBloc>(context)
-                    .add(dash.GetLastLessons());
-                BlocProvider.of<GradesDashboardBloc>(context)
-                    .add(GetDashboardGrades());
-                BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
-              });
-              ;
+              // final AgendaRepository agendaRepository = sl();
+              // final LessonsRepository lessonsRepository = sl();
+              // final GradesRepository gradesRepository = sl();
 
-              AppNavigator.instance.navToHome(context);
+              // Future.wait([
+              //   agendaRepository.updateAllAgenda(),
+              //   lessonsRepository.updateAllLessons(),
+              //   gradesRepository.updateGrades(),
+              // ]).then((value) {
+              //   BlocProvider.of<dash.LessonsDashboardBloc>(context);
+              //   AppNavigator.instance.navToHome(context);
+              //   UpdateUtils.updateAllData(fromLogin: true);
+              // });
+              Navigator.of(context)
+                  .pushReplacement(MaterialPageRoute(builder: (context) {
+                return HomePage(
+                  fromSignIn: true,
+                );
+              }));
 
               /// If the sign in is successful then navigate to the home page
               //AppNavigator.instance.navToHome(context);
@@ -303,7 +317,7 @@ class _LoginPageState extends State<LoginPage> {
               FLog.info(
                 text: 'Got valid input, proceeding to adding event to bloc',
               );
-
+              // TODO: remove this
               BlocProvider.of<AuthBloc>(context).add(
                 SignIn(
                   username: username,
@@ -311,12 +325,19 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               );
             } else {
+              // TODO: remove this
+              BlocProvider.of<AuthBloc>(context).add(
+                SignIn(
+                  username: 'S6102171X',
+                  password: 'c0b6SDyHw@jE^IOf',
+                ),
+              );
               FLog.info(text: 'Got empty input');
-              setState(() {
-                _invalid = true;
-                _erorrMessage = AppLocalizations.of(context)
-                    .translate('all_fields_message');
-              });
+              // setState(() {
+              //   _invalid = true;
+              //   _erorrMessage = AppLocalizations.of(context)
+              //       .translate('all_fields_message');
+              // });
             }
           },
         ),

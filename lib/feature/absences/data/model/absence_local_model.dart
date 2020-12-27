@@ -1,4 +1,4 @@
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/moor.dart';
 
 //"evtId": 1832573,
 //"evtCode": "ABR0",

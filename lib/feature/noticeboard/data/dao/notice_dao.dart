@@ -1,4 +1,4 @@
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/moor.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/notes/data/model/local/attachment_local_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/notice_local_model.dart';

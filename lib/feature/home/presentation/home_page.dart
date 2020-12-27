@@ -19,6 +19,7 @@ import 'package:registro_elettronico/utils/constants/preferences_constants.dart'
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
+import 'package:registro_elettronico/utils/update_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'blocs/agenda/agenda_dashboard_bloc.dart';
@@ -34,7 +35,14 @@ import 'sections/next_events_section.dart';
 ///   - [Last lessons]
 ///   - [Next eventd]
 class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+  final bool updateData;
+  final bool fromSignIn;
+
+  const HomePage({
+    Key key,
+    this.updateData = false,
+    this.fromSignIn = false,
+  }) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -57,10 +65,17 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     getPreferences();
-    BlocProvider.of<dash.LessonsDashboardBloc>(context)
-        .add(dash.GetLastLessons());
-    BlocProvider.of<GradesDashboardBloc>(context).add(GetDashboardGrades());
-    BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
+
+    if (widget.fromSignIn) {
+      _refreshHome();
+      UpdateUtils.updateAllData(fromLogin: true);
+    } else {
+      BlocProvider.of<dash.LessonsDashboardBloc>(context)
+          .add(dash.GetLastLessons());
+      BlocProvider.of<GradesDashboardBloc>(context).add(GetDashboardGrades());
+      BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
+      _refreshHome();
+    }
   }
 
   void getPreferences() async {

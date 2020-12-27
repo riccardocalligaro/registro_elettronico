@@ -1,4 +1,4 @@
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/moor.dart';
 
 /// "pubId": 4911199,
 /// "pubDT": "2019-12-16T09:54:59+01:00",
@@ -35,7 +35,7 @@ class Notices extends Table {
   BoolColumn get needJoin => boolean()();
   BoolColumn get needReply => boolean()();
   BoolColumn get needFile => boolean()();
-  
+
   @override
   Set<Column> get primaryKey => {pubId};
 }

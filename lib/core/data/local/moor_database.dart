@@ -1,4 +1,9 @@
-import 'package:moor_flutter/moor_flutter.dart';
+import 'dart:io';
+
+import 'package:moor/ffi.dart';
+import 'package:moor/moor.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
@@ -32,6 +37,14 @@ import 'package:registro_elettronico/feature/subjects/data/model/subject_local_m
 import 'package:registro_elettronico/feature/timetable/data/model/timetale_local_model.dart';
 
 part 'moor_database.g.dart';
+
+LazyDatabase _openConnection() {
+  return LazyDatabase(() async {
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dbFolder.path, 'registro_elettronico.sqlite'));
+    return VmDatabase(file);
+  });
+}
 
 @UseMoor(tables: [
   Profiles,
@@ -71,13 +84,7 @@ part 'moor_database.g.dart';
   DocumentsDao,
 ])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase()
-      : super(
-          (FlutterQueryExecutor.inDatabaseFolder(
-            path: 'db.sqlite',
-            logStatements: true,
-          )),
-        );
+  AppDatabase() : super(_openConnection());
 
   @override
   int get schemaVersion => 1;

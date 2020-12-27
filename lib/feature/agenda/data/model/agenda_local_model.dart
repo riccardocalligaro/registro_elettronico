@@ -1,4 +1,4 @@
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/moor.dart';
 
 // "evtId": 307339,
 // "evtCode": "AGNT",
@@ -10,7 +10,6 @@ import 'package:moor_flutter/moor_flutter.dart';
 // "classDesc": "4IA INFORMATICA",
 // "subjectId": null,
 // "subjectDesc": null
-
 
 class AgendaEvents extends Table {
   IntColumn get evtId => integer()();

@@ -63,7 +63,7 @@ class ResetDialog extends StatelessWidget {
             await appDatabase.resetDb();
 
             AppNavigator.instance.navToHome(context);
-            await UpdateUtils.updateAllData();
+            // await UpdateUtils.updateAllData();
           },
         )
       ],

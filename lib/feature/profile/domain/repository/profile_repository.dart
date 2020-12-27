@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/moor.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
 import 'package:registro_elettronico/feature/profile/data/model/profile_entity.dart';
 import 'package:tuple/tuple.dart';

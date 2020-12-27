@@ -47,13 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
           /// auto signed in, so it redirects to the Home page
           if (state is AutoSignInResult) {
             FLog.info(text: "Auto sign in resulted -> Home screen");
-            UpdateUtils.checkForUpdates(context).then((value) {
-              BlocProvider.of<dash.LessonsDashboardBloc>(context)
-                  .add(dash.GetLastLessons());
-              BlocProvider.of<GradesDashboardBloc>(context)
-                  .add(GetDashboardGrades());
-              BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
-            });
+            UpdateUtils.checkForUpdates(context);
             AppNavigator.instance.navToHome(context);
           }
 
