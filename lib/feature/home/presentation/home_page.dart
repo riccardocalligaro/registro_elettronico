@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
   }
 
-  getPreferences() async {
+  void getPreferences() async {
     SharedPreferences sharedPreferences = sl();
     setState(() {
       _lastUpdate = sharedPreferences.getInt(PrefsConstants.lastUpdateHome);

@@ -50,7 +50,7 @@ class _LastGradesPageState extends State<LastGradesPage> {
   }
 
   Widget _buildGradesList() {
-    if (widget.grades.length > 0) {
+    if (widget.grades.isNotEmpty) {
       return ListView.builder(
         padding: EdgeInsets.only(bottom: 16.0),
         itemCount: widget.grades.length,

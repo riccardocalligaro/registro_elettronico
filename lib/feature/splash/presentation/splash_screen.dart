@@ -1,26 +1,14 @@
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/core/domain/repository/preferences_repository.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
-import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
-import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_bloc.dart';
-import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
-import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/grades/presentation/bloc/grades_bloc.dart';
-import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/bloc/lessons_bloc.dart';
 import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
-import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
-import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
-import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/feature/periods/presentation/bloc/periods_bloc.dart';
-import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
-import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/feature/subjects/presentation/bloc/subjects_bloc.dart';
-import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/update_utils.dart';
@@ -49,17 +37,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (_needUpdateAllData(sharedPreferences)) {
       // update all the endpoints
+      await UpdateUtils.updateAllData();
 
       await sharedPreferences.setInt(PrefsConstants.lastUpdateAllData,
           DateTime.now().millisecondsSinceEpoch);
     } else {
-      {
+      if (_needUpdate(sharedPreferences)) {
         BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
         BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
         BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
         BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
-
-        await UpdateUtils.updateAllData();
 
         await sharedPreferences.setInt(
             PrefsConstants.lastUpdate, DateTime.now().millisecondsSinceEpoch);
@@ -152,34 +139,5 @@ class _SplashScreenState extends State<SplashScreen> {
       text: "Checking if user is signed in, adding auto sign in to BloC",
     );
     BlocProvider.of<AuthBloc>(context).add(AutoSignIn());
-  }
-
-  void _updateVitalData(int lastUpdateVitalData) async {
-    // We have to check if the school year started
-
-    final now = DateTime.now();
-    int yearBegin = now.year;
-
-    // if we are before sempember we need to fetch from the last year
-    if (now.month < DateTime.september) {
-      yearBegin -= 1;
-    }
-
-    final DateTime beginDate = DateTime.utc(yearBegin, DateTime.september, 1);
-
-    if (DateTime.fromMillisecondsSinceEpoch(lastUpdateVitalData)
-        .isBefore(beginDate)) {
-      // Update vital data
-      BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
-      BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
-
-      FLog.info(text: 'Updated vital data (subjects & periods)');
-
-      RepositoryProvider.of<PreferencesRepository>(context).setInt(
-          PrefsConstants.LAST_UPDATE_VITAL_DATA,
-          DateTime.now().millisecondsSinceEpoch);
-    } else {
-      FLog.info(text: 'No need to update');
-    }
   }
 }

@@ -7,10 +7,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'lessons_event.dart';
 part 'lessons_state.dart';

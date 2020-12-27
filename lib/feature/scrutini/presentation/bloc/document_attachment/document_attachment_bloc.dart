@@ -66,7 +66,7 @@ class DocumentAttachmentBloc
         FLog.info(text: 'Deleted file hash: ${event.document.hash}');
         yield DocumentAttachmentDeleteSuccess();
       } catch (e) {
-        documentsRepository.deleteAllDownloadedDocuments();
+        await documentsRepository.deleteAllDownloadedDocuments();
         yield DocumentAttachmentDeleteError();
       }
     }

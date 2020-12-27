@@ -40,7 +40,7 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
         await flutterWebviewPlugin
             .evalJavascript('\$("#password").val("${userInfo.item2}");');
 
-        flutterWebviewPlugin.evalJavascript('\$(".check-auth").click();');
+        await flutterWebviewPlugin.evalJavascript('\$(".check-auth").click();');
       }
     });
 

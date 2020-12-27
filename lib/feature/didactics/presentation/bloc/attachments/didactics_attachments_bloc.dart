@@ -92,7 +92,7 @@ class DidacticsAttachmentsBloc
             yield DidacticsAttachmentsErrror(error: e.toString());
           }
         } else {
-          FirebaseCrashlytics.instance
+          await FirebaseCrashlytics.instance
               .log('Unknown file type ${file.contentId}');
           FLog.error(
             text:
@@ -110,7 +110,7 @@ class DidacticsAttachmentsBloc
       if (fileDb != null) {
         File file = File(fileDb.path);
         file.deleteSync();
-        didacticsRepository.deleteDownloadedFile(fileDb);
+        await didacticsRepository.deleteDownloadedFile(fileDb);
       }
     }
   }

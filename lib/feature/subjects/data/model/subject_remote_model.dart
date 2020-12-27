@@ -5,15 +5,15 @@ class SubjectsResponse {
 
   SubjectsResponse.fromJson(Map<String, dynamic> json) {
     if (json['subjects'] != null) {
-      subjects = new List<SubjectRemoteModel>();
+      subjects = List<SubjectRemoteModel>();
       json['subjects'].forEach((v) {
-        subjects.add(new SubjectRemoteModel.fromJson(v));
+        subjects.add(SubjectRemoteModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.subjects != null) {
       data['subjects'] = this.subjects.map((v) => v.toJson()).toList();
     }
@@ -34,15 +34,15 @@ class SubjectRemoteModel {
     description = json['description'];
     order = json['order'];
     if (json['teachers'] != null) {
-      teachers = new List<TeacherRemoteModel>();
+      teachers = List<TeacherRemoteModel>();
       json['teachers'].forEach((v) {
-        teachers.add(new TeacherRemoteModel.fromJson(v));
+        teachers.add(TeacherRemoteModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['description'] = this.description;
     data['order'] = this.order;
@@ -65,7 +65,7 @@ class TeacherRemoteModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['teacherId'] = this.teacherId;
     data['teacherName'] = this.teacherName;
     return data;

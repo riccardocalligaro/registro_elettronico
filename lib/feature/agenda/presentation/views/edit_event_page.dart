@@ -32,7 +32,7 @@ class _EditEventPageState extends State<EditEventPage> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
-  Color _labelColor = null;
+  Color _labelColor;
   DateTime _selectedDate;
 
   String _initialSubject;
@@ -52,7 +52,7 @@ class _EditEventPageState extends State<EditEventPage> {
       hour: _selectedDate.hour,
       minute: _selectedDate.minute,
     );
-    if (widget == EventType.test) {
+    if (widget.type == EventType.test) {
       _labelColor = Colors.orange;
     } else if (widget.type == EventType.assigment) {
       _labelColor = Colors.blue;

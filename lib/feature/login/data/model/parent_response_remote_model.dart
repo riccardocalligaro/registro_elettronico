@@ -8,16 +8,16 @@ class ParentsLoginResponse {
   ParentsLoginResponse.fromJson(Map<String, dynamic> json) {
     requestedAction = json['requestedAction'];
     if (json['choices'] != null) {
-      choices = new List<Choices>();
+      choices = List<Choices>();
       json['choices'].forEach((v) {
-        choices.add(new Choices.fromJson(v));
+        choices.add(Choices.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['requestedAction'] = this.requestedAction;
     if (this.choices != null) {
       data['choices'] = this.choices.map((v) => v.toJson()).toList();
@@ -43,7 +43,7 @@ class Choices {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['cid'] = this.cid;
     data['ident'] = this.ident;
     data['name'] = this.name;

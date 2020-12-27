@@ -50,7 +50,7 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
           );
         },
         onLongPress: () async {
-          showDialog(
+          await showDialog(
             context: context,
             builder: (ctx) => SimpleDialog(
               children: <Widget>[
@@ -62,7 +62,7 @@ class _GradeSubjectCardState extends State<GradeSubjectCard> {
           ).then((value) async {
             if (value != null) {
               SharedPreferences pres = sl();
-              pres.setInt('${widget.subject.id}_objective', value);
+              await pres.setInt('${widget.subject.id}_objective', value);
               BlocProvider.of<SubjectsGradesBloc>(context)
                   .add(GetGradesAndSubjects());
             }

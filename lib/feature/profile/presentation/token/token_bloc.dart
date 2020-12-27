@@ -71,7 +71,7 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
             FLog.error(
               text: 'Error getting token from spaggiari',
             );
-            FirebaseCrashlytics.instance
+            await FirebaseCrashlytics.instance
                 .log('Error getting token from spaggiari');
             yield TokenLoadError();
           }, (token) async* {
@@ -94,7 +94,7 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
             FLog.error(
               text: 'Error getting token from spaggiari',
             );
-            FirebaseCrashlytics.instance
+            await FirebaseCrashlytics.instance
                 .log('Error getting token from spaggiari');
             yield TokenLoadError();
           }, (token) async* {

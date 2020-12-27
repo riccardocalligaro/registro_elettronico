@@ -5,15 +5,15 @@ class AgendaResponse {
 
   AgendaResponse.fromJson(Map<String, dynamic> json) {
     if (json['agenda'] != null) {
-      events = new List<AgendaRemoteModel>();
+      events = List<AgendaRemoteModel>();
       json['agenda'].forEach((v) {
-        events.add(new AgendaRemoteModel.fromJson(v));
+        events.add(AgendaRemoteModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.events != null) {
       data['agenda'] = this.events.map((v) => v.toJson()).toList();
     }
@@ -60,7 +60,7 @@ class AgendaRemoteModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['evtId'] = this.evtId;
     data['evtCode'] = this.evtCode;
     data['evtDatetimeBegin'] = this.evtDatetimeBegin;

@@ -158,7 +158,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
     if (fileDb != null) {
       File file = File(fileDb.path);
       file.deleteSync();
-      documentsDao.deleteDownloadedDocument(fileDb);
+      await documentsDao.deleteDownloadedDocument(fileDb);
     }
   }
 

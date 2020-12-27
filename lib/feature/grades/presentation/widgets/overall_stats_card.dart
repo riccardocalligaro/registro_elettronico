@@ -54,7 +54,7 @@ class OverallStatsCard extends StatelessWidget {
                         ? Colors.white
                         : Colors.grey.withOpacity(0.3),
                     animationDuration: 300,
-                    center: new Text(average.toStringAsFixed(2)),
+                    center: Text(average.toStringAsFixed(2)),
                     progressColor: GlobalUtils.getColorFromAverage(average),
                   ),
                   Padding(

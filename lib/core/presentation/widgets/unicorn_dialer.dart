@@ -29,31 +29,36 @@ class UnicornButton extends FloatingActionButton {
 
   Widget returnLabel() {
     return Container(
-        decoration: BoxDecoration(
-            boxShadow: this.labelHasShadow
-                ? [
-                    BoxShadow(
-                      color: this.labelShadowColor == null
-                          ? Color.fromRGBO(204, 204, 204, 1.0)
-                          : this.labelShadowColor,
-                      blurRadius: 3.0,
-                    ),
-                  ]
-                : null,
-            color: this.labelBackgroundColor == null
-                ? Colors.white
-                : this.labelBackgroundColor,
-            borderRadius: BorderRadius.circular(3.0)), //color: Colors.white,
-        padding: EdgeInsets.all(5.0),
-        child: Text(this.labelText,
-            style: TextStyle(
-                fontSize: this.labelFontSize,
-                fontWeight: FontWeight.w600,
-                color: this.labelColor == null
-                    ? Color.fromRGBO(119, 119, 119, 1.0)
-                    : this.labelColor)));
+      decoration: BoxDecoration(
+          boxShadow: this.labelHasShadow
+              ? [
+                  BoxShadow(
+                    color: this.labelShadowColor == null
+                        ? Color.fromRGBO(204, 204, 204, 1.0)
+                        : this.labelShadowColor,
+                    blurRadius: 3.0,
+                  ),
+                ]
+              : null,
+          color: this.labelBackgroundColor == null
+              ? Colors.white
+              : this.labelBackgroundColor,
+          borderRadius: BorderRadius.circular(3.0)), //color: Colors.white,
+      padding: EdgeInsets.all(5.0),
+      child: Text(
+        this.labelText,
+        style: TextStyle(
+          fontSize: this.labelFontSize,
+          fontWeight: FontWeight.w600,
+          color: this.labelColor == null
+              ? Color.fromRGBO(119, 119, 119, 1.0)
+              : this.labelColor,
+        ),
+      ),
+    );
   }
 
+  @override
   Widget build(BuildContext context) {
     return this.currentButton;
   }
@@ -73,21 +78,22 @@ class UnicornDialer extends StatefulWidget {
   final Object parentHeroTag;
   final bool hasNotch;
 
-  UnicornDialer(
-      {this.parentButton,
-      this.parentButtonBackground,
-      this.childButtons,
-      this.onMainButtonPressed,
-      this.orientation = 1,
-      this.hasBackground = true,
-      this.backgroundColor = Colors.white30,
-      this.parentHeroTag = "parent",
-      this.finalButtonIcon,
-      this.animationDuration = 180,
-      this.childPadding = 4.0,
-      this.hasNotch = false})
-      : assert(parentButton != null);
+  UnicornDialer({
+    this.parentButton,
+    this.parentButtonBackground,
+    this.childButtons,
+    this.onMainButtonPressed,
+    this.orientation = 1,
+    this.hasBackground = true,
+    this.backgroundColor = Colors.white30,
+    this.parentHeroTag = "parent",
+    this.finalButtonIcon,
+    this.animationDuration = 180,
+    this.childPadding = 4.0,
+    this.hasNotch = false,
+  }) : assert(parentButton != null);
 
+  @override
   _UnicornDialer createState() => _UnicornDialer();
 }
 
@@ -126,7 +132,7 @@ class _UnicornDialer extends State<UnicornDialer>
   }
 
   @override
-  dispose() {
+  void dispose() {
     this._animationController.dispose();
     this._parentController.dispose();
     super.dispose();
@@ -145,7 +151,7 @@ class _UnicornDialer extends State<UnicornDialer>
     this._animationController.reverse();
 
     var hasChildButtons =
-        widget.childButtons != null && widget.childButtons.length > 0;
+        widget.childButtons != null && widget.childButtons.isNotEmpty;
 
     var mainFAB = AnimatedBuilder(
         animation: this._parentController,
@@ -193,7 +199,7 @@ class _UnicornDialer extends State<UnicornDialer>
           });
 
       var childButtonsList = widget.childButtons == null ||
-              widget.childButtons.length == 0
+              widget.childButtons.isEmpty
           ? List<Widget>()
           : List.generate(widget.childButtons.length, (index) {
               var intervalValue = index == 0

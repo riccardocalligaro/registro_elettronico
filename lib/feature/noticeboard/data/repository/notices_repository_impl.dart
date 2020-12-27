@@ -97,7 +97,7 @@ class NoticesRepositoryImpl implements NoticesRepository {
       await spaggiariClient.readNotice(
           profile.studentId, notice.eventCode, notice.pubId.toString(), "");
 
-      noticeDao.updateNotice(notice.copyWith(readStatus: true));
+      await noticeDao.updateNotice(notice.copyWith(readStatus: true));
       final file = spaggiariClient.getNotice(
         profile.studentId,
         notice.eventCode,

@@ -27,7 +27,7 @@ class _ProgressButtonState extends State<ProgressButton>
   }
 
   @override
-  dispose() {
+  void dispose() {
     _controller.dispose();
     super.dispose();
   }
@@ -44,7 +44,7 @@ class _ProgressButtonState extends State<ProgressButton>
           width: _width,
           child: RaisedButton(
             shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(30.0)),
+                borderRadius: BorderRadius.circular(30.0)),
             padding: EdgeInsets.all(0.0),
             color: _state == 2 ? Colors.green : Colors.red,
             child: buildButtonChild(),
@@ -101,7 +101,7 @@ class _ProgressButtonState extends State<ProgressButton>
         height: 36.0,
         width: 36.0,
         decoration: BoxDecoration(
-          borderRadius: new BorderRadius.circular(18.0),
+          borderRadius: BorderRadius.circular(18.0),
         ),
         child: CircularProgressIndicator(
           value: null,

@@ -172,7 +172,7 @@ class _LessonDetailsState extends State<LessonDetails> {
           .toList()
             ..sort((b, a) => a.date.compareTo(b.date));
     }
-    if (lessons.length > 0) {
+    if (lessons.isNotEmpty) {
       return SmartRefresher(
         controller: RefreshController(),
         header: MaterialClassicHeader(

@@ -31,7 +31,7 @@ class LastLessonsSection extends StatelessWidget {
   }
 
   Widget _buildLessonsCardsList(List<Lesson> lessons, BuildContext context) {
-    if (lessons.length > 0) {
+    if (lessons.isNotEmpty) {
       final lessonsGrouped = GlobalUtils.getGroupedLessonsMap(lessons);
       return ScrollConfiguration(
         behavior: NoGlowBehavior(),

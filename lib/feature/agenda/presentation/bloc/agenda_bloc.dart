@@ -63,7 +63,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     SharedPreferences prefs = sl();
     try {
       final events = await agendaRepository.getAllEvents();
-      prefs.setInt(
+      await prefs.setInt(
           PrefsConstants.lastUpdateHome, DateTime.now().millisecondsSinceEpoch);
       FLog.info(text: 'BloC -> Got ${events.length} events');
 

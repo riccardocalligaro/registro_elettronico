@@ -34,7 +34,7 @@ class _NewEventPageState extends State<NewEventPage> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
-  Color _labelColor = null;
+  Color _labelColor;
   DateTime _selectedDate;
 
   TimeOfDay _timeOfDay = TimeOfDay(hour: 9, minute: 0);

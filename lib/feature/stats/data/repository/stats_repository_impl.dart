@@ -3,7 +3,6 @@ import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
 import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
@@ -20,13 +19,13 @@ import 'package:registro_elettronico/utils/grades_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StatsRepositoryImpl implements StatsRepository {
-  // Local Data sources
-  GradeDao gradeDao;
-  AbsenceDao absenceDao;
-  SubjectDao subjectDao;
-  PeriodDao periodDao;
-  NoteDao noteDao;
-  AgendaDao agendaDao;
+  final GradeDao gradeDao;
+  final AbsenceDao absenceDao;
+  final SubjectDao subjectDao;
+  final PeriodDao periodDao;
+  final NoteDao noteDao;
+  final AgendaDao agendaDao;
+  final SharedPreferences sharedPreferences;
 
   StatsRepositoryImpl(
     this.gradeDao,
@@ -35,6 +34,7 @@ class StatsRepositoryImpl implements StatsRepository {
     this.periodDao,
     this.noteDao,
     this.agendaDao,
+    this.sharedPreferences,
   );
 
   @override
@@ -48,10 +48,7 @@ class StatsRepositoryImpl implements StatsRepository {
       final notes = await noteDao.getAllNotes();
       final events = await agendaDao.getAllEvents();
 
-      // TODO: better di
-      SharedPreferences prefs = sl();
-
-      final year = prefs.getInt(PrefsConstants.STUDENT_YEAR) ?? 3;
+      final year = sharedPreferences.getInt(PrefsConstants.STUDENT_YEAR) ?? 3;
 
       if (periods.length >= 2) {
         double average = 0;

@@ -5,15 +5,15 @@ class AbsencesRemoteModel {
 
   AbsencesRemoteModel.fromJson(Map<String, dynamic> json) {
     if (json['events'] != null) {
-      events = new List<AbsenceRemoteModel>();
+      events = List<AbsenceRemoteModel>();
       json['events'].forEach((v) {
-        events.add(new AbsenceRemoteModel.fromJson(v));
+        events.add(AbsenceRemoteModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.events != null) {
       data['events'] = this.events.map((v) => v.toJson()).toList();
     }
@@ -54,7 +54,7 @@ class AbsenceRemoteModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['evtId'] = this.evtId;
     data['evtCode'] = this.evtCode;
     data['evtDate'] = this.evtDate;

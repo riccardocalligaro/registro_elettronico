@@ -58,7 +58,7 @@ class LocalGradeCard extends StatelessWidget {
 
   //// Widget _buildLessonArgument(Grade grade) {
   ////   String text = grade.notesForFamily;
-  ////   if (text.length > 0) {
+  ////   if (text.isNotEmpty) {
   ////     if (text.length > 40) {
   ////       text = text.substring(0, 39);
   ////       text += "...";

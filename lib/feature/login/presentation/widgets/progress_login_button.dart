@@ -48,7 +48,7 @@ class _ProgressLoginButtonState extends State<ProgressLoginButton>
   }
 
   @override
-  dispose() {
+  void dispose() {
     _controller.dispose();
     super.dispose();
   }

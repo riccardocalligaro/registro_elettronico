@@ -20,7 +20,7 @@ class SpaggiariWebViewNoPersistency extends StatefulWidget {
 
 class _SpaggiariWebViewNoPersistencyState
     extends State<SpaggiariWebViewNoPersistency> {
-  final flutterWebviewPlugin = new FlutterWebviewPlugin();
+  final flutterWebviewPlugin = FlutterWebviewPlugin();
   Map<String, String> headers;
   @override
   void initState() {

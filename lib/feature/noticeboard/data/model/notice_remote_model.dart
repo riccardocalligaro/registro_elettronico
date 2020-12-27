@@ -5,15 +5,15 @@ class NoticeboardResponse {
 
   NoticeboardResponse.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
-      items = new List<NoticeRemoteModel>();
+      items = List<NoticeRemoteModel>();
       json['items'].forEach((v) {
-        items.add(new NoticeRemoteModel.fromJson(v));
+        items.add(NoticeRemoteModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.items != null) {
       data['items'] = this.items.map((v) => v.toJson()).toList();
     }
@@ -79,15 +79,15 @@ class NoticeRemoteModel {
     needFile = json['needFile'];
     //eventoId = json['evento_id'] ?? json['pubId'].toString();
     if (json['attachments'] != null) {
-      attachments = new List<AttachmentRemoteModel>();
+      attachments = List<AttachmentRemoteModel>();
       json['attachments'].forEach((v) {
-        attachments.add(new AttachmentRemoteModel.fromJson(v));
+        attachments.add(AttachmentRemoteModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['pubId'] = this.pubId;
     data['pubDT'] = this.pubDT;
     data['readStatus'] = this.readStatus;
@@ -124,7 +124,7 @@ class AttachmentRemoteModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['fileName'] = this.fileName;
     data['attachNum'] = this.attachNum;
     return data;

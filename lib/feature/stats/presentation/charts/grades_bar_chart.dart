@@ -275,7 +275,7 @@ class GradesBarChartState extends State<GradesBarChart> {
 
       if (currentIndex < widget.grades.length) {
         currentIndex++;
-        refreshState();
+        await refreshState();
       } else {
         setState(() {
           isPlaying = !isPlaying;

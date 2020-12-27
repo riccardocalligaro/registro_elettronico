@@ -4,11 +4,11 @@ class NotesReadResponse {
   NotesReadResponse({this.event});
 
   NotesReadResponse.fromJson(Map<String, dynamic> json) {
-    event = json['event'] != null ? new NoteEvent.fromJson(json['event']) : null;
+    event = json['event'] != null ? NoteEvent.fromJson(json['event']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.event != null) {
       data['event'] = this.event.toJson();
     }
@@ -30,7 +30,7 @@ class NoteEvent {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['evtCode'] = this.evtCode;
     data['evtId'] = this.evtId;
     data['evtText'] = this.evtText;

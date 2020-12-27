@@ -31,7 +31,7 @@ class _GradesPageState extends State<GradesPage> {
     BlocProvider.of<SubjectsGradesBloc>(context).add(GetGradesAndSubjects());
   }
 
-  getPreferences() async {
+  void getPreferences() async {
     SharedPreferences sharedPreferences = sl();
     setState(() {
       _lastUpdateGrades =
@@ -84,7 +84,7 @@ class _GradesPageState extends State<GradesPage> {
                           .getNetworkErrorSnackBar(context));
                   }
                 },
-                child: state.periods.length > 0
+                child: state.periods.isNotEmpty
                     ? TabBarView(
                         children: <Widget>[
                           LastGradesPage(

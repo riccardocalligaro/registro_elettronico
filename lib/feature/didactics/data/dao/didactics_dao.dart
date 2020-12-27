@@ -65,7 +65,7 @@ class DidacticsDao extends DatabaseAccessor<AppDatabase>
   }
 
   Future<List<DidacticsTeacher>> getTeachersGrouped() {
-    return customSelectQuery(
+    return customSelect(
       'SELECT * FROM didactics_teachers WHERE id IN (SELECT didactics_folders.teacher_id FROM didactics_folders GROUP BY didactics_folders.teacher_id)',
       readsFrom: {
         didacticsTeachers,

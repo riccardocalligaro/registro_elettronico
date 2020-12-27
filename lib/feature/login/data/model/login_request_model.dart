@@ -12,7 +12,7 @@ class LoginRequest {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['ident'] = this.ident;
     data['pass'] = this.pass;
     data['uid'] = this.uid;

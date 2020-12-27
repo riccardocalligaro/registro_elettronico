@@ -36,7 +36,7 @@ class PeriodsRepositoryImpl implements PeriodsRepository {
       );
       await periodDao.deleteAllPeriods();
 
-      periodDao.insertPeriods(periodsList);
+      await periodDao.insertPeriods(periodsList);
     } else {
       throw NotConntectedException();
     }

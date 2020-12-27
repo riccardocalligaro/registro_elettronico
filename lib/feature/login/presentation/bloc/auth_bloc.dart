@@ -109,7 +109,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is SignOut) {
       await flutterSecureStorage.deleteAll();
       SharedPreferences sharedPreferences = sl();
-      sharedPreferences.clear();
+      await sharedPreferences.clear();
       yield SignOutSuccess();
     }
   }

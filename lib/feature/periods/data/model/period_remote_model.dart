@@ -5,7 +5,7 @@ class PeriodsResponse {
 
   PeriodsResponse.fromJson(Map<String, dynamic> json) {
     if (json['periods'] != null) {
-      periods = new List<PeriodRemoteModel>();
+      periods = List<PeriodRemoteModel>();
       json['periods'].forEach((v) {
         periods.add(PeriodRemoteModel.fromJson(v));
       });
@@ -51,7 +51,7 @@ class PeriodRemoteModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['periodCode'] = this.periodCode;
     data['periodPos'] = this.periodPos;
     data['periodDesc'] = this.periodDesc;

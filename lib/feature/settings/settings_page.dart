@@ -112,7 +112,7 @@ class _SettingsPageState extends State<SettingsPage> {
           subtitle: Text(trans.translate('info_app_subtitle')),
           onTap: () async {
             PackageInfo packageInfo = await PackageInfo.fromPlatform();
-            showDialog(
+            await showDialog(
               context: context,
               builder: (context) => AboutAppDialog(
                 packageInfo: packageInfo,

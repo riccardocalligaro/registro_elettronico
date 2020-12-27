@@ -5,15 +5,15 @@ class LessonsResponse {
 
   LessonsResponse.fromJson(Map<String, dynamic> json) {
     if (json['lessons'] != null) {
-      lessons = new List<LessonRemoteModel>();
+      lessons = List<LessonRemoteModel>();
       json['lessons'].forEach((v) {
-        lessons.add(new LessonRemoteModel.fromJson(v));
+        lessons.add(LessonRemoteModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.lessons != null) {
       data['lessons'] = this.lessons.map((v) => v.toJson()).toList();
     }
@@ -65,7 +65,7 @@ class LessonRemoteModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['evtId'] = this.evtId;
     data['evtDate'] = this.evtDate;
     data['evtCode'] = this.evtCode;

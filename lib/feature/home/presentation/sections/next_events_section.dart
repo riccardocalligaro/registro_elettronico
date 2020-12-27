@@ -51,7 +51,7 @@ class NextEventsSection extends StatelessWidget {
   ) {
     events = events.toList()..sort((a, b) => a.begin.compareTo(b.begin));
 
-    if (events.length == 0) {
+    if (events.isEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 24.0),
         child: Center(
@@ -125,16 +125,18 @@ class NextEventsSection extends StatelessWidget {
               );
             }).toList(),
             indicators: events.map((e) {
-              if (GlobalUtils.isCompito(e.notes))
+              if (GlobalUtils.isCompito(e.notes)) {
                 return Icon(
                   Icons.assignment,
                   color: Colors.grey[700],
                 );
-              if (GlobalUtils.isVerificaOrInterrogazione(e.notes))
+              }
+              if (GlobalUtils.isVerificaOrInterrogazione(e.notes)) {
                 return Icon(
                   Icons.assignment_late,
                   color: Colors.grey[700],
                 );
+              }
               return Icon(
                 Icons.calendar_today,
                 color: Colors.grey[700],

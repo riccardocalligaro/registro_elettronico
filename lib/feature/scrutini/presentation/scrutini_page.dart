@@ -219,8 +219,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
           child: BlocBuilder<DocumentsBloc, DocumentsState>(
             builder: (context, state) {
               if (state is DocumentsLoadSuccess) {
-                if (state.documents.length == 0 &&
-                    state.documents.length == 0) {
+                if (state.documents.isEmpty && state.documents.isEmpty) {
                   return CustomPlaceHolder(
                     icon: Icons.import_contacts,
                     showUpdate: true,

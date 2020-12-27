@@ -99,7 +99,7 @@ class _NotesPageState extends State<NotesPage> {
   }
 
   Widget _buildNotesList(List<Note> notes, BuildContext context) {
-    if (notes.length > 0) {
+    if (notes.isNotEmpty) {
       return CustomRefresher(
         onRefresh: () {
           BlocProvider.of<NotesBloc>(context).add(UpdateNotes());
@@ -115,6 +115,10 @@ class _NotesPageState extends State<NotesPage> {
                 iconColor: Theme.of(context).iconTheme.color,
               ),
               child: ExpandablePanel(
+                theme: ExpandableThemeData(
+                  hasIcon: false,
+                  tapHeaderToExpand: true,
+                ),
                 header: ListTile(
                   // onLongPress: () {
                   //   final AppDatabase appDatabase = AppDatabase();
@@ -129,8 +133,6 @@ class _NotesPageState extends State<NotesPage> {
                 expanded: ExpandedNote(
                   note: note,
                 ),
-                tapHeaderToExpand: true,
-                hasIcon: true,
               ),
             );
           },

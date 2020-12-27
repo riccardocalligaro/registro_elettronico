@@ -40,7 +40,7 @@ class LastGradesSection extends StatelessWidget {
   }
 
   Widget _buildLastGradesList(List<Grade> grades, BuildContext context) {
-    if (grades.length > 0) {
+    if (grades.isNotEmpty) {
       return ListView.builder(
         padding: EdgeInsets.symmetric(vertical: 6.0),
         physics: NeverScrollableScrollPhysics(),

@@ -443,7 +443,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   }
 
   Widget _buildLessonsList(List<db.Lesson> lessons) {
-    if (lessons.length == 0) {
+    if (lessons.isEmpty) {
       return Padding(
         padding: const EdgeInsets.only(top: 64.0),
         child: CustomPlaceHolder(
@@ -491,7 +491,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   }
 
   Widget _buildEventsMap() {
-    if (_selectedEvents.length > 0) {
+    if (_selectedEvents.isNotEmpty) {
       return ListView(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -565,7 +565,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                     title: Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                       child: Text(
-                        '${event.authorName.length > 0 ? StringUtils.titleCase(event.authorName) : AppLocalizations.of(context).translate('no_name_author')}',
+                        '${event.authorName.isNotEmpty ? StringUtils.titleCase(event.authorName) : AppLocalizations.of(context).translate('no_name_author')}',
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.w600),
                       ),
@@ -781,7 +781,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   }
 
   Future _refreshAgenda() async {
-    _refreshController.requestRefresh();
+    await _refreshController.requestRefresh();
     BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
     // _refreshController.refreshFailed();
   }

@@ -5,15 +5,15 @@ class DidacticsResponse {
 
   DidacticsResponse.fromJson(Map<String, dynamic> json) {
     if (json['didacticts'] != null) {
-      teachers = new List<TeacherRemoteModel>();
+      teachers = List<TeacherRemoteModel>();
       json['didacticts'].forEach((v) {
-        teachers.add(new TeacherRemoteModel.fromJson(v));
+        teachers.add(TeacherRemoteModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.teachers != null) {
       data['didacticts'] = this.teachers.map((v) => v.toJson()).toList();
     }
@@ -41,15 +41,15 @@ class TeacherRemoteModel {
     teacherFirstName = json['teacherFirstName'];
     teacherLastName = json['teacherLastName'];
     if (json['folders'] != null) {
-      folders = new List<FolderRemoteModel>();
+      folders = List<FolderRemoteModel>();
       json['folders'].forEach((v) {
-        folders.add(new FolderRemoteModel.fromJson(v));
+        folders.add(FolderRemoteModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['teacherId'] = this.teacherId;
     data['teacherName'] = this.teacherName;
     data['teacherFirstName'] = this.teacherFirstName;
@@ -67,22 +67,23 @@ class FolderRemoteModel {
   String lastShareDT;
   List<ContentRemoteModel> contents;
 
-  FolderRemoteModel({this.folderId, this.folderName, this.lastShareDT, this.contents});
+  FolderRemoteModel(
+      {this.folderId, this.folderName, this.lastShareDT, this.contents});
 
   FolderRemoteModel.fromJson(Map<String, dynamic> json) {
     folderId = json['folderId'];
     folderName = json['folderName'];
     lastShareDT = json['lastShareDT'];
     if (json['contents'] != null) {
-      contents = new List<ContentRemoteModel>();
+      contents = List<ContentRemoteModel>();
       json['contents'].forEach((v) {
-        contents.add(new ContentRemoteModel.fromJson(v));
+        contents.add(ContentRemoteModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['folderId'] = this.folderId;
     data['folderName'] = this.folderName;
     data['lastShareDT'] = this.lastShareDT;
@@ -116,7 +117,7 @@ class ContentRemoteModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['contentId'] = this.contentId;
     data['contentName'] = this.contentName;
     data['objectId'] = this.objectId;
@@ -132,11 +133,11 @@ class DownloadAttachmentURLResponse {
   DownloadAttachmentURLResponse({this.item});
 
   DownloadAttachmentURLResponse.fromJson(Map<String, dynamic> json) {
-    item = json['item'] != null ? new Item.fromJson(json['item']) : null;
+    item = json['item'] != null ? Item.fromJson(json['item']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.item != null) {
       data['item'] = this.item.toJson();
     }
@@ -154,7 +155,7 @@ class Item {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['link'] = this.link;
     return data;
   }
@@ -170,7 +171,7 @@ class DownloadAttachmentTextResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.text != null) {
       data['text'] = this.text;
     }

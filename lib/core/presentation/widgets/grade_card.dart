@@ -165,7 +165,7 @@ class GradeCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "${trans.translate('notes')}: ${grade.notesForFamily.length > 0 ? grade.notesForFamily : trans.translate('not_presents').toLowerCase()}",
+                  "${trans.translate('notes')}: ${grade.notesForFamily.isNotEmpty ? grade.notesForFamily : trans.translate('not_presents').toLowerCase()}",
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(
@@ -248,7 +248,7 @@ class GradeCard extends StatelessWidget {
 
   Widget _buildLessonArgument(Grade grade) {
     String text = grade.notesForFamily;
-    if (text.length > 0) {
+    if (text.isNotEmpty) {
       if (text.length > 30) {
         text = text.substring(0, 30);
         text += "...";

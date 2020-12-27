@@ -6,21 +6,21 @@ class DocumentsResponse {
 
   DocumentsResponse.fromJson(Map<String, dynamic> json) {
     if (json['documents'] != null) {
-      documents = new List<DocumentRemoteModel>();
+      documents = List<DocumentRemoteModel>();
       json['documents'].forEach((v) {
-        documents.add(new DocumentRemoteModel.fromJson(v));
+        documents.add(DocumentRemoteModel.fromJson(v));
       });
     }
     if (json['schoolReports'] != null) {
-      schoolReports = new List<SchoolReportRemoteModel>();
+      schoolReports = List<SchoolReportRemoteModel>();
       json['schoolReports'].forEach((v) {
-        schoolReports.add(new SchoolReportRemoteModel.fromJson(v));
+        schoolReports.add(SchoolReportRemoteModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.documents != null) {
       data['documents'] = this.documents.map((v) => v.toJson()).toList();
     }
@@ -44,7 +44,7 @@ class DocumentRemoteModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['hash'] = this.hash;
     data['desc'] = this.desc;
     return data;
@@ -65,7 +65,7 @@ class SchoolReportRemoteModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['desc'] = this.desc;
     data['confirmLink'] = this.confirmLink;
     data['viewLink'] = this.viewLink;

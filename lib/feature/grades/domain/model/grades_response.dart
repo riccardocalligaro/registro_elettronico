@@ -5,15 +5,15 @@ class GradesResponse {
 
   GradesResponse.fromJson(Map<String, dynamic> json) {
     if (json['grades'] != null) {
-      grades = new List<GradeRemoteModel>();
+      grades = List<GradeRemoteModel>();
       json['grades'].forEach((v) {
-        grades.add(new GradeRemoteModel.fromJson(v));
+        grades.add(GradeRemoteModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.grades != null) {
       data['grades'] = this.grades.map((v) => v.toJson()).toList();
     }
@@ -105,7 +105,7 @@ class GradeRemoteModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['subjectId'] = this.subjectId;
     data['subjectCode'] = this.subjectCode;
     data['subjectDesc'] = this.subjectDesc;

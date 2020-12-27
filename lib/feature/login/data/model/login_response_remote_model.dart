@@ -24,7 +24,7 @@ class LoginResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['ident'] = this.ident;
     data['firstName'] = this.firstName;
     data['lastName'] = this.lastName;

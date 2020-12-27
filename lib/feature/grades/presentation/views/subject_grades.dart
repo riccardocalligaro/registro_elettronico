@@ -225,7 +225,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     );
     final difference = GradesUtils.getDifferencePercentage(
         oldAverage: averages.average, newAverage: newAverage);
-    if (localGrades.length > 0) {
+    if (localGrades.isNotEmpty) {
       localGrades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
       return AnimatedContainer(
         duration: Duration(milliseconds: 2000),
@@ -334,7 +334,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
       builder: (context, state) {
         if (state is ProfessorsLoadSuccess) {
           String professorsText;
-          if (state.professors.length > 0) {
+          if (state.professors.isNotEmpty) {
             //professorsText = GlobalUtils.getMockupName(index: 6);
             professorsText = _getProfessorsText(state.professors
                 .where((professor) => professor.subjectId == widget.subject.id)
@@ -502,7 +502,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
       percent: (average / 10).isNaN ? 0.0 : average / 10,
       animation: true,
       animationDuration: 300,
-      center: new Text(
+      center: Text(
         average.isNaN ? "-" : average.toStringAsFixed(2),
       ),
       progressColor: GlobalUtils.getColorFromAverage(average),
@@ -510,20 +510,23 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
   }
 
   Icon _getIconFromChange(double change) {
-    if (change > 0)
+    if (change > 0) {
       return Icon(
         Icons.trending_up,
         color: Colors.green,
       );
-    if (change == 0)
+    }
+    if (change == 0) {
       return Icon(
         Icons.trending_flat,
       );
-    if (change < 0)
+    }
+    if (change < 0) {
       return Icon(
         Icons.trending_down,
         color: Colors.red,
       );
+    }
     return Icon(Icons.trending_flat);
   }
 }

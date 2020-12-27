@@ -95,7 +95,7 @@ class _TermGradesPageState extends State<TermGradesPage> {
     List<SubjectObjective> objective,
     BuildContext context,
   ) {
-    if (grades.length > 0) {
+    if (grades.isNotEmpty) {
       return SingleChildScrollView(
         child: Column(
           children: <Widget>[

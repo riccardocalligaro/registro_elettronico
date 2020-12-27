@@ -84,7 +84,7 @@ class _TimetablePageState extends State<TimetablePage> {
             }
 
             if (state is TimetableLoaded) {
-              if (state.timetableEntries.length > 0) {
+              if (state.timetableEntries.isNotEmpty) {
                 if (_defaultGridView) {
                   return _buildTimetableGridView(
                       state.timetableEntries, state.subjects);
@@ -168,16 +168,18 @@ ${AppLocalizations.of(context).translate('no_timetable_message')}""",
                   }
                   return TableRow(
                     children: List.generate(8, (day) {
-                      if (day == 0)
+                      if (day == 0) {
                         return Text(
                             (start + GeneralConstants.PADDING_DATE).toString());
+                      }
+
                       final entriesMap = timetableMap[start];
 
                       if (entriesMap != null) {
                         final entry = entriesMap
                             .where((t) => t.dayOfWeek == day)
                             .toList();
-                        if (entry.length > 0) {
+                        if (entry.isNotEmpty) {
                           return Column(
                             children: <Widget>[
                               _getSubjectBox(
@@ -332,7 +334,7 @@ ${AppLocalizations.of(context).translate('no_timetable_message')}""",
                   final subjectsList =
                       subjects.where((s) => s.id == entry.subject).toList();
                   String subject;
-                  if (subjectsList.length > 0) {
+                  if (subjectsList.isNotEmpty) {
                     subject = subjectsList[0].name;
                   } else {
                     FLog.info(

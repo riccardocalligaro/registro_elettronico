@@ -158,7 +158,7 @@ class AppInjector {
         () => ScrutiniRepositoryImpl(sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<StatsRepository>(
-        () => StatsRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
+        () => StatsRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl(), sl()));
   }
 
   static void injectBloc() {

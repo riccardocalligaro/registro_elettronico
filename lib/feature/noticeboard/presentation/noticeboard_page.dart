@@ -101,7 +101,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                 _showOutdatedNotices = result;
               });
               SharedPreferences sharedPreferences = sl();
-              sharedPreferences.setBool(
+              await sharedPreferences.setBool(
                 PrefsConstants.SHOW_OUTDATED_NOTICES,
                 result,
               );
@@ -219,7 +219,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
             );
     }
 
-    if (notices.length > 0) {
+    if (notices.isNotEmpty) {
       return BlocListener<AttachmentDownloadBloc, AttachmentDownloadState>(
         listener: (context, state) {
           if (state is AttachmentDownloadLoading) {
@@ -377,14 +377,14 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                     shrinkWrap: true,
                     itemCount: state.attachments.length,
                     itemBuilder: (ctx, index) {
-                      if (state.attachments.length > 0) {
+                      if (state.attachments.isNotEmpty) {
                         final attachment = state.attachments[index];
                         return ListTile(
                           title: Text(attachment.fileName),
                           onLongPress: () async {
                             final file = await _localFile(notice, attachment);
                             if (file.existsSync()) {
-                              showDialog(
+                              await showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
                                   title: Text(AppLocalizations.of(context)

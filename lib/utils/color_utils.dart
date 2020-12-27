@@ -22,7 +22,7 @@ class ColorUtils {
   }
 
   static Color getRandomMaterialColor() {
-    Random random = new Random();
+    Random random = Random();
     int randomNumber = random.nextInt(5);
     return getColorFromIndex(randomNumber);
   }
@@ -37,7 +37,7 @@ class ColorUtils {
         return Colors.red;
       }
     }
-    
+
     switch (index) {
       case 0:
         return Colors.red;

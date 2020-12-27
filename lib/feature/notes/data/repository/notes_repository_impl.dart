@@ -113,7 +113,7 @@ class NotesRepositoryImpl implements NotesRepository {
           NoteMapper.convertNoteAttachmentResponseToInsertable(res);
 
       await noteDao.deleteAllAttachments();
-      noteDao.insertAttachment(insertable);
+      await noteDao.insertAttachment(insertable);
 
       return insertable;
     } else {

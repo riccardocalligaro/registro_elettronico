@@ -64,7 +64,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   /// Gets lessons between [begin] and [end], it ignores [sostegno] and [supplenza]
   /// This function is used for generating the timetable
   Future<List<Lesson>> getLessonsBetweenDates(DateTime begin, DateTime end) {
-    return customSelectQuery(
+    return customSelect(
         'SELECT * FROM lessons WHERE date >= ? AND date <= ? AND subject_code NOT IN("SOST", "SUPZ") GROUP BY subject_id,date, position',
         variables: [
           Variable.withDateTime(begin),
@@ -85,7 +85,6 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
       batch.insertAllOnConflictUpdate(lessons, lessonsToInsert);
     });
   }
-
 
   /// Deletes [all] lessons
   Future deleteLessons() => delete(lessons).go();

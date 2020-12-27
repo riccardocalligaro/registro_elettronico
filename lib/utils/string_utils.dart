@@ -12,7 +12,7 @@ class StringUtils {
 
   static String removeLastChar(String str) {
     try {
-      if (str != null && str.length > 0) {
+      if (str != null && str.isNotEmpty) {
         str = str.substring(0, str.length - 2);
       }
       return str;

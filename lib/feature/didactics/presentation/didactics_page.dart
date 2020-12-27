@@ -179,7 +179,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
               }
 
               if (state is DidacticsAttachmentsFileLoaded) {
-                OpenFile.open(state.path);
+                await OpenFile.open(state.path);
                 Scaffold.of(context)..removeCurrentSnackBar();
               }
 
@@ -194,7 +194,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
               }
 
               if (state is DidacticsAttachmentsTextLoaded) {
-                Navigator.of(context).push(MaterialPageRoute(
+                await Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => TextViewPage(
                     text: state.text,
                   ),
@@ -259,7 +259,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
       foldersResult = folders;
     }
 
-    if (teachers.length > 0) {
+    if (teachers.isNotEmpty) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 16.0),
         child: CustomRefresher(
@@ -273,7 +273,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
                   .where((folder) => folder.teacherId == teacher.id)
                   .toList();
 
-              if (foldersList.length > 0) {
+              if (foldersList.isNotEmpty) {
                 return Column(
                   children: <Widget>[
                     ListTile(
@@ -326,6 +326,10 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
           data:
               ExpandableThemeData(iconColor: Theme.of(context).iconTheme.color),
           child: ExpandablePanel(
+            theme: ExpandableThemeData(
+              tapHeaderToExpand: true,
+              hasIcon: true,
+            ),
             header: ListTile(
               leading: Icon(Icons.folder),
               title: Text(_getFolderText(folders[index].name)),
@@ -337,8 +341,6 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
               ),
             ),
             expanded: _buildContentsList(contentsList),
-            tapHeaderToExpand: true,
-            hasIcon: true,
           ),
         );
       },
@@ -346,10 +348,11 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
   }
 
   String _getFolderText(String text) {
-    if (text.length > 0)
+    if (text.isNotEmpty) {
       return text;
-    else
+    } else {
       return AppLocalizations.of(context).translate('no_name');
+    }
   }
 
   Widget _buildContentsList(List<DidacticsContent> contents) {
@@ -419,7 +422,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
   }
 
   Future<String> _getContentText(DidacticsContent content) async {
-    if (content.name.length > 0) {
+    if (content.name.isNotEmpty) {
       return content.name;
     }
 
@@ -433,9 +436,10 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
 
   Icon _getIconFromFileType(String fileType) {
     if (fileType == 'link') return Icon(Icons.link);
-    if (fileType == 'text')
+    if (fileType == 'text') {
       return Icon(Icons.text_fields);
-    else
+    } else {
       return Icon(Icons.cloud_download);
+    }
   }
 }

@@ -56,8 +56,10 @@ class GradesUtils {
 
     int countAnnotaions = 0;
     grades.forEach((grade) {
-      if (grade.decimalValue == -1.00 && grade.subjectId == subjectId)
+      if (grade.decimalValue == -1.00 && grade.subjectId == subjectId) {
         countAnnotaions++;
+      }
+
       if (grade.subjectId == subjectId && isValidGrade(grade)) {
         sum += grade.decimalValue;
         count++;
@@ -249,8 +251,9 @@ class GradesUtils {
   /// Taken from registro elettroncio github by Simone Luconi, thanks
   static String getGradeMessage(
       double obj, double average, int numberOfGrades, BuildContext context) {
-    if (average.isNaN)
+    if (average.isNaN) {
       return AppLocalizations.of(context).translate('dont_worry');
+    }
     if (obj > 10 || average > 10) {
       return AppLocalizations.of(context).translate('calculation_error');
     }
@@ -300,9 +303,9 @@ class GradesUtils {
       String returnString;
       final trans = AppLocalizations.of(context);
       if (votiMinimi[0] <= 0) return trans.translate('dont_worry');
-      if (votiMinimi[0] <= obj)
+      if (votiMinimi[0] <= obj) {
         return "${trans.translate('dont_get_less_than')} ${votiMinimi[0].toStringAsFixed(2)}";
-      else {
+      } else {
         returnString = "${trans.translate('get_at_least')} ";
 
         if (votiMinimi.where((voto) => voto != 0.0).length > 3) {

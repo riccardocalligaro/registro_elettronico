@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/navigator.dart';
+import 'package:registro_elettronico/utils/update_utils.dart';
 
 import '../header_text.dart';
 
@@ -55,7 +59,11 @@ class ResetDialog extends StatelessWidget {
         FlatButton(
           child: Text(AppLocalizations.of(context).translate('yes')),
           onPressed: () async {
-            // TODO: reset the db
+            final AppDatabase appDatabase = sl();
+            await appDatabase.resetDb();
+
+            AppNavigator.instance.navToHome(context);
+            await UpdateUtils.updateAllData();
           },
         )
       ],

@@ -90,7 +90,7 @@ class _LessonsPageState extends State<LessonsPage> {
     @required List<Professor> professors,
     @required BuildContext context,
   }) {
-    if (subjects.length > 0) {
+    if (subjects.isNotEmpty) {
       return SubjectsList(
         professors: professors,
         subjects: subjects,

@@ -37,7 +37,7 @@ class TimetableRepositoryImpl implements TimetableRepository {
 
   @override
   Future updateTimeTable() async {
-    timetableDao.deleteTimetable();
+    await timetableDao.deleteTimetable();
     List<GeniusTimetable> genius = await lessonDao.getGeniusTimetable();
     await timetableDao.deleteTimetable();
 

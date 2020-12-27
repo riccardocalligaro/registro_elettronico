@@ -17,32 +17,27 @@ FlutterLocalNotificationsPlugin globalLocalNotifications;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // from firebase 0.5 +
   await Firebase.initializeApp();
 
   AppInjector.init();
 
-  // Finnaly run the app
-  runZoned<Future<void>>(() async {
-    runApp(MyApp());
-  }, onError: (Object error, Object stackTrace) {
+  runZonedGuarded(() {
+    runApp(SrApp());
+  }, (e, s) {
     FLog.error(
       text: 'Error!',
-      exception: Exception(error.toString()),
-      stacktrace: stackTrace,
+      exception: Exception(e.toString()),
+      stacktrace: s,
     );
-
-    FirebaseCrashlytics.instance.recordError(error, stackTrace);
+    FirebaseCrashlytics.instance.recordError(e, s);
   });
 }
 
-/// Registro elettronico by Riccardo Calligaro
-class MyApp extends StatelessWidget {
+class SrApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Application(
       builder: (bCtx, initData) {
-        // _setSystemUI(initData.overlayStyle);
         return MaterialApp(
           title: 'Registro elettronico',
           locale: initData.locale,
@@ -59,6 +54,4 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-
-  // _setSystemUI(SystemUiOverlayStyle overlayStyle) {}
 }

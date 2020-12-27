@@ -154,11 +154,11 @@ class AbsencesList extends StatelessWidget {
   /// The list of absences that are not justified
   Widget _buildNotJustifiedAbsences(
       Map<Absence, int> absences, BuildContext context) {
-    final notJustifiedAbsences = new Map.fromIterable(
+    final notJustifiedAbsences = Map.fromIterable(
         absences.keys.where((absence) => absence.isJustified == false),
         key: (k) => k,
         value: (k) => absences[k]);
-    if (notJustifiedAbsences.values.length > 0) {
+    if (notJustifiedAbsences.values.isNotEmpty) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -191,12 +191,12 @@ class AbsencesList extends StatelessWidget {
 
   Widget _buildJustifiedAbsences(
       Map<Absence, int> absences, BuildContext context) {
-    final justifiedAbsences = new Map.fromIterable(
+    final justifiedAbsences = Map.fromIterable(
         absences.keys.where((absence) => absence.isJustified == true),
         key: (k) => k,
         value: (k) => absences[k]);
 
-    if (justifiedAbsences.values.length > 0) {
+    if (justifiedAbsences.values.isNotEmpty) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -247,7 +247,7 @@ class AbsencesList extends StatelessWidget {
   }
 
   Map<Absence, int> getAbsencesMap(List<Absence> absences) {
-    Map<Absence, int> map = new Map();
+    Map<Absence, int> map = Map();
     Absence start;
     int days = 1;
     if (absences.length == 1) {

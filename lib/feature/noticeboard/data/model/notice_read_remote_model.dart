@@ -4,11 +4,13 @@ class NoticeboardReadResponse {
   NoticeboardReadResponse({this.item});
 
   NoticeboardReadResponse.fromJson(Map<String, dynamic> json) {
-    item = json['item'] != null ? new NoticeReadRemoteModel.fromJson(json['item']) : null;
+    item = json['item'] != null
+        ? NoticeReadRemoteModel.fromJson(json['item'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.item != null) {
       data['item'] = this.item.toJson();
     }
@@ -28,7 +30,7 @@ class NoticeReadRemoteModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['title'] = this.title;
     data['text'] = this.text;
     return data;

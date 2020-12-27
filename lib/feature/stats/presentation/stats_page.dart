@@ -66,7 +66,7 @@ class _StatsPageState extends State<StatsPage> {
 
               var path = '$directory/$fileName.png';
 
-              screenshotController
+              await screenshotController
                   .capture(
                 path: path,
                 pixelRatio: 2,
@@ -254,7 +254,7 @@ class _StatsPageState extends State<StatsPage> {
               center: IconButton(
                 icon: Icon(Icons.info),
                 onPressed: () async {
-                  showDialog(
+                  await showDialog(
                     context: context,
                     builder: (context) {
                       return AlertDialog(
