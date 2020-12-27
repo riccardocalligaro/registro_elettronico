@@ -5,7 +5,7 @@ import 'package:f_logs/f_logs.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
-import 'package:registro_elettronico/domain/repository/absences_repository.dart';
+import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/domain/repository/documents_repository.dart';

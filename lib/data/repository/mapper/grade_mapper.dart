@@ -1,8 +1,8 @@
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
-import 'package:registro_elettronico/domain/entity/api_responses/grades_response.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grades_response.dart';
 
 class GradeMapper {
-  static db.Grade convertGradeEntityToInserttable(Grades grade) {
+  static db.Grade convertGradeEntityToInserttable(GradeRemoteModel grade) {
     return db.Grade(
         subjectId: grade.subjectId ?? -1,
         subjectDesc: grade.subjectDesc ?? "",

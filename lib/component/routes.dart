@@ -1,6 +1,6 @@
-import 'package:registro_elettronico/feature/absences/absences_page.dart';
+import 'package:registro_elettronico/feature/absences/presentation/absences_page.dart';
 import 'package:registro_elettronico/ui/feature/agenda/agenda_page.dart';
-import 'package:registro_elettronico/ui/feature/grades/grades_page.dart';
+import 'package:registro_elettronico/feature/grades/presentation/grades_page.dart';
 import 'package:registro_elettronico/ui/feature/home/home_page.dart';
 import 'package:registro_elettronico/ui/feature/intro/intro_slideshow_page.dart';
 import 'package:registro_elettronico/ui/feature/lessons/lessons_page.dart';

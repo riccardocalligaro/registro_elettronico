@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
-import 'package:registro_elettronico/domain/entity/api_responses/agenda_response.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/agenda_remote_model.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 /// IntColumn get evtId => integer()();

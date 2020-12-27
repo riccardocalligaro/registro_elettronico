@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/f_logs.dart';
-import 'package:registro_elettronico/domain/repository/grades_repository.dart';
+import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import './bloc.dart';
 
 class GradesDashboardBloc

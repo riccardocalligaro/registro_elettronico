@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:registro_elettronico/component/api_config.dart';
 import 'package:registro_elettronico/domain/entity/api_requests/login_request.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/absences_response.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/agenda_response.dart';
+import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';
+import 'package:registro_elettronico/domain/entity/api_responses/agenda_remote_model.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/documents_response.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/grades_response.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grades_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/lessons_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/login_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/notes_read_response.dart';
@@ -54,7 +54,7 @@ abstract class SpaggiariClient {
 
   // Absences
   @GET("/students/{studentId}/absences/details")
-  Future<AbsencesResponse> getAbsences(@Path() String studentId);
+  Future<AbsencesRemoteModel> getAbsences(@Path() String studentId);
 
   // Absences
   @GET("/students/{studentId}/periods")
@@ -273,7 +273,7 @@ class _SpaggiariClient implements SpaggiariClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = AbsencesResponse.fromJson(_result.data);
+    final value = AbsencesRemoteModel.fromJson(_result.data);
     return Future.value(value);
   }
 

@@ -1,5 +1,5 @@
-export 'agenda_repository_impl.dart';
-export 'grades_repository_impl.dart';
+export '../../feature/agenda/data/repository/agenda_repository_impl.dart';
+export '../../feature/grades/data/repository/grades_repository_impl.dart';
 export 'lessons_repository_impl.dart';
 export 'login_repository_impl.dart';
 export 'profile_repository_impl.dart';

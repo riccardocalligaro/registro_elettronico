@@ -6,7 +6,7 @@ import 'package:registro_elettronico/data/repository/repository_impl_export.dart
 import 'package:registro_elettronico/data/repository/scrutini_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/timetable_repository_impl.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
-import 'package:registro_elettronico/domain/repository/grades_repository.dart';
+import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/domain/repository/preferences_repository.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';

@@ -1,6 +1,6 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/data/db/table/absence_table.dart';
+import 'package:registro_elettronico/feature/absences/data/model/absence_local_model.dart';
 
 part 'absence_dao.g.dart';
 
