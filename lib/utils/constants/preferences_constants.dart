@@ -40,4 +40,8 @@ class PrefsConstants {
   static const TERZA_SUPERIORE = 3;
   static const QUARTA_SUPERIORE = 4;
   static const QUINTA_SUPERIORE = 5;
+
+  static const lastUpdateVitalData = 'lastUpdateVitalData';
+  static const lastUpdateAllData = 'lastUpdateAllData';
+  static const lastUpdate = 'lastUpdate';
 }

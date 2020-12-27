@@ -4,14 +4,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/domain/repository/preferences_repository.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
+import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
+import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_bloc.dart';
+import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
+import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/grades/presentation/bloc/grades_bloc.dart';
+import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/bloc/lessons_bloc.dart';
 import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
+import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
+import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
+import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/feature/periods/presentation/bloc/periods_bloc.dart';
+import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
+import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/feature/subjects/presentation/bloc/subjects_bloc.dart';
+import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:registro_elettronico/utils/update_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,7 +35,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   bool _alreadyInit = false;
-  int _lastUpdateVitalData;
 
   @override
   void initState() {
@@ -32,8 +43,65 @@ class _SplashScreenState extends State<SplashScreen> {
     _checkForUpdate();
   }
 
-  void _checkForUpdate() {
+  void _checkForUpdate() async {
     // first we get the
+    final SharedPreferences sharedPreferences = sl();
+
+    if (_needUpdateAllData(sharedPreferences)) {
+      // update all the endpoints
+
+      await sharedPreferences.setInt(PrefsConstants.lastUpdateAllData,
+          DateTime.now().millisecondsSinceEpoch);
+    } else {
+      {
+        BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
+        BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
+        BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
+        BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
+
+        await UpdateUtils.updateAllData();
+
+        await sharedPreferences.setInt(
+            PrefsConstants.lastUpdate, DateTime.now().millisecondsSinceEpoch);
+      }
+
+      if (_needUpdateVitalData(sharedPreferences)) {
+        BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
+        BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
+
+        await sharedPreferences.setInt(PrefsConstants.lastUpdateVitalData,
+            DateTime.now().millisecondsSinceEpoch);
+      }
+    }
+  }
+
+  bool _needUpdateAllData(SharedPreferences sharedPreferences) {
+    final lastUpdate =
+        sharedPreferences.getInt(PrefsConstants.lastUpdateAllData);
+    return lastUpdate == null ||
+        (DateTime.now().month == DateTime.september &&
+            DateTime.fromMillisecondsSinceEpoch(lastUpdate)
+                .isBefore(DateTime.now().subtract(Duration(days: 30)))) ||
+        DateTime.fromMillisecondsSinceEpoch(lastUpdate)
+            .isBefore(DateTime.now().subtract(Duration(days: 180)));
+  }
+
+  bool _needUpdateVitalData(SharedPreferences sharedPreferences) {
+    final lastUpdate =
+        sharedPreferences.getInt(PrefsConstants.lastUpdateVitalData);
+    return lastUpdate == null ||
+        (DateTime.now().month == DateTime.september &&
+            DateTime.fromMillisecondsSinceEpoch(lastUpdate)
+                .isBefore(DateTime.now().subtract(Duration(days: 1)))) ||
+        DateTime.fromMillisecondsSinceEpoch(lastUpdate)
+            .isBefore(DateTime.now().subtract(Duration(days: 30)));
+  }
+
+  bool _needUpdate(SharedPreferences sharedPreferences) {
+    final lastUpdate = sharedPreferences.getInt(PrefsConstants.lastUpdate);
+    return lastUpdate == null ||
+        DateTime.fromMillisecondsSinceEpoch(lastUpdate)
+            .isBefore(DateTime.now().subtract(Duration(minutes: 2)));
   }
 
   @override
@@ -54,10 +122,8 @@ class _SplashScreenState extends State<SplashScreen> {
         listener: (context, state) {
           /// Checks if the autosign in returns the positive result that the user is
           /// auto signed in, so it redirects to the Home page
-
           if (state is AutoSignInResult) {
             FLog.info(text: "Auto sign in resulted -> Home screen");
-
             AppNavigator.instance.navToHome(context);
           }
 
