@@ -4,12 +4,11 @@ import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
-import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 
 part 'note_attachments_event.dart';
-
 part 'note_attachments_state.dart';
 
 class NoteAttachmentsBloc

@@ -4,14 +4,13 @@ import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
-import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/model/last_year_token.dart';
-import 'package:registro_elettronico/domain/entity/login_token.dart';
+import 'package:registro_elettronico/core/data/model/login_token.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
 
 part 'token_event.dart';
-
 part 'token_state.dart';
 
 class TokenBloc extends Bloc<TokenEvent, TokenState> {

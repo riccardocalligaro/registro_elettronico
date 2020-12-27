@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/ui/global/theme/app_themes.dart';
-import 'package:registro_elettronico/ui/global/theme/bloc/bloc.dart';
-import 'package:registro_elettronico/ui/global/theme/ui/theme_item.dart';
+import 'package:registro_elettronico/core/infrastructure/theme/app_themes.dart';
+import 'package:registro_elettronico/core/infrastructure/theme/bloc/bloc.dart';
+import 'package:registro_elettronico/core/infrastructure/theme/ui/theme_item.dart';
 
 class CustomizationSettingsThemeDialog extends StatelessWidget {
   const CustomizationSettingsThemeDialog({Key key}) : super(key: key);

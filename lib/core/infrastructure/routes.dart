@@ -1,12 +1,12 @@
 import 'package:registro_elettronico/feature/absences/presentation/absences_page.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/agenda_page.dart';
+import 'package:registro_elettronico/feature/didactics/presentation/didactics_page.dart';
 import 'package:registro_elettronico/feature/grades/presentation/grades_page.dart';
 import 'package:registro_elettronico/feature/home/presentation/home_page.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/lessons_page.dart';
 import 'package:registro_elettronico/feature/login/presentation/login_page.dart';
 import 'package:registro_elettronico/feature/notes/presentation/notes_page.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/noticeboard_page.dart';
-import 'package:registro_elettronico/feature/didactics/presentation/didactics_page.dart';
 import 'package:registro_elettronico/feature/scrutini/presentation/scrutini_page.dart';
 import 'package:registro_elettronico/feature/settings/settings_page.dart';
 import 'package:registro_elettronico/feature/splash/presentation/splash_screen.dart';

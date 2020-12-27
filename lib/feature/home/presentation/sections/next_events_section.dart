@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/blocs/agenda/agenda_dashboard_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/pages/next_events_page.dart';
 import 'package:registro_elettronico/feature/home/presentation/widgets/timeline.dart';
 import 'package:registro_elettronico/feature/home/presentation/widgets/week_summary_chart.dart';
-import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 

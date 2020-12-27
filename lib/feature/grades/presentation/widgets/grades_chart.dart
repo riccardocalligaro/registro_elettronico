@@ -162,7 +162,7 @@ class _GradesChartState extends State<GradesChart> {
       extraLinesData: ExtraLinesData(
         verticalLines: [
           VerticalLine(
-            y: cutOffYValue,
+            x: cutOffYValue,
             color: Colors.red[600].withOpacity(0.3),
             strokeWidth: 1.5,
           ),

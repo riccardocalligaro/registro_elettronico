@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class ProfileRemoteModel {
+class Profile {
   String ident;
   String firstName;
   String lastName;
@@ -8,7 +8,7 @@ class ProfileRemoteModel {
   String release;
   String expire;
 
-  ProfileRemoteModel({
+  Profile({
     this.ident,
     this.firstName,
     this.lastName,
@@ -17,7 +17,7 @@ class ProfileRemoteModel {
     this.expire,
   });
 
-  ProfileRemoteModel copyWith({
+  Profile copyWith({
     String ident,
     String firstName,
     String lastName,
@@ -25,7 +25,7 @@ class ProfileRemoteModel {
     String release,
     String expire,
   }) {
-    return ProfileRemoteModel(
+    return Profile(
       ident: ident ?? this.ident,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
@@ -46,10 +46,10 @@ class ProfileRemoteModel {
     };
   }
 
-  factory ProfileRemoteModel.fromMap(Map<String, dynamic> map) {
+  factory Profile.fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
 
-    return ProfileRemoteModel(
+    return Profile(
       ident: map['ident'],
       firstName: map['firstName'],
       lastName: map['lastName'],
@@ -61,19 +61,19 @@ class ProfileRemoteModel {
 
   String toJson() => json.encode(toMap());
 
-  factory ProfileRemoteModel.fromJson(String source) =>
-      ProfileRemoteModel.fromMap(json.decode(source));
+  factory Profile.fromJson(String source) =>
+      Profile.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'ProfileRemoteModel(ident: $ident, firstName: $firstName, lastName: $lastName, token: $token, release: $release, expire: $expire)';
+    return 'Profile(ident: $ident, firstName: $firstName, lastName: $lastName, token: $token, release: $release, expire: $expire)';
   }
 
   @override
   bool operator ==(Object o) {
     if (identical(this, o)) return true;
 
-    return o is ProfileRemoteModel &&
+    return o is Profile &&
         o.ident == ident &&
         o.firstName == firstName &&
         o.lastName == lastName &&

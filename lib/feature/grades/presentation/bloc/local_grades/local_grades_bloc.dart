@@ -8,7 +8,6 @@ import 'package:registro_elettronico/feature/grades/domain/repository/grades_rep
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 
 part 'local_grades_event.dart';
-
 part 'local_grades_state.dart';
 
 class LocalGradesBloc extends Bloc<LocalGradesEvent, LocalGradesState> {

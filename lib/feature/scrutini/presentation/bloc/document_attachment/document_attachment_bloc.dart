@@ -3,12 +3,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:meta/meta.dart';
-import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
 
 part 'document_attachment_event.dart';
-
 part 'document_attachment_state.dart';
 
 class DocumentAttachmentBloc

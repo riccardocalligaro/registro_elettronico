@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/periods/bloc.dart';
+import 'package:registro_elettronico/feature/periods/presentation/bloc/periods_bloc.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class GeneralAveragesHomeSettings extends StatefulWidget {

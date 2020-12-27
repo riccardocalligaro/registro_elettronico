@@ -5,20 +5,20 @@ import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/exception/server_exception.dart';
-import 'package:registro_elettronico/feature/profile/data/model/profile_mapper.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';
 import 'package:registro_elettronico/feature/login/data/model/parent_response_remote_model.dart';
 import 'package:registro_elettronico/feature/login/domain/repository/login_repository.dart';
+import 'package:registro_elettronico/feature/profile/data/model/profile_entity.dart';
+import 'package:registro_elettronico/feature/profile/data/model/profile_mapper.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_event.dart';
-
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -32,7 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     @required this.flutterSecureStorage,
   }) : super(AuthInitial());
 
-  Future<Profile> get profile => profileRepository.getDbProfile();
+  Future<db.Profile> get profile => profileRepository.getDbProfile();
 
   @override
   Stream<AuthState> mapEventToState(
@@ -108,7 +108,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     if (event is SignOut) {
       await flutterSecureStorage.deleteAll();
-      AppDatabase().resetDb();
       SharedPreferences sharedPreferences = sl();
       sharedPreferences.clear();
       yield SignOutSuccess();

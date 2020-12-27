@@ -8,7 +8,6 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 
 part 'professors_event.dart';
-
 part 'professors_state.dart';
 
 class ProfessorsBloc extends Bloc<ProfessorsEvent, ProfessorsState> {

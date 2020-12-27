@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:registro_elettronico/core/error/failures.dart';
-import 'package:registro_elettronico/core/network/network_info.dart';
-import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
+import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
 import 'package:registro_elettronico/feature/scrutini/data/model/document_mapper.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 
 class DocumentsRepositoryImpl implements DocumentsRepository {
   ProfileRepository profileRepository;

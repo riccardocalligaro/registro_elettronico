@@ -1,12 +1,12 @@
 import 'package:f_logs/f_logs.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
-import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/absences/data/model/absence_mapper.dart';
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
+import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 
 class AbsencesRepositoryImpl implements AbsencesRepository {
   SpaggiariClient spaggiariClient;

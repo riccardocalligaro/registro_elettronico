@@ -1,12 +1,12 @@
 import 'package:f_logs/f_logs.dart';
-import 'package:registro_elettronico/core/error/failures.dart';
-import 'package:registro_elettronico/core/network/network_info.dart';
-import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
-import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
+import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
 import 'package:registro_elettronico/feature/periods/data/model/period_mapper.dart';
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
+import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 
 class PeriodsRepositoryImpl implements PeriodsRepository {
   SpaggiariClient spaggiariClient;

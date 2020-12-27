@@ -1,10 +1,9 @@
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/core/infrastructure/navigator.dart';
-
-import 'package:registro_elettronico/core/presentation/widgets/gradient_red_button.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/navigator.dart';
+import 'package:registro_elettronico/core/presentation/widgets/gradient_red_button.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 

@@ -9,7 +9,6 @@ import 'package:registro_elettronico/feature/subjects/domain/repository/subjects
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 
 part 'timetable_event.dart';
-
 part 'timetable_state.dart';
 
 class TimetableBloc extends Bloc<TimetableEvent, TimetableState> {

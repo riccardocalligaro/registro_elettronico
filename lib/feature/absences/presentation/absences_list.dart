@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/feature/absences/presentation/bloc/absences_bloc.dart';
-import 'package:registro_elettronico/feature/absences/presentation/widgets/absences_chart_lines.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/core/presentation/widgets/custom_refresher.dart';
-import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/feature/absences/presentation/bloc/absences_bloc.dart';
+import 'package:registro_elettronico/feature/absences/presentation/widgets/absences_chart_lines.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 
 import 'widgets/absence_card.dart';

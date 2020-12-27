@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 
 abstract class DocumentsRepository {
   /// Gets both [school reports] and [documents]

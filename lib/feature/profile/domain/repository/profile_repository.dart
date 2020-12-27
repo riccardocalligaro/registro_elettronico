@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
+import 'package:registro_elettronico/feature/profile/data/model/profile_entity.dart';
 import 'package:tuple/tuple.dart';
 
 abstract class ProfileRepository {
@@ -21,7 +22,7 @@ abstract class ProfileRepository {
   /// Gets the token
   Future getToken();
 
-  Future<Profile> getDbProfile();
+  Future<db.Profile> getDbProfile();
 
-  Future<Tuple2<Profile, String>> getUserAndPassword();
+  Future<Tuple2<db.Profile, String>> getUserAndPassword();
 }

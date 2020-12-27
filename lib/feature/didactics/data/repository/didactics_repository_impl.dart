@@ -1,16 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
-import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
-import 'package:registro_elettronico/core/error/failures.dart';
-import 'package:registro_elettronico/core/network/network_info.dart';
-import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
-import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/data/api/dio_client.dart';
-import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
+import 'package:registro_elettronico/core/data/remote/api/dio_client.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
+import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
+import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_mapper.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
+import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 
 class DidacticsRepositoryImpl implements DidacticsRepository {
   SpaggiariClient spaggiariClient;

@@ -1,13 +1,13 @@
 import 'package:f_logs/f_logs.dart';
-import 'package:registro_elettronico/core/error/failures.dart';
-import 'package:registro_elettronico/core/network/network_info.dart';
-import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
-import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
+import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
+import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/model/note_mapper.dart';
 import 'package:registro_elettronico/feature/notes/data/model/remote/notes_read_remote_model.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
+import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 
 class NotesRepositoryImpl implements NotesRepository {
   NoteDao noteDao;
@@ -111,7 +111,7 @@ class NotesRepositoryImpl implements NotesRepository {
           await spaggiariClient.markNote(profile.studentId, type, eventId, "");
       final insertable =
           NoteMapper.convertNoteAttachmentResponseToInsertable(res);
-          
+
       await noteDao.deleteAllAttachments();
       noteDao.insertAttachment(insertable);
 

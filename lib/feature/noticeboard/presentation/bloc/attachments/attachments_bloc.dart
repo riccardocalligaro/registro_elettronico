@@ -4,12 +4,11 @@ import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
-import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
 
 part 'attachments_event.dart';
-
 part 'attachments_state.dart';
 
 class AttachmentsBloc extends Bloc<AttachmentsEvent, AttachmentsState> {

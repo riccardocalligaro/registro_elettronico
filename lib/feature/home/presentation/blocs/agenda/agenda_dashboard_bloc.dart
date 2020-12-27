@@ -8,7 +8,6 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 
 part 'agenda_dashboard_event.dart';
-
 part 'agenda_dashboard_state.dart';
 
 class AgendaDashboardBloc

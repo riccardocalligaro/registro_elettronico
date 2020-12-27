@@ -7,7 +7,6 @@ import 'package:registro_elettronico/feature/stats/data/model/student_report.dar
 import 'package:registro_elettronico/feature/stats/domain/repository/stats_repository.dart';
 
 part 'stats_event.dart';
-
 part 'stats_state.dart';
 
 class StatsBloc extends Bloc<StatsEvent, StatsState> {

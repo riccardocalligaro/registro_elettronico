@@ -3,10 +3,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:injector/injector.dart';
-import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -128,7 +128,7 @@ class GlobalUtils {
   }
 
   static Future<Period> getPeriodFromDate(DateTime date) async {
-    final PeriodDao periodDao = PeriodDao(Injector.appInstance.getDependency());
+    final PeriodDao periodDao = PeriodDao(sl());
     final periods = await periodDao.getAllPeriods();
     for (var i = 0; i < periods.length; i++) {
       if (periods[i].start.isBefore(date) && periods[i].end.isAfter(date))

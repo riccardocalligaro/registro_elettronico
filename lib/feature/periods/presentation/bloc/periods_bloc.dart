@@ -9,7 +9,6 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
 
 part 'periods_event.dart';
-
 part 'periods_state.dart';
 
 class PeriodsBloc extends Bloc<PeriodsEvent, PeriodsState> {

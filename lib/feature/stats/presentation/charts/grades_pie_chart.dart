@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/feature/stats/presentation/widgets/indicator.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/feature/stats/presentation/widgets/indicator.dart';
 
 class GradesPieChart extends StatefulWidget {
   final int sufficientiCount;

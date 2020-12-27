@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/widgets/app_drawer.dart';
 import 'package:registro_elettronico/feature/home/presentation/blocs/lessons/lessons_dashboard_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/widgets/lesson_card.dart';
-import 'package:registro_elettronico/core/presentation/widgets/app_drawer.dart';
-import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class LastLessonsSection extends StatelessWidget {

@@ -8,7 +8,6 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 
 part 'lessons_dashboard_event.dart';
-
 part 'lessons_dashboard_state.dart';
 
 class LessonsDashboardBloc
