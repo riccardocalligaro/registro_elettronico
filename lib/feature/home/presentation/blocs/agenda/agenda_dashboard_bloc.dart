@@ -40,7 +40,7 @@ class AgendaDashboardBloc
         exception: e,
         stacktrace: s,
       );
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield AgendaDashboardLoadError();
     }
   }

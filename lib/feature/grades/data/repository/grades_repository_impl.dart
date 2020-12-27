@@ -7,18 +7,22 @@ import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
 import 'package:registro_elettronico/feature/grades/data/model/grade_mapper.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GradesRepositoryImpl implements GradesRepository {
   GradeDao gradeDao;
   SpaggiariClient spaggiariClient;
   ProfileDao profileDao;
   NetworkInfo networkInfo;
+  final SharedPreferences sharedPreferences;
 
   GradesRepositoryImpl(
     this.gradeDao,
     this.spaggiariClient,
     this.profileDao,
     this.networkInfo,
+    this.sharedPreferences,
   );
 
   @override
@@ -36,7 +40,12 @@ class GradesRepositoryImpl implements GradesRepository {
             'Got ${gradesResponse.grades.length} grades from server, procceding to insert in database',
       );
       await gradeDao.deleteAllGrades();
-      return gradeDao.insertGrades(grades);
+      await gradeDao.insertGrades(grades);
+
+      await sharedPreferences.setInt(
+        PrefsConstants.lastUpdateGrades,
+        DateTime.now().millisecondsSinceEpoch,
+      );
     } else {
       throw NotConntectedException();
     }

@@ -70,7 +70,7 @@ class DidacticsAttachmentsBloc
           } on NotConntectedException catch (_) {
             yield DidacticsAttachmentsErrorNotConnected();
           } catch (e, s) {
-            FirebaseCrashlytics.instance.recordError(e, s);
+            await FirebaseCrashlytics.instance.recordError(e, s);
             yield DidacticsAttachmentsErrror(error: e.toString());
           }
         } else if (content.type == 'text') {

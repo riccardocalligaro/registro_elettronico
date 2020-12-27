@@ -69,10 +69,12 @@ class AppBlocDelegate {
           sl(),
           sl(),
           sl(),
+          sl(),
         ),
       ),
       RepositoryProvider<AgendaRepository>(
         create: (ctx) => AgendaRepositoryImpl(
+          sl(),
           sl(),
           sl(),
           sl(),

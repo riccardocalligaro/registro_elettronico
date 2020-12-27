@@ -67,7 +67,7 @@ class _LessonDetailsState extends State<LessonDetails> {
   void restore() async {
     SharedPreferences prefs = sl();
     setState(() {
-      _lastUpdate = prefs.getInt(PrefsConstants.LAST_UPDATE_LESSONS);
+      _lastUpdate = prefs.getInt(PrefsConstants.lastUpdateLessons);
     });
   }
 

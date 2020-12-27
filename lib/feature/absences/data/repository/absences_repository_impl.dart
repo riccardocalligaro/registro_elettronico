@@ -7,18 +7,22 @@ import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart'
 import 'package:registro_elettronico/feature/absences/data/model/absence_mapper.dart';
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AbsencesRepositoryImpl implements AbsencesRepository {
   SpaggiariClient spaggiariClient;
   AbsenceDao absenceDao;
   ProfileDao profileDao;
   NetworkInfo networkInfo;
+  final SharedPreferences sharedPreferences;
 
   AbsencesRepositoryImpl(
     this.spaggiariClient,
     this.absenceDao,
     this.profileDao,
     this.networkInfo,
+    this.sharedPreferences,
   );
 
   @override
@@ -39,7 +43,12 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
 
       await absenceDao.deleteAllAbsences();
 
-      absenceDao.insertEvents(absencesList);
+      await absenceDao.insertEvents(absencesList);
+
+      await sharedPreferences.setInt(
+        PrefsConstants.lastUpdateAbsences,
+        DateTime.now().millisecondsSinceEpoch,
+      );
     } else {
       throw NotConntectedException();
     }

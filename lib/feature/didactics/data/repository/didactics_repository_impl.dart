@@ -11,18 +11,22 @@ import 'package:registro_elettronico/feature/didactics/data/model/didactics_mapp
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DidacticsRepositoryImpl implements DidacticsRepository {
   SpaggiariClient spaggiariClient;
   DidacticsDao didacticsDao;
   ProfileDao profileDao;
   NetworkInfo networkInfo;
+  final SharedPreferences sharedPreferences;
 
   DidacticsRepositoryImpl(
     this.spaggiariClient,
     this.didacticsDao,
     this.profileDao,
     this.networkInfo,
+    this.sharedPreferences,
   );
 
   @override
@@ -67,7 +71,10 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
         text:
             'Got ${didactics.teachers} teachers events from server, procceding to insert in database',
       );
-      didacticsDao.insertTeachers(teachers);
+
+      await didacticsDao.insertTeachers(teachers);
+      await sharedPreferences.setInt(PrefsConstants.lastUpdateSchoolMaterial,
+          DateTime.now().millisecondsSinceEpoch);
     } else {
       throw NotConntectedException();
     }

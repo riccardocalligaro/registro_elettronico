@@ -8,17 +8,22 @@ import 'package:registro_elettronico/feature/noticeboard/data/dao/notice_dao.dar
 import 'package:registro_elettronico/feature/noticeboard/data/model/notice_mapper.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NoticesRepositoryImpl implements NoticesRepository {
   NoticeDao noticeDao;
   ProfileDao profileDao;
   SpaggiariClient spaggiariClient;
   NetworkInfo networkInfo;
+  final SharedPreferences sharedPreferences;
+
   NoticesRepositoryImpl(
     this.noticeDao,
     this.profileDao,
     this.spaggiariClient,
     this.networkInfo,
+    this.sharedPreferences,
   );
 
   @override
@@ -46,8 +51,11 @@ class NoticesRepositoryImpl implements NoticesRepository {
       await noticeDao.deleteAllNotices();
       await noticeDao.deleteAllAttachments();
 
-      noticeDao.insertNotices(notices);
-      noticeDao.insertAttachments(attachments);
+      await noticeDao.insertNotices(notices);
+      await noticeDao.insertAttachments(attachments);
+
+      await sharedPreferences.setInt(PrefsConstants.lastUpdateNoticeboard,
+          DateTime.now().millisecondsSinceEpoch);
     } else {
       throw NotConntectedException();
     }

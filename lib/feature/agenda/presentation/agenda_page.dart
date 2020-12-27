@@ -67,7 +67,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     SharedPreferences sharedPreferences = sl();
     setState(() {
       _agendaLastUpdate =
-          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_AGENDA);
+          sharedPreferences.getInt(PrefsConstants.lastUpdateAgenda);
     });
   }
 

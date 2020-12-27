@@ -42,7 +42,7 @@ class NoteAttachmentsBloc
         exception: e,
         stacktrace: s,
       );
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield NoteAttachmentsLoadError(error: e.toString());
     }
   }

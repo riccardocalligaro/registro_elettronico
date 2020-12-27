@@ -51,16 +51,11 @@ class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
       try {
         await didacticsRepository.updateDidactics();
 
-        SharedPreferences prefs = sl();
-
-        prefs.setInt(PrefsConstants.LAST_UPDATE_SCHOOL_MATERIAL,
-            DateTime.now().millisecondsSinceEpoch);
-
         yield DidacticsUpdateLoaded();
       } on NotConntectedException catch (_) {
         yield DidacticsErrorNotConnected();
       } catch (e, s) {
-        FirebaseCrashlytics.instance.recordError(e, s);
+        await FirebaseCrashlytics.instance.recordError(e, s);
 
         yield DidacticsError(e.toString());
       }

@@ -41,16 +41,11 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
   Stream<AgendaState> _mapUpdateAllAgendaToState() async* {
     // yield AgendaUpdateLoadInProgress();
     try {
-      FLog.info(text: 'updating here');
       await agendaRepository.updateAllAgenda();
       SharedPreferences prefs = sl();
 
-      prefs.setInt(
+      await prefs.setInt(
           PrefsConstants.lastUpdateHome, DateTime.now().millisecondsSinceEpoch);
-      prefs.setInt(
-        PrefsConstants.LAST_UPDATE_AGENDA,
-        DateTime.now().millisecondsSinceEpoch,
-      );
 
       yield AgendaUpdateLoadSuccess();
     } on NotConntectedException catch (_) {
@@ -58,7 +53,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     } on DioError catch (e) {
       yield AgendaLoadError(error: e.response.statusMessage.toString());
     } catch (e, s) {
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       FLog.error(text: 'Updating all agenda  error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
@@ -81,7 +76,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       );
       yield AgendaLoadSuccess(events: events, eventsMap: eventsMap);
     } catch (e, s) {
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       FLog.error(text: 'Getting agenda error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
@@ -103,7 +98,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       );
       yield AgendaLoadSuccess(events: events, eventsMap: eventsMap);
     } catch (e, s) {
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       FLog.error(text: 'Getting agenda error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
@@ -116,7 +111,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     } on NotConntectedException catch (_) {
       yield AgendaLoadErrorNotConnected();
     } on DioError catch (e, s) {
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield AgendaLoadError(error: e.response.statusMessage.toString());
     } catch (e) {
       yield AgendaLoadError(error: e.toString());

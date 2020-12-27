@@ -79,7 +79,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
 
     setState(() {
       _schoolMaterialLastUpdate =
-          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_SCHOOL_MATERIAL);
+          sharedPreferences.getInt(PrefsConstants.lastUpdateSchoolMaterial);
     });
   }
 

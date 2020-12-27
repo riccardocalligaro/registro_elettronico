@@ -38,7 +38,7 @@ class ScrutiniRepositoryImpl implements ScrutiniRepository {
 
         return Right(resToken);
       } catch (e, s) {
-        FirebaseCrashlytics.instance.recordError(e, s);
+        await FirebaseCrashlytics.instance.recordError(e, s);
         FLog.error(
           exception: Exception(e.toString()),
           stacktrace: s,

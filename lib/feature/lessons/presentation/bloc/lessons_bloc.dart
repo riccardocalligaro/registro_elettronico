@@ -71,7 +71,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
         exception: e,
         stacktrace: s,
       );
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield LessonsLoadError(error: e.toString());
     }
   }
@@ -88,7 +88,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
         exception: e,
         stacktrace: s,
       );
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield LessonsLoadError(error: e.toString());
     }
   }
@@ -102,7 +102,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
       yield LessonsLoadErrorNotConnected();
     } on DioError catch (e, s) {
       FLog.info(text: 'Server - Error updating absences');
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield LessonsLoadServerError(serverError: e);
     } on Exception catch (e, s) {
       FLog.error(
@@ -110,7 +110,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
         exception: e,
         stacktrace: s,
       );
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       LessonsLoadError(error: e.toString());
     }
   }
@@ -127,7 +127,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
         exception: e,
         stacktrace: s,
       );
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield LessonsLoadServerError(serverError: e);
     } on Exception catch (e, s) {
       FLog.error(
@@ -135,7 +135,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
         exception: e,
         stacktrace: s,
       );
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
 
       LessonsLoadError(error: e.toString());
     }

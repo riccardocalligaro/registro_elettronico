@@ -8,20 +8,24 @@ import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/event_mapper.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AgendaRepositoryImpl implements AgendaRepository {
   SpaggiariClient spaggiariClient;
   AgendaDao agendaDao;
   ProfileDao profileDao;
   NetworkInfo networkInfo;
+  final SharedPreferences sharedPreferences;
 
   AgendaRepositoryImpl(
     this.spaggiariClient,
     this.agendaDao,
     this.profileDao,
     this.networkInfo,
+    this.sharedPreferences,
   );
 
   @override
@@ -52,7 +56,12 @@ class AgendaRepositoryImpl implements AgendaRepository {
       );
       await agendaDao.deleteAllEventsWithoutLocal();
 
-      return agendaDao.insertEvents(events);
+      await agendaDao.insertEvents(events);
+
+      await sharedPreferences.setInt(
+        PrefsConstants.lastUpdateAgenda,
+        DateTime.now().millisecondsSinceEpoch,
+      );
     } else {
       throw NotConntectedException();
     }
@@ -81,7 +90,12 @@ class AgendaRepositoryImpl implements AgendaRepository {
       });
       await agendaDao.deleteEventsFromDate(DateTime.now());
 
-      return agendaDao.insertEvents(events);
+      await agendaDao.insertEvents(events);
+
+      await sharedPreferences.setInt(
+        PrefsConstants.lastUpdateAgenda,
+        DateTime.now().millisecondsSinceEpoch,
+      );
     } else {
       throw NotConntectedException();
     }
@@ -110,6 +124,11 @@ class AgendaRepositoryImpl implements AgendaRepository {
       await agendaDao.deleteAllEventsWithoutLocal();
 
       await agendaDao.insertEvents(events);
+
+      await sharedPreferences.setInt(
+        PrefsConstants.lastUpdateAgenda,
+        DateTime.now().millisecondsSinceEpoch,
+      );
     } else {
       throw NotConntectedException();
     }

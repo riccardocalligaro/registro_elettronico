@@ -46,7 +46,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
       await lessonDao.insertLessons(lessonsList);
 
-      await sharedPreferences.setInt(PrefsConstants.LAST_UPDATE_LESSONS,
+      await sharedPreferences.setInt(PrefsConstants.lastUpdateLessons,
           DateTime.now().millisecondsSinceEpoch);
     } else {
       throw NotConntectedException();
@@ -72,7 +72,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
       await lessonDao.insertLessons(lessonsInsertable);
 
-      await sharedPreferences.setInt(PrefsConstants.LAST_UPDATE_LESSONS,
+      await sharedPreferences.setInt(PrefsConstants.lastUpdateLessons,
           DateTime.now().millisecondsSinceEpoch);
     } else {
       throw NotConntectedException();

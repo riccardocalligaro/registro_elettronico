@@ -74,7 +74,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
 
     setState(() {
       _noticeboardLastUpdate =
-          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_NOTICEBOARD);
+          sharedPreferences.getInt(PrefsConstants.lastUpdateNoticeboard);
 
       _showOutdatedNotices =
           sharedPreferences.getBool(PrefsConstants.SHOW_OUTDATED_NOTICES) ??

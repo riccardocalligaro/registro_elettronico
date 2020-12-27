@@ -35,7 +35,7 @@ class LessonsDashboardBloc
       FLog.info(text: 'BloC -> Got ${lessons.length} lessons');
       yield LessonsDashboardLoadSuccess(lessons: lessons);
     } catch (e, s) {
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield LessonsDashboardLoadError();
     }
   }

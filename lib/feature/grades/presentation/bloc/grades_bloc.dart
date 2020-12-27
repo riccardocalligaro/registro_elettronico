@@ -34,15 +34,11 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
   Stream<GradesState> _mapUpdateGradesToState() async* {
     yield GradesUpdateLoading();
     try {
-      SharedPreferences prefs = sl();
       await gradesRepository.updateGrades();
-      prefs.setInt(
-        PrefsConstants.LAST_UPDATE_GRADES,
-        DateTime.now().millisecondsSinceEpoch,
-      );
+
       yield GradesUpdateLoaded();
     } catch (e, s) {
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield GradesError(message: e.toString());
     }
   }
@@ -60,7 +56,7 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
       FLog.info(text: 'BloC -> Got ${grades.length} grades');
       yield GradesLoaded(grades);
     } catch (e, s) {
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield GradesError(message: e.toString());
     }
   }

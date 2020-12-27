@@ -35,7 +35,7 @@ class _GradesPageState extends State<GradesPage> {
     SharedPreferences sharedPreferences = sl();
     setState(() {
       _lastUpdateGrades =
-          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_GRADES);
+          sharedPreferences.getInt(PrefsConstants.lastUpdateGrades);
     });
   }
 

@@ -70,7 +70,7 @@ class SubjectsGradesBloc
         generalObjective: generalObjective,
       );
     } catch (e, s) {
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield SubjectsGradesLoadError(error: e.toString());
     }
   }
@@ -79,18 +79,12 @@ class SubjectsGradesBloc
     yield SubjectsGradesUpdateLoadInProgress();
     try {
       await gradesRepository.updateGrades();
-      SharedPreferences prefs = sl();
-
-      await prefs.setInt(
-        PrefsConstants.LAST_UPDATE_GRADES,
-        DateTime.now().millisecondsSinceEpoch,
-      );
 
       yield SubjectsGradesUpdateLoadSuccess();
     } on NotConntectedException catch (_) {
       yield SubjectsGradesLoadNotConnected();
     } catch (e, s) {
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield SubjectsGradesLoadError(error: e.toString());
     }
   }

@@ -11,18 +11,22 @@ import 'package:registro_elettronico/feature/profile/domain/repository/profile_r
 import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
 import 'package:registro_elettronico/feature/scrutini/data/model/document_mapper.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DocumentsRepositoryImpl implements DocumentsRepository {
   ProfileRepository profileRepository;
   SpaggiariClient spaggiariClient;
   DocumentsDao documentsDao;
   NetworkInfo networkInfo;
+  final SharedPreferences sharedPreferences;
 
   DocumentsRepositoryImpl(
     this.spaggiariClient,
     this.profileRepository,
     this.documentsDao,
     this.networkInfo,
+    this.sharedPreferences,
   );
 
   @override
@@ -60,6 +64,11 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
 
       await documentsDao.insertDocuments(documentsList);
       await documentsDao.insertSchoolReports(reportsList);
+
+      await sharedPreferences.setInt(
+        PrefsConstants.lastUpdateScrutini,
+        DateTime.now().millisecondsSinceEpoch,
+      );
     } else {
       throw NotConntectedException();
     }

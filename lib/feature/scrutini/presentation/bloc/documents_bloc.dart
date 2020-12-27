@@ -40,11 +40,7 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
       FLog.info(text: 'Got documents and school reports');
       FLog.info(text: 'BloC -> Got ${data.value1.length} school reports');
       FLog.info(text: 'BloC -> Got ${data.value2.length} documents');
-      SharedPreferences sharedPreferences = sl();
-      await sharedPreferences.setInt(
-        PrefsConstants.LAST_UPDATE_SCRUTINI,
-        DateTime.now().millisecondsSinceEpoch,
-      );
+
       yield DocumentsLoadSuccess(
         schoolReports: data.value1,
         documents: data.value2,
@@ -54,7 +50,7 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
           text: 'Got error while getting documents',
           exception: e,
           stacktrace: s);
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield DocumentsLoadError();
     }
   }
@@ -71,7 +67,7 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
     } catch (e, s) {
       FLog.error(
           text: 'Got erorr updating documents', exception: e, stacktrace: s);
-      FirebaseCrashlytics.instance.recordError(e, s);
+      await FirebaseCrashlytics.instance.recordError(e, s);
       yield DocumentsUpdateLoadError();
     }
   }

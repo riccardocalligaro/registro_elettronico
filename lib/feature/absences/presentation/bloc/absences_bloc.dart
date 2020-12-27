@@ -31,20 +31,16 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
       yield AbsencesUpdateLoading();
       try {
         await absencesRepository.updateAbsences();
-        SharedPreferences prefs = sl();
-        prefs.setInt(
-          PrefsConstants.LAST_UPDATE_ABSENCES,
-          DateTime.now().millisecondsSinceEpoch,
-        );
+
         yield AbsencesUpdateLoaded();
       } on DioError catch (e, s) {
-        FirebaseCrashlytics.instance.recordError(e, s);
+        await FirebaseCrashlytics.instance.recordError(e, s);
         FLog.error(text: 'Updating asbences error ${e.toString()}');
         yield AbsencesUpdateError(e.response.data.toString());
       } on NotConntectedException catch (_) {
         yield AbsencesLoadErrorNotConnected();
       } catch (e, s) {
-        FirebaseCrashlytics.instance.recordError(e, s);
+        await FirebaseCrashlytics.instance.recordError(e, s);
         FLog.error(text: 'Updating absences error ${e.toString()}');
         yield AbsencesUpdateError(e.toString());
       }
@@ -57,7 +53,7 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
         FLog.info(text: 'BloC -> Got ${absences.length} absences');
         yield AbsencesLoaded(absences: absences);
       } catch (e, s) {
-        FirebaseCrashlytics.instance.recordError(e, s);
+        await FirebaseCrashlytics.instance.recordError(e, s);
         FLog.error(text: 'Getting absences error ${e.toString()}');
         yield AbsencesError(e.toString());
       }

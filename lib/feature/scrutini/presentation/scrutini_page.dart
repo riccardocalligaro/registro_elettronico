@@ -41,7 +41,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
 
     setState(() {
       _scrutiniLastUpdate =
-          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_SCRUTINI);
+          sharedPreferences.getInt(PrefsConstants.lastUpdateScrutini);
     });
   }
 

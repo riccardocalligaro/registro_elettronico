@@ -36,7 +36,7 @@ class ProfessorsBloc extends Bloc<ProfessorsEvent, ProfessorsState> {
           exception: e,
           stacktrace: s,
         );
-        FirebaseCrashlytics.instance.recordError(e, s);
+        await FirebaseCrashlytics.instance.recordError(e, s);
         yield ProfessorsLoadError();
       }
     }

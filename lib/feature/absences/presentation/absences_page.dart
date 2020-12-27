@@ -32,7 +32,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
     SharedPreferences sharedPreferences = sl();
     setState(() {
       _absencesLastUpdate =
-          sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_ABSENCES);
+          sharedPreferences.getInt(PrefsConstants.lastUpdateAbsences);
     });
   }
 

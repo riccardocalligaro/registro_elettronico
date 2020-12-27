@@ -32,9 +32,7 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
       FLog.info(text: 'Updating noticeboard');
       try {
         await noticesRepository.updateNotices();
-        SharedPreferences prefs = sl();
-        prefs.setInt(PrefsConstants.LAST_UPDATE_NOTICEBOARD,
-            DateTime.now().millisecondsSinceEpoch);
+
         yield NoticesUpdateLoaded();
       } on NotConntectedException {
         yield NoticesLoadNotConnected();
@@ -51,7 +49,7 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
           exception: e,
           stacktrace: s,
         );
-        FirebaseCrashlytics.instance.recordError(e, s);
+        await FirebaseCrashlytics.instance.recordError(e, s);
 
         yield NoticesUpdateError(e.toString());
       }
@@ -70,7 +68,7 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
           exception: e,
           stacktrace: s,
         );
-        FirebaseCrashlytics.instance.recordError(e, s);
+        await FirebaseCrashlytics.instance.recordError(e, s);
 
         yield NoticesError(e.toString());
       }
