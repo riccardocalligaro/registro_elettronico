@@ -658,12 +658,4 @@ class GlobalUtils {
     return DateUtils.convertDateLocale(
         absence.evtDate, AppLocalizations.of(context).locale.toString());
   }
-
-  // static void initialFetch(BuildContext context) {
-  //   BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
-  //   BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
-  //   BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
-  //   BlocProvider.of<GradesBloc>(context).add(FetchGrades());
-  //   BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
-  // }
 }

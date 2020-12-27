@@ -58,13 +58,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
         ));
       }
 
-      // if (darkTheme) {
-      //   SystemChrome.setSystemUIOverlayStyle(
-      //       SystemUiOverlayStyle(systemNavigationBarColor: Colors.grey));
-      // } else {
-      //   SystemChrome.setSystemUIOverlayStyle(
-      //       SystemUiOverlayStyle(systemNavigationBarColor: Colors.white));
-      // }
       await _saveSettings(darkTheme);
       yield ThemeState(
           materialThemeData: materialThemeData[event.theme],

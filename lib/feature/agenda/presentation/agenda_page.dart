@@ -469,13 +469,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),
-              // title: Padding(
-              //   padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-              //   child: Text(
-              //     GlobalUtils.getMockupName(),
-              //     style: TextStyle(fontWeight: FontWeight.w600),
-              //   ),
-              // ),
               subtitle: Padding(
                 padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
                 child: Text(
@@ -553,14 +546,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                       await _showLocalBoottomSheet(event);
                     },
                     leading: _buildEventLeading(event),
-                    // title: Padding(
-                    //   padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-                    //   child: Text(
-                    //     '${GlobalUtils.getMockupName()}',
-                    //     style: TextStyle(
-                    //         color: Colors.white, fontWeight: FontWeight.w600),
-                    //   ),
-                    // ),
                     title: Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                       child: Text(

@@ -185,19 +185,6 @@ class GradesUtils {
     int count = 0;
     double sum = 0;
 
-    // average = getAverageWithoutSubjectId(
-    //     grades.where((grade) => grade.subjectId == subject.id).toList());
-    // // Check if it is best average
-    // if (average > bestAverage) {
-    //   bestSubject = subject;
-    //   bestAverageó = average;
-    // }
-    // // Check fo worst subject
-    // if (average < worstAverage) {
-    //   worstSubject = subject;
-    //   worstAverage = average;
-    // }
-
     grades.forEach((grade) {
       // Ignore the grades in blue
       if ((grade.decimalValue != -1.00 && grade.periodPos == period) |

@@ -92,15 +92,6 @@ class _AppDrawerState extends State<AppDrawer>
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            // _createDrawerItem(
-            //   icon: Icons.person_add,
-            //   text: "Add account",
-            //   onTap: () {
-            //     Navigator.of(context).pushNamed(Routes.LOGIN);
-            //   },
-            //   pos: 0,
-            //   isAccount: true,
-            // ),
             _createDrawerItem(
               icon: Icons.settings_backup_restore,
               text: "Reset",
@@ -215,20 +206,6 @@ class _AppDrawerState extends State<AppDrawer>
                 AppNavigator.instance.navToAgenda(context);
               },
             ),
-            // _createDrawerItem(
-            //   icon: Icons.assignment_late,
-            //   text: trans.translate("next_tests"),
-            //   pos: DrawerConstants.NEXT_TESTS,
-            //   onTap: () {
-            //     // Navigator.pop(context);
-
-            //     // Navigator.pushNamedAndRemoveUntil(context, Routes.NEXT_TESTS, (
-            //     //   Route<dynamic> route,
-            //     // ) {
-            //     //   return route.isActive;
-            //     // });
-            //   },
-            // ),
             _createDrawerItem(
               icon: Icons.assessment,
               text: trans.translate("absences"),
@@ -291,7 +268,6 @@ class _AppDrawerState extends State<AppDrawer>
                 AppNavigator.instance.navToScrutini(context);
               },
             ),
-
             _createDrawerItem(
               icon: Icons.pie_chart,
               text: AppLocalizations.of(context).translate('statistics'),
@@ -302,23 +278,6 @@ class _AppDrawerState extends State<AppDrawer>
               },
             ),
             Divider(),
-
-            // _createDrawerItem(
-            //   icon: Icons.archive,
-            //   text: trans.translate('last_year'),
-            //   pos: 11,
-            //   onTap: () {
-            //     final url =
-            //         'https://web18.spaggiari.eu/home/app/default/menu_webinfoschool_studenti.php';
-            //     Navigator.of(context).push(MaterialPageRoute(
-            //       builder: (context) => WebViewLoadingPage(
-            //         title: trans.translate('last_year'),
-            //         url: url,
-            //         lastYear: true,
-            //       ),
-            //     ));
-            //   },
-            // ),
             _createDrawerItem(
               icon: Icons.web,
               text: trans.translate('web'),
@@ -336,22 +295,6 @@ class _AppDrawerState extends State<AppDrawer>
                 );
               },
             ),
-            // _createDrawerItem(
-            //   icon: Icons.work,
-            //   text: trans.translate('school_and_territory'),
-            //   pos: 13,
-            //   onTap: () {
-            //     final url =
-            //         'https://web.spaggiari.eu/home/app/default/login.php?target=sct';
-            //     Navigator.of(context).push(MaterialPageRoute(
-            //       builder: (context) => SpaggiariWebView(
-            //         appBarTitle: trans.translate('school_and_territory'),
-            //         url: url,
-            //       ),
-            //     ));
-            //   },
-            // ),
-
             Divider(),
             _createDrawerItem(
               icon: Icons.settings,
@@ -360,11 +303,6 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () {
                 Navigator.pop(context);
                 AppNavigator.instance.navToSettings(context);
-                // Navigator.pushNamedAndRemoveUntil(context, Routes.SETTINGS, (
-                //   Route<dynamic> route,
-                // ) {
-                //   return route.isActive;
-                // });
               },
             ),
             _createDrawerItem(
@@ -378,11 +316,6 @@ class _AppDrawerState extends State<AppDrawer>
                         '{download_url}',
                         'https://riccardocalligaro.github.io/registroelettronico-website/'),
                     'text/plain');
-
-                // Share.share(AppLocalizations.of(context)
-                //     .translate('share_message')
-                //     .replaceAll('{download_url}',
-                //         'https://riccardocalligaro.github.io/registroelettronico-website/'));
               },
             ),
           ],

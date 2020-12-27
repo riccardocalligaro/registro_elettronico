@@ -282,12 +282,6 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
                         style: TextStyle(color: Colors.red),
                       ),
                     ),
-                    // ListTile(
-                    //   title: Text(
-                    //     GlobalUtils.getMockupName().toUpperCase(),
-                    //     style: TextStyle(color: Colors.red),
-                    //   ),
-                    // ),
                     _buildFolderList(foldersList, contents)
                   ],
                 );

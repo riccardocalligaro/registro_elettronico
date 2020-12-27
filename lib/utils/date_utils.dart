@@ -89,15 +89,6 @@ class DateUtils {
     } else {
       return formatter.format(date);
     }
-
-    // if (diff.inHours < 23) {
-    //   return AppLocalizations.of(context).translate('today');
-    // } else if (diff.inHours == 23 || diff.inHours == 24) {
-    //   return 'dOmani';
-    //   return AppLocalizations.of(context).translate('tomorrow');
-    // } else {
-    //   return formatter.format(date);
-    // }
   }
 
   static String getBeforeNotifyTimeMessage(Duration d, BuildContext context) {

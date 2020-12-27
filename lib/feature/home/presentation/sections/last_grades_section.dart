@@ -106,55 +106,5 @@ class LastGradesSection extends StatelessWidget {
         ),
       ),
     );
-    // return Card(
-    //   margin: EdgeInsets.symmetric(vertical: 4.0),
-    //   child: Padding(
-    //     padding: const EdgeInsets.all(16.0),
-    //     child: Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //       children: <Widget>[
-    //         Row(
-    //           children: <Widget>[
-    //             Container(
-    //               height: 20,
-    //               width: 20,
-    //               decoration: BoxDecoration(
-    //                 shape: BoxShape.circle,
-    //                 color: GlobalUtils.getColorFromGrade(grade),
-    //               ),
-    //             ),
-    //             SizedBox(
-    //               width: 15,
-    //             ),
-    //             Column(
-    //               crossAxisAlignment: CrossAxisAlignment.start,
-    //               children: <Widget>[
-    //                 Text(
-    //                   grade.subjectDesc.length > 35
-    //                       ? StringUtils.titleCase(
-    //                           GlobalUtils.reduceSubjectTitleWithLength(
-    //                               grade.subjectDesc, 34))
-    //                       : StringUtils.titleCase(grade.subjectDesc),
-    //                   style: TextStyle(fontSize: 15),
-    //                 ),
-    //                 Text(
-    //                   DateUtils.convertDateLocale(grade.eventDate,
-    //                       AppLocalizations.of(context).locale.toString()),
-    //                   style: TextStyle(fontSize: 11),
-    //                 )
-    //               ],
-    //             )
-    //           ],
-    //         ),
-    //         Flexible(
-    //           child: Text(
-    //             grade.displayValue,
-    //             style: TextStyle(fontSize: 18),
-    //           ),
-    //         )
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }

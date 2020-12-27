@@ -172,51 +172,6 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
         },
       ),
     );
-    // return Card(
-    //   child: InkWell(
-    //     onTap: () {
-    //       showTimePicker(
-    //         context: context,
-    //         initialTime: _start,
-    //       ).then((time) {
-    //         if (time != null) {
-    //           setState(() {
-    //             if (time.hour >= 7 && time.hour <= 18) {
-    //               _start = time;
-    //             }
-    //           });
-    //         }
-    //       });
-    //     },
-    //     child: Padding(
-    //       padding: const EdgeInsets.all(16.0),
-    //       child: Container(
-    //         child: Row(
-    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //           children: <Widget>[
-    //             Row(
-    //               children: <Widget>[
-    //                 Icon(
-    //                   Icons.access_time,
-    //                   color: Theme.of(context).iconTheme.color.withOpacity(
-    //                       Theme.of(context).iconTheme.color.opacity * 0.60),
-    //                 ),
-    //                 SizedBox(
-    //                   width: 30,
-    //                 ),
-    //                 Text(
-    //                   AppLocalizations.of(context).translate('time'),
-    //                   style: TextStyle(fontSize: 16),
-    //                 ),
-    //               ],
-    //             ),
-    //             Text(_start.format(context)),
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
   Widget _buildSubjectCard() {
