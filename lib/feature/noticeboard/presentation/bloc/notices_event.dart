@@ -1,6 +1,7 @@
-abstract class NoticesEvent {
-  const NoticesEvent();
-}
+part of 'notices_bloc.dart';
+
+@immutable
+abstract class NoticesEvent {}
 
 class FetchNoticeboard extends NoticesEvent {}
 

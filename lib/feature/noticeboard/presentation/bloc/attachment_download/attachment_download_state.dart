@@ -1,11 +1,7 @@
-import 'package:equatable/equatable.dart';
+part of 'attachment_download_bloc.dart';
 
-abstract class AttachmentDownloadState extends Equatable {
-  const AttachmentDownloadState();
-
-  @override
-  List<Object> get props => [];
-}
+@immutable
+abstract class AttachmentDownloadState {}
 
 class AttachmentDownloadInitial extends AttachmentDownloadState {}
 

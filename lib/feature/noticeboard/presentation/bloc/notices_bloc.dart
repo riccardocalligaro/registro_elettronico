@@ -2,23 +2,26 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:f_logs/f_logs.dart';
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:injector/injector.dart';
+import 'package:meta/meta.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
-import 'package:registro_elettronico/domain/repository/notices_repository.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import './bloc.dart';
+part 'notices_event.dart';
+
+part 'notices_state.dart';
 
 class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
-  NoticesRepository noticesRepository;
+  final NoticesRepository noticesRepository;
 
-  NoticesBloc(this.noticesRepository);
-
-  @override
-  NoticesState get initialState => NoticesInitial();
+  NoticesBloc({
+    @required this.noticesRepository,
+  }) : super(NoticesInitial());
 
   @override
   Stream<NoticesState> mapEventToState(
@@ -30,7 +33,7 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
       FLog.info(text: 'Updating noticeboard');
       try {
         await noticesRepository.updateNotices();
-        SharedPreferences prefs = Injector.appInstance.getDependency();
+        SharedPreferences prefs = sl();
         prefs.setInt(PrefsConstants.LAST_UPDATE_NOTICEBOARD,
             DateTime.now().millisecondsSinceEpoch);
         yield NoticesUpdateLoaded();

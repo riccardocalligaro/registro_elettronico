@@ -2,11 +2,12 @@ import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/feature/notes/data/model/note_local_model.dart';
 
-part '../../../feature/notes/data/dao/note_dao.g.dart';
+part 'note_dao.g.dart';
 
 @UseDao(tables: [Notes, NotesAttachments])
 class NoteDao extends DatabaseAccessor<AppDatabase> with _$NoteDaoMixin {
   AppDatabase db;
+
   NoteDao(this.db) : super(db);
 
   Future<List<Note>> getAllNotes() => select(notes).get();
@@ -15,15 +16,22 @@ class NoteDao extends DatabaseAccessor<AppDatabase> with _$NoteDaoMixin {
       select(notesAttachments).get();
 
   Future insertAttachment(NotesAttachment attachment) =>
-      into(notesAttachments).insert(attachment, orReplace: true);
+      into(notesAttachments).insertOnConflictUpdate(attachment);
 
-  Future insertNote(Note note) => into(notes).insert(note, orReplace: true);
+  Future insertNote(Note note) => into(notes).insertOnConflictUpdate(note);
 
-  Future insertNotes(List<Note> notesList) =>
-      into(notes).insertAll(notesList, orReplace: true);
+  Future<void> insertNotes(List<Note> notesList) async {
+    await batch((batch) {
+      batch.insertAllOnConflictUpdate(notes, notesList);
+    });
+  }
 
-  Future insertAttachments(List<NotesAttachment> notesAttachmentsList) =>
-      into(notesAttachments).insertAll(notesAttachmentsList, orReplace: true);
+  Future<void> insertAttachments(
+      List<NotesAttachment> notesAttachmentsList) async {
+    await batch((batch) {
+      batch.insertAllOnConflictUpdate(notesAttachments, notesAttachmentsList);
+    });
+  }
 
   Future deleteAllNotes() => delete(notes).go();
 

@@ -3,14 +3,11 @@ import 'dart:io';
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injector/injector.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/ui/bloc/notices/attachment_download/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/notices/attachments/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/notices/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
@@ -18,6 +15,10 @@ import 'package:registro_elettronico/ui/global/localizations/app_localizations.d
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'bloc/attachment_download/attachment_download_bloc.dart';
+import 'bloc/attachments/attachments_bloc.dart';
+import 'bloc/notices_bloc.dart';
 
 class NoticeboardPage extends StatefulWidget {
   NoticeboardPage({Key key}) : super(key: key);
@@ -69,7 +70,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   }
 
   void restore() async {
-    SharedPreferences sharedPreferences = Injector.appInstance.getDependency();
+    SharedPreferences sharedPreferences = sl();
 
     setState(() {
       _noticeboardLastUpdate =
@@ -99,8 +100,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
               setState(() {
                 _showOutdatedNotices = result;
               });
-              SharedPreferences sharedPreferences =
-                  Injector.appInstance.getDependency();
+              SharedPreferences sharedPreferences = sl();
               sharedPreferences.setBool(
                 PrefsConstants.SHOW_OUTDATED_NOTICES,
                 result,
@@ -136,7 +136,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
 
               if (state is NoticesUpdateLoaded) {
                 setState(() {
-                  _noticeboardLastUpdate = DateTime.now().millisecondsSinceEpoch;
+                  _noticeboardLastUpdate =
+                      DateTime.now().millisecondsSinceEpoch;
                 });
               }
             },

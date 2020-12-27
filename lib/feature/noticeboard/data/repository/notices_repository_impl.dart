@@ -2,12 +2,12 @@ import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
-import 'package:registro_elettronico/feature/notes/data/dao/notice_dao.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/dao/notice_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
-import 'package:registro_elettronico/data/repository/mapper/notice_mapper.dart';
-import 'package:registro_elettronico/domain/repository/notices_repository.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/model/notice_mapper.dart';
+import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
 
 class NoticesRepositoryImpl implements NoticesRepository {
   NoticeDao noticeDao;

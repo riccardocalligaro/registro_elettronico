@@ -1,14 +1,9 @@
-import 'package:equatable/equatable.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+part of 'attachments_bloc.dart';
 
-abstract class AttachmentsState extends Equatable {
-  const AttachmentsState();
+@immutable
+abstract class AttachmentsState {}
 
-  @override
-  List<Object> get props => [];
-}
-
-class NoticesAttachmentsInitial extends AttachmentsState {}
+class AttachmentsInitial extends AttachmentsState {}
 
 /// Attachments
 

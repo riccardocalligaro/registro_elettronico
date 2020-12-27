@@ -10,8 +10,8 @@ import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
 import 'package:registro_elettronico/data/db/dao/document_dao.dart';
 import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
 import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
-import 'package:registro_elettronico/data/db/dao/note_dao.dart';
-import 'package:registro_elettronico/feature/notes/data/dao/notice_dao.dart';
+import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/dao/notice_dao.dart';
 import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
@@ -26,7 +26,7 @@ import 'package:registro_elettronico/feature/absences/data/repository/absences_r
 import 'package:registro_elettronico/data/repository/didactics_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/documents_repository_impl.dart';
 import 'package:registro_elettronico/feature/notes/data/repository/notes_repository_impl.dart';
-import 'package:registro_elettronico/data/repository/notices_repository_impl.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/repository/notices_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/periods_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
 import 'package:registro_elettronico/data/repository/scrutini_repository_impl.dart';
@@ -36,7 +36,7 @@ import 'package:registro_elettronico/feature/absences/domain/repository/absences
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
-import 'package:registro_elettronico/domain/repository/notices_repository.dart';
+import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
 import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';

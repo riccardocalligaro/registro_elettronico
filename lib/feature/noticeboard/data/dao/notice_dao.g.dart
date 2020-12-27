@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../../feature/notes/data/dao/notice_dao.dart';
+part of 'notice_dao.dart';
 
 // **************************************************************************
 // DaoGenerator

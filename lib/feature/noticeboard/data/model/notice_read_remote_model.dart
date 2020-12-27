@@ -1,10 +1,10 @@
 class NoticeboardReadResponse {
-  Item item;
+  NoticeReadRemoteModel item;
 
   NoticeboardReadResponse({this.item});
 
   NoticeboardReadResponse.fromJson(Map<String, dynamic> json) {
-    item = json['item'] != null ? new Item.fromJson(json['item']) : null;
+    item = json['item'] != null ? new NoticeReadRemoteModel.fromJson(json['item']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -16,13 +16,13 @@ class NoticeboardReadResponse {
   }
 }
 
-class Item {
+class NoticeReadRemoteModel {
   String title;
   String text;
 
-  Item({this.title, this.text});
+  NoticeReadRemoteModel({this.title, this.text});
 
-  Item.fromJson(Map<String, dynamic> json) {
+  NoticeReadRemoteModel.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     text = json['text'];
   }

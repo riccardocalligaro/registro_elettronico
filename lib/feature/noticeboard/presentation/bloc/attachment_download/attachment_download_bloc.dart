@@ -1,21 +1,26 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
+import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
-import 'package:registro_elettronico/domain/repository/notices_repository.dart';
-import './bloc.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
+
+part 'attachment_download_event.dart';
+
+part 'attachment_download_state.dart';
 
 class AttachmentDownloadBloc
     extends Bloc<AttachmentDownloadEvent, AttachmentDownloadState> {
-  NoticesRepository noticesRepository;
+  final NoticesRepository noticesRepository;
 
-  AttachmentDownloadBloc(this.noticesRepository);
-
-  @override
-  AttachmentDownloadState get initialState => AttachmentDownloadInitial();
+  AttachmentDownloadBloc({
+    @required this.noticesRepository,
+  }) : super(AttachmentDownloadInitial());
 
   @override
   Stream<AttachmentDownloadState> mapEventToState(

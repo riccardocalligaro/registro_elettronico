@@ -6,7 +6,7 @@ import 'package:registro_elettronico/ui/feature/intro/intro_slideshow_page.dart'
 import 'package:registro_elettronico/feature/lessons/presentation/lessons_page.dart';
 import 'package:registro_elettronico/ui/feature/login/login_page.dart';
 import 'package:registro_elettronico/feature/notes/presentation/notes_page.dart';
-import 'package:registro_elettronico/ui/feature/noticeboard/noticeboard_page.dart';
+import 'package:registro_elettronico/feature/noticeboard/presentation/noticeboard_page.dart';
 import 'package:registro_elettronico/ui/feature/school_material/school_material_page.dart';
 import 'package:registro_elettronico/ui/feature/scrutini/scrutini_page.dart';
 import 'package:registro_elettronico/ui/feature/settings/settings_page.dart';

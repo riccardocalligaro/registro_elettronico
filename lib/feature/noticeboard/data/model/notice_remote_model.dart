@@ -1,13 +1,13 @@
 class NoticeboardResponse {
-  List<Items> items;
+  List<NoticeRemoteModel> items;
 
   NoticeboardResponse({this.items});
 
   NoticeboardResponse.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
-      items = new List<Items>();
+      items = new List<NoticeRemoteModel>();
       json['items'].forEach((v) {
-        items.add(new Items.fromJson(v));
+        items.add(new NoticeRemoteModel.fromJson(v));
       });
     }
   }
@@ -21,7 +21,7 @@ class NoticeboardResponse {
   }
 }
 
-class Items {
+class NoticeRemoteModel {
   int pubId;
   String pubDT;
   bool readStatus;
@@ -38,10 +38,9 @@ class Items {
   bool needJoin;
   bool needReply;
   bool needFile;
-  //String eventoId;
-  List<Attachments> attachments;
+  List<AttachmentRemoteModel> attachments;
 
-  Items(
+  NoticeRemoteModel(
       {this.pubId,
       this.pubDT,
       this.readStatus,
@@ -61,7 +60,7 @@ class Items {
       //this.eventoId,
       this.attachments});
 
-  Items.fromJson(Map<String, dynamic> json) {
+  NoticeRemoteModel.fromJson(Map<String, dynamic> json) {
     pubId = json['pubId'];
     pubDT = json['pubDT'];
     readStatus = json['readStatus'];
@@ -80,9 +79,9 @@ class Items {
     needFile = json['needFile'];
     //eventoId = json['evento_id'] ?? json['pubId'].toString();
     if (json['attachments'] != null) {
-      attachments = new List<Attachments>();
+      attachments = new List<AttachmentRemoteModel>();
       json['attachments'].forEach((v) {
-        attachments.add(new Attachments.fromJson(v));
+        attachments.add(new AttachmentRemoteModel.fromJson(v));
       });
     }
   }
@@ -113,13 +112,13 @@ class Items {
   }
 }
 
-class Attachments {
+class AttachmentRemoteModel {
   String fileName;
   int attachNum;
 
-  Attachments({this.fileName, this.attachNum});
+  AttachmentRemoteModel({this.fileName, this.attachNum});
 
-  Attachments.fromJson(Map<String, dynamic> json) {
+  AttachmentRemoteModel.fromJson(Map<String, dynamic> json) {
     fileName = json['fileName'];
     attachNum = json['attachNum'];
   }

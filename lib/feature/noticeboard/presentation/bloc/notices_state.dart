@@ -1,12 +1,7 @@
-import 'package:equatable/equatable.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+part of 'notices_bloc.dart';
 
-abstract class NoticesState extends Equatable {
-  const NoticesState();
-
-  @override
-  List<Object> get props => [];
-}
+@immutable
+abstract class NoticesState {}
 
 class NoticesInitial extends NoticesState {}
 
