@@ -6,4 +6,3 @@ abstract class NotesEvent {}
 class UpdateNotes extends NotesEvent {}
 
 class GetNotes extends NotesEvent {}
-

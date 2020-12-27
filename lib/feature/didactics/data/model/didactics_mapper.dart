@@ -2,7 +2,8 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 
 class DidacticsMapper {
-  static db.DidacticsTeacher convertTeacherEntityToInsertable(TeacherRemoteModel teacher) {
+  static db.DidacticsTeacher convertTeacherEntityToInsertable(
+      TeacherRemoteModel teacher) {
     return db.DidacticsTeacher(
       id: teacher.teacherId ?? "",
       name: teacher.teacherName ?? "",

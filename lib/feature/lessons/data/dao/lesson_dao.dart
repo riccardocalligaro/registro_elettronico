@@ -19,7 +19,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   /// It ignores [sostegno]
   Future<List<Lesson>> getLastLessons() {
     return customSelect(
-      'SELECT * FROM lessons WHERE date IN (SELECT max(date) FROM lessons)',
+      "SELECT * FROM lessons WHERE date IN (SELECT max(date) FROM lessons) AND subject_code != 'SOST'",
       readsFrom: {
         lessons,
       },
@@ -46,9 +46,9 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   Future<List<Lesson>> getLessonsByDate(DateTime date) {
     return customSelect("""
         SELECT * FROM lessons 
-        WHERE (CAST(strftime("%Y", date, "unixepoch") AS INTEGER) = ?) 
-        AND ((CAST(strftime("%m", date, "unixepoch") AS INTEGER) = ?) 
-        AND (CAST(strftime("%d", date, "unixepoch") AS INTEGER) = ?)) 
+        WHERE (CAST(strftime('%Y', date, 'unixepoch') AS INTEGER) = ?) 
+        AND (CAST(strftime('%m', date, 'unixepoch') AS INTEGER) = ?) 
+        AND (CAST(strftime('%d', date, 'unixepoch') AS INTEGER) = ?)
         AND subject_code != 'SOST'
         GROUP BY lesson_arg, author ORDER BY position ASC""", readsFrom: {
       lessons
@@ -65,7 +65,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   /// This function is used for generating the timetable
   Future<List<Lesson>> getLessonsBetweenDates(DateTime begin, DateTime end) {
     return customSelect(
-        'SELECT * FROM lessons WHERE date >= ? AND date <= ? AND subject_code NOT IN("SOST", "SUPZ") GROUP BY subject_id,date, position',
+        "SELECT * FROM lessons WHERE date >= ? AND date <= ? AND subject_code NOT IN('SOST', 'SUPZ') GROUP BY subject_id,date, position",
         variables: [
           Variable.withDateTime(begin),
           Variable.withDateTime(end)

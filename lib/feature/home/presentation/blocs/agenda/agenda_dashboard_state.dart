@@ -5,7 +5,6 @@ abstract class AgendaDashboardState {}
 
 class AgendaDashboardInitial extends AgendaDashboardState {}
 
-
 class AgendaDashboardLoadInProgress extends AgendaDashboardState {}
 
 class AgendaDashboardLoadSuccess extends AgendaDashboardState {
@@ -15,4 +14,3 @@ class AgendaDashboardLoadSuccess extends AgendaDashboardState {
 }
 
 class AgendaDashboardLoadError extends AgendaDashboardState {}
-

@@ -4,4 +4,3 @@ part of 'grades_dashboard_bloc.dart';
 abstract class GradesDashboardEvent {}
 
 class GetDashboardGrades extends GradesDashboardEvent {}
-

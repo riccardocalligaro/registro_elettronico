@@ -12,4 +12,3 @@ class ReadNote extends NoteAttachmentsEvent {
     @required this.eventId,
   });
 }
-

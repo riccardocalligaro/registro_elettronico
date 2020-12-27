@@ -14,4 +14,3 @@ class GradesDashboardLoadSuccess extends GradesDashboardState {
 }
 
 class GradesDashboardLoadError extends GradesDashboardState {}
-

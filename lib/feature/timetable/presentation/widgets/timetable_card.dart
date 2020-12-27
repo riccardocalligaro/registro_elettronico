@@ -33,12 +33,15 @@ class TimetableCard extends StatelessWidget {
               width: 80.0,
               height: 100.0,
               child: timetableEntry != null
-                  ? Text(subject != null
-                      ? subject.length > 20
-                          ? StringUtils.titleCase(
-                              GlobalUtils.reduceSubjectTitle(subject))
-                          : StringUtils.titleCase(subject)
-                      : '', style: TextStyle(color: Colors.white),)
+                  ? Text(
+                      subject != null
+                          ? subject.length > 20
+                              ? StringUtils.titleCase(
+                                  GlobalUtils.reduceSubjectTitle(subject))
+                              : StringUtils.titleCase(subject)
+                          : '',
+                      style: TextStyle(color: Colors.white),
+                    )
                   : Icon(Icons.add),
             ),
           ),

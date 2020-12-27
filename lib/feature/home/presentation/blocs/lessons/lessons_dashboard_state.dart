@@ -14,4 +14,3 @@ class LessonsDashboardLoadSuccess extends LessonsDashboardState {
 }
 
 class LessonsDashboardLoadError extends LessonsDashboardState {}
-

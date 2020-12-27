@@ -11,4 +11,3 @@ class DownloadAttachment extends AttachmentDownloadEvent {
     @required this.attachment,
   });
 }
-

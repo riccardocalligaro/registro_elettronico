@@ -4,4 +4,3 @@ part of 'lessons_dashboard_bloc.dart';
 abstract class LessonsDashboardEvent {}
 
 class GetLastLessons extends LessonsDashboardEvent {}
-

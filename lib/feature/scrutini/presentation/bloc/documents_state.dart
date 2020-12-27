@@ -21,7 +21,6 @@ class DocumentsLoadError extends DocumentsState {}
 
 class DocumentsLoadNotConnected extends DocumentsState {}
 
-
 // Api update
 
 class DocumentsUpdateLoadInProgress extends DocumentsState {}

@@ -9,7 +9,6 @@ class AttachmentDownloadLoading extends AttachmentDownloadState {}
 
 class AttachmentDownloadLoadNotConnected extends AttachmentDownloadState {}
 
-
 class AttachmentDownloadLoaded extends AttachmentDownloadState {
   final String path;
   AttachmentDownloadLoaded(this.path);

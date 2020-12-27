@@ -5,7 +5,6 @@ abstract class LessonsState {}
 
 class LessonsInitial extends LessonsState {}
 
-
 class LessonsLoadInProgress extends LessonsState {}
 
 class LessonsLoadErrorNotConnected extends LessonsState {}
@@ -13,7 +12,7 @@ class LessonsLoadErrorNotConnected extends LessonsState {}
 class LessonsLoadSuccess extends LessonsState {
   final List<Lesson> lessons;
 
-   LessonsLoadSuccess({
+  LessonsLoadSuccess({
     @required this.lessons,
   });
 }
@@ -35,4 +34,3 @@ class LessonsLoadError extends LessonsState {
 
   LessonsLoadError({@required this.error});
 }
-

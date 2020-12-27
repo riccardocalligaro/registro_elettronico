@@ -11,7 +11,6 @@ class NoticesAttachmentsLoading extends AttachmentsState {}
 
 class NoticesAttachmentsLoadNotConnected extends AttachmentsState {}
 
-
 class NoticesAttachmentsLoaded extends AttachmentsState {
   final List<Attachment> attachments;
   NoticesAttachmentsLoaded(this.attachments);
