@@ -1,7 +1,7 @@
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 
 import 'constants/registro_constants.dart';
@@ -56,8 +56,10 @@ class GradesUtils {
 
     int countAnnotaions = 0;
     grades.forEach((grade) {
-      if (grade.decimalValue == -1.00 && grade.subjectId == subjectId)
+      if (grade.decimalValue == -1.00 && grade.subjectId == subjectId) {
         countAnnotaions++;
+      }
+
       if (grade.subjectId == subjectId && isValidGrade(grade)) {
         sum += grade.decimalValue;
         count++;
@@ -183,19 +185,6 @@ class GradesUtils {
     int count = 0;
     double sum = 0;
 
-    // average = getAverageWithoutSubjectId(
-    //     grades.where((grade) => grade.subjectId == subject.id).toList());
-    // // Check if it is best average
-    // if (average > bestAverage) {
-    //   bestSubject = subject;
-    //   bestAverageó = average;
-    // }
-    // // Check fo worst subject
-    // if (average < worstAverage) {
-    //   worstSubject = subject;
-    //   worstAverage = average;
-    // }
-
     grades.forEach((grade) {
       // Ignore the grades in blue
       if ((grade.decimalValue != -1.00 && grade.periodPos == period) |
@@ -249,8 +238,9 @@ class GradesUtils {
   /// Taken from registro elettroncio github by Simone Luconi, thanks
   static String getGradeMessage(
       double obj, double average, int numberOfGrades, BuildContext context) {
-    if (average.isNaN)
+    if (average.isNaN) {
       return AppLocalizations.of(context).translate('dont_worry');
+    }
     if (obj > 10 || average > 10) {
       return AppLocalizations.of(context).translate('calculation_error');
     }
@@ -300,9 +290,9 @@ class GradesUtils {
       String returnString;
       final trans = AppLocalizations.of(context);
       if (votiMinimi[0] <= 0) return trans.translate('dont_worry');
-      if (votiMinimi[0] <= obj)
+      if (votiMinimi[0] <= obj) {
         return "${trans.translate('dont_get_less_than')} ${votiMinimi[0].toStringAsFixed(2)}";
-      else {
+      } else {
         returnString = "${trans.translate('get_at_least')} ";
 
         if (votiMinimi.where((voto) => voto != 0.0).length > 3) {

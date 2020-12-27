@@ -15,15 +15,15 @@ class PrefsConstants {
   static const SORTING_ASCENDING = 'sorting_ascending';
   static const FIRST_LOGIN = 'first_login';
   static const DARK_THEME = 'ThemeBloc_DARK_THEME';
-  static const LAST_UPDATE_HOME = 'last_update_home';
-  static const LAST_UPDATE_LESSONS = 'last_update_lessons';
-  static const LAST_UPDATE_GRADES = 'last_update_grades';
-  static const LAST_UPDATE_AGENDA = 'last_update_agenda';
-  static const LAST_UPDATE_SCHOOL_MATERIAL = 'last_update_school_material';
-  static const LAST_UPDATE_ABSENCES = 'last_update_absences';
-  static const LAST_UPDATE_NOTES = 'last_update_notes';
-  static const LAST_UPDATE_NOTICEBOARD = 'last_update_noticeboard';
-  static const LAST_UPDATE_SCRUTINI = 'last_update_scrutini';
+  static const lastUpdateHome = 'lastUpdateHome';
+  static const lastUpdateLessons = 'lastUpdateLessons';
+  static const lastUpdateGrades = 'lastUpdateGrades';
+  static const lastUpdateAgenda = 'lastUpdateAgenda';
+  static const lastUpdateSchoolMaterial = 'lastUpdateSchoolMaterial';
+  static const lastUpdateAbsences = 'lastUpdateAbsences';
+  static const lastUpdateNotes = 'lastUpdateNotes';
+  static const lastUpdateNoticeboard = 'lastUpdateNoticeboard';
+  static const lastUpdateScrutini = 'lastUpdateScrutini';
   static const DIRECTORY_NAME = 'FLogs';
   static const SHOW_OUTDATED_NOTICES = 'show_outdated_notices';
   static const UPDATE_ONLY_WIFI = 'update_only_wifi';
@@ -40,4 +40,8 @@ class PrefsConstants {
   static const TERZA_SUPERIORE = 3;
   static const QUARTA_SUPERIORE = 4;
   static const QUINTA_SUPERIORE = 5;
+
+  static const lastUpdateVitalData = 'lastUpdateVitalData';
+  static const lastUpdateAllData = 'lastUpdateAllData';
+  static const lastUpdate = 'lastUpdate';
 }

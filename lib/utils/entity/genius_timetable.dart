@@ -1,4 +1,4 @@
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/moor.dart';
 
 class GeniusTimetable {
   String dayOfWeek;
@@ -8,14 +8,8 @@ class GeniusTimetable {
   int end;
   String subjectName;
 
-  GeniusTimetable(
-    this.dayOfWeek,
-    this.teacher,
-    this.subject,
-    this.end,
-    this.start,
-    this.subjectName
-  );
+  GeniusTimetable(this.dayOfWeek, this.teacher, this.subject, this.end,
+      this.start, this.subjectName);
 
   factory GeniusTimetable.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
@@ -30,7 +24,8 @@ class GeniusTimetable {
       intType.mapFromDatabaseResponse(data['${effectivePrefix}subject']),
       intType.mapFromDatabaseResponse(data['${effectivePrefix}start']),
       intType.mapFromDatabaseResponse(data['${effectivePrefix}end']),
-      stringType.mapFromDatabaseResponse(data['${effectivePrefix}subject_name']),
+      stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}subject_name']),
     );
   }
 

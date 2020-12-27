@@ -3,10 +3,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:injector/injector.dart';
-import 'package:registro_elettronico/data/db/dao/period_dao.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -23,7 +23,6 @@ class GlobalUtils {
   // }
   static Profile getMockProfile() {
     return Profile(
-      id: -1,
       ident: '32',
       firstName: 'x',
       lastName: '',
@@ -128,13 +127,14 @@ class GlobalUtils {
   }
 
   static Future<Period> getPeriodFromDate(DateTime date) async {
-    final PeriodDao periodDao = PeriodDao(Injector.appInstance.getDependency());
+    final PeriodDao periodDao = PeriodDao(sl());
     final periods = await periodDao.getAllPeriods();
     for (var i = 0; i < periods.length; i++) {
-      if (periods[i].start.isBefore(date) && periods[i].end.isAfter(date))
+      if (periods[i].start.isBefore(date) && periods[i].end.isAfter(date)) {
         return periods[i];
+      }
     }
-    if (periods.length > 0) {
+    if (periods.isNotEmpty) {
       int closestIndex = 0;
       int minDays = 366;
       for (var i = 0; i < periods.length; i++) {
@@ -203,8 +203,9 @@ class GlobalUtils {
     }
     if (stringToCompare.contains(RegExp(r'(BIOLOGIA)'))) {
       return SubjectsConstants.BIOLOGIA;
-    } else
+    } else {
       return -1;
+    }
   }
 
   static String translateSubject(int subjectId) {
@@ -475,20 +476,21 @@ class GlobalUtils {
 
   static String getPeriodName(int index, BuildContext context) {
     final trans = AppLocalizations.of(context);
-    if (index == TabsConstants.GENERALE)
+    if (index == TabsConstants.GENERALE) {
       return trans.translate('general');
-    else
+    } else {
       return '$index ${AppLocalizations.of(context).translate('term')}';
+    }
   }
 
   static int getRandomNumber() {
-    Random random = new Random();
+    Random random = Random();
     int randomNumber = random.nextInt(999999);
     return randomNumber;
   }
 
   static int getSmallRandomNumber() {
-    Random random = new Random();
+    Random random = Random();
     int randomNumber = random.nextInt(10000);
     return randomNumber;
   }
@@ -590,7 +592,7 @@ class GlobalUtils {
     ];
 
     if (index == null) {
-      Random random = new Random();
+      Random random = Random();
       int randomNumber = random.nextInt(names.length - 1);
 
       return names[randomNumber];
@@ -607,7 +609,7 @@ class GlobalUtils {
     final code = absence.evtCode;
     if (code == RegistroConstants.ASSENZA &&
         absence.isJustified == true &&
-        absence.justifReasonDesc.length > 0) {
+        absence.justifReasonDesc.isNotEmpty) {
       return absence.justifReasonDesc;
     } else if (code == RegistroConstants.ASSENZA) {
       return AppLocalizations.of(context).translate('absent_all_day');
@@ -656,12 +658,4 @@ class GlobalUtils {
     return DateUtils.convertDateLocale(
         absence.evtDate, AppLocalizations.of(context).locale.toString());
   }
-
-  // static void initialFetch(BuildContext context) {
-  //   BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
-  //   BlocProvider.of<AgendaBloc>(context).add(FetchAgenda());
-  //   BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
-  //   BlocProvider.of<GradesBloc>(context).add(FetchGrades());
-  //   BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
-  // }
 }

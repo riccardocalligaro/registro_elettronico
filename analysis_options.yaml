@@ -1,4 +1,15 @@
+include: package:pedantic/analysis_options.1.8.0.yaml
+
 analyzer:
-  errors:
-    # treat missing required parameters as a warning (not a hint)
-    missing_required_param: warning
+  exclude:
+    - [build/**]
+    - lib/src/locations.g.dart
+
+linter:
+  rules:
+    - always_declare_return_types
+    - camel_case_types
+    - annotate_overrides
+    - avoid_init_to_null
+    - slash_for_doc_comments
+    - unnecessary_brace_in_string_interps

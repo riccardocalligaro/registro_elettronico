@@ -1,110 +1,68 @@
 name: registro_elettronico
-description: >-
-  A beautiful and simple school register app for Spaggiari.
-  Made by students.
+description: Better and faster of the original.
 
-version: 1.0.1-alpha
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+version: 0.0.1-dev+1
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  # Dependency Injection
-  injector: ^1.0.8
-  # Object comparison
-  equatable: ^1.1.1
-  # BloC
-  flutter_bloc: ^4.0.0
-  # Database
-  moor_flutter: ^2.1.1
-  # Api
-  dio: ^3.0.10
-  retrofit: ^1.3.4
-  auto_size_text: ^2.1.0
-  # firebase_messaging: ^6.0.9
-
-  # Use svg icons in home
-  flutter_svg: ^0.18.1
-  # Launcher icon
-  flutter_launcher_icons:
-
-  # for percentage
-  percent_indicator: ^2.1.5
-  # for files
-  path_provider: ^1.6.14
-  #open downloaded file
-  open_file: ^3.0.1
-  # notifications
-  workmanager: ^0.2.3
-
-  # expandable school material
-  expandable: ^4.1.4
-  # open urls for school material
-  url_launcher: ^5.5.0
-  # pick a grade
-  numberpicker:
-
-  # download indicator
-  liquid_progress_indicator: ^0.3.2
-  tuple: ^1.0.3
-  # advanced logging
-  f_logs: ^1.2.2
-  # email
-  flutter_email_sender: ^3.0.1
-  #flutter_mailer: ^0.4.2
-  dartz: ^0.9.1
-  flutter_webview_plugin: ^0.3.11
-  #webview_flutter: ^0.3.19+4
-  pull_to_refresh: ^1.5.8
-  # check if user is conntected
-  data_connection_checker: ^0.3.4
-  liquid_swipe: ^1.5.0
-  rxdart: ^0.24.0
-  # chart in stats page
-  flutter_circular_chart: ^0.1.0
-  package_info: ^0.4.3
-  screenshot: ^0.1.1
-  # share screenshot
-  esys_flutter_share:
-  # unicorndial: ^1.1.5
-  flutter_colorpicker:
-  # date time picker
-  # datetime_picker_formfield: ^1.0.0
-  flutter_local_notifications: ^1.4.4+4
-
-  # firebase
-  firebase_core: ^0.5.0
-  firebase_analytics: ^6.0.0
-  firebase_crashlytics: ^0.1.4+1
-
-  # Storing user password
-  shared_preferences: ^0.5.7
-  flutter_secure_storage: ^3.3.3
-  # random string for flutter secure storage key generator
-  random_string:
-  # for date time
-  intl: ^0.16.1
-  # calendar in agenda page
-  table_calendar: ^2.2.3
-
-  fl_chart: ^0.7.0
-
   flutter_localizations:
     sdk: flutter
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons:
+  auto_size_text: ^2.1.0
+  cupertino_icons: null
+  dartz: ^0.9.2
+  data_connection_checker: ^0.3.4
+  dio: ^3.0.10
+  esys_flutter_share: ^1.0.2
+  expandable: ^4.1.4
+  f_logs: ^1.2.2
+  firebase_analytics: ^6.3.0
+  firebase_core: ^0.5.3
+  firebase_crashlytics: ^0.2.4
+  fl_chart: ^0.12.2
+  flutter_bloc: ^6.1.1
+  flutter_circular_chart: ^0.1.0
+  flutter_colorpicker: ^0.3.4
+  flutter_email_sender: ^4.0.0
+  flutter_launcher_icons: ^0.8.1
+  flutter_local_notifications: ^3.0.2
+  flutter_secure_storage: ^3.3.5
+  flutter_svg: null
+  flutter_webview_plugin: ^0.3.11
+  get_it: ^5.0.3
+  injector: ^1.0.9
+  intl: ^0.16.1
+  liquid_progress_indicator: ^0.3.2
+  liquid_swipe: ^1.5.0
+  moor:
+  sqlite3_flutter_libs:
+  numberpicker: ^1.3.0
+  open_file: ^3.0.3
+  package_info: ^0.4.3+2
+  path_provider: ^1.6.24
+  percent_indicator: ^2.1.9
+  pull_to_refresh: ^1.6.3
+  random_string: ^2.1.0
+  retrofit: ^1.3.4+1
+  rxdart: ^0.25.0
+  screenshot: ^0.2.0
+  shared_preferences: ^0.5.12+4
+  table_calendar: ^2.3.3
+  tuple: ^1.0.3
+  url_launcher: ^5.7.10
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner:
+  json_serializable: ^3.5.1
   moor_generator:
-  json_serializable: ^3.2.3
-  retrofit_generator:
+  retrofit_generator: null
 
 flutter_icons:
   android: true

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
 import 'package:tuple/tuple.dart';
 
@@ -89,15 +89,6 @@ class DateUtils {
     } else {
       return formatter.format(date);
     }
-
-    // if (diff.inHours < 23) {
-    //   return AppLocalizations.of(context).translate('today');
-    // } else if (diff.inHours == 23 || diff.inHours == 24) {
-    //   return 'dOmani';
-    //   return AppLocalizations.of(context).translate('tomorrow');
-    // } else {
-    //   return formatter.format(date);
-    // }
   }
 
   static String getBeforeNotifyTimeMessage(Duration d, BuildContext context) {
