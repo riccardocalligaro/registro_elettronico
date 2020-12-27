@@ -7,7 +7,7 @@ import 'package:injector/injector.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
-import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
+import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';

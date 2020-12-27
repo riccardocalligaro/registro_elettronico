@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
+part of 'didactics_attachments_bloc.dart';
 
-abstract class DidacticsAttachmentsState {
-  const DidacticsAttachmentsState();
-}
+@immutable
+abstract class DidacticsAttachmentsState {}
 
 class DidacticsAttachmentsInitial extends DidacticsAttachmentsState {}
 

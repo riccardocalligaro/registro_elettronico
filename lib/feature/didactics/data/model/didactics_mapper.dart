@@ -1,8 +1,8 @@
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
-import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 
 class DidacticsMapper {
-  static db.DidacticsTeacher convertTeacherEntityToInsertable(Teacher teacher) {
+  static db.DidacticsTeacher convertTeacherEntityToInsertable(TeacherRemoteModel teacher) {
     return db.DidacticsTeacher(
       id: teacher.teacherId ?? "",
       name: teacher.teacherName ?? "",
@@ -12,7 +12,7 @@ class DidacticsMapper {
   }
 
   static db.DidacticsFolder convertFolderEntityToInsertable(
-      Folder folder, String teacherId) {
+      FolderRemoteModel folder, String teacherId) {
     return db.DidacticsFolder(
       teacherId: teacherId ?? "",
       name: folder.folderName ?? "",
@@ -22,7 +22,7 @@ class DidacticsMapper {
   }
 
   static db.DidacticsContent convertContentEntityToInsertable(
-      Content content, int folderId) {
+      ContentRemoteModel content, int folderId) {
     return db.DidacticsContent(
       folderId: folderId,
       name: content.contentName,

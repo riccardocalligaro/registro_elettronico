@@ -4,7 +4,7 @@ import 'package:registro_elettronico/component/api_config.dart';
 import 'package:registro_elettronico/domain/entity/api_requests/login_request.dart';
 import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/agenda_remote_model.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/documents_response.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grades_response.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_remote_model.dart';

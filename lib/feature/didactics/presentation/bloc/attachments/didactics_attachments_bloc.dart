@@ -4,27 +4,30 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
-import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
+import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
 
-import './bloc.dart';
+part 'didactics_attachments_event.dart';
+
+part 'didactics_attachments_state.dart';
 
 class DidacticsAttachmentsBloc
     extends Bloc<DidacticsAttachmentsEvent, DidacticsAttachmentsState> {
-  DidacticsRepository didacticsRepository;
+  final DidacticsRepository didacticsRepository;
 
-  DidacticsAttachmentsBloc(this.didacticsRepository);
+  DidacticsAttachmentsBloc({
+    @required this.didacticsRepository,
+  }) : super(DidacticsAttachmentsInitial());
 
   Future<DownloadAttachmentTextResponse> getTextAttachment(int fileId) =>
       didacticsRepository.getTextAtachment(fileId);
+
   Future<DownloadAttachmentURLResponse> getUrlAttachment(int fileId) =>
       didacticsRepository.getURLAtachment(fileId);
-
-  @override
-  DidacticsAttachmentsState get initialState => DidacticsAttachmentsInitial();
 
   @override
   Stream<DidacticsAttachmentsState> mapEventToState(

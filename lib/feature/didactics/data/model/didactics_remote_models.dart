@@ -1,13 +1,13 @@
 class DidacticsResponse {
-  List<Teacher> teachers;
+  List<TeacherRemoteModel> teachers;
 
   DidacticsResponse({this.teachers});
 
   DidacticsResponse.fromJson(Map<String, dynamic> json) {
     if (json['didacticts'] != null) {
-      teachers = new List<Teacher>();
+      teachers = new List<TeacherRemoteModel>();
       json['didacticts'].forEach((v) {
-        teachers.add(new Teacher.fromJson(v));
+        teachers.add(new TeacherRemoteModel.fromJson(v));
       });
     }
   }
@@ -21,29 +21,29 @@ class DidacticsResponse {
   }
 }
 
-class Teacher {
+class TeacherRemoteModel {
   String teacherId;
   String teacherName;
   String teacherFirstName;
   String teacherLastName;
-  List<Folder> folders;
+  List<FolderRemoteModel> folders;
 
-  Teacher(
+  TeacherRemoteModel(
       {this.teacherId,
       this.teacherName,
       this.teacherFirstName,
       this.teacherLastName,
       this.folders});
 
-  Teacher.fromJson(Map<String, dynamic> json) {
+  TeacherRemoteModel.fromJson(Map<String, dynamic> json) {
     teacherId = json['teacherId'];
     teacherName = json['teacherName'];
     teacherFirstName = json['teacherFirstName'];
     teacherLastName = json['teacherLastName'];
     if (json['folders'] != null) {
-      folders = new List<Folder>();
+      folders = new List<FolderRemoteModel>();
       json['folders'].forEach((v) {
-        folders.add(new Folder.fromJson(v));
+        folders.add(new FolderRemoteModel.fromJson(v));
       });
     }
   }
@@ -61,22 +61,22 @@ class Teacher {
   }
 }
 
-class Folder {
+class FolderRemoteModel {
   int folderId;
   String folderName;
   String lastShareDT;
-  List<Content> contents;
+  List<ContentRemoteModel> contents;
 
-  Folder({this.folderId, this.folderName, this.lastShareDT, this.contents});
+  FolderRemoteModel({this.folderId, this.folderName, this.lastShareDT, this.contents});
 
-  Folder.fromJson(Map<String, dynamic> json) {
+  FolderRemoteModel.fromJson(Map<String, dynamic> json) {
     folderId = json['folderId'];
     folderName = json['folderName'];
     lastShareDT = json['lastShareDT'];
     if (json['contents'] != null) {
-      contents = new List<Content>();
+      contents = new List<ContentRemoteModel>();
       json['contents'].forEach((v) {
-        contents.add(new Content.fromJson(v));
+        contents.add(new ContentRemoteModel.fromJson(v));
       });
     }
   }
@@ -93,21 +93,21 @@ class Folder {
   }
 }
 
-class Content {
+class ContentRemoteModel {
   int contentId;
   String contentName;
   int objectId;
   String objectType;
   String shareDT;
 
-  Content(
+  ContentRemoteModel(
       {this.contentId,
       this.contentName,
       this.objectId,
       this.objectType,
       this.shareDT});
 
-  Content.fromJson(Map<String, dynamic> json) {
+  ContentRemoteModel.fromJson(Map<String, dynamic> json) {
     contentId = json['contentId'];
     contentName = json['contentName'];
     objectId = json['objectId'];

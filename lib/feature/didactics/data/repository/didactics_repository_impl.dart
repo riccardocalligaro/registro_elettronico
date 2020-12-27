@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
-import 'package:injector/injector.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
@@ -8,9 +8,9 @@ import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
-import 'package:registro_elettronico/data/repository/mapper/didactics_mapper.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
-import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/didactics_mapper.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
+import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
 
 class DidacticsRepositoryImpl implements DidacticsRepository {
   SpaggiariClient spaggiariClient;
@@ -131,8 +131,9 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
     FLog.info(text: 'Getting attachment file for $fileId!');
 
     String baseUrl = 'https://web.spaggiari.eu/rest/v1';
-    final _dio = DioClient(Injector.appInstance.getDependency(),
-        Injector.appInstance.getDependency());
+
+    // TODO: better di
+    final _dio = DioClient(sl(), sl());
     ArgumentError.checkNotNull(studentId, 'studentId');
     ArgumentError.checkNotNull(fileId, 'fileId');
     const _extra = <String, dynamic>{};

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 
 abstract class DidacticsRepository {
   // Updates didactics from spaggiari

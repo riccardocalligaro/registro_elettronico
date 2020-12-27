@@ -1,9 +1,9 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/data/db/table/didactics/content_table.dart';
-import 'package:registro_elettronico/data/db/table/didactics/downloaded_files.dart';
-import 'package:registro_elettronico/data/db/table/didactics/folder_table.dart';
-import 'package:registro_elettronico/data/db/table/didactics/teacher_table.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/local/content_local_model.dart';
+import 'package:registro_elettronico/data/db/table/didactics/downloaded_file_local_model.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/local/folder_local_model.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/local/teacher_local_model.dart';
 
 part 'didactics_dao.g.dart';
 

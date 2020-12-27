@@ -1,21 +1,26 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:injector/injector.dart';
+import 'package:meta/meta.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
-import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import './bloc.dart';
+
+part 'didactics_event.dart';
+
+part 'didactics_state.dart';
 
 class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
-  DidacticsRepository didacticsRepository;
+  final DidacticsRepository didacticsRepository;
 
-  DidacticsBloc(this.didacticsRepository);
-
-  @override
-  DidacticsState get initialState => DidacticsInitial();
+  DidacticsBloc({
+    @required this.didacticsRepository,
+  }) : super(DidacticsInitial());
 
   @override
   Stream<DidacticsState> mapEventToState(
@@ -47,7 +52,7 @@ class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
       try {
         await didacticsRepository.updateDidactics();
 
-        SharedPreferences prefs = Injector.appInstance.getDependency();
+        SharedPreferences prefs = sl();
 
         prefs.setInt(PrefsConstants.LAST_UPDATE_SCHOOL_MATERIAL,
             DateTime.now().millisecondsSinceEpoch);
