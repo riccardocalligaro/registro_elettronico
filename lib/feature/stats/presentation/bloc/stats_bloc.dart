@@ -1,16 +1,21 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/f_logs.dart';
-import 'package:registro_elettronico/domain/repository/stats_repository.dart';
-import './bloc.dart';
+import 'package:f_logs/model/flog/flog.dart';
+import 'package:meta/meta.dart';
+import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
+import 'package:registro_elettronico/feature/stats/domain/repository/stats_repository.dart';
+
+part 'stats_event.dart';
+
+part 'stats_state.dart';
 
 class StatsBloc extends Bloc<StatsEvent, StatsState> {
-  StatsRepository statsRepository;
+  final StatsRepository statsRepository;
 
-  StatsBloc(this.statsRepository);
-
-  @override
-  StatsState get initialState => StatsInitial();
+  StatsBloc({
+    @required this.statsRepository,
+  }) : super(StatsInitial());
 
   @override
   Stream<StatsState> mapEventToState(

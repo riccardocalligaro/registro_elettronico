@@ -5,15 +5,13 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injector/injector.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/domain/entity/student_report.dart';
-import 'package:registro_elettronico/ui/bloc/stats/bloc.dart';
-import 'package:registro_elettronico/ui/feature/grades/components/grades_chart.dart';
-import 'package:registro_elettronico/ui/feature/stats/charts/grades_bar_chart.dart';
-import 'package:registro_elettronico/ui/feature/stats/charts/grades_pie_chart.dart';
+import 'package:registro_elettronico/feature/grades/presentation/widgets/grades_chart.dart';
+import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
+
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
@@ -21,6 +19,10 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'bloc/stats_bloc.dart';
+import 'charts/grades_bar_chart.dart';
+import 'charts/grades_pie_chart.dart';
 
 class StatsPage extends StatefulWidget {
   StatsPage({Key key}) : super(key: key);
@@ -32,6 +34,7 @@ class StatsPage extends StatefulWidget {
 class _StatsPageState extends State<StatsPage> {
   ScreenshotController screenshotController = ScreenshotController();
   int objective;
+
   @override
   void initState() {
     super.initState();
@@ -40,7 +43,7 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   void restore() async {
-    SharedPreferences _prefs = Injector.appInstance.getDependency();
+    SharedPreferences _prefs = sl();
     objective = _prefs.getInt(PrefsConstants.OVERALL_OBJECTIVE);
   }
 
@@ -437,24 +440,24 @@ class _StatsPageState extends State<StatsPage> {
     );
   }
 
-  // Widget _buildFourthRowCard({
-  //   @required StudentReport report,
-  // }) {
-  //   final insufficientiTotal = report.insufficientiSubjectsCount +
-  //       report.nearlySufficientiSubjectsCount;
-  //   return Card(
-  //     child: Padding(
-  //       padding: const EdgeInsets.all(16.0),
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: <Widget>[
-  //           Text('Media eventi per giorno'),
-  //           // WeekEventsChart(
-  //           //   events: report.agendaEvents,
-  //           // )
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+// Widget _buildFourthRowCard({
+//   @required StudentReport report,
+// }) {
+//   final insufficientiTotal = report.insufficientiSubjectsCount +
+//       report.nearlySufficientiSubjectsCount;
+//   return Card(
+//     child: Padding(
+//       padding: const EdgeInsets.all(16.0),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: <Widget>[
+//           Text('Media eventi per giorno'),
+//           // WeekEventsChart(
+//           //   events: report.agendaEvents,
+//           // )
+//         ],
+//       ),
+//     ),
+//   );
+// }
 }

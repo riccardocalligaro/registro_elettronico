@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
@@ -10,8 +10,8 @@ import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/domain/entity/student_report.dart';
-import 'package:registro_elettronico/domain/repository/stats_repository.dart';
+import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
+import 'package:registro_elettronico/feature/stats/domain/repository/stats_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -48,7 +48,8 @@ class StatsRepositoryImpl implements StatsRepository {
       final notes = await noteDao.getAllNotes();
       final events = await agendaDao.getAllEvents();
 
-      SharedPreferences prefs = Injector.appInstance.getDependency();
+      // TODO: better di
+      SharedPreferences prefs = sl();
 
       final year = prefs.getInt(PrefsConstants.STUDENT_YEAR) ?? 3;
 

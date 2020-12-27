@@ -1,6 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/ui/feature/stats/components/indicator.dart';
+import 'package:registro_elettronico/feature/stats/presentation/widgets/indicator.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 class GradesPieChart extends StatefulWidget {

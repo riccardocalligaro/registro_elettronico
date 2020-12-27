@@ -1,5 +1,4 @@
-import 'package:meta/meta.dart';
-import 'package:registro_elettronico/domain/entity/student_report.dart';
+part of 'stats_bloc.dart';
 
 @immutable
 abstract class StatsState {}

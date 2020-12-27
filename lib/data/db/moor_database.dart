@@ -22,7 +22,7 @@ import 'package:registro_elettronico/feature/didactics/data/model/local/teacher_
 import 'package:registro_elettronico/data/db/table/document_table.dart';
 import 'package:registro_elettronico/feature/grades/data/model/grade_local_model.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_local_model.dart';
-import 'package:registro_elettronico/data/db/table/local_grade_table.dart';
+import 'package:registro_elettronico/feature/grades/data/model/local_grade_local_model.dart';
 import 'package:registro_elettronico/feature/notes/data/model/note_local_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/notice_local_model.dart';
 import 'package:registro_elettronico/data/db/table/period_table.dart';

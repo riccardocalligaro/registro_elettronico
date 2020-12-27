@@ -130,11 +130,14 @@ class GradesBarChartState extends State<GradesBarChart> {
         show: true,
         bottomTitles: SideTitles(
           showTitles: true,
-          textStyle: TextStyle(
+          getTextStyles: (_) {
+            return TextStyle(
               fontSize: 14,
               color: Theme.of(context).brightness == Brightness.dark
                   ? Colors.white
-                  : Colors.black),
+                  : Colors.black,
+            );
+          },
           margin: 14,
           getTitles: (double value) {
             if (value == 0) return '<3';
@@ -144,7 +147,7 @@ class GradesBarChartState extends State<GradesBarChart> {
         leftTitles: SideTitles(
             margin: 16.0,
             showTitles: true,
-            textStyle: TextStyle(
+            getTextStyles: (_) => TextStyle(
                 color: Theme.of(context).brightness == Brightness.dark
                     ? Colors.white
                     : Colors.black),
@@ -182,7 +185,8 @@ class GradesBarChartState extends State<GradesBarChart> {
       barRods: [
         BarChartRodData(
           y: y,
-          color: GlobalUtils.getColorFromAverage(x + 3.toDouble()),
+          // TODO: better look at this
+          colors: [GlobalUtils.getColorFromAverage(x + 3.toDouble())],
           width: 22,
           backDrawRodData: BackgroundBarChartRodData(
             show: false,
@@ -219,7 +223,7 @@ class GradesBarChartState extends State<GradesBarChart> {
           show: true,
           bottomTitles: SideTitles(
             showTitles: true,
-            textStyle: TextStyle(
+            getTextStyles: (_) => TextStyle(
                 fontSize: 14,
                 color: Theme.of(context).brightness == Brightness.dark
                     ? Colors.white
@@ -233,7 +237,7 @@ class GradesBarChartState extends State<GradesBarChart> {
           leftTitles: SideTitles(
             margin: 8.0,
             showTitles: true,
-            textStyle: TextStyle(
+            getTextStyles: (_) => TextStyle(
                 color: Theme.of(context).brightness == Brightness.dark
                     ? Colors.white
                     : Colors.black),
