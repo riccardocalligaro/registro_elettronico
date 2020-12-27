@@ -1,5 +1,4 @@
-import 'package:meta/meta.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+part of 'documents_bloc.dart';
 
 @immutable
 abstract class DocumentsState {}

@@ -1,4 +1,4 @@
-import 'package:meta/meta.dart';
+part of 'document_attachment_bloc.dart';
 
 @immutable
 abstract class DocumentAttachmentState {}

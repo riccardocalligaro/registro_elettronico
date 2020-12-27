@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/ui/feature/settings/components/header_text.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../header_text.dart';
 
 class AboutDevelopersPage extends StatelessWidget {
   const AboutDevelopersPage({Key key}) : super(key: key);

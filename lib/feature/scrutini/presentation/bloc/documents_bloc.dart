@@ -1,21 +1,26 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/f_logs.dart';
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:injector/injector.dart';
+import 'package:meta/meta.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import './bloc.dart';
+
+part 'documents_event.dart';
+
+part 'documents_state.dart';
 
 class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
-  DocumentsRepository documentsRepository;
+  final DocumentsRepository documentsRepository;
 
-  DocumentsBloc(this.documentsRepository);
-
-  @override
-  DocumentsState get initialState => DocumentsInitial();
+  DocumentsBloc({
+    @required this.documentsRepository,
+  }) : super(DocumentsInitial());
 
   @override
   Stream<DocumentsState> mapEventToState(
@@ -36,8 +41,7 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
       FLog.info(text: 'Got documents and school reports');
       FLog.info(text: 'BloC -> Got ${data.value1.length} school reports');
       FLog.info(text: 'BloC -> Got ${data.value2.length} documents');
-      SharedPreferences sharedPreferences =
-          Injector.appInstance.getDependency();
+      SharedPreferences sharedPreferences = sl();
       await sharedPreferences.setInt(
         PrefsConstants.LAST_UPDATE_SCRUTINI,
         DateTime.now().millisecondsSinceEpoch,

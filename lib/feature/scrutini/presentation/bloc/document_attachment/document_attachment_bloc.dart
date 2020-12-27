@@ -2,19 +2,22 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
+import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/documents_repository.dart';
 
-import './bloc.dart';
+part 'document_attachment_event.dart';
+
+part 'document_attachment_state.dart';
 
 class DocumentAttachmentBloc
     extends Bloc<DocumentAttachmentEvent, DocumentAttachmentState> {
-  DocumentsRepository documentsRepository;
+  final DocumentsRepository documentsRepository;
 
-  DocumentAttachmentBloc(this.documentsRepository);
-
-  @override
-  DocumentAttachmentState get initialState => DocumentAttachmentInitial();
+  DocumentAttachmentBloc({
+    @required this.documentsRepository,
+  }) : super(DocumentAttachmentInitial());
 
   @override
   Stream<DocumentAttachmentState> mapEventToState(

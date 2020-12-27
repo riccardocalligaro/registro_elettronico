@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:registro_elettronico/ui/feature/settings/components/general/general_sorting_settings_dialog.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../header_text.dart';
 import 'general_objective_settings_dialog.dart';
+import 'general_sorting_settings_dialog.dart';
 
 class GeneralSettings extends StatefulWidget {
   GeneralSettings({
@@ -20,6 +20,7 @@ class GeneralSettings extends StatefulWidget {
 
 class _GeneralSettingsState extends State<GeneralSettings> {
   int _sliderValue = 6;
+
   //int _periodAveragesHomeScreen;
   bool _ascending = false;
   bool _updateAtStart = false;
@@ -32,7 +33,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
   }
 
   restore() async {
-    SharedPreferences sharedPrefs = Injector.appInstance.getDependency();
+    SharedPreferences sharedPrefs = sl();
     setState(() {
       _sliderValue = sharedPrefs.getInt(PrefsConstants.OVERALL_OBJECTIVE) ?? 6;
 
@@ -70,8 +71,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
               ),
             ).then((value) async {
               if (value != null) {
-                SharedPreferences preferences =
-                    Injector.appInstance.getDependency();
+                SharedPreferences preferences = sl();
                 setState(() {
                   _sliderValue = value;
                   preferences.setInt(PrefsConstants.OVERALL_OBJECTIVE, value);
@@ -131,8 +131,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
                 });
               }
 
-              SharedPreferences sharedPreferences =
-                  Injector.appInstance.getDependency();
+              SharedPreferences sharedPreferences = sl();
               sharedPreferences.setBool(
                   PrefsConstants.SORTING_ASCENDING, value);
             });
@@ -148,14 +147,15 @@ class _GeneralSettingsState extends State<GeneralSettings> {
                 _updateAtStart = value;
               });
 
-              SharedPreferences prefs = Injector.appInstance.getDependency();
+              SharedPreferences prefs = sl();
               prefs.setBool(PrefsConstants.UPDATE_AT_START, value);
             },
           ),
         ),
         ListTile(
           title: Text(AppLocalizations.of(context).translate('class_title')),
-          subtitle: Text(AppLocalizations.of(context).translate('class_subtitle')),
+          subtitle:
+              Text(AppLocalizations.of(context).translate('class_subtitle')),
           onTap: () {
             showDialog(
               context: context,
@@ -164,8 +164,8 @@ class _GeneralSettingsState extends State<GeneralSettings> {
                   initialIntegerValue: _class,
                   minValue: 1,
                   maxValue: 5,
-                  title:
-                      Text(AppLocalizations.of(context).translate('class_title')),
+                  title: Text(
+                      AppLocalizations.of(context).translate('class_title')),
                   cancelWidget: Text(AppLocalizations.of(context)
                       .translate('cancel')
                       .toUpperCase()),
@@ -177,7 +177,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
                   _class = value;
                 });
 
-                SharedPreferences prefs = Injector.appInstance.getDependency();
+                SharedPreferences prefs = sl();
                 prefs.setInt(PrefsConstants.STUDENT_YEAR, value);
               }
             });

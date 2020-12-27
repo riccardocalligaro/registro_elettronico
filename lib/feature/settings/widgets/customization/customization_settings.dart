@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/ui/feature/settings/components/customization/customization_theme_dialog.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 
 import '../header_text.dart';
+import 'customization_theme_dialog.dart';
 
 class CustomizationSettings extends StatefulWidget {
   CustomizationSettings({Key key}) : super(key: key);

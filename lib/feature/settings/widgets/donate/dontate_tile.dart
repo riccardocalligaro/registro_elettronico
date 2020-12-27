@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/ui/feature/settings/components/donate/donate_dialog.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
+
+import 'donate_dialog.dart';
 
 class DonateTile extends StatelessWidget {
   const DonateTile({Key key}) : super(key: key);
