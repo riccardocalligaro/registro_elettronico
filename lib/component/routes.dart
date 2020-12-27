@@ -4,7 +4,7 @@ import 'package:registro_elettronico/feature/grades/presentation/grades_page.dar
 import 'package:registro_elettronico/feature/home/presentation/home_page.dart';
 import 'package:registro_elettronico/ui/feature/intro/intro_slideshow_page.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/lessons_page.dart';
-import 'package:registro_elettronico/ui/feature/login/login_page.dart';
+import 'package:registro_elettronico/feature/login/presentation/login_page.dart';
 import 'package:registro_elettronico/feature/notes/presentation/notes_page.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/noticeboard_page.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/didactics_page.dart';

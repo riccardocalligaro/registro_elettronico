@@ -1,14 +1,10 @@
-import 'package:equatable/equatable.dart';
-import 'package:registro_elettronico/data/network/exception/server_exception.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/parent_response.dart';
-import 'package:registro_elettronico/domain/entity/entities.dart';
+part of 'auth_bloc.dart';
 
-abstract class AuthState extends Equatable {
-  const AuthState();
+@immutable
+abstract class AuthState {}
 
-  @override
-  List<Object> get props => [];
-}
+class AuthInitial extends AuthState {}
+
 
 class Init extends AuthState {}
 

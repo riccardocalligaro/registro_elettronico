@@ -4,7 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:injector/injector.dart';
+import 'package:meta/meta.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
@@ -16,19 +17,22 @@ import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import './bloc.dart';
+part 'auth_event.dart';
+
+part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  LoginRepository loginRepository;
-  ProfileRepository profileRepository;
-  FlutterSecureStorage flutterSecureStorage;
+  final ProfileRepository profileRepository;
+  final LoginRepository loginRepository;
+  final FlutterSecureStorage flutterSecureStorage;
 
-  AuthBloc(
-      this.loginRepository, this.profileRepository, this.flutterSecureStorage);
+  AuthBloc({
+    @required this.profileRepository,
+    @required this.loginRepository,
+    @required this.flutterSecureStorage,
+  }) : super(AuthInitial());
 
   Future<Profile> get profile => profileRepository.getDbProfile();
-  @override
-  AuthState get initialState => Init();
 
   @override
   Stream<AuthState> mapEventToState(
@@ -41,7 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final isUserLoggedIn = await profileRepository.isLoggedIn();
       FLog.info(text: 'Auto sign in result: $isUserLoggedIn');
       if (isUserLoggedIn) {
-        SharedPreferences prefs = Injector.appInstance.getDependency();
+        SharedPreferences prefs = sl();
         final vitalDataDownloaded =
             prefs.getBool(PrefsConstants.VITAL_DATA_DOWNLOADED) ?? false;
         if (!vitalDataDownloaded) {
@@ -105,8 +109,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is SignOut) {
       await flutterSecureStorage.deleteAll();
       AppDatabase().resetDb();
-      SharedPreferences sharedPreferences =
-          Injector.appInstance.getDependency();
+      SharedPreferences sharedPreferences = sl();
       sharedPreferences.clear();
       yield SignOutSuccess();
     }

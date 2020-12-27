@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/auth/bloc.dart';
+import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
 
 enum LoadingState { initial, loading, loaded, error, success }
 

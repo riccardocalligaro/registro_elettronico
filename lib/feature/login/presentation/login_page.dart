@@ -2,13 +2,13 @@ import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/component/navigator.dart';
-import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/auth/auth_event.dart';
-import 'package:registro_elettronico/ui/bloc/auth/auth_state.dart';
+
 import 'package:registro_elettronico/ui/feature/widgets/gradient_red_button.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'bloc/auth_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -402,102 +402,102 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Widget _buildLoginForm(BuildContext context) {
-  //   return BlocListener<AuthBloc, AuthState>(
-  //     listener: (context, state) {
-  //       if (state is SignInSuccess) {
-  //         AppNavigator.instance.navToIntro(context);
+// Widget _buildLoginForm(BuildContext context) {
+//   return BlocListener<AuthBloc, AuthState>(
+//     listener: (context, state) {
+//       if (state is SignInSuccess) {
+//         AppNavigator.instance.navToIntro(context);
 
-  //         /// If the sign in is successful then navigate to the home page
-  //         //AppNavigator.instance.navToHome(context);
-  //       }
+//         /// If the sign in is successful then navigate to the home page
+//         //AppNavigator.instance.navToHome(context);
+//       }
 
-  //       /// Sets the valide data to true
-  //       if (state is SignInNetworkError) {
-  //         setState(() {
-  //           _valide = true;
-  //           if (state.error.messageCode ==
-  //               RegistroConstants.USERNAME_PASSWORD_NOT_MATCHING) {
-  //             _errorMessage = AppLocalizations.of(context)
-  //                 .translate('username_password_doesent_match');
-  //           } else {
-  //             _errorMessage = state.error.message;
-  //           }
-  //         });
-  //       }
+//       /// Sets the valide data to true
+//       if (state is SignInNetworkError) {
+//         setState(() {
+//           _valide = true;
+//           if (state.error.messageCode ==
+//               RegistroConstants.USERNAME_PASSWORD_NOT_MATCHING) {
+//             _errorMessage = AppLocalizations.of(context)
+//                 .translate('username_password_doesent_match');
+//           } else {
+//             _errorMessage = state.error.message;
+//           }
+//         });
+//       }
 
-  //       if (state is SignInError) {
-  //         Scaffold.of(context).showSnackBar(SnackBar(
-  //           content: Text(
-  //               "🤔 ${AppLocalizations.of(context).translate('unexcepted_error')}"),
-  //         ));
-  //       }
+//       if (state is SignInError) {
+//         Scaffold.of(context).showSnackBar(SnackBar(
+//           content: Text(
+//               "🤔 ${AppLocalizations.of(context).translate('unexcepted_error')}"),
+//         ));
+//       }
 
-  //       if (state is SignInLoading) {
-  //         Scaffold.of(context).showSnackBar(
-  //           SnackBar(
-  //             content:
-  //                 Text(AppLocalizations.of(context).translate('loading_login')),
-  //             duration: Duration(milliseconds: 2000),
-  //           ),
-  //         );
-  //       }
-  //     },
-  //     child: Padding(
-  //       padding: const EdgeInsets.only(top: TOP_FIELDS_PADDING),
-  //       child: Container(
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: <Widget>[
-  //             TextFormField(
-  //               controller: _usernameController,
-  //               decoration: InputDecoration(
-  //                 hintText: AppLocalizations.of(context)
-  //                     .translate('username_form_login_placeholder'),
-  //                 errorText: _valide ? _errorMessage : null,
-  //                 contentPadding: EdgeInsetsGeometry.lerp(
-  //                   const EdgeInsetsDirectional.only(end: 6.0),
-  //                   EdgeInsets.symmetric(vertical: 5),
-  //                   2.0,
-  //                 ),
-  //               ),
-  //             ),
-  //             SizedBox(
-  //               height: 20.0,
-  //             ),
-  //             TextFormField(
-  //               controller: _passwordController,
-  //               obscureText: true,
-  //               decoration: InputDecoration(
-  //                 hintText: 'Password',
-  //                 errorText: _valide ? _errorMessage : null,
-  //                 contentPadding: EdgeInsetsGeometry.lerp(
-  //                   const EdgeInsetsDirectional.only(end: 6.0),
-  //                   EdgeInsets.symmetric(vertical: 5),
-  //                   2.0,
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+//       if (state is SignInLoading) {
+//         Scaffold.of(context).showSnackBar(
+//           SnackBar(
+//             content:
+//                 Text(AppLocalizations.of(context).translate('loading_login')),
+//             duration: Duration(milliseconds: 2000),
+//           ),
+//         );
+//       }
+//     },
+//     child: Padding(
+//       padding: const EdgeInsets.only(top: TOP_FIELDS_PADDING),
+//       child: Container(
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: <Widget>[
+//             TextFormField(
+//               controller: _usernameController,
+//               decoration: InputDecoration(
+//                 hintText: AppLocalizations.of(context)
+//                     .translate('username_form_login_placeholder'),
+//                 errorText: _valide ? _errorMessage : null,
+//                 contentPadding: EdgeInsetsGeometry.lerp(
+//                   const EdgeInsetsDirectional.only(end: 6.0),
+//                   EdgeInsets.symmetric(vertical: 5),
+//                   2.0,
+//                 ),
+//               ),
+//             ),
+//             SizedBox(
+//               height: 20.0,
+//             ),
+//             TextFormField(
+//               controller: _passwordController,
+//               obscureText: true,
+//               decoration: InputDecoration(
+//                 hintText: 'Password',
+//                 errorText: _valide ? _errorMessage : null,
+//                 contentPadding: EdgeInsetsGeometry.lerp(
+//                   const EdgeInsetsDirectional.only(end: 6.0),
+//                   EdgeInsets.symmetric(vertical: 5),
+//                   2.0,
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     ),
+//   );
+// }
 
-  // _signIn(BuildContext context) {
-  //   final username = _usernameController.text;
-  //   final password = _passwordController.text;
+// _signIn(BuildContext context) {
+//   final username = _usernameController.text;
+//   final password = _passwordController.text;
 
-  //   if (username != '' && password != '') {
-  //     BlocProvider.of<AuthBloc>(context).add(SignIn(
-  //         username: _usernameController.text,
-  //         password: _passwordController.text));
-  //   } else {
-  //     setState(() {
-  //       _valide = true;
-  //       _errorMessage = 'Devi compilare tutti i campi';
-  //     });
-  //   }
-  // }
+//   if (username != '' && password != '') {
+//     BlocProvider.of<AuthBloc>(context).add(SignIn(
+//         username: _usernameController.text,
+//         password: _passwordController.text));
+//   } else {
+//     setState(() {
+//       _valide = true;
+//       _errorMessage = 'Devi compilare tutti i campi';
+//     });
+//   }
+// }
 }
