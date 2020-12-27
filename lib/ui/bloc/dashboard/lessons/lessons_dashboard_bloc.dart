@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
+import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import './bloc.dart';
 
 class LessonsDashboardBloc

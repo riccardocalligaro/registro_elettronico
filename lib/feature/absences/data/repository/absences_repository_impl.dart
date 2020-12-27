@@ -1,7 +1,7 @@
 import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
-import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
+import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';

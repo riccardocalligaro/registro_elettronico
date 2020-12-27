@@ -2,27 +2,26 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:f_logs/f_logs.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:injector/injector.dart';
+import 'package:meta/meta.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
-import 'package:registro_elettronico/domain/repository/lessons_repository.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import './bloc.dart';
+part 'lessons_event.dart';
 
-/// Bloc for updating all the [lessons]
+part 'lessons_state.dart';
+
 class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
-  LessonsRepository lessonsRepository;
+  final LessonsRepository lessonsRepository;
 
-  LessonsBloc(
-    this.lessonsRepository,
-  );
-
-  @override
-  LessonsState get initialState => LessonsIntial();
+  LessonsBloc({
+    @required this.lessonsRepository,
+  }) : super(LessonsInitial());
 
   @override
   Stream<LessonsState> mapEventToState(
@@ -96,10 +95,9 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
   }
 
   Stream<LessonsState> _mapUpdateAllLessonsToState() async* {
-    // yield LessonsUpdateLoadInProgress();
     try {
       await lessonsRepository.updateAllLessons();
-      SharedPreferences prefs = Injector.appInstance.getDependency();
+      SharedPreferences prefs = sl();
       prefs.setInt(PrefsConstants.LAST_UPDATE_LESSONS,
           DateTime.now().millisecondsSinceEpoch);
       yield LessonsUpdateLoadSuccess();
@@ -121,7 +119,6 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
   }
 
   Stream<LessonsState> _mapTodayLessonsToState() async* {
-    // yield LessonsUpdateLoadInProgress();
     try {
       await lessonsRepository.upadateTodayLessons();
       yield LessonsUpdateLoadSuccess();

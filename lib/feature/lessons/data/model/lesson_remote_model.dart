@@ -1,13 +1,13 @@
 class LessonsResponse {
-  List<Lessons> lessons;
+  List<LessonRemoteModel> lessons;
 
   LessonsResponse({this.lessons});
 
   LessonsResponse.fromJson(Map<String, dynamic> json) {
     if (json['lessons'] != null) {
-      lessons = new List<Lessons>();
+      lessons = new List<LessonRemoteModel>();
       json['lessons'].forEach((v) {
-        lessons.add(new Lessons.fromJson(v));
+        lessons.add(new LessonRemoteModel.fromJson(v));
       });
     }
   }
@@ -21,7 +21,7 @@ class LessonsResponse {
   }
 }
 
-class Lessons {
+class LessonRemoteModel {
   int evtId;
   String evtDate;
   String evtCode;
@@ -35,7 +35,7 @@ class Lessons {
   String lessonType;
   String lessonArg;
 
-  Lessons(
+  LessonRemoteModel(
       {this.evtId,
       this.evtDate,
       this.evtCode,
@@ -49,7 +49,7 @@ class Lessons {
       this.lessonType,
       this.lessonArg});
 
-  Lessons.fromJson(Map<String, dynamic> json) {
+  LessonRemoteModel.fromJson(Map<String, dynamic> json) {
     evtId = json['evtId'];
     evtDate = json['evtDate'];
     evtCode = json['evtCode'];

@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injector/injector.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/lessons/lessons_event.dart';
-import 'package:registro_elettronico/ui/bloc/lessons/lessons_state.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'bloc/lessons_bloc.dart';
 
 class LessonDetails extends StatefulWidget {
   final int subjectId;
@@ -66,7 +65,7 @@ class _LessonDetailsState extends State<LessonDetails> {
   }
 
   void restore() async {
-    SharedPreferences prefs = Injector.appInstance.getDependency();
+    SharedPreferences prefs = sl();
     setState(() {
       _lastUpdate = prefs.getInt(PrefsConstants.LAST_UPDATE_LESSONS);
     });

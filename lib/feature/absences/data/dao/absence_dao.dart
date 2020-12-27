@@ -14,9 +14,13 @@ class AbsenceDao extends DatabaseAccessor<AppDatabase> with _$AbsenceDaoMixin {
   Future<List<Absence>> getAllAbsences() => select(absences).get();
 
   Future insertEvent(Absence absence) =>
-      into(absences).insert(absence, orReplace: true);
-  Future insertEvents(List<Absence> absencesList) =>
-      into(absences).insertAll(absencesList, orReplace: true);
+      into(absences).insertOnConflictUpdate(absence);
+
+  Future<void> insertEvents(List<Absence> absencesList) async {
+    await batch((batch) {
+      batch.insertAllOnConflictUpdate(absences, absencesList);
+    });
+  }
 
   Future deleteAllAbsences() => delete(absences).go();
 

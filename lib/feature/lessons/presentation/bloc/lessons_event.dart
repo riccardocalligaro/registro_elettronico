@@ -1,12 +1,7 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+part of 'lessons_bloc.dart';
 
-abstract class LessonsEvent extends Equatable {
-  const LessonsEvent();
-
-  @override
-  List<Object> get props => [];
-}
+@immutable
+abstract class LessonsEvent {}
 
 class UpdateTodayLessons extends LessonsEvent {}
 
@@ -19,13 +14,14 @@ class GetLastLessons extends LessonsEvent {}
 class GetLessonsForSubject extends LessonsEvent {
   final int subjectId;
 
-  const GetLessonsForSubject({@required this.subjectId});
+  GetLessonsForSubject({@required this.subjectId});
 }
 
 /// Gets the lessons for a [date]
 class GetLessonsByDate extends LessonsEvent {
   final DateTime dateTime;
-  const GetLessonsByDate({@required this.dateTime});
+
+  GetLessonsByDate({@required this.dateTime});
 }
 
 /// Gets [all] the lessons

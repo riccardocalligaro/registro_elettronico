@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/component/notifications/local_notification.dart';
 import 'package:registro_elettronico/component/notifications/notification_message.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
-import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
+import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
 import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
 import 'package:registro_elettronico/data/db/dao/document_dao.dart';

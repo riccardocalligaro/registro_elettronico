@@ -3,7 +3,7 @@ import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
-import 'package:registro_elettronico/data/db/dao/absence_dao.dart';
+import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
 import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
 import 'package:registro_elettronico/data/db/dao/note_dao.dart';

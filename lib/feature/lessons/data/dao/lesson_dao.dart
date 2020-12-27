@@ -1,6 +1,6 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/data/db/table/lesson_table.dart';
+import 'package:registro_elettronico/feature/lessons/data/model/lesson_local_model.dart';
 import 'package:registro_elettronico/data/db/table/professor_table.dart';
 import 'package:registro_elettronico/utils/entity/genius_timetable.dart';
 
@@ -18,7 +18,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   /// Gets the [last] lessons of the [last day] where there are lessons
   /// It ignores [sostegno]
   Future<List<Lesson>> getLastLessons() {
-    return customSelectQuery(
+    return customSelect(
       'SELECT * FROM lessons WHERE date IN (SELECT max(date) FROM lessons) AND subject_code != "SOST"',
       readsFrom: {
         lessons,
@@ -29,7 +29,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   }
 
   Future<List<Lesson>> getLessonsForSubjectId(int subjectId) {
-    return customSelectQuery(
+    return customSelect(
       'SELECT * FROM lessons WHERE subject_id = ? GROUP BY lesson_arg ORDER BY date DESC',
       readsFrom: {
         lessons,
@@ -44,7 +44,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
 
   /// Gets lessons of a [date] by checking the day, month and year
   Future<List<Lesson>> getLessonsByDate(DateTime date) {
-    return customSelectQuery("""
+    return customSelect("""
         SELECT * FROM lessons 
         WHERE (CAST(strftime("%Y", date, "unixepoch") AS INTEGER) = ?) 
         AND ((CAST(strftime("%m", date, "unixepoch") AS INTEGER) = ?) 
@@ -77,18 +77,22 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
 
   /// Inserts a [single] lesson
   Future insertLesson(Insertable<Lesson> lesson) =>
-      into(lessons).insert(lesson, orReplace: true);
+      into(lessons).insertOnConflictUpdate(lesson);
 
   /// Inserts a [list] of lessons
-  Future insertLessons(List<Insertable<Lesson>> lessonsToInsert) =>
-      into(lessons).insertAll(lessonsToInsert, orReplace: true);
+  Future<void> insertLessons(List<Insertable<Lesson>> lessonsToInsert) async {
+    await batch((batch) {
+      batch.insertAllOnConflictUpdate(lessons, lessonsToInsert);
+    });
+  }
+
 
   /// Deletes [all] lessons
   Future deleteLessons() => delete(lessons).go();
 
   // Thanks to Registro elettronico android by simone luconi
   Future<List<GeniusTimetable>> getGeniusTimetable() {
-    return customSelectQuery(""" SELECT `dayOfWeek`,`teacher`,`subject`, `subject_name`,`start`,`end` FROM
+    return customSelect(""" SELECT `dayOfWeek`,`teacher`,`subject`, `subject_name`,`start`,`end` FROM
       (select strftime('%w', date, 'unixepoch') as `dayOfWeek`,
       `subject_id` as `subject`,
       `subject_description` as `subject_name`,

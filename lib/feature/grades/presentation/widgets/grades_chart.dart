@@ -160,7 +160,6 @@ class _GradesChartState extends State<GradesChart> {
 
       // The vertical line for the minimum mark (6.0)
       extraLinesData: ExtraLinesData(
-        showVerticalLines: true,
         verticalLines: [
           VerticalLine(
             y: cutOffYValue,

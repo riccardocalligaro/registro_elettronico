@@ -7,7 +7,7 @@ import 'package:registro_elettronico/domain/entity/api_responses/agenda_remote_m
 import 'package:registro_elettronico/domain/entity/api_responses/didactics_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/documents_response.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grades_response.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/lessons_response.dart';
+import 'package:registro_elettronico/feature/lessons/data/model/lesson_remote_model.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/login_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/notes_read_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/notes_response.dart';
