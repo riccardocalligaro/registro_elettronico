@@ -1,4 +1,4 @@
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 abstract class AbsencesRepository {
   /// This fetches to the api of spaggiari and updates all the absences

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
-import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
+import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_request_model.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';

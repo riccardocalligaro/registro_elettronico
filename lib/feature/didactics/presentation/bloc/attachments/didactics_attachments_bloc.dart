@@ -7,7 +7,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
 

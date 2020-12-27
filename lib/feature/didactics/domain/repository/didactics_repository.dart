@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 
 abstract class DidacticsRepository {

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:registro_elettronico/feature/notes/data/model/note_mapper.dart';
-import 'package:registro_elettronico/feature/notes/data/model/note_remote_model.dart';
+import 'package:registro_elettronico/feature/notes/data/model/remote/note_remote_model.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 
 void main() {

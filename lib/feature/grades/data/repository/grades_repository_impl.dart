@@ -2,10 +2,10 @@ import 'package:f_logs/model/flog/flog.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
-import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
-import 'package:registro_elettronico/data/repository/mapper/grade_mapper.dart';
+import 'package:registro_elettronico/feature/grades/data/model/grade_mapper.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 
 class GradesRepositoryImpl implements GradesRepository {

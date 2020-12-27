@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/component/navigator.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view_no_persistency.dart';
 import 'package:registro_elettronico/ui/bloc/token/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';

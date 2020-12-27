@@ -2,11 +2,11 @@ import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
-import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/feature/notes/data/model/note_mapper.dart';
-import 'package:registro_elettronico/feature/notes/data/model/notes_read_remote_model.dart';
+import 'package:registro_elettronico/feature/notes/data/model/remote/notes_read_remote_model.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 
 class NotesRepositoryImpl implements NotesRepository {

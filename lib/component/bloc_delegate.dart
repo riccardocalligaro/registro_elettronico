@@ -1,43 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injector/injector.dart';
-import 'package:registro_elettronico/data/repository/preferences_repository_impl.dart';
-import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
+import 'package:registro_elettronico/core/data/repository/preferences_repository_impl.dart';
+import 'package:registro_elettronico/feature/profile/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/feature/scrutini/data/repository/scrutini_repository_impl.dart';
 import 'package:registro_elettronico/feature/timetable/data/repository/timetable_repository_impl.dart';
-import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
-import 'package:registro_elettronico/domain/repository/preferences_repository.dart';
-import 'package:registro_elettronico/domain/repository/profile_repository.dart';
-import 'package:registro_elettronico/domain/repository/repositories_export.dart';
+import 'package:registro_elettronico/core/domain/repository/preferences_repository.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
-import 'package:registro_elettronico/ui/bloc/absences/absences_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/agenda/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/dashboard/agenda/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/dashboard/grades/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/dashboard/lessons/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/didactics/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/didactics/didactics_attachments/didactics_attachments_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/documents/document_attachment/bloc/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/documents/documents_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/grades/grades_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/grades/subject_grades/subjects_grades_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/intro/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/lessons/lessons_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/local_grades/local_grades_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/notes/note_attachments/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/notes/notes_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/notices/attachment_download/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/notices/attachments/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/notices/notices_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/periods/periods_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/professors/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/stats/stats_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/subjects/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/timetable/timetable_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/token/token_bloc.dart';
 
 class AppBlocDelegate {
   static AppBlocDelegate _instance;
@@ -46,12 +18,11 @@ class AppBlocDelegate {
   List<RepositoryProvider> _repositoryProviders;
 
   AppBlocDelegate._(BuildContext context) {
-    Injector i = Injector.appInstance;
     _repositoryProviders = [
       RepositoryProvider<ProfileRepository>(
         create: (ctx) => ProfileRepositoryImpl(
-          i.getDependency(),
-          i.getDependency(),
+          sl(),
+          sl(),
         ),
       ),
       RepositoryProvider<ScrutiniRepository>(

@@ -1,6 +1,6 @@
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/feature/notes/data/model/note_local_model.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/feature/notes/data/model/local/note_local_model.dart';
 
 part 'note_dao.g.dart';
 

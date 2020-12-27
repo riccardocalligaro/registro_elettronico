@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 /// A student report that contains useful information that is displayed
 /// in the [report] section

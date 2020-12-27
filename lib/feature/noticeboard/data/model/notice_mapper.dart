@@ -1,4 +1,4 @@
-import 'package:registro_elettronico/data/db/moor_database.dart' as db;
+import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
 import 'package:registro_elettronico/feature/noticeboard/data/model/notice_remote_model.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';

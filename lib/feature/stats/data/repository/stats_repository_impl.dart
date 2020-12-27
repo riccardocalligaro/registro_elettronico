@@ -9,7 +9,7 @@ import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
 import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
 import 'package:registro_elettronico/feature/stats/domain/repository/stats_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';

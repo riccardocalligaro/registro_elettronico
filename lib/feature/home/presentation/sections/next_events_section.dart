@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart' as db;
+import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
 import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/blocs/agenda/agenda_dashboard_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/pages/next_events_page.dart';

@@ -1,10 +1,10 @@
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
-import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
-import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
+import 'package:registro_elettronico/feature/professors/data/dao/professor_dao.dart';
+import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/feature/subjects/data/model/subject_mapper.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';

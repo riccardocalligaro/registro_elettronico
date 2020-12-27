@@ -1,4 +1,4 @@
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 abstract class TimetableRepository {
   /// Checks the lessons and [updates] the timetable

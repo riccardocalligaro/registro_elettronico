@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 abstract class NoticesRepository {
   /// Updates all the notices in the database

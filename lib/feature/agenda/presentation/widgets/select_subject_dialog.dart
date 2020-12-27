@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/subjects/presentation/bloc/subjects_bloc.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 

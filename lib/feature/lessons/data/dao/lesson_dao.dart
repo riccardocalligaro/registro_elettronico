@@ -1,7 +1,7 @@
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_local_model.dart';
-import 'package:registro_elettronico/data/db/table/professor_table.dart';
+import 'package:registro_elettronico/feature/professors/data/model/professor_table.dart';
 import 'package:registro_elettronico/utils/entity/genius_timetable.dart';
 
 part 'lesson_dao.g.dart';

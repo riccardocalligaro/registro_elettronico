@@ -3,32 +3,44 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:registro_elettronico/core/data/remote/api/dio_client.dart';
+import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
+import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client.dart';
+import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client_impl.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
-import 'package:registro_elettronico/data/db/dao/didactics_dao.dart';
-import 'package:registro_elettronico/data/db/dao/document_dao.dart';
+import 'package:registro_elettronico/feature/agenda/data/repository/agenda_repository_impl.dart';
+import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
+import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
+import 'package:registro_elettronico/feature/grades/data/repository/grades_repository_impl.dart';
+import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
+import 'package:registro_elettronico/feature/lessons/data/repository/lessons_repository_impl.dart';
+import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
+import 'package:registro_elettronico/feature/login/data/repository/login_repository_impl.dart';
+import 'package:registro_elettronico/feature/login/domain/repository/login_repository.dart';
+import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
+import 'package:registro_elettronico/feature/profile/data/repository/profile_repository_impl.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
 import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
 import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/dao/notice_dao.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
-import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
-import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
+import 'package:registro_elettronico/feature/professors/data/dao/professor_dao.dart';
+import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
+import 'package:registro_elettronico/feature/subjects/data/repository/subjects_respository_impl.dart';
+import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/feature/timetable/data/dao/timetable_dao.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
-import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
-import 'package:registro_elettronico/data/network/service/web/web_spaggiari_client.dart';
-import 'package:registro_elettronico/data/network/service/web/web_spaggiari_client_impl.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/absences/data/repository/absences_repository_impl.dart';
 import 'package:registro_elettronico/feature/didactics/data/repository/didactics_repository_impl.dart';
 import 'package:registro_elettronico/feature/scrutini/data/repository/documents_repository_impl.dart';
 import 'package:registro_elettronico/feature/notes/data/repository/notes_repository_impl.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/repository/notices_repository_impl.dart';
 import 'package:registro_elettronico/feature/periods/data/repository/periods_repository_impl.dart';
-import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
 import 'package:registro_elettronico/feature/scrutini/data/repository/scrutini_repository_impl.dart';
 import 'package:registro_elettronico/feature/stats/data/repository/stats_repository_impl.dart';
 import 'package:registro_elettronico/feature/timetable/data/repository/timetable_repository_impl.dart';
@@ -38,11 +50,9 @@ import 'package:registro_elettronico/feature/scrutini/domain/repository/document
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
-import 'package:registro_elettronico/domain/repository/repositories_export.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
 import 'package:registro_elettronico/feature/stats/domain/repository/stats_repository.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
-import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
@@ -151,7 +161,13 @@ class AppInjector {
   }
 
   static void injectBloc() {
-    sl.registerLazySingleton<AuthBloc>(() => AuthBloc(sl(), sl(), sl()));
+    sl.registerLazySingleton<AuthBloc>(
+      () => AuthBloc(
+        profileRepository: sl(),
+        loginRepository: sl(),
+        flutterSecureStorage: sl(),
+      ),
+    );
   }
 
   static void injectSharedPreferences() async {

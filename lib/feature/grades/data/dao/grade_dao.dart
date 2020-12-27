@@ -1,5 +1,5 @@
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/grades/data/model/grade_local_model.dart';
 import 'package:registro_elettronico/feature/grades/data/model/local_grade_local_model.dart';
 

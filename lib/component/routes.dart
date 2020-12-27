@@ -1,8 +1,7 @@
 import 'package:registro_elettronico/feature/absences/presentation/absences_page.dart';
-import 'package:registro_elettronico/ui/feature/agenda/agenda_page.dart';
+import 'package:registro_elettronico/feature/agenda/presentation/agenda_page.dart';
 import 'package:registro_elettronico/feature/grades/presentation/grades_page.dart';
 import 'package:registro_elettronico/feature/home/presentation/home_page.dart';
-import 'package:registro_elettronico/ui/feature/intro/intro_slideshow_page.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/lessons_page.dart';
 import 'package:registro_elettronico/feature/login/presentation/login_page.dart';
 import 'package:registro_elettronico/feature/notes/presentation/notes_page.dart';
@@ -34,13 +33,11 @@ class Routes {
 
   static var routes = {
     MAIN: (ctx) => SplashScreen(),
-    INTRO: (ctx) => IntroSlideshowPage(),
     LOGIN: (ctx) => LoginPage(),
     HOME: (ctx) => HomePage(),
     LESSONS: (ctx) => LessonsPage(),
     GRADES: (ctx) => GradesPage(),
     AGENDA: (ctx) => AgendaPage(),
-    //NEXT_TESTS: (ctx) => NextTestsPage(),
     ABSENCES: (ctx) => AbsencesPage(),
     NOTES: (ctx) => NotesPage(),
     SCHOOL_MATERIAL: (ctx) => SchoolMaterialPage(),
