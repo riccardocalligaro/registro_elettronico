@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 
 enum Status { loading, success, failed }
 

@@ -78,7 +78,6 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  // TODO: check what events 2 means
   void _onDaySelected(DateTime day, List events, List events2) {
     _selectedDay = day;
 

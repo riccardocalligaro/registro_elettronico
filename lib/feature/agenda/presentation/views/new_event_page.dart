@@ -5,6 +5,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/model/event_type.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/notification/local_notification.dart';
 import 'package:registro_elettronico/core/presentation/widgets/app_drawer.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/widgets/select_date_dialog.dart';
@@ -167,18 +168,16 @@ class _NewEventPageState extends State<NewEventPage> {
     if (_notifyEvent) {
       FLog.info(text: 'Setting up notifications');
 
-      // TODO: set up local notifications
+      final LocalNotification localNotification =
+          LocalNotification(onSelectNotification);
 
-      // final LocalNotification localNotification =
-      //     LocalNotification(onSelectNotification);
-
-      // localNotification.scheduleNotification(
-      //   title: AppLocalizations.of(context).translate('new_event') ?? '',
-      //   message: _titleController.text ?? '',
-      //   scheduledTime: _date.subtract(_beforeNotify) ??
-      //       DateTime.now().add(Duration(hours: 1)),
-      //   eventId: id,
-      // );
+      await localNotification.scheduleNotification(
+        title: AppLocalizations.of(context).translate('new_event') ?? '',
+        message: _titleController.text ?? '',
+        scheduledTime: _date.subtract(_beforeNotify) ??
+            DateTime.now().add(Duration(hours: 1)),
+        eventId: id,
+      );
     }
   }
 
