@@ -19,7 +19,7 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
   /// It ignores [sostegno]
   Future<List<Lesson>> getLastLessons() {
     return customSelect(
-      'SELECT * FROM lessons WHERE date IN (SELECT max(date) FROM lessons) AND subject_code != "SOST"',
+      'SELECT * FROM lessons WHERE date IN (SELECT max(date) FROM lessons)',
       readsFrom: {
         lessons,
       },

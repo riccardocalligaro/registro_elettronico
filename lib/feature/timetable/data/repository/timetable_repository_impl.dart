@@ -43,12 +43,13 @@ class TimetableRepositoryImpl implements TimetableRepository {
 
     return genius.forEach((t) {
       timetableDao.insertTimetableEntry(TimetableEntry(
-          start: t.start,
-          end: t.end,
-          dayOfWeek: int.parse(t.dayOfWeek),
-          id: null,
-          subject: t.subject,
-          subjectName: t.subjectName));
+        start: t.start,
+        end: t.end,
+        dayOfWeek: int.parse(t.dayOfWeek),
+        id: null,
+        subject: t.subject,
+        subjectName: t.subjectName,
+      ));
     });
   }
 

@@ -45,7 +45,7 @@ class SrApp extends StatelessWidget {
           supportedLocales: initData.supportedLocales,
           localizationsDelegates: initData.localizationsDelegates,
           localeResolutionCallback: initData.localeResolutionCallback,
-          showPerformanceOverlay: true,
+          // showPerformanceOverlay: true,
           debugShowCheckedModeBanner: false,
           routes: Routes.routes,
           onUnknownRoute: (settings) {

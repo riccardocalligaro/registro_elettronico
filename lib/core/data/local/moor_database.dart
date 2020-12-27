@@ -41,8 +41,8 @@ part 'moor_database.g.dart';
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'registro_elettronico.sqlite'));
-    return VmDatabase(file);
+    final file = File(p.join(dbFolder.path, 'registro.sqlite'));
+    return VmDatabase(file, logStatements: true);
   });
 }
 
