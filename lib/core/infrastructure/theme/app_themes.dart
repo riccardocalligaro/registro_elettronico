@@ -1,14 +1,14 @@
-import 'theme_data/dark_theme.dart' as darkTheme;
-import 'theme_data/light_theme.dart' as lightTheme;
+import 'theme_data/dark_theme.dart' as dark_theme;
+import 'theme_data/light_theme.dart' as light_theme;
 
-enum AppTheme { Dark, Light }
+enum AppTheme { dark, light }
 
 final materialThemeData = {
-  AppTheme.Dark: darkTheme.material,
-  AppTheme.Light: lightTheme.material,
+  AppTheme.dark: dark_theme.material,
+  AppTheme.light: light_theme.material,
 };
 
 final cupertinoThemeData = {
-  AppTheme.Dark: darkTheme.cupertino,
-  AppTheme.Light: lightTheme.cupertino,
+  AppTheme.dark: dark_theme.cupertino,
+  AppTheme.light: light_theme.cupertino,
 };

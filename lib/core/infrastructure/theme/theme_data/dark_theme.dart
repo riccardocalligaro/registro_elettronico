@@ -15,8 +15,8 @@ final material = ThemeData(
   ),
   primaryTextTheme: TextTheme(
     headline6: TextStyle(color: Colors.white),
-    headline5: HeadingSmall.copyWith(color: Colors.white),
-    bodyText2: BodyStyle1.copyWith(color: Colors.white),
+    headline5: heaingSmall.copyWith(color: Colors.white),
+    bodyText2: bodyStyle1.copyWith(color: Colors.white),
   ),
   cardTheme: CardTheme(color: Colors.grey[900]),
 );

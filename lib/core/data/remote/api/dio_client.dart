@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/core/data/remote/api/api_config.dart';
 import 'package:registro_elettronico/core/infrastructure/exception/server_exception.dart';
@@ -61,7 +58,7 @@ class DioClient {
           final loginResponse = LoginResponse.fromJson(res.data);
 
           // finally we update the db with the new token
-          profileRepository.updateProfile(
+          await profileRepository.updateProfile(
               ProfileMapper.mapLoginResponseProfileToProfileEntity(
             loginResponse,
           ));
@@ -96,12 +93,6 @@ class DioClient {
         text:
             'DioEND -> Error -> url:[${error.request.baseUrl}] type:${error.type} message: ${error.message}',
       );
-
-      if (error != SocketException) {
-        FirebaseCrashlytics.instance.recordError(error, StackTrace.current);
-      }
-
-      // handlError(error);
     }));
     return dio;
   }

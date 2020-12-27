@@ -13,7 +13,7 @@
 //   appBarTheme: AppBarTheme(color: Colors.black),
 // );
 
-// final mainTextTheme = TextTheme(headline: HeadingSmall, body1: BodyStyle1);
+// final mainTextTheme = TextTheme(headline: heaingSmall, body1: bodyStyle1);
 
 // final defaultTheme = ThemeData(
 //   brightness: Brightness.dark,

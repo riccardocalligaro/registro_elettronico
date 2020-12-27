@@ -18,8 +18,8 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   ThemeBloc()
       : super(ThemeState(
-          materialThemeData: materialThemeData[AppTheme.Dark],
-          cupertinoThemeData: cupertinoThemeData[AppTheme.Dark],
+          materialThemeData: materialThemeData[AppTheme.dark],
+          cupertinoThemeData: cupertinoThemeData[AppTheme.dark],
         )) {
     _loadSettings();
   }
@@ -36,7 +36,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     ThemeEvent event,
   ) async* {
     if (event is ThemeChanged) {
-      bool darkTheme = event.theme == AppTheme.Dark;
+      bool darkTheme = event.theme == AppTheme.dark;
 
       if (darkTheme) {
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -72,14 +72,14 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     }
   }
 
-  _loadSettings() async {
+  Future<bool> _loadSettings() async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
     bool _darkTheme = prefs.getBool(PrefsConstants.DARK_THEME) ?? true;
-    add(ThemeChanged(theme: _darkTheme ? AppTheme.Dark : AppTheme.Light));
+    add(ThemeChanged(theme: _darkTheme ? AppTheme.dark : AppTheme.light));
     return _darkTheme;
   }
 
-  _saveSettings(bool darkTheme) async {
+  Future<void> _saveSettings(bool darkTheme) async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
     await prefs.setBool(PrefsConstants.DARK_THEME, darkTheme);
   }

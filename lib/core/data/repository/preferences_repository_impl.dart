@@ -7,12 +7,12 @@ class PreferencesRepositoryImpl implements PreferencesRepository {
   PreferencesRepositoryImpl(this.sharedPreferences);
 
   @override
-  setBool(String key, bool value) {
+  Future<bool> setBool(String key, bool value) {
     return sharedPreferences.setBool(key, value);
   }
 
   @override
-  setInt(String key, int value) {
+  Future<bool> setInt(String key, int value) {
     return sharedPreferences.setInt(key, value);
   }
 

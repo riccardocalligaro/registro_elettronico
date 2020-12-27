@@ -26,7 +26,7 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer>
     with AutomaticKeepAliveClientMixin {
-  List<bool> selectedList = new List<bool>.filled(14, false);
+  List<bool> selectedList = List<bool>.filled(14, false);
   bool _showUserDetails = false;
 
   @override

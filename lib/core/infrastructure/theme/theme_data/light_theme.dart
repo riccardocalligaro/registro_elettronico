@@ -17,8 +17,8 @@ final material = ThemeData(
     headline6: TextStyle(
       color: Colors.grey[900],
     ),
-    headline5: HeadingSmall.copyWith(color: Colors.grey[900]),
-    bodyText2: BodyStyle1.copyWith(color: Colors.grey[900]),
+    headline5: heaingSmall.copyWith(color: Colors.grey[900]),
+    bodyText2: bodyStyle1.copyWith(color: Colors.grey[900]),
   ),
 );
 

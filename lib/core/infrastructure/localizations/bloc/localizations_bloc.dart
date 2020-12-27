@@ -10,7 +10,7 @@ import 'bloc.dart';
 class LocalizationsBloc extends Bloc<LocalizationsEvent, LocalizationsState> {
   static LocalizationsBloc _instance;
 
-  static const String LOCALE = "LocalizationsBloc_LOCALE";
+  static const String localeKey = "LocalizationsBloc_LOCALE";
 
   SharedPreferences prefs;
 
@@ -26,11 +26,6 @@ class LocalizationsBloc extends Bloc<LocalizationsEvent, LocalizationsState> {
   }
 
   @override
-  LocalizationsState get initialState {
-    return LocalizationsState(locale: ui.window.locale);
-  }
-
-  @override
   Stream<LocalizationsState> mapEventToState(
     LocalizationsEvent event,
   ) async* {
@@ -40,9 +35,9 @@ class LocalizationsBloc extends Bloc<LocalizationsEvent, LocalizationsState> {
     }
   }
 
-  _loadSettings() async {
+  void _loadSettings() async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
-    List<String> localeString = prefs.getStringList(LOCALE);
+    List<String> localeString = prefs.getStringList(localeKey);
     if (localeString != null) {
       ui.Locale locale =
           ui.Locale(localeString.elementAt(0), localeString.elementAt(1));
@@ -50,9 +45,9 @@ class LocalizationsBloc extends Bloc<LocalizationsEvent, LocalizationsState> {
     }
   }
 
-  _saveSettings(Locale locale) async {
+  void _saveSettings(Locale locale) async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
     await prefs
-        .setStringList(LOCALE, [locale.languageCode, locale.countryCode]);
+        .setStringList(localeKey, [locale.languageCode, locale.countryCode]);
   }
 }

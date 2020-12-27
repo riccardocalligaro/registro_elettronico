@@ -359,12 +359,13 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
   }
 
   String _getProfessorsText(List<Professor> professors) {
-    if (professors.length > 0) {
+    if (professors.isNotEmpty) {
       String professorsText = "";
       professors.forEach((prof) {
         String name = StringUtils.titleCase(prof.name);
-        if (!professorsText.contains(name))
+        if (!professorsText.contains(name)) {
           professorsText += "${StringUtils.titleCase(prof.name)}, ";
+        }
       });
       professorsText = StringUtils.removeLastChar(professorsText);
       return professorsText;
