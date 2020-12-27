@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:registro_elettronico/data/repository/mapper/note_mapper.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/notes_response.dart';
+import 'package:registro_elettronico/feature/notes/data/model/note_mapper.dart';
+import 'package:registro_elettronico/feature/notes/data/model/note_remote_model.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 
 void main() {
   group('Notes', () {
-    final note1 = Note(
+    final note1 = NoteRemoteModel(
       authorName: "John Doe",
       evtDate: '2019-11-24',
       readStatus: false,

@@ -10,7 +10,7 @@ import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
-import 'package:registro_elettronico/domain/repository/notes_repository.dart';
+import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 import 'package:registro_elettronico/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';

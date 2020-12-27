@@ -1,8 +1,8 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/data/db/table/note_table.dart';
+import 'package:registro_elettronico/feature/notes/data/model/note_local_model.dart';
 
-part 'note_dao.g.dart';
+part '../../../feature/notes/data/dao/note_dao.g.dart';
 
 @UseDao(tables: [Notes, NotesAttachments])
 class NoteDao extends DatabaseAccessor<AppDatabase> with _$NoteDaoMixin {

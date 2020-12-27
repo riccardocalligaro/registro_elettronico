@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../../feature/notes/data/dao/notice_dao.dart';
+part of '../../../../data/db/dao/note_dao.dart';
 
 // **************************************************************************
 // DaoGenerator
 // **************************************************************************
 
-mixin _$NoticeDaoMixin on DatabaseAccessor<AppDatabase> {
-  $NoticesTable get notices => db.notices;
-  $AttachmentsTable get attachments => db.attachments;
+mixin _$NoteDaoMixin on DatabaseAccessor<AppDatabase> {
+  $NotesTable get notes => db.notes;
+  $NotesAttachmentsTable get notesAttachments => db.notesAttachments;
 }

@@ -2,7 +2,7 @@ import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/core/network/network_info.dart';
-import 'package:registro_elettronico/data/db/dao/notice_dao.dart';
+import 'package:registro_elettronico/feature/notes/data/dao/notice_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
