@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
   getPreferences() async {
     SharedPreferences sharedPreferences = sl();
     setState(() {
-      _lastUpdate = sharedPreferences.getInt(PrefsConstants.LAST_UPDATE_HOME);
+      _lastUpdate = sharedPreferences.getInt(PrefsConstants.lastUpdateHome);
     });
   }
 

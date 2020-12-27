@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
             }
 
             if (state is SignInSuccess) {
-              AppNavigator.instance.navToIntro(context);
+              AppNavigator.instance.navToHome(context);
 
               /// If the sign in is successful then navigate to the home page
               //AppNavigator.instance.navToHome(context);

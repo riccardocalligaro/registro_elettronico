@@ -15,7 +15,6 @@ import 'package:registro_elettronico/feature/timetable/presentation/timetable_pa
 
 class Routes {
   static const MAIN = '/';
-  static const INTRO = '/intro';
   static const LOGIN = '/login';
   static const HOME = '/home';
   static const LESSONS = '/lessons';

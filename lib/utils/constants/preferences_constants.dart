@@ -15,7 +15,7 @@ class PrefsConstants {
   static const SORTING_ASCENDING = 'sorting_ascending';
   static const FIRST_LOGIN = 'first_login';
   static const DARK_THEME = 'ThemeBloc_DARK_THEME';
-  static const LAST_UPDATE_HOME = 'last_update_home';
+  static const lastUpdateHome = 'lastUpdateHome';
   static const LAST_UPDATE_LESSONS = 'last_update_lessons';
   static const LAST_UPDATE_GRADES = 'last_update_grades';
   static const LAST_UPDATE_AGENDA = 'last_update_agenda';

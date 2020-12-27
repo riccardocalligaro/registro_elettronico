@@ -20,7 +20,7 @@ void main() async {
   // from firebase 0.5 +
   await Firebase.initializeApp();
 
-  initApp();
+  AppInjector.init();
 
   // Finnaly run the app
   runZoned<Future<void>>(() async {
@@ -34,17 +34,6 @@ void main() async {
 
     FirebaseCrashlytics.instance.recordError(error, stackTrace);
   });
-}
-
-void initApp() {
-  // Init the dependency injection -> compile-time dependency injection for Dart and Flutter, similar to Dagger.
-  AppInjector.init();
-
-  //initLocalNotifications();
-
-  FirebaseCrashlytics.instance.enableInDevMode = false;
-
-  // FirebaseNotifications().setUpFirebase();
 }
 
 /// Registro elettronico by Riccardo Calligaro

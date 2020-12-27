@@ -27,33 +27,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    restore();
     super.initState();
+
+    _checkForUpdate();
   }
 
-  void restore() async {
-    SharedPreferences prefs = sl();
-    _lastUpdateVitalData = prefs.getInt(PrefsConstants.LAST_UPDATE_VITAL_DATA);
-
-    if (_lastUpdateVitalData != null) {
-      FLog.info(
-          text:
-              'Last update vital data is not null, need to check last update');
-      _updateVitalData(_lastUpdateVitalData);
-    } else {
-      FLog.info(
-          text: 'Last update vital data is null, no need to check last update');
-    }
-
-    final _updateAtStart =
-        prefs.getBool(PrefsConstants.UPDATE_AT_START) ?? false;
-
-    if (_updateAtStart) {
-      BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
-      BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
-      BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
-      BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
-    }
+  void _checkForUpdate() {
+    // first we get the
   }
 
   @override
@@ -77,8 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
           if (state is AutoSignInResult) {
             FLog.info(text: "Auto sign in resulted -> Home screen");
-            //AppNavigator.instance.navToLogin(context);
-            //AppNavigator.instance.navToIntro(context);
+
             AppNavigator.instance.navToHome(context);
           }
 
@@ -88,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
             FLog.info(text: "Auto sign in error -> Login screen screen");
             AppNavigator.instance.navToLogin(context);
           } else if (state is AutoSignInNeedDownloadData) {
-            AppNavigator.instance.navToIntro(context);
+            AppNavigator.instance.navToHome(context);
           }
         },
         child: Center(

@@ -6,7 +6,9 @@ import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart'
 import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/lesson_mapper.dart';
 
@@ -15,12 +17,14 @@ class LessonsRepositoryImpl implements LessonsRepository {
   LessonDao lessonDao;
   ProfileDao profileDao;
   NetworkInfo networkInfo;
+  final SharedPreferences sharedPreferences;
 
   LessonsRepositoryImpl(
     this.spaggiariClient,
     this.lessonDao,
     this.profileDao,
     this.networkInfo,
+    this.sharedPreferences,
   );
 
   @override
@@ -40,7 +44,10 @@ class LessonsRepositoryImpl implements LessonsRepository {
             'Got ${lessons.lessons.length} documents from server, procceding to insert in database',
       );
 
-      lessonDao.insertLessons(lessonsList);
+      await lessonDao.insertLessons(lessonsList);
+
+      await sharedPreferences.setInt(PrefsConstants.LAST_UPDATE_LESSONS,
+          DateTime.now().millisecondsSinceEpoch);
     } else {
       throw NotConntectedException();
     }
@@ -63,7 +70,10 @@ class LessonsRepositoryImpl implements LessonsRepository {
       });
       await lessonDao.deleteLessons();
 
-      lessonDao.insertLessons(lessonsInsertable);
+      await lessonDao.insertLessons(lessonsInsertable);
+
+      await sharedPreferences.setInt(PrefsConstants.LAST_UPDATE_LESSONS,
+          DateTime.now().millisecondsSinceEpoch);
     } else {
       throw NotConntectedException();
     }

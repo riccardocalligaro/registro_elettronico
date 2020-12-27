@@ -96,9 +96,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
   Stream<LessonsState> _mapUpdateAllLessonsToState() async* {
     try {
       await lessonsRepository.updateAllLessons();
-      SharedPreferences prefs = sl();
-      prefs.setInt(PrefsConstants.LAST_UPDATE_LESSONS,
-          DateTime.now().millisecondsSinceEpoch);
+
       yield LessonsUpdateLoadSuccess();
     } on NotConntectedException catch (_) {
       yield LessonsLoadErrorNotConnected();

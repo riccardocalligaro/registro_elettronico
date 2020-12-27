@@ -45,8 +45,8 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       await agendaRepository.updateAllAgenda();
       SharedPreferences prefs = sl();
 
-      prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
-          DateTime.now().millisecondsSinceEpoch);
+      prefs.setInt(
+          PrefsConstants.lastUpdateHome, DateTime.now().millisecondsSinceEpoch);
       prefs.setInt(
         PrefsConstants.LAST_UPDATE_AGENDA,
         DateTime.now().millisecondsSinceEpoch,
@@ -68,8 +68,8 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
     SharedPreferences prefs = sl();
     try {
       final events = await agendaRepository.getAllEvents();
-      prefs.setInt(PrefsConstants.LAST_UPDATE_HOME,
-          DateTime.now().millisecondsSinceEpoch);
+      prefs.setInt(
+          PrefsConstants.lastUpdateHome, DateTime.now().millisecondsSinceEpoch);
       FLog.info(text: 'BloC -> Got ${events.length} events');
 
       final Map<DateTime, List<db.AgendaEvent>> eventsMap = Map.fromIterable(
