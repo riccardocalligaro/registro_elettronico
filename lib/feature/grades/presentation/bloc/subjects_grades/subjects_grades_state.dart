@@ -1,6 +1,4 @@
-import 'package:meta/meta.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/domain/entity/subject_objective.dart';
+part of 'subjects_grades_bloc.dart';
 
 @immutable
 abstract class SubjectsGradesState {}

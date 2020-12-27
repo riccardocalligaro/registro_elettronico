@@ -1,4 +1,4 @@
-import 'package:meta/meta.dart';
+part of 'subjects_grades_bloc.dart';
 
 @immutable
 abstract class SubjectsGradesEvent {}

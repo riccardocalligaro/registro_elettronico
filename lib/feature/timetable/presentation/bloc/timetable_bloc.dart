@@ -3,19 +3,23 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
+import 'package:meta/meta.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
+import 'package:registro_elettronico/domain/repository/subjects_repository.dart';
+import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 
-import './bloc.dart';
-import '../../../domain/repository/repositories_export.dart';
+part 'timetable_event.dart';
+
+part 'timetable_state.dart';
 
 class TimetableBloc extends Bloc<TimetableEvent, TimetableState> {
-  TimetableRepository timetableRepository;
-  SubjectsRepository subjectsRepository;
+  final TimetableRepository timetableRepository;
+  final SubjectsRepository subjectsRepository;
 
-  TimetableBloc(this.timetableRepository, this.subjectsRepository);
-
-  @override
-  TimetableState get initialState => TimetableInitial();
+  TimetableBloc({
+    @required this.timetableRepository,
+    @required this.subjectsRepository,
+  }) : super(TimetableInitial());
 
   @override
   Stream<TimetableState> mapEventToState(

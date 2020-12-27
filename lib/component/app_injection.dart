@@ -16,7 +16,7 @@ import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
-import 'package:registro_elettronico/data/db/dao/timetable_dao.dart';
+import 'package:registro_elettronico/feature/timetable/data/dao/timetable_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/dio_client.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
@@ -31,7 +31,7 @@ import 'package:registro_elettronico/data/repository/periods_repository_impl.dar
 import 'package:registro_elettronico/data/repository/repository_impl_export.dart';
 import 'package:registro_elettronico/data/repository/scrutini_repository_impl.dart';
 import 'package:registro_elettronico/data/repository/stats_repository_impl.dart';
-import 'package:registro_elettronico/data/repository/timetable_repository_impl.dart';
+import 'package:registro_elettronico/feature/timetable/data/repository/timetable_repository_impl.dart';
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/domain/repository/documents_repository.dart';
@@ -41,7 +41,7 @@ import 'package:registro_elettronico/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
 import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
 import 'package:registro_elettronico/domain/repository/stats_repository.dart';
-import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
+import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/ui/bloc/auth/auth_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

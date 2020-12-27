@@ -1,6 +1,7 @@
-abstract class GradesEvent {
-  const GradesEvent();
-}
+part of 'grades_bloc.dart';
+
+@immutable
+abstract class GradesEvent {}
 
 /// This is only for updateing grades in the database
 class UpdateGrades extends GradesEvent {}

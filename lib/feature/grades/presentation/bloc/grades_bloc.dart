@@ -1,25 +1,25 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/f_logs.dart';
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:injector/injector.dart';
+import 'package:meta/meta.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
-import 'package:registro_elettronico/domain/repository/repositories_export.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import './bloc.dart';
+part 'grades_event.dart';
+
+part 'grades_state.dart';
 
 class GradesBloc extends Bloc<GradesEvent, GradesState> {
-  GradesRepository gradesRepository;
+  final GradesRepository gradesRepository;
 
-  SubjectsRepository subjectsRepository;
-
-  GradesBloc(this.gradesRepository, this.subjectsRepository);
-  @override
-  GradesState get initialState => GradesInitial();
+  GradesBloc({
+    @required this.gradesRepository,
+  }) : super(GradesInitial());
 
   @override
   Stream<GradesState> mapEventToState(
@@ -35,7 +35,7 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
   Stream<GradesState> _mapUpdateGradesToState() async* {
     yield GradesUpdateLoading();
     try {
-      SharedPreferences prefs = Injector.appInstance.getDependency();
+      SharedPreferences prefs = sl();
       await gradesRepository.updateGrades();
       prefs.setInt(
         PrefsConstants.LAST_UPDATE_GRADES,

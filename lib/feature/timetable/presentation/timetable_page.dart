@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/preferences_repository.dart';
-import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
-import 'package:registro_elettronico/ui/bloc/timetable/bloc.dart';
-import 'package:registro_elettronico/ui/feature/timetable/components/timetable_card.dart';
-import 'package:registro_elettronico/ui/feature/timetable/views/new_timetable_entry.dart';
+import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
+import 'package:registro_elettronico/feature/timetable/presentation/views/new_timetable_entry.dart';
+import 'package:registro_elettronico/feature/timetable/presentation/widgets/timetable_card.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/general_constants.dart';
@@ -14,7 +13,8 @@ import 'package:registro_elettronico/utils/constants/preferences_constants.dart'
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:tuple/tuple.dart';
 
-import '../../bloc/timetable/timetable_event.dart';
+import 'bloc/timetable_bloc.dart';
+
 
 class TimetablePage extends StatefulWidget {
   const TimetablePage({Key key}) : super(key: key);

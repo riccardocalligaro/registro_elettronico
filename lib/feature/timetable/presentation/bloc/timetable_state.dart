@@ -1,10 +1,10 @@
-import 'package:meta/meta.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+part of 'timetable_bloc.dart';
 
 @immutable
 abstract class TimetableState {}
 
 class TimetableInitial extends TimetableState {}
+
 
 class TimetableLoading extends TimetableState {}
 

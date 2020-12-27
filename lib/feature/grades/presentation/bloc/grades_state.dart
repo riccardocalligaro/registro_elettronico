@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:registro_elettronico/data/db/moor_database.dart';
+part of 'grades_bloc.dart';
 
-abstract class GradesState {
-  const GradesState();
-}
+@immutable
+abstract class GradesState {}
 
 class GradesInitial extends GradesState {}
 

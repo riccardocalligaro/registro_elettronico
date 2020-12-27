@@ -1,6 +1,6 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/data/db/table/timetable_table.dart';
+import 'package:registro_elettronico/feature/timetable/data/model/timetale_local_model.dart';
 
 part 'timetable_dao.g.dart';
 
@@ -8,11 +8,11 @@ part 'timetable_dao.g.dart';
 class TimetableDao extends DatabaseAccessor<AppDatabase>
     with _$TimetableDaoMixin {
   AppDatabase db;
+
   TimetableDao(this.db) : super(db);
 
-  //Future<List<TimetableEntry>> getTimetable() => select(timetableEntries).get();
   Future<List<TimetableEntry>> getTimetable() {
-    return customSelectQuery('SELECT * FROM timetable_entries')
+    return customSelect('SELECT * FROM timetable_entries')
         .map((row) => TimetableEntry.fromData(row.data, db))
         .get();
   }
@@ -24,16 +24,23 @@ class TimetableDao extends DatabaseAccessor<AppDatabase>
 
   Future deleteTimetableEntryWithInfo(int dayOfWeek, int begin, int end) {
     return (delete(timetableEntries)
-          ..where((t) => and(t.dayOfWeek.equals(dayOfWeek),
-              and(t.start.equals(begin), t.end.equals(end)))))
+          ..where(
+            (t) =>
+                t.dayOfWeek.equals(dayOfWeek) &
+                t.start.equals(begin) &
+                t.end.equals(end),
+          ))
         .go();
   }
 
-  Future insertTimetableEntries(List<TimetableEntry> entries) =>
-      into(timetableEntries).insertAll(entries, orReplace: true);
+  Future<void> insertTimetableEntries(List<TimetableEntry> entries) async {
+    await batch((batch) {
+      batch.insertAllOnConflictUpdate(timetableEntries, entries);
+    });
+  }
 
   Future insertTimetableEntry(TimetableEntry entry) =>
-      into(timetableEntries).insert(entry, orReplace: true);
+      into(timetableEntries).insertOnConflictUpdate(entry);
 
   Future updateTimetableEntry(TimetableEntry entry) =>
       update(timetableEntries).replace(entry);

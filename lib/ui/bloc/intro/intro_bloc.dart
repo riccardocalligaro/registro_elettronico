@@ -14,7 +14,7 @@ import 'package:registro_elettronico/feature/notes/domain/repository/notes_repos
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/domain/repository/repositories_export.dart';
-import 'package:registro_elettronico/domain/repository/timetable_repository.dart';
+import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './bloc.dart';

@@ -4,7 +4,6 @@ import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/feature/grades/presentation/views/last_grades_page.dart';
 import 'package:registro_elettronico/feature/grades/presentation/views/term_grades_page.dart';
-import 'package:registro_elettronico/ui/bloc/grades/subject_grades/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
@@ -12,6 +11,8 @@ import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'bloc/subjects_grades/subjects_grades_bloc.dart';
 
 class GradesPage extends StatefulWidget {
   GradesPage({Key key}) : super(key: key);

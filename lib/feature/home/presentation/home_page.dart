@@ -8,9 +8,9 @@ import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_bloc.dart';
+import 'package:registro_elettronico/feature/grades/presentation/bloc/grades_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/sections/last_grades_section.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/bloc/lessons_bloc.dart';
-import 'package:registro_elettronico/ui/bloc/grades/bloc.dart';
 import 'package:registro_elettronico/ui/feature/widgets/app_drawer.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
@@ -21,7 +21,6 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../ui/bloc/grades/bloc.dart';
 import '../../../ui/global/localizations/app_localizations.dart';
 import 'blocs/agenda/agenda_dashboard_bloc.dart';
 import 'blocs/grades/grades_dashboard_bloc.dart';

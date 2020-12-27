@@ -1,29 +1,34 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:injector/injector.dart';
+import 'package:meta/meta.dart';
+import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
+import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/domain/entity/subject_objective.dart';
 import 'package:registro_elettronico/domain/repository/periods_repository.dart';
-import 'package:registro_elettronico/domain/repository/repositories_export.dart';
+import 'package:registro_elettronico/domain/repository/subjects_repository.dart';
+import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import './bloc.dart';
+
+part 'subjects_grades_event.dart';
+
+part 'subjects_grades_state.dart';
 
 class SubjectsGradesBloc
     extends Bloc<SubjectsGradesEvent, SubjectsGradesState> {
-  SubjectsRepository subjectsRepository;
-  GradesRepository gradesRepository;
-  PeriodsRepository periodsRepository;
 
-  SubjectsGradesBloc(
-    this.subjectsRepository,
-    this.gradesRepository,
-    this.periodsRepository,
-  );
+  final GradesRepository gradesRepository;
+  final SubjectsRepository subjectsRepository;
+  final PeriodsRepository periodsRepository;
 
-  @override
-  SubjectsGradesState get initialState => SubjectsGradesInitial();
+  SubjectsGradesBloc({
+    @required this.gradesRepository,
+    @required this.subjectsRepository,
+    @required this.periodsRepository,
+  }) : super(SubjectsGradesInitial());
 
   @override
   Stream<SubjectsGradesState> mapEventToState(
@@ -43,7 +48,7 @@ class SubjectsGradesBloc
       final grades = await gradesRepository.getAllGrades();
       final periods = await periodsRepository.getAllPeriods();
 
-      SharedPreferences prefs = Injector.appInstance.getDependency();
+      SharedPreferences prefs = sl();
       final generalObjective =
           prefs.getInt(PrefsConstants.OVERALL_OBJECTIVE) ?? 6;
 
@@ -76,7 +81,7 @@ class SubjectsGradesBloc
     yield SubjectsGradesUpdateLoadInProgress();
     try {
       await gradesRepository.updateGrades();
-      SharedPreferences prefs = Injector.appInstance.getDependency();
+      SharedPreferences prefs = sl();
 
       await prefs.setInt(
         PrefsConstants.LAST_UPDATE_GRADES,

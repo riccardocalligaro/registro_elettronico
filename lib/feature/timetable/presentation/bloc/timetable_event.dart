@@ -1,4 +1,4 @@
-import 'package:meta/meta.dart';
+part of 'timetable_bloc.dart';
 
 @immutable
 abstract class TimetableEvent {}

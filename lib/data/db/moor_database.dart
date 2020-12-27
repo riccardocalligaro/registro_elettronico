@@ -11,7 +11,7 @@ import 'package:registro_elettronico/data/db/dao/period_dao.dart';
 import 'package:registro_elettronico/data/db/dao/professor_dao.dart';
 import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/dao/subject_dao.dart';
-import 'package:registro_elettronico/data/db/dao/timetable_dao.dart';
+import 'package:registro_elettronico/feature/timetable/data/dao/timetable_dao.dart';
 import 'package:registro_elettronico/feature/absences/data/model/absence_local_model.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_local_model.dart';
 import 'package:registro_elettronico/data/db/table/attachment_table.dart';
@@ -29,7 +29,7 @@ import 'package:registro_elettronico/data/db/table/period_table.dart';
 import 'package:registro_elettronico/data/db/table/professor_table.dart';
 import 'package:registro_elettronico/data/db/table/profile_table.dart';
 import 'package:registro_elettronico/data/db/table/subject_table.dart';
-import 'package:registro_elettronico/data/db/table/timetable_table.dart';
+import 'package:registro_elettronico/feature/timetable/data/model/timetale_local_model.dart';
 
 part 'moor_database.g.dart';
 
