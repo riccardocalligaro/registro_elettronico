@@ -42,6 +42,7 @@ class _GradesChartState extends State<GradesChart> {
 
   /// Stream builder that takes data from the bloc stream
   Widget _buildChart(BuildContext context) {
+    print('build chart');
     // we take the grades from the state
     final grades = widget.grades;
 
@@ -160,9 +161,9 @@ class _GradesChartState extends State<GradesChart> {
 
       // The vertical line for the minimum mark (6.0)
       extraLinesData: ExtraLinesData(
-        verticalLines: [
-          VerticalLine(
-            x: cutOffYValue,
+        horizontalLines: [
+          HorizontalLine(
+            y: cutOffYValue,
             color: Colors.red[600].withOpacity(0.3),
             strokeWidth: 1.5,
           ),

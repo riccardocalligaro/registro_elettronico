@@ -1,3 +1,5 @@
+// ignore_for_file: always_declare_return_types
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';

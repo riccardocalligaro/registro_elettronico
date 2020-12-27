@@ -139,7 +139,6 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
 
     String baseUrl = 'https://web.spaggiari.eu/rest/v1';
 
-    // TODO: better di
     final _dio = DioClient(sl(), sl());
     ArgumentError.checkNotNull(studentId, 'studentId');
     ArgumentError.checkNotNull(fileId, 'fileId');

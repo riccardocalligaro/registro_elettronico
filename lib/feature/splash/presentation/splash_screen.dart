@@ -1,18 +1,14 @@
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
-import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_bloc.dart';
-import 'package:registro_elettronico/feature/grades/presentation/bloc/grades_bloc.dart';
-import 'package:registro_elettronico/feature/lessons/presentation/bloc/lessons_bloc.dart';
+import 'package:registro_elettronico/feature/home/presentation/blocs/agenda/agenda_dashboard_bloc.dart';
+import 'package:registro_elettronico/feature/home/presentation/blocs/grades/grades_dashboard_bloc.dart';
+import 'package:registro_elettronico/feature/home/presentation/blocs/lessons/lessons_dashboard_bloc.dart'
+    as dash;
 import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
-import 'package:registro_elettronico/feature/periods/presentation/bloc/periods_bloc.dart';
-import 'package:registro_elettronico/feature/subjects/presentation/bloc/subjects_bloc.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/update_utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
@@ -28,67 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    _checkForUpdate();
-  }
-
-  void _checkForUpdate() async {
-    // first we get the
-    final SharedPreferences sharedPreferences = sl();
-
-    if (_needUpdateAllData(sharedPreferences)) {
-      // update all the endpoints
-      await UpdateUtils.updateAllData();
-
-      await sharedPreferences.setInt(PrefsConstants.lastUpdateAllData,
-          DateTime.now().millisecondsSinceEpoch);
-    } else {
-      if (_needUpdate(sharedPreferences)) {
-        BlocProvider.of<LessonsBloc>(context).add(UpdateTodayLessons());
-        BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
-        BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
-        BlocProvider.of<GradesBloc>(context).add(GetGrades(limit: 3));
-
-        await sharedPreferences.setInt(
-            PrefsConstants.lastUpdate, DateTime.now().millisecondsSinceEpoch);
-      }
-
-      if (_needUpdateVitalData(sharedPreferences)) {
-        BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
-        BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
-
-        await sharedPreferences.setInt(PrefsConstants.lastUpdateVitalData,
-            DateTime.now().millisecondsSinceEpoch);
-      }
-    }
-  }
-
-  bool _needUpdateAllData(SharedPreferences sharedPreferences) {
-    final lastUpdate =
-        sharedPreferences.getInt(PrefsConstants.lastUpdateAllData);
-    return lastUpdate == null ||
-        (DateTime.now().month == DateTime.september &&
-            DateTime.fromMillisecondsSinceEpoch(lastUpdate)
-                .isBefore(DateTime.now().subtract(Duration(days: 30)))) ||
-        DateTime.fromMillisecondsSinceEpoch(lastUpdate)
-            .isBefore(DateTime.now().subtract(Duration(days: 180)));
-  }
-
-  bool _needUpdateVitalData(SharedPreferences sharedPreferences) {
-    final lastUpdate =
-        sharedPreferences.getInt(PrefsConstants.lastUpdateVitalData);
-    return lastUpdate == null ||
-        (DateTime.now().month == DateTime.september &&
-            DateTime.fromMillisecondsSinceEpoch(lastUpdate)
-                .isBefore(DateTime.now().subtract(Duration(days: 1)))) ||
-        DateTime.fromMillisecondsSinceEpoch(lastUpdate)
-            .isBefore(DateTime.now().subtract(Duration(days: 30)));
-  }
-
-  bool _needUpdate(SharedPreferences sharedPreferences) {
-    final lastUpdate = sharedPreferences.getInt(PrefsConstants.lastUpdate);
-    return lastUpdate == null ||
-        DateTime.fromMillisecondsSinceEpoch(lastUpdate)
-            .isBefore(DateTime.now().subtract(Duration(minutes: 2)));
+    // check if logged in
   }
 
   @override
@@ -111,6 +47,13 @@ class _SplashScreenState extends State<SplashScreen> {
           /// auto signed in, so it redirects to the Home page
           if (state is AutoSignInResult) {
             FLog.info(text: "Auto sign in resulted -> Home screen");
+            UpdateUtils.checkForUpdates(context).then((value) {
+              BlocProvider.of<dash.LessonsDashboardBloc>(context)
+                  .add(dash.GetLastLessons());
+              BlocProvider.of<GradesDashboardBloc>(context)
+                  .add(GetDashboardGrades());
+              BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
+            });
             AppNavigator.instance.navToHome(context);
           }
 

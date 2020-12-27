@@ -160,7 +160,12 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: true,
-            // TODO: set the dot color
+            getDotPainter: (spot, percent, barData, index) =>
+                FlDotCirclePainter(
+              radius: 3,
+              color: Colors.transparent,
+              strokeColor: Colors.red,
+            ),
           ),
           belowBarData: BarAreaData(
             show: true,

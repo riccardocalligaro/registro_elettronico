@@ -73,202 +73,202 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _drawerKey,
-        drawer: AppDrawer(
-          position: DrawerConstants.HOME,
-        ),
-        bottomNavigationBar: LastUpdateBottomSheet(
-          millisecondsSinceEpoch: _lastUpdate,
-        ),
-        body: MultiBlocListener(
-          listeners: [
-            BlocListener<AgendaBloc, AgendaState>(
-              listener: (context, state) {
-                if (state is AgendaUpdateLoadSuccess) {
-                  BlocProvider.of<AgendaDashboardBloc>(context)
-                      .add(GetEvents());
+      key: _drawerKey,
+      drawer: AppDrawer(
+        position: DrawerConstants.HOME,
+      ),
+      bottomNavigationBar: LastUpdateBottomSheet(
+        millisecondsSinceEpoch: _lastUpdate,
+      ),
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<AgendaBloc, AgendaState>(
+            listener: (context, state) {
+              if (state is AgendaUpdateLoadSuccess) {
+                BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
 
-                  _refreshed[2] = true;
-                  if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
-                    _refreshController.refreshCompleted();
+                _refreshed[2] = true;
+                if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
+                  _refreshController.refreshCompleted();
 
-                    _resetRefreshed();
+                  _resetRefreshed();
 
-                    setState(() {
-                      _lastUpdate = DateTime.now().millisecondsSinceEpoch;
-                    });
-                  }
+                  setState(() {
+                    _lastUpdate = DateTime.now().millisecondsSinceEpoch;
+                  });
                 }
+              }
 
-                if (state is AgendaLoadErrorNotConnected) {
-                  Scaffold.of(context)
-                    ..removeCurrentSnackBar()
-                    ..showSnackBar(
-                      AppNavigator.instance.getNetworkErrorSnackBar(context),
-                    );
+              if (state is AgendaLoadErrorNotConnected) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    AppNavigator.instance.getNetworkErrorSnackBar(context),
+                  );
 
-                  _refreshController.refreshFailed();
-                } else if (state is AgendaLoadError) {
-                  Scaffold.of(context)
-                    ..removeCurrentSnackBar()
-                    ..showSnackBar(SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      content: Text(
-                        AppLocalizations.of(context)
-                            .translate('update_error_snackbar'),
-                      ),
-                    ));
-                  _refreshController.refreshFailed();
+                _refreshController.refreshFailed();
+              } else if (state is AgendaLoadError) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    content: Text(
+                      AppLocalizations.of(context)
+                          .translate('update_error_snackbar'),
+                    ),
+                  ));
+                _refreshController.refreshFailed();
+              }
+            },
+          ),
+          BlocListener<GradesBloc, GradesState>(
+            listener: (context, state) {
+              if (state is GradesUpdateLoaded) {
+                BlocProvider.of<GradesDashboardBloc>(context)
+                    .add(GetDashboardGrades());
+
+                _refreshed[0] = true;
+
+                if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
+                  _refreshController.refreshCompleted();
+
+                  _resetRefreshed();
+
+                  setState(() {
+                    _lastUpdate = DateTime.now().millisecondsSinceEpoch;
+                  });
                 }
-              },
-            ),
-            BlocListener<GradesBloc, GradesState>(
-              listener: (context, state) {
-                if (state is GradesUpdateLoaded) {
-                  BlocProvider.of<GradesDashboardBloc>(context)
-                      .add(GetDashboardGrades());
+              } else if (state is GradesUpdateError) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    content: Text(
+                      AppLocalizations.of(context)
+                          .translate('update_error_snackbar'),
+                    ),
+                  ));
 
-                  _refreshed[0] = true;
+                _refreshController.refreshFailed();
+              } else if (state is GradesErrorNotConnected) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    AppNavigator.instance.getNetworkErrorSnackBar(context),
+                  );
+                _refreshController.refreshFailed();
+              }
+            },
+          ),
+          BlocListener<LessonsBloc, LessonsState>(
+            listener: (context, state) {
+              if (state is LessonsUpdateLoadSuccess) {
+                BlocProvider.of<LessonsDashboardBloc>(context)
+                    .add(dash.GetLastLessons());
 
-                  if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
-                    _refreshController.refreshCompleted();
+                _refreshed[1] = true;
 
-                    _resetRefreshed();
+                if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
+                  _refreshController.refreshCompleted();
+                  _resetRefreshed();
 
-                    setState(() {
-                      _lastUpdate = DateTime.now().millisecondsSinceEpoch;
-                    });
-                  }
-                } else if (state is GradesUpdateError) {
-                  Scaffold.of(context)
-                    ..removeCurrentSnackBar()
-                    ..showSnackBar(SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      content: Text(
-                        AppLocalizations.of(context)
-                            .translate('update_error_snackbar'),
-                      ),
-                    ));
-
-                  _refreshController.refreshFailed();
-                } else if (state is GradesErrorNotConnected) {
-                  Scaffold.of(context)
-                    ..removeCurrentSnackBar()
-                    ..showSnackBar(
-                      AppNavigator.instance.getNetworkErrorSnackBar(context),
-                    );
-                  _refreshController.refreshFailed();
+                  setState(() {
+                    _lastUpdate = DateTime.now().millisecondsSinceEpoch;
+                  });
                 }
-              },
-            ),
-            BlocListener<LessonsBloc, LessonsState>(
-              listener: (context, state) {
-                if (state is LessonsUpdateLoadSuccess) {
-                  BlocProvider.of<LessonsDashboardBloc>(context)
-                      .add(dash.GetLastLessons());
-
-                  _refreshed[1] = true;
-
-                  if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
-                    _refreshController.refreshCompleted();
-                    _resetRefreshed();
-
-                    setState(() {
-                      _lastUpdate = DateTime.now().millisecondsSinceEpoch;
-                    });
-                  }
-                } else if (state is LessonsLoadErrorNotConnected) {
-                  Scaffold.of(context)
-                    ..removeCurrentSnackBar()
-                    ..showSnackBar(
-                      AppNavigator.instance.getNetworkErrorSnackBar(context),
-                    );
-                  _refreshController.refreshFailed();
-                } else if (state is LessonsLoadError) {
-                  Scaffold.of(context)
-                    ..removeCurrentSnackBar()
-                    ..showSnackBar(SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      content: Text(
-                        AppLocalizations.of(context)
-                            .translate('update_error_snackbar'),
-                      ),
-                    ));
-                  _refreshController.refreshFailed();
-                }
-              },
-            ),
-          ],
-          child: SmartRefresher(
-            controller: _refreshController,
-            header: MaterialClassicHeader(
-              backgroundColor: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.grey[900]
-                  : Colors.white,
-              color: Colors.red,
-            ),
-            onRefresh: _refreshHome,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Stack(
-                    children: <Widget>[
-                      Container(
-                        height: 220,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            stops: [0.4, 1],
-                            colors: <Color>[Colors.red[400], Colors.red[900]],
-                            begin: Alignment(-1.0, -2.0),
-                            end: Alignment(1.0, 2.0),
-                          ),
+              } else if (state is LessonsLoadErrorNotConnected) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    AppNavigator.instance.getNetworkErrorSnackBar(context),
+                  );
+                _refreshController.refreshFailed();
+              } else if (state is LessonsLoadError) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    content: Text(
+                      AppLocalizations.of(context)
+                          .translate('update_error_snackbar'),
+                    ),
+                  ));
+                _refreshController.refreshFailed();
+              }
+            },
+          ),
+        ],
+        child: SmartRefresher(
+          controller: _refreshController,
+          header: MaterialClassicHeader(
+            backgroundColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey[900]
+                : Colors.white,
+            color: Colors.red,
+          ),
+          onRefresh: _refreshHome,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      height: 220,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          stops: [0.4, 1],
+                          colors: <Color>[Colors.red[400], Colors.red[900]],
+                          begin: Alignment(-1.0, -2.0),
+                          end: Alignment(1.0, 2.0),
                         ),
                       ),
-                      _buildTopSection()
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(AppLocalizations.of(context)
-                            .translate('last_grades')),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: LastGradesSection(),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(AppLocalizations.of(context)
-                            .translate('last_lessons')),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      LastLessonsSection(),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: NextEventsSection(),
-                      )
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    _buildTopSection()
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(AppLocalizations.of(context)
+                          .translate('last_grades')),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: LastGradesSection(),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(AppLocalizations.of(context)
+                          .translate('last_lessons')),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    LastLessonsSection(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: NextEventsSection(),
+                    )
+                  ],
+                ),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _buildTopSection() {
@@ -311,75 +311,6 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-
-  // Widget _buildWelcomeSection() {
-  //   return Positioned(
-  //     top: 40,
-  //     left: -16,
-  //     right: 0,
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: <Widget>[
-  //         Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: <Widget>[
-  //             RawMaterialButton(
-  //               onPressed: () {
-  //                 _drawerKey.currentState.openDrawer();
-  //               },
-  //               child: Icon(
-  //                 Icons.menu,
-  //                 color: Colors.white,
-  //               ),
-  //               shape: CircleBorder(),
-  //               elevation: 2.0,
-  //               padding: const EdgeInsets.all(15.0),
-  //             ),
-  //             Padding(
-  //               padding: const EdgeInsets.symmetric(horizontal: 32.0),
-  //               child: FutureBuilder(
-  //                 future: RepositoryProvider.of<ProfileRepository>(context)
-  //                     .getDbProfile(),
-  //                 initialData: GlobalUtils.getMockProfile(),
-  //                 builder: (context, snapshot) {
-  //                   final Profile profile = snapshot.data;
-  //                   if (profile != null) {
-  //                     return Text(
-  //                       '${AppLocalizations.of(context).translate('welcome_message')}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
-  //                       style: TextStyle(
-  //                         color: Colors.white,
-  //                         fontSize: 24,
-  //                         fontWeight: FontWeight.w400,
-  //                       ),
-  //                     );
-  //                   }
-  //                   return Text(
-  //                     '${AppLocalizations.of(context).translate('welcome_message')}}.',
-  //                     style: TextStyle(
-  //                       color: Colors.white,
-  //                       fontSize: 24,
-  //                       fontWeight: FontWeight.w400,
-  //                     ),
-  //                   );
-  //                 },
-  //               ),
-  //             ),
-  //             Padding(
-  //               padding: const EdgeInsets.symmetric(horizontal: 32.0),
-  //               child: Text(
-  //                 DateUtils.convertDateLocale(DateTime.now(),
-  //                     AppLocalizations.of(context).locale.toString()),
-  //                 style: TextStyle(
-  //                   color: Colors.white,
-  //                 ),
-  //               ),
-  //             )
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   Widget _buildNameText() {
     return FutureBuilder(

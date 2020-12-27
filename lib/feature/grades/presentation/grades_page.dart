@@ -66,9 +66,6 @@ class _GradesPageState extends State<GradesPage> {
               bottomSheet: LastUpdateBottomSheet(
                 millisecondsSinceEpoch: _lastUpdateGrades,
               ),
-              // drawer: AppDrawer(
-              //   position: DrawerConstants.GRADES,
-              // ),
               body: BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
                 listener: (context, state2) {
                   if (state2 is SubjectsGradesUpdateLoadSuccess) {

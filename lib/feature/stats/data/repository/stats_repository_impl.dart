@@ -135,10 +135,14 @@ class StatsRepositoryImpl implements StatsRepository {
         firstTermAverage = firstTermAverage / firstTermGradesCount;
         secondTermAverage = secondTermAverage / secondTermGradesCount;
 
-        if (firstTermAverage >= secondTermAverage) {
-          mostProfitablePeriod = periods.elementAt(0);
+        if (secondTermAverage > 0) {
+          if (firstTermAverage >= secondTermAverage) {
+            mostProfitablePeriod = periods.elementAt(0);
+          } else {
+            mostProfitablePeriod = periods.elementAt(1);
+          }
         } else {
-          mostProfitablePeriod = periods.elementAt(1);
+          mostProfitablePeriod = periods.elementAt(0);
         }
 
         final skippedTestsForAbsences = _getSkippedTests(

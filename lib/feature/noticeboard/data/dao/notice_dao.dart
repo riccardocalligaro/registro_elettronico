@@ -45,7 +45,7 @@ class NoticeDao extends DatabaseAccessor<AppDatabase> with _$NoticeDaoMixin {
 
   Future<void> insertAttachments(List<Attachment> attachmentsList) async {
     await batch((batch) {
-      batch.insertAllOnConflictUpdate(notices, attachmentsList);
+      batch.insertAllOnConflictUpdate(attachments, attachmentsList);
     });
   }
 

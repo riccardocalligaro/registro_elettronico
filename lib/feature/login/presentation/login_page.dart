@@ -4,7 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/gradient_red_button.dart';
+import 'package:registro_elettronico/feature/home/presentation/blocs/agenda/agenda_dashboard_bloc.dart';
+import 'package:registro_elettronico/feature/home/presentation/blocs/grades/grades_dashboard_bloc.dart';
+import 'package:registro_elettronico/feature/home/presentation/blocs/lessons/lessons_dashboard_bloc.dart'
+    as dash;
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
+import 'package:registro_elettronico/utils/update_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'bloc/auth_bloc.dart';
@@ -89,6 +94,15 @@ class _LoginPageState extends State<LoginPage> {
             }
 
             if (state is SignInSuccess) {
+              UpdateUtils.checkForUpdates(context).then((value) {
+                BlocProvider.of<dash.LessonsDashboardBloc>(context)
+                    .add(dash.GetLastLessons());
+                BlocProvider.of<GradesDashboardBloc>(context)
+                    .add(GetDashboardGrades());
+                BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
+              });
+              ;
+
               AppNavigator.instance.navToHome(context);
 
               /// If the sign in is successful then navigate to the home page

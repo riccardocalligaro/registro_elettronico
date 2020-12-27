@@ -185,7 +185,6 @@ class GradesBarChartState extends State<GradesBarChart> {
       barRods: [
         BarChartRodData(
           y: y,
-          // TODO: better look at this
           colors: [GlobalUtils.getColorFromAverage(x + 3.toDouble())],
           width: 22,
           backDrawRodData: BackgroundBarChartRodData(

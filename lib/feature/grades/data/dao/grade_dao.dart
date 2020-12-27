@@ -15,13 +15,12 @@ class GradeDao extends DatabaseAccessor<AppDatabase> with _$GradeDaoMixin {
   GradeDao(this.db) : super(db);
 
   // Inserts a single grade into the database
-  Future insertGrade(Grade grade) =>
-      into(grades).insertOnConflictUpdate(grade);
+  Future insertGrade(Grade grade) => into(grades).insertOnConflictUpdate(grade);
 
   // Given a list it inserts a list of grades
   Future<void> insertGrades(List<Grade> gradesData) async {
     await batch((batch) {
-      batch.insertAllOnConflictUpdate(localGrades, gradesData);
+      batch.insertAllOnConflictUpdate(grades, gradesData);
     });
   }
 
