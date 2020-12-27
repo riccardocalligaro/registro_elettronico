@@ -5,16 +5,17 @@ import 'package:open_file/open_file.dart';
 import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/component/navigator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/ui/bloc/documents/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/documents/document_attachment/bloc/bloc.dart';
+import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view_no_persistency.dart';
 import 'package:registro_elettronico/ui/bloc/token/bloc.dart';
-import 'package:registro_elettronico/ui/feature/web/spaggiari_web_view_no_persistency.dart';
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/ui/feature/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'bloc/document_attachment/document_attachment_bloc.dart';
+import 'bloc/documents_bloc.dart';
 
 class ScrutiniPage extends StatefulWidget {
   const ScrutiniPage({Key key}) : super(key: key);

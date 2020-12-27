@@ -7,7 +7,7 @@
 // TextColumn get type => text()();
 
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
-import 'package:registro_elettronico/domain/entity/api_responses/notes_read_response.dart';
+import 'package:registro_elettronico/feature/notes/data/model/notes_read_remote_model.dart';
 import 'package:registro_elettronico/feature/notes/data/model/note_remote_model.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';

@@ -6,7 +6,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:registro_elettronico/core/error/failures.dart';
 import 'package:registro_elettronico/domain/entity/last_year_token.dart';
 import 'package:registro_elettronico/domain/entity/login_token.dart';
-import 'package:registro_elettronico/domain/repository/scrutini_repository.dart';
+import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
 
 import './bloc.dart';
 

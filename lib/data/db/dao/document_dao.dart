@@ -1,6 +1,6 @@
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/data/db/table/document_table.dart';
+import 'package:registro_elettronico/feature/scrutini/data/model/document_local_model.dart';
 
 part 'document_dao.g.dart';
 

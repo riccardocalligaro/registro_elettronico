@@ -1,5 +1,5 @@
 import 'package:registro_elettronico/data/db/moor_database.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/notes_read_response.dart';
+import 'package:registro_elettronico/feature/notes/data/model/notes_read_remote_model.dart';
 
 abstract class NotesRepository {
   // Update the lessons from spaggiari

@@ -6,7 +6,7 @@ import 'package:registro_elettronico/data/db/dao/profile_dao.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/data/network/service/api/spaggiari_client.dart';
 import 'package:registro_elettronico/feature/notes/data/model/note_mapper.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/notes_read_response.dart';
+import 'package:registro_elettronico/feature/notes/data/model/notes_read_remote_model.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 
 class NotesRepositoryImpl implements NotesRepository {

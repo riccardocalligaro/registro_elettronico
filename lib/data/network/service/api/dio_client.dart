@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/component/api_config.dart';
 import 'package:registro_elettronico/data/network/exception/server_exception.dart';
 import 'package:registro_elettronico/data/repository/mapper/profile_mapper.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/login_response.dart';
+import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';
 import 'package:registro_elettronico/domain/repository/profile_repository.dart';
 
 class DioClient {

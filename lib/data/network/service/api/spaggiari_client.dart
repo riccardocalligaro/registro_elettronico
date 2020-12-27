@@ -1,21 +1,21 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:registro_elettronico/component/api_config.dart';
-import 'package:registro_elettronico/domain/entity/api_requests/login_request.dart';
+import 'package:registro_elettronico/feature/login/data/model/login_request_model.dart';
 import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';
 import 'package:registro_elettronico/domain/entity/api_responses/agenda_remote_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/documents_response.dart';
+import 'package:registro_elettronico/feature/scrutini/data/model/document_remote_model.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grades_response.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_remote_model.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/login_response.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/notes_read_response.dart';
+import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';
+import 'package:registro_elettronico/feature/notes/data/model/notes_read_remote_model.dart';
 import 'package:registro_elettronico/feature/notes/data/model/note_remote_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/notice_read_remote_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/notice_remote_model.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/parent_response.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/periods_response.dart';
-import 'package:registro_elettronico/domain/entity/api_responses/subjects_response.dart';
+import 'package:registro_elettronico/feature/login/data/model/parent_response_remote_model.dart';
+import 'package:registro_elettronico/feature/periods/data/model/period_remote_model.dart';
+import 'package:registro_elettronico/feature/subjects/data/model/subject_remote_model.dart';
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 

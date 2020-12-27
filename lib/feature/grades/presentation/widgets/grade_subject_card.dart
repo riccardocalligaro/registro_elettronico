@@ -6,7 +6,7 @@ import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/feature/grades/presentation/bloc/subjects_grades/subjects_grades_bloc.dart';
 import 'package:registro_elettronico/feature/grades/presentation/views/subject_grades.dart';
-import 'package:registro_elettronico/ui/feature/settings/components/general/general_objective_settings_dialog.dart';
+import 'package:registro_elettronico/feature/settings/widgets/general/general_objective_settings_dialog.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';

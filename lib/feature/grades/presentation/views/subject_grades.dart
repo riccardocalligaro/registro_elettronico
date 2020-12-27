@@ -6,9 +6,10 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:registro_elettronico/data/db/moor_database.dart';
 import 'package:registro_elettronico/feature/grades/presentation/bloc/grades_bloc.dart';
+import 'package:registro_elettronico/feature/grades/presentation/bloc/local_grades/local_grades_bloc.dart';
 import 'package:registro_elettronico/feature/grades/presentation/widgets/grades_chart.dart';
-import 'package:registro_elettronico/ui/bloc/local_grades/bloc.dart';
-import 'package:registro_elettronico/ui/bloc/professors/bloc.dart';
+import 'package:registro_elettronico/feature/professors/presentation/bloc/professors_bloc.dart';
+
 import 'package:registro_elettronico/ui/feature/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/ui/feature/widgets/grade_card.dart';
 import 'package:registro_elettronico/ui/global/localizations/app_localizations.dart';

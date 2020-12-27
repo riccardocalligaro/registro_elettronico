@@ -1,0 +1,12 @@
+part of 'professors_bloc.dart';
+
+@immutable
+abstract class ProfessorsEvent {}
+
+class GetProfessorsForSubject extends ProfessorsEvent {
+  final int subjectId;
+
+  GetProfessorsForSubject({
+    @required this.subjectId,
+  });
+}

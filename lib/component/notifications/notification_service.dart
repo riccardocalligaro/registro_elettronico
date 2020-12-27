@@ -18,7 +18,7 @@ import 'package:registro_elettronico/data/network/service/api/spaggiari_client.d
 import 'package:registro_elettronico/feature/absences/data/repository/absences_repository_impl.dart';
 import 'package:registro_elettronico/feature/agenda/data/repository/agenda_repository_impl.dart';
 import 'package:registro_elettronico/feature/didactics/data/repository/didactics_repository_impl.dart';
-import 'package:registro_elettronico/data/repository/documents_repository_impl.dart';
+import 'package:registro_elettronico/feature/scrutini/data/repository/documents_repository_impl.dart';
 import 'package:registro_elettronico/feature/grades/data/repository/grades_repository_impl.dart';
 import 'package:registro_elettronico/feature/notes/data/repository/notes_repository_impl.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/repository/notices_repository_impl.dart';
@@ -26,7 +26,7 @@ import 'package:registro_elettronico/data/repository/profile_repository_impl.dar
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
-import 'package:registro_elettronico/domain/repository/documents_repository.dart';
+import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';

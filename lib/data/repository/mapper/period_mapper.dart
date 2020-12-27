@@ -1,5 +1,5 @@
 import 'package:registro_elettronico/data/db/moor_database.dart' as db;
-import 'package:registro_elettronico/domain/entity/api_responses/periods_response.dart';
+import 'package:registro_elettronico/feature/periods/data/model/period_remote_model.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 
 // TextColumn get code => text()();
@@ -11,7 +11,7 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 // TextColumn get miurDivisionCode => text()();
 
 class PeriodMapper {
-  static db.Period convertEventEntityToInsertable(Period period, int index) {
+  static db.Period convertEventEntityToInsertable(PeriodRemoteModel period, int index) {
     return db.Period(
       code: period.periodCode ?? "",
       position: period.periodPos ?? -1,

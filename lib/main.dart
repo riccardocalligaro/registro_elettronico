@@ -9,7 +9,7 @@ import 'package:registro_elettronico/component/app_injection.dart';
 import 'package:registro_elettronico/component/notifications/notification_service.dart';
 import 'package:registro_elettronico/component/simple_bloc_delegate.dart';
 import 'package:registro_elettronico/ui/application.dart';
-import 'package:registro_elettronico/ui/feature/splash_screen/splash_screen.dart';
+import 'package:registro_elettronico/feature/splash/presentation/splash_screen.dart';
 
 // import 'component/firebase_notification_handler.dart';
 import 'component/routes.dart';

@@ -10,7 +10,7 @@ import 'package:registro_elettronico/feature/noticeboard/presentation/noticeboar
 import 'package:registro_elettronico/feature/didactics/presentation/didactics_page.dart';
 import 'package:registro_elettronico/feature/scrutini/presentation/scrutini_page.dart';
 import 'package:registro_elettronico/feature/settings/settings_page.dart';
-import 'package:registro_elettronico/ui/feature/splash_screen/splash_screen.dart';
+import 'package:registro_elettronico/feature/splash/presentation/splash_screen.dart';
 import 'package:registro_elettronico/feature/stats/presentation/stats_page.dart';
 import 'package:registro_elettronico/feature/timetable/presentation/timetable_page.dart';
 
