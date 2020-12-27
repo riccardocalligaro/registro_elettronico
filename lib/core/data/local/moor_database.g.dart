@@ -8,7 +8,6 @@ part of 'moor_database.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class Profile extends DataClass implements Insertable<Profile> {
-  final int id;
   final String studentId;
   final String ident;
   final String firstName;
@@ -17,8 +16,7 @@ class Profile extends DataClass implements Insertable<Profile> {
   final DateTime release;
   final DateTime expire;
   Profile(
-      {@required this.id,
-      @required this.studentId,
+      {@required this.studentId,
       @required this.ident,
       @required this.firstName,
       @required this.lastName,
@@ -28,11 +26,9 @@ class Profile extends DataClass implements Insertable<Profile> {
   factory Profile.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return Profile(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       studentId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}student_id']),
       ident:
@@ -52,9 +48,6 @@ class Profile extends DataClass implements Insertable<Profile> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int>(id);
-    }
     if (!nullToAbsent || studentId != null) {
       map['student_id'] = Variable<String>(studentId);
     }
@@ -81,7 +74,6 @@ class Profile extends DataClass implements Insertable<Profile> {
 
   ProfilesCompanion toCompanion(bool nullToAbsent) {
     return ProfilesCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       studentId: studentId == null && nullToAbsent
           ? const Value.absent()
           : Value(studentId),
@@ -107,7 +99,6 @@ class Profile extends DataClass implements Insertable<Profile> {
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return Profile(
-      id: serializer.fromJson<int>(json['id']),
       studentId: serializer.fromJson<String>(json['studentId']),
       ident: serializer.fromJson<String>(json['ident']),
       firstName: serializer.fromJson<String>(json['firstName']),
@@ -121,7 +112,6 @@ class Profile extends DataClass implements Insertable<Profile> {
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
       'studentId': serializer.toJson<String>(studentId),
       'ident': serializer.toJson<String>(ident),
       'firstName': serializer.toJson<String>(firstName),
@@ -133,8 +123,7 @@ class Profile extends DataClass implements Insertable<Profile> {
   }
 
   Profile copyWith(
-          {int id,
-          String studentId,
+          {String studentId,
           String ident,
           String firstName,
           String lastName,
@@ -142,7 +131,6 @@ class Profile extends DataClass implements Insertable<Profile> {
           DateTime release,
           DateTime expire}) =>
       Profile(
-        id: id ?? this.id,
         studentId: studentId ?? this.studentId,
         ident: ident ?? this.ident,
         firstName: firstName ?? this.firstName,
@@ -154,7 +142,6 @@ class Profile extends DataClass implements Insertable<Profile> {
   @override
   String toString() {
     return (StringBuffer('Profile(')
-          ..write('id: $id, ')
           ..write('studentId: $studentId, ')
           ..write('ident: $ident, ')
           ..write('firstName: $firstName, ')
@@ -168,22 +155,19 @@ class Profile extends DataClass implements Insertable<Profile> {
 
   @override
   int get hashCode => $mrjf($mrjc(
-      id.hashCode,
+      studentId.hashCode,
       $mrjc(
-          studentId.hashCode,
+          ident.hashCode,
           $mrjc(
-              ident.hashCode,
+              firstName.hashCode,
               $mrjc(
-                  firstName.hashCode,
-                  $mrjc(
-                      lastName.hashCode,
-                      $mrjc(token.hashCode,
-                          $mrjc(release.hashCode, expire.hashCode))))))));
+                  lastName.hashCode,
+                  $mrjc(token.hashCode,
+                      $mrjc(release.hashCode, expire.hashCode)))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is Profile &&
-          other.id == this.id &&
           other.studentId == this.studentId &&
           other.ident == this.ident &&
           other.firstName == this.firstName &&
@@ -194,7 +178,6 @@ class Profile extends DataClass implements Insertable<Profile> {
 }
 
 class ProfilesCompanion extends UpdateCompanion<Profile> {
-  final Value<int> id;
   final Value<String> studentId;
   final Value<String> ident;
   final Value<String> firstName;
@@ -203,7 +186,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<DateTime> release;
   final Value<DateTime> expire;
   const ProfilesCompanion({
-    this.id = const Value.absent(),
     this.studentId = const Value.absent(),
     this.ident = const Value.absent(),
     this.firstName = const Value.absent(),
@@ -213,7 +195,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.expire = const Value.absent(),
   });
   ProfilesCompanion.insert({
-    @required int id,
     @required String studentId,
     @required String ident,
     @required String firstName,
@@ -221,8 +202,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     @required String token,
     @required DateTime release,
     @required DateTime expire,
-  })  : id = Value(id),
-        studentId = Value(studentId),
+  })  : studentId = Value(studentId),
         ident = Value(ident),
         firstName = Value(firstName),
         lastName = Value(lastName),
@@ -230,7 +210,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
         release = Value(release),
         expire = Value(expire);
   static Insertable<Profile> custom({
-    Expression<int> id,
     Expression<String> studentId,
     Expression<String> ident,
     Expression<String> firstName,
@@ -240,7 +219,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Expression<DateTime> expire,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
       if (studentId != null) 'student_id': studentId,
       if (ident != null) 'ident': ident,
       if (firstName != null) 'first_name': firstName,
@@ -252,8 +230,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   }
 
   ProfilesCompanion copyWith(
-      {Value<int> id,
-      Value<String> studentId,
+      {Value<String> studentId,
       Value<String> ident,
       Value<String> firstName,
       Value<String> lastName,
@@ -261,7 +238,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<DateTime> release,
       Value<DateTime> expire}) {
     return ProfilesCompanion(
-      id: id ?? this.id,
       studentId: studentId ?? this.studentId,
       ident: ident ?? this.ident,
       firstName: firstName ?? this.firstName,
@@ -275,9 +251,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
     if (studentId.present) {
       map['student_id'] = Variable<String>(studentId.value);
     }
@@ -305,7 +278,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   @override
   String toString() {
     return (StringBuffer('ProfilesCompanion(')
-          ..write('id: $id, ')
           ..write('studentId: $studentId, ')
           ..write('ident: $ident, ')
           ..write('firstName: $firstName, ')
@@ -322,15 +294,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   final GeneratedDatabase _db;
   final String _alias;
   $ProfilesTable(this._db, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
-  @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
   final VerificationMeta _studentIdMeta = const VerificationMeta('studentId');
   GeneratedTextColumn _studentId;
   @override
@@ -417,7 +380,7 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
 
   @override
   List<GeneratedColumn> get $columns =>
-      [id, studentId, ident, firstName, lastName, token, release, expire];
+      [studentId, ident, firstName, lastName, token, release, expire];
   @override
   $ProfilesTable get asDslTable => this;
   @override
@@ -429,11 +392,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
-    }
     if (data.containsKey('student_id')) {
       context.handle(_studentIdMeta,
           studentId.isAcceptableOrUnknown(data['student_id'], _studentIdMeta));
@@ -480,7 +438,7 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id, ident};
+  Set<GeneratedColumn> get $primaryKey => {ident};
   @override
   Profile map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;

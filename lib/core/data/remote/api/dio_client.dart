@@ -20,8 +20,8 @@ class DioClient {
     final dio = Dio();
 
     dio.options.headers["Content-Type"] = Headers.jsonContentType;
-    dio.options.headers["User-Agent"] = "${ApiConfig.BASE_USER_AGENT}";
-    dio.options.headers["Z-Dev-Apikey"] = "${ApiConfig.API_KEY}";
+    dio.options.headers["User-Agent"] = "${ApiConfig.baseUserAgent}";
+    dio.options.headers["Z-Dev-Apikey"] = "${ApiConfig.apiKey}";
 
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
@@ -41,11 +41,10 @@ class DioClient {
           final password = await flutterSecureStorage.read(key: profile.ident);
           // we create a dio client for requesting the token to spaggiari
           final tokenDio = Dio();
-          tokenDio.options.baseUrl = "${ApiConfig.BASE_API_URL}";
+          tokenDio.options.baseUrl = "${ApiConfig.baseApiUrl}";
           tokenDio.options.headers["Content-Type"] = Headers.jsonContentType;
-          tokenDio.options.headers["User-Agent"] =
-              "${ApiConfig.BASE_USER_AGENT}";
-          tokenDio.options.headers["Z-Dev-Apikey"] = "${ApiConfig.API_KEY}";
+          tokenDio.options.headers["User-Agent"] = "${ApiConfig.baseUserAgent}";
+          tokenDio.options.headers["Z-Dev-Apikey"] = "${ApiConfig.apiKey}";
 
           // we make a request to auth login to get the new token
           final res = await tokenDio.post("/auth/login", data: {

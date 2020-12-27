@@ -9,7 +9,6 @@ class ProfileMapper {
   /// inserted in the database
   static db.Profile mapProfileEntityToProfileInsertable(entity.Profile e) {
     return db.Profile(
-      id: -1,
       ident: e.ident,
       studentId: ProfileUtils.getIdFromIdent(e.ident),
       firstName: e.firstName ?? "",

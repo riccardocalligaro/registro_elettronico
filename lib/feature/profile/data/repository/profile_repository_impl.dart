@@ -1,3 +1,4 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
@@ -12,10 +13,12 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   ProfileRepositoryImpl(this.profileDao, this.flutterSecureStorage);
 
+  @override
   Future<bool> isLoggedIn() async {
+    FLog.info(text: 'Checking logged in user...');
     final profiles = await profileDao.getAllProfiles();
 
-    return (profiles.length >= 1);
+    return profiles.isNotEmpty;
   }
 
   @override

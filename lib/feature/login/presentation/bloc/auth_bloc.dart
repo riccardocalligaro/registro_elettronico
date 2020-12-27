@@ -80,7 +80,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             if (event.username.contains(RegExp(regEx))) {
               email = event.username;
             }
-            _saveProfileInDb(loginReponse, event.password, email);
+            await _saveProfileInDb(loginReponse, event.password, email);
             FLog.info(text: 'Log in success');
 
             yield SignInSuccess(
@@ -114,13 +114,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  _saveProfileInDb(
-      LoginResponse returnedProfile, String userPassword, String email) {
+  Future<void> _saveProfileInDb(
+    LoginResponse returnedProfile,
+    String userPassword,
+    String email,
+  ) async {
     FLog.info(text: 'Saving profile in database');
     final profileEntity = ProfileMapper.mapLoginResponseProfileToProfileEntity(
       returnedProfile,
     );
-    profileRepository.insertProfile(profile: profileEntity);
-    flutterSecureStorage.write(key: profileEntity.ident, value: userPassword);
+    await profileRepository.insertProfile(profile: profileEntity);
+    await flutterSecureStorage.write(
+        key: profileEntity.ident, value: userPassword);
   }
 }

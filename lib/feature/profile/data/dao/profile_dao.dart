@@ -34,7 +34,5 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
   Future deleteProfile(Insertable<Profile> profile) =>
       delete(profiles).delete(profile);
 
-  Future deleteAllProfiles() =>
-      (delete(profiles)..where((entry) => entry.id.isBiggerOrEqualValue(-1)))
-          .go();
+  Future deleteAllProfiles() => delete(profiles).go();
 }

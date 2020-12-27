@@ -490,6 +490,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1+1"
+  injector:
+    dependency: "direct main"
+    description:
+      name: injector
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.9"
   intl:
     dependency: "direct main"
     description:

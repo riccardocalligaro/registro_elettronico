@@ -1,7 +1,6 @@
 import 'package:moor_flutter/moor_flutter.dart';
 
 class Profiles extends Table {
-  IntColumn get id => integer().autoIncrement()();
   TextColumn get studentId => text()();
   TextColumn get ident => text()();
   TextColumn get firstName => text()();
@@ -11,5 +10,5 @@ class Profiles extends Table {
   DateTimeColumn get expire => dateTime()();
 
   @override
-  Set<Column> get primaryKey => {id, ident};
+  Set<Column> get primaryKey => {ident};
 }

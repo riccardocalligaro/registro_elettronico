@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:f_logs/f_logs.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -13,8 +14,14 @@ import 'core/infrastructure/routes.dart';
 
 FlutterLocalNotificationsPlugin globalLocalNotifications;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // from firebase 0.5 +
+  await Firebase.initializeApp();
+
   initApp();
+
   // Finnaly run the app
   runZoned<Future<void>>(() async {
     runApp(MyApp());

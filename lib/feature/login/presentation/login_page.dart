@@ -40,10 +40,8 @@ class _LoginPageState extends State<LoginPage> {
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is SignInSuccess) {
-              AppNavigator.instance.navToIntro(context);
-
               /// If the sign in is successful then navigate to the home page
-              //AppNavigator.instance.navToHome(context);
+              AppNavigator.instance.navToHome(context);
             }
 
             if (state is SignInParent) {

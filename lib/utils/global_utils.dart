@@ -23,7 +23,6 @@ class GlobalUtils {
   // }
   static Profile getMockProfile() {
     return Profile(
-      id: -1,
       ident: '32',
       firstName: 'x',
       lastName: '',
