@@ -1,3 +1,26 @@
+Ciao a tutti, è ora scaricabile registro elettronico V2.
+
+Dopo aver abbandonato temporaneamente il progetto a causa di altri impegni lavorativi ho deciso di riprenderlo e concluderlo una volta per tutte, qui di seguito il changelog, se tutto va bene nelle prossime settimane pubblicherò sul Play store.
+
+Version 2.0.0-dev+2
+
+* Close #48 - New event with notification crash
+
+* Close #47 - Workmanager issues 
+
+* Close #46 - Black intro screen
+
+* Close #45 - School material folder issues
+
+* Close #43 - Notifications issues
+
+* Rimossa intro: ora viene scaricato tutto in background senza far perdere tempo all'utente.
+
+Il codice è stato riorganizzato completamente e si sono aggiornate le librerie + l'engine di flutter quindi è possibile notare notevoli miglioramenti di performance
+
+Grazie a tutti e buone vacanze
+
+
 Version 0.0.9-alpha 
 
 * Fixed #42 - fixed opening of text and links in school material
