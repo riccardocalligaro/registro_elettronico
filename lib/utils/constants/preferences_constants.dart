@@ -44,4 +44,6 @@ class PrefsConstants {
   static const lastUpdateVitalData = 'lastUpdateVitalData';
   static const lastUpdateAllData = 'lastUpdateAllData';
   static const lastUpdate = 'lastUpdate';
+
+  static const profile = 'profile';
 }

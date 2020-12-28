@@ -2,11 +2,11 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
 import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
+import 'package:registro_elettronico/feature/profile/data/model/profile_entity.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/feature/settings/widgets/account/account_settings.dart';
 import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view.dart';
@@ -353,7 +353,7 @@ class _AppDrawerState extends State<AppDrawer>
 
   Future<Profile> _getUsername() async {
     final profile =
-        await RepositoryProvider.of<ProfileRepository>(context).getDbProfile();
+        await RepositoryProvider.of<ProfileRepository>(context).getProfile();
     return await profile;
   }
 

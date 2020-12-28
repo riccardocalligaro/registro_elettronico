@@ -9,7 +9,6 @@ import 'package:registro_elettronico/application.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/splash/presentation/splash_screen.dart';
 
-// import 'component/firebase_notification_handler.dart';
 import 'core/infrastructure/routes.dart';
 
 FlutterLocalNotificationsPlugin globalLocalNotifications;

@@ -105,7 +105,7 @@ class AppInjector {
 
   static void injectService() {
     sl.registerLazySingleton<Dio>(
-      () => DioClient(sl(), sl()).createDio(),
+      () => DioClient(sl(), sl(), sl()).createDio(),
     );
     sl.registerLazySingleton(() => Dio(), instanceName: 'WebSpaggiariDio');
 
@@ -118,8 +118,11 @@ class AppInjector {
     sl.registerLazySingleton<LoginRepository>(
         () => LoginRepositoryImpl(sl(), sl(), sl()));
 
-    sl.registerLazySingleton<ProfileRepository>(
-        () => ProfileRepositoryImpl(sl(), sl()));
+    sl.registerLazySingleton<ProfileRepository>(() => ProfileRepositoryImpl(
+          sl(),
+          sl(),
+          sl(),
+        ));
 
     sl.registerLazySingleton<LessonsRepository>(
         () => LessonsRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
@@ -167,6 +170,7 @@ class AppInjector {
         profileRepository: sl(),
         loginRepository: sl(),
         flutterSecureStorage: sl(),
+        sharedPreferences: sl(),
       ),
     );
   }

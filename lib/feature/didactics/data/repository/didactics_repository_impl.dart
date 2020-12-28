@@ -139,7 +139,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
 
     String baseUrl = 'https://web.spaggiari.eu/rest/v1';
 
-    final _dio = DioClient(sl(), sl());
+    final _dio = DioClient(sl(), sl(), sl());
     ArgumentError.checkNotNull(studentId, 'studentId');
     ArgumentError.checkNotNull(fileId, 'fileId');
     const _extra = <String, dynamic>{};

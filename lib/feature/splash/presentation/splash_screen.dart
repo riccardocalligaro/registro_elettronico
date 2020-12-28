@@ -52,8 +52,6 @@ class _SplashScreenState extends State<SplashScreen> {
           else if (state is AutoSignInError) {
             FLog.info(text: "Auto sign in error -> Login screen screen");
             AppNavigator.instance.navToLogin(context);
-          } else if (state is AutoSignInNeedDownloadData) {
-            AppNavigator.instance.navToHome(context);
           }
         },
         child: Center(

@@ -5,20 +5,25 @@ import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/feature/profile/data/model/profile_entity.dart';
 import 'package:registro_elettronico/feature/profile/data/model/profile_mapper.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   final ProfileDao profileDao;
   final FlutterSecureStorage flutterSecureStorage;
+  final SharedPreferences sharedPreferences;
 
-  ProfileRepositoryImpl(this.profileDao, this.flutterSecureStorage);
+  ProfileRepositoryImpl(
+    this.profileDao,
+    this.flutterSecureStorage,
+    this.sharedPreferences,
+  );
 
   @override
   Future<bool> isLoggedIn() async {
     FLog.info(text: 'Checking logged in user...');
-    final profiles = await profileDao.getAllProfiles();
-
-    return profiles.isNotEmpty;
+    return sharedPreferences.getString(PrefsConstants.profile) != null;
   }
 
   @override
@@ -61,5 +66,11 @@ class ProfileRepositoryImpl implements ProfileRepository {
     final profile = await profileDao.getProfile();
     final password = await flutterSecureStorage.read(key: profile.ident);
     return Tuple2(profile, password);
+  }
+
+  @override
+  Profile getProfile() {
+    final profile = sharedPreferences.getString(PrefsConstants.profile);
+    return Profile.fromJson(profile);
   }
 }

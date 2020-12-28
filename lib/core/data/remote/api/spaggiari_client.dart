@@ -22,6 +22,8 @@ import 'package:retrofit/retrofit.dart';
 
 // part 'spaggiari_client.g.dart';
 
+// This is written 'strangely' beacuse I used Retrofit to generate the calls but then
+// for feature reasons I had to manually write the http calls
 abstract class SpaggiariClient {
   factory SpaggiariClient(Dio dio) = _SpaggiariClient;
 

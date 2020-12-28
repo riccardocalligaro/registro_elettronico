@@ -32,7 +32,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   @override
   Future updateDocuments() async {
     if (await networkInfo.isConnected) {
-      final profile = await profileRepository.getDbProfile();
+      final profile = await profileRepository.getProfile();
       final documents = await spaggiariClient.getDocuments(profile.studentId);
 
       List<Document> documentsList = [];
@@ -85,7 +85,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   @override
   Future<Either<Failure, bool>> checkDocument(String documentHash) async {
     if (await networkInfo.isConnected) {
-      final profile = await profileRepository.getDbProfile();
+      final profile = profileRepository.getProfile();
 
       try {
         final available = await spaggiariClient.checkDocumentAvailability(
@@ -106,7 +106,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   Future<Either<Failure, String>> readDocument(String documentHash) async {
     if (await networkInfo.isConnected) {
       try {
-        final profile = await profileRepository.getDbProfile();
+        final profile = profileRepository.getProfile();
         FLog.info(text: 'Got profile');
 
         final document = await spaggiariClient.readDocument(

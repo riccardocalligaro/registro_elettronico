@@ -31,6 +31,7 @@ class ProfileMapper {
       token: resProfile.token ?? "",
       release: resProfile.release ?? DateTime.now(),
       expire: resProfile.expire ?? DateTime.now(),
+      studentId: ProfileUtils.getIdFromIdent(resProfile.ident),
     );
   }
 }

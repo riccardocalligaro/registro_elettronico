@@ -5,8 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
-import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/exception/server_exception.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';
@@ -25,14 +23,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ProfileRepository profileRepository;
   final LoginRepository loginRepository;
   final FlutterSecureStorage flutterSecureStorage;
+  final SharedPreferences sharedPreferences;
 
   AuthBloc({
     @required this.profileRepository,
     @required this.loginRepository,
     @required this.flutterSecureStorage,
+    @required this.sharedPreferences,
   }) : super(AuthInitial());
 
-  Future<db.Profile> get profile => profileRepository.getDbProfile();
+  Profile get profile => profileRepository.getProfile();
 
   @override
   Stream<AuthState> mapEventToState(
@@ -43,29 +43,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is AutoSignIn) {
       yield AutoSignInLoading();
       final isUserLoggedIn = await profileRepository.isLoggedIn();
+
       FLog.info(text: 'Auto sign in result: $isUserLoggedIn');
+
       if (isUserLoggedIn) {
-        SharedPreferences prefs = sl();
-        final vitalDataDownloaded =
-            prefs.getBool(PrefsConstants.VITAL_DATA_DOWNLOADED) ?? false;
-        if (!vitalDataDownloaded) {
-          yield AutoSignInNeedDownloadData();
-        } else {
-          yield AutoSignInResult();
-        }
+        yield AutoSignInResult();
       } else {
         yield AutoSignInError();
       }
-    }
-
-    if (event is SignIn) {
+    } else if (event is SignIn) {
       yield SignInLoading();
       try {
         final responseProfile = await loginRepository.signIn(
             username: event.username, password: event.password);
 
         FLog.info(text: responseProfile.toString());
-        // If it is classic login response
 
         yield* responseProfile.fold(
           (loginReponse) async* {
@@ -80,7 +72,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             if (event.username.contains(RegExp(regEx))) {
               email = event.username;
             }
-            await _saveProfileInDb(loginReponse, event.password, email);
+
+            await _saveProfile(loginReponse, event.password, email);
+
             FLog.info(text: 'Log in success');
 
             yield SignInSuccess(
@@ -108,22 +102,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     if (event is SignOut) {
       await flutterSecureStorage.deleteAll();
-      SharedPreferences sharedPreferences = sl();
       await sharedPreferences.clear();
       yield SignOutSuccess();
     }
   }
 
-  Future<void> _saveProfileInDb(
+  Future<void> _saveProfile(
     LoginResponse returnedProfile,
     String userPassword,
     String email,
   ) async {
     FLog.info(text: 'Saving profile in database');
+
     final profileEntity = ProfileMapper.mapLoginResponseProfileToProfileEntity(
       returnedProfile,
     );
-    await profileRepository.insertProfile(profile: profileEntity);
+
+    // save it to shared preferences
+    await sharedPreferences.setString(
+        PrefsConstants.profile, profileEntity.toJson());
+
     await flutterSecureStorage.write(
         key: profileEntity.ident, value: userPassword);
   }

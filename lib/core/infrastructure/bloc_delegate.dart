@@ -53,6 +53,7 @@ class AppBlocDelegate {
         create: (ctx) => ProfileRepositoryImpl(
           sl(),
           sl(),
+          sl(),
         ),
       ),
       RepositoryProvider<ScrutiniRepository>(
@@ -109,6 +110,7 @@ class AppBlocDelegate {
           flutterSecureStorage: sl(),
           profileRepository: sl(),
           loginRepository: sl(),
+          sharedPreferences: sl(),
         ),
       ),
       BlocProvider<LessonsBloc>(

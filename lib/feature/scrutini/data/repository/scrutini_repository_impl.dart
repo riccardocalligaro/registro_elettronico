@@ -26,7 +26,7 @@ class ScrutiniRepositoryImpl implements ScrutiniRepository {
     bool lastYear,
   }) async {
     if (await networkInfo.isConnected) {
-      final profile = await profileRepository.getDbProfile();
+      final profile = profileRepository.getProfile();
       final password = await flutterSecureStorage.read(key: profile.ident);
 
       try {

@@ -6,12 +6,19 @@ import 'package:registro_elettronico/core/infrastructure/exception/server_except
 import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';
 import 'package:registro_elettronico/feature/profile/data/model/profile_mapper.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DioClient {
   final ProfileRepository profileRepository;
   final FlutterSecureStorage flutterSecureStorage;
+  final SharedPreferences sharedPreferences;
 
-  DioClient(this.profileRepository, this.flutterSecureStorage);
+  DioClient(
+    this.profileRepository,
+    this.flutterSecureStorage,
+    this.sharedPreferences,
+  );
 
   Dio createDio() {
     final dio = Dio();
@@ -27,10 +34,13 @@ class DioClient {
         // temporarily lock the requests
         dio.lock();
         // get the profile from the database
-        final profile = await profileRepository.getDbProfile();
+        final profile = await profileRepository.getProfile();
+
+        final expireDate = DateTime.parse(profile.expire);
+
         FLog.info(text: 'Got profile');
         //? This checks if the profile exires before now, so if this  results true the token is expired
-        if (profile.expire.isBefore(DateTime.now())) {
+        if (expireDate.isBefore(DateTime.now())) {
           FLog.info(
             text: "Need to request new token - ${profile.expire.toString()}",
           );
@@ -58,10 +68,14 @@ class DioClient {
           final loginResponse = LoginResponse.fromJson(res.data);
 
           // finally we update the db with the new token
-          await profileRepository.updateProfile(
+
+          final updatedProfile =
               ProfileMapper.mapLoginResponseProfileToProfileEntity(
             loginResponse,
-          ));
+          );
+
+          await sharedPreferences.setString(
+              PrefsConstants.profile, updatedProfile.toJson());
 
           //profileRepository.updateProfile();
           FLog.info(

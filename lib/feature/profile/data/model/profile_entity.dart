@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 class Profile {
   String ident;
   String firstName;
@@ -7,14 +9,16 @@ class Profile {
   String token;
   String release;
   String expire;
+  String studentId;
 
   Profile({
-    this.ident,
-    this.firstName,
-    this.lastName,
-    this.token,
-    this.release,
-    this.expire,
+    @required this.ident,
+    @required this.firstName,
+    @required this.lastName,
+    @required this.token,
+    @required this.release,
+    @required this.expire,
+    @required this.studentId,
   });
 
   Profile copyWith({
@@ -24,6 +28,7 @@ class Profile {
     String token,
     String release,
     String expire,
+    String studentId,
   }) {
     return Profile(
       ident: ident ?? this.ident,
@@ -32,6 +37,7 @@ class Profile {
       token: token ?? this.token,
       release: release ?? this.release,
       expire: expire ?? this.expire,
+      studentId: studentId ?? this.studentId,
     );
   }
 
@@ -43,6 +49,7 @@ class Profile {
       'token': token,
       'release': release,
       'expire': expire,
+      'studentId': studentId,
     };
   }
 
@@ -56,6 +63,7 @@ class Profile {
       token: map['token'],
       release: map['release'],
       expire: map['expire'],
+      studentId: map['studentId'],
     );
   }
 
@@ -66,7 +74,7 @@ class Profile {
 
   @override
   String toString() {
-    return 'Profile(ident: $ident, firstName: $firstName, lastName: $lastName, token: $token, release: $release, expire: $expire)';
+    return 'Profile(ident: $ident, firstName: $firstName, lastName: $lastName, token: $token, release: $release, expire: $expire, studentId: $studentId)';
   }
 
   @override
@@ -79,7 +87,8 @@ class Profile {
         o.lastName == lastName &&
         o.token == token &&
         o.release == release &&
-        o.expire == expire;
+        o.expire == expire &&
+        o.studentId == studentId;
   }
 
   @override
@@ -89,6 +98,7 @@ class Profile {
         lastName.hashCode ^
         token.hashCode ^
         release.hashCode ^
-        expire.hashCode;
+        expire.hashCode ^
+        studentId.hashCode;
   }
 }

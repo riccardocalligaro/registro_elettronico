@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
@@ -13,11 +12,11 @@ import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_blo
 import 'package:registro_elettronico/feature/grades/presentation/bloc/grades_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/sections/last_grades_section.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/bloc/lessons_bloc.dart';
+import 'package:registro_elettronico/feature/profile/data/model/profile_entity.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 import 'package:registro_elettronico/utils/update_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,10 +55,7 @@ class _HomePageState extends State<HomePage> {
 
   List<bool> _refreshed = [false, false, false];
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
+  Profile profile;
 
   @override
   void initState() {
@@ -76,6 +72,10 @@ class _HomePageState extends State<HomePage> {
       BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
       _refreshHome();
     }
+
+    setState(() {
+      profile = RepositoryProvider.of<ProfileRepository>(context).getProfile();
+    });
   }
 
   void getPreferences() async {
@@ -328,30 +328,23 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildNameText() {
-    return FutureBuilder(
-      future: RepositoryProvider.of<ProfileRepository>(context).getDbProfile(),
-      initialData: GlobalUtils.getMockProfile(),
-      builder: (context, snapshot) {
-        final Profile profile = snapshot.data;
-        if (profile != null) {
-          return Text(
-            '${AppLocalizations.of(context).translate('welcome_message')}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.w400,
-            ),
-          );
-        }
-        return Text(
-          '${AppLocalizations.of(context).translate('welcome_message')}}.',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.w400,
-          ),
-        );
-      },
+    if (profile != null) {
+      return Text(
+        '${AppLocalizations.of(context).translate('welcome_message')}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 24,
+          fontWeight: FontWeight.w400,
+        ),
+      );
+    }
+    return Text(
+      '${AppLocalizations.of(context).translate('welcome_message')}}.',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 24,
+        fontWeight: FontWeight.w400,
+      ),
     );
   }
 
