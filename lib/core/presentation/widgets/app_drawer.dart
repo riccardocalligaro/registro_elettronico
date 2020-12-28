@@ -223,13 +223,6 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () {
                 Navigator.pop(context);
                 AppNavigator.instance.navToSchoolMaterial(context);
-
-                // Navigator.pushNamedAndRemoveUntil(
-                //     context, Routes.SCHOOL_MATERIAL, (
-                //   Route<dynamic> route,
-                // ) {
-                //   return route.isActive;
-                // });
               },
             ),
             _createDrawerItem(

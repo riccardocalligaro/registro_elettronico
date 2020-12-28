@@ -134,39 +134,51 @@ class _TermGradesPageState extends State<TermGradesPage> {
     List<Grade> grades,
     List<Subject> subjects,
   ) {
-    final sortedMap =
-        _getGradesOrderedByAverage(grades, subjects, showAsending);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: ListView.builder(
-        padding: EdgeInsets.only(bottom: 16.0),
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: sortedMap.keys.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: GradeSubjectCard(
-              subject: sortedMap.keys.elementAt(index),
-              grades: grades,
-              objective: widget.objectives
-                  .where(
-                      (o) => o.subjectId == sortedMap.keys.elementAt(index).id)
-                  .single
-                  .objective,
-              period: widget.periodPosition,
-            ),
+    return FutureBuilder(
+      future: _getGradesOrderedByAverage(grades, subjects, showAsending),
+      initialData: LinkedHashMap(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        final sortedMap = snapshot.data;
+
+        if (sortedMap.isEmpty) {
+          return Center(
+            child: CircularProgressIndicator(),
           );
-        },
-      ),
+        }
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: ListView.builder(
+            padding: EdgeInsets.only(bottom: 16.0),
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: sortedMap.keys.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: GradeSubjectCard(
+                  subject: sortedMap.keys.elementAt(index),
+                  grades: grades,
+                  objective: widget.objectives
+                      .where((o) =>
+                          o.subjectId == sortedMap.keys.elementAt(index).id)
+                      .single
+                      .objective,
+                  period: widget.periodPosition,
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
-  LinkedHashMap<Subject, double> _getGradesOrderedByAverage(
+  Future<LinkedHashMap<Subject, double>> _getGradesOrderedByAverage(
     List<Grade> grades,
     List<Subject> subjects,
     bool ascending,
-  ) {
+  ) async {
     Map<Subject, double> subjectsValues = Map.fromIterable(subjects,
         key: (e) => e, value: (e) => GradesUtils.getAverage(e.id, grades));
 

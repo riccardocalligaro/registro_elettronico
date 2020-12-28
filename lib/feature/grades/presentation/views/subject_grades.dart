@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dartz/dartz.dart' show Tuple2;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -6,6 +7,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/stateful_wrapper.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/core/presentation/widgets/grade_card.dart';
 import 'package:registro_elettronico/feature/grades/presentation/bloc/grades_bloc.dart';
@@ -19,7 +21,7 @@ import 'package:registro_elettronico/utils/string_utils.dart';
 
 import '../../../../utils/constants/tabs_constants.dart';
 
-class SubjectGradesPage extends StatefulWidget {
+class SubjectGradesPage extends StatelessWidget {
   final List<Grade> grades;
   final Subject subject;
   final int objective;
@@ -34,98 +36,130 @@ class SubjectGradesPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SubjectGradesPageState createState() => _SubjectGradesPageState();
+  Widget build(BuildContext context) {
+    return StatefulWrapper(
+      onInit: () {
+        BlocProvider.of<ProfessorsBloc>(context)
+            .add(GetProfessorsForSubject(subjectId: subject.id));
+        BlocProvider.of<GradesBloc>(context).add(GetGrades());
+        BlocProvider.of<LocalGradesBloc>(context).add(GetLocalGrades(
+          period: period,
+        ));
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          // backgroundColor: Colors.transparent,
+          // brightness: Theme.of(context).brightness,
+          // elevation: 0.0,
+          title: Text(subject.name),
+        ),
+        body: BlocBuilder<GradesBloc, GradesState>(
+          builder: (context, state) {
+            if (state is GradesLoaded) {
+              return SubjectGradesLoaded(
+                grades: state.grades,
+                subject: subject,
+                objective: objective,
+                period: period,
+              );
+            } else if (state is GradesError) {
+              // error widget
+              return Text('Error widget');
+            }
+
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
 
-class _SubjectGradesPageState extends State<SubjectGradesPage> {
-  double _currentPickerValue = 6.0;
+class SubjectGradesLoaded extends StatelessWidget {
+  final List<Grade> grades;
+  final Subject subject;
+  final int objective;
+  final int period;
 
-  @override
-  void initState() {
-    BlocProvider.of<ProfessorsBloc>(context)
-        .add(GetProfessorsForSubject(subjectId: widget.subject.id));
-    BlocProvider.of<GradesBloc>(context).add(GetGrades());
-    BlocProvider.of<LocalGradesBloc>(context).add(GetLocalGrades(
-      period: widget.period,
-    ));
-    super.initState();
-  }
+  const SubjectGradesLoaded({
+    Key key,
+    @required this.grades,
+    @required this.subject,
+    @required this.objective,
+    @required this.period,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final subject = widget.subject;
+    return FutureBuilder(
+      future: getSortedData(),
+      initialData: Tuple2(null, null),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        final Tuple2 values = snapshot.data;
+        if (values.value1 != null) {
+          return Container(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView(
+                children: <Widget>[
+                  _buildProfessorsCard(context),
 
-    return BlocBuilder<GradesBloc, GradesState>(
-      builder: (context, state) {
-        if (state is GradesLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (state is GradesLoaded) {
-          List<Grade> grades;
+                  /// Pratico scritto and orale ciruclar progress widgets
+                  _buildAveragesCard(values.value2, context),
 
-          grades = state.grades;
-          if (widget.period != TabsConstants.GENERALE) {
-            grades = state.grades
-                .where((grade) =>
-                    grade.subjectId == subject.id &&
-                    grade.periodPos == widget.period)
-                .toList()
-                  ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
-          } else {
-            grades = state.grades
-                .where((grade) => grade.subjectId == subject.id)
-                .toList()
-                  ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
-          }
+                  /// The chart that shows the average and grades
+                  _buildChartCard(
+                      subject,
+                      values.value1
+                          .where((g) => GradesUtils.isValidGrade(g))
+                          .toList()),
 
-          final averages =
-              GradesUtils.getSubjectAveragesFromGrades(grades, subject.id);
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              brightness: Theme.of(context).brightness,
-              elevation: 0.0,
-              title: Text(subject.name),
-            ),
-            body: Container(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView(
-                  children: <Widget>[
-                    _buildProfessorsCard(),
+                  // Shots the progress bar of the obj and the avg
+                  _buildProgressBarCard(values.value2, context),
 
-                    /// Pratico scritto and orale ciruclar progress widgets
-                    _buildAveragesCard(averages),
+                  _buildLocalGrades(values.value2, values.value1, context),
 
-                    /// The chart that shows the average and grades
-                    _buildChartCard(
-                        subject,
-                        grades
-                            .where((g) => GradesUtils.isValidGrade(g))
-                            .toList()),
-
-                    // Shots the progress bar of the obj and the avg
-                    _buildProgressBarCard(averages),
-
-                    _buildLocalGrades(averages, grades),
-
-                    // // Last grades
-                    _buildLastGrades(grades),
-                  ],
-                ),
+                  // // Last grades
+                  _buildLastGrades(values.value1),
+                ],
               ),
             ),
           );
         }
-
-        return Container();
+        return CircularProgressIndicator();
       },
     );
   }
 
-  Widget _buildLocalGrades(SubjectAverages averages, List<Grade> grades) {
+  Future<Tuple2<List<Grade>, SubjectAverages>> getSortedData() async {
+    List<Grade> updatedGrades;
+
+    if (period != TabsConstants.GENERALE) {
+      updatedGrades = grades
+          .where((grade) =>
+              grade.subjectId == subject.id && grade.periodPos == period)
+          .toList()
+            ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
+    } else {
+      updatedGrades = grades
+          .where((grade) => grade.subjectId == subject.id)
+          .toList()
+            ..sort((b, a) => a.eventDate.compareTo(b.eventDate));
+    }
+
+    final averages =
+        GradesUtils.getSubjectAveragesFromGrades(grades, subject.id);
+
+    return Tuple2(updatedGrades, averages);
+  }
+
+  Widget _buildLocalGrades(
+    SubjectAverages averages,
+    List<Grade> grades,
+    BuildContext context,
+  ) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.only(top: 16.0, left: 16.0),
@@ -143,10 +177,11 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                 if (state is LocalGradesLoaded) {
                   return _buildLocalGradesLoaded(
                       state.localGrades
-                          .where((g) => g.subjectId == widget.subject.id)
+                          .where((g) => g.subjectId == subject.id)
                           .toList(),
                       averages,
-                      grades);
+                      grades,
+                      context);
                 }
 
                 if (state is LocalGradesError) {
@@ -182,15 +217,15 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                           cancelWidget: Text(AppLocalizations.of(context)
                               .translate('cancel')
                               .toUpperCase()),
-                          initialDoubleValue: _currentPickerValue,
+                          initialDoubleValue: 6.0,
                         );
                       },
                     ).then(
                       (value) {
                         if (value != null) {
                           final grade = LocalGrade(
-                            periodPos: widget.period,
-                            subjectId: widget.subject.id,
+                            periodPos: period,
+                            subjectId: subject.id,
                             id: GlobalUtils.getRandomNumber(),
                             eventDate: DateTime.now(),
                             decimalValue: value,
@@ -217,8 +252,12 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     );
   }
 
-  Widget _buildLocalGradesLoaded(List<LocalGrade> localGrades,
-      SubjectAverages averages, List<Grade> grades) {
+  Widget _buildLocalGradesLoaded(
+    List<LocalGrade> localGrades,
+    SubjectAverages averages,
+    List<Grade> grades,
+    BuildContext context,
+  ) {
     final newAverage = GradesUtils.getAverageFromGradesAndLocalGrades(
       localGrades: localGrades,
       grades: grades,
@@ -329,16 +368,18 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     );
   }
 
-  Widget _buildProfessorsCard() {
+  Widget _buildProfessorsCard(BuildContext context) {
     return BlocBuilder<ProfessorsBloc, ProfessorsState>(
       builder: (context, state) {
         if (state is ProfessorsLoadSuccess) {
           String professorsText;
           if (state.professors.isNotEmpty) {
             //professorsText = GlobalUtils.getMockupName(index: 6);
-            professorsText = _getProfessorsText(state.professors
-                .where((professor) => professor.subjectId == widget.subject.id)
-                .toList());
+            professorsText = _getProfessorsText(
+                state.professors
+                    .where((professor) => professor.subjectId == subject.id)
+                    .toList(),
+                context);
           } else {
             professorsText =
                 AppLocalizations.of(context).translate('no_professors');
@@ -358,7 +399,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     );
   }
 
-  String _getProfessorsText(List<Professor> professors) {
+  String _getProfessorsText(List<Professor> professors, BuildContext context) {
     if (professors.isNotEmpty) {
       String professorsText = "";
       professors.forEach((prof) {
@@ -394,14 +435,14 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     );
   }
 
-  Widget _buildProgressBarCard(SubjectAverages averages) {
+  Widget _buildProgressBarCard(SubjectAverages averages, BuildContext context) {
     double percent;
     if (averages.average.isNaN) {
       percent = 0.0;
-    } else if (averages.average / widget.objective > 1) {
+    } else if (averages.average / objective > 1) {
       percent = 1.0;
     } else {
-      percent = (averages.average / widget.objective);
+      percent = (averages.average / objective);
     }
 
     return Card(
@@ -409,6 +450,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
             Container(
               child: LinearPercentIndicator(
@@ -416,7 +458,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                 percent: percent,
                 backgroundColor: Colors.grey,
                 progressColor: GlobalUtils.getColorFromAverageAndObjective(
-                    averages.average, widget.objective),
+                    averages.average, objective),
               ),
             ),
             Padding(
@@ -425,7 +467,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   AutoSizeText(
-                    '${AppLocalizations.of(context).translate('your_objective')}: ${widget.objective}',
+                    '${AppLocalizations.of(context).translate('your_objective')}: $objective',
                     textScaleFactor: 1.0,
                   ),
                   AutoSizeText(
@@ -441,7 +483,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
     );
   }
 
-  Widget _buildAveragesCard(SubjectAverages averages) {
+  Widget _buildAveragesCard(SubjectAverages averages, BuildContext context) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -489,7 +531,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
         padding: const EdgeInsets.only(right: 21.0),
         child: GradesChart(
           grades: grades,
-          objective: widget.objective,
+          objective: objective,
         ),
       ),
     );
