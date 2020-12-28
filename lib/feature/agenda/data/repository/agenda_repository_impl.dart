@@ -8,6 +8,7 @@ import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/event_mapper.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -19,6 +20,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
   final ProfileDao profileDao;
   final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
+  final ProfileRepository profileRepository;
 
   AgendaRepositoryImpl(
     this.spaggiariClient,
@@ -26,12 +28,13 @@ class AgendaRepositoryImpl implements AgendaRepository {
     this.profileDao,
     this.networkInfo,
     this.sharedPreferences,
+    this.profileRepository,
   );
 
   @override
   Future updateAgendaBetweenDates(DateTime begin, DateTime end) async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
 
       final beginDate = DateUtils.convertDate(begin);
       final endDate = DateUtils.convertDate(end);
@@ -70,7 +73,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
   @override
   Future updateAgendaStartingFromDate(DateTime begin) async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
 
       final now = DateUtils.convertDate(DateTime.now());
       final interval = DateUtils.getDateInerval();
@@ -104,7 +107,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
   @override
   Future updateAllAgenda() async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
 
       final interval = DateUtils.getDateInerval();
       final agenda = await spaggiariClient.getAgenda(

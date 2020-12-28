@@ -270,6 +270,7 @@ class SubjectGradesLoaded extends StatelessWidget {
         duration: Duration(milliseconds: 2000),
         child: ListView(
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),

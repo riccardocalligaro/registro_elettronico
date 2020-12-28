@@ -7,6 +7,7 @@ import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart'
 import 'package:registro_elettronico/feature/absences/data/model/absence_mapper.dart';
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,6 +17,7 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
   final ProfileDao profileDao;
   final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
+  final ProfileRepository profileRepository;
 
   AbsencesRepositoryImpl(
     this.spaggiariClient,
@@ -23,6 +25,7 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
     this.profileDao,
     this.networkInfo,
     this.sharedPreferences,
+    this.profileRepository,
   );
 
   @override
@@ -30,7 +33,7 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
     if (await networkInfo.isConnected) {
       FLog.info(text: 'Updating absences');
 
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
       final absences = await spaggiariClient.getAbsences(profile.studentId);
       List<Absence> absencesList = [];
       absences.events.forEach((event) {

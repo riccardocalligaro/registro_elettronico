@@ -6,6 +6,7 @@ import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart'
 import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +19,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
   final ProfileDao profileDao;
   final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
+  final ProfileRepository profileRepository;
 
   LessonsRepositoryImpl(
     this.spaggiariClient,
@@ -25,12 +27,13 @@ class LessonsRepositoryImpl implements LessonsRepository {
     this.profileDao,
     this.networkInfo,
     this.sharedPreferences,
+    this.profileRepository,
   );
 
   @override
   Future upadateTodayLessons() async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
       final lessons = await spaggiariClient.getTodayLessons(profile.studentId);
 
       List<Lesson> lessonsList = [];
@@ -56,7 +59,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
   @override
   Future updateAllLessons() async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
       final dateInterval = DateUtils.getDateInerval();
       final lessons = await spaggiariClient.getLessonBetweenDates(
         profile.studentId,

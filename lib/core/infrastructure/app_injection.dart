@@ -125,31 +125,31 @@ class AppInjector {
         ));
 
     sl.registerLazySingleton<LessonsRepository>(
-        () => LessonsRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
+        () => LessonsRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<SubjectsRepository>(
-        () => SubjectsRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
+        () => SubjectsRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<GradesRepository>(
-        () => GradesRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
+        () => GradesRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<AgendaRepository>(
-        () => AgendaRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
+        () => AgendaRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<AbsencesRepository>(
-        () => AbsencesRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
+        () => AbsencesRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<PeriodsRepository>(
-        () => PeriodsRepositoryImpl(sl(), sl(), sl(), sl()));
+        () => PeriodsRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<NoticesRepository>(
-        () => NoticesRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
+        () => NoticesRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<NotesRepository>(
-        () => NotesRepositoryImpl(sl(), sl(), sl(), sl()));
+        () => NotesRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<DidacticsRepository>(
-        () => DidacticsRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
+        () => DidacticsRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<TimetableRepository>(
         () => TimetableRepositoryImpl(sl(), sl()));

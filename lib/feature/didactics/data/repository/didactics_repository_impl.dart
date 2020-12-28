@@ -11,6 +11,7 @@ import 'package:registro_elettronico/feature/didactics/data/model/didactics_mapp
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +21,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   final ProfileDao profileDao;
   final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
+  final ProfileRepository profileRepository;
 
   DidacticsRepositoryImpl(
     this.spaggiariClient,
@@ -27,6 +29,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
     this.profileDao,
     this.networkInfo,
     this.sharedPreferences,
+    this.profileRepository,
   );
 
   @override
@@ -37,7 +40,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future updateDidactics() async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
 
       FLog.info(text: 'Updating didactics');
 
@@ -98,7 +101,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future<Response> getFileAttachment(int fileID) async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
       FLog.info(text: 'Getting attachment for $fileID!');
       final res = await _getAttachmentFile(profile.studentId, fileID);
       FLog.info(text: 'Got attachment for $fileID!');
@@ -111,7 +114,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future<DownloadAttachmentTextResponse> getTextAtachment(int fileID) async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
       FLog.info(text: 'Getting text attachment for $fileID!');
       final res = spaggiariClient.getAttachmentText(profile.studentId, fileID);
       FLog.info(text: 'Got text attachment for $fileID!');
@@ -124,7 +127,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future<DownloadAttachmentURLResponse> getURLAtachment(int fileID) async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
       FLog.info(text: 'Getting URL attachment for $fileID!');
       final res = spaggiariClient.getAttachmentUrl(profile.studentId, fileID);
       FLog.info(text: 'Got URL attachment for $fileID!');

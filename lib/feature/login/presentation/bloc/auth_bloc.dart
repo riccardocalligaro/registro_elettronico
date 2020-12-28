@@ -5,6 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart'
+    hide Profile;
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/exception/server_exception.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';
@@ -103,6 +106,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is SignOut) {
       await flutterSecureStorage.deleteAll();
       await sharedPreferences.clear();
+      final AppDatabase appDatabase = sl();
+      await appDatabase.resetDb();
       yield SignOutSuccess();
     }
   }

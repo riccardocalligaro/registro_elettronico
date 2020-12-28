@@ -5,6 +5,7 @@ import 'package:registro_elettronico/core/infrastructure/network/network_info.da
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
 import 'package:registro_elettronico/feature/professors/data/dao/professor_dao.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
 import 'package:registro_elettronico/feature/subjects/data/model/subject_mapper.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
@@ -15,6 +16,7 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
   final SubjectDao subjectDao;
   final ProfileDao profileDao;
   final NetworkInfo networkInfo;
+  final ProfileRepository profileRepository;
 
   SubjectsRepositoryImpl(
     this.spaggiariClient,
@@ -22,12 +24,13 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
     this.subjectDao,
     this.profileDao,
     this.networkInfo,
+    this.profileRepository,
   );
 
   @override
   Future updateSubjects() async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
       final res = await spaggiariClient.getSubjects(profile.studentId);
 
       List<Subject> subjects = [];

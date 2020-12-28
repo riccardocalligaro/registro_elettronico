@@ -7,6 +7,7 @@ import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
 import 'package:registro_elettronico/feature/grades/data/model/grade_mapper.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,6 +17,7 @@ class GradesRepositoryImpl implements GradesRepository {
   final ProfileDao profileDao;
   final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
+  final ProfileRepository profileRepository;
 
   GradesRepositoryImpl(
     this.gradeDao,
@@ -23,12 +25,13 @@ class GradesRepositoryImpl implements GradesRepository {
     this.profileDao,
     this.networkInfo,
     this.sharedPreferences,
+    this.profileRepository,
   );
 
   @override
   Future updateGrades() async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
       final gradesResponse = await spaggiariClient.getGrades(profile.studentId);
       List<Grade> grades = [];
       gradesResponse.grades.forEach((grade) {

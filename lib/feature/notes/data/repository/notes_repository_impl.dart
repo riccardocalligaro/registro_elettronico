@@ -8,18 +8,21 @@ import 'package:registro_elettronico/feature/notes/data/model/note_mapper.dart';
 import 'package:registro_elettronico/feature/notes/data/model/remote/notes_read_remote_model.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 
 class NotesRepositoryImpl implements NotesRepository {
   final NoteDao noteDao;
   final SpaggiariClient spaggiariClient;
   final ProfileDao profileDao;
   final NetworkInfo networkInfo;
+  final ProfileRepository profileRepository;
 
   NotesRepositoryImpl(
     this.noteDao,
     this.spaggiariClient,
     this.profileDao,
     this.networkInfo,
+    this.profileRepository,
   );
 
   @override
@@ -40,7 +43,7 @@ class NotesRepositoryImpl implements NotesRepository {
   @override
   Future updateNotes() async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
 
       final notesResponse = await spaggiariClient.getNotes(profile.studentId);
 
@@ -82,7 +85,7 @@ class NotesRepositoryImpl implements NotesRepository {
   @override
   Future<NotesReadResponse> readNote(String type, int eventId) async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
 
       final res =
           await spaggiariClient.markNote(profile.studentId, type, eventId, "");
@@ -100,7 +103,7 @@ class NotesRepositoryImpl implements NotesRepository {
   @override
   Future<NotesAttachment> getAttachmentForNote(String type, int eventId) async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
       final attachments = await noteDao.getAllAttachments();
 
       for (var attachment in attachments) {

@@ -8,6 +8,7 @@ import 'package:registro_elettronico/feature/noticeboard/data/dao/notice_dao.dar
 import 'package:registro_elettronico/feature/noticeboard/data/model/notice_mapper.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +18,7 @@ class NoticesRepositoryImpl implements NoticesRepository {
   final SpaggiariClient spaggiariClient;
   final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
+  final ProfileRepository profileRepository;
 
   NoticesRepositoryImpl(
     this.noticeDao,
@@ -24,12 +26,13 @@ class NoticesRepositoryImpl implements NoticesRepository {
     this.spaggiariClient,
     this.networkInfo,
     this.sharedPreferences,
+    this.profileRepository,
   );
 
   @override
   Future updateNotices() async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
       final response = await spaggiariClient.getNoticeBoard(profile.studentId);
 
       List<Notice> notices = [];
@@ -92,7 +95,7 @@ class NoticesRepositoryImpl implements NoticesRepository {
     @required int attachNumber,
   }) async {
     if (await networkInfo.isConnected) {
-      final profile = await profileDao.getProfile();
+      final profile = await profileRepository.getProfile();
 
       await spaggiariClient.readNotice(
           profile.studentId, notice.eventCode, notice.pubId.toString(), "");

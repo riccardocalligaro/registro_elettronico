@@ -71,10 +71,12 @@ class AppBlocDelegate {
           sl(),
           sl(),
           sl(),
+          sl(),
         ),
       ),
       RepositoryProvider<AgendaRepository>(
         create: (ctx) => AgendaRepositoryImpl(
+          sl(),
           sl(),
           sl(),
           sl(),
@@ -95,6 +97,7 @@ class AppBlocDelegate {
       ),
       RepositoryProvider<SubjectsRepository>(
         create: (ctx) => SubjectsRepositoryImpl(
+          sl(),
           sl(),
           sl(),
           sl(),

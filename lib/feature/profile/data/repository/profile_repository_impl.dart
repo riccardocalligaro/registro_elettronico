@@ -44,7 +44,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<String> getToken() async {
-    final profile = await profileDao.getProfile();
+    final profile = await getProfile();
     return profile.token;
   }
 

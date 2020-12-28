@@ -18,9 +18,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // static const double LEFT_LOGIN_PADDING = 80.0;
-  // static const double TOP_FIELDS_PADDING = 32.0;
-
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -29,9 +26,6 @@ class _LoginPageState extends State<LoginPage> {
 
   /// Text that changes in case of a login [error]
   String _erorrMessage = "";
-
-  // bool _valide = false;
-  // String _errorMessage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -131,44 +125,13 @@ class _LoginPageState extends State<LoginPage> {
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
               //return Text(state.toString());
-              if (state is SignInLoading) {
+              if (state is SignInLoading || state is SignInSuccess) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
               }
 
               return _buildInitial();
-              // return Padding(
-              //   padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
-              //   child: Column(
-              //     children: <Widget>[
-              //       Column(
-              //         crossAxisAlignment: CrossAxisAlignment.start,
-              //         children: <Widget>[
-              //           // Welcome, login with Classeviva
-              //           _buildWelcomeText(trans.translate('welcome')),
-              //           _buildLoginMessageText(trans.translate('login_with')),
-              //           _buildLoginForm(context),
-              //           Padding(
-              //             padding: const EdgeInsets.symmetric(vertical: 16.0),
-              //             child: RaisedButton(
-              //               child: Text(
-              //                 trans.translate('log_in'),
-              //                 style: TextStyle(
-              //                     color: Colors.white,
-              //                     fontWeight: FontWeight.bold),
-              //               ),
-              //               color: Theme.of(context).accentColor,
-              //               onPressed: () {
-              //                 _signIn(context);
-              //               },
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     ],
-              //   ),
-              // );
             },
           ),
         ),
@@ -177,16 +140,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildInitial() {
-    // return Padding(
-    //   padding: const EdgeInsets.all(32.0),
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.center,
-    //     children: <Widget>[
-    //       _buildHeaderText(),
-    //       _buildLoginInput(),
-    //     ],
-    //   ),
-    // );
     return Stack(
       children: <Widget>[
         SingleChildScrollView(
