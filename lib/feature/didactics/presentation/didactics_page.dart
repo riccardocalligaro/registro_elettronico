@@ -125,6 +125,8 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
       bottomSheet: LastUpdateBottomSheet(
         millisecondsSinceEpoch: _schoolMaterialLastUpdate,
       ),
+      floatingActionButton: const SizedBox(height: 1),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: MultiBlocListener(
         listeners: [
           BlocListener<DidacticsBloc, DidacticsState>(

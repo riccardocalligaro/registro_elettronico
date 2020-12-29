@@ -59,13 +59,15 @@ class ResetDialog extends StatelessWidget {
         FlatButton(
           child: Text(AppLocalizations.of(context).translate('yes')),
           onPressed: () async {
-            final AppDatabase appDatabase = sl();
-            await appDatabase.resetDbWithoutProfile();
-
-            await UpdateUtils.updateAllData(fromLogin: true);
-
+            Navigator.pop(context);
             AppNavigator.instance.navToHome(context);
-            // await UpdateUtils.updateAllData();
+
+            final AppDatabase appDatabase = sl();
+            // ignore: unawaited_futures
+            appDatabase.resetDbWithoutProfile();
+
+            // ignore: unawaited_futures
+            UpdateUtils.updateAllData(fromLogin: true);
           },
         )
       ],

@@ -52,6 +52,18 @@ class DateUtils {
     return formatter.format(date);
   }
 
+  static String localizedTimeMessage(BuildContext context) {
+    var hour = DateTime.now().hour;
+    if (hour < 12) {
+      return AppLocalizations.of(context).translate('welcome_morning');
+    }
+    if (hour < 17) {
+      return AppLocalizations.of(context).translate('welcome_afternoon');
+    }
+
+    return AppLocalizations.of(context).translate('welcome_evening');
+  }
+
   static String convertDateLocale(DateTime date, String locale) {
     final formatter = DateFormat.yMMMMd(locale);
     return formatter.format(date);

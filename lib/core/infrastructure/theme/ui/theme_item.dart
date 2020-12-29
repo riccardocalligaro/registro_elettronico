@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/utils/string_utils.dart';
 
 import '../app_themes.dart';
 
@@ -33,7 +34,7 @@ class ThemeItem extends StatelessWidget {
             shape: BoxShape.circle,
           )),
       title: Text(
-        theme.toString().split('.')[1],
+        StringUtils.capitalize(theme.toString().split('.')[1]),
       ),
       onTap: onTap,
     );

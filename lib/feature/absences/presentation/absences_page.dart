@@ -46,6 +46,8 @@ class _AbsencesPageState extends State<AbsencesPage> {
       bottomSheet: LastUpdateBottomSheet(
         millisecondsSinceEpoch: _absencesLastUpdate,
       ),
+      floatingActionButton: const SizedBox(height: 1),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: BlocListener<AbsencesBloc, AbsencesState>(
         listener: (context, state) {
           if (state is AbsencesUpdateLoaded) {

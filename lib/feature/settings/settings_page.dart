@@ -10,7 +10,6 @@ import 'package:registro_elettronico/core/presentation/widgets/about_app_dialog.
 import 'package:registro_elettronico/feature/settings/widgets/about/about_developers_page.dart';
 import 'package:registro_elettronico/feature/settings/widgets/account/account_settings.dart';
 import 'package:registro_elettronico/feature/settings/widgets/customization/customization_settings.dart';
-import 'package:registro_elettronico/feature/settings/widgets/donate/dontate_tile.dart';
 import 'package:registro_elettronico/feature/settings/widgets/general/general_settings.dart';
 import 'package:registro_elettronico/feature/settings/widgets/header_text.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
@@ -106,7 +105,7 @@ class _SettingsPageState extends State<SettingsPage> {
             await FlutterEmailSender.send(reportEmail);
           },
         ),
-        DonateTile(),
+        // DonateTile(),
         ListTile(
           title: Text(trans.translate('info_app_title')),
           subtitle: Text(trans.translate('info_app_subtitle')),
@@ -119,6 +118,9 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             );
           },
+        ),
+        const SizedBox(
+          height: 8,
         ),
       ],
     );

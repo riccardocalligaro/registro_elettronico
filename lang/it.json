@@ -302,5 +302,8 @@
   "update_error_snackbar": "Errore nell'aggiornamento dei dati",
   "update_erorr_snackbar_grades": "Errore nell'aggiornamento dei voti",
   "update_erorr_snackbar_agenda": "Errore nell'aggiornamento dell'agenda",
-  "update_erorr_snackbar_lessons": "Errore nell'aggiornamento delle lezioni"
+  "update_erorr_snackbar_lessons": "Errore nell'aggiornamento delle lezioni",
+  "welcome_morning": "Buongiorno",
+  "welcome_afternoon": "Buon pomeriggio",
+  "welcome_evening": "Buonasera"
 }

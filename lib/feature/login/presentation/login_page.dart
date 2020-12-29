@@ -6,6 +6,7 @@ import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/gradient_red_button.dart';
 import 'package:registro_elettronico/feature/home/presentation/home_page.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'bloc/auth_bloc.dart';
@@ -177,24 +178,6 @@ class _LoginPageState extends State<LoginPage> {
             AppLocalizations.of(context).translate('login_with')),
       ],
     );
-    // return Row(
-    //   children: <Widget>[
-    //     Text(
-    //       'Login with',
-    //       style: TextStyle(fontSize: 24),
-    //     ),
-    //     SizedBox(
-    //       width: 7,
-    //     ),
-    //     Text(
-    //       'Classeviva',
-    //       style: TextStyle(
-    //           fontSize: 24,
-    //           fontWeight: FontWeight.bold,
-    //           color: Theme.of(context).primaryColor),
-    //     )
-    //   ],
-    // );
   }
 
   Widget _buildLoginInput() {
@@ -304,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Align(
         alignment: Alignment.bottomLeft,
         child: Text(
-          "$welcomeMessage,",
+          "${DateUtils.localizedTimeMessage(context)}, ",
           style: Theme.of(context).textTheme.headline5,
         ),
       ),

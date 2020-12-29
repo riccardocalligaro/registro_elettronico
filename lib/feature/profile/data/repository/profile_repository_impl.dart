@@ -62,8 +62,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<Tuple2<db.Profile, String>> getUserAndPassword() async {
-    final profile = await profileDao.getProfile();
+  Future<Tuple2<Profile, String>> getUserAndPassword() async {
+    final profile = await getProfile();
     final password = await flutterSecureStorage.read(key: profile.ident);
     return Tuple2(profile, password);
   }

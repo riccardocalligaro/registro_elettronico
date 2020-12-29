@@ -91,6 +91,8 @@ class _LessonDetailsState extends State<LessonDetails> {
         bottomSheet: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _lastUpdate,
         ),
+        floatingActionButton: const SizedBox(height: 1),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: BlocListener<LessonsBloc, LessonsState>(
           listener: (context, state) {
             if (state is LessonsUpdateLoadSuccess) {

@@ -120,9 +120,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
       bottomSheet: LastUpdateBottomSheet(
         millisecondsSinceEpoch: _noticeboardLastUpdate,
       ),
-      // drawer: AppDrawer(
-      //   position: DrawerConstants.NOTICE_BOARD,
-      // ),
+      floatingActionButton: const SizedBox(height: 1),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: MultiBlocListener(
         listeners: [
           BlocListener<NoticesBloc, NoticesState>(

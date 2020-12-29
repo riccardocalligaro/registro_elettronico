@@ -55,6 +55,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
         bottomSheet: LastUpdateBottomSheet(
           millisecondsSinceEpoch: _scrutiniLastUpdate,
         ),
+        floatingActionButton: const SizedBox(height: 1),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: MultiBlocListener(
           listeners: [
             BlocListener<TokenBloc, TokenState>(

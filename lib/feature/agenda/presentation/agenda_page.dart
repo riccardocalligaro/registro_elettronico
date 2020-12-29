@@ -295,34 +295,31 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   }
 
   Widget _buildColumnContent() {
-    return IgnorePointer(
-      child: ListView(
-        shrinkWrap: true,
-        children: <Widget>[
-          const SizedBox(height: 8.0),
-          const SizedBox(height: 8.0),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
-            child: Text(
-              AppLocalizations.of(context).translate('events'),
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
+    return ListView(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: <Widget>[
+        const SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 8.0),
+          child: Text(
+            AppLocalizations.of(context).translate('events'),
+            style: TextStyle(fontWeight: FontWeight.w500),
           ),
-          Container(
-            child: _buildEventsMap(),
+        ),
+        Container(
+          child: _buildEventsMap(),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
+          child: Text(
+            AppLocalizations.of(context).translate('lessons'),
+            style: TextStyle(fontWeight: FontWeight.w500),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
-            child: Text(
-              AppLocalizations.of(context).translate('lessons'),
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
-          ),
-          IgnorePointer(
-            child: _buildLessonsBlocBuilder(),
-          )
-        ],
-      ),
+        ),
+        _buildLessonsBlocBuilder(),
+      ],
     );
   }
 
@@ -354,8 +351,10 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildTableCalendar(Map<DateTime, List<db.AgendaEvent>> eventsMap,
-      List<db.AgendaEvent> events) {
+  Widget _buildTableCalendar(
+    Map<DateTime, List<db.AgendaEvent>> eventsMap,
+    List<db.AgendaEvent> events,
+  ) {
     return TableCalendar(
       calendarController: _calendarController,
       events: eventsMap,
@@ -370,7 +369,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         outsideDaysVisible: false,
         outsideStyle: TextStyle(color: Colors.grey[300]),
         outsideWeekendStyle: TextStyle(color: Colors.red[100]),
-        weekendStyle: TextStyle(color: Colors.red),
+        weekendStyle: const TextStyle(color: Colors.red),
       ),
       headerStyle: HeaderStyle(
         formatButtonTextStyle:
@@ -453,6 +452,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       );
     }
     return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
       padding: EdgeInsets.only(bottom: 24.0),
       shrinkWrap: true,
       itemCount: lessons.length,
@@ -537,6 +537,26 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
                 ),
               );
             } else {
+              if (event.notes.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
+                  child: Card(
+                    color: Color(int.parse(event.labelColor)) ?? Colors.red,
+                    child: ListTile(
+                      onTap: () {
+                        _showLocalBoottomSheet(event);
+                      },
+                      leading: _buildEventLeading(event),
+                      title: Text(
+                        '${event.authorName.isNotEmpty ? StringUtils.titleCase(event.authorName) : AppLocalizations.of(context).translate('no_name_author')}',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                );
+              }
+
               return Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
                 child: Card(
@@ -581,6 +601,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
   Widget _buildEventLeading(db.AgendaEvent event) {
     if (event.isFullDay) {
       return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
             AppLocalizations.of(context).translate('all_day_card'),

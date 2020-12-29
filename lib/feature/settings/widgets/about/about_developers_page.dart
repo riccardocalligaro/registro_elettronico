@@ -1,3 +1,4 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,7 +17,6 @@ class AboutDevelopersPage extends StatelessWidget {
       ),
       body: Container(
         child: Column(
-          //mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
@@ -43,6 +43,7 @@ class AboutDevelopersPage extends StatelessWidget {
                   if (await canLaunch(url)) {
                     await launch(url);
                   } else {
+                    FLog.info(text: 'Could not launch $url');
                     throw 'Could not launch $url';
                   }
                 },
@@ -78,7 +79,8 @@ class AboutDevelopersPage extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text('Jacopo Ferian, Samuele Zanella, Andrea Nocco'),
+              title: Text(
+                  'Jacopo Ferian, Samuele Zanella, Andrea Nocco, Leone Bacciu, Diego Caspi'),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
@@ -94,7 +96,7 @@ class AboutDevelopersPage extends StatelessWidget {
                 child: Text(trans.translate('view_source_code')),
                 onPressed: () async {
                   const url =
-                      'https://github.com/Zuccante-Web-App/Registro-elettronico';
+                      'https://github.com/riccardocalligaro/registro_elettronico';
                   if (await canLaunch(url)) {
                     await launch(url);
                   } else {

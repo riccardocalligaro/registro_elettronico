@@ -26,5 +26,5 @@ abstract class ProfileRepository {
 
   Profile getProfile();
 
-  Future<Tuple2<db.Profile, String>> getUserAndPassword();
+  Future<Tuple2<Profile, String>> getUserAndPassword();
 }

@@ -70,6 +70,7 @@ class _HomePageState extends State<HomePage> {
           .add(dash.GetLastLessons());
       BlocProvider.of<GradesDashboardBloc>(context).add(GetDashboardGrades());
       BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
+
       _refreshHome();
     }
 
@@ -95,6 +96,8 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: LastUpdateBottomSheet(
         millisecondsSinceEpoch: _lastUpdate,
       ),
+      floatingActionButton: const SizedBox(height: 1),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: MultiBlocListener(
         listeners: [
           BlocListener<AgendaBloc, AgendaState>(
@@ -330,7 +333,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildNameText() {
     if (profile != null) {
       return Text(
-        '${AppLocalizations.of(context).translate('welcome_message')}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
+        '${DateUtils.localizedTimeMessage(context)}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
         style: TextStyle(
           color: Colors.white,
           fontSize: 24,
@@ -339,7 +342,7 @@ class _HomePageState extends State<HomePage> {
       );
     }
     return Text(
-      '${AppLocalizations.of(context).translate('welcome_message')}}.',
+      '${DateUtils.localizedTimeMessage(context)}.',
       style: TextStyle(
         color: Colors.white,
         fontSize: 24,

@@ -66,6 +66,9 @@ class _GradesPageState extends State<GradesPage> {
               bottomSheet: LastUpdateBottomSheet(
                 millisecondsSinceEpoch: _lastUpdateGrades,
               ),
+              floatingActionButton: const SizedBox(height: 1),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerFloat,
               body: BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
                 listener: (context, state2) {
                   if (state2 is SubjectsGradesUpdateLoadSuccess) {
