@@ -23,7 +23,7 @@ class CustomRefresher extends StatelessWidget {
         backgroundColor: Theme.of(context).brightness == Brightness.dark
             ? Colors.grey[900]
             : Colors.white,
-        color: Colors.red,
+        color: Theme.of(context).accentColor,
       ),
       onRefresh: onRefresh,
       child: child,

@@ -20,12 +20,6 @@ class GradesChart extends StatefulWidget {
 }
 
 class _GradesChartState extends State<GradesChart> {
-  // color gradient for the graph background
-  List<Color> gradientColors = [
-    Colors.red[400],
-    Colors.grey[900],
-  ];
-
   // by defualt we want to show the average
   bool showAvg = false;
 
@@ -164,7 +158,7 @@ class _GradesChartState extends State<GradesChart> {
         horizontalLines: [
           HorizontalLine(
             y: cutOffYValue,
-            color: Colors.red[600].withOpacity(0.3),
+            color: Theme.of(context).accentColor.withOpacity(0.3),
             strokeWidth: 1.5,
           ),
         ],
@@ -236,6 +230,9 @@ class _GradesChartState extends State<GradesChart> {
           spots: spots,
           isCurved: false,
           barWidth: 1.2,
+          colors: [
+            Theme.of(context).accentColor,
+          ],
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,
@@ -250,6 +247,7 @@ class _GradesChartState extends State<GradesChart> {
             gradientFrom: const Offset(0, 0),
             gradientTo: const Offset(0, 1),
           ),
+
           // Cut off for showing how much you need for the minmium mark
           aboveBarData: BarAreaData(
             show: true,
@@ -263,8 +261,8 @@ class _GradesChartState extends State<GradesChart> {
   }
 
   List<Color> _getGradients(BuildContext context) {
-    return gradientColors = [
-      Colors.red[400],
+    return [
+      Theme.of(context).accentColor,
       Theme.of(context).brightness == Brightness.dark
           ? Colors.grey[900]
           : Colors.white

@@ -316,13 +316,13 @@ class GlobalUtils {
         .withOpacity(1.0);
   }
 
-  static Color getColorFromPosition(int position) {
+  static Color getColorFromPosition(int position, BuildContext context) {
     switch (position) {
       case 0:
         return Colors.deepPurpleAccent;
         break;
       case 1:
-        return Colors.redAccent;
+        return Colors.red;
         break;
       case 2:
         return Colors.deepOrangeAccent;

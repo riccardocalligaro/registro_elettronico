@@ -289,7 +289,7 @@ class SubjectGradesLoaded extends StatelessWidget {
                   ),
                   Row(
                     children: <Widget>[
-                      _getIconFromChange(difference),
+                      _getIconFromChange(difference, context),
                       SizedBox(
                         width: 8,
                       ),
@@ -308,7 +308,8 @@ class SubjectGradesLoaded extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ListTile(
                   leading: _getIconFromChange(
-                      localGrades[index].decimalValue - averages.average),
+                      localGrades[index].decimalValue - averages.average,
+                      context),
                   title: Text(
                     localGrades[index].displayValue,
                   ),
@@ -556,7 +557,7 @@ class SubjectGradesLoaded extends StatelessWidget {
     );
   }
 
-  Icon _getIconFromChange(double change) {
+  Icon _getIconFromChange(double change, BuildContext context) {
     if (change > 0) {
       return Icon(
         Icons.trending_up,
@@ -571,7 +572,7 @@ class SubjectGradesLoaded extends StatelessWidget {
     if (change < 0) {
       return Icon(
         Icons.trending_down,
-        color: Colors.red,
+        color: Theme.of(context).accentColor,
       );
     }
     return Icon(Icons.trending_flat);

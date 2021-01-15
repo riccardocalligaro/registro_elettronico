@@ -10,6 +10,7 @@ import 'package:registro_elettronico/feature/profile/data/model/profile_entity.d
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/feature/settings/widgets/account/account_settings.dart';
 import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view.dart';
+import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -79,7 +80,15 @@ class _AppDrawerState extends State<AppDrawer>
               _showUserDetails = !_showUserDetails;
             });
           },
-          decoration: BoxDecoration(color: Theme.of(context).accentColor),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              stops: [0.4, 1],
+              colors:
+                  ColorUtils.getGradientForColor(Theme.of(context).accentColor),
+              begin: Alignment(-1.0, -2.0),
+              end: Alignment(1.0, 2.0),
+            ),
+          ),
         );
       },
     );
@@ -330,7 +339,7 @@ class _AppDrawerState extends State<AppDrawer>
           Icon(
             icon,
             color: selectedList[pos] == true && (isAccount ?? false) == false
-                ? Colors.red
+                ? Theme.of(context).accentColor
                 : Theme.of(context).primaryIconTheme.color,
           ),
           Padding(

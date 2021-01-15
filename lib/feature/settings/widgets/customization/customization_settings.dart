@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/feature/settings/widgets/customization/color_settings_dialog.dart';
 
 import '../header_text.dart';
 import 'customization_theme_dialog.dart';
@@ -33,6 +34,22 @@ class _CustomizationSettingsState extends State<CustomizationSettings> {
               builder: (ctx) {
                 return SimpleDialog(
                   children: <Widget>[CustomizationSettingsThemeDialog()],
+                );
+              },
+            );
+          },
+        ),
+        ListTile(
+          title:
+              Text(AppLocalizations.of(context).translate('theme_color_title')),
+          subtitle: Text(
+              AppLocalizations.of(context).translate('theme_color_subtitle')),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (ctx) {
+                return SimpleDialog(
+                  children: <Widget>[ColorSettingsDialog()],
                 );
               },
             );

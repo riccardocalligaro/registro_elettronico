@@ -14,6 +14,7 @@ import 'package:registro_elettronico/feature/home/presentation/sections/last_gra
 import 'package:registro_elettronico/feature/lessons/presentation/bloc/lessons_bloc.dart';
 import 'package:registro_elettronico/feature/profile/data/model/profile_entity.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -222,7 +223,7 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Theme.of(context).brightness == Brightness.dark
                 ? Colors.grey[900]
                 : Colors.white,
-            color: Colors.red,
+            color: Theme.of(context).accentColor,
           ),
           onRefresh: _refreshHome,
           child: SingleChildScrollView(
@@ -236,7 +237,8 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           stops: [0.4, 1],
-                          colors: <Color>[Colors.red[400], Colors.red[900]],
+                          colors: ColorUtils.getGradientForColor(
+                              Theme.of(context).accentColor),
                           begin: Alignment(-1.0, -2.0),
                           end: Alignment(1.0, 2.0),
                         ),
@@ -421,7 +423,8 @@ class _HomePageState extends State<HomePage> {
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
                     stops: [0.4, 1],
-                    colors: <Color>[Colors.red[400], Colors.red[900]],
+                    colors: ColorUtils.getGradientForColor(
+                        Theme.of(context).accentColor),
                     begin: Alignment(-1.0, -2.0),
                     end: Alignment(1.0, 2.0),
                   ),

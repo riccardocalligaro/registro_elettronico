@@ -56,7 +56,7 @@ class _GradesPageState extends State<GradesPage> {
                 iconTheme: Theme.of(context).primaryIconTheme,
                 bottom: TabBar(
                   isScrollable: true,
-                  indicatorColor: Colors.red,
+                  indicatorColor: Theme.of(context).accentColor,
                   labelColor:
                       Theme.of(context).primaryTextTheme.headline5.color,
                   tabs: _getTabBar(),
@@ -154,25 +154,26 @@ class _GradesPageState extends State<GradesPage> {
           return DefaultTabController(
             length: 4,
             child: Scaffold(
-                appBar: AppBar(
-                  elevation: 0.0,
-                  textTheme: Theme.of(context).textTheme,
-                  iconTheme: Theme.of(context).primaryIconTheme,
-                  bottom: TabBar(
-                    isScrollable: true,
-                    indicatorColor: Colors.red,
-                    labelColor:
-                        Theme.of(context).primaryTextTheme.headline5.color,
-                    tabs: _getTabBar(),
-                  ),
-                  title: Text(AppLocalizations.of(context).translate('grades')),
+              appBar: AppBar(
+                elevation: 0.0,
+                textTheme: Theme.of(context).textTheme,
+                iconTheme: Theme.of(context).primaryIconTheme,
+                bottom: TabBar(
+                  isScrollable: true,
+                  indicatorColor: Theme.of(context).accentColor,
+                  labelColor:
+                      Theme.of(context).primaryTextTheme.headline5.color,
+                  tabs: _getTabBar(),
                 ),
-                drawer: AppDrawer(
-                  position: DrawerConstants.GRADES,
-                ),
-                body: Center(
-                  child: CircularProgressIndicator(),
-                )),
+                title: Text(AppLocalizations.of(context).translate('grades')),
+              ),
+              drawer: AppDrawer(
+                position: DrawerConstants.GRADES,
+              ),
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
           );
         }
       },
@@ -213,14 +214,16 @@ class _GradesPageState extends State<GradesPage> {
       ),
     );
 
-    tabs.add(Container(
-      width: 140,
-      child: Tab(
-        child: Text(
-          AppLocalizations.of(context).translate('overall').toUpperCase(),
+    tabs.add(
+      Container(
+        width: 140,
+        child: Tab(
+          child: Text(
+            AppLocalizations.of(context).translate('overall').toUpperCase(),
+          ),
         ),
       ),
-    ));
+    );
 
     return tabs;
   }

@@ -150,9 +150,7 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
           //showingIndicators: [1, 2, 3, 4, 5, 6],
           spots: _getEventsSpots(),
           isCurved: true,
-          colors: [
-            Colors.red[400],
-          ],
+          colors: [Theme.of(context).accentColor],
           preventCurveOverShooting: true,
 
           //curveSmoothness: 0.60,
@@ -164,7 +162,7 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
                 FlDotCirclePainter(
               radius: 3,
               color: Colors.transparent,
-              strokeColor: Colors.red,
+              strokeColor: Theme.of(context).accentColor,
             ),
           ),
           belowBarData: BarAreaData(
@@ -217,7 +215,7 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
 
   List<Color> _getGradients(BuildContext context) {
     return [
-      Colors.red[400],
+      Theme.of(context).accentColor,
       Theme.of(context).brightness == Brightness.dark
           ? Colors.grey[900]
           : Colors.white

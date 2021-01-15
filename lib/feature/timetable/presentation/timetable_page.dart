@@ -329,7 +329,7 @@ ${AppLocalizations.of(context).translate('no_timetable_message')}""",
                       DateTime.utc(2000, 1, 2).add(Duration(days: index)),
                       AppLocalizations.of(context).locale.toString()),
                   style: TextStyle(
-                    color: Colors.red,
+                    color: Theme.of(context).accentColor,
                   ),
                 ),
               ),

@@ -46,6 +46,7 @@ class LastLessonsSection extends StatelessWidget {
                     l.lessonArg == lessonKey.item2 &&
                     l.subjectId == lessonKey.item1)
                 .elementAt(0);
+
             return LessonCard(
               lesson: lesson,
               duration: duration,

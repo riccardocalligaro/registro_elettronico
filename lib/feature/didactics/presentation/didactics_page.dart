@@ -281,7 +281,7 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
                     ListTile(
                       title: Text(
                         teacher.name,
-                        style: TextStyle(color: Colors.red),
+                        style: TextStyle(color: Theme.of(context).accentColor),
                       ),
                     ),
                     _buildFolderList(foldersList, contents)

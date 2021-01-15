@@ -305,5 +305,7 @@
   "update_erorr_snackbar_lessons": "Errore nell'aggiornamento delle lezioni",
   "welcome_morning": "Buongiorno",
   "welcome_afternoon": "Buon pomeriggio",
-  "welcome_evening": "Buonasera"
+  "welcome_evening": "Buonasera",
+  "theme_color_title": "Colore",
+  "theme_color_subtitle": "Cambia colore del tema"
 }

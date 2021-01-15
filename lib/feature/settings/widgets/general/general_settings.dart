@@ -54,7 +54,9 @@ class _GeneralSettingsState extends State<GeneralSettings> {
           ),
         ),
         ListTile(
-          title: Text(AppLocalizations.of(context).translate('your_objective')),
+          title: Text(
+            AppLocalizations.of(context).translate('your_objective'),
+          ),
           subtitle: Text('$_sliderValue'),
           onTap: () async {
             await showDialog(

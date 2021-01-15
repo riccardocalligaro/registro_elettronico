@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/utils/color_utils.dart';
 
 class GradientRedButton extends StatefulWidget {
   final Widget center;
@@ -33,10 +34,8 @@ class _GradientRedButtonState extends State<GradientRedButton> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             stops: [0.6, 1],
-            colors: [
-              Colors.red[600],
-              Colors.red[800],
-            ],
+            colors:
+                ColorUtils.getGradientForColor(Theme.of(context).accentColor),
           ),
           borderRadius: BorderRadius.all(
             Radius.circular(80.0),

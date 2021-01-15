@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:registro_elettronico/core/infrastructure/theme/theme_data/dark_theme.dart';
+import 'package:registro_elettronico/core/infrastructure/theme/theme_data/light_theme.dart';
+import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +21,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   ThemeBloc()
       : super(ThemeState(
-          materialThemeData: materialThemeData[AppTheme.dark],
+          materialThemeData: DarkTheme.getThemeData(Colors.red),
           cupertinoThemeData: cupertinoThemeData[AppTheme.dark],
         )) {
     _loadSettings();
@@ -36,7 +39,13 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     ThemeEvent event,
   ) async* {
     if (event is ThemeChanged) {
-      bool darkTheme = event.theme == AppTheme.dark;
+      bool darkTheme;
+
+      if (event.theme == null) {
+        darkTheme = prefs.getBool(PrefsConstants.DARK_THEME) ?? true;
+      } else {
+        darkTheme = event.theme == AppTheme.dark;
+      }
 
       if (darkTheme) {
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -57,10 +66,16 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
           statusBarBrightness: Brightness.dark,
         ));
       }
+      final MaterialColor color = event.color ??
+          ColorUtils.createMaterialColor(Color(
+              prefs.getInt(PrefsConstants.themeColor) ?? Colors.red.value));
 
-      await _saveSettings(darkTheme);
+      await _saveSettings(darkTheme, color);
+
       yield ThemeState(
-        materialThemeData: materialThemeData[event.theme],
+        materialThemeData: darkTheme
+            ? DarkTheme.getThemeData(color)
+            : LightTheme.getThemeData(color),
         cupertinoThemeData: cupertinoThemeData[event.theme],
       );
     }
@@ -69,12 +84,21 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   Future<bool> _loadSettings() async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
     bool _darkTheme = prefs.getBool(PrefsConstants.DARK_THEME) ?? true;
-    add(ThemeChanged(theme: _darkTheme ? AppTheme.dark : AppTheme.light));
+    Color _themeColor = ColorUtils.createMaterialColor(
+        Color(prefs.getInt(PrefsConstants.themeColor)));
+
+    add(ThemeChanged(
+      theme: _darkTheme ? AppTheme.dark : AppTheme.light,
+      color: _themeColor,
+    ));
+
     return _darkTheme;
   }
 
-  Future<void> _saveSettings(bool darkTheme) async {
+  Future<void> _saveSettings(bool darkTheme, MaterialColor color) async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
     await prefs.setBool(PrefsConstants.DARK_THEME, darkTheme);
+
+    await prefs.setInt(PrefsConstants.themeColor, color.shade500.value);
   }
 }

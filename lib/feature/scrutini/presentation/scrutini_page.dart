@@ -284,7 +284,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
         ListTile(
           title: Text(
             AppLocalizations.of(context).translate('scrutini_documents'),
-            style: TextStyle(color: Colors.red),
+            style: TextStyle(color: Theme.of(context).accentColor),
           ),
         ),
         ListView.builder(
@@ -308,7 +308,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
         ListTile(
           title: Text(
             AppLocalizations.of(context).translate('scrutini_school_reports'),
-            style: TextStyle(color: Colors.red),
+            style: TextStyle(color: Theme.of(context).accentColor),
           ),
         ),
         ListView.builder(

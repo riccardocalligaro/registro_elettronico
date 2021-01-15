@@ -3,10 +3,10 @@ import 'theme_data/light_theme.dart' as light_theme;
 
 enum AppTheme { dark, light }
 
-final materialThemeData = {
-  AppTheme.dark: dark_theme.material,
-  AppTheme.light: light_theme.material,
-};
+// final materialThemeData = {
+//   AppTheme.dark: dark_theme.material,
+//   AppTheme.light: light_theme.material,
+// };
 
 final cupertinoThemeData = {
   AppTheme.dark: dark_theme.cupertino,

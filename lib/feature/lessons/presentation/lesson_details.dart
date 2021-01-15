@@ -181,7 +181,7 @@ class _LessonDetailsState extends State<LessonDetails> {
           backgroundColor: Theme.of(context).brightness == Brightness.dark
               ? Colors.grey[900]
               : Colors.white,
-          color: Colors.red,
+          color: Theme.of(context).accentColor,
         ),
         onRefresh: _refreshLessons,
         child: ListView.builder(
@@ -210,7 +210,7 @@ class _LessonDetailsState extends State<LessonDetails> {
                     ),
                     child: Text(
                       convertMonthLocale,
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(color: Theme.of(context).accentColor),
                     ),
                   ),
                   _buildLessonCard(lesson)

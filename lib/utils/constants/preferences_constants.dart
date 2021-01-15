@@ -46,4 +46,6 @@ class PrefsConstants {
   static const lastUpdate = 'lastUpdate';
 
   static const profile = 'profile';
+
+  static const themeColor = 'themeColor';
 }

@@ -59,7 +59,7 @@ class LessonCard extends StatelessWidget {
           width: 220.0,
           height: 140,
           decoration: BoxDecoration(
-              color: GlobalUtils.getColorFromPosition(position),
+              color: GlobalUtils.getColorFromPosition(position, context),
               borderRadius: BorderRadius.circular(5.0)),
           child: Padding(
             padding: const EdgeInsets.all(16.0),

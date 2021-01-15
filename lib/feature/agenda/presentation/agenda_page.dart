@@ -245,7 +245,7 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         ],
       ),
       floatingActionButton: UnicornDialer(
-        parentButtonBackground: Colors.redAccent,
+        parentButtonBackground: Theme.of(context).accentColor,
         orientation: UnicornOrientation.VERTICAL,
         parentButton: Icon(Icons.add),
         childButtons: childButtons,
@@ -364,13 +364,14 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
       locale: AppLocalizations.of(context).locale.toString(),
       weekendDays: const [DateTime.sunday],
       calendarStyle: CalendarStyle(
-        selectedColor: Colors.red[400],
-        todayColor: Colors.red[200],
+        selectedColor: Theme.of(context).accentColor.withOpacity(0.7),
+        todayColor: Theme.of(context).accentColor.withAlpha(140),
         markersColor: Colors.red[700],
         outsideDaysVisible: false,
         outsideStyle: TextStyle(color: Colors.grey[300]),
-        outsideWeekendStyle: TextStyle(color: Colors.red[100]),
-        weekendStyle: const TextStyle(color: Colors.red),
+        outsideWeekendStyle:
+            TextStyle(color: Theme.of(context).accentColor.withOpacity(0.7)),
+        weekendStyle: TextStyle(color: Theme.of(context).accentColor),
       ),
       headerStyle: HeaderStyle(
         formatButtonTextStyle:
