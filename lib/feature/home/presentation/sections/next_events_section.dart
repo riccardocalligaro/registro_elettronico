@@ -82,13 +82,15 @@ class NextEventsSection extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          '${e.title ?? ''}',
-                          style: TextStyle(fontSize: 15.0),
-                        ),
-                        SizedBox(
-                          height: 2.5,
-                        ),
+                        if (e.title != '')
+                          Text(
+                            '${e.title ?? ''}',
+                            style: TextStyle(fontSize: 15.0),
+                          ),
+                        if (e.title != '')
+                          SizedBox(
+                            height: 2.5,
+                          ),
                         Text(
                           '${e.notes ?? ''} - ${GlobalUtils.getEventDateMessage(context, e.begin, e.isFullDay)}',
                           style: TextStyle(fontSize: 12.0),
@@ -104,13 +106,15 @@ class NextEventsSection extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        '${e.notes ?? ''}',
-                        style: TextStyle(fontSize: 15.0),
-                      ),
-                      SizedBox(
-                        height: 2.5,
-                      ),
+                      if (e.title != '')
+                        Text(
+                          '${e.notes ?? ''}',
+                          style: TextStyle(fontSize: 15.0),
+                        ),
+                      if (e.title != '')
+                        SizedBox(
+                          height: 2.5,
+                        ),
                       // Text(
                       //   '${StringUtils.titleCase(GlobalUtils.getMockupName())} - ${_getDateMessage(e, context)}',
                       //   style: TextStyle(fontSize: 12.0),

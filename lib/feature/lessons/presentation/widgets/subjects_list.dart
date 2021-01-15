@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/presentation_constants.dart';
 import 'package:registro_elettronico/core/presentation/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/bloc/lessons_bloc.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/lesson_details.dart';
@@ -36,14 +37,19 @@ class SubjectsList extends StatelessWidget {
           final professorsForSubject =
               professors.where((prof) => prof.subjectId == subject.id).toList();
           String professorsText = "";
-          // professorsText +=
-          //     "${StringUtils.titleCase(GlobalUtils.getMockupName(index: index))}, ";
-          professorsForSubject.forEach((prof) {
-            String name = StringUtils.titleCase(prof.name);
-            if (!professorsText.contains(name)) {
-              professorsText += "${StringUtils.titleCase(prof.name)}, ";
-            }
-          });
+
+          if (PresentationConstants.isForPresentation) {
+            professorsText +=
+                "${StringUtils.titleCase(GlobalUtils.getMockupName(index: index))}, ";
+          } else {
+            professorsForSubject.forEach((prof) {
+              String name = StringUtils.titleCase(prof.name);
+              if (!professorsText.contains(name)) {
+                professorsText += "${StringUtils.titleCase(prof.name)}, ";
+              }
+            });
+          }
+
           professorsText = StringUtils.removeLastChar(professorsText);
           return Column(
             children: <Widget>[

@@ -146,64 +146,72 @@ ${AppLocalizations.of(context).translate('no_timetable_message')}""",
           SingleChildScrollView(
             //controller: _horizontalController,
             scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Table(
-                defaultColumnWidth: IntrinsicColumnWidth(),
-                children: List.generate(12, (start) {
-                  if (start == 0) {
+            child: Center(
+              child: Padding(
+                padding:
+                    MediaQuery.of(context).orientation == Orientation.landscape
+                        ? EdgeInsets.fromLTRB(
+                            16, 8, MediaQuery.of(context).viewInsets.right, 8.0)
+                        : const EdgeInsets.all(8.0),
+                child: Table(
+                  defaultColumnWidth: IntrinsicColumnWidth(),
+                  children: List.generate(12, (start) {
+                    if (start == 0) {
+                      return TableRow(
+                          children: List.generate(8, (index) {
+                        if (index == 0) return Container();
+                        return Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            DateUtils.convertSingleDayShortForDisplay(
+                                DateTime.utc(2000, 1, 2)
+                                    .add(Duration(days: index)),
+                                AppLocalizations.of(context).locale.toString()),
+                          ),
+                        );
+                      }));
+                    }
                     return TableRow(
-                        children: List.generate(8, (index) {
-                      if (index == 0) return Container();
-                      return Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          DateUtils.convertSingleDayShortForDisplay(
-                              DateTime.utc(2000, 1, 2)
-                                  .add(Duration(days: index)),
-                              AppLocalizations.of(context).locale.toString()),
-                        ),
-                      );
-                    }));
-                  }
-                  return TableRow(
-                    children: List.generate(8, (day) {
-                      if (day == 0) {
-                        return Text(
-                            (start + GeneralConstants.PADDING_DATE).toString());
-                      }
+                      children: List.generate(8, (day) {
+                        if (day == 0) {
+                          return Text((start + GeneralConstants.PADDING_DATE)
+                              .toString());
+                        }
 
-                      final entriesMap = timetableMap[start];
+                        final entriesMap = timetableMap[start];
 
-                      if (entriesMap != null) {
-                        final entry = entriesMap
-                            .where((t) => t.dayOfWeek == day)
-                            .toList();
-                        if (entry.isNotEmpty) {
-                          return Column(
-                            children: <Widget>[
-                              _getSubjectBox(
-                                entry[0],
-                                subjectsMap,
+                        if (entriesMap != null) {
+                          final entry = entriesMap
+                              .where((t) => t.dayOfWeek == day)
+                              .toList();
+                          if (entry.isNotEmpty) {
+                            return Column(
+                              children: <Widget>[
+                                _getSubjectBox(
+                                  entry[0],
+                                  subjectsMap,
+                                  dayOfWeek: day + 1,
+                                  begin: start,
+                                  end: start + 1,
+                                ),
+                                Divider()
+                              ],
+                            );
+                          }
+                        }
+                        return Column(
+                          children: <Widget>[
+                            _getSubjectBox(null, subjectsMap,
                                 dayOfWeek: day + 1,
                                 begin: start,
-                                end: start + 1,
-                              ),
-                              Divider()
-                            ],
-                          );
-                        }
-                      }
-                      return Column(
-                        children: <Widget>[
-                          _getSubjectBox(null, subjectsMap,
-                              dayOfWeek: day + 1, begin: start, end: start + 1),
-                          Divider()
-                        ],
-                      );
-                    }),
-                  );
-                }),
+                                end: start + 1),
+                            Divider()
+                          ],
+                        );
+                      }),
+                    );
+                  }),
+                ),
               ),
             ),
           )

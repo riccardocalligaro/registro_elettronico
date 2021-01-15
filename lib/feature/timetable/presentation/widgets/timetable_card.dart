@@ -19,8 +19,10 @@ class TimetableCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      padding: EdgeInsets.symmetric(horizontal: isLandscape ? 8 : 4.0),
       child: Container(
         child: Material(
           child: InkWell(
@@ -29,8 +31,8 @@ class TimetableCard extends StatelessWidget {
             ),
             onTap: onTap,
             child: Container(
-              padding: EdgeInsets.all(4.0),
-              width: 80.0,
+              padding: EdgeInsets.all(isLandscape ? 8.0 : 4.0),
+              width: isLandscape ? 100.0 : 80,
               height: 100.0,
               child: timetableEntry != null
                   ? Text(
@@ -40,7 +42,9 @@ class TimetableCard extends StatelessWidget {
                                   GlobalUtils.reduceSubjectTitle(subject))
                               : StringUtils.titleCase(subject)
                           : '',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: isLandscape ? 15.5 : null),
                     )
                   : Icon(Icons.add),
             ),

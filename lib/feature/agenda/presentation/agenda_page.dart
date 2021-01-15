@@ -8,6 +8,7 @@ import 'package:registro_elettronico/core/data/model/event_type.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
+import 'package:registro_elettronico/core/infrastructure/presentation_constants.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/core/presentation/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/core/presentation/widgets/last_update_bottom_sheet.dart';
@@ -465,7 +466,9 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
               title: Padding(
                 padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                 child: Text(
-                  StringUtils.titleCase(lesson.author),
+                  PresentationConstants.isForPresentation
+                      ? GlobalUtils.getMockupName()
+                      : StringUtils.titleCase(lesson.author),
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),

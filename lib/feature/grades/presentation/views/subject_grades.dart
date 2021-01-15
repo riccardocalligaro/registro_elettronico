@@ -7,6 +7,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/presentation_constants.dart';
 import 'package:registro_elettronico/core/presentation/stateful_wrapper.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/core/presentation/widgets/grade_card.dart';
@@ -375,12 +376,15 @@ class SubjectGradesLoaded extends StatelessWidget {
         if (state is ProfessorsLoadSuccess) {
           String professorsText;
           if (state.professors.isNotEmpty) {
-            //professorsText = GlobalUtils.getMockupName(index: 6);
-            professorsText = _getProfessorsText(
-                state.professors
-                    .where((professor) => professor.subjectId == subject.id)
-                    .toList(),
-                context);
+            if (PresentationConstants.isForPresentation) {
+              professorsText = GlobalUtils.getMockupName();
+            } else {
+              professorsText = _getProfessorsText(
+                  state.professors
+                      .where((professor) => professor.subjectId == subject.id)
+                      .toList(),
+                  context);
+            }
           } else {
             professorsText =
                 AppLocalizations.of(context).translate('no_professors');

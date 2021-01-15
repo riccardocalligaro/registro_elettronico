@@ -60,8 +60,9 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
       await _saveSettings(darkTheme);
       yield ThemeState(
-          materialThemeData: materialThemeData[event.theme],
-          cupertinoThemeData: cupertinoThemeData[event.theme]);
+        materialThemeData: materialThemeData[event.theme],
+        cupertinoThemeData: cupertinoThemeData[event.theme],
+      );
     }
   }
 
