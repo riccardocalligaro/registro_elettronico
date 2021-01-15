@@ -6,10 +6,10 @@ import 'package:meta/meta.dart';
 @immutable
 class ThemeState extends Equatable {
   final ThemeData materialThemeData;
-  final CupertinoThemeData cupertinoThemeData;
 
-  ThemeState(
-      {@required this.materialThemeData, @required this.cupertinoThemeData});
+  ThemeState({
+    @required this.materialThemeData,
+  });
 
   @override
   List<Object> get props => [materialThemeData];

@@ -48,4 +48,5 @@ class PrefsConstants {
   static const profile = 'profile';
 
   static const themeColor = 'themeColor';
+  static const themeType = 'themeType';
 }

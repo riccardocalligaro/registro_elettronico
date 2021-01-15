@@ -38,7 +38,7 @@ class ColorSettingsDialog extends StatelessWidget {
         onColorChanged: (color) {
           Navigator.of(context).pop();
           BlocProvider.of<ThemeBloc>(context)
-              .add(ThemeChanged(theme: null, color: color));
+              .add(ThemeChanged(type: null, color: color));
         },
         itemBuilder: (color, isCurrentColor, changeColor) {
           return Container(

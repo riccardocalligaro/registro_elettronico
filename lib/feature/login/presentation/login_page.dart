@@ -270,7 +270,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text(
                   'Open source.',
                   style: TextStyle(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).accentColor,
                   ),
                 ),
               ),

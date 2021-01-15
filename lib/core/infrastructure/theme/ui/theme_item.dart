@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
-import '../app_themes.dart';
-
 class ThemeItem extends StatelessWidget {
   final Function onTap;
-  final ThemeData themeData;
-  final AppTheme theme;
+  final Color color;
+  final String name;
 
-  ThemeItem({this.onTap, @required this.themeData, @required this.theme});
+  ThemeItem({
+    this.onTap,
+    @required this.color,
+    @required this.name,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,25 +19,22 @@ class ThemeItem extends StatelessWidget {
     return ListTile(
       leading: Container(
         child: CircleAvatar(
-          backgroundColor: themeData.brightness == Brightness.dark
-              ? Colors.grey[800]
-              : Colors.white,
+          backgroundColor: color,
           child: Text(
-            theme
+            name
                 .toString()
-                .substring(theme.toString().lastIndexOf('.') + 1)[0],
+                .substring(name.toString().lastIndexOf('.') + 1)[0]
+                .toUpperCase(),
           ),
         ),
         padding: const EdgeInsets.all(2.0), // borde width
         decoration: BoxDecoration(
-          color: themeData.brightness == Brightness.dark
-              ? Colors.white
-              : Colors.grey[800], // border color
+          color: color, // border color
           shape: BoxShape.circle,
         ),
       ),
       title: Text(
-        StringUtils.capitalize(theme.toString().split('.')[1]),
+        StringUtils.capitalize(name.toString().split('.')[1]),
       ),
       onTap: onTap,
     );

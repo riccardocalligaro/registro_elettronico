@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:registro_elettronico/core/infrastructure/theme/theme_data/themes.dart';
 
 import '../app_themes.dart';
 
@@ -13,11 +14,11 @@ abstract class ThemeEvent extends Equatable {
 }
 
 class ThemeChanged extends ThemeEvent {
-  final AppTheme theme;
+  final ThemeType type;
   final MaterialColor color;
 
   ThemeChanged({
-    @required this.theme,
+    @required this.type,
     @required this.color,
   });
 }

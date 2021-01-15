@@ -34,8 +34,9 @@ class _GradientRedButtonState extends State<GradientRedButton> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             stops: [0.6, 1],
-            colors:
-                ColorUtils.getGradientForColor(Theme.of(context).accentColor),
+            colors: ColorUtils.getGradientForColor(
+                Theme.of(context).accentColor,
+                button: true),
           ),
           borderRadius: BorderRadius.all(
             Radius.circular(80.0),

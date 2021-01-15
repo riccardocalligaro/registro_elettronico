@@ -18,7 +18,7 @@ class ThemeBlocBuilder extends StatelessWidget {
         return builder(
           context,
           themeState.materialThemeData,
-          themeState.cupertinoThemeData,
+          null,
         );
       }),
     );

@@ -53,12 +53,21 @@ class ColorUtils {
     return _colors;
   }
 
-  static List<Color> getGradientForColor(Color color) {
+  static List<Color> getGradientForColor(
+    Color color, {
+    bool button = false,
+  }) {
     if (color == Colors.yellow) {
       return [Colors.yellow[700], Colors.yellow[900]];
     } else if (color == Colors.green) {
       return [Colors.green[500], Colors.green[800]];
     } else if (color == Colors.red) {
+      if (button) {
+        return [
+          Colors.red[600],
+          Colors.red[800],
+        ];
+      }
       return [Colors.red[400], Colors.red[900]];
     }
 

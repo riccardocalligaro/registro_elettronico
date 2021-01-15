@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:registro_elettronico/core/infrastructure/theme/theme_data/black_theme.dart';
 import 'package:registro_elettronico/core/infrastructure/theme/theme_data/dark_theme.dart';
 import 'package:registro_elettronico/core/infrastructure/theme/theme_data/light_theme.dart';
+import 'package:registro_elettronico/core/infrastructure/theme/theme_data/themes.dart';
 import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../app_themes.dart';
 import 'bloc.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
@@ -22,7 +23,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc()
       : super(ThemeState(
           materialThemeData: DarkTheme.getThemeData(Colors.red),
-          cupertinoThemeData: cupertinoThemeData[AppTheme.dark],
         )) {
     _loadSettings();
   }
@@ -39,15 +39,17 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     ThemeEvent event,
   ) async* {
     if (event is ThemeChanged) {
-      bool darkTheme;
+      ThemeType _themeType;
 
-      if (event.theme == null) {
-        darkTheme = prefs.getBool(PrefsConstants.DARK_THEME) ?? true;
+      if (event.type == null) {
+        _themeType = _typeFromString(
+            prefs.getString(PrefsConstants.themeType) ??
+                ThemeType.dark.toString());
       } else {
-        darkTheme = event.theme == AppTheme.dark;
+        _themeType = event.type;
       }
 
-      if (darkTheme) {
+      if (_themeType == ThemeType.dark || _themeType == ThemeType.black) {
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           systemNavigationBarColor: Colors.black,
@@ -70,35 +72,47 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
           ColorUtils.createMaterialColor(Color(
               prefs.getInt(PrefsConstants.themeColor) ?? Colors.red.value));
 
-      await _saveSettings(darkTheme, color);
+      await _saveSettings(_themeType, color);
 
       yield ThemeState(
-        materialThemeData: darkTheme
-            ? DarkTheme.getThemeData(color)
-            : LightTheme.getThemeData(color),
-        cupertinoThemeData: cupertinoThemeData[event.theme],
+        materialThemeData: _getThemeData(_themeType, color),
       );
     }
   }
 
-  Future<bool> _loadSettings() async {
+  ThemeData _getThemeData(ThemeType themeType, Color color) {
+    if (themeType == ThemeType.dark) {
+      return DarkTheme.getThemeData(color);
+    } else if (themeType == ThemeType.black) {
+      return BlackTheme.getThemeData(color);
+    } else {
+      return LightTheme.getThemeData(color);
+    }
+  }
+
+  Future<void> _loadSettings() async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
-    bool _darkTheme = prefs.getBool(PrefsConstants.DARK_THEME) ?? true;
+    // bool _darkTheme = prefs.getBool(PrefsConstants.DARK_THEME) ?? true;
+    ThemeType _themeType = _typeFromString(
+        prefs.getString(PrefsConstants.themeType) ?? ThemeType.dark);
+
     Color _themeColor = ColorUtils.createMaterialColor(
         Color(prefs.getInt(PrefsConstants.themeColor)));
 
     add(ThemeChanged(
-      theme: _darkTheme ? AppTheme.dark : AppTheme.light,
+      type: _themeType,
       color: _themeColor,
     ));
-
-    return _darkTheme;
   }
 
-  Future<void> _saveSettings(bool darkTheme, MaterialColor color) async {
+  Future<void> _saveSettings(ThemeType themeType, MaterialColor color) async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(PrefsConstants.DARK_THEME, darkTheme);
+    await prefs.setString(PrefsConstants.themeType, themeType.toString());
 
     await prefs.setInt(PrefsConstants.themeColor, color.shade500.value);
+  }
+
+  ThemeType _typeFromString(String type) {
+    return ThemeType.values.firstWhere((e) => e.toString() == type);
   }
 }
