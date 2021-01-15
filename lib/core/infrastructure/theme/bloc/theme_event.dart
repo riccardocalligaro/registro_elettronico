@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/infrastructure/theme/theme_data/themes.dart';
 
-import '../app_themes.dart';
-
 @immutable
 abstract class ThemeEvent extends Equatable {
   ThemeEvent();

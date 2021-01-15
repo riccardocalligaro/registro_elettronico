@@ -92,12 +92,13 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   Future<void> _loadSettings() async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
-    // bool _darkTheme = prefs.getBool(PrefsConstants.DARK_THEME) ?? true;
+
     ThemeType _themeType = _typeFromString(
-        prefs.getString(PrefsConstants.themeType) ?? ThemeType.dark);
+      prefs.getString(PrefsConstants.themeType) ?? ThemeType.dark.toString(),
+    );
 
     Color _themeColor = ColorUtils.createMaterialColor(
-        Color(prefs.getInt(PrefsConstants.themeColor)));
+        Color(prefs.getInt(PrefsConstants.themeColor) ?? Colors.red.value));
 
     add(ThemeChanged(
       type: _themeType,
