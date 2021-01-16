@@ -163,7 +163,8 @@ class GradeCard extends StatelessWidget {
           actions: <Widget>[
             FlatButton(
               child: Text(
-                  AppLocalizations.of(context).translate('no').toUpperCase()),
+                AppLocalizations.of(context).translate('no').toUpperCase(),
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },

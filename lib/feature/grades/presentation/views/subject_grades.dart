@@ -333,7 +333,9 @@ class SubjectGradesLoaded extends StatelessWidget {
                                     .translate('cancel')
                                     .toUpperCase(),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
                             ),
                             FlatButton(
                               child: Text(

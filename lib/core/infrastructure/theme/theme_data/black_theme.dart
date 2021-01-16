@@ -5,8 +5,9 @@ class BlackTheme {
   static ThemeData getThemeData(MaterialColor color) {
     return ThemeData(
       scaffoldBackgroundColor: Colors.black,
-      backgroundColor: Colors.black,
       primarySwatch: color,
+      buttonColor: color,
+      primaryColor: color,
       accentColor: color,
       dialogBackgroundColor: Color(0xff0f0f0f),
       // primaryColor: color,
