@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:registro_elettronico/utils/color_utils.dart';
 
 class CustomRefresher extends StatelessWidget {
   final Widget child;
@@ -20,9 +21,7 @@ class CustomRefresher extends StatelessWidget {
     return SmartRefresher(
       controller: controller ?? RefreshController(),
       header: WaterDropMaterialHeader(
-        backgroundColor: Theme.of(context).brightness == Brightness.dark
-            ? Colors.grey[900]
-            : Colors.white,
+        backgroundColor: ColorUtils.getDropHeaderColor(context),
         color: Theme.of(context).accentColor,
       ),
       onRefresh: onRefresh,

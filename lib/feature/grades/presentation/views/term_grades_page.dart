@@ -12,6 +12,7 @@ import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholde
 import 'package:registro_elettronico/feature/grades/presentation/bloc/subjects_grades/subjects_grades_bloc.dart';
 import 'package:registro_elettronico/feature/grades/presentation/widgets/grade_subject_card.dart';
 import 'package:registro_elettronico/feature/grades/presentation/widgets/overall_stats_card.dart';
+import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/grades_utils.dart';
@@ -69,9 +70,7 @@ class _TermGradesPageState extends State<TermGradesPage> {
     return SmartRefresher(
         controller: RefreshController(),
         header: WaterDropMaterialHeader(
-          backgroundColor: Theme.of(context).brightness == Brightness.dark
-              ? Colors.grey[900]
-              : Colors.white,
+          backgroundColor: ColorUtils.getDropHeaderColor(context),
           color: Theme.of(context).accentColor,
         ),
         onRefresh: () {

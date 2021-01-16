@@ -53,6 +53,15 @@ class ColorUtils {
     return _colors;
   }
 
+  static Color getDropHeaderColor(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.light) {
+      return Colors.white;
+    } else if (Theme.of(context).scaffoldBackgroundColor == Colors.black) {
+      return Colors.black;
+    }
+    return Colors.grey[900];
+  }
+
   static List<Color> getGradientForColor(
     Color color, {
     bool button = false,
