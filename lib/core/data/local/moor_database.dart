@@ -20,7 +20,7 @@ import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart'
 import 'package:registro_elettronico/feature/timetable/data/dao/timetable_dao.dart';
 import 'package:registro_elettronico/feature/absences/data/model/absence_local_model.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_local_model.dart';
-import 'package:registro_elettronico/feature/notes/data/model/local/attachment_local_model.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/model/attachment_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/content_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/folder_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/teacher_local_model.dart';
@@ -87,7 +87,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

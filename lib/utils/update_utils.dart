@@ -29,13 +29,15 @@ class UpdateUtils {
 
       await sharedPreferences.setInt(PrefsConstants.lastUpdateAllData,
           DateTime.now().millisecondsSinceEpoch);
+      await sharedPreferences.setInt(PrefsConstants.lastUpdateVitalData,
+          DateTime.now().millisecondsSinceEpoch);
     } else {
       if (_needUpdateVitalData(sharedPreferences)) {
-        BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
-        BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
-
         await sharedPreferences.setInt(PrefsConstants.lastUpdateVitalData,
             DateTime.now().millisecondsSinceEpoch);
+
+        BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
+        BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
       }
     }
   }
@@ -43,6 +45,7 @@ class UpdateUtils {
   static bool _needUpdateAllData(SharedPreferences sharedPreferences) {
     final lastUpdate =
         sharedPreferences.getInt(PrefsConstants.lastUpdateAllData);
+    print(lastUpdate);
     return lastUpdate == null ||
         (DateTime.now().month == DateTime.september &&
             DateTime.fromMillisecondsSinceEpoch(lastUpdate)
