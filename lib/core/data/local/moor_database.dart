@@ -97,6 +97,7 @@ class AppDatabase extends _$AppDatabase {
             await m.deleteTable(attachments.actualTableName);
 
             await m.createTable(attachments);
+            await m.addColumn(attachments, attachments.id);
           }
         },
       );
