@@ -121,20 +121,29 @@ class Logger {
     FirebaseCrashlytics.instance.recordError(
       Exception(error.toString()),
       StackTrace.fromString(Trace.from(stacktrace).toString()),
-      reason: '⛔️ ${Trace.from(stacktrace).frames[1].member.toString()}',
+      reason: '⛔️ ${Trace.from(stacktrace).frames[0].member.toString()}',
     );
-    FLog.error(
-      className: className ??
-          Trace.from(stacktrace).frames[1].uri.toString() ??
-          'Unknown',
-      methodName: methodName ??
-          Trace.from(stacktrace).frames[1].member.toString() ??
-          'Unknown',
-      text: '⛔️ ${Trace.from(stacktrace).frames[1].member.toString()}',
-      exception: Exception(error.toString()),
-      stacktrace: stacktrace,
-      dataLogType: type.toString(),
-    );
+    if (Trace.from(stacktrace).frames.isNotEmpty) {
+      FLog.error(
+        className: className ??
+            Trace.from(stacktrace).frames[0].uri.toString() ??
+            'Unknown',
+        methodName: methodName ??
+            Trace.from(stacktrace).frames[0].member.toString() ??
+            'Unknown',
+        text: '⛔️ ${Trace.from(stacktrace).frames[0].member.toString()}',
+        exception: Exception(error.toString()),
+        stacktrace: stacktrace,
+        dataLogType: type.toString(),
+      );
+    } else {
+      FLog.error(
+        text: '⛔️ [UKNOWN ERROR]',
+        exception: Exception(error.toString()),
+        stacktrace: stacktrace,
+        dataLogType: type.toString(),
+      );
+    }
   }
 
   static void error(

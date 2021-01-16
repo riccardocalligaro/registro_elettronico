@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:tinycolor/tinycolor.dart';
 
@@ -70,14 +71,14 @@ class ColorUtils {
       return [Colors.yellow[700], Colors.yellow[900]];
     } else if (color == Colors.green) {
       return [Colors.green[500], Colors.green[800]];
-    } else if (color == Colors.red) {
+    } else if (color == Colors.red || color.value == 4294198070) {
       if (button) {
         return [
           Colors.red[600],
           Colors.red[800],
         ];
       }
-      return [Colors.red[400], Colors.red[900]];
+      return [Colors.red[400], Colors.red[800]];
     }
 
     return [

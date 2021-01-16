@@ -1,5 +1,6 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -8,6 +9,7 @@ import 'package:registro_elettronico/core/data/remote/api/dio_client.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
 import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client.dart';
 import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client_impl.dart';
+import 'package:registro_elettronico/core/infrastructure/notification/fcm_service.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/absences/data/repository/absences_repository_impl.dart';
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
@@ -112,6 +114,12 @@ class AppInjector {
     sl.registerLazySingleton(() => SpaggiariClient(sl()));
     sl.registerLazySingleton<WebSpaggiariClient>(() =>
         WebSpaggiariClientImpl(sl.get<Dio>(instanceName: 'WebSpaggiariDio')));
+
+    sl.registerLazySingleton<FirebaseMessaging>(
+      () => FirebaseMessaging(),
+    );
+
+    sl.registerLazySingleton(() => PushNotificationService(sl()));
   }
 
   static void injectRepository() {

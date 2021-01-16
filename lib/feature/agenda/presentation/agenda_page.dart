@@ -369,8 +369,12 @@ class _AgendaPageState extends State<AgendaPage> with TickerProviderStateMixin {
         markersColor: Colors.red[700],
         outsideDaysVisible: false,
         outsideStyle: TextStyle(color: Colors.grey[300]),
-        outsideWeekendStyle:
-            TextStyle(color: Theme.of(context).accentColor.withOpacity(0.7)),
+        outsideWeekendStyle: TextStyle(
+          color: Theme.of(context).accentColor.withOpacity(0.7),
+        ),
+        weekendStyle: TextStyle(color: Theme.of(context).accentColor),
+      ),
+      daysOfWeekStyle: DaysOfWeekStyle(
         weekendStyle: TextStyle(color: Theme.of(context).accentColor),
       ),
       headerStyle: HeaderStyle(

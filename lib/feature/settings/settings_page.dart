@@ -91,8 +91,13 @@ class _SettingsPageState extends State<SettingsPage> {
             final random = GlobalUtils.getRandomNumber();
             final subject =
                 'Bug report #$random - ${DateTime.now().toString()}';
-            String userMessage;
-            userMessage =
+            String userMessage = '';
+            final packageInfo = await PackageInfo.fromPlatform();
+            userMessage +=
+                "Versione app: ${packageInfo.version}+${packageInfo.buildNumber}";
+
+            userMessage += "\nPiattaforma: ${Platform.operatingSystem}\n";
+            userMessage +=
                 '${AppLocalizations.of(context).translate("email_message")}\n  -';
 
             final Email reportEmail = Email(
