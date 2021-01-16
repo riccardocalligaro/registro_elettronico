@@ -45,13 +45,11 @@ class SubjectGradesPage extends StatelessWidget {
         BlocProvider.of<GradesBloc>(context).add(GetGrades());
         BlocProvider.of<LocalGradesBloc>(context).add(GetLocalGrades(
           period: period,
+          subjectId: subject.id,
         ));
       },
       child: Scaffold(
         appBar: AppBar(
-          // backgroundColor: Colors.transparent,
-          // brightness: Theme.of(context).brightness,
-          // elevation: 0.0,
           title: Text(subject.name),
         ),
         body: BlocBuilder<GradesBloc, GradesState>(
@@ -110,19 +108,19 @@ class SubjectGradesLoaded extends StatelessWidget {
                   /// Pratico scritto and orale ciruclar progress widgets
                   _buildAveragesCard(values.value2, context),
 
-                  /// The chart that shows the average and grades
+                  // /// The chart that shows the average and grades
                   _buildChartCard(
                       subject,
                       values.value1
                           .where((g) => GradesUtils.isValidGrade(g))
                           .toList()),
 
-                  // Shots the progress bar of the obj and the avg
+                  // // Shots the progress bar of the obj and the avg
                   _buildProgressBarCard(values.value2, context),
 
                   _buildLocalGrades(values.value2, values.value1, context),
 
-                  // // Last grades
+                  // // // Last grades
                   _buildLastGrades(values.value1),
                 ],
               ),
@@ -177,12 +175,11 @@ class SubjectGradesLoaded extends StatelessWidget {
 
                 if (state is LocalGradesLoaded) {
                   return _buildLocalGradesLoaded(
-                      state.localGrades
-                          .where((g) => g.subjectId == subject.id)
-                          .toList(),
-                      averages,
-                      grades,
-                      context);
+                    state.localGrades,
+                    averages,
+                    grades,
+                    context,
+                  );
                 }
 
                 if (state is LocalGradesError) {
@@ -265,13 +262,12 @@ class SubjectGradesLoaded extends StatelessWidget {
     );
     final difference = GradesUtils.getDifferencePercentage(
         oldAverage: averages.average, newAverage: newAverage);
+
     if (localGrades.isNotEmpty) {
       localGrades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
       return AnimatedContainer(
         duration: Duration(milliseconds: 2000),
-        child: ListView(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+        child: Column(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -280,8 +276,8 @@ class SubjectGradesLoaded extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Icon(Icons.timeline),
-                      SizedBox(
+                      const Icon(Icons.timeline),
+                      const SizedBox(
                         width: 8,
                       ),
                       Text(newAverage.toStringAsFixed(2)),
@@ -290,7 +286,7 @@ class SubjectGradesLoaded extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       _getIconFromChange(difference, context),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       Text(difference.toStringAsFixed(2)),
@@ -299,7 +295,7 @@ class SubjectGradesLoaded extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             //Placeholder()
             ListView.builder(
               shrinkWrap: true,
@@ -396,7 +392,7 @@ class SubjectGradesLoaded extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                leading: Icon(Icons.person),
+                leading: const Icon(Icons.person),
                 title: Text(professorsText ?? ''),
               ),
             ),

@@ -27,12 +27,31 @@ class LocalGradesBloc extends Bloc<LocalGradesEvent, LocalGradesState> {
       Logger.info('BloC -> Got ${grades.length} grades (not for period)');
 
       if (event.period != TabsConstants.GENERALE) {
-        yield LocalGradesLoaded(
+        if (event.subjectId != null) {
+          yield LocalGradesLoaded(
+            localGrades: grades
+                .where(((g) =>
+                    g.periodPos == event.period &&
+                    g.subjectId == event.subjectId))
+                .toList(),
+          );
+        } else {
+          yield LocalGradesLoaded(
             localGrades: grades
                 .where(((grade) => grade.periodPos == event.period))
-                .toList());
+                .toList(),
+          );
+        }
       } else {
-        yield LocalGradesLoaded(localGrades: grades);
+        if (event.subjectId != null) {
+          yield LocalGradesLoaded(
+              localGrades:
+                  grades.where((g) => g.subjectId == event.subjectId).toList());
+        } else {
+          yield LocalGradesLoaded(
+            localGrades: grades,
+          );
+        }
       }
     }
 
