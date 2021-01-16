@@ -91,13 +91,14 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
+        beforeOpen: (details) async {},
         onCreate: (Migrator m) {
           return m.createAll();
         },
         onUpgrade: (Migrator m, int from, int to) async {
           if (from == 1) {
-            await m.drop(attachments);
-            await m.drop(notices);
+            await m.deleteTable(attachments.actualTableName);
+            await m.deleteTable(notices.actualTableName);
             await m.createTable(attachments);
             await m.createTable(notices);
           }
