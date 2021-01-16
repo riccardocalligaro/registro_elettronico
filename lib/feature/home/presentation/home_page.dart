@@ -58,8 +58,6 @@ class _HomePageState extends State<HomePage> {
 
   Profile profile;
 
-  List<Color> _lessonColors;
-
   @override
   void initState() {
     super.initState();
@@ -80,8 +78,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       profile = RepositoryProvider.of<ProfileRepository>(context).getProfile();
     });
-
-    _lessonColors = ColorUtils.getCardsColors(15);
   }
 
   void getPreferences() async {
@@ -277,9 +273,7 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 10,
                     ),
-                    LastLessonsSection(
-                      colors: _lessonColors,
-                    ),
+                    LastLessonsSection(),
                     SizedBox(
                       height: 10,
                     ),

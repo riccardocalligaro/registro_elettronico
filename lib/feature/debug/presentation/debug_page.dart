@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:moor/moor.dart' show GeneratedDatabase;
 import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
@@ -29,8 +28,8 @@ class _DebugPageState extends State<DebugPage> {
             title: 'Open DB',
             onTap: () {
               final AppDatabase db = sl();
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => MoorDbViewer(db as GeneratedDatabase)));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => MoorDbViewer(db)));
             },
           ),
           DebugButton(

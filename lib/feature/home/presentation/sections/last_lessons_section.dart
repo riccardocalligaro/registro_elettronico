@@ -8,11 +8,8 @@ import 'package:registro_elettronico/feature/home/presentation/widgets/lesson_ca
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class LastLessonsSection extends StatelessWidget {
-  final List<Color> colors;
-
   const LastLessonsSection({
     Key key,
-    @required this.colors,
   }) : super(key: key);
 
   @override
@@ -33,14 +30,6 @@ class LastLessonsSection extends StatelessWidget {
         );
       },
     );
-  }
-
-  Color _safeColor(int index) {
-    if (index >= colors.length - 1) {
-      return colors[0];
-    } else {
-      return colors[index];
-    }
   }
 
   Widget _buildLessonsCardsList(List<Lesson> lessons, BuildContext context) {
@@ -64,7 +53,6 @@ class LastLessonsSection extends StatelessWidget {
               lesson: lesson,
               duration: duration,
               position: index,
-              color: _safeColor(index),
             );
           },
         ),

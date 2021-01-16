@@ -7,7 +7,6 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class LessonCard extends StatelessWidget {
-  final Color color;
   final Lesson lesson;
   final int position;
   final int duration;
@@ -17,7 +16,6 @@ class LessonCard extends StatelessWidget {
     @required this.lesson,
     @required this.position,
     @required this.duration,
-    @required this.color,
   }) : super(key: key);
 
   @override
@@ -76,7 +74,7 @@ class LessonCard extends StatelessWidget {
           width: 220.0,
           height: 140,
           decoration: BoxDecoration(
-            color: color,
+            color: Theme.of(context).accentColor,
             borderRadius: BorderRadius.circular(5.0),
           ),
           child: Padding(
