@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -23,10 +23,10 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
   Stream<NoticesState> mapEventToState(
     NoticesEvent event,
   ) async* {
-    FLog.info(text: event.toString());
+    Logger.info(event.toString());
     if (event is FetchNoticeboard) {
       yield NoticesUpdateLoading();
-      FLog.info(text: 'Updating noticeboard');
+      Logger.info('Updating noticeboard');
       try {
         await noticesRepository.updateNotices();
 
@@ -34,14 +34,14 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
       } on NotConntectedException {
         yield NoticesLoadNotConnected();
       } on DioError catch (e, s) {
-        FLog.error(
+        Logger.e(
           text: 'Network Error fetching noticeboardd',
           exception: e,
           stacktrace: s,
         );
         yield NoticesUpdateError(e.response.data.toString());
       } on Exception catch (e, s) {
-        FLog.error(
+        Logger.e(
           text: 'Error when updating noticeboard',
           exception: e,
           stacktrace: s,
@@ -54,13 +54,13 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState> {
 
     if (event is GetNoticeboard) {
       yield NoticesLoading();
-      FLog.info(text: 'Getting noticeboard');
+      Logger.info('Getting noticeboard');
       try {
         final notices = await noticesRepository.getAllNotices();
-        FLog.info(text: 'BloC -> Got ${notices.length} notices');
+        Logger.info('BloC -> Got ${notices.length} notices');
         yield NoticesLoaded(notices);
       } on Exception catch (e, s) {
-        FLog.error(
+        Logger.e(
           text: 'Error getting lessons by date',
           exception: e,
           stacktrace: s,

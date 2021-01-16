@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
 
@@ -38,7 +38,7 @@ class DidacticsAttachmentsBloc
           await didacticsRepository.getDownloadedFileFromContentId(content.id);
 
       if (file != null) {
-        FLog.info(text: 'File exists ${file.path}');
+        Logger.info('File exists ${file.path}');
         yield DidacticsAttachmentsFileLoaded(path: file.path);
       } else {
         yield DidacticsAttachmentsLoading();
@@ -46,14 +46,13 @@ class DidacticsAttachmentsBloc
           try {
             final response =
                 await didacticsRepository.getFileAttachment(content.id);
-            FLog.info(
-                text: 'Got response from Spaggiari of file ${content.id}');
+            Logger.info('Got response from Spaggiari of file ${content.id}');
             String filename =
                 response.headers.value('content-disposition') ?? "";
             filename = filename.replaceAll('attachment; filename=', '');
             filename = filename.replaceAll(RegExp('\"'), '');
             filename = filename.trim();
-            FLog.info(text: 'Filename -> $filename');
+            Logger.info('Filename -> $filename');
             final path = await _localPath;
             String filePath = '$path/$filename';
             File file = File(filePath);
@@ -94,7 +93,7 @@ class DidacticsAttachmentsBloc
         } else {
           await FirebaseCrashlytics.instance
               .log('Unknown file type ${file.contentId}');
-          FLog.error(
+          Logger.e(
             text:
                 'Unknown file type ${file.contentId} - File name: ${file.name} - Content type: ${content.type}',
           );

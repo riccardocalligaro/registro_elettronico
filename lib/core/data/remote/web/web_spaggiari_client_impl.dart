@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 
 class WebSpaggiariClientImpl implements WebSpaggiariClient {
   Dio _dio;
@@ -14,7 +14,7 @@ class WebSpaggiariClientImpl implements WebSpaggiariClient {
     String password,
     bool lastYear,
   }) async {
-    FLog.info(text: 'Requesting new PHP Token');
+    Logger.info('Requesting new PHP Token');
 
     String loginPage;
     if (lastYear ?? false) {
@@ -45,7 +45,7 @@ class WebSpaggiariClientImpl implements WebSpaggiariClient {
 
       return ssid;
     } else {
-      FLog.info(text: 'Erorr');
+      Logger.info('Erorr');
       throw ServerFailure();
     }
   }

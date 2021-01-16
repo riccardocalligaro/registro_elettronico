@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
 import 'package:registro_elettronico/feature/stats/domain/repository/stats_repository.dart';
@@ -35,13 +35,13 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
       final stats = await statsRepository.getStudentReport();
       yield stats.fold(
         (failure) {
-          FLog.error(text: 'Error getting student report');
+          Logger.e(text: 'Error getting student report');
           return StatsLoadError();
         },
         (report) => StatsLoadSuccess(studentReport: report),
       );
     } catch (e, s) {
-      FLog.error(exception: e, stacktrace: s, text: 'Error getting user stats');
+      Logger.e(exception: e, stacktrace: s, text: 'Error getting user stats');
     }
   }
 }

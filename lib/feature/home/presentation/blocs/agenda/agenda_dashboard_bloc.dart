@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -31,11 +31,11 @@ class AgendaDashboardBloc
     yield AgendaDashboardLoadInProgress();
     try {
       final events = await agendaRepository.getLastEvents(DateTime.now());
-      FLog.info(text: 'BloC -> Got ${events.length} events dashboard');
+      Logger.info('BloC -> Got ${events.length} events dashboard');
 
       yield AgendaDashboardLoadSuccess(events: events);
     } on Exception catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Error getting dashboard',
         exception: e,
         stacktrace: s,

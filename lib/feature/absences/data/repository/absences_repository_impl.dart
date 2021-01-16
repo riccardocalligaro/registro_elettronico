@@ -1,7 +1,7 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/absences/data/model/absence_mapper.dart';
@@ -31,7 +31,7 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
   @override
   Future updateAbsences() async {
     if (await networkInfo.isConnected) {
-      FLog.info(text: 'Updating absences');
+      Logger.info('Updating absences');
 
       final profile = await profileRepository.getProfile();
       final absences = await spaggiariClient.getAbsences(profile.studentId);
@@ -39,9 +39,8 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
       absences.events.forEach((event) {
         absencesList.add(AbsenceMapper.convertEventEntityToInsertable(event));
       });
-      FLog.info(
-        text:
-            'Got ${absences.events.length} events from server, procceding to insert in database',
+      Logger.info(
+        'Got ${absences.events.length} events from server, procceding to insert in database',
       );
 
       await absenceDao.deleteAllAbsences();

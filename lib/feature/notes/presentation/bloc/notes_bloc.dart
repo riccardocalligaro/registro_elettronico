@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -31,11 +31,11 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
 
   Stream<NotesState> _mapUpdateNotesToState() async* {
     yield NotesUpdateLoading();
-    FLog.info(text: 'Updating notes');
+    Logger.info('Updating notes');
     try {
       await notesRepository.deleteAllNotes();
       await notesRepository.updateNotes();
-      FLog.info(text: 'Updated notes');
+      Logger.info('Updated notes');
     } on NotConntectedException {
       yield NotesLoadErrorNotConnected();
     } catch (e, s) {
@@ -49,10 +49,10 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     yield NotesLoading();
     try {
       final notes = await notesRepository.getAllNotes();
-      FLog.info(text: 'BloC -> Loaded ${notes.length} notes');
+      Logger.info('BloC -> Loaded ${notes.length} notes');
       yield NotesLoaded(notes);
     } on Exception catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Error loading notes',
         exception: e,
         stacktrace: s,

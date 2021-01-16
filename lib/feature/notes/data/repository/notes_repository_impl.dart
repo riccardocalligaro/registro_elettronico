@@ -1,8 +1,8 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
+import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/model/note_mapper.dart';
 import 'package:registro_elettronico/feature/notes/data/model/remote/notes_read_remote_model.dart';
@@ -57,21 +57,17 @@ class NotesRepositoryImpl implements NotesRepository {
       notesResponse.notesNTST.forEach((note) =>
           notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTST')));
 
-      FLog.info(
-        text:
-            'Got ${notesResponse.notesNTCL.length} notesNTCL from server, procceding to insert in database',
+      Logger.info(
+        'Got ${notesResponse.notesNTCL.length} notesNTCL from server, procceding to insert in database',
       );
-      FLog.info(
-        text:
-            'Got ${notesResponse.notesNTWN.length} notesNTWN from server, procceding to insert in database',
+      Logger.info(
+        'Got ${notesResponse.notesNTWN.length} notesNTWN from server, procceding to insert in database',
       );
-      FLog.info(
-        text:
-            'Got ${notesResponse.notesNTTE.length} notesNTTE from server, procceding to insert in database',
+      Logger.info(
+        'Got ${notesResponse.notesNTTE.length} notesNTTE from server, procceding to insert in database',
       );
-      FLog.info(
-        text:
-            'Got ${notesResponse.notesNTST.length} notesNTST from server, procceding to insert in database',
+      Logger.info(
+        'Got ${notesResponse.notesNTST.length} notesNTST from server, procceding to insert in database',
       );
       await noteDao.deleteAllAttachments();
       await noteDao.deleteAllNotes();

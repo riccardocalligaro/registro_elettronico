@@ -7,7 +7,6 @@ class DarkTheme {
     return ThemeData(
       primarySwatch: color,
       accentColor: color,
-      primaryColor: color,
       brightness: Brightness.dark,
       fontFamily: 'Montserrat',
       appBarTheme: AppBarTheme(

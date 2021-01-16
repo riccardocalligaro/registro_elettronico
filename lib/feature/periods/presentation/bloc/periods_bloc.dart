@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -24,14 +24,14 @@ class PeriodsBloc extends Bloc<PeriodsEvent, PeriodsState> {
   ) async* {
     if (event is FetchPeriods) {
       yield PeriodsUpdateLoading();
-      FLog.info(text: 'Updating periods');
+      Logger.info('Updating periods');
       try {
         await periodsRepository.updatePeriods();
         yield PeriodsUpdateLoaded();
       } on DioError catch (e) {
         yield PeriodsUpdateError(e.toString());
       } on Exception catch (e, s) {
-        FLog.error(
+        Logger.e(
           text: 'Error updating periods',
           exception: e,
           stacktrace: s,
@@ -47,7 +47,7 @@ class PeriodsBloc extends Bloc<PeriodsEvent, PeriodsState> {
         final periods = await periodsRepository.getAllPeriods();
         yield PeriodsLoaded(periods: periods);
       } on Exception catch (e, s) {
-        FLog.error(
+        Logger.e(
           text: 'Error getting all periods',
           exception: e,
           stacktrace: s,

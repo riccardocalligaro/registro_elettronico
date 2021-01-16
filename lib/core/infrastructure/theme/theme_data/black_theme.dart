@@ -7,13 +7,12 @@ class BlackTheme {
       scaffoldBackgroundColor: Colors.black,
       primarySwatch: color,
       buttonColor: color,
-      primaryColor: color,
+      // primaryColor: color,
       accentColor: color,
       dialogBackgroundColor: Color(0xff0f0f0f),
       // primaryColor: color,
       brightness: Brightness.dark,
       canvasColor: Colors.black,
-
       fontFamily: 'Montserrat',
       appBarTheme: AppBarTheme(
         elevation: 0,

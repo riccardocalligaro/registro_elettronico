@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -27,18 +27,18 @@ class AttachmentDownloadBloc
   ) async* {
     if (event is DownloadAttachment) {
       yield AttachmentDownloadLoading();
-      FLog.info(text: 'Downloading attachment');
+      Logger.info('Downloading attachment');
       try {
         final response = await noticesRepository.downloadFile(
           notice: event.notice,
           attachNumber: event.attachment.attachNumber,
         );
 
-        FLog.info(text: 'Got response for file');
+        Logger.info('Got response for file');
 
         final path = await _localPath;
 
-        FLog.info(text: 'Path $path');
+        Logger.info('Path $path');
         final ext = event.attachment.fileName.split('.').last;
         final filePath =
             '$path/${event.notice.contentTitle.replaceAll('/', '').replaceAll(' ', '_')}.$ext';
@@ -53,7 +53,7 @@ class AttachmentDownloadBloc
       } on DioError catch (e) {
         yield AttachmentDownloadError(e.toString());
       } catch (e, s) {
-        FLog.error(
+        Logger.e(
           text: 'Error downloading attachment',
           exception: e,
           stacktrace: s,

@@ -1,9 +1,9 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/domain/repository/preferences_repository.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/feature/timetable/presentation/views/new_timetable_entry.dart';
@@ -345,8 +345,7 @@ ${AppLocalizations.of(context).translate('no_timetable_message')}""",
                   if (subjectsList.isNotEmpty) {
                     subject = subjectsList[0].name;
                   } else {
-                    FLog.info(
-                        text: 'Unknown subject: ' + entry.subject.toString());
+                    Logger.info('Unknown subject: ' + entry.subject.toString());
                     subject = AppLocalizations.of(context)
                         .translate('unknown_subject')
                         .toUpperCase();

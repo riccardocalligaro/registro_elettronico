@@ -1,8 +1,8 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
+import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
 import 'package:registro_elettronico/feature/periods/data/model/period_mapper.dart';
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
@@ -37,9 +37,8 @@ class PeriodsRepositoryImpl implements PeriodsRepository {
         periodIndex++;
       });
 
-      FLog.info(
-        text:
-            'Got ${periods.periods.length} periods from server, procceding to insert in database',
+      Logger.info(
+        'Got ${periods.periods.length} periods from server, procceding to insert in database',
       );
       await periodDao.deleteAllPeriods();
 

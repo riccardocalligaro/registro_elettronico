@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:f_logs/model/flog/flog.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/remote/api/dio_client.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
-import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
+import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_mapper.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
@@ -42,7 +42,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
     if (await networkInfo.isConnected) {
       final profile = await profileRepository.getProfile();
 
-      FLog.info(text: 'Updating didactics');
+      Logger.info('Updating didactics');
 
       final didactics = await spaggiariClient.getDidactics(profile.studentId);
 
@@ -70,9 +70,8 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
         teachers.add(teacherDb);
       });
 
-      FLog.info(
-        text:
-            'Got ${didactics.teachers} teachers events from server, procceding to insert in database',
+      Logger.info(
+        'Got ${didactics.teachers} teachers events from server, procceding to insert in database',
       );
 
       await didacticsDao.insertTeachers(teachers);
@@ -102,9 +101,9 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   Future<Response> getFileAttachment(int fileID) async {
     if (await networkInfo.isConnected) {
       final profile = await profileRepository.getProfile();
-      FLog.info(text: 'Getting attachment for $fileID!');
+      Logger.info('Getting attachment for $fileID!');
       final res = await _getAttachmentFile(profile.studentId, fileID);
-      FLog.info(text: 'Got attachment for $fileID!');
+      Logger.info('Got attachment for $fileID!');
       return res;
     } else {
       throw NotConntectedException();
@@ -115,9 +114,9 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   Future<DownloadAttachmentTextResponse> getTextAtachment(int fileID) async {
     if (await networkInfo.isConnected) {
       final profile = await profileRepository.getProfile();
-      FLog.info(text: 'Getting text attachment for $fileID!');
+      Logger.info('Getting text attachment for $fileID!');
       final res = spaggiariClient.getAttachmentText(profile.studentId, fileID);
-      FLog.info(text: 'Got text attachment for $fileID!');
+      Logger.info('Got text attachment for $fileID!');
       return res;
     } else {
       throw NotConntectedException();
@@ -128,9 +127,9 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   Future<DownloadAttachmentURLResponse> getURLAtachment(int fileID) async {
     if (await networkInfo.isConnected) {
       final profile = await profileRepository.getProfile();
-      FLog.info(text: 'Getting URL attachment for $fileID!');
+      Logger.info('Getting URL attachment for $fileID!');
       final res = spaggiariClient.getAttachmentUrl(profile.studentId, fileID);
-      FLog.info(text: 'Got URL attachment for $fileID!');
+      Logger.info('Got URL attachment for $fileID!');
       return res;
     } else {
       throw NotConntectedException();
@@ -138,7 +137,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   }
 
   Future<Response> _getAttachmentFile(String studentId, int fileId) async {
-    FLog.info(text: 'Getting attachment file for $fileId!');
+    Logger.info('Getting attachment file for $fileId!');
 
     String baseUrl = 'https://web.spaggiari.eu/rest/v1';
 

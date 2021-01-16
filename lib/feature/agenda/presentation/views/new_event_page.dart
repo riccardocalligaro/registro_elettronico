@@ -1,10 +1,10 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/model/event_type.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/local_notification.dart';
 import 'package:registro_elettronico/core/presentation/widgets/app_drawer.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
@@ -75,9 +75,9 @@ class _NewEventPageState extends State<NewEventPage> {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () async {
-              FLog.info(text: 'Pressed the check button');
+              Logger.info('Pressed the check button');
               _insertEventInDb();
-              FLog.info(text: 'Inserted the element, popping the navigator');
+              Logger.info('Inserted the element, popping the navigator');
             },
           ),
         ],
@@ -100,11 +100,11 @@ class _NewEventPageState extends State<NewEventPage> {
   }
 
   void _insertEventInDb() async {
-    FLog.info(text: 'Inside the insert event button');
+    Logger.info('Inside the insert event button');
 
     final id = DateTime.now().millisecondsSinceEpoch.toSigned(32);
 
-    FLog.info(text: 'Set new event id to $id');
+    Logger.info('Set new event id to $id');
 
     final DateTime _date = DateTime(
       _selectedDate.year,
@@ -114,7 +114,7 @@ class _NewEventPageState extends State<NewEventPage> {
       _timeOfDay.minute,
     );
 
-    FLog.info(text: 'Date of the new event $_date');
+    Logger.info('Date of the new event $_date');
 
     AgendaEvent event;
     if (widget.eventType == EventType.memo) {
@@ -163,10 +163,10 @@ class _NewEventPageState extends State<NewEventPage> {
 
     Navigator.pop(context, _selectedDate);
 
-    FLog.info(text: 'Added event');
+    Logger.info('Added event');
 
     if (_notifyEvent) {
-      FLog.info(text: 'Setting up notifications');
+      Logger.info('Setting up notifications');
 
       final LocalNotification localNotification =
           LocalNotification(onSelectNotification);

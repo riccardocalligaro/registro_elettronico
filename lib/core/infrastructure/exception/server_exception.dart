@@ -1,4 +1,4 @@
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 
 /// This is the class that is used when the reponse of the
@@ -38,7 +38,7 @@ class ServerException implements Exception {
   }
 
   int _tryToConvertMessageToConstant(int code, String message) {
-    FLog.info(text: code.toString() + " :" + message);
+    Logger.info(code.toString() + " :" + message);
     if (code == 422 && message.trim() == "username and password does't match") {
       return RegistroConstants.USERNAME_PASSWORD_NOT_MATCHING;
     }

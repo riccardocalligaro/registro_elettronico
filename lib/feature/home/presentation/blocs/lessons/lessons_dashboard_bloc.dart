@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -32,7 +32,7 @@ class LessonsDashboardBloc
 
     try {
       final lessons = await lessonsRepository.getLastLessons();
-      FLog.info(text: 'BloC -> Got ${lessons.length} lessons');
+      Logger.info('BloC -> Got ${lessons.length} lessons');
       yield LessonsDashboardLoadSuccess(lessons: lessons);
     } catch (e, s) {
       await FirebaseCrashlytics.instance.recordError(e, s);

@@ -1,4 +1,4 @@
-import 'package:f_logs/f_logs.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 
 class StringUtils {
   // john doe => John Doe
@@ -81,7 +81,7 @@ class StringUtils {
         ret = string.substring(
             0, string.length > length ? length : string.length);
       } catch (e) {
-        FLog.info(text: 'Coldnt beatufiy string');
+        Logger.info('Coldnt beatufiy string');
         String removedSpaces = string.replaceAll(' ', '');
         ret = string.substring(
             0, removedSpaces.length > length ? length : removedSpaces.length);

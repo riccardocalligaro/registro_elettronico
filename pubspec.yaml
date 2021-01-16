@@ -24,6 +24,7 @@ dependencies:
   firebase_analytics: ^6.3.0
   firebase_core: ^0.5.3
   firebase_crashlytics: ^0.2.4
+  firebase_messaging: ^7.0.3
   fl_chart: ^0.12.2
   flutter_bloc: ^6.1.1
   flutter_circular_chart: ^0.1.0

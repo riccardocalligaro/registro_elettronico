@@ -1,8 +1,8 @@
-import 'package:f_logs/model/flog/flog.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
+import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
 import 'package:registro_elettronico/feature/grades/data/model/grade_mapper.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
@@ -38,9 +38,8 @@ class GradesRepositoryImpl implements GradesRepository {
         grades.add(GradeMapper.convertGradeEntityToInserttable(grade));
       });
 
-      FLog.info(
-        text:
-            'Got ${gradesResponse.grades.length} grades from server, procceding to insert in database',
+      Logger.info(
+        'Got ${gradesResponse.grades.length} grades from server, procceding to insert in database',
       );
       await gradeDao.deleteAllGrades();
       await gradeDao.insertGrades(grades);

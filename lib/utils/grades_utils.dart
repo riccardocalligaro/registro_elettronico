@@ -1,4 +1,4 @@
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
@@ -22,8 +22,8 @@ class GradesUtils {
         count++;
       }
     });
-    FLog.info(text: 'Media senza local: ${sum / count}');
-    FLog.info(text: 'Local Grades: ${localGrades.length}');
+    Logger.info('Media senza local: ${sum / count}');
+    Logger.info('Local Grades: ${localGrades.length}');
 
     localGrades.forEach((g) {
       if (isValidLocalGrade(g)) {
@@ -32,7 +32,7 @@ class GradesUtils {
       }
     });
 
-    FLog.info(text: 'Media con local: ${sum / count}');
+    Logger.info('Media con local: ${sum / count}');
 
     return sum / count;
   }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -24,7 +24,7 @@ class AttachmentsBloc extends Bloc<AttachmentsEvent, AttachmentsState> {
   ) async* {
     if (event is GetAttachments) {
       yield NoticesAttachmentsLoading();
-      FLog.info(text: 'Getting attachment for ${event.notice.pubId}');
+      Logger.info('Getting attachment for ${event.notice.pubId}');
       try {
         final attachments =
             await noticesRepository.getAttachmentsForPubId(event.notice.pubId);
@@ -32,7 +32,7 @@ class AttachmentsBloc extends Bloc<AttachmentsEvent, AttachmentsState> {
       } on NotConntectedException {
         yield NoticesAttachmentsLoadNotConnected();
       } catch (e, s) {
-        FLog.error(
+        Logger.e(
           text: 'Error getting attachments for notice',
           exception: e,
           stacktrace: s,

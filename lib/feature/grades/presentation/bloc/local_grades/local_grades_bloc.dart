@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
@@ -24,7 +24,7 @@ class LocalGradesBloc extends Bloc<LocalGradesEvent, LocalGradesState> {
     if (event is GetLocalGrades) {
       //yield LocalGradesLoading();
       final grades = await gradesRepository.getLocalGrades();
-      FLog.info(text: 'BloC -> Got ${grades.length} grades (not for period)');
+      Logger.info('BloC -> Got ${grades.length} grades (not for period)');
 
       if (event.period != TabsConstants.GENERALE) {
         yield LocalGradesLoaded(
@@ -38,21 +38,21 @@ class LocalGradesBloc extends Bloc<LocalGradesEvent, LocalGradesState> {
 
     if (event is AddLocalGrade) {
       await gradesRepository.insertLocalGrade(event.localGrade);
-      FLog.info(text: 'Inserted grade ${event.localGrade.toString()}');
+      Logger.info('Inserted grade ${event.localGrade.toString()}');
       final grades = await gradesRepository.getLocalGrades();
       yield LocalGradesLoaded(localGrades: grades);
     }
 
     if (event is DeleteLocalGrade) {
       await gradesRepository.deleteLocalGrade(event.localGrade);
-      FLog.info(text: 'Deleted local grade ${event.localGrade.toString()}');
+      Logger.info('Deleted local grade ${event.localGrade.toString()}');
 
       final grades = await gradesRepository.getLocalGrades();
       yield LocalGradesLoaded(localGrades: grades);
     }
     if (event is UpdateLocalGrade) {
       await gradesRepository.updateLocalGrade(event.localGrade);
-      FLog.info(text: 'Updated local grade ${event.localGrade.toString()}');
+      Logger.info('Updated local grade ${event.localGrade.toString()}');
 
       final grades = await gradesRepository.getLocalGrades();
       yield LocalGradesLoaded(localGrades: grades);

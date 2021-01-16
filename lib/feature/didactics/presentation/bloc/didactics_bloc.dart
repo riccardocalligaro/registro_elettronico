@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
 
 part 'didactics_event.dart';
@@ -28,9 +28,9 @@ class DidacticsBloc extends Bloc<DidacticsEvent, DidacticsState> {
         final teachers = await didacticsRepository.getTeachersGrouped();
         final folders = await didacticsRepository.getFolders();
         final contents = await didacticsRepository.getContents();
-        FLog.info(
-          text:
-              'BloC -> Got ${teachers.length} teachers, ${folders.length} folders, ${contents.length} contents',
+
+        Logger.info(
+          'BloC -> Got ${teachers.length} teachers, ${folders.length} folders, ${contents.length} contents',
         );
 
         yield DidacticsLoaded(

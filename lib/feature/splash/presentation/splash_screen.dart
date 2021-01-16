@@ -1,6 +1,6 @@
-import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
           /// Checks if the autosign in returns the positive result that the user is
           /// auto signed in, so it redirects to the Home page
           if (state is AutoSignInResult) {
-            FLog.info(text: "Auto sign in resulted -> Home screen");
+            Logger.info("Auto sign in resulted -> Home screen");
             UpdateUtils.checkForUpdates(context);
             AppNavigator.instance.navToHome(context);
           }
@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
           /// If the auto sign in returns an error the user
           /// is redirected to the login page
           else if (state is AutoSignInError) {
-            FLog.info(text: "Auto sign in error -> Login screen screen");
+            Logger.info("Auto sign in error -> Login screen screen");
             AppNavigator.instance.navToLogin(context);
           }
         },
@@ -66,8 +66,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _autoSignIn(BuildContext context) {
-    FLog.info(
-      text: "Checking if user is signed in, adding auto sign in to BloC",
+    Logger.info(
+      "Checking if user is signed in, adding auto sign in to BloC",
     );
     BlocProvider.of<AuthBloc>(context).add(AutoSignIn());
   }

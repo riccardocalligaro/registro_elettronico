@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -32,12 +32,12 @@ class NoteAttachmentsBloc
     yield NoteAttachmentsLoadInProgress();
     try {
       final attachment = await notesRepository.getAttachmentForNote(type, id);
-      FLog.info(text: 'Got attachment ${attachment.id}');
+      Logger.info('Got attachment ${attachment.id}');
       yield NoteAttachmentsLoadSuccess(attachment: attachment);
     } on NotConntectedException {
       yield NoteAttachmentsLoadNotConnected();
     } catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Error reading note',
         exception: e,
         stacktrace: s,

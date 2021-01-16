@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
 import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
@@ -213,7 +213,7 @@ class StatsRepositoryImpl implements StatsRepository {
         return Left(GenericFailure());
       }
     } catch (e, s) {
-      FLog.error(
+      Logger.e(
           text: 'Error calculating student report ${e.toString()}',
           stacktrace: s);
       return Left(GenericFailure());

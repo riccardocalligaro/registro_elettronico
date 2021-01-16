@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
@@ -30,21 +30,21 @@ class DocumentAttachmentBloc
             .getDownloadedDocument(event.document.hash);
 
         if (fileDb != null) {
-          FLog.info(text: 'Got file in database ${fileDb.hash}');
+          Logger.info('Got file in database ${fileDb.hash}');
           yield DocumentLoadedLocally(path: fileDb.path);
         } else {
           final available = await documentsRepository.checkDocument(
             event.document.hash,
           );
 
-          FLog.info(text: 'File available: ${available.toString()}');
+          Logger.info('File available: ${available.toString()}');
 
           yield* available.fold((failure) async* {
-            FLog.info(text: 'File available failure');
+            Logger.info('File available failure');
             yield DocumentAttachmentError();
           }, (available) async* {
             if (available) {
-              FLog.info(text: 'Reading document from repository');
+              Logger.info('Reading document from repository');
               final path = await documentsRepository.readDocument(
                 event.document.hash,
               );
@@ -63,7 +63,7 @@ class DocumentAttachmentBloc
     } else if (event is DeleteDocumentAttachment) {
       try {
         await documentsRepository.deleteDownloadedDocument(event.document.hash);
-        FLog.info(text: 'Deleted file hash: ${event.document.hash}');
+        Logger.info('Deleted file hash: ${event.document.hash}');
         yield DocumentAttachmentDeleteSuccess();
       } catch (e) {
         await documentsRepository.deleteAllDownloadedDocuments();

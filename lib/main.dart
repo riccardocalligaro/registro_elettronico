@@ -1,14 +1,16 @@
 import 'dart:async';
 
-import 'package:f_logs/f_logs.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:registro_elettronico/application.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/splash/presentation/splash_screen.dart';
 
+import 'core/infrastructure/log/logger.dart';
+import 'core/infrastructure/log/logger_bloc.dart';
 import 'core/infrastructure/routes.dart';
 
 FlutterLocalNotificationsPlugin globalLocalNotifications;
@@ -20,10 +22,12 @@ void main() async {
 
   AppInjector.init();
 
+  Bloc.observer = LoggerBlocDelegate();
+
   runZonedGuarded(() {
     runApp(SrApp());
   }, (e, s) {
-    FLog.error(
+    Logger.e(
       text: 'Error!',
       exception: Exception(e.toString()),
       stacktrace: s,

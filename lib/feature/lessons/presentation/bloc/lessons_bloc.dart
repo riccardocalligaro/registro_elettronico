@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -42,11 +42,11 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     yield LessonsLoadInProgress();
     try {
       final lessons = await lessonsRepository.getLastLessons();
-      FLog.info(text: 'BloC -> Got ${lessons.length} lessons');
+      Logger.info('BloC -> Got ${lessons.length} lessons');
 
       yield LessonsLoadSuccess(lessons: lessons);
     } on Exception catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Error getting last lessons by date',
         exception: e,
         stacktrace: s,
@@ -60,10 +60,10 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     yield LessonsLoadInProgress();
     try {
       final lessons = await lessonsRepository.getLessonsByDate(dateTime);
-      FLog.info(text: 'BloC -> Got ${lessons.length} lessons');
+      Logger.info('BloC -> Got ${lessons.length} lessons');
       yield LessonsLoadSuccess(lessons: lessons);
     } on Exception catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Error getting lessons by date',
         exception: e,
         stacktrace: s,
@@ -77,10 +77,10 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     yield LessonsLoadInProgress();
     try {
       final lessons = await lessonsRepository.getLessons();
-      FLog.info(text: 'BloC -> Got ${lessons.length} events');
+      Logger.info('BloC -> Got ${lessons.length} events');
       yield LessonsLoadSuccess(lessons: lessons);
     } on Exception catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Error getting absences',
         exception: e,
         stacktrace: s,
@@ -98,11 +98,11 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     } on NotConntectedException catch (_) {
       yield LessonsLoadErrorNotConnected();
     } on DioError catch (e, s) {
-      FLog.info(text: 'Server - Error updating absences');
+      Logger.info('Server - Error updating absences');
       await FirebaseCrashlytics.instance.recordError(e, s);
       yield LessonsLoadServerError(serverError: e);
     } on Exception catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Other - Error updating absences',
         exception: e,
         stacktrace: s,
@@ -119,7 +119,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
     } on NotConntectedException catch (_) {
       yield LessonsLoadErrorNotConnected();
     } on DioError catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Other - Error updating today lessons',
         exception: e,
         stacktrace: s,
@@ -127,7 +127,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
       await FirebaseCrashlytics.instance.recordError(e, s);
       yield LessonsLoadServerError(serverError: e);
     } on Exception catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Other - Error updating today lessons',
         exception: e,
         stacktrace: s,
@@ -144,7 +144,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
       final lessons = await lessonsRepository.getLessonsForSubject(subjectId);
       yield LessonsLoadSuccess(lessons: lessons);
     } on Exception catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Other - Error getting lessons for subject lessons',
         exception: e,
         stacktrace: s,

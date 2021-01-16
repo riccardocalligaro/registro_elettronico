@@ -1,8 +1,8 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
+import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
@@ -42,9 +42,8 @@ class LessonsRepositoryImpl implements LessonsRepository {
             .add(LessonMapper.mapLessonEntityToLessoneInsertable(lesson));
       });
 
-      FLog.info(
-        text:
-            'Got ${lessons.lessons.length} documents from server, procceding to insert in database',
+      Logger.info(
+        'Got ${lessons.lessons.length} documents from server, procceding to insert in database',
       );
 
       await lessonDao.insertLessons(lessonsList);

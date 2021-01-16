@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/core/data/remote/api/api_config.dart';
 import 'package:registro_elettronico/core/infrastructure/exception/server_exception.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';
 import 'package:registro_elettronico/feature/profile/data/model/profile_mapper.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
@@ -38,11 +38,10 @@ class DioClient {
 
         final expireDate = DateTime.parse(profile.expire);
 
-        FLog.info(text: 'Got profile');
         //? This checks if the profile exires before now, so if this  results true the token is expired
         if (expireDate.isBefore(DateTime.now())) {
-          FLog.info(
-            text: "Need to request new token - ${profile.expire.toString()}",
+          Logger.info(
+            '🔒 [DioINTERCEPTOR] Need to request new token - ${profile.expire.toString()}',
           );
           // this gets the password from flutter secure storage which is saved using the ident
           final password = await flutterSecureStorage.read(key: profile.ident);
@@ -78,14 +77,14 @@ class DioClient {
               PrefsConstants.profile, updatedProfile.toJson());
 
           //profileRepository.updateProfile();
-          FLog.info(
-            text: "Got a new token - proceeding with request",
+          Logger.info(
+            '🔒 [DioINTERCEPTOR] Got a new token - proceeding with request',
           );
           // this sets the token as the new one we just got from the api
           options.headers["Z-Auth-Token"] = loginResponse.token;
         } else {
-          FLog.info(
-            text: "No need for token - proceeding with request",
+          Logger.info(
+            '🆓 [DioINTERCEPTOR] No need for token - proceeding with request',
           );
           // If the token is still vaid we just use the one we got from the database
           options.headers["Z-Auth-Token"] = profile.token;
@@ -96,16 +95,17 @@ class DioClient {
 
       return options;
     }, onResponse: (Response response) {
-      FLog.info(
-        text:
-            'DioEND -> Response -> ${response.statusCode} [${response.request.path}] ${response.request.method}  ${response.request.responseType}',
+      Logger.info(
+        '🌐 [DioEND] -> Response -> ${response.statusCode} [${response.request.path}] ${response.request.method}  ${response.request.responseType}',
       );
 
       return response; // continue
     }, onError: (DioError error) async {
-      FLog.error(
-        text:
-            'DioEND -> Error -> url:[${error.request.baseUrl}] type:${error.type} message: ${error.message}',
+      Logger.networkError(
+        '🤮 [DioERROR] ${error.type}',
+        Exception(
+          'Url: [${error.request.baseUrl}] status:${error.response.statusCode} type:${error.type} Data: ${error.response.data} message: ${error.message}',
+        ),
       );
     }));
     return dio;

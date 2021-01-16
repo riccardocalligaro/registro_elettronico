@@ -1,8 +1,8 @@
-import 'package:f_logs/model/flog/flog.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
+import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/professors/data/dao/professor_dao.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
@@ -50,9 +50,8 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
         });
       });
 
-      FLog.info(
-        text:
-            'Got ${res.subjects} subjects from server, procceding to insert in database',
+      Logger.info(
+        'Got ${res.subjects} subjects from server, procceding to insert in database',
       );
       // Clear the old profofessors and subjects from the database
       await professorDao.deleteAllProfessors();

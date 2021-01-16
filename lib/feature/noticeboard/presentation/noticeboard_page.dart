@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
@@ -8,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/core/presentation/widgets/custom_refresher.dart';
@@ -247,7 +247,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
           }
 
           if (state is AttachmentDownloadLoaded) {
-            FLog.info(text: 'Path ${state.path}');
+            Logger.info('Path ${state.path}');
             Scaffold.of(context)
               ..removeCurrentSnackBar()
               ..showSnackBar(

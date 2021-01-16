@@ -1,6 +1,6 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../header_text.dart';
@@ -43,7 +43,7 @@ class AboutDevelopersPage extends StatelessWidget {
                   if (await canLaunch(url)) {
                     await launch(url);
                   } else {
-                    FLog.info(text: 'Could not launch $url');
+                    Logger.info('Could not launch $url');
                     throw 'Could not launch $url';
                   }
                 },

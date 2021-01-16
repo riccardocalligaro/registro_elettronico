@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart'
@@ -41,13 +41,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> mapEventToState(
     AuthEvent event,
   ) async* {
-    FLog.info(text: "$event added to Auth Bloc");
+    Logger.info("$event added to Auth Bloc");
 
     if (event is AutoSignIn) {
       yield AutoSignInLoading();
       final isUserLoggedIn = await profileRepository.isLoggedIn();
 
-      FLog.info(text: 'Auto sign in result: $isUserLoggedIn');
+      Logger.info('Auto sign in result: $isUserLoggedIn');
 
       if (isUserLoggedIn) {
         yield AutoSignInResult();
@@ -60,7 +60,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final responseProfile = await loginRepository.signIn(
             username: event.username, password: event.password);
 
-        FLog.info(text: responseProfile.toString());
+        Logger.info(responseProfile.toString());
 
         yield* responseProfile.fold(
           (loginReponse) async* {
@@ -78,14 +78,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
             await _saveProfile(loginReponse, event.password, email);
 
-            FLog.info(text: 'Log in success');
+            Logger.info('Log in success');
 
             yield SignInSuccess(
                 ProfileMapper.mapLoginResponseProfileToProfileEntity(
                     loginReponse));
           },
           (parentsLoginResponse) async* {
-            FLog.info(text: 'Got parents response');
+            Logger.info('Got parents response');
             final ParentsLoginResponse parentsLoginResponse =
                 responseProfile.getOrElse(null);
             yield SignInParent(parentsLoginResponse);
@@ -94,11 +94,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } on NotConntectedException {
         yield SignInNotConnected();
       } on DioError catch (e) {
-        FLog.error(text: 'Error while logging in user: ${e.response.data}');
+        Logger.e(text: 'Error while logging in user: ${e.response.data}');
         yield SignInNetworkError(ServerException.fromJson(e.response.data));
       } catch (e, s) {
-        FLog.error(
-            text: 'Sign in other error ${e.toString()}, ${s.toString()};');
+        Logger.e(text: 'Sign in other error ${e.toString()}, ${s.toString()};');
         yield SignInError(e.toString());
       }
     }
@@ -117,7 +116,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     String userPassword,
     String email,
   ) async {
-    FLog.info(text: 'Saving profile in database');
+    Logger.info('Saving profile in database');
 
     final profileEntity = ProfileMapper.mapLoginResponseProfileToProfileEntity(
       returnedProfile,

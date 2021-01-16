@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
@@ -54,7 +54,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       yield AgendaLoadError(error: e.response.statusMessage.toString());
     } catch (e, s) {
       await FirebaseCrashlytics.instance.recordError(e, s);
-      FLog.error(text: 'Updating all agenda  error ${e.toString()}');
+      Logger.e(text: 'Updating all agenda  error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
   }
@@ -65,7 +65,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       final events = await agendaRepository.getAllEvents();
       await prefs.setInt(
           PrefsConstants.lastUpdateHome, DateTime.now().millisecondsSinceEpoch);
-      FLog.info(text: 'BloC -> Got ${events.length} events');
+      Logger.info('BloC -> Got ${events.length} events');
 
       final Map<DateTime, List<db.AgendaEvent>> eventsMap = Map.fromIterable(
         events,
@@ -77,7 +77,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       yield AgendaLoadSuccess(events: events, eventsMap: eventsMap);
     } catch (e, s) {
       await FirebaseCrashlytics.instance.recordError(e, s);
-      FLog.error(text: 'Getting agenda error ${e.toString()}');
+      Logger.e(text: 'Getting agenda error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
   }
@@ -99,7 +99,7 @@ class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
       yield AgendaLoadSuccess(events: events, eventsMap: eventsMap);
     } catch (e, s) {
       await FirebaseCrashlytics.instance.recordError(e, s);
-      FLog.error(text: 'Getting agenda error ${e.toString()}');
+      Logger.e(text: 'Getting agenda error ${e.toString()}');
       yield AgendaLoadError(error: e.toString());
     }
   }

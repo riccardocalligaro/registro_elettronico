@@ -1,7 +1,7 @@
-import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/gradient_red_button.dart';
 import 'package:registro_elettronico/feature/home/presentation/home_page.dart';
@@ -214,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
             style: TextStyle(fontSize: 19),
           ),
           onTap: () {
-            FLog.info(text: 'Sign in button pressed');
+            Logger.info('Sign in button pressed');
 
             FocusScopeNode currentFocus = FocusScope.of(context);
             if (!currentFocus.hasPrimaryFocus) {
@@ -225,8 +225,8 @@ class _LoginPageState extends State<LoginPage> {
             final password = _passwordController.text;
 
             if (username != '' && password != '') {
-              FLog.info(
-                text: 'Got valid input, proceeding to adding event to bloc',
+              Logger.info(
+                'Got valid input, proceeding to adding event to bloc',
               );
               BlocProvider.of<AuthBloc>(context).add(
                 SignIn(
@@ -235,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               );
             } else {
-              FLog.info(text: 'Got empty input');
+              Logger.info('Got empty input');
               setState(() {
                 _invalid = true;
                 _erorrMessage = AppLocalizations.of(context)

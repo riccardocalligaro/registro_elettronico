@@ -1,9 +1,9 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/presentation/widgets/app_drawer.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/widgets/select_subject_dialog.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
@@ -222,9 +222,9 @@ class _NewTimetableEntryState extends State<NewTimetableEntry> {
                 end: start,
                 subjectName: _selectedSubject.name));
       }
-      FLog.info(
-          text:
-              'Insert entry subject ${_selectedSubject.id}, dayOfWeek: ${_dayOfWeek.weekday} start ${_start.hour} duration $_durationHours');
+
+      Logger.info(
+          'Insert entry subject ${_selectedSubject.id}, dayOfWeek: ${_dayOfWeek.weekday} start ${_start.hour} duration $_durationHours');
 
       await BlocProvider.of<TimetableBloc>(context).add(GetTimetable());
 

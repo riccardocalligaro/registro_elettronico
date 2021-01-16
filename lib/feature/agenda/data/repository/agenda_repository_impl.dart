@@ -1,8 +1,8 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/event_mapper.dart';
@@ -53,9 +53,8 @@ class AgendaRepositoryImpl implements AgendaRepository {
         events.add(EventMapper.convertEventEntityToInsertable(event, color));
       });
 
-      FLog.info(
-        text:
-            'Got ${agenda.events.length} events from server, procceding to insert in database',
+      Logger.info(
+        'Got ${agenda.events.length} events from server, procceding to insert in database',
       );
       await agendaDao.deleteAllEventsWithoutLocal();
 

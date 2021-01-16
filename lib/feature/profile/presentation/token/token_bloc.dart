@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -31,7 +31,7 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
       yield TokenLoadInProgress();
 
       if (loginToken != null) {
-        FLog.info(text: 'Got token from singleton');
+        Logger.info('Got token from singleton');
         yield TokenSchoolReportLoadSuccess(
           token: loginToken.token.split(';')[0],
           schoolReport: event.schoolReport,
@@ -39,7 +39,7 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
       } else {
         try {
           final res = await scrutiniRepository.getLoginToken();
-          FLog.info(text: 'Got token from Spaggiari');
+          Logger.info('Got token from Spaggiari');
 
           yield* res.fold((failure) async* {
             yield TokenLoadError();
@@ -55,20 +55,20 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
         }
       }
     } else if (event is GetLoginToken) {
-      FLog.info(text: 'Getting login token');
+      Logger.info('Getting login token');
       yield TokenLoadInProgress();
 
       if (event.lastYear) {
         if (lastYearToken != null) {
-          FLog.info(text: 'Got token from singleton');
+          Logger.info('Got token from singleton');
           yield TokenLoadSuccess(
             token: loginToken.token.split(';')[0],
           );
         } else {
           final res = await scrutiniRepository.getLoginToken(lastYear: true);
-          FLog.info(text: 'Got token from Spaggiari');
+          Logger.info('Got token from Spaggiari');
           yield* res.fold((failure) async* {
-            FLog.error(
+            Logger.e(
               text: 'Error getting token from spaggiari',
             );
             await FirebaseCrashlytics.instance
@@ -83,15 +83,15 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
         }
       } else {
         if (loginToken != null) {
-          FLog.info(text: 'Got token from singleton');
+          Logger.info('Got token from singleton');
           yield TokenLoadSuccess(
             token: loginToken.token.split(';')[0],
           );
         } else {
           final res = await scrutiniRepository.getLoginToken();
-          FLog.info(text: 'Got token from Spaggiari');
+          Logger.info('Got token from Spaggiari');
           yield* res.fold((failure) async* {
-            FLog.error(
+            Logger.e(
               text: 'Error getting token from spaggiari',
             );
             await FirebaseCrashlytics.instance

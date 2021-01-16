@@ -1,10 +1,10 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/model/event_type.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/widgets/select_date_dialog.dart';
@@ -145,7 +145,7 @@ class _EditEventPageState extends State<EditEventPage> {
       );
     }
 
-    FLog.info(text: 'Updated events');
+    Logger.info('Updated events');
 
     await RepositoryProvider.of<AgendaRepository>(context).updateEvent(event);
 

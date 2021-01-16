@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
-import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -10,6 +9,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/grades/presentation/widgets/grades_chart.dart';
 import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
@@ -82,7 +82,7 @@ class _StatsPageState extends State<StatsPage> {
                       '${AppLocalizations.of(context).translate('statistics')} ${DateUtils.convertDateLocaleDashboard(DateTime.now(), AppLocalizations.of(context).locale.toString())}',
                 );
               }).catchError((onError) {
-                FLog.info(text: 'Coudlnt create stats image file for sharing');
+                Logger.info('Coudlnt create stats image file for sharing');
               });
             },
           )

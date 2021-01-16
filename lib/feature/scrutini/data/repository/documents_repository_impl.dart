@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:f_logs/f_logs.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
+import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
 import 'package:registro_elettronico/feature/scrutini/data/model/document_mapper.dart';
@@ -48,14 +48,12 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
             .add(DocumentMapper.convertApiSchoolReportToInsertable(report));
       });
 
-      FLog.info(
-        text:
-            'Got ${documents.documents.length} documents from server, procceding to insert in database',
+      Logger.info(
+        'Got ${documents.documents.length} documents from server, procceding to insert in database',
       );
 
-      FLog.info(
-        text:
-            'Got ${documents.schoolReports.length} school reports from server, procceding to insert in database',
+      Logger.info(
+        'Got ${documents.schoolReports.length} school reports from server, procceding to insert in database',
       );
 
       // Delete the documents
@@ -107,7 +105,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
     if (await networkInfo.isConnected) {
       try {
         final profile = profileRepository.getProfile();
-        FLog.info(text: 'Got profile');
+        Logger.info('Got profile');
 
         final document = await spaggiariClient.readDocument(
           profile.studentId,
@@ -118,7 +116,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
         filename = filename.replaceAll(RegExp('\"'), '');
         filename = filename.trim();
 
-        FLog.info(text: 'Filename -> $filename');
+        Logger.info('Filename -> $filename');
         final path = await _localPath;
         String filePath = '$path/$filename';
         File file = File(filePath);
@@ -153,7 +151,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
 
   @override
   Future deleteDownloadedDocument(String hash) async {
-    FLog.info(text: 'Checking downloaded with hash');
+    Logger.info('Checking downloaded with hash');
     final fileDb = await documentsDao.getDownloadedDocumentFromHash(hash);
     if (fileDb != null) {
       File file = File(fileDb.path);

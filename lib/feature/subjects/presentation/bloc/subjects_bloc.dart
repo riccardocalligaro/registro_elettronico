@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -42,7 +42,7 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
       await subjectsRepository.updateSubjects();
       yield SubjectsUpdateLoadSuccess();
     } on Exception catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Error updating subjects',
         exception: e,
         stacktrace: s,
@@ -56,10 +56,10 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
     yield SubjectsLoadInProgress();
     try {
       final subjects = await subjectsRepository.getAllSubjects();
-      FLog.info(text: 'BloC -> Got ${subjects.length} subjects');
+      Logger.info('BloC -> Got ${subjects.length} subjects');
       yield SubjectsLoadSuccess(subjects: subjects);
     } on Exception catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Error getting all subjects',
         exception: e,
         stacktrace: s,
@@ -74,15 +74,15 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
     try {
       final subjects = await subjectsRepository.getAllSubjects();
       final professors = await subjectsRepository.getAllProfessors();
-      FLog.info(text: 'BloC -> Got ${subjects.length} subjects');
-      FLog.info(text: 'BloC -> Got ${professors.length} professors');
+      Logger.info('BloC -> Got ${subjects.length} subjects');
+      Logger.info('BloC -> Got ${professors.length} professors');
 
       yield SubjectsAndProfessorsLoadSuccess(
         subjects: subjects,
         professors: professors,
       );
     } on Exception catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Error getting subjects and professors',
         exception: e,
         stacktrace: s,
@@ -96,13 +96,13 @@ class SubjectsBloc extends Bloc<SubjectsEvent, SubjectsState> {
     yield ProfessorsLoadInProgress();
     try {
       final professors = await subjectsRepository.getAllProfessors();
-      FLog.info(text: 'BloC -> Got ${professors.length} professors');
+      Logger.info('BloC -> Got ${professors.length} professors');
 
       yield ProfessorsLoadSuccess(
         professors: professors,
       );
     } on Exception catch (e, s) {
-      FLog.error(
+      Logger.e(
         text: 'Error getting professors',
         exception: e,
         stacktrace: s,

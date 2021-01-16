@@ -1,6 +1,6 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/feature/profile/data/model/profile_entity.dart';
 import 'package:registro_elettronico/feature/profile/data/model/profile_mapper.dart';
@@ -22,7 +22,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<bool> isLoggedIn() async {
-    FLog.info(text: 'Checking logged in user...');
+    Logger.info('Checking logged in user...');
     return sharedPreferences.getString(PrefsConstants.profile) != null;
   }
 

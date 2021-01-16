@@ -1,9 +1,9 @@
-import 'package:f_logs/model/flog/flog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
+import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/dao/notice_dao.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/notice_mapper.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
@@ -46,9 +46,8 @@ class NoticesRepositoryImpl implements NoticesRepository {
         });
       });
 
-      FLog.info(
-        text:
-            'Got ${response.items.length} notice items from server, procceding to insert in database',
+      Logger.info(
+        'Got ${response.items.length} notice items from server, procceding to insert in database',
       );
 
       await noticeDao.deleteAllNotices();

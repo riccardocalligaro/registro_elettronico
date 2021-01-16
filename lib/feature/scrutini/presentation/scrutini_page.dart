@@ -1,10 +1,10 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/core/presentation/widgets/custom_refresher.dart';
@@ -150,7 +150,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                       ),
                     );
                 } else if (state is DocumentLoadSuccess) {
-                  FLog.info(text: state.path);
+                  Logger.info(state.path);
                   Scaffold.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(

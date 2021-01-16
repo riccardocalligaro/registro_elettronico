@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:f_logs/model/flog/flog.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -50,7 +50,7 @@ class GradesBloc extends Bloc<GradesEvent, GradesState> {
       } else {
         grades = await gradesRepository.getAllGrades();
       }
-      FLog.info(text: 'BloC -> Got ${grades.length} grades');
+      Logger.info('BloC -> Got ${grades.length} grades');
       yield GradesLoaded(grades);
     } catch (e, s) {
       await FirebaseCrashlytics.instance.recordError(e, s);
