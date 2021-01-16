@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 
 class WeekSummaryChart extends StatefulWidget {
@@ -150,7 +151,7 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
           //showingIndicators: [1, 2, 3, 4, 5, 6],
           spots: _getEventsSpots(),
           isCurved: true,
-          colors: [Theme.of(context).accentColor],
+          colors: [ColorUtils.getLessonCardColor(context)],
           preventCurveOverShooting: true,
 
           //curveSmoothness: 0.60,
@@ -162,7 +163,7 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
                 FlDotCirclePainter(
               radius: 3,
               color: Colors.transparent,
-              strokeColor: Theme.of(context).accentColor,
+              strokeColor: ColorUtils.getLessonCardColor(context),
             ),
           ),
           belowBarData: BarAreaData(
@@ -215,7 +216,7 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
 
   List<Color> _getGradients(BuildContext context) {
     return [
-      Theme.of(context).accentColor,
+      ColorUtils.getLessonCardColor(context),
       Theme.of(context).brightness == Brightness.dark
           ? Colors.grey[900]
           : Colors.white

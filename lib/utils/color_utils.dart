@@ -22,6 +22,16 @@ class ColorUtils {
     }
   }
 
+  static Color getLessonCardColor(BuildContext context) {
+    final themeColor = Theme.of(context).accentColor;
+
+    if (themeColor == Colors.red) {
+      return Colors.red[400];
+    }
+
+    return themeColor;
+  }
+
   static List<Color> getCardsColors(int length) {
     List<Color> _colors = [
       Colors.pink,

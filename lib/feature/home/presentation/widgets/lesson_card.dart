@@ -2,6 +2,7 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
@@ -74,7 +75,7 @@ class LessonCard extends StatelessWidget {
           width: 220.0,
           height: 140,
           decoration: BoxDecoration(
-            color: Theme.of(context).accentColor,
+            color: ColorUtils.getLessonCardColor(context),
             borderRadius: BorderRadius.circular(5.0),
           ),
           child: Padding(

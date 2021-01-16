@@ -99,31 +99,29 @@ class SubjectGradesLoaded extends StatelessWidget {
         final Tuple2 values = snapshot.data;
         if (values.value1 != null) {
           return Container(
-            child: Padding(
+            child: ListView(
               padding: const EdgeInsets.all(8.0),
-              child: ListView(
-                children: <Widget>[
-                  _buildProfessorsCard(context),
+              children: <Widget>[
+                _buildProfessorsCard(context),
 
-                  /// Pratico scritto and orale ciruclar progress widgets
-                  _buildAveragesCard(values.value2, context),
+                /// Pratico scritto and orale ciruclar progress widgets
+                _buildAveragesCard(values.value2, context),
 
-                  // /// The chart that shows the average and grades
-                  _buildChartCard(
-                      subject,
-                      values.value1
-                          .where((g) => GradesUtils.isValidGrade(g))
-                          .toList()),
+                // /// The chart that shows the average and grades
+                _buildChartCard(
+                    subject,
+                    values.value1
+                        .where((g) => GradesUtils.isValidGrade(g))
+                        .toList()),
 
-                  // // Shots the progress bar of the obj and the avg
-                  _buildProgressBarCard(values.value2, context),
+                // // Shots the progress bar of the obj and the avg
+                _buildProgressBarCard(values.value2, context),
 
-                  _buildLocalGrades(values.value2, values.value1, context),
+                _buildLocalGrades(values.value2, values.value1, context),
 
-                  // // // Last grades
-                  _buildLastGrades(values.value1),
-                ],
-              ),
+                // // // Last grades
+                _buildLastGrades(values.value1),
+              ],
             ),
           );
         }
@@ -419,23 +417,21 @@ class SubjectGradesLoaded extends StatelessWidget {
   }
 
   Widget _buildLastGrades(List<Grade> grades) {
-    return Padding(
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       padding: const EdgeInsets.all(4.0),
-      child: ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: grades.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: index == 0
-                ? EdgeInsets.only(top: 2.0, bottom: 8.0)
-                : EdgeInsets.only(bottom: 8.0),
-            child: GradeCard(
-              grade: grades[index],
-            ),
-          );
-        },
-      ),
+      itemCount: grades.length,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: index == 0
+              ? EdgeInsets.only(top: 2.0, bottom: 8.0)
+              : EdgeInsets.only(bottom: 8.0),
+          child: GradeCard(
+            grade: grades[index],
+          ),
+        );
+      },
     );
   }
 
