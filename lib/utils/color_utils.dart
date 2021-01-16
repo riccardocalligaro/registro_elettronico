@@ -24,7 +24,6 @@ class ColorUtils {
 
   static List<Color> getCardsColors(int length) {
     List<Color> _colors = [
-      Colors.red,
       Colors.pink,
       Colors.purple,
       Colors.deepPurple,
