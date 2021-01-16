@@ -4,6 +4,7 @@ import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
@@ -93,11 +94,9 @@ class AppDatabase extends _$AppDatabase {
   MigrationStrategy get migration => MigrationStrategy(
         onUpgrade: (Migrator m, int from, int to) async {
           if (from == 1) {
-            print('Making migrations');
+            Logger.info('🗄️ [MIGRATIONS] From $from to $to');
             await m.deleteTable(attachments.actualTableName);
-
             await m.createTable(attachments);
-            await m.addColumn(attachments, attachments.id);
           }
         },
       );
