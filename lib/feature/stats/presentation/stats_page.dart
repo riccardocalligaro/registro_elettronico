@@ -166,7 +166,7 @@ class _StatsPageState extends State<StatsPage> {
                       .translate('general_average')
                       .replaceAll(
                           '{average}', report.average.toStringAsFixed(2))),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   Text(
@@ -177,21 +177,21 @@ class _StatsPageState extends State<StatsPage> {
                             : AppLocalizations.of(context)
                                 .translate('no_credits')),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   Text(AppLocalizations.of(context)
                       .translate('best_subject')
                       .replaceAll(
                           '{subject}', report.bestSubject.name.toLowerCase())),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   Text(AppLocalizations.of(context)
                       .translate('worst_subject')
                       .replaceAll(
                           '{subject}', report.worstSubject.name.toLowerCase())),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   AutoSizeText(
@@ -203,7 +203,7 @@ class _StatsPageState extends State<StatsPage> {
                                 .toString()),
                     maxLines: 1,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   AutoSizeText(
@@ -213,7 +213,7 @@ class _StatsPageState extends State<StatsPage> {
                             report.sufficientiSubjectsCount.toString()),
                     maxLines: 1,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   AutoSizeText(
@@ -222,14 +222,14 @@ class _StatsPageState extends State<StatsPage> {
                         .replaceAll('{number}', insufficientiTotal.toString()),
                     maxLines: 1,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   Text(AppLocalizations.of(context)
                       .translate('best_term')
                       .replaceAll('{number}',
                           '${report.mostProfitablePeriod.periodIndex}° ${AppLocalizations.of(context).translate('term')}')),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   AutoSizeText(
@@ -339,7 +339,7 @@ class _StatsPageState extends State<StatsPage> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     CircularPercentIndicator(
@@ -368,7 +368,7 @@ class _StatsPageState extends State<StatsPage> {
                         report.firstTermAverage,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     CircularPercentIndicator(
@@ -395,7 +395,7 @@ class _StatsPageState extends State<StatsPage> {
                       progressColor: GlobalUtils.getColorFromAverage(
                           report.secondTermAverage),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     CircularPercentIndicator(

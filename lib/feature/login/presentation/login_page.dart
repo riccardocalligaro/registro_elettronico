@@ -150,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 90,
                 ),
                 _buildHeaderText(),
@@ -183,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginInput() {
     return Column(
       children: <Widget>[
-        SizedBox(
+        const SizedBox(
           height: 30,
         ),
         TextField(
@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                   .translate('login_username_input_field'),
               errorText: _invalid ? _erorrMessage : null),
         ),
-        SizedBox(
+        const SizedBox(
           height: 30,
         ),
         TextField(
@@ -204,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
             errorText: _invalid ? _erorrMessage : null,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 30,
         ),
         GradientRedButton(
@@ -244,7 +244,7 @@ class _LoginPageState extends State<LoginPage> {
             }
           },
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         Row(

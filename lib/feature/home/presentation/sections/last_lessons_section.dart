@@ -68,7 +68,7 @@ class LastLessonsSection extends StatelessWidget {
               Icons.subject,
               size: 64,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(AppLocalizations.of(context).translate('no_lessons'))

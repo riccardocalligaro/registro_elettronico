@@ -61,7 +61,7 @@ class NextEventsSection extends StatelessWidget {
                 Icons.calendar_today,
                 size: 64,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(AppLocalizations.of(context).translate('no_events'))
@@ -88,7 +88,7 @@ class NextEventsSection extends StatelessWidget {
                             style: TextStyle(fontSize: 15.0),
                           ),
                         if (e.title != '')
-                          SizedBox(
+                          const SizedBox(
                             height: 2.5,
                           ),
                         Text(
@@ -112,7 +112,7 @@ class NextEventsSection extends StatelessWidget {
                           style: TextStyle(fontSize: 15.0),
                         ),
                       if (e.title != '')
-                        SizedBox(
+                        const SizedBox(
                           height: 2.5,
                         ),
                       // Text(

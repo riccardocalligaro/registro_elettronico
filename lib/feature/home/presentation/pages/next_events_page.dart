@@ -78,7 +78,7 @@ class NextEventsPage extends StatelessWidget {
                   '${e.title ?? ''}',
                   style: TextStyle(fontSize: 15.0),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 2.5,
                 ),
                 Text(
@@ -104,7 +104,7 @@ class NextEventsPage extends StatelessWidget {
                 '${e.notes ?? ''}',
                 style: TextStyle(fontSize: 15.0),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 2.5,
               ),
               Text(

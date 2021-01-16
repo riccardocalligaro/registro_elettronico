@@ -27,12 +27,12 @@ class _WeekSummaryChartState extends State<WeekSummaryChart> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Text(
             '${AppLocalizations.of(context).translate('this_week_section_title')} - ${_getEventsMessage(_weekEvents)}'),
-        SizedBox(
+        const SizedBox(
           height: 16,
         ),
         AspectRatio(

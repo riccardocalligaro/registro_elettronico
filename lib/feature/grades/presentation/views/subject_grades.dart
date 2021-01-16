@@ -498,7 +498,7 @@ class SubjectGradesLoaded extends StatelessWidget {
               Column(
                 children: <Widget>[
                   _buildStatsCircle(averages.scrittoAverage),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(AppLocalizations.of(context).translate('written')),
@@ -507,7 +507,7 @@ class SubjectGradesLoaded extends StatelessWidget {
               Column(
                 children: <Widget>[
                   _buildStatsCircle(averages.oraleAverage),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(AppLocalizations.of(context).translate('oral')),
@@ -516,7 +516,7 @@ class SubjectGradesLoaded extends StatelessWidget {
               Column(
                 children: <Widget>[
                   _buildStatsCircle(averages.praticoAverage),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(AppLocalizations.of(context).translate('pratico')),
