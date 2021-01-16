@@ -108,7 +108,11 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
       lessons,
       professors,
     }, variables: [
-      Variable.withDateTime(DateTime.now().subtract(Duration(days: 45)))
+      Variable.withDateTime(
+        DateTime.now().subtract(
+          Duration(days: 30),
+        ),
+      ),
     ]).map((row) {
       return GeniusTimetable.fromData(row.data, db);
     }).get();

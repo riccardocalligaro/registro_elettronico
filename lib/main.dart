@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:registro_elettronico/application.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/core/infrastructure/presentation_constants.dart';
 import 'package:registro_elettronico/feature/splash/presentation/splash_screen.dart';
 
 import 'core/infrastructure/log/logger.dart';
@@ -61,7 +62,7 @@ class SrApp extends StatelessWidget {
           localizationsDelegates: initData.localizationsDelegates,
           localeResolutionCallback: initData.localeResolutionCallback,
           // showPerformanceOverlay: true,
-          // debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: !PresentationConstants.isForPresentation,
           routes: Routes.routes,
           onUnknownRoute: (settings) {
             return MaterialPageRoute(builder: (ctx) => SplashScreen());

@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:tinycolor/tinycolor.dart';
 

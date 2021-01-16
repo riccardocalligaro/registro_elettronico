@@ -82,6 +82,4 @@ class PushNotificationService {
   int _randomId() {
     return Random().nextInt(10000) + 0;
   }
-
-  void _selectNotification(String payload) {}
 }
