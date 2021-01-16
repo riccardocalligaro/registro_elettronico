@@ -82,6 +82,9 @@ PODS:
     - Flutter
   - flutter_webview_plugin (0.0.1):
     - Flutter
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
   - GoogleAppMeasurement (6.8.3):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
     - GoogleUtilities/MethodSwizzler (~> 6.7)
@@ -126,6 +129,9 @@ PODS:
   - Protobuf (3.14.0)
   - shared_preferences (0.0.1):
     - Flutter
+  - sqflite (0.0.2):
+    - Flutter
+    - FMDB (>= 2.7.5)
   - sqlite3 (3.32.3):
     - sqlite3/common (= 3.32.3)
   - sqlite3/common (3.32.3)
@@ -163,6 +169,7 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - sqlite3_flutter_libs (from `.symlinks/plugins/sqlite3_flutter_libs/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
@@ -176,6 +183,7 @@ SPEC REPOS:
     - FirebaseInstallations
     - FirebaseInstanceID
     - FirebaseMessaging
+    - FMDB
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
@@ -215,6 +223,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
   sqlite3_flutter_libs:
     :path: ".symlinks/plugins/sqlite3_flutter_libs/ios"
   url_launcher:
@@ -239,6 +249,7 @@ SPEC CHECKSUMS:
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GoogleAppMeasurement: 966e88df9d19c15715137bb2ddaf52373f111436
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
@@ -250,6 +261,7 @@ SPEC CHECKSUMS:
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
   Protobuf: 0cde852566359049847168e51bd1c690e0f70056
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   sqlite3: 8f7d2078ae27778699a622a94b853285793422a2
   sqlite3_flutter_libs: 5651f8ff48e3b44d910863c4ea5916085b1b245f
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef

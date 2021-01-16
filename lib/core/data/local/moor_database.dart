@@ -89,6 +89,21 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onCreate: (Migrator m) {
+          return m.createAll();
+        },
+        onUpgrade: (Migrator m, int from, int to) async {
+          if (from == 1) {
+            await m.drop(attachments);
+            await m.drop(notices);
+            await m.createTable(attachments);
+            await m.createTable(notices);
+          }
+        },
+      );
+
   /// Deletes all the tables from the db except the profiles, so the user is not logged out
   Future resetDbWithoutProfile() async {
     for (var table in allTables) {

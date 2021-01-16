@@ -5485,11 +5485,13 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
 }
 
 class Attachment extends DataClass implements Insertable<Attachment> {
+  final int id;
   final int pubId;
   final String fileName;
   final int attachNumber;
   Attachment(
-      {@required this.pubId,
+      {@required this.id,
+      @required this.pubId,
       @required this.fileName,
       @required this.attachNumber});
   factory Attachment.fromData(Map<String, dynamic> data, GeneratedDatabase db,
@@ -5498,6 +5500,7 @@ class Attachment extends DataClass implements Insertable<Attachment> {
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     return Attachment(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       pubId: intType.mapFromDatabaseResponse(data['${effectivePrefix}pub_id']),
       fileName: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}file_name']),
@@ -5508,6 +5511,9 @@ class Attachment extends DataClass implements Insertable<Attachment> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
     if (!nullToAbsent || pubId != null) {
       map['pub_id'] = Variable<int>(pubId);
     }
@@ -5522,6 +5528,7 @@ class Attachment extends DataClass implements Insertable<Attachment> {
 
   AttachmentsCompanion toCompanion(bool nullToAbsent) {
     return AttachmentsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       pubId:
           pubId == null && nullToAbsent ? const Value.absent() : Value(pubId),
       fileName: fileName == null && nullToAbsent
@@ -5537,6 +5544,7 @@ class Attachment extends DataClass implements Insertable<Attachment> {
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return Attachment(
+      id: serializer.fromJson<int>(json['id']),
       pubId: serializer.fromJson<int>(json['pubId']),
       fileName: serializer.fromJson<String>(json['fileName']),
       attachNumber: serializer.fromJson<int>(json['attachNumber']),
@@ -5546,14 +5554,16 @@ class Attachment extends DataClass implements Insertable<Attachment> {
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
       'pubId': serializer.toJson<int>(pubId),
       'fileName': serializer.toJson<String>(fileName),
       'attachNumber': serializer.toJson<int>(attachNumber),
     };
   }
 
-  Attachment copyWith({int pubId, String fileName, int attachNumber}) =>
+  Attachment copyWith({int id, int pubId, String fileName, int attachNumber}) =>
       Attachment(
+        id: id ?? this.id,
         pubId: pubId ?? this.pubId,
         fileName: fileName ?? this.fileName,
         attachNumber: attachNumber ?? this.attachNumber,
@@ -5561,6 +5571,7 @@ class Attachment extends DataClass implements Insertable<Attachment> {
   @override
   String toString() {
     return (StringBuffer('Attachment(')
+          ..write('id: $id, ')
           ..write('pubId: $pubId, ')
           ..write('fileName: $fileName, ')
           ..write('attachNumber: $attachNumber')
@@ -5569,38 +5580,45 @@ class Attachment extends DataClass implements Insertable<Attachment> {
   }
 
   @override
-  int get hashCode => $mrjf(
-      $mrjc(pubId.hashCode, $mrjc(fileName.hashCode, attachNumber.hashCode)));
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(pubId.hashCode, $mrjc(fileName.hashCode, attachNumber.hashCode))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is Attachment &&
+          other.id == this.id &&
           other.pubId == this.pubId &&
           other.fileName == this.fileName &&
           other.attachNumber == this.attachNumber);
 }
 
 class AttachmentsCompanion extends UpdateCompanion<Attachment> {
+  final Value<int> id;
   final Value<int> pubId;
   final Value<String> fileName;
   final Value<int> attachNumber;
   const AttachmentsCompanion({
+    this.id = const Value.absent(),
     this.pubId = const Value.absent(),
     this.fileName = const Value.absent(),
     this.attachNumber = const Value.absent(),
   });
   AttachmentsCompanion.insert({
-    this.pubId = const Value.absent(),
+    this.id = const Value.absent(),
+    @required int pubId,
     @required String fileName,
     @required int attachNumber,
-  })  : fileName = Value(fileName),
+  })  : pubId = Value(pubId),
+        fileName = Value(fileName),
         attachNumber = Value(attachNumber);
   static Insertable<Attachment> custom({
+    Expression<int> id,
     Expression<int> pubId,
     Expression<String> fileName,
     Expression<int> attachNumber,
   }) {
     return RawValuesInsertable({
+      if (id != null) 'id': id,
       if (pubId != null) 'pub_id': pubId,
       if (fileName != null) 'file_name': fileName,
       if (attachNumber != null) 'attach_number': attachNumber,
@@ -5608,8 +5626,12 @@ class AttachmentsCompanion extends UpdateCompanion<Attachment> {
   }
 
   AttachmentsCompanion copyWith(
-      {Value<int> pubId, Value<String> fileName, Value<int> attachNumber}) {
+      {Value<int> id,
+      Value<int> pubId,
+      Value<String> fileName,
+      Value<int> attachNumber}) {
     return AttachmentsCompanion(
+      id: id ?? this.id,
       pubId: pubId ?? this.pubId,
       fileName: fileName ?? this.fileName,
       attachNumber: attachNumber ?? this.attachNumber,
@@ -5619,6 +5641,9 @@ class AttachmentsCompanion extends UpdateCompanion<Attachment> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
     if (pubId.present) {
       map['pub_id'] = Variable<int>(pubId.value);
     }
@@ -5634,6 +5659,7 @@ class AttachmentsCompanion extends UpdateCompanion<Attachment> {
   @override
   String toString() {
     return (StringBuffer('AttachmentsCompanion(')
+          ..write('id: $id, ')
           ..write('pubId: $pubId, ')
           ..write('fileName: $fileName, ')
           ..write('attachNumber: $attachNumber')
@@ -5647,6 +5673,15 @@ class $AttachmentsTable extends Attachments
   final GeneratedDatabase _db;
   final String _alias;
   $AttachmentsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
   final VerificationMeta _pubIdMeta = const VerificationMeta('pubId');
   GeneratedIntColumn _pubId;
   @override
@@ -5686,7 +5721,7 @@ class $AttachmentsTable extends Attachments
   }
 
   @override
-  List<GeneratedColumn> get $columns => [pubId, fileName, attachNumber];
+  List<GeneratedColumn> get $columns => [id, pubId, fileName, attachNumber];
   @override
   $AttachmentsTable get asDslTable => this;
   @override
@@ -5698,9 +5733,14 @@ class $AttachmentsTable extends Attachments
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    }
     if (data.containsKey('pub_id')) {
       context.handle(
           _pubIdMeta, pubId.isAcceptableOrUnknown(data['pub_id'], _pubIdMeta));
+    } else if (isInserting) {
+      context.missing(_pubIdMeta);
     }
     if (data.containsKey('file_name')) {
       context.handle(_fileNameMeta,
@@ -5720,7 +5760,7 @@ class $AttachmentsTable extends Attachments
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {pubId};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Attachment map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
