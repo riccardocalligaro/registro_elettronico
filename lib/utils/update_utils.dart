@@ -4,7 +4,6 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
-import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
@@ -74,7 +73,7 @@ class UpdateUtils {
     final NoticesRepository noticesRepository = sl();
     final PeriodsRepository periodsRepository = sl();
     final SubjectsRepository subjectsRepository = sl();
-    final GradesRepository gradesRepository = sl();
+    // final GradesRepository gradesRepository = sl();
     final NotesRepository notesRepository = sl();
     final DidacticsRepository didacticsRepository = sl();
     final DocumentsRepository documentsRepository = sl();
@@ -85,7 +84,7 @@ class UpdateUtils {
       await Future.wait([
         agendaRepository.updateAllAgenda(),
         lessonsRepository.updateAllLessons(),
-        gradesRepository.updateGrades(),
+        // gradesRepository.updateGrades(),
       ]);
     }
 

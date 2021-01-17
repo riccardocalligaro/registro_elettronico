@@ -101,12 +101,16 @@ class DioClient {
 
       return response; // continue
     }, onError: (DioError error) async {
-      Logger.networkError(
-        '🤮 [DioERROR] ${error.type}',
-        Exception(
-          'Url: [${error.request.baseUrl}] status:${error.response.statusCode} type:${error.type} Data: ${error.response.data} message: ${error.message}',
-        ),
-      );
+      if (error.response != null) {
+        Logger.networkError(
+          '🤮 [DioERROR] ${error.type}',
+          Exception(
+            'Url: [${error.request.baseUrl}] status:${error.response.statusCode} type:${error.type} Data: ${error.response.data} message: ${error.message}',
+          ),
+        );
+      } else {
+        Logger.info(error.toString());
+      }
     }));
     return dio;
   }

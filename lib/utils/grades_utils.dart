@@ -9,24 +9,24 @@ import 'constants/tabs_constants.dart';
 import 'entity/overall_stats.dart';
 import 'entity/subject_averages.dart';
 
-class GradesUtils {
-  static double getAverageFromGradesAndLocalGrades({
-    @required List<LocalGrade> localGrades,
-    @required List<Grade> grades,
+class GradeLocalModelsUtils {
+  static double getAverageFromGradeLocalModelsAndLocalGradeLocalModels({
+    @required List<GradeLocalModel> localGradeLocalModels,
+    @required List<GradeLocalModel> grades,
   }) {
     double sum = 0;
     int count = 0;
     grades.forEach((g) {
-      if (isValidGrade(g)) {
+      if (isValidGradeLocalModel(g)) {
         sum += g.decimalValue;
         count++;
       }
     });
     Logger.info('Media senza local: ${sum / count}');
-    Logger.info('Local Grades: ${localGrades.length}');
+    Logger.info('Local GradeLocalModels: ${localGradeLocalModels.length}');
 
-    localGrades.forEach((g) {
-      if (isValidLocalGrade(g)) {
+    localGradeLocalModels.forEach((g) {
+      if (isValidLocalGradeLocalModel(g)) {
         sum += g.decimalValue;
         count++;
       }
@@ -50,7 +50,7 @@ class GradesUtils {
 // }  return 0.0;
   }
 
-  static double getAverage(int subjectId, List<Grade> grades) {
+  static double getAverage(int subjectId, List<GradeLocalModel> grades) {
     double sum = 0;
     int count = 0;
 
@@ -60,7 +60,7 @@ class GradesUtils {
         countAnnotaions++;
       }
 
-      if (grade.subjectId == subjectId && isValidGrade(grade)) {
+      if (grade.subjectId == subjectId && isValidGradeLocalModel(grade)) {
         sum += grade.decimalValue;
         count++;
       }
@@ -104,7 +104,7 @@ class GradesUtils {
     return 0;
   }
 
-  static double getAverageWithoutSubjectId(List<Grade> grades) {
+  static double getAverageWithoutSubjectId(List<GradeLocalModel> grades) {
     double sum = 0;
     int count = 0;
 
@@ -120,8 +120,8 @@ class GradesUtils {
     return sum / count;
   }
 
-  static SubjectAverages getSubjectAveragesFromGrades(
-      List<Grade> grades, int subjectId) {
+  static SubjectAverages getSubjectAveragesFromGradeLocalModels(
+      List<GradeLocalModel> grades, int subjectId) {
     // Declare variables for the different type of averages
     double sumAverage = 0;
     double countAverage = 0;
@@ -137,7 +137,7 @@ class GradesUtils {
 
     grades.forEach((grade) {
       final decimalValue = grade.decimalValue;
-      if (isValidGrade(grade) && grade.subjectId == subjectId) {
+      if (isValidGradeLocalModel(grade) && grade.subjectId == subjectId) {
         // always check the average for all grades
         sumAverage += decimalValue;
         countAverage++;
@@ -167,8 +167,8 @@ class GradesUtils {
     );
   }
 
-  static OverallStats getOverallStatsFromSubjectGrades(
-      Subject subject, List<Grade> grades, int period) {
+  static OverallStats getOverallStatsFromSubjectGradeLocalModels(
+      Subject subject, List<GradeLocalModel> grades, int period) {
     // get the number of insufficienze
     int insufficienze = 0;
     int sufficienze = 0;
@@ -179,8 +179,8 @@ class GradesUtils {
     Subject worstSubject;
     Subject bestSubject;
 
-    double maxGrade = -1.0;
-    double minGrade = 10.0;
+    double maxGradeLocalModel = -1.0;
+    double minGradeLocalModel = 10.0;
 
     int count = 0;
     double sum = 0;
@@ -197,12 +197,12 @@ class GradesUtils {
         if (grade.decimalValue < 6) insufficienze++;
 
         // check for best grade
-        if (grade.decimalValue > maxGrade) {
-          maxGrade = grade.decimalValue;
+        if (grade.decimalValue > maxGradeLocalModel) {
+          maxGradeLocalModel = grade.decimalValue;
         }
         // check for min grade
-        if (grade.decimalValue < minGrade) {
-          minGrade = grade.decimalValue;
+        if (grade.decimalValue < minGradeLocalModel) {
+          minGradeLocalModel = grade.decimalValue;
         }
       }
     });
@@ -211,8 +211,8 @@ class GradesUtils {
       return OverallStats(
           insufficienze: insufficienze,
           sufficienze: sufficienze,
-          votoMin: minGrade,
-          votoMax: maxGrade,
+          votoMin: minGradeLocalModel,
+          votoMax: maxGradeLocalModel,
           bestSubject: bestSubject,
           worstSubject: worstSubject,
           average: sum / count);
@@ -221,7 +221,7 @@ class GradesUtils {
     }
   }
 
-  static double getAverageForPratica(List<Grade> grades) {
+  static double getAverageForPratica(List<GradeLocalModel> grades) {
     double sum = 0;
     int count = 0;
 
@@ -236,8 +236,8 @@ class GradesUtils {
   }
 
   /// Taken from registro elettroncio github by Simone Luconi, thanks
-  static String getGradeMessage(
-      double obj, double average, int numberOfGrades, BuildContext context) {
+  static String getGradeLocalModelMessage(double obj, double average,
+      int numberOfGradeLocalModels, BuildContext context) {
     if (average.isNaN) {
       return AppLocalizations.of(context).translate('dont_worry');
     }
@@ -260,8 +260,8 @@ class GradesUtils {
     try {
       do {
         index += 1;
-        sommaVotiDaPrendere =
-            obj * (numberOfGrades + index) - average * numberOfGrades;
+        sommaVotiDaPrendere = obj * (numberOfGradeLocalModels + index) -
+            average * numberOfGradeLocalModels;
       } while (sommaVotiDaPrendere / index > 10);
       var i = 0;
       while (i < index) {
@@ -308,13 +308,13 @@ class GradesUtils {
     }
   }
 
-  static bool isValidGrade(Grade grade) {
+  static bool isValidGradeLocalModel(GradeLocalModel grade) {
     return (grade.decimalValue != -1.00 &&
         grade.cancelled == false &&
         grade.localllyCancelled == false);
   }
 
-  static bool isValidLocalGrade(LocalGrade grade) {
+  static bool isValidLocalGradeLocalModel(GradeLocalModel grade) {
     return (grade.decimalValue != -1.00 || grade.cancelled != true);
   }
 }

@@ -4,10 +4,11 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class GradesBarChart extends StatefulWidget {
-  final List<Grade> grades;
+  final List<GradeDomainModel> grades;
 
   const GradesBarChart({
     Key key,

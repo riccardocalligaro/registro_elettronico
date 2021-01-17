@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/feature/grades/presentation/bloc/grades_bloc.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/feature/home/presentation/blocs/grades/grades_dashboard_bloc.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -24,7 +24,7 @@ class LastGradesSection extends StatelessWidget {
             text: AppLocalizations.of(context).translate('error'),
             showUpdate: true,
             onTap: () {
-              BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
+              // BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
             },
           );
         }
@@ -39,7 +39,8 @@ class LastGradesSection extends StatelessWidget {
     );
   }
 
-  Widget _buildLastGradesList(List<Grade> grades, BuildContext context) {
+  Widget _buildLastGradesList(
+      List<GradeDomainModel> grades, BuildContext context) {
     if (grades.isNotEmpty) {
       return ListView.builder(
         padding: EdgeInsets.symmetric(vertical: 6.0),
@@ -62,7 +63,7 @@ class LastGradesSection extends StatelessWidget {
     }
   }
 
-  Widget _buildListViewCard(Grade grade, BuildContext context) {
+  Widget _buildListViewCard(GradeDomainModel grade, BuildContext context) {
     return Card(
       child: ListTile(
         leading: Padding(

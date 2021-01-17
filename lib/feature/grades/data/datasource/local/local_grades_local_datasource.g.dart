@@ -1,12 +1,11 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'grade_dao.dart';
+part of 'local_grades_local_datasource.dart';
 
 // **************************************************************************
 // DaoGenerator
 // **************************************************************************
 
-mixin _$GradeDaoMixin on DatabaseAccessor<AppDatabase> {
-  $GradesTable get grades => attachedDatabase.grades;
+mixin _$LocalGradesLocalDatasourceMixin on DatabaseAccessor<AppDatabase> {
   $LocalGradesTable get localGrades => attachedDatabase.localGrades;
 }

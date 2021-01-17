@@ -26,5 +26,7 @@ abstract class ProfileRepository {
 
   Profile getProfile();
 
+  String currentStudentId();
+
   Future<Tuple2<Profile, String>> getUserAndPassword();
 }

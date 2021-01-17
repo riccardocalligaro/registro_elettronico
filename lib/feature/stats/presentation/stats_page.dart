@@ -11,7 +11,6 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/feature/grades/presentation/widgets/grades_chart.dart';
 import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -130,10 +129,10 @@ class _StatsPageState extends State<StatsPage> {
             children: <Widget>[
               _buildOverallStatsCard(report: studentReport),
 
-              _buildAverageChart(
-                grades: studentReport.grades,
-                objective: objective,
-              ),
+              // _buildAverageChart(
+              //   grades: studentReport.grades,
+              //   objective: objective,
+              // ),
 
               _buildSecondRowGraphs(report: studentReport),
 
@@ -286,7 +285,7 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildAverageChart({
-    @required List<Grade> grades,
+    @required List<GradeLocalModel> grades,
     int objective,
   }) {
     return Card(
@@ -299,11 +298,11 @@ class _StatsPageState extends State<StatsPage> {
               AppLocalizations.of(context)
                   .translate('stats_timeline_graph_average'),
             ),
-            GradesChart(
-              showAverageFirst: true,
-              grades: grades,
-              objective: objective,
-            )
+            // GradesChart(
+            //   showAverageFirst: true,
+            //   grades: grades,
+            //   objective: objective,
+            // )
           ],
         ),
       ),
@@ -434,9 +433,9 @@ class _StatsPageState extends State<StatsPage> {
   Widget _buildThirdRowCard({
     @required StudentReport report,
   }) {
-    return GradesBarChart(
-      grades: report.grades..sort((a, b) => a.eventDate.compareTo(b.eventDate)),
-    );
+    // return GradesBarChart(
+    //   grades: report.grades..sort((a, b) => a.eventDate.compareTo(b.eventDate)),
+    // );
   }
 
 // Widget _buildFourthRowCard({

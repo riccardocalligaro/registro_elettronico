@@ -1,26 +1,3 @@
-class GradesResponse {
-  List<GradeRemoteModel> grades;
-
-  GradesResponse({this.grades});
-
-  GradesResponse.fromJson(Map<String, dynamic> json) {
-    if (json['grades'] != null) {
-      grades = List<GradeRemoteModel>();
-      json['grades'].forEach((v) {
-        grades.add(GradeRemoteModel.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    if (this.grades != null) {
-      data['grades'] = this.grades.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
 class GradeRemoteModel {
   int subjectId;
   String subjectCode;
@@ -48,32 +25,33 @@ class GradeRemoteModel {
   int oldskillId;
   String oldskillDesc;
 
-  GradeRemoteModel(
-      {this.subjectId,
-      this.subjectCode,
-      this.subjectDesc,
-      this.evtId,
-      this.evtCode,
-      this.evtDate,
-      this.decimalValue,
-      this.displayValue,
-      this.displaPos,
-      this.notesForFamily,
-      this.color,
-      this.canceled,
-      this.underlined,
-      this.periodPos,
-      this.periodDesc,
-      this.componentPos,
-      this.componentDesc,
-      this.weightFactor,
-      this.skillId,
-      this.gradeMasterId,
-      this.skillDesc,
-      this.skillCode,
-      this.skillMasterId,
-      this.oldskillId,
-      this.oldskillDesc});
+  GradeRemoteModel({
+    this.subjectId,
+    this.subjectCode,
+    this.subjectDesc,
+    this.evtId,
+    this.evtCode,
+    this.evtDate,
+    this.decimalValue,
+    this.displayValue,
+    this.displaPos,
+    this.notesForFamily,
+    this.color,
+    this.canceled,
+    this.underlined,
+    this.periodPos,
+    this.periodDesc,
+    this.componentPos,
+    this.componentDesc,
+    this.weightFactor,
+    this.skillId,
+    this.gradeMasterId,
+    this.skillDesc,
+    this.skillCode,
+    this.skillMasterId,
+    this.oldskillId,
+    this.oldskillDesc,
+  });
 
   GradeRemoteModel.fromJson(Map<String, dynamic> json) {
     subjectId = json['subjectId'];

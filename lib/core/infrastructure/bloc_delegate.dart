@@ -9,11 +9,8 @@ import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_rep
 import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_bloc.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/bloc/attachments/didactics_attachments_bloc.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/bloc/didactics_bloc.dart';
-import 'package:registro_elettronico/feature/grades/data/repository/grades_repository_impl.dart';
-import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
-import 'package:registro_elettronico/feature/grades/presentation/bloc/grades_bloc.dart';
-import 'package:registro_elettronico/feature/grades/presentation/bloc/local_grades/local_grades_bloc.dart';
-import 'package:registro_elettronico/feature/grades/presentation/bloc/subjects_grades/subjects_grades_bloc.dart';
+import 'package:registro_elettronico/feature/grades/grades_container.dart'
+    hide sl;
 import 'package:registro_elettronico/feature/home/presentation/blocs/agenda/agenda_dashboard_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/blocs/grades/grades_dashboard_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/blocs/lessons/lessons_dashboard_bloc.dart';
@@ -64,16 +61,17 @@ class AppBlocDelegate {
           sl(),
         ),
       ),
-      RepositoryProvider<GradesRepository>(
-        create: (ctx) => GradesRepositoryImpl(
-          sl(),
-          sl(),
-          sl(),
-          sl(),
-          sl(),
-          sl(),
-        ),
-      ),
+
+      // RepositoryProvider<GradesRepository>(
+      //   create: (ctx) => GradesRepositoryImpl(
+      //     sl(),
+      //     sl(),
+      //     sl(),
+      //     sl(),
+      //     sl(),
+      //     sl(),
+      //   ),
+      // ),
       RepositoryProvider<AgendaRepository>(
         create: (ctx) => AgendaRepositoryImpl(
           sl(),
@@ -108,6 +106,7 @@ class AppBlocDelegate {
     ];
 
     _blocProviders = [
+      ...GradesContainer.getBlocProviders(),
       BlocProvider<AuthBloc>(
         create: (bCtx) => AuthBloc(
           flutterSecureStorage: sl(),
@@ -120,9 +119,6 @@ class AppBlocDelegate {
         create: (ctx) => LessonsBloc(
           lessonsRepository: sl(),
         ),
-      ),
-      BlocProvider<GradesBloc>(
-        create: (ctx) => GradesBloc(gradesRepository: sl()),
       ),
       BlocProvider<SubjectsBloc>(
         create: (ctx) => SubjectsBloc(
@@ -157,20 +153,10 @@ class AppBlocDelegate {
       BlocProvider<DidacticsAttachmentsBloc>(
         create: (ctx) => DidacticsAttachmentsBloc(didacticsRepository: sl()),
       ),
-      BlocProvider<LocalGradesBloc>(
-        create: (ctx) => LocalGradesBloc(gradesRepository: sl()),
-      ),
       BlocProvider<TimetableBloc>(
         create: (ctx) => TimetableBloc(
           timetableRepository: sl(),
           subjectsRepository: sl(),
-        ),
-      ),
-      BlocProvider<SubjectsGradesBloc>(
-        create: (ctx) => SubjectsGradesBloc(
-          subjectsRepository: sl(),
-          gradesRepository: sl(),
-          periodsRepository: sl(),
         ),
       ),
       BlocProvider<NoteAttachmentsBloc>(
@@ -210,8 +196,8 @@ class AppBlocDelegate {
       ),
       BlocProvider<GradesDashboardBloc>(
         create: (ctx) => GradesDashboardBloc(
-          gradesRepository: sl(),
-        ),
+            // gradesRepository: sl(),
+            ),
       ),
       BlocProvider<StatsBloc>(
         create: (ctx) => StatsBloc(

@@ -22,7 +22,7 @@ void main() async {
 
   await Firebase.initializeApp();
 
-  AppInjector.init();
+  await AppInjector.init();
 
   Bloc.observer = LoggerBlocDelegate();
 

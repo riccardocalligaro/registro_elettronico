@@ -73,4 +73,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
     final profile = sharedPreferences.getString(PrefsConstants.profile);
     return Profile.fromJson(profile);
   }
+
+  @override
+  String currentStudentId() {
+    final profile = sharedPreferences.getString(PrefsConstants.profile);
+    return Profile.fromJson(profile).studentId;
+  }
 }

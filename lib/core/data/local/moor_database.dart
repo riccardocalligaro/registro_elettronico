@@ -9,8 +9,10 @@ import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart'
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/downloaded_file_local_model.dart';
+import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
+import 'package:registro_elettronico/feature/grades/data/model/grade_local_model.dart';
+import 'package:registro_elettronico/feature/grades/data/model/local_grade_local_model.dart';
 import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
-import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
 import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/dao/notice_dao.dart';
@@ -26,9 +28,7 @@ import 'package:registro_elettronico/feature/didactics/data/model/local/content_
 import 'package:registro_elettronico/feature/didactics/data/model/local/folder_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/teacher_local_model.dart';
 import 'package:registro_elettronico/feature/scrutini/data/model/document_local_model.dart';
-import 'package:registro_elettronico/feature/grades/data/model/grade_local_model.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_local_model.dart';
-import 'package:registro_elettronico/feature/grades/data/model/local_grade_local_model.dart';
 import 'package:registro_elettronico/feature/notes/data/model/local/note_local_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/notice_local_model.dart';
 import 'package:registro_elettronico/feature/periods/data/model/period_local_model.dart';
@@ -74,7 +74,6 @@ LazyDatabase _openConnection() {
   LessonDao,
   SubjectDao,
   ProfessorDao,
-  GradeDao,
   AgendaDao,
   AbsenceDao,
   PeriodDao,
@@ -83,6 +82,7 @@ LazyDatabase _openConnection() {
   DidacticsDao,
   TimetableDao,
   DocumentsDao,
+  GradesLocalDatasource,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());

@@ -1,41 +1,19 @@
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
 
 abstract class GradesRepository {
-  /// updates the grades in the database
-  Future updateGrades();
+  Stream<Resource<List<GradeDomainModel>>> watchAllGrades();
 
-  /// Given a list it inserts a list of grades
-  Future insertGrades(List<Grade> gradesData);
+  Stream<Resource<List<GradeSectionDomainModel>>> watchAllGradesSections();
 
-  ///Gets all grades ordered by date
-  Future<List<Grade>> getAllGradesOrdered();
+  Future<Either<Failure, Success>> updateGrades({@required bool ifNeeded});
 
-  ///Gets number of grades by a date
-  Future<List<Grade>> getNumberOfGradesByDate(int number);
+  Future<Either<Failure, GradeDomainModel>> getGrade(String id);
 
-  ///Gets last grades
-  Future<List<Grade>> getLastGrades();
-
-  /// Future of all grades in the table
-  Future<List<Grade>> getAllGrades();
-
-  ///Delete all grades
-  Future deleteAllGrades();
-
-  /// Inserts a single grade into the database
-  Future insertGrade(Grade grade);
-
-  Future insertLocalGrade(LocalGrade localGrade);
-
-  Future deleteLocalGrade(LocalGrade localGrade);
-
-  Future updateLocalGrade(LocalGrade localGrade);
-
-  Future updateGrade(Grade grade);
-
-  Future cancelGradeLocally(Grade grade);
-
-  Future restoreGradeLocally(Grade grade);
-
-  Future<List<LocalGrade>> getLocalGrades();
+  Future<Either<Failure, List<GradeDomainModel>>> getGrades();
 }

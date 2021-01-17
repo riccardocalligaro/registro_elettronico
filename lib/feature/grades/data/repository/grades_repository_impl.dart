@@ -1,125 +1,156 @@
+import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
-import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
-import 'package:registro_elettronico/feature/grades/data/model/grade_mapper.dart';
+import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
+import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_remote_datasource.dart';
+import 'package:registro_elettronico/feature/grades/data/model/grade_local_model.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:dartz/dartz.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
-import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rxdart/rxdart.dart';
 
-class GradesRepositoryImpl implements GradesRepository {
-  final GradeDao gradeDao;
-  final SpaggiariClient spaggiariClient;
-  final ProfileDao profileDao;
+class GradesRepositoryImpl extends GradesRepository {
+  static const String lastUpdateKey = 'gradesLastUpdate';
+
+  final GradesRemoteDatasource gradesRemoteDatasource;
+  final GradesLocalDatasource gradesLocalDatasource;
+  final PeriodDao periodDao;
+
   final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
-  final ProfileRepository profileRepository;
 
-  GradesRepositoryImpl(
-    this.gradeDao,
-    this.spaggiariClient,
-    this.profileDao,
-    this.networkInfo,
-    this.sharedPreferences,
-    this.profileRepository,
-  );
+  GradesRepositoryImpl({
+    @required this.gradesRemoteDatasource,
+    @required this.gradesLocalDatasource,
+    @required this.networkInfo,
+    @required this.sharedPreferences,
+    @required this.periodDao,
+  });
 
   @override
-  Future updateGrades() async {
-    if (await networkInfo.isConnected) {
-      final profile = await profileRepository.getProfile();
-      final gradesResponse = await spaggiariClient.getGrades(profile.studentId);
-      List<Grade> grades = [];
-      gradesResponse.grades.forEach((grade) {
-        grades.add(GradeMapper.convertGradeEntityToInserttable(grade));
-      });
+  Future<Either<Failure, GradeDomainModel>> getGrade(String id) async {}
 
-      Logger.info(
-        'Got ${gradesResponse.grades.length} grades from server, procceding to insert in database',
-      );
-      await gradeDao.deleteAllGrades();
-      await gradeDao.insertGrades(grades);
-
-      await sharedPreferences.setInt(
-        PrefsConstants.lastUpdateGrades,
-        DateTime.now().millisecondsSinceEpoch,
-      );
-    } else {
-      throw NotConntectedException();
+  @override
+  Future<Either<Failure, List<GradeDomainModel>>> getGrades() async {
+    try {
+      final grades = await gradesLocalDatasource.getGrades();
+      return Right(grades
+          .map(
+            (e) => GradeDomainModel.fromLocalModel(e),
+          )
+          .toList());
+    } catch (e) {
+      return Left(handleError(e));
     }
   }
 
   @override
-  Future insertGrade(Grade grade) async {
-    return gradeDao.insertGrade(grade);
+  Future<Either<Failure, Success>> updateGrades({bool ifNeeded}) async {
+    try {
+      if (!ifNeeded |
+          (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
+        final remoteGrades = await gradesRemoteDatasource.getGrades();
+
+        final localGrades = await gradesLocalDatasource.getGrades();
+
+        final gradesMap = Map<int, GradeLocalModel>.fromIterable(localGrades,
+            key: (v) => v.evtId, value: (v) => v);
+
+        // get the ids
+        final remoteIds = remoteGrades.map((e) => e.evtId).toList();
+
+        List<GradeLocalModel> gradesToDelete = [];
+
+        for (final localGrade in localGrades) {
+          if (!remoteIds.contains(localGrade.evtId)) {
+            gradesToDelete.add(localGrade);
+          }
+        }
+
+        await gradesLocalDatasource.insertGrades(
+          remoteGrades
+              .map((e) => GradeLocalModelConverter.fromRemoteModel(
+                    e,
+                    gradesMap[e.evtId],
+                  ))
+              .toList(),
+        );
+
+        // delete the grades that were removed from the remote source
+        await gradesLocalDatasource.deleteGrades(gradesToDelete);
+
+        await sharedPreferences.setInt(
+            lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
+
+        return Right(SuccessWithUpdate());
+      }
+      return Right(SuccessWithoutUpdate());
+    } catch (e) {
+      return Left(handleError(e));
+    }
   }
 
   @override
-  Future insertGrades(List<Grade> gradesData) async {
-    return gradeDao.insertGrades(gradesData);
+  Stream<Resource<List<GradeDomainModel>>> watchAllGrades() async* {
+    yield* gradesLocalDatasource.watchGrades().map((localModels) {
+      return Resource.success(
+          data: localModels
+              .map((localModel) => GradeDomainModel.fromLocalModel(localModel))
+              .toList());
+    }).onErrorReturnWith(
+      (e) {
+        Logger.e(exception: e);
+        return Resource.failed(error: e);
+      },
+    );
   }
 
   @override
-  Future deleteAllGrades() {
-    return gradeDao.deleteAllGrades();
-  }
+  Stream<Resource<List<GradeSectionDomainModel>>>
+      watchAllGradesSections() async* {
+    final periods = await periodDao.getAllPeriods();
 
-  @override
-  Future<List<Grade>> getAllGrades() {
-    return gradeDao.getAllGrades();
-  }
+    yield* gradesLocalDatasource.watchGrades().map((localGrades) {
+      // dobbiamo convertire i modelli locali dividendoli in più periods
+      List<GradeSectionDomainModel> sections = [];
 
-  @override
-  Future deleteLocalGrade(LocalGrade localGrade) {
-    return gradeDao.deleteLocalGrade(localGrade);
-  }
+      // sort them
+      // localGrades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
 
-  @override
-  Future<List<LocalGrade>> getLocalGrades() {
-    return gradeDao.getLocalGrades();
-  }
+      sections.add(GradeSectionDomainModel(
+        period: null,
+        grades: localGrades
+            .map((localModel) => GradeDomainModel.fromLocalModel(localModel))
+            .toList(),
+      ));
 
-  @override
-  Future insertLocalGrade(LocalGrade localGrade) async {
-    return gradeDao.insertLocalGrade(localGrade);
-  }
+      for (final period in periods) {
+        final gradesForThisPeriod = localGrades
+            .where((g) => g.periodPos == period.position)
+            .map((localModel) => GradeDomainModel.fromLocalModel(localModel))
+            .toList();
 
-  @override
-  Future updateLocalGrade(LocalGrade localGrade) {
-    return gradeDao.updateLocalGrade(localGrade);
-  }
+        sections.add(GradeSectionDomainModel(
+          period: period,
+          grades: gradesForThisPeriod,
+        ));
+      }
 
-  @override
-  Future updateGrade(Grade grade) {
-    return gradeDao.updateGrade(grade);
-  }
-
-  @override
-  Future<List<Grade>> getAllGradesOrdered() {
-    return gradeDao.getAllGradesOrdered();
-  }
-
-  @override
-  Future<List<Grade>> getLastGrades() {
-    return gradeDao.getLastGrades();
-  }
-
-  @override
-  Future<List<Grade>> getNumberOfGradesByDate(int number) {
-    return gradeDao.getNumberOfGradesByDate(number);
-  }
-
-  @override
-  Future cancelGradeLocally(Grade grade) {
-    return gradeDao.updateGrade(grade.copyWith(localllyCancelled: true));
-  }
-
-  @override
-  Future restoreGradeLocally(Grade grade) {
-    return gradeDao.updateGrade(grade.copyWith(localllyCancelled: false));
+      return Resource.success(data: sections);
+    }).onErrorReturnWith(
+      (e) {
+        Logger.e(exception: e);
+        return Resource.failed(error: e);
+      },
+    );
   }
 }

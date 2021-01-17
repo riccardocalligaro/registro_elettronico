@@ -1682,7 +1682,7 @@ class $ProfessorsTable extends Professors
   }
 }
 
-class Grade extends DataClass implements Insertable<Grade> {
+class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
   final int subjectId;
   final String subjectDesc;
   final int evtId;
@@ -1702,7 +1702,7 @@ class Grade extends DataClass implements Insertable<Grade> {
   final int skillId;
   final int gradeMasterId;
   final bool localllyCancelled;
-  Grade(
+  GradeLocalModel(
       {@required this.subjectId,
       @required this.subjectDesc,
       @required this.evtId,
@@ -1722,7 +1722,8 @@ class Grade extends DataClass implements Insertable<Grade> {
       @required this.skillId,
       @required this.gradeMasterId,
       @required this.localllyCancelled});
-  factory Grade.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory GradeLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
@@ -1730,7 +1731,7 @@ class Grade extends DataClass implements Insertable<Grade> {
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     final doubleType = db.typeSystem.forDartType<double>();
     final boolType = db.typeSystem.forDartType<bool>();
-    return Grade(
+    return GradeLocalModel(
       subjectId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
       subjectDesc: stringType
@@ -1894,10 +1895,10 @@ class Grade extends DataClass implements Insertable<Grade> {
     );
   }
 
-  factory Grade.fromJson(Map<String, dynamic> json,
+  factory GradeLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Grade(
+    return GradeLocalModel(
       subjectId: serializer.fromJson<int>(json['subjectId']),
       subjectDesc: serializer.fromJson<String>(json['subjectDesc']),
       evtId: serializer.fromJson<int>(json['evtId']),
@@ -1945,7 +1946,7 @@ class Grade extends DataClass implements Insertable<Grade> {
     };
   }
 
-  Grade copyWith(
+  GradeLocalModel copyWith(
           {int subjectId,
           String subjectDesc,
           int evtId,
@@ -1965,7 +1966,7 @@ class Grade extends DataClass implements Insertable<Grade> {
           int skillId,
           int gradeMasterId,
           bool localllyCancelled}) =>
-      Grade(
+      GradeLocalModel(
         subjectId: subjectId ?? this.subjectId,
         subjectDesc: subjectDesc ?? this.subjectDesc,
         evtId: evtId ?? this.evtId,
@@ -1988,7 +1989,7 @@ class Grade extends DataClass implements Insertable<Grade> {
       );
   @override
   String toString() {
-    return (StringBuffer('Grade(')
+    return (StringBuffer('GradeLocalModel(')
           ..write('subjectId: $subjectId, ')
           ..write('subjectDesc: $subjectDesc, ')
           ..write('evtId: $evtId, ')
@@ -2058,7 +2059,7 @@ class Grade extends DataClass implements Insertable<Grade> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Grade &&
+      (other is GradeLocalModel &&
           other.subjectId == this.subjectId &&
           other.subjectDesc == this.subjectDesc &&
           other.evtId == this.evtId &&
@@ -2080,7 +2081,7 @@ class Grade extends DataClass implements Insertable<Grade> {
           other.localllyCancelled == this.localllyCancelled);
 }
 
-class GradesCompanion extends UpdateCompanion<Grade> {
+class GradesCompanion extends UpdateCompanion<GradeLocalModel> {
   final Value<int> subjectId;
   final Value<String> subjectDesc;
   final Value<int> evtId;
@@ -2159,7 +2160,7 @@ class GradesCompanion extends UpdateCompanion<Grade> {
         skillId = Value(skillId),
         gradeMasterId = Value(gradeMasterId),
         localllyCancelled = Value(localllyCancelled);
-  static Insertable<Grade> custom({
+  static Insertable<GradeLocalModel> custom({
     Expression<int> subjectId,
     Expression<String> subjectDesc,
     Expression<int> evtId,
@@ -2336,7 +2337,8 @@ class GradesCompanion extends UpdateCompanion<Grade> {
   }
 }
 
-class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
+class $GradesTable extends Grades
+    with TableInfo<$GradesTable, GradeLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $GradesTable(this._db, [this._alias]);
@@ -2615,7 +2617,7 @@ class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
   @override
   final String actualTableName = 'grades';
   @override
-  VerificationContext validateIntegrity(Insertable<Grade> instance,
+  VerificationContext validateIntegrity(Insertable<GradeLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -2761,9 +2763,9 @@ class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
   @override
   Set<GeneratedColumn> get $primaryKey => {evtId};
   @override
-  Grade map(Map<String, dynamic> data, {String tablePrefix}) {
+  GradeLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Grade.fromData(data, _db, prefix: effectivePrefix);
+    return GradeLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -9329,8 +9331,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   ProfessorDao _professorDao;
   ProfessorDao get professorDao =>
       _professorDao ??= ProfessorDao(this as AppDatabase);
-  GradeDao _gradeDao;
-  GradeDao get gradeDao => _gradeDao ??= GradeDao(this as AppDatabase);
   AgendaDao _agendaDao;
   AgendaDao get agendaDao => _agendaDao ??= AgendaDao(this as AppDatabase);
   AbsenceDao _absenceDao;
@@ -9350,6 +9350,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   DocumentsDao _documentsDao;
   DocumentsDao get documentsDao =>
       _documentsDao ??= DocumentsDao(this as AppDatabase);
+  GradesLocalDatasource _gradesLocalDatasource;
+  GradesLocalDatasource get gradesLocalDatasource =>
+      _gradesLocalDatasource ??= GradesLocalDatasource(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

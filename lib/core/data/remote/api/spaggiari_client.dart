@@ -5,7 +5,6 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_remote_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
-import 'package:registro_elettronico/feature/grades/domain/model/grades_response.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_remote_model.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_request_model.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';
@@ -46,8 +45,8 @@ abstract class SpaggiariClient {
   Future<SubjectsResponse> getSubjects(@Path() String studentId);
 
   // Subjects
-  @GET("/students/{studentId}/grades")
-  Future<GradesResponse> getGrades(@Path() String studentId);
+  // @GET("/students/{studentId}/grades")
+  // Future<GradesResponse> getGrades(@Path() String studentId);
 
   // Subjects
   @GET("/students/{studentId}/agenda/all/{start}/{end}")
@@ -220,24 +219,24 @@ class _SpaggiariClient implements SpaggiariClient {
     return Future.value(value);
   }
 
-  @override
-  getGrades(studentId) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/grades',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = GradesResponse.fromJson(_result.data);
-    return Future.value(value);
-  }
+  // @override
+  // getGrades(studentId) async {
+  //   ArgumentError.checkNotNull(studentId, 'studentId');
+  //   const _extra = <String, dynamic>{};
+  //   final queryParameters = <String, dynamic>{};
+  //   final _data = <String, dynamic>{};
+  //   final Response<Map<String, dynamic>> _result = await _dio.request(
+  //       '/students/$studentId/grades',
+  //       queryParameters: queryParameters,
+  //       options: RequestOptions(
+  //           method: 'GET',
+  //           headers: <String, dynamic>{},
+  //           extra: _extra,
+  //           baseUrl: baseUrl),
+  //       data: _data);
+  //   final value = GradesResponse.fromJson(_result.data);
+  //   return Future.value(value);
+  // }
 
   @override
   getAgenda(studentId, start, end) async {

@@ -5,7 +5,8 @@ import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
-import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
+import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
 import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
@@ -19,7 +20,7 @@ import 'package:registro_elettronico/utils/grades_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StatsRepositoryImpl implements StatsRepository {
-  final GradeDao gradeDao;
+  final GradesLocalDatasource gradeDao;
   final AbsenceDao absenceDao;
   final SubjectDao subjectDao;
   final PeriodDao periodDao;
@@ -41,7 +42,7 @@ class StatsRepositoryImpl implements StatsRepository {
   Future<Either<Failure, StudentReport>> getStudentReport() async {
     try {
       // We get the data that we need to get the stats
-      final grades = await gradeDao.getAllGrades();
+      final grades = await gradeDao.getGrades();
       final absences = await absenceDao.getAllAbsences();
       final subjects = await subjectDao.getAllSubjects();
       final periods = await periodDao.getAllPeriods();
@@ -82,7 +83,8 @@ class StatsRepositoryImpl implements StatsRepository {
         int gravementeInsufficientiSubjectsCount = 0;
 
         subjects.forEach((subject) {
-          subjectAverage = GradesUtils.getAverage(subject.id, grades);
+          // TODO: look
+          // subjectAverage = GradesUtils.getAverage(subject.id, grades);
           if (subjectAverage > maxAverage) {
             bestSubject = subject;
             maxAverage = subjectAverage;
@@ -107,7 +109,9 @@ class StatsRepositoryImpl implements StatsRepository {
         });
 
         grades.forEach((grade) {
-          if (GradesUtils.isValidGrade(grade)) {
+          // TODO: look
+          // if (GradesUtils.isValidGrade(grade)) {
+          if (true) {
             average += grade.decimalValue;
             gradesCount++;
 
@@ -154,13 +158,15 @@ class StatsRepositoryImpl implements StatsRepository {
             periods.elementAt(1).end.difference(DateTime.now());
 
         int schoolCredits;
-        if (periods.elementAt(0).end.isAfter(DateTime.now())) {
-          schoolCredits =
-              GradesUtils.getMinSchoolCredits(firstTermAverage, year);
-        } else {
-          schoolCredits =
-              GradesUtils.getMinSchoolCredits(secondTermAverage, year);
-        }
+
+        //TODO: look
+        // if (periods.elementAt(0).end.isAfter(DateTime.now())) {
+        //   schoolCredits =
+        //       GradesUtils.getMinSchoolCredits(firstTermAverage, year);
+        // } else {
+        //   schoolCredits =
+        //       GradesUtils.getMinSchoolCredits(secondTermAverage, year);
+        // }
 
         final score = _getUserScore(
           absences: absences,
@@ -221,7 +227,7 @@ class StatsRepositoryImpl implements StatsRepository {
   }
 
   double _getUserScore({
-    @required List<Grade> grades,
+    @required List<GradeLocalModel> grades,
     @required List<Absence> absences,
     @required List<Note> notes,
     @required int skippedTests,

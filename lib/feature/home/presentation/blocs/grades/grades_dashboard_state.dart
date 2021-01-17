@@ -8,7 +8,7 @@ class GradesDashboardInitial extends GradesDashboardState {}
 class GradesDashboardLoadInProgress extends GradesDashboardState {}
 
 class GradesDashboardLoadSuccess extends GradesDashboardState {
-  final List<Grade> grades;
+  final List<GradeDomainModel> grades;
 
   GradesDashboardLoadSuccess({@required this.grades});
 }

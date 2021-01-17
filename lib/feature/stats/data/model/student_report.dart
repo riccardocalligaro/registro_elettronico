@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 
 /// A student report that contains useful information that is displayed
 /// in the [report] section
@@ -62,7 +63,7 @@ class StudentReport {
   /// Total grades for the [first] and [second period]
   final int totalGrades;
 
-  final List<Grade> grades;
+  final List<GradeLocalModel> grades;
 
   final List<Absence> absences;
 
