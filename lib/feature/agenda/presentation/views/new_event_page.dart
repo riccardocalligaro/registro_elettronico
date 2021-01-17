@@ -239,7 +239,7 @@ class _NewEventPageState extends State<NewEventPage> {
               Icon(
                 Icons.notifications_none,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 30.0,
               ),
               Text(
@@ -247,7 +247,7 @@ class _NewEventPageState extends State<NewEventPage> {
             ],
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         InkWell(

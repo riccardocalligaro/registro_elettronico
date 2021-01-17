@@ -110,7 +110,7 @@ class AbsenceCard extends StatelessWidget {
                         absence.justifReasonDesc,
                       ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
               ],
@@ -133,7 +133,7 @@ class AbsenceCard extends StatelessWidget {
                   AppLocalizations.of(context)
                       .translate('not_justified_singular'),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
               ],

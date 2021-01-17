@@ -8,7 +8,9 @@ import 'package:registro_elettronico/feature/home/presentation/widgets/lesson_ca
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class LastLessonsSection extends StatelessWidget {
-  const LastLessonsSection({Key key}) : super(key: key);
+  const LastLessonsSection({
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +68,7 @@ class LastLessonsSection extends StatelessWidget {
               Icons.subject,
               size: 64,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(AppLocalizations.of(context).translate('no_lessons'))

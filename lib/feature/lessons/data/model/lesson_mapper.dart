@@ -1,6 +1,8 @@
 import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
 import 'package:registro_elettronico/utils/date_utils.dart';
 
+import 'lesson_remote_model.dart';
+
 ///"evtId": 7096829,
 ///"evtDate": "2019-12-09",
 ///"evtCode": "LSS0",
@@ -15,7 +17,7 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 ///"lessonArg": ""
 
 class LessonMapper {
-  static db.Lesson mapLessonEntityToLessoneInsertable(e) {
+  static db.Lesson mapLessonEntityToLessoneInsertable(LessonRemoteModel e) {
     return db.Lesson(
       eventId: e.evtId ?? -1,
       date: DateUtils.getDateFromApiString(e.evtDate) ?? DateTime.now(),

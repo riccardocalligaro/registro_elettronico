@@ -117,28 +117,28 @@ class GradeCard extends StatelessWidget {
                   "${trans.translate('notes')}: ${grade.notesForFamily.isNotEmpty ? grade.notesForFamily : trans.translate('not_presents').toLowerCase()}",
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Text(
                   valueRow,
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Text(
                   '${trans.translate('date')}: ${DateUtils.convertDateLocale(grade.eventDate, trans.locale.toString())}',
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Text(
                   '${trans.translate('term')}: ${grade.periodDesc.toLowerCase()}',
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
               ],

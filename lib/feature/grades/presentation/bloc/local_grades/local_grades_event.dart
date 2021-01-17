@@ -6,8 +6,12 @@ abstract class LocalGradesEvent {}
 /// Gets the [local] grades
 class GetLocalGrades extends LocalGradesEvent {
   final int period;
+  final int subjectId;
 
-  GetLocalGrades({@required this.period});
+  GetLocalGrades({
+    @required this.period,
+    this.subjectId,
+  });
 }
 
 class AddLocalGrade extends LocalGradesEvent {

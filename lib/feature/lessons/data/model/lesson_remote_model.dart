@@ -35,26 +35,27 @@ class LessonRemoteModel {
   String lessonType;
   String lessonArg;
 
-  LessonRemoteModel(
-      {this.evtId,
-      this.evtDate,
-      this.evtCode,
-      this.evtHPos,
-      this.evtDuration,
-      this.classDesc,
-      this.authorName,
-      this.subjectId,
-      this.subjectCode,
-      this.subjectDesc,
-      this.lessonType,
-      this.lessonArg});
+  LessonRemoteModel({
+    this.evtId,
+    this.evtDate,
+    this.evtCode,
+    this.evtHPos,
+    this.evtDuration,
+    this.classDesc,
+    this.authorName,
+    this.subjectId,
+    this.subjectCode,
+    this.subjectDesc,
+    this.lessonType,
+    this.lessonArg,
+  });
 
   LessonRemoteModel.fromJson(Map<String, dynamic> json) {
     evtId = json['evtId'];
     evtDate = json['evtDate'];
     evtCode = json['evtCode'];
     evtHPos = json['evtHPos'];
-    evtDuration = json['evtDuration'];
+    evtDuration = _safeInt(json['evtDuration']);
     classDesc = json['classDesc'];
     authorName = json['authorName'];
     subjectId = json['subjectId'];
@@ -62,6 +63,16 @@ class LessonRemoteModel {
     subjectDesc = json['subjectDesc'];
     lessonType = json['lessonType'];
     lessonArg = json['lessonArg'];
+  }
+
+  int _safeInt(dynamic value) {
+    if (value is int) {
+      return value;
+    } else if (value is double) {
+      return value.round();
+    } else {
+      return null;
+    }
   }
 
   Map<String, dynamic> toJson() {

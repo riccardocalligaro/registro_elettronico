@@ -28,9 +28,12 @@ class NoticeMapper {
   }
 
   static db.Attachment convertAttachmentEntityToInsertable(
-      int pubId, AttachmentRemoteModel attachment) {
+    int pubId,
+    AttachmentRemoteModel attachment,
+  ) {
     return db.Attachment(
-      pubId: pubId ?? GlobalUtils.getRandomNumber(),
+      id: null,
+      pubId: pubId,
       attachNumber: attachment.attachNum ?? GlobalUtils.getRandomNumber(),
       fileName: attachment.fileName ?? ProfileUtils.createCryptoRandomString(),
     );

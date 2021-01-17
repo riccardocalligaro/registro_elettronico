@@ -40,7 +40,7 @@ class AboutAppDialog extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         GestureDetector(

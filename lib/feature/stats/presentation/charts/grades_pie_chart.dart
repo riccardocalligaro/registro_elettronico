@@ -63,7 +63,7 @@ class _GradesPieChartState extends State<GradesPieChart> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Expanded(

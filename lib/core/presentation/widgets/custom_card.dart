@@ -30,7 +30,7 @@ class CustomCard extends StatelessWidget {
                   title,
                   style: TextStyle(fontSize: 15.0),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 2.5,
                 ),
                 Text(

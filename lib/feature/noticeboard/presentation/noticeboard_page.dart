@@ -424,8 +424,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
                                       notice: notice, attachment: attachment));
 
                               await Navigator.pop(context);
-                              // BlocProvider.of<NoticesBloc>(context)
-                              //     .add(GetNoticeboard());
                             }
                           },
                         );

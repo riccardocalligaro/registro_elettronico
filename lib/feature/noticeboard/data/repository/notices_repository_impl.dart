@@ -40,9 +40,12 @@ class NoticesRepositoryImpl implements NoticesRepository {
 
       response.items.forEach((notice) {
         notices.add(NoticeMapper.convertNoticeEntityToInsertable(notice));
+
         notice.attachments.forEach((attachment) {
           attachments.add(NoticeMapper.convertAttachmentEntityToInsertable(
-              notice.pubId, attachment));
+            notice.pubId,
+            attachment,
+          ));
         });
       });
 

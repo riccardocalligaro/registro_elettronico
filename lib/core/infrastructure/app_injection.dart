@@ -79,7 +79,7 @@ class AppInjector {
   }
 
   static void injectDatabase() {
-    sl.registerLazySingleton(() => AppDatabase());
+    sl.registerLazySingleton<AppDatabase>(() => AppDatabase());
   }
 
   // All the DAOS (Data Access Objects)

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:moor_db_viewer/moor_db_viewer.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/fcm_service.dart';
 
 class DebugPage extends StatefulWidget {
@@ -21,6 +24,14 @@ class _DebugPageState extends State<DebugPage> {
       ),
       body: Column(
         children: <Widget>[
+          DebugButton(
+            title: 'Open DB',
+            onTap: () {
+              final AppDatabase db = sl();
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => MoorDbViewer(db)));
+            },
+          ),
           DebugButton(
             title: 'Send notification',
             subtitle: 'With the local notifications plugin',

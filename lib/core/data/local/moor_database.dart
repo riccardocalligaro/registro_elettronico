@@ -4,6 +4,7 @@ import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
@@ -20,7 +21,7 @@ import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart'
 import 'package:registro_elettronico/feature/timetable/data/dao/timetable_dao.dart';
 import 'package:registro_elettronico/feature/absences/data/model/absence_local_model.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_local_model.dart';
-import 'package:registro_elettronico/feature/notes/data/model/local/attachment_local_model.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/model/attachment_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/content_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/folder_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/teacher_local_model.dart';
@@ -87,7 +88,18 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onUpgrade: (Migrator m, int from, int to) async {
+          if (from == 1) {
+            Logger.info('🗄️ [MIGRATIONS] From $from to $to');
+            await m.deleteTable(attachments.actualTableName);
+            await m.createTable(attachments);
+          }
+        },
+      );
 
   /// Deletes all the tables from the db except the profiles, so the user is not logged out
   Future resetDbWithoutProfile() async {

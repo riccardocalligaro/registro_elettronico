@@ -11,6 +11,9 @@ PODS:
   - Firebase/Crashlytics (6.33.0):
     - Firebase/CoreOnly
     - FirebaseCrashlytics (~> 4.6.1)
+  - Firebase/Messaging (6.33.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (~> 4.7.0)
   - firebase_analytics (6.3.0):
     - Firebase/Analytics (~> 6.33.0)
     - Firebase/CoreOnly (~> 6.33.0)
@@ -23,6 +26,11 @@ PODS:
     - Firebase/CoreOnly (~> 6.33.0)
     - Firebase/Crashlytics (~> 6.33.0)
     - firebase_core
+  - firebase_messaging (7.0.3):
+    - Firebase/CoreOnly (~> 6.33.0)
+    - Firebase/Messaging (~> 6.33.0)
+    - firebase_core
+    - Flutter
   - FirebaseAnalytics (6.8.3):
     - FirebaseCore (~> 6.10)
     - FirebaseInstallations (~> 1.6)
@@ -52,6 +60,19 @@ PODS:
     - GoogleUtilities/Environment (~> 6.7)
     - GoogleUtilities/UserDefaults (~> 6.7)
     - PromisesObjC (~> 1.2)
+  - FirebaseInstanceID (4.8.0):
+    - FirebaseCore (~> 6.10)
+    - FirebaseInstallations (~> 1.6)
+    - GoogleUtilities/Environment (~> 6.7)
+    - GoogleUtilities/UserDefaults (~> 6.7)
+  - FirebaseMessaging (4.7.1):
+    - FirebaseCore (~> 6.10)
+    - FirebaseInstanceID (~> 4.7)
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
+    - GoogleUtilities/Environment (~> 6.7)
+    - GoogleUtilities/Reachability (~> 6.7)
+    - GoogleUtilities/UserDefaults (~> 6.7)
+    - Protobuf (>= 3.9.2, ~> 3.9)
   - Flutter (1.0.0)
   - flutter_email_sender (0.0.1):
     - Flutter
@@ -61,6 +82,9 @@ PODS:
     - Flutter
   - flutter_webview_plugin (0.0.1):
     - Flutter
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
   - GoogleAppMeasurement (6.8.3):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
     - GoogleUtilities/MethodSwizzler (~> 6.7)
@@ -102,8 +126,12 @@ PODS:
   - "permission_handler (4.4.0+hotfix.4)":
     - Flutter
   - PromisesObjC (1.2.11)
+  - Protobuf (3.14.0)
   - shared_preferences (0.0.1):
     - Flutter
+  - sqflite (0.0.2):
+    - Flutter
+    - FMDB (>= 2.7.5)
   - sqlite3 (3.32.3):
     - sqlite3/common (= 3.32.3)
   - sqlite3/common (3.32.3)
@@ -130,6 +158,7 @@ DEPENDENCIES:
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
+  - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
   - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
@@ -140,6 +169,7 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - sqlite3_flutter_libs (from `.symlinks/plugins/sqlite3_flutter_libs/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
@@ -151,11 +181,15 @@ SPEC REPOS:
     - FirebaseCoreDiagnostics
     - FirebaseCrashlytics
     - FirebaseInstallations
+    - FirebaseInstanceID
+    - FirebaseMessaging
+    - FMDB
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
     - nanopb
     - PromisesObjC
+    - Protobuf
     - sqlite3
 
 EXTERNAL SOURCES:
@@ -167,6 +201,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_crashlytics:
     :path: ".symlinks/plugins/firebase_crashlytics/ios"
+  firebase_messaging:
+    :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: Flutter
   flutter_email_sender:
@@ -187,6 +223,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
   sqlite3_flutter_libs:
     :path: ".symlinks/plugins/sqlite3_flutter_libs/ios"
   url_launcher:
@@ -198,16 +236,20 @@ SPEC CHECKSUMS:
   firebase_analytics: 36a619088c46224900829f14f4daa71585693a6f
   firebase_core: 5d6a02f3d85acd5f8321c2d6d62877626a670659
   firebase_crashlytics: 7b37f8e79a82175606a3447852c9efa8e10034b3
+  firebase_messaging: 0aea2cd5885b65e19ede58ee3507f485c992cc75
   FirebaseAnalytics: 5dd088bd2e67bb9d13dbf792d1164ceaf3052193
   FirebaseCore: d889d9e12535b7f36ac8bfbf1713a0836a3012cd
   FirebaseCoreDiagnostics: 770ac5958e1372ce67959ae4b4f31d8e127c3ac1
   FirebaseCrashlytics: 1a747c9cc084a24dc6d9511c991db1cd078154eb
   FirebaseInstallations: 466c7b4d1f58fe16707693091da253726a731ed2
+  FirebaseInstanceID: bd3ffc24367f901a43c063b36c640b345a4a5dd1
+  FirebaseMessaging: 5eca4ef173de76253352511aafef774caa1cba2a
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_email_sender: 02d7443217d8c41483223627972bfdc09f74276b
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GoogleAppMeasurement: 966e88df9d19c15715137bb2ddaf52373f111436
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
@@ -217,7 +259,9 @@ SPEC CHECKSUMS:
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: 8278954f2382902f63f00dd8828769c0bd6d511b
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
+  Protobuf: 0cde852566359049847168e51bd1c690e0f70056
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   sqlite3: 8f7d2078ae27778699a622a94b853285793422a2
   sqlite3_flutter_libs: 5651f8ff48e3b44d910863c4ea5916085b1b245f
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef

@@ -45,13 +45,11 @@ class SubjectGradesPage extends StatelessWidget {
         BlocProvider.of<GradesBloc>(context).add(GetGrades());
         BlocProvider.of<LocalGradesBloc>(context).add(GetLocalGrades(
           period: period,
+          subjectId: subject.id,
         ));
       },
       child: Scaffold(
         appBar: AppBar(
-          // backgroundColor: Colors.transparent,
-          // brightness: Theme.of(context).brightness,
-          // elevation: 0.0,
           title: Text(subject.name),
         ),
         body: BlocBuilder<GradesBloc, GradesState>(
@@ -101,31 +99,29 @@ class SubjectGradesLoaded extends StatelessWidget {
         final Tuple2 values = snapshot.data;
         if (values.value1 != null) {
           return Container(
-            child: Padding(
+            child: ListView(
               padding: const EdgeInsets.all(8.0),
-              child: ListView(
-                children: <Widget>[
-                  _buildProfessorsCard(context),
+              children: <Widget>[
+                _buildProfessorsCard(context),
 
-                  /// Pratico scritto and orale ciruclar progress widgets
-                  _buildAveragesCard(values.value2, context),
+                /// Pratico scritto and orale ciruclar progress widgets
+                _buildAveragesCard(values.value2, context),
 
-                  /// The chart that shows the average and grades
-                  _buildChartCard(
-                      subject,
-                      values.value1
-                          .where((g) => GradesUtils.isValidGrade(g))
-                          .toList()),
+                // /// The chart that shows the average and grades
+                _buildChartCard(
+                    subject,
+                    values.value1
+                        .where((g) => GradesUtils.isValidGrade(g))
+                        .toList()),
 
-                  // Shots the progress bar of the obj and the avg
-                  _buildProgressBarCard(values.value2, context),
+                // // Shots the progress bar of the obj and the avg
+                _buildProgressBarCard(values.value2, context),
 
-                  _buildLocalGrades(values.value2, values.value1, context),
+                _buildLocalGrades(values.value2, values.value1, context),
 
-                  // // Last grades
-                  _buildLastGrades(values.value1),
-                ],
-              ),
+                // // // Last grades
+                _buildLastGrades(values.value1),
+              ],
             ),
           );
         }
@@ -177,12 +173,11 @@ class SubjectGradesLoaded extends StatelessWidget {
 
                 if (state is LocalGradesLoaded) {
                   return _buildLocalGradesLoaded(
-                      state.localGrades
-                          .where((g) => g.subjectId == subject.id)
-                          .toList(),
-                      averages,
-                      grades,
-                      context);
+                    state.localGrades,
+                    averages,
+                    grades,
+                    context,
+                  );
                 }
 
                 if (state is LocalGradesError) {
@@ -265,13 +260,12 @@ class SubjectGradesLoaded extends StatelessWidget {
     );
     final difference = GradesUtils.getDifferencePercentage(
         oldAverage: averages.average, newAverage: newAverage);
+
     if (localGrades.isNotEmpty) {
       localGrades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
       return AnimatedContainer(
         duration: Duration(milliseconds: 2000),
-        child: ListView(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+        child: Column(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -280,8 +274,8 @@ class SubjectGradesLoaded extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Icon(Icons.timeline),
-                      SizedBox(
+                      const Icon(Icons.timeline),
+                      const SizedBox(
                         width: 8,
                       ),
                       Text(newAverage.toStringAsFixed(2)),
@@ -290,7 +284,7 @@ class SubjectGradesLoaded extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       _getIconFromChange(difference, context),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       Text(difference.toStringAsFixed(2)),
@@ -299,7 +293,7 @@ class SubjectGradesLoaded extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             //Placeholder()
             ListView.builder(
               shrinkWrap: true,
@@ -396,7 +390,7 @@ class SubjectGradesLoaded extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                leading: Icon(Icons.person),
+                leading: const Icon(Icons.person),
                 title: Text(professorsText ?? ''),
               ),
             ),
@@ -423,23 +417,21 @@ class SubjectGradesLoaded extends StatelessWidget {
   }
 
   Widget _buildLastGrades(List<Grade> grades) {
-    return Padding(
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       padding: const EdgeInsets.all(4.0),
-      child: ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: grades.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: index == 0
-                ? EdgeInsets.only(top: 2.0, bottom: 8.0)
-                : EdgeInsets.only(bottom: 8.0),
-            child: GradeCard(
-              grade: grades[index],
-            ),
-          );
-        },
-      ),
+      itemCount: grades.length,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: index == 0
+              ? EdgeInsets.only(top: 2.0, bottom: 8.0)
+              : EdgeInsets.only(bottom: 8.0),
+          child: GradeCard(
+            grade: grades[index],
+          ),
+        );
+      },
     );
   }
 
@@ -502,7 +494,7 @@ class SubjectGradesLoaded extends StatelessWidget {
               Column(
                 children: <Widget>[
                   _buildStatsCircle(averages.scrittoAverage),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(AppLocalizations.of(context).translate('written')),
@@ -511,7 +503,7 @@ class SubjectGradesLoaded extends StatelessWidget {
               Column(
                 children: <Widget>[
                   _buildStatsCircle(averages.oraleAverage),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(AppLocalizations.of(context).translate('oral')),
@@ -520,7 +512,7 @@ class SubjectGradesLoaded extends StatelessWidget {
               Column(
                 children: <Widget>[
                   _buildStatsCircle(averages.praticoAverage),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(AppLocalizations.of(context).translate('pratico')),

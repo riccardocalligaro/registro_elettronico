@@ -1,6 +1,8 @@
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
@@ -12,9 +14,9 @@ class LessonCard extends StatelessWidget {
 
   const LessonCard({
     Key key,
-    this.lesson,
-    this.position,
-    this.duration,
+    @required this.lesson,
+    @required this.position,
+    @required this.duration,
   }) : super(key: key);
 
   @override
@@ -27,6 +29,20 @@ class LessonCard extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: _paddingLeft, right: 8.0),
       child: InkWell(
+        onLongPress: () {
+          final trans = AppLocalizations.of(context);
+
+          String message = "";
+
+          message +=
+              '${trans.translate('author')}: ${StringUtils.titleCase(lesson.author)}';
+          message +=
+              "\n${trans.translate('date')}: ${DateUtils.convertDateForLessons(lesson.date)}";
+          message += '\n${lesson.lessonArg}';
+
+          Share.text(AppLocalizations.of(context).translate('share'), message,
+              'text/plain');
+        },
         onTap: () {
           showDialog(
             context: context,
@@ -59,8 +75,9 @@ class LessonCard extends StatelessWidget {
           width: 220.0,
           height: 140,
           decoration: BoxDecoration(
-              color: GlobalUtils.getColorFromPosition(position, context),
-              borderRadius: BorderRadius.circular(5.0)),
+            color: ColorUtils.getLessonCardColor(context),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(

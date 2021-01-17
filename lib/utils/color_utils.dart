@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:tinycolor/tinycolor.dart';
 
@@ -23,9 +22,18 @@ class ColorUtils {
     }
   }
 
+  static Color getLessonCardColor(BuildContext context) {
+    final themeColor = Theme.of(context).accentColor;
+
+    if (themeColor == Colors.red || themeColor.value == 4294198070) {
+      return Colors.red[400];
+    }
+
+    return themeColor;
+  }
+
   static List<Color> getCardsColors(int length) {
     List<Color> _colors = [
-      Colors.red,
       Colors.pink,
       Colors.purple,
       Colors.deepPurple,

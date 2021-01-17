@@ -143,7 +143,7 @@ class AbsencesList extends StatelessWidget {
           ),
           progressColor: color,
         ),
-        SizedBox(
+        const SizedBox(
           height: 4,
         ),
         Text(typeOfEvent)
@@ -223,7 +223,7 @@ class AbsencesList extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           )
         ],

@@ -247,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                     _buildTopSection()
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Column(
@@ -262,7 +262,7 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.symmetric(horizontal: 16.0),
                       child: LastGradesSection(),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Padding(
@@ -270,11 +270,11 @@ class _HomePageState extends State<HomePage> {
                       child: Text(AppLocalizations.of(context)
                           .translate('last_lessons')),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     LastLessonsSection(),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Padding(
@@ -321,7 +321,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               _buildQuickShortcutsSection()
@@ -431,7 +431,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             AutoSizeText(
