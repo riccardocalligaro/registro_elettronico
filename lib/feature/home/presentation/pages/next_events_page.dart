@@ -74,16 +74,18 @@ class NextEventsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  '${e.title ?? ''}',
-                  style: TextStyle(fontSize: 15.0),
-                ),
-                const SizedBox(
-                  height: 2.5,
-                ),
+                if (e.title != '')
+                  Text(
+                    '${e.title ?? ''}',
+                    style: TextStyle(fontSize: 15.0),
+                  ),
+                if (e.title != '')
+                  const SizedBox(
+                    height: 2.5,
+                  ),
                 Text(
                   '${e.notes ?? ''} - ${GlobalUtils.getEventDateMessage(context, e.begin, e.isFullDay)}',
-                  style: TextStyle(fontSize: 12.0),
+                  style: TextStyle(fontSize: e.title != '' ? 12.0 : 15),
                 ),
               ],
             ),
@@ -100,16 +102,18 @@ class NextEventsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                '${e.notes ?? ''}',
-                style: TextStyle(fontSize: 15.0),
-              ),
-              const SizedBox(
-                height: 2.5,
-              ),
+              if (e.title != '')
+                Text(
+                  '${e.notes ?? ''}',
+                  style: TextStyle(fontSize: 15.0),
+                ),
+              if (e.title != '')
+                const SizedBox(
+                  height: 2.5,
+                ),
               Text(
                 '${StringUtils.titleCase(e.authorName)} - ${GlobalUtils.getEventDateMessage(context, e.begin, e.isFullDay)}',
-                style: TextStyle(fontSize: 12.0),
+                style: TextStyle(fontSize: e.title != '' ? 12.0 : 15),
               ),
             ],
           ),

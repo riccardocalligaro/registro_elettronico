@@ -25,7 +25,7 @@ class ColorUtils {
   static Color getLessonCardColor(BuildContext context) {
     final themeColor = Theme.of(context).accentColor;
 
-    if (themeColor == Colors.red) {
+    if (themeColor == Colors.red || themeColor.value == 4294198070) {
       return Colors.red[400];
     }
 
