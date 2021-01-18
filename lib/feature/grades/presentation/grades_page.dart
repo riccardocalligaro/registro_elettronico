@@ -155,6 +155,7 @@ class _GradesPageState extends State<GradesPage> {
             length: 4,
             child: Scaffold(
               appBar: AppBar(
+                brightness: Theme.of(context).brightness,
                 elevation: 0.0,
                 textTheme: Theme.of(context).textTheme,
                 iconTheme: Theme.of(context).primaryIconTheme,
@@ -167,8 +168,8 @@ class _GradesPageState extends State<GradesPage> {
                 ),
                 title: Text(AppLocalizations.of(context).translate('grades')),
               ),
-              drawer: AppDrawer(
-                position: DrawerConstants.GRADES,
+              bottomSheet: LastUpdateBottomSheet(
+                millisecondsSinceEpoch: _lastUpdateGrades,
               ),
               body: Center(
                 child: CircularProgressIndicator(),
