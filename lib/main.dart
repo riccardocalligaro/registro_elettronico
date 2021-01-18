@@ -8,6 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:registro_elettronico/application.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/feature/agenda/presentation/agenda_page.dart';
+import 'package:registro_elettronico/feature/grades/presentation/grades_page.dart';
+import 'package:registro_elettronico/feature/home/presentation/home_page.dart';
+import 'package:registro_elettronico/feature/noticeboard/presentation/noticeboard_page.dart';
 import 'package:registro_elettronico/feature/splash/presentation/splash_screen.dart';
 
 import 'core/data/remote/api/dio_client.dart';
@@ -65,11 +69,98 @@ class SrApp extends StatelessWidget {
           // showPerformanceOverlay: true,
           debugShowCheckedModeBanner: false,
           routes: Routes.routes,
+          // home: NavigatorPage(),
           onUnknownRoute: (settings) {
             return MaterialPageRoute(builder: (ctx) => SplashScreen());
           },
         );
       },
+    );
+  }
+}
+
+class NavigatorPage extends StatefulWidget {
+  NavigatorPage({Key key}) : super(key: key);
+
+  @override
+  _NavigatorPageState createState() => _NavigatorPageState();
+}
+
+class _NavigatorPageState extends State<NavigatorPage> {
+  List<Widget> _pages;
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      HomePage(),
+      GradesPage(),
+      AgendaPage(),
+      NoticeboardPage(),
+      Scaffold()
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      bottomNavigationBar: _buildBottomNavigationBar(),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
+      ),
+    );
+  }
+
+  BottomNavigationBar _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      currentIndex: _currentIndex,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      onTap: (int index) {
+        // Calls the api if needed
+        setState(() {
+          _currentIndex = index;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          label: 'Home',
+          icon: Icon(Icons.home),
+        ),
+        BottomNavigationBarItem(
+          // title: Container(),
+          label: '',
+
+          icon: Icon(Icons.timeline),
+        ),
+        BottomNavigationBarItem(
+          // title: Container(),
+          label: '',
+          icon: Icon(
+            Icons.event,
+            size: 26,
+          ),
+        ),
+        BottomNavigationBarItem(
+          // title: Container(),
+          label: '',
+          icon: Icon(
+            Icons.assignment,
+            size: 26,
+          ),
+        ),
+        BottomNavigationBarItem(
+          // title: Container(),
+          label: '',
+          icon: Icon(
+            Icons.more_horiz,
+            size: 26,
+          ),
+        ),
+      ],
     );
   }
 }

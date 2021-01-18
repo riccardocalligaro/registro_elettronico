@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
+import 'package:registro_elettronico/main.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/update_utils.dart';
 
@@ -44,7 +45,12 @@ class _SplashScreenState extends State<SplashScreen> {
           if (state is AutoSignInResult) {
             Logger.info("Auto sign in resulted -> Home screen");
             UpdateUtils.checkForUpdates(context);
-            AppNavigator.instance.navToHome(context);
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => NavigatorPage(),
+              ),
+            );
+            // AppNavigator.instance.navToHome(context);
           }
 
           /// If the auto sign in returns an error the user
