@@ -1,13 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/core/data/remote/api/api_config.dart';
 import 'package:registro_elettronico/core/infrastructure/exception/server_exception.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';
+import 'package:registro_elettronico/feature/login/presentation/login_page.dart';
 import 'package:registro_elettronico/feature/profile/data/model/profile_mapper.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+final GlobalKey<NavigatorState> navigator =
+    GlobalKey(); //Create a key for navigator
 
 class DioClient {
   final ProfileRepository profileRepository;
@@ -36,21 +41,45 @@ class DioClient {
         // get the profile from the database
         final profile = await profileRepository.getProfile();
 
+        print(profile);
+
         final expireDate = DateTime.parse(profile.expire);
 
         //? This checks if the profile exires before now, so if this  results true the token is expired
-        if (expireDate.isBefore(DateTime.now())) {
+        if (expireDate.isBefore(DateTime.now()) || profile.token == "") {
           Logger.info(
             '🔒 [DioINTERCEPTOR] Need to request new token - ${profile.expire.toString()}',
           );
           // this gets the password from flutter secure storage which is saved using the ident
           final password = await flutterSecureStorage.read(key: profile.ident);
+
           // we create a dio client for requesting the token to spaggiari
           final tokenDio = Dio();
           tokenDio.options.baseUrl = "${ApiConfig.baseApiUrl}";
           tokenDio.options.headers["Content-Type"] = Headers.jsonContentType;
           tokenDio.options.headers["User-Agent"] = "${ApiConfig.baseUserAgent}";
           tokenDio.options.headers["Z-Dev-Apikey"] = "${ApiConfig.apiKey}";
+
+          tokenDio.interceptors.add(
+            InterceptorsWrapper(
+              onError: (DioError error) async {
+                if (error.response != null &&
+                    error.response.statusCode == 422) {
+                  await flutterSecureStorage.deleteAll();
+                  await sharedPreferences.clear();
+                  // ignore: unawaited_futures
+                  navigator.currentState.pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(),
+                    ),
+                  );
+
+                  return null;
+                }
+                Logger.e(text: error.toString());
+              },
+            ),
+          );
 
           // we make a request to auth login to get the new token
           final res = await tokenDio.post("/auth/login", data: {
@@ -101,12 +130,16 @@ class DioClient {
 
       return response; // continue
     }, onError: (DioError error) async {
-      Logger.networkError(
-        '🤮 [DioERROR] ${error.type}',
-        Exception(
-          'Url: [${error.request.baseUrl}] status:${error.response.statusCode} type:${error.type} Data: ${error.response.data} message: ${error.message}',
-        ),
-      );
+      if (error.response == null) {
+        Logger.e(text: error.toString());
+      } else {
+        Logger.networkError(
+          '🤮 [DioERROR] ${error.type}',
+          Exception(
+            'Url: [${error.request.baseUrl}] status:${error.response.statusCode} type:${error.type} Data: ${error.response.data} message: ${error.message}',
+          ),
+        );
+      }
     }));
     return dio;
   }

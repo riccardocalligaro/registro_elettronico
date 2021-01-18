@@ -42,8 +42,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthEvent event,
   ) async* {
     Logger.info("$event added to Auth Bloc");
-
-    if (event is AutoSignIn) {
+    if (event is ResetAuth) {
+      yield AuthInitial();
+    } else if (event is AutoSignIn) {
       yield AutoSignInLoading();
       final isUserLoggedIn = await profileRepository.isLoggedIn();
 
@@ -121,6 +122,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final profileEntity = ProfileMapper.mapLoginResponseProfileToProfileEntity(
       returnedProfile,
     );
+
+    Logger.info('Profile $profileEntity');
 
     // save it to shared preferences
     await sharedPreferences.setString(

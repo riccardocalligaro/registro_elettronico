@@ -136,6 +136,10 @@ class DateUtils {
     );
   }
 
+  static String getApiDateStringFromDate(DateTime date) {
+    return '${date.year}-${date.month}-${date.day}';
+  }
+
   /// This returns the [max interval] to fetch all the lessons / grades
   /// For example if it is november 2019 it fetches => sep 2019 to aug 2020
   static DateTimeInterval getDateInerval() {
