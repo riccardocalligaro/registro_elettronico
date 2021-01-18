@@ -7,7 +7,6 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/fcm_service.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
-import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DebugPage extends StatefulWidget {
