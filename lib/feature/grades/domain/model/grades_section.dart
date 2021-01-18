@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
@@ -14,18 +15,30 @@ class GradesPagesDomainModel {
 }
 
 class PeriodWithGradesDomainModel {
+  int overallObjective;
+
+  List<GradeDomainModel> grades;
+
   /// The subject, the average, the grade you need for this objective
-  List<PeriodGradeDomainModel> grades;
+  List<PeriodGradeDomainModel> gradesForList;
 
   Period period;
 
   /// The average grade for this period
   double average;
 
+  List<FlSpot> averageSpots;
+
+  List<FlSpot> normalSpots;
+
   PeriodWithGradesDomainModel({
     @required this.grades,
     @required this.period,
     @required this.average,
+    @required this.gradesForList,
+    @required this.averageSpots,
+    @required this.normalSpots,
+    @required this.overallObjective,
   });
 }
 

@@ -16,7 +16,9 @@ Failure handleError(
   Exception toThrow;
   // log the errror
   if (e is Exception) {
-    Logger.e(exception: e, stacktrace: s);
+    print(e.toString());
+
+    // Logger.e(exception: e, stacktrace: s);
     toThrow = e;
   } else {
     print(e.toString());

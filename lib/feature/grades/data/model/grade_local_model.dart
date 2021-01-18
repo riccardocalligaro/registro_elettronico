@@ -23,6 +23,7 @@ class Grades extends Table {
   IntColumn get skillId => integer()();
   IntColumn get gradeMasterId => integer()();
   BoolColumn get localllyCancelled => boolean()();
+  BoolColumn get hasSeenIt => boolean().withDefault(const Constant(true))();
 
   @override
   Set<Column> get primaryKey => {evtId};
@@ -35,6 +36,7 @@ class GradeLocalModelConverter {
   static GradeLocalModel fromRemoteModel(
     GradeRemoteModel remoteModel,
     GradeLocalModel localModel,
+    bool hasSeenIt,
   ) {
     return GradeLocalModel(
       subjectId: remoteModel.subjectId,
@@ -55,7 +57,8 @@ class GradeLocalModelConverter {
       weightFactor: remoteModel.weightFactor,
       skillId: remoteModel.skillId,
       gradeMasterId: remoteModel.gradeMasterId,
-      localllyCancelled: localModel.cancelled,
+      localllyCancelled: localModel != null ? localModel.cancelled : false,
+      hasSeenIt: hasSeenIt,
     );
   }
 }

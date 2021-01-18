@@ -16,4 +16,8 @@ abstract class GradesRepository {
   Future<Either<Failure, GradeDomainModel>> getGrade(String id);
 
   Future<Either<Failure, List<GradeDomainModel>>> getGrades();
+
+  Future<Either<Failure, Success>> toggleGradeLocallyCancelledStatus({
+    @required GradeDomainModel gradeDomainModel,
+  });
 }

@@ -1702,6 +1702,7 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
   final int skillId;
   final int gradeMasterId;
   final bool localllyCancelled;
+  final bool hasSeenIt;
   GradeLocalModel(
       {@required this.subjectId,
       @required this.subjectDesc,
@@ -1721,7 +1722,8 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
       @required this.weightFactor,
       @required this.skillId,
       @required this.gradeMasterId,
-      @required this.localllyCancelled});
+      @required this.localllyCancelled,
+      @required this.hasSeenIt});
   factory GradeLocalModel.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -1769,6 +1771,8 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
           .mapFromDatabaseResponse(data['${effectivePrefix}grade_master_id']),
       localllyCancelled: boolType.mapFromDatabaseResponse(
           data['${effectivePrefix}locallly_cancelled']),
+      hasSeenIt: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}has_seen_it']),
     );
   }
   @override
@@ -1831,6 +1835,9 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
     if (!nullToAbsent || localllyCancelled != null) {
       map['locallly_cancelled'] = Variable<bool>(localllyCancelled);
     }
+    if (!nullToAbsent || hasSeenIt != null) {
+      map['has_seen_it'] = Variable<bool>(hasSeenIt);
+    }
     return map;
   }
 
@@ -1892,6 +1899,9 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
       localllyCancelled: localllyCancelled == null && nullToAbsent
           ? const Value.absent()
           : Value(localllyCancelled),
+      hasSeenIt: hasSeenIt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(hasSeenIt),
     );
   }
 
@@ -1918,6 +1928,7 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
       skillId: serializer.fromJson<int>(json['skillId']),
       gradeMasterId: serializer.fromJson<int>(json['gradeMasterId']),
       localllyCancelled: serializer.fromJson<bool>(json['localllyCancelled']),
+      hasSeenIt: serializer.fromJson<bool>(json['hasSeenIt']),
     );
   }
   @override
@@ -1943,6 +1954,7 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
       'skillId': serializer.toJson<int>(skillId),
       'gradeMasterId': serializer.toJson<int>(gradeMasterId),
       'localllyCancelled': serializer.toJson<bool>(localllyCancelled),
+      'hasSeenIt': serializer.toJson<bool>(hasSeenIt),
     };
   }
 
@@ -1965,7 +1977,8 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
           int weightFactor,
           int skillId,
           int gradeMasterId,
-          bool localllyCancelled}) =>
+          bool localllyCancelled,
+          bool hasSeenIt}) =>
       GradeLocalModel(
         subjectId: subjectId ?? this.subjectId,
         subjectDesc: subjectDesc ?? this.subjectDesc,
@@ -1986,6 +1999,7 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
         skillId: skillId ?? this.skillId,
         gradeMasterId: gradeMasterId ?? this.gradeMasterId,
         localllyCancelled: localllyCancelled ?? this.localllyCancelled,
+        hasSeenIt: hasSeenIt ?? this.hasSeenIt,
       );
   @override
   String toString() {
@@ -2008,7 +2022,8 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
           ..write('weightFactor: $weightFactor, ')
           ..write('skillId: $skillId, ')
           ..write('gradeMasterId: $gradeMasterId, ')
-          ..write('localllyCancelled: $localllyCancelled')
+          ..write('localllyCancelled: $localllyCancelled, ')
+          ..write('hasSeenIt: $hasSeenIt')
           ..write(')'))
         .toString();
   }
@@ -2054,8 +2069,9 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
                                                                       $mrjc(
                                                                           gradeMasterId
                                                                               .hashCode,
-                                                                          localllyCancelled
-                                                                              .hashCode)))))))))))))))))));
+                                                                          $mrjc(
+                                                                              localllyCancelled.hashCode,
+                                                                              hasSeenIt.hashCode))))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -2078,7 +2094,8 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
           other.weightFactor == this.weightFactor &&
           other.skillId == this.skillId &&
           other.gradeMasterId == this.gradeMasterId &&
-          other.localllyCancelled == this.localllyCancelled);
+          other.localllyCancelled == this.localllyCancelled &&
+          other.hasSeenIt == this.hasSeenIt);
 }
 
 class GradesCompanion extends UpdateCompanion<GradeLocalModel> {
@@ -2101,6 +2118,7 @@ class GradesCompanion extends UpdateCompanion<GradeLocalModel> {
   final Value<int> skillId;
   final Value<int> gradeMasterId;
   final Value<bool> localllyCancelled;
+  final Value<bool> hasSeenIt;
   const GradesCompanion({
     this.subjectId = const Value.absent(),
     this.subjectDesc = const Value.absent(),
@@ -2121,6 +2139,7 @@ class GradesCompanion extends UpdateCompanion<GradeLocalModel> {
     this.skillId = const Value.absent(),
     this.gradeMasterId = const Value.absent(),
     this.localllyCancelled = const Value.absent(),
+    this.hasSeenIt = const Value.absent(),
   });
   GradesCompanion.insert({
     @required int subjectId,
@@ -2142,6 +2161,7 @@ class GradesCompanion extends UpdateCompanion<GradeLocalModel> {
     @required int skillId,
     @required int gradeMasterId,
     @required bool localllyCancelled,
+    this.hasSeenIt = const Value.absent(),
   })  : subjectId = Value(subjectId),
         subjectDesc = Value(subjectDesc),
         evtCode = Value(evtCode),
@@ -2180,6 +2200,7 @@ class GradesCompanion extends UpdateCompanion<GradeLocalModel> {
     Expression<int> skillId,
     Expression<int> gradeMasterId,
     Expression<bool> localllyCancelled,
+    Expression<bool> hasSeenIt,
   }) {
     return RawValuesInsertable({
       if (subjectId != null) 'subject_id': subjectId,
@@ -2201,6 +2222,7 @@ class GradesCompanion extends UpdateCompanion<GradeLocalModel> {
       if (skillId != null) 'skill_id': skillId,
       if (gradeMasterId != null) 'grade_master_id': gradeMasterId,
       if (localllyCancelled != null) 'locallly_cancelled': localllyCancelled,
+      if (hasSeenIt != null) 'has_seen_it': hasSeenIt,
     });
   }
 
@@ -2223,7 +2245,8 @@ class GradesCompanion extends UpdateCompanion<GradeLocalModel> {
       Value<int> weightFactor,
       Value<int> skillId,
       Value<int> gradeMasterId,
-      Value<bool> localllyCancelled}) {
+      Value<bool> localllyCancelled,
+      Value<bool> hasSeenIt}) {
     return GradesCompanion(
       subjectId: subjectId ?? this.subjectId,
       subjectDesc: subjectDesc ?? this.subjectDesc,
@@ -2244,6 +2267,7 @@ class GradesCompanion extends UpdateCompanion<GradeLocalModel> {
       skillId: skillId ?? this.skillId,
       gradeMasterId: gradeMasterId ?? this.gradeMasterId,
       localllyCancelled: localllyCancelled ?? this.localllyCancelled,
+      hasSeenIt: hasSeenIt ?? this.hasSeenIt,
     );
   }
 
@@ -2307,6 +2331,9 @@ class GradesCompanion extends UpdateCompanion<GradeLocalModel> {
     if (localllyCancelled.present) {
       map['locallly_cancelled'] = Variable<bool>(localllyCancelled.value);
     }
+    if (hasSeenIt.present) {
+      map['has_seen_it'] = Variable<bool>(hasSeenIt.value);
+    }
     return map;
   }
 
@@ -2331,7 +2358,8 @@ class GradesCompanion extends UpdateCompanion<GradeLocalModel> {
           ..write('weightFactor: $weightFactor, ')
           ..write('skillId: $skillId, ')
           ..write('gradeMasterId: $gradeMasterId, ')
-          ..write('localllyCancelled: $localllyCancelled')
+          ..write('localllyCancelled: $localllyCancelled, ')
+          ..write('hasSeenIt: $hasSeenIt')
           ..write(')'))
         .toString();
   }
@@ -2588,6 +2616,15 @@ class $GradesTable extends Grades
     );
   }
 
+  final VerificationMeta _hasSeenItMeta = const VerificationMeta('hasSeenIt');
+  GeneratedBoolColumn _hasSeenIt;
+  @override
+  GeneratedBoolColumn get hasSeenIt => _hasSeenIt ??= _constructHasSeenIt();
+  GeneratedBoolColumn _constructHasSeenIt() {
+    return GeneratedBoolColumn('has_seen_it', $tableName, false,
+        defaultValue: const Constant(true));
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         subjectId,
@@ -2608,7 +2645,8 @@ class $GradesTable extends Grades
         weightFactor,
         skillId,
         gradeMasterId,
-        localllyCancelled
+        localllyCancelled,
+        hasSeenIt
       ];
   @override
   $GradesTable get asDslTable => this;
@@ -2756,6 +2794,10 @@ class $GradesTable extends Grades
               data['locallly_cancelled'], _localllyCancelledMeta));
     } else if (isInserting) {
       context.missing(_localllyCancelledMeta);
+    }
+    if (data.containsKey('has_seen_it')) {
+      context.handle(_hasSeenItMeta,
+          hasSeenIt.isAcceptableOrUnknown(data['has_seen_it'], _hasSeenItMeta));
     }
     return context;
   }

@@ -11,6 +11,13 @@ class GradesFailure extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('failure $failure');
+    return TabBarView(
+      children: List.generate(
+        4,
+        (index) => Center(
+          child: Text(failure.toString()),
+        ),
+      ),
+    );
   }
 }

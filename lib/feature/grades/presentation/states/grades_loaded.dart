@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/presentation/widgets/grade_card.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
+import 'package:registro_elettronico/feature/grades/presentation/states/tabs/grades_tab.dart';
+import 'package:registro_elettronico/feature/grades/presentation/states/tabs/period_tab.dart';
 
 class GradesLoaded extends StatelessWidget {
   final GradesPagesDomainModel gradesPagesDomainModel;
@@ -12,9 +14,24 @@ class GradesLoaded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(gradesPagesDomainModel.grades[0].toString());
-    // return GradeCard(
-    //   grade: sections[1].grades.length.toString(),
-    // );
+    return TabBarView(
+      children: [
+        GradesTab(
+          grades: gradesPagesDomainModel.grades,
+        ),
+        PeriodTab(
+          periodWithGradesDomainModel:
+              gradesPagesDomainModel.periodsWithGrades[0],
+        ),
+        PeriodTab(
+          periodWithGradesDomainModel:
+              gradesPagesDomainModel.periodsWithGrades[1],
+        ),
+        PeriodTab(
+          periodWithGradesDomainModel:
+              gradesPagesDomainModel.periodsWithGrades[2],
+        ),
+      ],
+    );
   }
 }

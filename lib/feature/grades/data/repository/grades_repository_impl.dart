@@ -1,4 +1,5 @@
 import 'package:f_logs/f_logs.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
@@ -85,10 +86,18 @@ class GradesRepositoryImpl extends GradesRepository {
 
         await gradesLocalDatasource.insertGrades(
           remoteGrades
-              .map((e) => GradeLocalModelConverter.fromRemoteModel(
-                    e,
-                    gradesMap[e.evtId],
-                  ))
+              .map(
+                (e) => GradeLocalModelConverter.fromRemoteModel(
+                  e,
+                  gradesMap[e.evtId],
+                  // se i voti locali non sono vuoti allora guarda se il voto
+                  // c'è localmente, quindi
+                  localGrades.isNotEmpty
+                      // se diverso da null significa che è presente
+                      ? (gradesMap[e.evtId] != null)
+                      : true,
+                ),
+              )
               .toList(),
         );
 
@@ -193,11 +202,17 @@ class GradesRepositoryImpl extends GradesRepository {
           );
         }
 
-        gradesPeriods.add(PeriodWithGradesDomainModel(
-          grades: periodGradeDomainModels,
-          period: period,
-          average: average,
-        ));
+        gradesPeriods.add(
+          PeriodWithGradesDomainModel(
+            gradesForList: periodGradeDomainModels,
+            period: period,
+            average: average,
+            grades: gradesForThisPeriod,
+            normalSpots: _getNormalSpots(grades: gradesForThisPeriod),
+            averageSpots: _getAverageSpots(grades: gradesForThisPeriod),
+            overallObjective: defaultObjective,
+          ),
+        );
       }
 
       GradesPagesDomainModel gradesPagesDomainModel = GradesPagesDomainModel(
@@ -211,6 +226,50 @@ class GradesRepositoryImpl extends GradesRepository {
         return Resource.failed(error: handleError(e));
       },
     );
+  }
+
+  List<FlSpot> _getAverageSpots({
+    @required List<GradeDomainModel> grades,
+  }) {
+    List<FlSpot> spots = List<FlSpot>();
+
+    // simple algorithm to calculate avg
+    double sum = 0;
+    int count = 0;
+    double average;
+
+    // good old for, rare these days
+    for (int i = 0; i < grades.length; i++) {
+      if (grades[i].decimalValue != -1.00) {
+        sum += grades[i].decimalValue;
+        count++;
+        average = sum / count;
+        // with num.parse(average.toStringAsFixed(2)) we cut the decimal digits
+        spots.add(FlSpot(i.toDouble(), num.parse(average.toStringAsFixed(2))));
+      }
+      if (spots.length == 1) {
+        spots.add(FlSpot(spots[0].x + 1, spots[0].y));
+      }
+    }
+
+    return spots;
+  }
+
+  List<FlSpot> _getNormalSpots({@required List<GradeDomainModel> grades}) {
+    List<FlSpot> spots = List<FlSpot>();
+
+    // if we don't want to see the average we want to see the single grades during that time
+    for (int i = 0; i < grades.length; i++) {
+      if (grades[i].decimalValue != -1.00) {
+        spots.add(FlSpot(i.toDouble(), grades[i].decimalValue));
+      }
+    }
+
+    if (spots.length == 1) {
+      spots.add(FlSpot(spots[0].x + 1, spots[0].y));
+    }
+
+    return spots;
   }
 
   PeriodGradeDomainModel _getGradePeriodDomainModel({
@@ -382,5 +441,22 @@ class GradesRepositoryImpl extends GradesRepository {
     return (grade.decimalValue != -1.00 &&
         grade.cancelled == false &&
         grade.localllyCancelled == false);
+  }
+
+  @override
+  Future<Either<Failure, Success>> toggleGradeLocallyCancelledStatus({
+    GradeDomainModel gradeDomainModel,
+  }) async {
+    try {
+      final localModel = gradeDomainModel.toLocalModel();
+      await gradesLocalDatasource.updateGrade(
+        localModel.copyWith(
+            localllyCancelled: !gradeDomainModel.localllyCancelled),
+      );
+
+      return Right(Success());
+    } catch (e, s) {
+      return Left(handleError(e, s));
+    }
   }
 }

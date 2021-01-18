@@ -70,4 +70,8 @@ class GradesLocalDatasource extends DatabaseAccessor<AppDatabase>
   Future deleteGrade(GradeLocalModel grade) => delete(grades).delete(grade);
 
   Future updateGrade(GradeLocalModel grade) => update(grades).replace(grade);
+
+  Future deleteGradeWithId(int id) {
+    return (delete(grades)..where((t) => t.evtId.equals(id))).go();
+  }
 }

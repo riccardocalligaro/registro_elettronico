@@ -22,6 +22,8 @@ class GradeDomainModel {
   int skillId;
   int gradeMasterId;
   bool localllyCancelled;
+  bool hasSeenIt;
+
   GradeDomainModel({
     this.subjectId,
     this.subjectDesc,
@@ -42,6 +44,7 @@ class GradeDomainModel {
     this.skillId,
     this.gradeMasterId,
     this.localllyCancelled,
+    this.hasSeenIt,
   });
 
   GradeDomainModel.fromLocalModel(GradeLocalModel l) {
@@ -62,6 +65,32 @@ class GradeDomainModel {
     this.componentDesc = l.componentDesc;
     this.weightFactor = l.weightFactor;
     this.localllyCancelled = l.localllyCancelled;
+    this.hasSeenIt = l.hasSeenIt;
+  }
+
+  GradeLocalModel toLocalModel() {
+    return GradeLocalModel(
+      subjectId: this.subjectId,
+      subjectDesc: this.subjectDesc,
+      evtId: this.evtId,
+      evtCode: this.evtCode,
+      eventDate: this.eventDate,
+      decimalValue: this.decimalValue,
+      displayValue: this.displayValue,
+      displayPos: this.displayPos,
+      notesForFamily: this.notesForFamily,
+      cancelled: this.cancelled,
+      underlined: this.underlined,
+      periodPos: this.periodPos,
+      periodDesc: this.periodDesc,
+      componentPos: this.componentPos,
+      componentDesc: this.componentDesc,
+      weightFactor: this.weightFactor,
+      skillId: this.skillId ?? -1,
+      gradeMasterId: this.gradeMasterId ?? -1,
+      localllyCancelled: this.localllyCancelled,
+      hasSeenIt: this.hasSeenIt,
+    );
   }
 
   GradeDomainModel copyWith({
