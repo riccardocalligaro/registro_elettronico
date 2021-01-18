@@ -57,7 +57,8 @@ class GradeLocalModelConverter {
       weightFactor: remoteModel.weightFactor,
       skillId: remoteModel.skillId,
       gradeMasterId: remoteModel.gradeMasterId,
-      localllyCancelled: localModel != null ? localModel.cancelled : false,
+      localllyCancelled:
+          localModel != null ? localModel.localllyCancelled : false,
       hasSeenIt: hasSeenIt,
     );
   }

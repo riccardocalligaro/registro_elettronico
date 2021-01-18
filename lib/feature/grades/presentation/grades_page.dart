@@ -14,7 +14,16 @@ class GradesPage extends StatefulWidget {
   _GradesPageState createState() => _GradesPageState();
 }
 
-class _GradesPageState extends State<GradesPage> {
+class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _tabController = TabController(length: 4, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -25,6 +34,7 @@ class _GradesPageState extends State<GradesPage> {
             AppLocalizations.of(context).translate('grades'),
           ),
           bottom: TabBar(
+            controller: _tabController,
             isScrollable: true,
             indicatorColor: Theme.of(context).accentColor,
             labelColor: Theme.of(context).primaryTextTheme.headline5.color,
@@ -63,19 +73,14 @@ class _GradesPageState extends State<GradesPage> {
               ),
             ],
           ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () {
-                BlocProvider.of<GradesUpdaterBloc>(context).add(UpdateGrades());
-              },
-            )
-          ],
         ),
         body: BlocBuilder<GradesWatcherBloc, GradesWatcherState>(
           builder: (context, state) {
             if (state is GradesWatcherLoadSuccess) {
-              return GradesLoaded(gradesPagesDomainModel: state.gradesSections);
+              return GradesLoaded(
+                gradesPagesDomainModel: state.gradesSections,
+                tabController: _tabController,
+              );
             } else if (state is GradesWatcherFailure) {
               return GradesFailure(failure: state.failure);
             }

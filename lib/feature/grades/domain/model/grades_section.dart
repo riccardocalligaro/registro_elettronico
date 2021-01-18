@@ -19,6 +19,8 @@ class PeriodWithGradesDomainModel {
 
   List<GradeDomainModel> grades;
 
+  List<GradeDomainModel> filteredGrades;
+
   /// The subject, the average, the grade you need for this objective
   List<PeriodGradeDomainModel> gradesForList;
 
@@ -39,6 +41,7 @@ class PeriodWithGradesDomainModel {
     @required this.averageSpots,
     @required this.normalSpots,
     @required this.overallObjective,
+    @required this.filteredGrades,
   });
 }
 

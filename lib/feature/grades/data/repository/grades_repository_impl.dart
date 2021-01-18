@@ -148,6 +148,9 @@ class GradesRepositoryImpl extends GradesRepository {
 
     final subjects = await subjectDao.getAllSubjects();
 
+    bool showAsending =
+        sharedPreferences.getBool(PrefsConstants.SORTING_ASCENDING) ?? false;
+
     yield* gradesLocalDatasource.watchGrades().map((localGrades) {
       // dobbiamo convertire i modelli locali dividendoli in più periods
 
@@ -172,6 +175,7 @@ class GradesRepositoryImpl extends GradesRepository {
 
       List<PeriodWithGradesDomainModel> gradesPeriods = [];
       List<GradeDomainModel> gradesForThisPeriod;
+      List<GradeDomainModel> filteredGradesForThisPeriod;
 
       for (final period in periods) {
         if (period.position == -1) {
@@ -180,6 +184,12 @@ class GradesRepositoryImpl extends GradesRepository {
           gradesForThisPeriod =
               grades.where((g) => g.periodPos == period.position).toList();
         }
+
+        filteredGradesForThisPeriod =
+            gradesForThisPeriod.where((g) => _isValidGrade(g)).toList();
+
+        filteredGradesForThisPeriod
+            .sort((b, a) => a.eventDate.compareTo(a.eventDate));
 
         final average = _getAverageForPeriod(grades: gradesForThisPeriod);
 
@@ -198,8 +208,19 @@ class GradesRepositoryImpl extends GradesRepository {
               subject: subject,
               grades: gradesForThisPeriod,
               objectives: objectives,
+              numberOfFilteredGrades: filteredGradesForThisPeriod
+                  .where((element) => element.subjectId == subject.id)
+                  .length,
             ),
           );
+        }
+
+        if (showAsending) {
+          periodGradeDomainModels
+              .sort((a, b) => a.average.compareTo(b.average));
+        } else {
+          periodGradeDomainModels
+              .sort((b, a) => a.average.compareTo(b.average));
         }
 
         gradesPeriods.add(
@@ -208,9 +229,10 @@ class GradesRepositoryImpl extends GradesRepository {
             period: period,
             average: average,
             grades: gradesForThisPeriod,
-            normalSpots: _getNormalSpots(grades: gradesForThisPeriod),
-            averageSpots: _getAverageSpots(grades: gradesForThisPeriod),
+            normalSpots: _getNormalSpots(grades: filteredGradesForThisPeriod),
+            averageSpots: _getAverageSpots(grades: filteredGradesForThisPeriod),
             overallObjective: defaultObjective,
+            filteredGrades: filteredGradesForThisPeriod,
           ),
         );
       }
@@ -240,13 +262,12 @@ class GradesRepositoryImpl extends GradesRepository {
 
     // good old for, rare these days
     for (int i = 0; i < grades.length; i++) {
-      if (grades[i].decimalValue != -1.00) {
-        sum += grades[i].decimalValue;
-        count++;
-        average = sum / count;
-        // with num.parse(average.toStringAsFixed(2)) we cut the decimal digits
-        spots.add(FlSpot(i.toDouble(), num.parse(average.toStringAsFixed(2))));
-      }
+      sum += grades[i].decimalValue;
+      count++;
+      average = sum / count;
+      // with num.parse(average.toStringAsFixed(2)) we cut the decimal digits
+      spots.add(FlSpot(i.toDouble(), num.parse(average.toStringAsFixed(2))));
+
       if (spots.length == 1) {
         spots.add(FlSpot(spots[0].x + 1, spots[0].y));
       }
@@ -260,9 +281,7 @@ class GradesRepositoryImpl extends GradesRepository {
 
     // if we don't want to see the average we want to see the single grades during that time
     for (int i = 0; i < grades.length; i++) {
-      if (grades[i].decimalValue != -1.00) {
-        spots.add(FlSpot(i.toDouble(), grades[i].decimalValue));
-      }
+      spots.add(FlSpot(i.toDouble(), grades[i].decimalValue));
     }
 
     if (spots.length == 1) {
@@ -277,6 +296,7 @@ class GradesRepositoryImpl extends GradesRepository {
     @required List<GradeDomainModel> grades,
     @required Map<int, GradeDomainModel> gradesAndSubjectMap,
     @required Map<int, int> objectives,
+    @required int numberOfFilteredGrades,
   }) {
     // grades di quella materia
     final average = _getSubjectAverage(
@@ -284,12 +304,10 @@ class GradesRepositoryImpl extends GradesRepository {
       grades: grades,
     );
 
-    print(objectives);
-
     final gradeNeededForObjective = _gradeNeededForObjective(
       average: average,
       obj: objectives[subject.id],
-      numberOfGrades: grades.length,
+      numberOfGrades: numberOfFilteredGrades,
     );
 
     return PeriodGradeDomainModel(
@@ -312,7 +330,7 @@ class GradesRepositoryImpl extends GradesRepository {
         countAnnotaions++;
       }
 
-      if (grade.subjectId == subjectId && _isValidGradeLocalModel(grade)) {
+      if (grade.subjectId == subjectId && _isValidGrade(grade)) {
         sum += grade.decimalValue;
         count++;
       }
@@ -387,11 +405,11 @@ class GradesRepositoryImpl extends GradesRepository {
       String returnString;
 
       if (votiMinimi[0] <= 0) {
-        GradeNeededDomainModel(message: GradeNeededMessage.dont_worry);
+        return GradeNeededDomainModel(message: GradeNeededMessage.dont_worry);
       }
 
       if (votiMinimi[0] <= obj) {
-        GradeNeededDomainModel(
+        return GradeNeededDomainModel(
           message: GradeNeededMessage.not_less_then,
           value: votiMinimi[0].toStringAsFixed(2),
         );
@@ -411,9 +429,6 @@ class GradesRepositoryImpl extends GradesRepository {
           value: returnString,
         );
       }
-
-      return GradeNeededDomainModel(
-          message: GradeNeededMessage.calculation_error);
     } catch (e) {
       return GradeNeededDomainModel(message: GradeNeededMessage.unreachable);
     }
@@ -437,7 +452,7 @@ class GradesRepositoryImpl extends GradesRepository {
     return sum / count;
   }
 
-  bool _isValidGradeLocalModel(GradeDomainModel grade) {
+  bool _isValidGrade(GradeDomainModel grade) {
     return (grade.decimalValue != -1.00 &&
         grade.cancelled == false &&
         grade.localllyCancelled == false);

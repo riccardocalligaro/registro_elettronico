@@ -4,7 +4,7 @@ description: Better and faster of the original.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 2.0.2+8
-  
+
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
@@ -20,6 +20,7 @@ dependencies:
   dio: ^3.0.10
   esys_flutter_share: ^1.0.2
   expandable: ^4.1.4
+  extended_tabs: ^1.0.1
   f_logs: ^1.2.2
   firebase_analytics: ^6.3.0
   firebase_core: ^0.5.3
