@@ -31,6 +31,7 @@ class GradesContainer {
         gradesLocalDatasource: sl(),
         sharedPreferences: sl(),
         periodDao: sl(),
+        subjectDao: sl(),
       ),
     );
   }

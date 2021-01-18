@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:f_logs/f_logs.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
@@ -9,11 +10,19 @@ import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'failures_v2.dart';
 
 Failure handleError(
-  Exception e, [
+  dynamic e, [
   StackTrace s,
 ]) {
+  Exception toThrow;
   // log the errror
-  Logger.info(e.toString());
+  if (e is Exception) {
+    Logger.e(exception: e, stacktrace: s);
+    toThrow = e;
+  } else {
+    print(e.toString());
+    print(e.stackTrace);
+    toThrow = Exception(e);
+  }
 
   if (e is DioError) {
     if (e is TimeoutException || e is SocketException || e.response == null) {
@@ -27,6 +36,6 @@ Failure handleError(
     if (e is SqliteException || e is MoorWrappedException) {
       return DatabaseFailure();
     }
-    return GenericFailure(e: e);
+    return GenericFailure(e: toThrow);
   }
 }

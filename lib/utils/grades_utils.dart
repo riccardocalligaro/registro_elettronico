@@ -2,6 +2,7 @@ import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/feature/grades/data/model/overall_stats_domain_model.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 
 import 'constants/registro_constants.dart';
@@ -167,15 +168,12 @@ class GradeLocalModelsUtils {
     );
   }
 
-  static OverallStats getOverallStatsFromSubjectGradeLocalModels(
+  static OverallStatsDomainModel getOverallStatsFromSubjectGradeLocalModels(
       Subject subject, List<GradeLocalModel> grades, int period) {
     // get the number of insufficienze
     int insufficienze = 0;
     int sufficienze = 0;
 
-    ///double average = 0;
-    ///double worstAverage = 10.0;
-    ///double bestAverage = 0;
     Subject worstSubject;
     Subject bestSubject;
 
@@ -208,14 +206,15 @@ class GradeLocalModelsUtils {
     });
 
     if (count > 0) {
-      return OverallStats(
-          insufficienze: insufficienze,
-          sufficienze: sufficienze,
-          votoMin: minGradeLocalModel,
-          votoMax: maxGradeLocalModel,
-          bestSubject: bestSubject,
-          worstSubject: worstSubject,
-          average: sum / count);
+      return OverallStatsDomainModel(
+        insufficienze: insufficienze,
+        sufficienze: sufficienze,
+        votoMin: minGradeLocalModel,
+        votoMax: maxGradeLocalModel,
+        bestSubject: bestSubject,
+        worstSubject: worstSubject,
+        average: sum / count,
+      );
     } else {
       return null;
     }

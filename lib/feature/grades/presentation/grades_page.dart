@@ -33,7 +33,7 @@ class _GradesPageState extends State<GradesPage> {
       body: BlocBuilder<GradesWatcherBloc, GradesWatcherState>(
         builder: (context, state) {
           if (state is GradesWatcherLoadSuccess) {
-            return GradesLoaded(sections: state.gradesSections);
+            return GradesLoaded(gradesPagesDomainModel: state.gradesSections);
           } else if (state is GradesWatcherFailure) {
             return GradesFailure(failure: state.failure);
           }

@@ -9,7 +9,7 @@ import 'package:registro_elettronico/feature/grades/domain/model/grades_section.
 abstract class GradesRepository {
   Stream<Resource<List<GradeDomainModel>>> watchAllGrades();
 
-  Stream<Resource<List<GradeSectionDomainModel>>> watchAllGradesSections();
+  Stream<Resource<GradesPagesDomainModel>> watchAllGradesSections();
 
   Future<Either<Failure, Success>> updateGrades({@required bool ifNeeded});
 

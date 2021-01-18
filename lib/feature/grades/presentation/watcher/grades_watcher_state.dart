@@ -8,7 +8,7 @@ class GradesWatcherInitial extends GradesWatcherState {}
 class GradesWatcherLoading extends GradesWatcherState {}
 
 class GradesWatcherLoadSuccess extends GradesWatcherState {
-  final List<GradeSectionDomainModel> gradesSections;
+  final GradesPagesDomainModel gradesSections;
 
   GradesWatcherLoadSuccess({
     @required this.gradesSections,

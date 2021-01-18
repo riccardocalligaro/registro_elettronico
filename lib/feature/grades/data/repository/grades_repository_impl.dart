@@ -1,3 +1,4 @@
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
@@ -7,6 +8,7 @@ import 'package:registro_elettronico/core/infrastructure/network/network_info.da
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_remote_datasource.dart';
 import 'package:registro_elettronico/feature/grades/data/model/grade_local_model.dart';
+import 'package:registro_elettronico/feature/grades/data/model/overall_stats_domain_model.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
@@ -15,8 +17,10 @@ import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart'
 import 'package:dartz/dartz.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
+import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/rxdart.dart' hide Subject;
 
 class GradesRepositoryImpl extends GradesRepository {
   static const String lastUpdateKey = 'gradesLastUpdate';
@@ -28,12 +32,15 @@ class GradesRepositoryImpl extends GradesRepository {
   final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
 
+  final SubjectDao subjectDao;
+
   GradesRepositoryImpl({
     @required this.gradesRemoteDatasource,
     @required this.gradesLocalDatasource,
     @required this.networkInfo,
     @required this.sharedPreferences,
     @required this.periodDao,
+    @required this.subjectDao,
   });
 
   @override
@@ -108,49 +115,272 @@ class GradesRepositoryImpl extends GradesRepository {
               .toList());
     }).onErrorReturnWith(
       (e) {
-        Logger.e(exception: e);
+        Logger.e(text: e.toString());
         return Resource.failed(error: e);
       },
     );
   }
 
   @override
-  Stream<Resource<List<GradeSectionDomainModel>>>
-      watchAllGradesSections() async* {
+  Stream<Resource<GradesPagesDomainModel>> watchAllGradesSections() async* {
     final periods = await periodDao.getAllPeriods();
+    periods.add(
+      Period(
+        code: 'general',
+        position: -1,
+        description: 'Generale',
+        isFinal: null,
+        start: null,
+        end: null,
+        miurDivisionCode: null,
+        periodIndex: null,
+      ),
+    );
+
+    final subjects = await subjectDao.getAllSubjects();
 
     yield* gradesLocalDatasource.watchGrades().map((localGrades) {
       // dobbiamo convertire i modelli locali dividendoli in più periods
-      List<GradeSectionDomainModel> sections = [];
 
-      // sort them
-      // localGrades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
+      Map<int, int> objectives = Map();
 
-      sections.add(GradeSectionDomainModel(
-        period: null,
-        grades: localGrades
-            .map((localModel) => GradeDomainModel.fromLocalModel(localModel))
-            .toList(),
-      ));
+      final defaultObjective = sharedPreferences.getInt(
+            PrefsConstants.OVERALL_OBJECTIVE,
+          ) ??
+          6;
+
+      for (final mSubject in subjects) {
+        final obj = sharedPreferences.getInt('${mSubject.id}_objective') ??
+            defaultObjective;
+        objectives[mSubject.id] = obj;
+      }
+
+      localGrades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
+
+      final grades = localGrades
+          .map((localModel) => GradeDomainModel.fromLocalModel(localModel))
+          .toList();
+
+      List<PeriodWithGradesDomainModel> gradesPeriods = [];
+      List<GradeDomainModel> gradesForThisPeriod;
 
       for (final period in periods) {
-        final gradesForThisPeriod = localGrades
-            .where((g) => g.periodPos == period.position)
-            .map((localModel) => GradeDomainModel.fromLocalModel(localModel))
-            .toList();
+        if (period.position == -1) {
+          gradesForThisPeriod = grades;
+        } else {
+          gradesForThisPeriod =
+              grades.where((g) => g.periodPos == period.position).toList();
+        }
 
-        sections.add(GradeSectionDomainModel(
+        final average = _getAverageForPeriod(grades: gradesForThisPeriod);
+
+        final Map<int, GradeDomainModel> gradesMap = Map.fromIterable(
+          gradesForThisPeriod,
+          key: (g) => g.subjectId,
+          value: (g) => g,
+        );
+
+        List<PeriodGradeDomainModel> periodGradeDomainModels = [];
+
+        for (final subject in subjects) {
+          periodGradeDomainModels.add(
+            _getGradePeriodDomainModel(
+              gradesAndSubjectMap: gradesMap,
+              subject: subject,
+              grades: gradesForThisPeriod,
+              objectives: objectives,
+            ),
+          );
+        }
+
+        gradesPeriods.add(PeriodWithGradesDomainModel(
+          grades: periodGradeDomainModels,
           period: period,
-          grades: gradesForThisPeriod,
+          average: average,
         ));
       }
 
-      return Resource.success(data: sections);
+      GradesPagesDomainModel gradesPagesDomainModel = GradesPagesDomainModel(
+        grades: grades,
+        periodsWithGrades: gradesPeriods,
+      );
+
+      return Resource.success(data: gradesPagesDomainModel);
     }).onErrorReturnWith(
       (e) {
-        Logger.e(exception: e);
-        return Resource.failed(error: e);
+        return Resource.failed(error: handleError(e));
       },
     );
+  }
+
+  PeriodGradeDomainModel _getGradePeriodDomainModel({
+    @required Subject subject,
+    @required List<GradeDomainModel> grades,
+    @required Map<int, GradeDomainModel> gradesAndSubjectMap,
+    @required Map<int, int> objectives,
+  }) {
+    // grades di quella materia
+    final average = _getSubjectAverage(
+      subjectId: subject.id,
+      grades: grades,
+    );
+
+    print(objectives);
+
+    final gradeNeededForObjective = _gradeNeededForObjective(
+      average: average,
+      obj: objectives[subject.id],
+      numberOfGrades: grades.length,
+    );
+
+    return PeriodGradeDomainModel(
+      average: average,
+      gradeNeededForObjective: gradeNeededForObjective,
+      subject: subject,
+    );
+  }
+
+  double _getSubjectAverage({
+    @required int subjectId,
+    @required List<GradeDomainModel> grades,
+  }) {
+    double sum = 0;
+    int count = 0;
+
+    int countAnnotaions = 0;
+    grades.forEach((grade) {
+      if (grade.decimalValue == -1.00 && grade.subjectId == subjectId) {
+        countAnnotaions++;
+      }
+
+      if (grade.subjectId == subjectId && _isValidGradeLocalModel(grade)) {
+        sum += grade.decimalValue;
+        count++;
+      }
+    });
+    final double avg = sum / count;
+
+    if (countAnnotaions == 0 && avg.isNaN) {
+      return -1.00;
+    } else if (countAnnotaions > 0 && avg.isNaN) {
+      return 0.0;
+    }
+
+    return avg;
+  }
+
+  GradeNeededDomainModel _gradeNeededForObjective({
+    @required int obj,
+    @required double average,
+    @required int numberOfGrades,
+  }) {
+    if (average.isNaN) {
+      return GradeNeededDomainModel(message: GradeNeededMessage.dont_worry);
+    }
+    if (obj > 10 || average > 10) {
+      return GradeNeededDomainModel(
+        message: GradeNeededMessage.calculation_error,
+      );
+    }
+    if (obj >= 10 && average < obj) {
+      return GradeNeededDomainModel(message: GradeNeededMessage.unreachable);
+    }
+
+    var array = [0.75, 0.5, 0.25, 0.0];
+    var index = 0;
+    double sommaVotiDaPrendere;
+    var votiMinimi = [0.0, 0.0, 0.0, 0.0, 0.0];
+    double diff;
+    double diff2;
+    double resto = 0.0;
+    double parteIntera;
+    double parteDecimale;
+    try {
+      do {
+        index += 1;
+        sommaVotiDaPrendere =
+            obj * (numberOfGrades + index) - average * numberOfGrades;
+      } while (sommaVotiDaPrendere / index > 10);
+      var i = 0;
+      while (i < index) {
+        votiMinimi[i] = sommaVotiDaPrendere / index + resto;
+        resto = 0.0;
+        parteIntera = votiMinimi[i];
+        parteDecimale = (votiMinimi[i] - parteIntera) * 100;
+        if (parteDecimale != 25.0 &&
+            parteDecimale != 50.0 &&
+            parteDecimale != 75.0) {
+          var k = 0;
+          do {
+            diff = votiMinimi[i] - (parteIntera + array[k]);
+            k++;
+          } while (diff < 0);
+          votiMinimi[i] = votiMinimi[i] - diff;
+          resto = diff;
+        }
+        if (votiMinimi[i] > 10) {
+          diff2 = votiMinimi[i] - 10;
+          votiMinimi[i] = 10.0;
+          resto += diff2;
+        }
+        i += 1;
+      }
+      String returnString;
+
+      if (votiMinimi[0] <= 0) {
+        GradeNeededDomainModel(message: GradeNeededMessage.dont_worry);
+      }
+
+      if (votiMinimi[0] <= obj) {
+        GradeNeededDomainModel(
+          message: GradeNeededMessage.not_less_then,
+          value: votiMinimi[0].toStringAsFixed(2),
+        );
+      } else {
+        if (votiMinimi.where((voto) => voto != 0.0).length > 3) {
+          return GradeNeededDomainModel(
+              message: GradeNeededMessage.unreachable);
+        }
+
+        returnString = "";
+
+        votiMinimi.where((votoMinimo) => votoMinimo != 0.0).forEach((voto) {
+          returnString += "${voto.toStringAsFixed(2)}, ";
+        });
+        return GradeNeededDomainModel(
+          message: GradeNeededMessage.get_at_lest,
+          value: returnString,
+        );
+      }
+
+      return GradeNeededDomainModel(
+          message: GradeNeededMessage.calculation_error);
+    } catch (e) {
+      return GradeNeededDomainModel(message: GradeNeededMessage.unreachable);
+    }
+  }
+
+  double _getAverageForPeriod({
+    @required List<GradeDomainModel> grades,
+  }) {
+    double sum = 0;
+    int count = 0;
+
+    grades.forEach((grade) {
+      if (grade.decimalValue != -1.00 ||
+          grade.cancelled == true ||
+          grade.localllyCancelled == true) {
+        sum += grade.decimalValue;
+
+        count++;
+      }
+    });
+    return sum / count;
+  }
+
+  bool _isValidGradeLocalModel(GradeDomainModel grade) {
+    return (grade.decimalValue != -1.00 &&
+        grade.cancelled == false &&
+        grade.localllyCancelled == false);
   }
 }
