@@ -12,7 +12,6 @@ import 'package:registro_elettronico/feature/didactics/presentation/bloc/didacti
 import 'package:registro_elettronico/feature/grades/grades_container.dart'
     hide sl;
 import 'package:registro_elettronico/feature/home/presentation/blocs/agenda/agenda_dashboard_bloc.dart';
-import 'package:registro_elettronico/feature/home/presentation/blocs/grades/grades_dashboard_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/blocs/lessons/lessons_dashboard_bloc.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/bloc/lessons_bloc.dart';
 import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
@@ -193,11 +192,6 @@ class AppBlocDelegate {
         create: (ctx) => DocumentAttachmentBloc(
           documentsRepository: sl(),
         ),
-      ),
-      BlocProvider<GradesDashboardBloc>(
-        create: (ctx) => GradesDashboardBloc(
-            // gradesRepository: sl(),
-            ),
       ),
       BlocProvider<StatsBloc>(
         create: (ctx) => StatsBloc(

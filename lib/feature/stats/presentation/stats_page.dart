@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
+import 'package:registro_elettronico/feature/stats/presentation/charts/stats_grades_chart.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -129,10 +130,10 @@ class _StatsPageState extends State<StatsPage> {
             children: <Widget>[
               _buildOverallStatsCard(report: studentReport),
 
-              // _buildAverageChart(
-              //   grades: studentReport.grades,
-              //   objective: objective,
-              // ),
+              _buildAverageChart(
+                grades: studentReport.grades,
+                objective: objective,
+              ),
 
               _buildSecondRowGraphs(report: studentReport),
 
@@ -285,7 +286,7 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildAverageChart({
-    @required List<GradeLocalModel> grades,
+    @required List<GradeDomainModel> grades,
     int objective,
   }) {
     return Card(
@@ -298,11 +299,11 @@ class _StatsPageState extends State<StatsPage> {
               AppLocalizations.of(context)
                   .translate('stats_timeline_graph_average'),
             ),
-            // GradesChart(
-            //   showAverageFirst: true,
-            //   grades: grades,
-            //   objective: objective,
-            // )
+            StatsGradesChart(
+              showAverageFirst: true,
+              grades: grades,
+              objective: objective,
+            )
           ],
         ),
       ),
@@ -433,29 +434,8 @@ class _StatsPageState extends State<StatsPage> {
   Widget _buildThirdRowCard({
     @required StudentReport report,
   }) {
-    // return GradesBarChart(
-    //   grades: report.grades..sort((a, b) => a.eventDate.compareTo(b.eventDate)),
-    // );
+    return GradesBarChart(
+      grades: report.grades..sort((a, b) => a.eventDate.compareTo(b.eventDate)),
+    );
   }
-
-// Widget _buildFourthRowCard({
-//   @required StudentReport report,
-// }) {
-//   final insufficientiTotal = report.insufficientiSubjectsCount +
-//       report.nearlySufficientiSubjectsCount;
-//   return Card(
-//     child: Padding(
-//       padding: const EdgeInsets.all(16.0),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: <Widget>[
-//           Text('Media eventi per giorno'),
-//           // WeekEventsChart(
-//           //   events: report.agendaEvents,
-//           // )
-//         ],
-//       ),
-//     ),
-//   );
-// }
 }

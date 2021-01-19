@@ -63,7 +63,7 @@ class StudentReport {
   /// Total grades for the [first] and [second period]
   final int totalGrades;
 
-  final List<GradeLocalModel> grades;
+  final List<GradeDomainModel> grades;
 
   final List<Absence> absences;
 

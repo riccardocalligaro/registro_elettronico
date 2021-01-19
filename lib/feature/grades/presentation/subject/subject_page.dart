@@ -13,13 +13,10 @@ import 'package:registro_elettronico/feature/grades/domain/model/subject_data_do
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/grades_failure.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/grades_loading.dart';
-import 'package:registro_elettronico/feature/grades/presentation/states/widget/empty_grades.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/widget/period/period_chart.dart';
 import 'package:registro_elettronico/feature/grades/presentation/subject/local_watcher/local_grades_watcher_bloc.dart';
 import 'package:registro_elettronico/feature/grades/presentation/subject/pageset/subject_grades_pageset_bloc.dart';
-import 'package:registro_elettronico/feature/grades/presentation/watcher/grades_watcher_bloc.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
-import 'package:registro_elettronico/utils/grades_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class SubjectGradesPage extends StatefulWidget {
@@ -622,6 +619,7 @@ class _LastGrades extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 8.0),
           child: GradeCard(
             grade: grades[index],
+            fromSubjectGrades: true,
           ),
         );
       },

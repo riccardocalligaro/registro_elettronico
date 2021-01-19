@@ -9,6 +9,7 @@ import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/app_drawer.dart';
 import 'package:registro_elettronico/core/presentation/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_bloc.dart';
+import 'package:registro_elettronico/feature/grades/presentation/updater/grades_updater_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/sections/last_grades_section.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/bloc/lessons_bloc.dart';
 import 'package:registro_elettronico/feature/profile/data/model/profile_entity.dart';
@@ -22,7 +23,6 @@ import 'package:registro_elettronico/utils/update_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'blocs/agenda/agenda_dashboard_bloc.dart';
-import 'blocs/grades/grades_dashboard_bloc.dart';
 import 'blocs/lessons/lessons_dashboard_bloc.dart' as dash;
 import 'blocs/lessons/lessons_dashboard_bloc.dart';
 import 'sections/last_lessons_section.dart';
@@ -68,7 +68,6 @@ class _HomePageState extends State<HomePage> {
     } else {
       BlocProvider.of<dash.LessonsDashboardBloc>(context)
           .add(dash.GetLastLessons());
-      BlocProvider.of<GradesDashboardBloc>(context).add(GetDashboardGrades());
       BlocProvider.of<AgendaDashboardBloc>(context).add(GetEvents());
 
       _refreshHome();
@@ -139,45 +138,32 @@ class _HomePageState extends State<HomePage> {
               }
             },
           ),
-          // BlocListener<GradesBloc, GradesState>(
-          //   listener: (context, state) {
-          //     if (state is GradesUpdateLoaded) {
-          //       BlocProvider.of<GradesDashboardBloc>(context)
-          //           .add(GetDashboardGrades());
+          BlocListener<GradesUpdaterBloc, GradesUpdaterState>(
+            listener: (context, state) {
+              if (state is GradesUpdaterSuccess) {
+                _refreshed[0] = true;
 
-          //       _refreshed[0] = true;
+                if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
+                  _refreshController.refreshCompleted();
 
-          //       if (_refreshed[0] && _refreshed[1] && _refreshed[2]) {
-          //         _refreshController.refreshCompleted();
+                  _resetRefreshed();
 
-          //         _resetRefreshed();
+                  setState(() {
+                    _lastUpdate = DateTime.now().millisecondsSinceEpoch;
+                  });
+                }
+              } else if (state is GradesUpdaterFailure) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    content: Text(state.failure.localizedDescription(context)),
+                  ));
 
-          //         setState(() {
-          //           _lastUpdate = DateTime.now().millisecondsSinceEpoch;
-          //         });
-          //       }
-          //     } else if (state is GradesUpdateError) {
-          //       Scaffold.of(context)
-          //         ..removeCurrentSnackBar()
-          //         ..showSnackBar(SnackBar(
-          //           behavior: SnackBarBehavior.floating,
-          //           content: Text(
-          //             AppLocalizations.of(context)
-          //                 .translate('update_error_snackbar'),
-          //           ),
-          //         ));
-
-          //       _refreshController.refreshFailed();
-          //     } else if (state is GradesErrorNotConnected) {
-          //       Scaffold.of(context)
-          //         ..removeCurrentSnackBar()
-          //         ..showSnackBar(
-          //           AppNavigator.instance.getNetworkErrorSnackBar(context),
-          //         );
-          //       _refreshController.refreshFailed();
-          //     }
-          //   },
-          // ),
+                _refreshController.refreshFailed();
+              }
+            },
+          ),
           BlocListener<LessonsBloc, LessonsState>(
             listener: (context, state) {
               if (state is LessonsUpdateLoadSuccess) {
@@ -448,12 +434,14 @@ class _HomePageState extends State<HomePage> {
   void _refreshHome() async {
     BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
     BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
-    // BlocProvider.of<GradesBloc>(context).add(UpdateGrades());
+    BlocProvider.of<GradesUpdaterBloc>(context).add(UpdateGrades());
   }
 
   void _resetRefreshed() {
-    _refreshed[0] = false;
-    _refreshed[1] = false;
-    _refreshed[2] = false;
+    setState(() {
+      _refreshed[0] = false;
+      _refreshed[1] = false;
+      _refreshed[2] = false;
+    });
   }
 }

@@ -226,14 +226,18 @@ class GradesRepositoryImpl extends GradesRepository {
               .sort((b, a) => a.average.compareTo(b.average));
         }
 
+        final invertedFilteredGrades = filteredGradesForThisPeriod;
+        invertedFilteredGrades
+            .sort((a, b) => a.eventDate.compareTo(b.eventDate));
+
         gradesPeriods.add(
           PeriodWithGradesDomainModel(
             gradesForList: periodGradeDomainModels,
             period: period,
             average: average,
             grades: gradesForThisPeriod,
-            normalSpots: _getNormalSpots(grades: filteredGradesForThisPeriod),
-            averageSpots: _getAverageSpots(grades: filteredGradesForThisPeriod),
+            normalSpots: _getNormalSpots(grades: invertedFilteredGrades),
+            averageSpots: _getAverageSpots(grades: invertedFilteredGrades),
             overallObjective: defaultObjective,
             filteredGrades: filteredGradesForThisPeriod,
           ),

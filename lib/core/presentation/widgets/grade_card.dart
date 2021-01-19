@@ -7,10 +7,12 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 
 class GradeCard extends StatelessWidget {
   final GradeDomainModel grade;
+  final bool fromSubjectGrades;
 
   const GradeCard({
     Key key,
     @required this.grade,
+    this.fromSubjectGrades = false,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,9 @@ class GradeCard extends StatelessWidget {
             _showGradeInfoDialog(context);
           },
           onLongPress: () {
-            _showDeleteGradeDialog(context);
+            if (!fromSubjectGrades) {
+              _showDeleteGradeDialog(context);
+            }
           },
           child: Container(
             child: Padding(

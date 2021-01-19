@@ -43,6 +43,10 @@ class StatsRepositoryImpl implements StatsRepository {
     try {
       // We get the data that we need to get the stats
       final grades = await gradeDao.getGrades();
+
+      final domainGrades =
+          grades.map((l) => GradeDomainModel.fromLocalModel(l)).toList();
+
       final absences = await absenceDao.getAllAbsences();
       final subjects = await subjectDao.getAllSubjects();
       final periods = await periodDao.getAllPeriods();
@@ -83,8 +87,7 @@ class StatsRepositoryImpl implements StatsRepository {
         int gravementeInsufficientiSubjectsCount = 0;
 
         subjects.forEach((subject) {
-          // TODO: look
-          // subjectAverage = GradesUtils.getAverage(subject.id, grades);
+          subjectAverage = GradesUtils.getAverage(subject.id, domainGrades);
           if (subjectAverage > maxAverage) {
             bestSubject = subject;
             maxAverage = subjectAverage;
@@ -108,29 +111,29 @@ class StatsRepositoryImpl implements StatsRepository {
           }
         });
 
-        grades.forEach((grade) {
-          // TODO: look
-          // if (GradesUtils.isValidGrade(grade)) {
-          if (true) {
-            average += grade.decimalValue;
-            gradesCount++;
+        domainGrades.forEach((grade) {
+          if (GradesUtils.isValidGrade(grade)) {
+            if (true) {
+              average += grade.decimalValue;
+              gradesCount++;
 
-            if (grade.periodPos == periods.elementAt(0).position) {
-              firstTermAverage += grade.decimalValue;
-              firstTermGradesCount++;
-            } else if (grade.periodPos == periods.elementAt(1).position) {
-              secondTermAverage += grade.decimalValue;
-              secondTermGradesCount++;
-            }
+              if (grade.periodPos == periods.elementAt(0).position) {
+                firstTermAverage += grade.decimalValue;
+                firstTermGradesCount++;
+              } else if (grade.periodPos == periods.elementAt(1).position) {
+                secondTermAverage += grade.decimalValue;
+                secondTermGradesCount++;
+              }
 
-            if (grade.decimalValue >= 6) {
-              sufficienzeCount++;
-            } else if (grade.decimalValue >= 5.5 && grade.decimalValue < 6) {
-              insufficienzeLieviCount++;
-            } else if (grade.decimalValue >= 4.5) {
-              insufficienzeCount++;
-            } else {
-              insufficienzeGraviCount++;
+              if (grade.decimalValue >= 6) {
+                sufficienzeCount++;
+              } else if (grade.decimalValue >= 5.5 && grade.decimalValue < 6) {
+                insufficienzeLieviCount++;
+              } else if (grade.decimalValue >= 4.5) {
+                insufficienzeCount++;
+              } else {
+                insufficienzeGraviCount++;
+              }
             }
           }
         });
@@ -159,18 +162,17 @@ class StatsRepositoryImpl implements StatsRepository {
 
         int schoolCredits;
 
-        //TODO: look
-        // if (periods.elementAt(0).end.isAfter(DateTime.now())) {
-        //   schoolCredits =
-        //       GradesUtils.getMinSchoolCredits(firstTermAverage, year);
-        // } else {
-        //   schoolCredits =
-        //       GradesUtils.getMinSchoolCredits(secondTermAverage, year);
-        // }
+        if (periods.elementAt(0).end.isAfter(DateTime.now())) {
+          schoolCredits =
+              GradesUtils.getMinSchoolCredits(firstTermAverage, year);
+        } else {
+          schoolCredits =
+              GradesUtils.getMinSchoolCredits(secondTermAverage, year);
+        }
 
         final score = _getUserScore(
           absences: absences,
-          grades: grades,
+          grades: domainGrades,
           notes: notes,
           skippedTests: skippedTestsForAbsences,
           average: average,
@@ -202,7 +204,7 @@ class StatsRepositoryImpl implements StatsRepository {
             sufficientiSubjects: sufficientiSubjects,
             insufficientiSubjects: insufficientiSubjects,
             totalGrades: gradesCount,
-            grades: grades,
+            grades: domainGrades,
             absences: absences,
             subjects: subjects,
             periods: periods,
@@ -227,7 +229,7 @@ class StatsRepositoryImpl implements StatsRepository {
   }
 
   double _getUserScore({
-    @required List<GradeLocalModel> grades,
+    @required List<GradeDomainModel> grades,
     @required List<Absence> absences,
     @required List<Note> notes,
     @required int skippedTests,
