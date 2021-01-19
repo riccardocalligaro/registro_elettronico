@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
@@ -19,5 +20,10 @@ abstract class GradesRepository {
 
   Future<Either<Failure, Success>> toggleGradeLocallyCancelledStatus({
     @required GradeDomainModel gradeDomainModel,
+  });
+
+  Future<Either<Failure, Success>> changeSubjectObjective({
+    @required int newValue,
+    @required Subject subject,
   });
 }

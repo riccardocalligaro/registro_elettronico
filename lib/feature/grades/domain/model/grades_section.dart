@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -49,11 +48,13 @@ class PeriodGradeDomainModel {
   Subject subject;
   double average;
   GradeNeededDomainModel gradeNeededForObjective;
+  int objective;
 
   PeriodGradeDomainModel({
     @required this.subject,
     @required this.average,
     @required this.gradeNeededForObjective,
+    @required this.objective,
   });
 }
 

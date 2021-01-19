@@ -19,8 +19,6 @@ import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_rep
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/repository/didactics_repository_impl.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
-import 'package:registro_elettronico/feature/grades/data/repository/grades_repository_impl.dart';
-import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/grades/grades_container.dart';
 import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
 import 'package:registro_elettronico/feature/lessons/data/repository/lessons_repository_impl.dart';

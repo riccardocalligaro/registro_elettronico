@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
-import 'package:registro_elettronico/utils/color_utils.dart';
+import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
+import 'package:registro_elettronico/feature/grades/presentation/watcher/grades_watcher_bloc.dart';
+import 'package:registro_elettronico/feature/settings/widgets/general/general_objective_settings_dialog.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class PeriodGradeCard extends StatelessWidget {
@@ -20,6 +24,9 @@ class PeriodGradeCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(4.0),
         onTap: () {},
+        onLongPress: () {
+          _showObjectiveDialog(context);
+        },
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Row(
@@ -73,6 +80,32 @@ class PeriodGradeCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _showObjectiveDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        children: <Widget>[
+          GeneralObjectiveSettingsDialog(
+            objective: subjectData.objective,
+          )
+        ],
+      ),
+    ).then(
+      (value) async {
+        if (value != null) {
+          final GradesRepository gradesRepositoryImpl = sl();
+
+          await gradesRepositoryImpl.changeSubjectObjective(
+            subject: subjectData.subject,
+            newValue: value,
+          );
+
+          BlocProvider.of<GradesWatcherBloc>(context).add(RestartWatcher());
+        }
+      },
     );
   }
 

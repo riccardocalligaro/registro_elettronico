@@ -1,27 +1,25 @@
-import 'package:f_logs/f_logs.dart';
+import 'package:dartz/dartz.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_remote_datasource.dart';
 import 'package:registro_elettronico/feature/grades/data/model/grade_local_model.dart';
-import 'package:registro_elettronico/feature/grades/data/model/overall_stats_domain_model.dart';
-import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
-import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
-import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
-import 'package:dartz/dartz.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
 import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rxdart/rxdart.dart' hide Subject;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GradesRepositoryImpl extends GradesRepository {
   static const String lastUpdateKey = 'gradesLastUpdate';
@@ -189,7 +187,7 @@ class GradesRepositoryImpl extends GradesRepository {
             gradesForThisPeriod.where((g) => _isValidGrade(g)).toList();
 
         filteredGradesForThisPeriod
-            .sort((b, a) => a.eventDate.compareTo(a.eventDate));
+            .sort((b, a) => a.eventDate.compareTo(b.eventDate));
 
         final average = _getAverageForPeriod(grades: gradesForThisPeriod);
 
@@ -304,9 +302,10 @@ class GradesRepositoryImpl extends GradesRepository {
       grades: grades,
     );
 
+    final objective = objectives[subject.id];
     final gradeNeededForObjective = _gradeNeededForObjective(
       average: average,
-      obj: objectives[subject.id],
+      obj: objective,
       numberOfGrades: numberOfFilteredGrades,
     );
 
@@ -314,6 +313,7 @@ class GradesRepositoryImpl extends GradesRepository {
       average: average,
       gradeNeededForObjective: gradeNeededForObjective,
       subject: subject,
+      objective: objective,
     );
   }
 
@@ -472,6 +472,21 @@ class GradesRepositoryImpl extends GradesRepository {
       return Right(Success());
     } catch (e, s) {
       return Left(handleError(e, s));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Success>> changeSubjectObjective({
+    Subject subject,
+    int newValue,
+  }) async {
+    try {
+      await sharedPreferences.setInt('${subject.id}_objective', newValue);
+      print('${subject.id}_objective');
+      print(newValue.toString());
+      return Right(Success());
+    } catch (e) {
+      return Left(handleError(e));
     }
   }
 }

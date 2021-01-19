@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 
-class SubjectAverages {
+class SubjectDataDomainModel {
+  Subject subject;
+  Professor professor;
+  List<GradeDomainModel> grades;
+  int objective;
+  SubjectAveragesDomainModel averages;
+}
+
+class SubjectAveragesDomainModel {
   final double average;
   final double praticoAverage;
   final double scrittoAverage;
   final double oraleAverage;
 
-  SubjectAverages({
+  SubjectAveragesDomainModel({
     @required this.praticoAverage,
     @required this.scrittoAverage,
     @required this.oraleAverage,

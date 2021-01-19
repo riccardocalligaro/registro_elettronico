@@ -37,6 +37,12 @@ class GradesWatcherBloc extends Bloc<GradesWatcherEvent, GradesWatcherState> {
       } else if (event.resource.status == Status.loading) {
         yield GradesWatcherLoading();
       }
+    } else if (event is RestartWatcher) {
+      await _gradesStreamSubscription.cancel();
+      _gradesStreamSubscription =
+          gradesRepository.watchAllGradesSections().listen((resource) {
+        add(GradesReceived(resource: resource));
+      });
     }
   }
 

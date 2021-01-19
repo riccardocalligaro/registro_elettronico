@@ -12,3 +12,5 @@ class GradesReceived extends GradesWatcherEvent {
     @required this.resource,
   });
 }
+
+class RestartWatcher extends GradesWatcherEvent {}
