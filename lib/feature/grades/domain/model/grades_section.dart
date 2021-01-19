@@ -48,6 +48,7 @@ class PeriodGradeDomainModel {
   Subject subject;
   double average;
   GradeNeededDomainModel gradeNeededForObjective;
+  List<GradeDomainModel> grades;
   int objective;
 
   PeriodGradeDomainModel({
@@ -55,6 +56,7 @@ class PeriodGradeDomainModel {
     @required this.average,
     @required this.gradeNeededForObjective,
     @required this.objective,
+    @required this.grades,
   });
 }
 

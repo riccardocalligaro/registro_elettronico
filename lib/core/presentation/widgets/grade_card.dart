@@ -8,7 +8,10 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 class GradeCard extends StatelessWidget {
   final GradeDomainModel grade;
 
-  const GradeCard({Key key, this.grade}) : super(key: key);
+  const GradeCard({
+    Key key,
+    @required this.grade,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

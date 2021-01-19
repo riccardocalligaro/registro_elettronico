@@ -1,13 +1,23 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
 
 class SubjectDataDomainModel {
-  Subject subject;
-  Professor professor;
-  List<GradeDomainModel> grades;
-  int objective;
+  List<FlSpot> normalSpots;
+  List<FlSpot> averageSpots;
+
+  PeriodGradeDomainModel data;
+  List<Professor> professors;
   SubjectAveragesDomainModel averages;
+
+  SubjectDataDomainModel({
+    @required this.data,
+    @required this.professors,
+    @required this.averages,
+    @required this.averageSpots,
+    @required this.normalSpots,
+  });
 }
 
 class SubjectAveragesDomainModel {

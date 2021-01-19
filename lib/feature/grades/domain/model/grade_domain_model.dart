@@ -47,6 +47,17 @@ class GradeDomainModel {
     this.hasSeenIt,
   });
 
+  GradeDomainModel.fromLocalGrade(LocalGrade l) {
+    this.subjectId = l.subjectId;
+    this.evtId = l.id;
+    this.eventDate = l.eventDate;
+    this.decimalValue = l.decimalValue;
+    this.displayValue = l.displayValue;
+    this.cancelled = l.cancelled;
+    this.underlined = l.underlined;
+    this.periodPos = l.periodPos;
+  }
+
   GradeDomainModel.fromLocalModel(GradeLocalModel l) {
     this.subjectId = l.subjectId;
     this.subjectDesc = l.subjectDesc;
@@ -66,6 +77,19 @@ class GradeDomainModel {
     this.weightFactor = l.weightFactor;
     this.localllyCancelled = l.localllyCancelled;
     this.hasSeenIt = l.hasSeenIt;
+  }
+
+  LocalGrade toLocalGrade() {
+    return LocalGrade(
+      subjectId: this.subjectId,
+      id: this.evtId,
+      eventDate: this.eventDate,
+      decimalValue: this.decimalValue,
+      displayValue: this.displayValue,
+      cancelled: this.cancelled,
+      underlined: this.underlined,
+      periodPos: this.periodPos,
+    );
   }
 
   GradeLocalModel toLocalModel() {

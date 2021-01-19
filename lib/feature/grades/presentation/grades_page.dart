@@ -4,7 +4,6 @@ import 'package:registro_elettronico/core/infrastructure/localizations/app_local
 import 'package:registro_elettronico/feature/grades/presentation/states/grades_failure.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/grades_loaded.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/grades_loading.dart';
-import 'package:registro_elettronico/feature/grades/presentation/updater/grades_updater_bloc.dart';
 import 'package:registro_elettronico/feature/grades/presentation/watcher/grades_watcher_bloc.dart';
 
 class GradesPage extends StatefulWidget {

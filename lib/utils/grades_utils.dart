@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/grades/data/model/overall_stats_domain_model.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 
 import 'constants/registro_constants.dart';
@@ -10,33 +11,33 @@ import 'constants/tabs_constants.dart';
 import 'entity/overall_stats.dart';
 import 'entity/subject_averages.dart';
 
-class GradeLocalModelsUtils {
-  static double getAverageFromGradeLocalModelsAndLocalGradeLocalModels({
-    @required List<GradeLocalModel> localGradeLocalModels,
-    @required List<GradeLocalModel> grades,
-  }) {
-    double sum = 0;
-    int count = 0;
-    grades.forEach((g) {
-      if (isValidGradeLocalModel(g)) {
-        sum += g.decimalValue;
-        count++;
-      }
-    });
-    Logger.info('Media senza local: ${sum / count}');
-    Logger.info('Local GradeLocalModels: ${localGradeLocalModels.length}');
+class GradeUtils {
+  // static double getAverageFromGradeLocalModelsAndLocalGradeLocalModels({
+  //   @required List<GradeLocalModel> localGradeLocalModels,
+  //   @required List<GradeLocalModel> grades,
+  // }) {
+  //   double sum = 0;
+  //   int count = 0;
+  //   grades.forEach((g) {
+  //     if (isValidGradeLocalModel(g)) {
+  //       sum += g.decimalValue;
+  //       count++;
+  //     }
+  //   });
+  //   Logger.info('Media senza local: ${sum / count}');
+  //   Logger.info('Local GradeLocalModels: ${localGradeLocalModels.length}');
 
-    localGradeLocalModels.forEach((g) {
-      if (isValidLocalGradeLocalModel(g)) {
-        sum += g.decimalValue;
-        count++;
-      }
-    });
+  //   localGradeLocalModels.forEach((g) {
+  //     if (isValidLocalGradeLocalModel(g)) {
+  //       sum += g.decimalValue;
+  //       count++;
+  //     }
+  //   });
 
-    Logger.info('Media con local: ${sum / count}');
+  //   Logger.info('Media con local: ${sum / count}');
 
-    return sum / count;
-  }
+  //   return sum / count;
+  // }
 
   static double getDifferencePercentage({
     @required double oldAverage,
@@ -51,7 +52,7 @@ class GradeLocalModelsUtils {
 // }  return 0.0;
   }
 
-  static double getAverage(int subjectId, List<GradeLocalModel> grades) {
+  static double getAverage(int subjectId, List<GradeDomainModel> grades) {
     double sum = 0;
     int count = 0;
 
@@ -61,7 +62,7 @@ class GradeLocalModelsUtils {
         countAnnotaions++;
       }
 
-      if (grade.subjectId == subjectId && isValidGradeLocalModel(grade)) {
+      if (grade.subjectId == subjectId && isValidGrade(grade)) {
         sum += grade.decimalValue;
         count++;
       }
@@ -122,7 +123,7 @@ class GradeLocalModelsUtils {
   }
 
   static SubjectAverages getSubjectAveragesFromGradeLocalModels(
-      List<GradeLocalModel> grades, int subjectId) {
+      List<GradeDomainModel> grades, int subjectId) {
     // Declare variables for the different type of averages
     double sumAverage = 0;
     double countAverage = 0;
@@ -138,7 +139,7 @@ class GradeLocalModelsUtils {
 
     grades.forEach((grade) {
       final decimalValue = grade.decimalValue;
-      if (isValidGradeLocalModel(grade) && grade.subjectId == subjectId) {
+      if (isValidGrade(grade) && grade.subjectId == subjectId) {
         // always check the average for all grades
         sumAverage += decimalValue;
         countAverage++;
@@ -168,57 +169,57 @@ class GradeLocalModelsUtils {
     );
   }
 
-  static OverallStatsDomainModel getOverallStatsFromSubjectGradeLocalModels(
-      Subject subject, List<GradeLocalModel> grades, int period) {
-    // get the number of insufficienze
-    int insufficienze = 0;
-    int sufficienze = 0;
+  // static OverallStatsDomainModel getOverallStatsFromSubjectGradeLocalModels(
+  //     Subject subject, List<GradeLocalModel> grades, int period) {
+  //   // get the number of insufficienze
+  //   int insufficienze = 0;
+  //   int sufficienze = 0;
 
-    Subject worstSubject;
-    Subject bestSubject;
+  //   Subject worstSubject;
+  //   Subject bestSubject;
 
-    double maxGradeLocalModel = -1.0;
-    double minGradeLocalModel = 10.0;
+  //   double maxGradeLocalModel = -1.0;
+  //   double minGradeLocalModel = 10.0;
 
-    int count = 0;
-    double sum = 0;
+  //   int count = 0;
+  //   double sum = 0;
 
-    grades.forEach((grade) {
-      // Ignore the grades in blue
-      if ((grade.decimalValue != -1.00 && grade.periodPos == period) |
-          (grade.decimalValue != -1.00 && period == TabsConstants.GENERALE)) {
-        count++;
-        sum += grade.decimalValue;
+  //   grades.forEach((grade) {
+  //     // Ignore the grades in blue
+  //     if ((grade.decimalValue != -1.00 && grade.periodPos == period) |
+  //         (grade.decimalValue != -1.00 && period == TabsConstants.GENERALE)) {
+  //       count++;
+  //       sum += grade.decimalValue;
 
-        // check for insufficienze and sufficienze
-        if (grade.decimalValue >= 6) sufficienze++;
-        if (grade.decimalValue < 6) insufficienze++;
+  //       // check for insufficienze and sufficienze
+  //       if (grade.decimalValue >= 6) sufficienze++;
+  //       if (grade.decimalValue < 6) insufficienze++;
 
-        // check for best grade
-        if (grade.decimalValue > maxGradeLocalModel) {
-          maxGradeLocalModel = grade.decimalValue;
-        }
-        // check for min grade
-        if (grade.decimalValue < minGradeLocalModel) {
-          minGradeLocalModel = grade.decimalValue;
-        }
-      }
-    });
+  //       // check for best grade
+  //       if (grade.decimalValue > maxGradeLocalModel) {
+  //         maxGradeLocalModel = grade.decimalValue;
+  //       }
+  //       // check for min grade
+  //       if (grade.decimalValue < minGradeLocalModel) {
+  //         minGradeLocalModel = grade.decimalValue;
+  //       }
+  //     }
+  //   });
 
-    if (count > 0) {
-      return OverallStatsDomainModel(
-        insufficienze: insufficienze,
-        sufficienze: sufficienze,
-        votoMin: minGradeLocalModel,
-        votoMax: maxGradeLocalModel,
-        bestSubject: bestSubject,
-        worstSubject: worstSubject,
-        average: sum / count,
-      );
-    } else {
-      return null;
-    }
-  }
+  //   if (count > 0) {
+  //     return OverallStatsDomainModel(
+  //       insufficienze: insufficienze,
+  //       sufficienze: sufficienze,
+  //       votoMin: minGradeLocalModel,
+  //       votoMax: maxGradeLocalModel,
+  //       bestSubject: bestSubject,
+  //       worstSubject: worstSubject,
+  //       average: sum / count,
+  //     );
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   static double getAverageForPratica(List<GradeLocalModel> grades) {
     double sum = 0;
@@ -307,7 +308,7 @@ class GradeLocalModelsUtils {
     }
   }
 
-  static bool isValidGradeLocalModel(GradeLocalModel grade) {
+  static bool isValidGrade(GradeDomainModel grade) {
     return (grade.decimalValue != -1.00 &&
         grade.cancelled == false &&
         grade.localllyCancelled == false);

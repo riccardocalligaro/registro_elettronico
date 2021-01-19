@@ -11,6 +11,10 @@ class ProfessorDao extends DatabaseAccessor<AppDatabase>
 
   ProfessorDao(this.db) : super(db);
 
+  Future<List<Professor>> getProfessorsForSubject(int id) {
+    return (select(professors)..where((p) => p.subjectId.equals(id))).get();
+  }
+
   Future insertProfessor(Insertable<Professor> professor) =>
       into(professors).insertOnConflictUpdate(professor);
 

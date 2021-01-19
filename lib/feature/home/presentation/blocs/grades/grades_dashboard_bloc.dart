@@ -1,11 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:meta/meta.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
-import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 
 part 'grades_dashboard_event.dart';
 part 'grades_dashboard_state.dart';

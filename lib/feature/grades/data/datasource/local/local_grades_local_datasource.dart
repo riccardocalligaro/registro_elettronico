@@ -15,6 +15,18 @@ class LocalGradesLocalDatasource extends DatabaseAccessor<AppDatabase>
 
   Stream<List<LocalGrade>> watchGrades() => select(localGrades).watch();
 
+  Stream<List<LocalGrade>> watchGradesForSubject(int id, int periodPos) {
+    if (periodPos == -1) {
+      return (select(localGrades)..where((p) => p.subjectId.equals(id)))
+          .watch();
+    } else {
+      return (select(localGrades)
+            ..where(
+                (p) => p.subjectId.equals(id) & p.periodPos.equals(periodPos)))
+          .watch();
+    }
+  }
+
   Future<List<LocalGrade>> getGrades() => select(localGrades).get();
 
   Future insertGrade(LocalGrade localGrade) =>
@@ -22,6 +34,10 @@ class LocalGradesLocalDatasource extends DatabaseAccessor<AppDatabase>
 
   Future deleteGrade(LocalGrade localGrade) =>
       delete(localGrades).delete(localGrade);
+
+  Future deleteGradeWithId(int id) {
+    return (delete(localGrades)..where((t) => t.id.equals(id))).go();
+  }
 
   Future updateGrade(LocalGrade localGrade) =>
       update(localGrades).replace(localGrade);

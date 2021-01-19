@@ -5,16 +5,19 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
+import 'package:registro_elettronico/feature/grades/presentation/subject/subject_page.dart';
 import 'package:registro_elettronico/feature/grades/presentation/watcher/grades_watcher_bloc.dart';
 import 'package:registro_elettronico/feature/settings/widgets/general/general_objective_settings_dialog.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class PeriodGradeCard extends StatelessWidget {
   final PeriodGradeDomainModel subjectData;
+  final int periodPos;
 
   const PeriodGradeCard({
     Key key,
     @required this.subjectData,
+    @required this.periodPos,
   }) : super(key: key);
 
   @override
@@ -23,7 +26,16 @@ class PeriodGradeCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8.0),
       child: InkWell(
         borderRadius: BorderRadius.circular(4.0),
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => SubjectGradesPage(
+                periodGradeDomainModel: subjectData,
+                periodPos: periodPos,
+              ),
+            ),
+          );
+        },
         onLongPress: () {
           _showObjectiveDialog(context);
         },
