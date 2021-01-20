@@ -27,6 +27,55 @@ class GradesTab extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         itemCount: grades.length,
         itemBuilder: (context, index) {
+          if (index == 0 && !grades[0].hasSeenIt) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text(
+                      'NOT SEEN',
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ),
+                  ),
+                  SRGradeCard(
+                    grade: grades[index],
+                  ),
+                ],
+              ),
+            );
+          }
+
+          if (!grades[0].hasSeenIt &&
+              index >= 1 &&
+              !grades[index - 1].hasSeenIt &&
+              grades[index].hasSeenIt) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text(
+                      'SEEN',
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ),
+                  ),
+                  SRGradeCard(
+                    grade: grades[index],
+                  ),
+                ],
+              ),
+            );
+          }
+
           return Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: SRGradeCard(

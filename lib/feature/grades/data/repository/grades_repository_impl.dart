@@ -286,8 +286,16 @@ class GradesRepositoryImpl extends GradesRepository {
         );
       }
 
+      final notSeenGrades = grades.where((g) => !g.hasSeenIt);
+      final seenGrades = grades.where((g) => g.hasSeenIt);
+
+      List<GradeDomainModel> dividedGrades = [
+        ...notSeenGrades,
+        ...seenGrades,
+      ];
+
       GradesPagesDomainModel gradesPagesDomainModel = GradesPagesDomainModel(
-        grades: grades,
+        grades: dividedGrades,
         periodsWithGrades: gradesPeriods,
       );
 

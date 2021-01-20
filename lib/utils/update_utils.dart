@@ -8,7 +8,6 @@ import 'package:registro_elettronico/feature/grades/domain/repository/grades_rep
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
-import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/feature/periods/presentation/bloc/periods_bloc.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
@@ -82,7 +81,7 @@ class UpdateUtils {
     final GradesRepository gradesRepository = sl();
 
     if (!fromLogin) {
-// download the agenda, lessons and grades
+      // download the agenda, lessons and grades
       await Future.wait([
         agendaRepository.updateAllAgenda(),
         lessonsRepository.updateAllLessons(),
