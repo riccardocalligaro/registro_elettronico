@@ -8,7 +8,7 @@ import 'package:registro_elettronico/core/infrastructure/localizations/app_local
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/app_drawer.dart';
 import 'package:registro_elettronico/core/presentation/widgets/last_update_bottom_sheet.dart';
-import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_updater_bloc.dart';
+import 'package:registro_elettronico/feature/agenda/presentation/updater/agenda_updater_bloc.dart';
 import 'package:registro_elettronico/feature/grades/presentation/updater/grades_updater_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/sections/last_grades_section.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/bloc/lessons_bloc.dart';
@@ -422,7 +422,7 @@ class _HomePageState extends State<HomePage> {
   void _refreshHome() async {
     BlocProvider.of<LessonsBloc>(context).add(UpdateAllLessons());
     BlocProvider.of<AgendaUpdaterBloc>(context)
-        .add(UpdateAgenda(onlyLastDays: true));
+        .add(UpdateAgenda(onlyLastDays: false));
     BlocProvider.of<GradesUpdaterBloc>(context).add(UpdateGrades());
   }
 

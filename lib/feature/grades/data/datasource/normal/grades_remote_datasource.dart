@@ -14,8 +14,7 @@ class GradesRemoteDatasource {
 
   Future<List<GradeRemoteModel>> getGrades() async {
     final studentId = await profileRepository.currentStudentId();
-    final response = await dio
-        .get('https://web.spaggiari.eu/rest/v1/students/$studentId/grades');
+    final response = await dio.get('/students/$studentId/grades');
 
     List<GradeRemoteModel> grades = List<GradeRemoteModel>.from(
       response.data['grades'].map(

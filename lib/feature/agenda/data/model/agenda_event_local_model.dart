@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart' show Colors;
 import 'package:moor/moor.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_remote_model.dart';
@@ -39,11 +40,11 @@ class AgendaEventLocalModelConverter {
       notes: r.notes,
       authorName: r.authorName,
       classDesc: r.classDesc,
-      subjectId: r.subjectId,
-      subjectDesc: r.subjectDesc,
-      isLocal: l.isLocal,
-      labelColor: l.labelColor,
-      title: l.title,
+      subjectId: r.subjectId ?? 0,
+      subjectDesc: r.subjectDesc ?? '',
+      isLocal: l != null ? l.isLocal : false,
+      labelColor: l != null ? l.labelColor : Colors.green.value.toString(),
+      title: l != null ? l.title : '',
     );
   }
 }

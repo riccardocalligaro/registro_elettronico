@@ -22,7 +22,7 @@ class AgendaRemoteDatasource {
   }) async {
     final studentId = await profileRepository.currentStudentId();
     final response = await dio.get(
-      'https://web.spaggiari.eu/students/$studentId/agenda/all/$start/$end',
+      '/students/$studentId/agenda/all/$start/$end',
     );
 
     List<AgendaEventRemoteModel> events = List<AgendaEventRemoteModel>.from(

@@ -32,6 +32,8 @@ class DioClient {
     dio.options.headers["User-Agent"] = "${ApiConfig.baseUserAgent}";
     dio.options.headers["Z-Dev-Apikey"] = "${ApiConfig.apiKey}";
 
+    dio.options.baseUrl = 'https://web.spaggiari.eu/rest/v1';
+
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       //? We need to add the token when we are not loggin in

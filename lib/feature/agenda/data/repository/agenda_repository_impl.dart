@@ -18,6 +18,7 @@ import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_rep
 import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rxdart/rxdart.dart' hide Subject;
@@ -125,6 +126,8 @@ class AgendaRepositoryImpl implements AgendaRepository {
       agendaLocalDatasource.watchAllEvents(),
       lessonDao.watchAllLessons(),
       (List<AgendaEventLocalModel> events, List<Lesson> lessons) {
+        print(events.length);
+
         final domainEvents = events
             .map((l) => AgendaEventDomainModel.fromLocalModel(l))
             .toList();
@@ -142,11 +145,22 @@ class AgendaRepositoryImpl implements AgendaRepository {
           (e) => e.date,
         );
 
+        final today = DateTime.now();
+
+        // mette nella lista soltanto gli eventi di oggi o i prossimi
+        final eventsList = domainEvents
+            .where(
+              (e) =>
+                  e.begin.isAfter(today) ||
+                  DateUtils.areSameDay(e.begin, today),
+            )
+            .toList();
+
         return Resource.success(
           data: AgendaDataDomainModel(
             eventsMap: eventsMap,
             lessonsMap: lessonsMap,
-            events: domainEvents,
+            events: eventsList,
           ),
         );
       },

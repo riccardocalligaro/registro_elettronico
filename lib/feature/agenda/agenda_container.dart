@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:registro_elettronico/feature/agenda/data/repository/agenda_repository_impl.dart';
-import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_updater_bloc.dart';
+import 'package:registro_elettronico/feature/agenda/presentation/updater/agenda_updater_bloc.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/watcher/agenda_watcher_bloc.dart';
 
 import 'data/datasource/local/agenda_local_datasource.dart';

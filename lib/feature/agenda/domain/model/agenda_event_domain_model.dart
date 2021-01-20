@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 class AgendaEventDomainModel {
@@ -59,11 +57,11 @@ class AgendaEventDomainModel {
       notes: this.notes,
       authorName: this.author,
       classDesc: this.className,
-      subjectId: this.subjectId,
-      subjectDesc: this.subjectName,
+      subjectId: this.subjectId ?? 0,
+      subjectDesc: this.subjectName ?? '',
       isLocal: this.isLocal,
       labelColor: this.labelColor,
-      title: this.title,
+      title: this.title ?? '',
     );
   }
 }
