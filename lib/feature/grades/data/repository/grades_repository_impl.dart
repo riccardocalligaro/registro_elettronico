@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
@@ -18,8 +19,11 @@ import 'package:registro_elettronico/feature/grades/domain/model/grades_section.
 import 'package:registro_elettronico/feature/grades/domain/model/subject_data_domain_model.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
+import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/feature/professors/data/dao/professor_dao.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
+import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:rxdart/rxdart.dart' hide Subject;
@@ -39,6 +43,12 @@ class GradesRepositoryImpl extends GradesRepository {
   final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
 
+  final SpaggiariClient spaggiariClient;
+  final ProfileRepository profileRepository;
+
+  final SubjectsRepository subjectsRepository;
+  final PeriodsRepository periodsRepository;
+
   GradesRepositoryImpl({
     @required this.gradesRemoteDatasource,
     @required this.gradesLocalDatasource,
@@ -48,6 +58,10 @@ class GradesRepositoryImpl extends GradesRepository {
     @required this.subjectDao,
     @required this.professorDao,
     @required this.localGradesLocalDatasource,
+    @required this.spaggiariClient,
+    @required this.profileRepository,
+    @required this.subjectsRepository,
+    @required this.periodsRepository,
   });
 
   @override
@@ -135,7 +149,37 @@ class GradesRepositoryImpl extends GradesRepository {
 
   @override
   Stream<Resource<GradesPagesDomainModel>> watchAllGradesSections() async* {
-    final periods = await periodDao.getAllPeriods();
+    List<Period> periods = await periodDao.getAllPeriods();
+
+    if (periods.isEmpty) {
+      final profile = await profileRepository.getProfile();
+      final remotePeriods = await spaggiariClient.getPeriods(profile.studentId);
+
+      if (remotePeriods.periods.isEmpty) {
+        yield Resource.failed(error: GenericFailure());
+        return;
+      } else {
+        await periodsRepository.updatePeriods();
+        periods = await periodDao.getAllPeriods();
+      }
+    }
+
+    List<Subject> subjects = await subjectDao.getAllSubjects();
+
+    if (subjects.isEmpty) {
+      final profile = await profileRepository.getProfile();
+      final remoteSubjects =
+          await spaggiariClient.getSubjects(profile.studentId);
+
+      if (remoteSubjects.subjects.isEmpty) {
+        yield Resource.failed(error: GenericFailure());
+        return;
+      } else {
+        await subjectsRepository.updateSubjects();
+        subjects = await subjectDao.getAllSubjects();
+      }
+    }
+
     periods.add(
       Period(
         code: 'general',
@@ -148,8 +192,6 @@ class GradesRepositoryImpl extends GradesRepository {
         periodIndex: null,
       ),
     );
-
-    final subjects = await subjectDao.getAllSubjects();
 
     bool showAsending =
         sharedPreferences.getBool(PrefsConstants.SORTING_ASCENDING) ?? false;

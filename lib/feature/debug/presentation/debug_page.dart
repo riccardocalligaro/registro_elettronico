@@ -33,6 +33,13 @@ class _DebugPageState extends State<DebugPage> {
             },
           ),
           DebugButton(
+            title: 'Reset DB',
+            onTap: () async {
+              final AppDatabase db = sl();
+              await db.resetDb();
+            },
+          ),
+          DebugButton(
             title: 'Send notification',
             subtitle: 'With the local notifications plugin',
             onTap: () async {

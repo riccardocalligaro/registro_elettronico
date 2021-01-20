@@ -43,6 +43,10 @@ class GradesContainer {
         subjectDao: sl(),
         professorDao: sl(),
         localGradesLocalDatasource: sl(),
+        spaggiariClient: sl(),
+        profileRepository: sl(),
+        subjectsRepository: sl(),
+        periodsRepository: sl(),
       ),
     );
   }

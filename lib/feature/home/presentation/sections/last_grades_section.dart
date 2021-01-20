@@ -116,9 +116,20 @@ class _LastGradesLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 100.0),
+      padding: const EdgeInsets.symmetric(vertical: 24.0),
       child: Center(
-        child: CircularProgressIndicator(),
+        child: Column(
+          children: <Widget>[
+            Icon(
+              Icons.timeline,
+              size: 64,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(AppLocalizations.of(context).translate('no_grades'))
+          ],
+        ),
       ),
     );
   }
