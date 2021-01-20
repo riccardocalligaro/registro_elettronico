@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/widget/empty_grades.dart';
@@ -18,6 +19,7 @@ class GradesTab extends StatelessWidget {
     if (grades.isEmpty) {
       return EmptyGradesPlaceholder();
     }
+
     return RefreshIndicator(
       onRefresh: () {
         final GradesRepository gradesRepository = sl();
@@ -36,7 +38,9 @@ class GradesTab extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Text(
-                      'NOT SEEN',
+                      AppLocalizations.of(context)
+                          .translate('not_seen_grades')
+                          .toUpperCase(),
                       style: TextStyle(
                         color: Theme.of(context).accentColor,
                       ),
@@ -62,7 +66,9 @@ class GradesTab extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Text(
-                      'SEEN',
+                      AppLocalizations.of(context)
+                          .translate('seen_grades')
+                          .toUpperCase(),
                       style: TextStyle(
                         color: Theme.of(context).accentColor,
                       ),
