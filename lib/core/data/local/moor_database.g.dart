@@ -2816,7 +2816,8 @@ class $GradesTable extends Grades
   }
 }
 
-class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
+class AgendaEventLocalModel extends DataClass
+    implements Insertable<AgendaEventLocalModel> {
   final int evtId;
   final String evtCode;
   final DateTime begin;
@@ -2830,7 +2831,7 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
   final bool isLocal;
   final String labelColor;
   final String title;
-  AgendaEvent(
+  AgendaEventLocalModel(
       {@required this.evtId,
       @required this.evtCode,
       @required this.begin,
@@ -2844,14 +2845,15 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
       @required this.isLocal,
       @required this.labelColor,
       @required this.title});
-  factory AgendaEvent.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory AgendaEventLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     final boolType = db.typeSystem.forDartType<bool>();
-    return AgendaEvent(
+    return AgendaEventLocalModel(
       evtId: intType.mapFromDatabaseResponse(data['${effectivePrefix}evt_id']),
       evtCode: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}evt_code']),
@@ -2923,8 +2925,8 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
     return map;
   }
 
-  AgendaEventsCompanion toCompanion(bool nullToAbsent) {
-    return AgendaEventsCompanion(
+  AgendaEventsTableCompanion toCompanion(bool nullToAbsent) {
+    return AgendaEventsTableCompanion(
       evtId:
           evtId == null && nullToAbsent ? const Value.absent() : Value(evtId),
       evtCode: evtCode == null && nullToAbsent
@@ -2961,10 +2963,10 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
     );
   }
 
-  factory AgendaEvent.fromJson(Map<String, dynamic> json,
+  factory AgendaEventLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return AgendaEvent(
+    return AgendaEventLocalModel(
       evtId: serializer.fromJson<int>(json['evtId']),
       evtCode: serializer.fromJson<String>(json['evtCode']),
       begin: serializer.fromJson<DateTime>(json['begin']),
@@ -3000,7 +3002,7 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
     };
   }
 
-  AgendaEvent copyWith(
+  AgendaEventLocalModel copyWith(
           {int evtId,
           String evtCode,
           DateTime begin,
@@ -3014,7 +3016,7 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
           bool isLocal,
           String labelColor,
           String title}) =>
-      AgendaEvent(
+      AgendaEventLocalModel(
         evtId: evtId ?? this.evtId,
         evtCode: evtCode ?? this.evtCode,
         begin: begin ?? this.begin,
@@ -3031,7 +3033,7 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
       );
   @override
   String toString() {
-    return (StringBuffer('AgendaEvent(')
+    return (StringBuffer('AgendaEventLocalModel(')
           ..write('evtId: $evtId, ')
           ..write('evtCode: $evtCode, ')
           ..write('begin: $begin, ')
@@ -3077,7 +3079,7 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is AgendaEvent &&
+      (other is AgendaEventLocalModel &&
           other.evtId == this.evtId &&
           other.evtCode == this.evtCode &&
           other.begin == this.begin &&
@@ -3093,7 +3095,8 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
           other.title == this.title);
 }
 
-class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
+class AgendaEventsTableCompanion
+    extends UpdateCompanion<AgendaEventLocalModel> {
   final Value<int> evtId;
   final Value<String> evtCode;
   final Value<DateTime> begin;
@@ -3107,7 +3110,7 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
   final Value<bool> isLocal;
   final Value<String> labelColor;
   final Value<String> title;
-  const AgendaEventsCompanion({
+  const AgendaEventsTableCompanion({
     this.evtId = const Value.absent(),
     this.evtCode = const Value.absent(),
     this.begin = const Value.absent(),
@@ -3122,7 +3125,7 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
     this.labelColor = const Value.absent(),
     this.title = const Value.absent(),
   });
-  AgendaEventsCompanion.insert({
+  AgendaEventsTableCompanion.insert({
     this.evtId = const Value.absent(),
     @required String evtCode,
     @required DateTime begin,
@@ -3148,7 +3151,7 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
         isLocal = Value(isLocal),
         labelColor = Value(labelColor),
         title = Value(title);
-  static Insertable<AgendaEvent> custom({
+  static Insertable<AgendaEventLocalModel> custom({
     Expression<int> evtId,
     Expression<String> evtCode,
     Expression<DateTime> begin,
@@ -3180,7 +3183,7 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
     });
   }
 
-  AgendaEventsCompanion copyWith(
+  AgendaEventsTableCompanion copyWith(
       {Value<int> evtId,
       Value<String> evtCode,
       Value<DateTime> begin,
@@ -3194,7 +3197,7 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
       Value<bool> isLocal,
       Value<String> labelColor,
       Value<String> title}) {
-    return AgendaEventsCompanion(
+    return AgendaEventsTableCompanion(
       evtId: evtId ?? this.evtId,
       evtCode: evtCode ?? this.evtCode,
       begin: begin ?? this.begin,
@@ -3258,7 +3261,7 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
 
   @override
   String toString() {
-    return (StringBuffer('AgendaEventsCompanion(')
+    return (StringBuffer('AgendaEventsTableCompanion(')
           ..write('evtId: $evtId, ')
           ..write('evtCode: $evtCode, ')
           ..write('begin: $begin, ')
@@ -3277,11 +3280,11 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
   }
 }
 
-class $AgendaEventsTable extends AgendaEvents
-    with TableInfo<$AgendaEventsTable, AgendaEvent> {
+class $AgendaEventsTableTable extends AgendaEventsTable
+    with TableInfo<$AgendaEventsTableTable, AgendaEventLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
-  $AgendaEventsTable(this._db, [this._alias]);
+  $AgendaEventsTableTable(this._db, [this._alias]);
   final VerificationMeta _evtIdMeta = const VerificationMeta('evtId');
   GeneratedIntColumn _evtId;
   @override
@@ -3457,13 +3460,14 @@ class $AgendaEventsTable extends AgendaEvents
         title
       ];
   @override
-  $AgendaEventsTable get asDslTable => this;
+  $AgendaEventsTableTable get asDslTable => this;
   @override
   String get $tableName => _alias ?? 'agenda_events';
   @override
   final String actualTableName = 'agenda_events';
   @override
-  VerificationContext validateIntegrity(Insertable<AgendaEvent> instance,
+  VerificationContext validateIntegrity(
+      Insertable<AgendaEventLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -3555,14 +3559,14 @@ class $AgendaEventsTable extends AgendaEvents
   @override
   Set<GeneratedColumn> get $primaryKey => {evtId};
   @override
-  AgendaEvent map(Map<String, dynamic> data, {String tablePrefix}) {
+  AgendaEventLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return AgendaEvent.fromData(data, _db, prefix: effectivePrefix);
+    return AgendaEventLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $AgendaEventsTable createAlias(String alias) {
-    return $AgendaEventsTable(_db, alias);
+  $AgendaEventsTableTable createAlias(String alias) {
+    return $AgendaEventsTableTable(_db, alias);
   }
 }
 
@@ -9323,9 +9327,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $ProfessorsTable get professors => _professors ??= $ProfessorsTable(this);
   $GradesTable _grades;
   $GradesTable get grades => _grades ??= $GradesTable(this);
-  $AgendaEventsTable _agendaEvents;
-  $AgendaEventsTable get agendaEvents =>
-      _agendaEvents ??= $AgendaEventsTable(this);
+  $AgendaEventsTableTable _agendaEventsTable;
+  $AgendaEventsTableTable get agendaEventsTable =>
+      _agendaEventsTable ??= $AgendaEventsTableTable(this);
   $AbsencesTable _absences;
   $AbsencesTable get absences => _absences ??= $AbsencesTable(this);
   $PeriodsTable _periods;
@@ -9373,8 +9377,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   ProfessorDao _professorDao;
   ProfessorDao get professorDao =>
       _professorDao ??= ProfessorDao(this as AppDatabase);
-  AgendaDao _agendaDao;
-  AgendaDao get agendaDao => _agendaDao ??= AgendaDao(this as AppDatabase);
   AbsenceDao _absenceDao;
   AbsenceDao get absenceDao => _absenceDao ??= AbsenceDao(this as AppDatabase);
   PeriodDao _periodDao;
@@ -9395,6 +9397,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   GradesLocalDatasource _gradesLocalDatasource;
   GradesLocalDatasource get gradesLocalDatasource =>
       _gradesLocalDatasource ??= GradesLocalDatasource(this as AppDatabase);
+  AgendaLocalDatasource _agendaLocalDatasource;
+  AgendaLocalDatasource get agendaLocalDatasource =>
+      _agendaLocalDatasource ??= AgendaLocalDatasource(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -9404,7 +9409,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         subjects,
         professors,
         grades,
-        agendaEvents,
+        agendaEventsTable,
         absences,
         periods,
         notices,

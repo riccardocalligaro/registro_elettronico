@@ -1,11 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'agenda_dao.dart';
+part of 'agenda_local_datasource.dart';
 
 // **************************************************************************
 // DaoGenerator
 // **************************************************************************
 
-mixin _$AgendaDaoMixin on DatabaseAccessor<AppDatabase> {
-  $AgendaEventsTable get agendaEvents => attachedDatabase.agendaEvents;
+mixin _$AgendaLocalDatasourceMixin on DatabaseAccessor<AppDatabase> {
+  $AgendaEventsTableTable get agendaEventsTable =>
+      attachedDatabase.agendaEventsTable;
 }

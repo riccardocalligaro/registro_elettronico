@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class NextEventsPage extends StatelessWidget {
-  final List<AgendaEvent> events;
+  final List<AgendaEventDomainModel> events;
   const NextEventsPage({
     Key key,
     @required this.events,
@@ -64,7 +64,7 @@ class NextEventsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildEventCard(AgendaEvent e, BuildContext context) {
+  Widget _buildEventCard(AgendaEventDomainModel e, BuildContext context) {
     if (e.isLocal) {
       return Card(
         child: Padding(
@@ -112,7 +112,7 @@ class NextEventsPage extends StatelessWidget {
                   height: 2.5,
                 ),
               Text(
-                '${StringUtils.titleCase(e.authorName)} - ${GlobalUtils.getEventDateMessage(context, e.begin, e.isFullDay)}',
+                '${StringUtils.titleCase(e.author)} - ${GlobalUtils.getEventDateMessage(context, e.begin, e.isFullDay)}',
                 style: TextStyle(fontSize: e.title != '' ? 12.0 : 15),
               ),
             ],

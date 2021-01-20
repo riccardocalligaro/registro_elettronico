@@ -1,27 +1,4 @@
-class AgendaResponse {
-  List<AgendaRemoteModel> events;
-
-  AgendaResponse({this.events});
-
-  AgendaResponse.fromJson(Map<String, dynamic> json) {
-    if (json['agenda'] != null) {
-      events = List<AgendaRemoteModel>();
-      json['agenda'].forEach((v) {
-        events.add(AgendaRemoteModel.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    if (this.events != null) {
-      data['agenda'] = this.events.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class AgendaRemoteModel {
+class AgendaEventRemoteModel {
   int evtId;
   String evtCode;
   String evtDatetimeBegin;
@@ -33,7 +10,7 @@ class AgendaRemoteModel {
   int subjectId;
   String subjectDesc;
 
-  AgendaRemoteModel({
+  AgendaEventRemoteModel({
     this.evtId,
     this.evtCode,
     this.evtDatetimeBegin,
@@ -46,7 +23,7 @@ class AgendaRemoteModel {
     this.subjectDesc,
   });
 
-  AgendaRemoteModel.fromJson(Map<String, dynamic> json) {
+  AgendaEventRemoteModel.fromJson(Map<String, dynamic> json) {
     evtId = json['evtId'];
     evtCode = json['evtCode'];
     evtDatetimeBegin = json['evtDatetimeBegin'];

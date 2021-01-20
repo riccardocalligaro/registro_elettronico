@@ -4,14 +4,12 @@ import 'package:registro_elettronico/core/data/repository/preferences_repository
 import 'package:registro_elettronico/core/domain/repository/preferences_repository.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/absences/presentation/bloc/absences_bloc.dart';
-import 'package:registro_elettronico/feature/agenda/data/repository/agenda_repository_impl.dart';
-import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
-import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_bloc.dart';
+import 'package:registro_elettronico/feature/agenda/agenda_container.dart'
+    hide sl;
 import 'package:registro_elettronico/feature/didactics/presentation/bloc/attachments/didactics_attachments_bloc.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/bloc/didactics_bloc.dart';
 import 'package:registro_elettronico/feature/grades/grades_container.dart'
     hide sl;
-import 'package:registro_elettronico/feature/home/presentation/blocs/agenda/agenda_dashboard_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/blocs/lessons/lessons_dashboard_bloc.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/bloc/lessons_bloc.dart';
 import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
@@ -60,27 +58,6 @@ class AppBlocDelegate {
           sl(),
         ),
       ),
-
-      // RepositoryProvider<GradesRepository>(
-      //   create: (ctx) => GradesRepositoryImpl(
-      //     sl(),
-      //     sl(),
-      //     sl(),
-      //     sl(),
-      //     sl(),
-      //     sl(),
-      //   ),
-      // ),
-      RepositoryProvider<AgendaRepository>(
-        create: (ctx) => AgendaRepositoryImpl(
-          sl(),
-          sl(),
-          sl(),
-          sl(),
-          sl(),
-          sl(),
-        ),
-      ),
       RepositoryProvider<TimetableRepository>(
         create: (ctx) => TimetableRepositoryImpl(
           sl(),
@@ -106,6 +83,7 @@ class AppBlocDelegate {
 
     _blocProviders = [
       ...GradesContainer.getBlocProviders(),
+      ...AgendaContainer.getBlocProviders(),
       BlocProvider<AuthBloc>(
         create: (bCtx) => AuthBloc(
           flutterSecureStorage: sl(),
@@ -124,9 +102,6 @@ class AppBlocDelegate {
           subjectsRepository: sl(),
           profileRepository: sl(),
         ),
-      ),
-      BlocProvider<AgendaBloc>(
-        create: (ctx) => AgendaBloc(agendaRepository: sl()),
       ),
       BlocProvider<PeriodsBloc>(
         create: (ctx) => PeriodsBloc(periodsRepository: sl()),
@@ -166,11 +141,6 @@ class AppBlocDelegate {
       BlocProvider<LessonsDashboardBloc>(
         create: (ctx) => LessonsDashboardBloc(
           lessonsRepository: sl(),
-        ),
-      ),
-      BlocProvider<AgendaDashboardBloc>(
-        create: (ctx) => AgendaDashboardBloc(
-          agendaRepository: sl(),
         ),
       ),
       BlocProvider<ProfessorsBloc>(

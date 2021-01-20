@@ -3,7 +3,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';
-import 'package:registro_elettronico/feature/agenda/data/model/agenda_remote_model.dart';
+import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_remote_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_remote_model.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_request_model.dart';
@@ -47,11 +47,6 @@ abstract class SpaggiariClient {
   // Subjects
   // @GET("/students/{studentId}/grades")
   // Future<GradesResponse> getGrades(@Path() String studentId);
-
-  // Subjects
-  @GET("/students/{studentId}/agenda/all/{start}/{end}")
-  Future<AgendaResponse> getAgenda(@Path() String studentId,
-      @Path("start") String start, @Path("end") String end);
 
   // Absences
   @GET("/students/{studentId}/absences/details")
@@ -237,27 +232,6 @@ class _SpaggiariClient implements SpaggiariClient {
   //   final value = GradesResponse.fromJson(_result.data);
   //   return Future.value(value);
   // }
-
-  @override
-  getAgenda(studentId, start, end) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    ArgumentError.checkNotNull(start, 'start');
-    ArgumentError.checkNotNull(end, 'end');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/agenda/all/$start/$end',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AgendaResponse.fromJson(_result.data);
-    return Future.value(value);
-  }
 
   @override
   getAbsences(studentId) async {

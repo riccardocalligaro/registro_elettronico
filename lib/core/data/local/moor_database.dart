@@ -6,7 +6,8 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
-import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
+import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
+import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/downloaded_file_local_model.dart';
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
@@ -22,7 +23,6 @@ import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
 import 'package:registro_elettronico/feature/timetable/data/dao/timetable_dao.dart';
 import 'package:registro_elettronico/feature/absences/data/model/absence_local_model.dart';
-import 'package:registro_elettronico/feature/agenda/data/model/agenda_local_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/attachment_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/content_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/folder_local_model.dart';
@@ -53,7 +53,7 @@ LazyDatabase _openConnection() {
   Subjects,
   Professors,
   Grades,
-  AgendaEvents,
+  AgendaEventsTable,
   Absences,
   Periods,
   Notices,
@@ -74,7 +74,6 @@ LazyDatabase _openConnection() {
   LessonDao,
   SubjectDao,
   ProfessorDao,
-  AgendaDao,
   AbsenceDao,
   PeriodDao,
   NoticeDao,
@@ -83,6 +82,7 @@ LazyDatabase _openConnection() {
   TimetableDao,
   DocumentsDao,
   GradesLocalDatasource,
+  AgendaLocalDatasource
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());

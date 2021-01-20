@@ -15,6 +15,8 @@ class LessonDao extends DatabaseAccessor<AppDatabase> with _$LessonDaoMixin {
 
   LessonDao(this.db) : super(db);
 
+  Stream<List<Lesson>> watchAllLessons() => select(lessons).watch();
+
   /// Gets the [last] lessons of the [last day] where there are lessons
   /// It ignores [sostegno]
   Future<List<Lesson>> getLastLessons() {

@@ -13,9 +13,7 @@ import 'package:registro_elettronico/core/infrastructure/notification/fcm_servic
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/absences/data/repository/absences_repository_impl.dart';
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
-import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
-import 'package:registro_elettronico/feature/agenda/data/repository/agenda_repository_impl.dart';
-import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
+import 'package:registro_elettronico/feature/agenda/agenda_container.dart';
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/repository/didactics_repository_impl.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
@@ -76,6 +74,7 @@ class AppInjector {
     injectSharedPreferences();
 
     await GradesContainer.init();
+    await AgendaContainer.init();
   }
 
   static void injectDatabase() {
@@ -88,7 +87,6 @@ class AppInjector {
     sl.registerLazySingleton(() => LessonDao(sl()));
     sl.registerLazySingleton(() => ProfessorDao(sl()));
     sl.registerLazySingleton(() => SubjectDao(sl()));
-    sl.registerLazySingleton(() => AgendaDao(sl()));
     sl.registerLazySingleton(() => AbsenceDao(sl()));
     sl.registerLazySingleton(() => PeriodDao(sl()));
     sl.registerLazySingleton(() => NoticeDao(sl()));
@@ -136,9 +134,6 @@ class AppInjector {
 
     sl.registerLazySingleton<SubjectsRepository>(
         () => SubjectsRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
-
-    sl.registerLazySingleton<AgendaRepository>(
-        () => AgendaRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<AbsencesRepository>(
         () => AbsencesRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
