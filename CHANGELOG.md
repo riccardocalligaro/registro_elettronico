@@ -1,6 +1,19 @@
-Ciao a tutti, è ora scaricabile registro elettronico V2.
+Versione 2.0.2+8
 
-Dopo aver abbandonato temporaneamente il progetto a causa di altri impegni lavorativi ho deciso di riprenderlo e concluderlo una volta per tutte, qui di seguito il changelog, se tutto va bene nelle prossime settimane pubblicherò sul Play store.
+* Aggiunto tema black
+
+* Aggiunto supporto a colori custom
+
+* Risolto problema allegati multipli nelle circolari
+
+* Risolto problema lezioni
+
+* Cambiato colore card home
+
+* Cambiato algoritmo orario
+
+* Colore corretto del drop header
+
 
 Version 2.0.0-dev+2
 

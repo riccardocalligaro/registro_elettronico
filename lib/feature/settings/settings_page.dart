@@ -103,7 +103,7 @@ class _SettingsPageState extends State<SettingsPage> {
             final Email reportEmail = Email(
               body: userMessage,
               subject: subject,
-              recipients: ['riccardocalligaro@gmail.com'],
+              recipients: ['registroelettronico.mobileapp@gmail.com'],
               attachmentPaths: ['$path/flog.txt'],
               isHTML: false,
             );

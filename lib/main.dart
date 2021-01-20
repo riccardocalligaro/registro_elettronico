@@ -10,6 +10,7 @@ import 'package:registro_elettronico/application.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/splash/presentation/splash_screen.dart';
 
+import 'core/data/remote/api/dio_client.dart';
 import 'core/infrastructure/log/logger.dart';
 import 'core/infrastructure/log/logger_bloc.dart';
 import 'core/infrastructure/notification/fcm_service.dart';
@@ -54,6 +55,7 @@ class SrApp extends StatelessWidget {
     return Application(
       builder: (bCtx, initData) {
         return MaterialApp(
+          navigatorKey: navigator,
           title: 'Registro elettronico',
           locale: initData.locale,
           theme: initData.materialThemeData,
