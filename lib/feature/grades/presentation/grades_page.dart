@@ -3,11 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
-import 'package:registro_elettronico/core/presentation/widgets/app_drawer.dart';
 import 'package:registro_elettronico/core/presentation/widgets/last_update_bottom_sheet.dart';
 import 'package:registro_elettronico/feature/grades/presentation/views/last_grades_page.dart';
 import 'package:registro_elettronico/feature/grades/presentation/views/term_grades_page.dart';
-import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -155,6 +153,7 @@ class _GradesPageState extends State<GradesPage> {
             length: 4,
             child: Scaffold(
               appBar: AppBar(
+                brightness: Theme.of(context).brightness,
                 elevation: 0.0,
                 textTheme: Theme.of(context).textTheme,
                 iconTheme: Theme.of(context).primaryIconTheme,
@@ -167,8 +166,8 @@ class _GradesPageState extends State<GradesPage> {
                 ),
                 title: Text(AppLocalizations.of(context).translate('grades')),
               ),
-              drawer: AppDrawer(
-                position: DrawerConstants.GRADES,
+              bottomSheet: LastUpdateBottomSheet(
+                millisecondsSinceEpoch: _lastUpdateGrades,
               ),
               body: Center(
                 child: CircularProgressIndicator(),

@@ -29,6 +29,12 @@ class _LoginPageState extends State<LoginPage> {
   String _erorrMessage = "";
 
   @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<AuthBloc>(context).add(ResetAuth());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,

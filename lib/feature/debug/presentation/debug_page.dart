@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/fcm_service.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DebugPage extends StatefulWidget {
   DebugPage({Key key}) : super(key: key);
@@ -32,6 +36,30 @@ class _DebugPageState extends State<DebugPage> {
                   MaterialPageRoute(builder: (context) => MoorDbViewer(db)));
             },
           ),
+          DebugButton(
+              title: 'Cancel token',
+              onTap: () async {
+                FlutterSecureStorage flutterSecureStorage = sl();
+                ProfileRepository profileRepository = sl();
+                SharedPreferences sharedPreferences = sl();
+
+                final profile = await profileRepository.getProfile();
+
+                await flutterSecureStorage.write(key: profile.ident, value: '');
+                final profile2 = profile.copyWith(
+                  token: '',
+                  expire: DateTime.now()
+                      .subtract(
+                        Duration(
+                          days: 1,
+                        ),
+                      )
+                      .toIso8601String(),
+                );
+
+                await sharedPreferences.setString(
+                    PrefsConstants.profile, profile2.toJson());
+              }),
           DebugButton(
             title: 'Send notification',
             subtitle: 'With the local notifications plugin',
