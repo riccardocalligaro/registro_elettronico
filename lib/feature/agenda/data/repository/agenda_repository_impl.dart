@@ -124,8 +124,6 @@ class AgendaRepositoryImpl implements AgendaRepository {
       agendaLocalDatasource.watchAllEvents(),
       lessonDao.watchAllLessons(),
       (List<AgendaEventLocalModel> events, List<Lesson> lessons) {
-        print(events.length);
-
         final domainEvents = events
             .map((l) => AgendaEventDomainModel.fromLocalModel(l))
             .toList();

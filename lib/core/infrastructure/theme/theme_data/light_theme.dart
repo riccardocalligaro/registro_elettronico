@@ -8,7 +8,7 @@ class LightTheme {
       primarySwatch: color,
       accentColor: color,
       brightness: Brightness.light,
-      fontFamily: 'Montserrat',
+      fontFamily: 'Manrope',
       //canvasColor: Colors.white,
       appBarTheme: AppBarTheme(
         elevation: 1,

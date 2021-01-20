@@ -269,7 +269,7 @@ class _HomePageState extends State<HomePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(top: 30, left: 5),
+          padding: const EdgeInsets.only(top: 32, left: 5),
           child: IconButton(
             icon: Icon(
               Icons.menu,
@@ -335,10 +335,8 @@ class _HomePageState extends State<HomePage> {
       elevation: 2,
       child: Container(
         height: 120,
-        // width: MediaQuery.of(context).size.width,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          // crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             Flexible(
               child: _buildSectionIcon(
@@ -376,15 +374,16 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildSectionIcon(
       String name, IconData icon, GestureTapCallback onTap) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            GestureDetector(
-              onTap: onTap,
-              child: Container(
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
                 width: 60,
                 height: 60,
                 child: Icon(
@@ -403,17 +402,17 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            AutoSizeText(
-              name,
-              style: TextStyle(fontSize: 12),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            )
-          ],
+              const SizedBox(
+                height: 8,
+              ),
+              AutoSizeText(
+                name,
+                style: TextStyle(fontSize: 12),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],
+          ),
         ),
       ),
     );

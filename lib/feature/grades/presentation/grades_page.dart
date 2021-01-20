@@ -14,13 +14,11 @@ class GradesPage extends StatefulWidget {
 }
 
 class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
-  TabController _tabController;
+  int _currentPage = 0;
 
   @override
   void initState() {
     super.initState();
-
-    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -32,53 +30,14 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
           title: Text(
             AppLocalizations.of(context).translate('grades'),
           ),
-          bottom: TabBar(
-            controller: _tabController,
-            isScrollable: true,
-            indicatorColor: Theme.of(context).accentColor,
-            labelColor: Theme.of(context).primaryTextTheme.headline5.color,
-            tabs: [
-              Container(
-                width: 140,
-                child: Tab(
-                  child: Text(AppLocalizations.of(context)
-                      .translate('last_grades')
-                      .toUpperCase()),
-                ),
-              ),
-              Container(
-                width: 140,
-                child: Tab(
-                  child: Text(
-                      "1° ${AppLocalizations.of(context).translate('term').toUpperCase()}"),
-                ),
-              ),
-              Container(
-                width: 140,
-                child: Tab(
-                  child: Text(
-                      "2° ${AppLocalizations.of(context).translate('term').toUpperCase()}"),
-                ),
-              ),
-              Container(
-                width: 140,
-                child: Tab(
-                  child: Text(
-                    AppLocalizations.of(context)
-                        .translate('overall')
-                        .toUpperCase(),
-                  ),
-                ),
-              ),
-            ],
-          ),
         ),
+        bottomNavigationBar: _buildBottomNavigationBar(),
         body: BlocBuilder<GradesWatcherBloc, GradesWatcherState>(
           builder: (context, state) {
             if (state is GradesWatcherLoadSuccess) {
               return GradesLoaded(
                 gradesPagesDomainModel: state.gradesSections,
-                tabController: _tabController,
+                index: _currentPage,
               );
             } else if (state is GradesWatcherFailure) {
               return GradesFailure(failure: state.failure);
@@ -88,6 +47,41 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
           },
         ),
       ),
+    );
+  }
+
+  BottomNavigationBar _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      // selectedItemColor: CYColors.lightOrange,
+      // unselectedItemColor: CYColors.lightText,
+      type: BottomNavigationBarType.fixed,
+      currentIndex: _currentPage,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      onTap: (int index) {
+        // Calls the api if needed
+        setState(() {
+          _currentPage = index;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          label: 'Tutti i voti',
+          icon: Icon(Icons.all_inbox),
+        ),
+        BottomNavigationBarItem(
+          label: '',
+          icon: Icon(Icons.looks_one),
+        ),
+        BottomNavigationBarItem(
+          label: '',
+          icon: Icon(Icons.looks),
+        ),
+        BottomNavigationBarItem(
+          label: '',
+          icon: Icon(Icons.poll),
+        ),
+      ],
     );
   }
 }

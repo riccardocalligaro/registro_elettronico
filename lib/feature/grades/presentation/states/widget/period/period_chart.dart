@@ -47,14 +47,14 @@ class _GradesChartState extends State<GradesChart> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: showAvg
                       ? GradesLineChart(
-                          spots: widget.normalSpots,
+                          spots: widget.averageSpots,
                           grades: widget.grades,
                           cutOffYValue: widget.overallObjective != null
                               ? widget.overallObjective.toDouble()
                               : 6.0,
                         )
                       : GradesLineChart(
-                          spots: widget.averageSpots,
+                          spots: widget.normalSpots,
                           grades: widget.grades,
                           cutOffYValue: widget.overallObjective != null
                               ? widget.overallObjective.toDouble()
