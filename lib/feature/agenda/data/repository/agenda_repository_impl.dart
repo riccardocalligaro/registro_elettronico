@@ -140,9 +140,9 @@ class AgendaRepositoryImpl implements AgendaRepository {
         final domainLessons =
             lessons.map((l) => LessonDomainModel.fromLocalModel(l)).toList();
 
-        final lessonsMap = groupBy<LessonDomainModel, DateTime>(
+        final lessonsMap = groupBy<LessonDomainModel, String>(
           domainLessons,
-          (e) => e.date,
+          (e) => _convertDate(e.date),
         );
 
         final today = DateTime.now();

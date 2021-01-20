@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/unicorn_dialer.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
@@ -7,6 +8,8 @@ import 'package:registro_elettronico/feature/agenda/presentation/updater/agenda_
 import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+import 'lesson_list.dart';
 
 class AgendaLoaded extends StatefulWidget {
   final AgendaDataDomainModel data;
@@ -22,9 +25,10 @@ class AgendaLoaded extends StatefulWidget {
 
 class _AgendaLoadedState extends State<AgendaLoaded> {
   final CalendarController _calendarController = CalendarController();
+
   final DateTime _initialDay = DateTime.now();
 
-  DateTime _selectedDay;
+  DateTime _selectedDay = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +43,11 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
         },
         child: ListView(
           children: [
-            _LessonsList(
-              lessons: null,
-            ),
             TableCalendar(
               calendarController: _calendarController,
               events: widget.data.eventsMap,
               initialSelectedDay: _initialDay,
+              onDaySelected: _onDaySelected,
               startingDayOfWeek: StartingDayOfWeek.monday,
               locale: AppLocalizations.of(context).locale.toString(),
               weekendDays: const [DateTime.sunday],
@@ -85,32 +87,32 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
                   );
                 },
               ),
-            )
+            ),
+            LessonsList(
+              lessons: widget.data.lessonsMap[_convertDate(_selectedDay)],
+            ),
           ],
         ),
       ),
     );
   }
 
+  String _convertDate(DateTime date) {
+    final formatter = DateFormat('yyyyMMdd');
+    return formatter.format(date);
+  }
+
   Color _getLabelColor(String eventColor) {
     return Color(int.parse(eventColor));
   }
 
-  void _reactToListenerState(AgendaUpdaterState state) {}
-}
-
-class _LessonsList extends StatelessWidget {
-  final List<LessonDomainModel> lessons;
-
-  const _LessonsList({
-    Key key,
-    @required this.lessons,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
+  void _onDaySelected(DateTime day, List events, List events2) {
+    setState(() {
+      _selectedDay = day;
+    });
   }
+
+  void _reactToListenerState(AgendaUpdaterState state) {}
 }
 
 class _MultiActionsButton extends StatelessWidget {
