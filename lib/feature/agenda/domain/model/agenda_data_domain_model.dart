@@ -5,11 +5,14 @@ import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_
 class AgendaDataDomainModel {
   Map<DateTime, List<AgendaEventDomainModel>> eventsMap;
   Map<String, List<LessonDomainModel>> lessonsMap;
+  Map<String, List<AgendaEventDomainModel>> eventsMapString;
+
   List<AgendaEventDomainModel> events;
 
   AgendaDataDomainModel({
     @required this.events,
     @required this.eventsMap,
     @required this.lessonsMap,
+    @required this.eventsMapString,
   });
 }

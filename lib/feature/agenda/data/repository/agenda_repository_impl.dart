@@ -1,27 +1,25 @@
 import 'package:collection/collection.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/remote/agenda_remote_datasource.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_local_model.dart';
-import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
-import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
-import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
-import 'package:dartz/dartz.dart';
+import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
-import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
-import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rxdart/rxdart.dart' hide Subject;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AgendaRepositoryImpl implements AgendaRepository {
   static const String lastUpdateKey = 'agendaLastUpdate';
@@ -145,6 +143,11 @@ class AgendaRepositoryImpl implements AgendaRepository {
           (e) => _convertDate(e.date),
         );
 
+        final eventsMapString = groupBy<AgendaEventDomainModel, String>(
+          domainEvents,
+          (e) => _convertDate(e.begin),
+        );
+
         final today = DateTime.now();
 
         // mette nella lista soltanto gli eventi di oggi o i prossimi
@@ -161,6 +164,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
             eventsMap: eventsMap,
             lessonsMap: lessonsMap,
             events: eventsList,
+            eventsMapString: eventsMapString,
           ),
         );
       },

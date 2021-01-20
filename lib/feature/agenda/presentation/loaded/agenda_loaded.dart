@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:registro_elettronico/core/data/model/event_type.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/unicorn_dialer.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
+import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
+import 'package:registro_elettronico/feature/agenda/presentation/loaded/events_list.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/updater/agenda_updater_bloc.dart';
-import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'event/new_event_page.dart';
 import 'lesson_list.dart';
 
 class AgendaLoaded extends StatefulWidget {
@@ -35,8 +39,19 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('agenda')),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              final AgendaRepository agendaRepository = sl();
+              agendaRepository.updateAllAgenda(ifNeeded: false);
+            },
+          )
+        ],
       ),
-      floatingActionButton: _MultiActionsButton(),
+      floatingActionButton: _MultiActionsButton(
+        dateTime: _selectedDay,
+      ),
       body: BlocListener<AgendaUpdaterBloc, AgendaUpdaterState>(
         listener: (context, state) {
           _reactToListenerState(state);
@@ -44,6 +59,7 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
         child: ListView(
           children: [
             TableCalendar(
+              initialCalendarFormat: CalendarFormat.twoWeeks,
               calendarController: _calendarController,
               events: widget.data.eventsMap,
               initialSelectedDay: _initialDay,
@@ -88,6 +104,12 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
                 },
               ),
             ),
+            const SizedBox(
+              height: 16,
+            ),
+            AgendaEventsList(
+              events: widget.data.eventsMapString[_convertDate(_selectedDay)],
+            ),
             LessonsList(
               lessons: widget.data.lessonsMap[_convertDate(_selectedDay)],
             ),
@@ -107,6 +129,9 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
   }
 
   void _onDaySelected(DateTime day, List events, List events2) {
+    print(day);
+    print("Event" + widget.data.eventsMap.keys.first.toString());
+
     setState(() {
       _selectedDay = day;
     });
@@ -116,7 +141,12 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
 }
 
 class _MultiActionsButton extends StatelessWidget {
-  const _MultiActionsButton({Key key}) : super(key: key);
+  final DateTime dateTime;
+
+  const _MultiActionsButton({
+    Key key,
+    @required this.dateTime,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -145,14 +175,14 @@ class _MultiActionsButton extends StatelessWidget {
               size: 17,
             ),
             onPressed: () {
-              // Navigator.of(context).push(
-              //   MaterialPageRoute(
-              //     builder: (context) => NewEventPage(
-              //       eventType: EventType.memo,
-              //       initialDate: _selectedDay ?? DateTime.now(),
-              //     ),
-              //   ),
-              // );
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => NewEventPage(
+                    eventType: EventType.memo,
+                    initialDate: dateTime ?? DateTime.now(),
+                  ),
+                ),
+              );
             },
           ),
         ),
@@ -175,14 +205,14 @@ class _MultiActionsButton extends StatelessWidget {
               size: 17,
             ),
             onPressed: () {
-              // Navigator.of(context).push(
-              //   MaterialPageRoute(
-              //     builder: (context) => NewEventPage(
-              //       eventType: EventType.test,
-              //       initialDate: _selectedDay ?? DateTime.now(),
-              //     ),
-              //   ),
-              // );
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => NewEventPage(
+                    eventType: EventType.test,
+                    initialDate: dateTime ?? DateTime.now(),
+                  ),
+                ),
+              );
             },
           ),
         ),
@@ -205,14 +235,14 @@ class _MultiActionsButton extends StatelessWidget {
               size: 17,
             ),
             onPressed: () {
-              // Navigator.of(context).push(
-              //   MaterialPageRoute(
-              //     builder: (context) => NewEventPage(
-              //       eventType: EventType.assigment,
-              //       initialDate: _selectedDay ?? DateTime.now(),
-              //     ),
-              //   ),
-              // );
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => NewEventPage(
+                    eventType: EventType.assigment,
+                    initialDate: dateTime ?? DateTime.now(),
+                  ),
+                ),
+              );
             },
           ),
         ),

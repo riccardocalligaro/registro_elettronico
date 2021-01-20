@@ -40,4 +40,10 @@ class AgendaWatcherBloc extends Bloc<AgendaWatcherEvent, AgendaWatcherState> {
       }
     }
   }
+
+  @override
+  Future<void> close() {
+    _agendaStreamSubscription.cancel();
+    return super.close();
+  }
 }

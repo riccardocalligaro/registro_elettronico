@@ -3,7 +3,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';
-import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_remote_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_remote_model.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_request_model.dart';
