@@ -307,5 +307,7 @@
   "welcome_afternoon": "Good afternoon",
   "welcome_evening": "Good evening",
   "theme_color_title": "Color",
-  "theme_color_subtitle": "Change the theme's color"
+  "theme_color_subtitle": "Change the theme's color",
+  "seen_grades": "Seen",
+  "not_seen_grades": "Not seen"
 }

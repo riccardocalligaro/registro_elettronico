@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 
 enum Status { loading, success, failed }
 
@@ -8,7 +10,7 @@ class Resource<T> {
   final Status status;
   final T data;
   final String message;
-  final Exception failure;
+  final Failure failure;
 
   const Resource({
     this.data,
@@ -20,7 +22,7 @@ class Resource<T> {
   static Resource<T> loading<T>({T data}) =>
       Resource<T>(data: data, status: Status.loading);
 
-  static Resource<T> failed<T>({Exception error, T data}) => Resource<T>(
+  static Resource<T> failed<T>({Failure error, T data}) => Resource<T>(
         failure: error,
         data: data,
         status: Status.failed,
@@ -34,7 +36,7 @@ class Resource<T> {
       final res = await req();
       return success<T>(data: res);
     } on Exception catch (e) {
-      return Future.error(failed(error: e, data: null));
+      return Future.error(failed(error: handleError(e), data: null));
     }
   }
 

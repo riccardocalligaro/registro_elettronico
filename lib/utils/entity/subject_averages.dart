@@ -5,8 +5,6 @@ class SubjectAverages {
   final double praticoAverage;
   final double scrittoAverage;
   final double oraleAverage;
-  //final int insufficienze;
-  //final int sufficienze;
 
   SubjectAverages({
     @required this.praticoAverage,

@@ -1,18 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
-import 'package:registro_elettronico/feature/grades/presentation/bloc/grades_bloc.dart';
-import 'package:registro_elettronico/feature/grades/presentation/bloc/subjects_grades/subjects_grades_bloc.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class GradeCard extends StatelessWidget {
-  final Grade grade;
+  final GradeDomainModel grade;
+  final bool fromSubjectGrades;
 
-  const GradeCard({Key key, this.grade}) : super(key: key);
+  const GradeCard({
+    Key key,
+    @required this.grade,
+    this.fromSubjectGrades = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,9 @@ class GradeCard extends StatelessWidget {
             _showGradeInfoDialog(context);
           },
           onLongPress: () {
-            _showDeleteGradeDialog(context);
+            if (!fromSubjectGrades) {
+              _showDeleteGradeDialog(context);
+            }
           },
           child: Container(
             child: Padding(
@@ -173,19 +176,19 @@ class GradeCard extends StatelessWidget {
               child: Text(
                   AppLocalizations.of(context).translate('yes').toUpperCase()),
               onPressed: () async {
-                if (grade.localllyCancelled) {
-                  await RepositoryProvider.of<GradesRepository>(context)
-                      .updateGrade(grade.copyWith(localllyCancelled: false));
-                  BlocProvider.of<GradesBloc>(context).add(GetGrades());
-                  BlocProvider.of<SubjectsGradesBloc>(context)
-                      .add(GetGradesAndSubjects());
-                } else {
-                  await RepositoryProvider.of<GradesRepository>(context)
-                      .updateGrade(grade.copyWith(localllyCancelled: true));
-                  BlocProvider.of<GradesBloc>(context).add(GetGrades());
-                  BlocProvider.of<SubjectsGradesBloc>(context)
-                      .add(GetGradesAndSubjects());
-                }
+                // if (grade.localllyCancelled) {
+                //   await RepositoryProvider.of<GradesRepository>(context)
+                //       .updateGrade(grade.copyWith(localllyCancelled: false));
+                //   BlocProvider.of<GradesBloc>(context).add(GetGrades());
+                //   BlocProvider.of<SubjectsGradesBloc>(context)
+                //       .add(GetGradesAndSubjects());
+                // } else {
+                //   await RepositoryProvider.of<GradesRepository>(context)
+                //       .updateGrade(grade.copyWith(localllyCancelled: true));
+                //   BlocProvider.of<GradesBloc>(context).add(GetGrades());
+                //   BlocProvider.of<SubjectsGradesBloc>(context)
+                //       .add(GetGradesAndSubjects());
+                // }
 
                 Navigator.pop(context);
               },
@@ -196,7 +199,7 @@ class GradeCard extends StatelessWidget {
     }
   }
 
-  Widget _buildLessonArgument(Grade grade) {
+  Widget _buildLessonArgument(GradeDomainModel grade) {
     String text = grade.notesForFamily;
     if (text.isNotEmpty) {
       if (text.length > 30) {

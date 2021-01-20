@@ -19,9 +19,7 @@ import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_rep
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/repository/didactics_repository_impl.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
-import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
-import 'package:registro_elettronico/feature/grades/data/repository/grades_repository_impl.dart';
-import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
+import 'package:registro_elettronico/feature/grades/grades_container.dart';
 import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
 import 'package:registro_elettronico/feature/lessons/data/repository/lessons_repository_impl.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
@@ -61,7 +59,7 @@ import 'network/network_info.dart';
 final sl = GetIt.instance;
 
 class AppInjector {
-  static void init() {
+  static Future<void> init() async {
     // Inject the application database
     injectDatabase();
     // Inject all the daos
@@ -76,6 +74,8 @@ class AppInjector {
     injectBloc();
 
     injectSharedPreferences();
+
+    await GradesContainer.init();
   }
 
   static void injectDatabase() {
@@ -88,7 +88,6 @@ class AppInjector {
     sl.registerLazySingleton(() => LessonDao(sl()));
     sl.registerLazySingleton(() => ProfessorDao(sl()));
     sl.registerLazySingleton(() => SubjectDao(sl()));
-    sl.registerLazySingleton(() => GradeDao(sl()));
     sl.registerLazySingleton(() => AgendaDao(sl()));
     sl.registerLazySingleton(() => AbsenceDao(sl()));
     sl.registerLazySingleton(() => PeriodDao(sl()));
@@ -137,9 +136,6 @@ class AppInjector {
 
     sl.registerLazySingleton<SubjectsRepository>(
         () => SubjectsRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
-
-    sl.registerLazySingleton<GradesRepository>(
-        () => GradesRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<AgendaRepository>(
         () => AgendaRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));

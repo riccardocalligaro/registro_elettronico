@@ -37,29 +37,12 @@ class _DebugPageState extends State<DebugPage> {
             },
           ),
           DebugButton(
-              title: 'Cancel token',
-              onTap: () async {
-                FlutterSecureStorage flutterSecureStorage = sl();
-                ProfileRepository profileRepository = sl();
-                SharedPreferences sharedPreferences = sl();
-
-                final profile = await profileRepository.getProfile();
-
-                await flutterSecureStorage.write(key: profile.ident, value: '');
-                final profile2 = profile.copyWith(
-                  token: '',
-                  expire: DateTime.now()
-                      .subtract(
-                        Duration(
-                          days: 1,
-                        ),
-                      )
-                      .toIso8601String(),
-                );
-
-                await sharedPreferences.setString(
-                    PrefsConstants.profile, profile2.toJson());
-              }),
+            title: 'Reset DB',
+            onTap: () async {
+              final AppDatabase db = sl();
+              await db.resetDb();
+            },
+          ),
           DebugButton(
             title: 'Send notification',
             subtitle: 'With the local notifications plugin',

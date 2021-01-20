@@ -1,5 +1,8 @@
 import 'package:moor/moor.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/feature/grades/data/model/grade_remote_model.dart';
 
+@DataClassName('GradeLocalModel')
 class Grades extends Table {
   IntColumn get subjectId => integer()();
   TextColumn get subjectDesc => text()();
@@ -20,7 +23,43 @@ class Grades extends Table {
   IntColumn get skillId => integer()();
   IntColumn get gradeMasterId => integer()();
   BoolColumn get localllyCancelled => boolean()();
+  BoolColumn get hasSeenIt => boolean().withDefault(const Constant(true))();
 
   @override
   Set<Column> get primaryKey => {evtId};
+
+  @override
+  String get tableName => 'grades';
+}
+
+class GradeLocalModelConverter {
+  static GradeLocalModel fromRemoteModel(
+    GradeRemoteModel remoteModel,
+    GradeLocalModel localModel,
+    bool hasSeenIt,
+  ) {
+    return GradeLocalModel(
+      subjectId: remoteModel.subjectId,
+      subjectDesc: remoteModel.subjectDesc,
+      evtId: remoteModel.evtId,
+      evtCode: remoteModel.evtCode,
+      eventDate: DateTime.parse(remoteModel.evtDate) ?? DateTime.now(),
+      decimalValue: remoteModel.decimalValue,
+      displayValue: remoteModel.displayValue,
+      displayPos: remoteModel.displaPos,
+      notesForFamily: remoteModel.notesForFamily,
+      cancelled: remoteModel.canceled,
+      underlined: remoteModel.underlined,
+      periodPos: remoteModel.periodPos,
+      periodDesc: remoteModel.periodDesc,
+      componentPos: remoteModel.componentPos,
+      componentDesc: remoteModel.componentDesc,
+      weightFactor: remoteModel.weightFactor,
+      skillId: remoteModel.skillId,
+      gradeMasterId: remoteModel.gradeMasterId,
+      localllyCancelled:
+          localModel != null ? localModel.localllyCancelled : false,
+      hasSeenIt: hasSeenIt,
+    );
+  }
 }

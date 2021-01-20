@@ -59,6 +59,8 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
 
       await subjectDao.insertSubjects(subjects);
       await professorDao.insertProfessors(teachers);
+
+      return;
     } else {
       throw NotConntectedException();
     }

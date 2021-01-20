@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
@@ -434,7 +435,7 @@ class GlobalUtils {
   /// This function returns the color of a grade, it checks if it is because grades
   /// that are null are stored in the database with -1 value, so if it is -1 it must be
   /// canelled or an annotation
-  static Color getColorFromGrade(Grade grade) {
+  static Color getColorFromGrade(GradeDomainModel grade) {
     if (grade.cancelled ||
         grade.decimalValue == -1.00 ||
         grade.localllyCancelled) {

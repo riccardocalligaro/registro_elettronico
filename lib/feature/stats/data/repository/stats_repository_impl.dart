@@ -5,7 +5,8 @@ import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
-import 'package:registro_elettronico/feature/grades/data/dao/grade_dao.dart';
+import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
 import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
@@ -19,7 +20,7 @@ import 'package:registro_elettronico/utils/grades_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StatsRepositoryImpl implements StatsRepository {
-  final GradeDao gradeDao;
+  final GradesLocalDatasource gradeDao;
   final AbsenceDao absenceDao;
   final SubjectDao subjectDao;
   final PeriodDao periodDao;
@@ -41,7 +42,11 @@ class StatsRepositoryImpl implements StatsRepository {
   Future<Either<Failure, StudentReport>> getStudentReport() async {
     try {
       // We get the data that we need to get the stats
-      final grades = await gradeDao.getAllGrades();
+      final grades = await gradeDao.getGrades();
+
+      final domainGrades =
+          grades.map((l) => GradeDomainModel.fromLocalModel(l)).toList();
+
       final absences = await absenceDao.getAllAbsences();
       final subjects = await subjectDao.getAllSubjects();
       final periods = await periodDao.getAllPeriods();
@@ -82,7 +87,7 @@ class StatsRepositoryImpl implements StatsRepository {
         int gravementeInsufficientiSubjectsCount = 0;
 
         subjects.forEach((subject) {
-          subjectAverage = GradesUtils.getAverage(subject.id, grades);
+          subjectAverage = GradesUtils.getAverage(subject.id, domainGrades);
           if (subjectAverage > maxAverage) {
             bestSubject = subject;
             maxAverage = subjectAverage;
@@ -106,27 +111,29 @@ class StatsRepositoryImpl implements StatsRepository {
           }
         });
 
-        grades.forEach((grade) {
+        domainGrades.forEach((grade) {
           if (GradesUtils.isValidGrade(grade)) {
-            average += grade.decimalValue;
-            gradesCount++;
+            if (true) {
+              average += grade.decimalValue;
+              gradesCount++;
 
-            if (grade.periodPos == periods.elementAt(0).position) {
-              firstTermAverage += grade.decimalValue;
-              firstTermGradesCount++;
-            } else if (grade.periodPos == periods.elementAt(1).position) {
-              secondTermAverage += grade.decimalValue;
-              secondTermGradesCount++;
-            }
+              if (grade.periodPos == periods.elementAt(0).position) {
+                firstTermAverage += grade.decimalValue;
+                firstTermGradesCount++;
+              } else if (grade.periodPos == periods.elementAt(1).position) {
+                secondTermAverage += grade.decimalValue;
+                secondTermGradesCount++;
+              }
 
-            if (grade.decimalValue >= 6) {
-              sufficienzeCount++;
-            } else if (grade.decimalValue >= 5.5 && grade.decimalValue < 6) {
-              insufficienzeLieviCount++;
-            } else if (grade.decimalValue >= 4.5) {
-              insufficienzeCount++;
-            } else {
-              insufficienzeGraviCount++;
+              if (grade.decimalValue >= 6) {
+                sufficienzeCount++;
+              } else if (grade.decimalValue >= 5.5 && grade.decimalValue < 6) {
+                insufficienzeLieviCount++;
+              } else if (grade.decimalValue >= 4.5) {
+                insufficienzeCount++;
+              } else {
+                insufficienzeGraviCount++;
+              }
             }
           }
         });
@@ -154,6 +161,7 @@ class StatsRepositoryImpl implements StatsRepository {
             periods.elementAt(1).end.difference(DateTime.now());
 
         int schoolCredits;
+
         if (periods.elementAt(0).end.isAfter(DateTime.now())) {
           schoolCredits =
               GradesUtils.getMinSchoolCredits(firstTermAverage, year);
@@ -164,7 +172,7 @@ class StatsRepositoryImpl implements StatsRepository {
 
         final score = _getUserScore(
           absences: absences,
-          grades: grades,
+          grades: domainGrades,
           notes: notes,
           skippedTests: skippedTestsForAbsences,
           average: average,
@@ -196,7 +204,7 @@ class StatsRepositoryImpl implements StatsRepository {
             sufficientiSubjects: sufficientiSubjects,
             insufficientiSubjects: insufficientiSubjects,
             totalGrades: gradesCount,
-            grades: grades,
+            grades: domainGrades,
             absences: absences,
             subjects: subjects,
             periods: periods,
@@ -221,7 +229,7 @@ class StatsRepositoryImpl implements StatsRepository {
   }
 
   double _getUserScore({
-    @required List<Grade> grades,
+    @required List<GradeDomainModel> grades,
     @required List<Absence> absences,
     @required List<Note> notes,
     @required int skippedTests,

@@ -239,6 +239,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.1.4"
+  extended_tabs:
+    dependency: "direct main"
+    description:
+      name: extended_tabs
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   f_logs:
     dependency: "direct main"
     description:
@@ -1176,4 +1183,4 @@ packages:
     version: "2.2.1"
 sdks:
   dart: ">=2.10.2 <2.11.0"
-  flutter: ">=1.22.2 <2.0.0"
+  flutter: ">=1.22.4 <2.0.0"
