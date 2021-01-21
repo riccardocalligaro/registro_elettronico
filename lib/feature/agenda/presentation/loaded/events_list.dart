@@ -24,7 +24,7 @@ class AgendaEventsList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (events == null || events.isEmpty) {
       return Padding(
-        padding: const EdgeInsets.only(top: 64.0),
+        padding: const EdgeInsets.only(top: 64.0, bottom: 32),
         child: CustomPlaceHolder(
           icon: Icons.event,
           text: AppLocalizations.of(context).translate('empty_events'),

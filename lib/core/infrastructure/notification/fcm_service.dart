@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 
@@ -21,8 +22,10 @@ class PushNotificationService {
       fcm.requestNotificationPermissions(IosNotificationSettings());
     }
 
-    final token = await fcm.getToken();
-    Logger.info("🔔 [FCM] Got token $token");
+    if (kDebugMode) {
+      final token = await fcm.getToken();
+      Logger.info("🔔 [FCM] Got token $token");
+    }
 
     AndroidInitializationSettings androidInitializationSettings =
         AndroidInitializationSettings('app_icon');

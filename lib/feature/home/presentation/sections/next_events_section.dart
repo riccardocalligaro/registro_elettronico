@@ -61,7 +61,7 @@ class NextEventsSection extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Text(AppLocalizations.of(context).translate('no_events'))
+              Text(AppLocalizations.of(context).translate('no_events')),
             ],
           ),
         ),

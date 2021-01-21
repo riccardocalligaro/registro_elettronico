@@ -25,32 +25,50 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).translate('grades'),
-          ),
-        ),
-        bottomNavigationBar: _buildBottomNavigationBar(),
-        body: BlocBuilder<GradesWatcherBloc, GradesWatcherState>(
-          builder: (context, state) {
-            if (state is GradesWatcherLoadSuccess) {
-              return GradesLoaded(
+      child: BlocBuilder<GradesWatcherBloc, GradesWatcherState>(
+        builder: (context, state) {
+          if (state is GradesWatcherLoadSuccess) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  AppLocalizations.of(context).translate('grades'),
+                ),
+              ),
+              bottomNavigationBar: _buildBottomNavigationBar(
+                periods: state.gradesSections.periods,
+              ),
+              body: GradesLoaded(
                 gradesPagesDomainModel: state.gradesSections,
                 index: _currentPage,
-              );
-            } else if (state is GradesWatcherFailure) {
-              return GradesFailure(failure: state.failure);
-            }
+              ),
+            );
+          } else if (state is GradesWatcherFailure) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  AppLocalizations.of(context).translate('grades'),
+                ),
+              ),
+              body: GradesFailure(failure: state.failure),
+            );
+          }
 
-            return GradesLoading();
-          },
-        ),
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                AppLocalizations.of(context).translate('grades'),
+              ),
+            ),
+            body: GradesLoading(),
+          );
+        },
       ),
     );
   }
 
-  BottomNavigationBar _buildBottomNavigationBar() {
+  BottomNavigationBar _buildBottomNavigationBar({
+    @required int periods,
+  }) {
     return BottomNavigationBar(
       // selectedItemColor: CYColors.lightOrange,
       // unselectedItemColor: CYColors.lightText,
@@ -67,21 +85,40 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
       items: [
         BottomNavigationBarItem(
           label: 'Tutti i voti',
-          icon: Icon(Icons.all_inbox),
+          icon: Icon(Icons.format_list_numbered),
         ),
+        ...List.generate(periods - 1, (index) => _navBarItem(index)),
         BottomNavigationBarItem(
           label: '',
-          icon: Icon(Icons.looks_one),
-        ),
-        BottomNavigationBarItem(
-          label: '',
-          icon: Icon(Icons.looks),
-        ),
-        BottomNavigationBarItem(
-          label: '',
-          icon: Icon(Icons.poll),
+          icon: Icon(Icons.timeline),
         ),
       ],
     );
+  }
+
+  BottomNavigationBarItem _navBarItem(int period) {
+    return BottomNavigationBarItem(
+      label: '',
+      icon: Icon(_iconFromNumber(period)),
+    );
+  }
+
+  IconData _iconFromNumber(int number) {
+    switch (number) {
+      case 0:
+        return Icons.looks_one;
+        break;
+      case 1:
+        return Icons.looks_two;
+        break;
+      case 3:
+        return Icons.looks_3;
+        break;
+      case 4:
+        return Icons.looks_4;
+        break;
+      default:
+        return Icons.looks_6;
+    }
   }
 }
