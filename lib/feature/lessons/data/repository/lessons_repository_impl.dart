@@ -116,9 +116,6 @@ class LessonsRepositoryImpl implements LessonsRepository {
   }) async {
     final localLessons = await lessonsLocalDatasource.getAllLessons();
 
-    final lessonsMap = Map<int, LessonLocalModel>.fromIterable(localLessons,
-        key: (v) => v.evtId, value: (v) => v);
-
     final remoteIds = remoteLessons.map((e) => e.evtId).toList();
 
     List<LessonLocalModel> lessonsToDelete = [];

@@ -1,17 +1,14 @@
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 
 abstract class SubjectsRepository {
-  Future updateSubjects();
+  Stream<Resource<List<SubjectDomainModel>>> watchAllSubjects();
 
-  /// Inserts a single subject into the database
-  Future insertSubject(Subject subject);
-
-  /// Future of all subjects
-  Future<List<Subject>> getAllSubjects();
-
-  /// Stream of all subjects
-  Future<List<Subject>> getSubjectsOrdered();
-
-  /// Stream of all professors
-  Future<List<Professor>> getAllProfessors();
+  Future<Either<Failure, Success>> updateSubjects({
+    @required bool ifNeeded,
+  });
 }

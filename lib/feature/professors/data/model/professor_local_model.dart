@@ -1,8 +1,6 @@
 import 'package:moor/moor.dart';
 
-// "teacherId": "A3175375",
-// "teacherName": "CAZZIOLATO ALESSANDRO"
-
+@DataClassName('ProfessorLocalModel')
 class Professors extends Table {
   TextColumn get id => text()();
   IntColumn get subjectId => integer()();

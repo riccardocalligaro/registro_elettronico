@@ -1,7 +1,7 @@
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:moor/moor.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_local_model.dart';
-import 'package:registro_elettronico/feature/professors/data/model/professor_table.dart';
+import 'package:registro_elettronico/feature/professors/data/model/professor_local_model.dart';
 
 part 'lessons_local_datasource.g.dart';
 

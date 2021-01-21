@@ -1,11 +1,11 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'subject_dao.dart';
+part of 'professors_local_datasource.dart';
 
 // **************************************************************************
 // DaoGenerator
 // **************************************************************************
 
-mixin _$SubjectDaoMixin on DatabaseAccessor<AppDatabase> {
-  $SubjectsTable get subjects => attachedDatabase.subjects;
+mixin _$ProfessorLocalDatasourceMixin on DatabaseAccessor<AppDatabase> {
+  $ProfessorsTable get professors => attachedDatabase.professors;
 }

@@ -30,9 +30,9 @@ abstract class SpaggiariClient {
   Future<Either<LoginResponse, ParentsLoginResponse>> loginUser(
       @Body() LoginRequest loginRequest);
 
-  // Subjects
-  @GET("/students/{studentId}/subjects")
-  Future<SubjectsResponse> getSubjects(@Path() String studentId);
+  // // Subjects
+  // @GET("/students/{studentId}/subjects")
+  // Future<SubjectsResponse> getSubjects(@Path() String studentId);
 
   // Subjects
   // @GET("/students/{studentId}/grades")
@@ -143,25 +143,6 @@ class _SpaggiariClient implements SpaggiariClient {
     return Left(LoginResponse.fromJson(_result.data));
 
     //return Future.value(value);
-  }
-
-  @override
-  getSubjects(studentId) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/subjects',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = SubjectsResponse.fromJson(_result.data);
-    return Future.value(value);
   }
 
   // @override

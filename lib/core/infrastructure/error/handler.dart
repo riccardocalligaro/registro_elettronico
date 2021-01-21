@@ -4,26 +4,28 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 
 import 'failures_v2.dart';
+
+Failure handleStreamError(
+  dynamic e, [
+  StackTrace s,
+]) {
+  Logger.streamError(e.toString());
+  return _handleError(e);
+}
 
 Failure handleError(
   dynamic e, [
   StackTrace s,
 ]) {
-  Exception toThrow;
   // log the errror
-  if (e is Exception) {
-    print(e.toString());
+  Logger.e(exception: e, stacktrace: s);
+  return _handleError(e);
+}
 
-    // Logger.e(exception: e, stacktrace: s);
-    toThrow = e;
-  } else {
-    print(e.toString());
-    print(e.stackTrace);
-    toThrow = Exception(e);
-  }
-
+Failure _handleError(Exception e) {
   if (e is DioError) {
     if (e is TimeoutException || e is SocketException || e.response == null) {
       return NetworkFailure(dioError: e);
@@ -36,6 +38,6 @@ Failure handleError(
     if (e is SqliteException || e is MoorWrappedException) {
       return DatabaseFailure();
     }
-    return GenericFailure(e: toThrow);
+    return GenericFailure(e: e);
   }
 }

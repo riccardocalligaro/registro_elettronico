@@ -1157,22 +1157,24 @@ class $LessonsTable extends Lessons
   }
 }
 
-class Subject extends DataClass implements Insertable<Subject> {
+class SubjectLocalModel extends DataClass
+    implements Insertable<SubjectLocalModel> {
   final int id;
   final String name;
   final int orderNumber;
   final String color;
-  Subject(
+  SubjectLocalModel(
       {@required this.id,
       @required this.name,
       @required this.orderNumber,
       @required this.color});
-  factory Subject.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory SubjectLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    return Subject(
+    return SubjectLocalModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       orderNumber: intType
@@ -1211,10 +1213,10 @@ class Subject extends DataClass implements Insertable<Subject> {
     );
   }
 
-  factory Subject.fromJson(Map<String, dynamic> json,
+  factory SubjectLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Subject(
+    return SubjectLocalModel(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       orderNumber: serializer.fromJson<int>(json['orderNumber']),
@@ -1232,8 +1234,9 @@ class Subject extends DataClass implements Insertable<Subject> {
     };
   }
 
-  Subject copyWith({int id, String name, int orderNumber, String color}) =>
-      Subject(
+  SubjectLocalModel copyWith(
+          {int id, String name, int orderNumber, String color}) =>
+      SubjectLocalModel(
         id: id ?? this.id,
         name: name ?? this.name,
         orderNumber: orderNumber ?? this.orderNumber,
@@ -1241,7 +1244,7 @@ class Subject extends DataClass implements Insertable<Subject> {
       );
   @override
   String toString() {
-    return (StringBuffer('Subject(')
+    return (StringBuffer('SubjectLocalModel(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('orderNumber: $orderNumber, ')
@@ -1256,14 +1259,14 @@ class Subject extends DataClass implements Insertable<Subject> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Subject &&
+      (other is SubjectLocalModel &&
           other.id == this.id &&
           other.name == this.name &&
           other.orderNumber == this.orderNumber &&
           other.color == this.color);
 }
 
-class SubjectsCompanion extends UpdateCompanion<Subject> {
+class SubjectsCompanion extends UpdateCompanion<SubjectLocalModel> {
   final Value<int> id;
   final Value<String> name;
   final Value<int> orderNumber;
@@ -1282,7 +1285,7 @@ class SubjectsCompanion extends UpdateCompanion<Subject> {
   })  : name = Value(name),
         orderNumber = Value(orderNumber),
         color = Value(color);
-  static Insertable<Subject> custom({
+  static Insertable<SubjectLocalModel> custom({
     Expression<int> id,
     Expression<String> name,
     Expression<int> orderNumber,
@@ -1339,7 +1342,8 @@ class SubjectsCompanion extends UpdateCompanion<Subject> {
   }
 }
 
-class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
+class $SubjectsTable extends Subjects
+    with TableInfo<$SubjectsTable, SubjectLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $SubjectsTable(this._db, [this._alias]);
@@ -1402,7 +1406,7 @@ class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
   @override
   final String actualTableName = 'subjects';
   @override
-  VerificationContext validateIntegrity(Insertable<Subject> instance,
+  VerificationContext validateIntegrity(Insertable<SubjectLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1435,9 +1439,9 @@ class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Subject map(Map<String, dynamic> data, {String tablePrefix}) {
+  SubjectLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Subject.fromData(data, _db, prefix: effectivePrefix);
+    return SubjectLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -1446,17 +1450,20 @@ class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
   }
 }
 
-class Professor extends DataClass implements Insertable<Professor> {
+class ProfessorLocalModel extends DataClass
+    implements Insertable<ProfessorLocalModel> {
   final String id;
   final int subjectId;
   final String name;
-  Professor({@required this.id, @required this.subjectId, @required this.name});
-  factory Professor.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  ProfessorLocalModel(
+      {@required this.id, @required this.subjectId, @required this.name});
+  factory ProfessorLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final intType = db.typeSystem.forDartType<int>();
-    return Professor(
+    return ProfessorLocalModel(
       id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       subjectId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
@@ -1488,10 +1495,10 @@ class Professor extends DataClass implements Insertable<Professor> {
     );
   }
 
-  factory Professor.fromJson(Map<String, dynamic> json,
+  factory ProfessorLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Professor(
+    return ProfessorLocalModel(
       id: serializer.fromJson<String>(json['id']),
       subjectId: serializer.fromJson<int>(json['subjectId']),
       name: serializer.fromJson<String>(json['name']),
@@ -1507,14 +1514,15 @@ class Professor extends DataClass implements Insertable<Professor> {
     };
   }
 
-  Professor copyWith({String id, int subjectId, String name}) => Professor(
+  ProfessorLocalModel copyWith({String id, int subjectId, String name}) =>
+      ProfessorLocalModel(
         id: id ?? this.id,
         subjectId: subjectId ?? this.subjectId,
         name: name ?? this.name,
       );
   @override
   String toString() {
-    return (StringBuffer('Professor(')
+    return (StringBuffer('ProfessorLocalModel(')
           ..write('id: $id, ')
           ..write('subjectId: $subjectId, ')
           ..write('name: $name')
@@ -1528,13 +1536,13 @@ class Professor extends DataClass implements Insertable<Professor> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Professor &&
+      (other is ProfessorLocalModel &&
           other.id == this.id &&
           other.subjectId == this.subjectId &&
           other.name == this.name);
 }
 
-class ProfessorsCompanion extends UpdateCompanion<Professor> {
+class ProfessorsCompanion extends UpdateCompanion<ProfessorLocalModel> {
   final Value<String> id;
   final Value<int> subjectId;
   final Value<String> name;
@@ -1550,7 +1558,7 @@ class ProfessorsCompanion extends UpdateCompanion<Professor> {
   })  : id = Value(id),
         subjectId = Value(subjectId),
         name = Value(name);
-  static Insertable<Professor> custom({
+  static Insertable<ProfessorLocalModel> custom({
     Expression<String> id,
     Expression<int> subjectId,
     Expression<String> name,
@@ -1598,7 +1606,7 @@ class ProfessorsCompanion extends UpdateCompanion<Professor> {
 }
 
 class $ProfessorsTable extends Professors
-    with TableInfo<$ProfessorsTable, Professor> {
+    with TableInfo<$ProfessorsTable, ProfessorLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $ProfessorsTable(this._db, [this._alias]);
@@ -1647,7 +1655,8 @@ class $ProfessorsTable extends Professors
   @override
   final String actualTableName = 'professors';
   @override
-  VerificationContext validateIntegrity(Insertable<Professor> instance,
+  VerificationContext validateIntegrity(
+      Insertable<ProfessorLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1674,9 +1683,9 @@ class $ProfessorsTable extends Professors
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Professor map(Map<String, dynamic> data, {String tablePrefix}) {
+  ProfessorLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Professor.fromData(data, _db, prefix: effectivePrefix);
+    return ProfessorLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -9373,11 +9382,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       _downloadedDocuments ??= $DownloadedDocumentsTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
-  SubjectDao _subjectDao;
-  SubjectDao get subjectDao => _subjectDao ??= SubjectDao(this as AppDatabase);
-  ProfessorDao _professorDao;
-  ProfessorDao get professorDao =>
-      _professorDao ??= ProfessorDao(this as AppDatabase);
   AbsenceDao _absenceDao;
   AbsenceDao get absenceDao => _absenceDao ??= AbsenceDao(this as AppDatabase);
   PeriodDao _periodDao;
@@ -9404,6 +9408,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   LessonsLocalDatasource _lessonsLocalDatasource;
   LessonsLocalDatasource get lessonsLocalDatasource =>
       _lessonsLocalDatasource ??= LessonsLocalDatasource(this as AppDatabase);
+  SubjectsLocalDatasource _subjectsLocalDatasource;
+  SubjectsLocalDatasource get subjectsLocalDatasource =>
+      _subjectsLocalDatasource ??= SubjectsLocalDatasource(this as AppDatabase);
+  ProfessorLocalDatasource _professorLocalDatasource;
+  ProfessorLocalDatasource get professorLocalDatasource =>
+      _professorLocalDatasource ??=
+          ProfessorLocalDatasource(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
