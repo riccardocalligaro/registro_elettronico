@@ -197,6 +197,7 @@ class GradesRepositoryImpl extends GradesRepository {
         sharedPreferences.getBool(PrefsConstants.SORTING_ASCENDING) ?? false;
 
     yield* gradesLocalDatasource.watchGrades().map((localGrades) {
+      print(localGrades.length);
       // dobbiamo convertire i modelli locali dividendoli in più periods
 
       Map<int, int> objectives = Map();

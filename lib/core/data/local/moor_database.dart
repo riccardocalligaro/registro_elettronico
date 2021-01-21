@@ -98,7 +98,7 @@ class AppDatabase extends _$AppDatabase {
             await m.deleteTable(attachments.actualTableName);
             await m.createTable(attachments);
           }
-          if (from < 3) {
+          if (from < 3 && to == 3) {
             await m.addColumn(grades, grades.hasSeenIt);
           }
         },
