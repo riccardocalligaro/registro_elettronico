@@ -14,80 +14,111 @@ class GradesPage extends StatefulWidget {
 }
 
 class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
-  TabController _tabController;
+  int _currentPage = 0;
 
   @override
   void initState() {
     super.initState();
-
-    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).translate('grades'),
-          ),
-          bottom: TabBar(
-            controller: _tabController,
-            isScrollable: true,
-            indicatorColor: Theme.of(context).accentColor,
-            labelColor: Theme.of(context).primaryTextTheme.headline5.color,
-            tabs: [
-              Container(
-                width: 140,
-                child: Tab(
-                  child: Text(AppLocalizations.of(context)
-                      .translate('last_grades')
-                      .toUpperCase()),
+      child: BlocBuilder<GradesWatcherBloc, GradesWatcherState>(
+        builder: (context, state) {
+          if (state is GradesWatcherLoadSuccess) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  AppLocalizations.of(context).translate('grades'),
                 ),
               ),
-              Container(
-                width: 140,
-                child: Tab(
-                  child: Text(
-                      "1° ${AppLocalizations.of(context).translate('term').toUpperCase()}"),
-                ),
+              bottomNavigationBar: _buildBottomNavigationBar(
+                periods: state.gradesSections.periods,
               ),
-              Container(
-                width: 140,
-                child: Tab(
-                  child: Text(
-                      "2° ${AppLocalizations.of(context).translate('term').toUpperCase()}"),
-                ),
-              ),
-              Container(
-                width: 140,
-                child: Tab(
-                  child: Text(
-                    AppLocalizations.of(context)
-                        .translate('overall')
-                        .toUpperCase(),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        body: BlocBuilder<GradesWatcherBloc, GradesWatcherState>(
-          builder: (context, state) {
-            if (state is GradesWatcherLoadSuccess) {
-              return GradesLoaded(
+              body: GradesLoaded(
                 gradesPagesDomainModel: state.gradesSections,
-                tabController: _tabController,
-              );
-            } else if (state is GradesWatcherFailure) {
-              return GradesFailure(failure: state.failure);
-            }
+                index: _currentPage,
+              ),
+            );
+          } else if (state is GradesWatcherFailure) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  AppLocalizations.of(context).translate('grades'),
+                ),
+              ),
+              body: GradesFailure(failure: state.failure),
+            );
+          }
 
-            return GradesLoading();
-          },
-        ),
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                AppLocalizations.of(context).translate('grades'),
+              ),
+            ),
+            body: GradesLoading(),
+          );
+        },
       ),
     );
+  }
+
+  BottomNavigationBar _buildBottomNavigationBar({
+    @required int periods,
+  }) {
+    return BottomNavigationBar(
+      // selectedItemColor: CYColors.lightOrange,
+      // unselectedItemColor: CYColors.lightText,
+      type: BottomNavigationBarType.fixed,
+      currentIndex: _currentPage,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      onTap: (int index) {
+        // Calls the api if needed
+        setState(() {
+          _currentPage = index;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          label: 'Tutti i voti',
+          icon: Icon(Icons.format_list_numbered),
+        ),
+        ...List.generate(periods - 1, (index) => _navBarItem(index)),
+        BottomNavigationBarItem(
+          label: '',
+          icon: Icon(Icons.timeline),
+        ),
+      ],
+    );
+  }
+
+  BottomNavigationBarItem _navBarItem(int period) {
+    return BottomNavigationBarItem(
+      label: '',
+      icon: Icon(_iconFromNumber(period)),
+    );
+  }
+
+  IconData _iconFromNumber(int number) {
+    switch (number) {
+      case 0:
+        return Icons.looks_one;
+        break;
+      case 1:
+        return Icons.looks_two;
+        break;
+      case 3:
+        return Icons.looks_3;
+        break;
+      case 4:
+        return Icons.looks_4;
+        break;
+      default:
+        return Icons.looks_6;
+    }
   }
 }

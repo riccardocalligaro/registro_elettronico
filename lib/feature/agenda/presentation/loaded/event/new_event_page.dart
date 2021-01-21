@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/model/event_type.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/local_notification.dart';
 import 'package:registro_elettronico/core/presentation/widgets/app_drawer.dart';
+import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
-import 'package:registro_elettronico/feature/agenda/presentation/widgets/select_date_dialog.dart';
-import 'package:registro_elettronico/feature/agenda/presentation/widgets/select_notifications_time_alert.dart';
-import 'package:registro_elettronico/feature/agenda/presentation/widgets/select_subject_dialog.dart';
+import 'package:registro_elettronico/feature/agenda/presentation/agenda_page.dart';
+import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_date_dialog.dart';
+import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_notifications_time_alert.dart';
+import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_subject_dialog.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
-
-import '../agenda_page.dart';
 
 class NewEventPage extends StatefulWidget {
   final EventType eventType;
@@ -116,36 +116,36 @@ class _NewEventPageState extends State<NewEventPage> {
 
     Logger.info('Date of the new event $_date');
 
-    AgendaEvent event;
+    AgendaEventDomainModel event;
     if (widget.eventType == EventType.memo) {
-      event = AgendaEvent(
+      event = AgendaEventDomainModel(
         subjectId: -1,
         isLocal: true,
         isFullDay: false,
-        evtCode: "",
+        code: '',
         begin: _date,
         end: _date,
-        subjectDesc: '',
-        authorName: "",
-        classDesc: "",
-        evtId: id,
+        subjectName: '',
+        author: '',
+        className: '',
+        id: id,
         notes: _descriptionController.text,
         labelColor: _labelColor.value.toString(),
         title: _titleController.text,
       );
     } else {
       if (_selectedSubject != null) {
-        event = AgendaEvent(
+        event = AgendaEventDomainModel(
           subjectId: _selectedSubject.id,
           isLocal: true,
           isFullDay: false,
-          evtCode: "",
+          code: '',
           begin: _date,
           end: _date,
-          subjectDesc: _selectedSubject.name,
-          authorName: "",
-          classDesc: "",
-          evtId: id,
+          subjectName: _selectedSubject.name,
+          author: '',
+          className: '',
+          id: id,
           notes: _descriptionController.text,
           labelColor: _labelColor.value.toString(),
           title: _titleController.text,
@@ -158,8 +158,8 @@ class _NewEventPageState extends State<NewEventPage> {
       }
     }
 
-    await RepositoryProvider.of<AgendaRepository>(context)
-        .insertLocalEvent(event);
+    final AgendaRepository agendaRepository = sl();
+    await agendaRepository.insertEvent(event: event);
 
     Navigator.pop(context, _selectedDate);
 

@@ -83,7 +83,7 @@ class UpdateUtils {
     if (!fromLogin) {
       // download the agenda, lessons and grades
       await Future.wait([
-        agendaRepository.updateAllAgenda(),
+        agendaRepository.updateAllAgenda(ifNeeded: false),
         lessonsRepository.updateAllLessons(),
         gradesRepository.updateGrades(ifNeeded: false),
       ]);

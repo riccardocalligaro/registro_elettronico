@@ -4,6 +4,7 @@ import 'package:registro_elettronico/feature/didactics/presentation/didactics_pa
 import 'package:registro_elettronico/feature/home/presentation/home_page.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/lessons_page.dart';
 import 'package:registro_elettronico/feature/login/presentation/login_page.dart';
+import 'package:registro_elettronico/feature/navigator/navigator_page.dart';
 import 'package:registro_elettronico/feature/notes/presentation/notes_page.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/noticeboard_page.dart';
 import 'package:registro_elettronico/feature/scrutini/presentation/scrutini_page.dart';
@@ -14,6 +15,7 @@ import 'package:registro_elettronico/feature/timetable/presentation/timetable_pa
 
 class Routes {
   static const MAIN = '/';
+  static const NAVIGATOR = '/navigator';
   static const LOGIN = '/login';
   static const HOME = '/home';
   static const LESSONS = '/lessons';
@@ -42,6 +44,7 @@ class Routes {
     TIMETABLE: (ctx) => TimetablePage(),
     SCRUTINI: (ctx) => ScrutiniPage(),
     STATS: (ctx) => StatsPage(),
-    SETTINGS: (ctx) => SettingsPage()
+    SETTINGS: (ctx) => SettingsPage(),
+    NAVIGATOR: (ctx) => NavigatorPage()
   };
 }

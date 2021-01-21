@@ -309,5 +309,7 @@
   "theme_color_title": "Color",
   "theme_color_subtitle": "Change the theme's color",
   "seen_grades": "Seen",
-  "not_seen_grades": "Not seen"
+  "not_seen_grades": "Not seen",
+  "empty_events": "No events",
+  "empty_lessons": "No lessons"
 }

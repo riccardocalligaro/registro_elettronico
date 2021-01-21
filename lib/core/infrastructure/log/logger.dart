@@ -110,6 +110,12 @@ class Logger {
     );
   }
 
+  static void streamError(String text) {
+    FLog.error(
+      text: '⛔️ [STREAM ERROR] $text',
+    );
+  }
+
   static void e({
     String text,
     Object exception,

@@ -43,7 +43,7 @@ class SRGradeCard extends StatelessWidget {
                   color: Colors.white,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8.0,
-                    vertical: 17.0,
+                    vertical: 19.0,
                   ),
                   child: Text(
                     grade.displayValue,

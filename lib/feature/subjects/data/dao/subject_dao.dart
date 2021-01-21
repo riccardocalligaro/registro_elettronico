@@ -21,6 +21,8 @@ class SubjectDao extends DatabaseAccessor<AppDatabase> with _$SubjectDaoMixin {
 
   Future<List<Subject>> getAllSubjects() => select(subjects).get();
 
+  Stream<List<Subject>> watchAllSubjects() => select(subjects).watch();
+
   Future<List<Subject>> getSubjectsOrdered() {
     return (select(subjects)
           ..orderBy([

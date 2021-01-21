@@ -297,6 +297,7 @@ class GradesRepositoryImpl extends GradesRepository {
       GradesPagesDomainModel gradesPagesDomainModel = GradesPagesDomainModel(
         grades: dividedGrades,
         periodsWithGrades: gradesPeriods,
+        periods: periods.length,
       );
 
       return Resource.success(data: gradesPagesDomainModel);

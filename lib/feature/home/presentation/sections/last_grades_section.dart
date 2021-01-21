@@ -65,6 +65,7 @@ class _LastGradesLoaded extends StatelessWidget {
 
   Widget _buildListViewCard(GradeDomainModel grade, BuildContext context) {
     return Card(
+      margin: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
       child: ListTile(
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),

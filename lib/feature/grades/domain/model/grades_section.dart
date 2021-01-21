@@ -5,11 +5,13 @@ import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_mo
 
 class GradesPagesDomainModel {
   List<GradeDomainModel> grades;
+  int periods;
   List<PeriodWithGradesDomainModel> periodsWithGrades;
 
   GradesPagesDomainModel({
-    this.grades,
-    this.periodsWithGrades,
+    @required this.grades,
+    @required this.periodsWithGrades,
+    @required this.periods,
   });
 }
 

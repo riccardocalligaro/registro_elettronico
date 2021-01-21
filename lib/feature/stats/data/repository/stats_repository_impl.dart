@@ -4,7 +4,8 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
-import 'package:registro_elettronico/feature/agenda/data/dao/agenda_dao.dart';
+import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
+import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
@@ -25,7 +26,7 @@ class StatsRepositoryImpl implements StatsRepository {
   final SubjectDao subjectDao;
   final PeriodDao periodDao;
   final NoteDao noteDao;
-  final AgendaDao agendaDao;
+  final AgendaLocalDatasource agendaDao;
   final SharedPreferences sharedPreferences;
 
   StatsRepositoryImpl(
@@ -51,7 +52,10 @@ class StatsRepositoryImpl implements StatsRepository {
       final subjects = await subjectDao.getAllSubjects();
       final periods = await periodDao.getAllPeriods();
       final notes = await noteDao.getAllNotes();
-      final events = await agendaDao.getAllEvents();
+      final localEvents = await agendaDao.getAllEvents();
+      final events = localEvents
+          .map((e) => AgendaEventDomainModel.fromLocalModel(e))
+          .toList();
 
       final year = sharedPreferences.getInt(PrefsConstants.STUDENT_YEAR) ?? 3;
 
@@ -233,7 +237,7 @@ class StatsRepositoryImpl implements StatsRepository {
     @required List<Absence> absences,
     @required List<Note> notes,
     @required int skippedTests,
-    @required List<AgendaEvent> events,
+    @required List<AgendaEventDomainModel> events,
     @required int nearlySufficientSubjects,
     @required int insufficientSubjects,
     @required double average,
@@ -275,7 +279,7 @@ class StatsRepositoryImpl implements StatsRepository {
   }
 
   int _getSkippedTests({
-    @required List<AgendaEvent> events,
+    @required List<AgendaEventDomainModel> events,
     @required List<Absence> absences,
   }) {
     int days = 0;

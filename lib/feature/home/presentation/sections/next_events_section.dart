@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/feature/agenda/presentation/bloc/agenda_bloc.dart';
-import 'package:registro_elettronico/feature/home/presentation/blocs/agenda/agenda_dashboard_bloc.dart';
+import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
+import 'package:registro_elettronico/feature/agenda/presentation/watcher/agenda_watcher_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/pages/next_events_page.dart';
 import 'package:registro_elettronico/feature/home/presentation/widgets/timeline.dart';
 import 'package:registro_elettronico/feature/home/presentation/widgets/week_summary_chart.dart';
@@ -16,28 +15,26 @@ class NextEventsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AgendaDashboardBloc, AgendaDashboardState>(
+    return BlocBuilder<AgendaWatcherBloc, AgendaWatcherState>(
       builder: (context, state) {
-        if (state is AgendaDashboardLoadSuccess) {
+        if (state is AgendaWatcherLoadSuccess) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               WeekSummaryChart(
-                events: state.events.toList(),
+                events: state.agendaDataDomainModel.events.toList(),
               ),
               Text(AppLocalizations.of(context).translate('next_events')),
-              _buildAgenda(context, state.events),
+              _buildAgenda(context, state.agendaDataDomainModel.events),
             ],
           );
-        } else if (state is AgendaDashboardLoadError) {
+        } else if (state is AgendaWatcherFailure) {
           return CustomPlaceHolder(
             text: AppLocalizations.of(context)
                 .translate('unexcepted_error_single'),
             icon: Icons.error,
             showUpdate: true,
-            onTap: () {
-              BlocProvider.of<AgendaBloc>(context).add(UpdateAllAgenda());
-            },
+            onTap: () {},
           );
         }
         return Container();
@@ -47,7 +44,7 @@ class NextEventsSection extends StatelessWidget {
 
   Widget _buildAgenda(
     BuildContext context,
-    List<db.AgendaEvent> events,
+    List<AgendaEventDomainModel> events,
   ) {
     events = events.toList()..sort((a, b) => a.begin.compareTo(b.begin));
 
@@ -64,7 +61,7 @@ class NextEventsSection extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Text(AppLocalizations.of(context).translate('no_events'))
+              Text(AppLocalizations.of(context).translate('no_events')),
             ],
           ),
         ),
@@ -120,7 +117,7 @@ class NextEventsSection extends StatelessWidget {
                       //   style: TextStyle(fontSize: 12.0),
                       // ),
                       Text(
-                        '${StringUtils.titleCase(e.authorName)} - ${_getDateMessage(e, context)}',
+                        '${StringUtils.titleCase(e.author)} - ${_getDateMessage(e, context)}',
                         style: TextStyle(fontSize: 12.0),
                       ),
                     ],
@@ -174,7 +171,8 @@ class NextEventsSection extends StatelessWidget {
     }
   }
 
-  String _getDateMessage(db.AgendaEvent agendaEvent, BuildContext context) {
+  String _getDateMessage(
+      AgendaEventDomainModel agendaEvent, BuildContext context) {
     return GlobalUtils.getEventDateMessage(
         context, agendaEvent.begin, agendaEvent.isFullDay);
   }

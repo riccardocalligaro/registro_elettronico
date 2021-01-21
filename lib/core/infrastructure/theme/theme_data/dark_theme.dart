@@ -9,7 +9,7 @@ class DarkTheme {
       accentColor: color,
       // primaryColor: color,
       brightness: Brightness.dark,
-      fontFamily: 'Montserrat',
+      fontFamily: 'Manrope',
       appBarTheme: AppBarTheme(
         elevation: 0,
         color: Colors.grey[900],

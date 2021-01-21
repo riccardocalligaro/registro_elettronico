@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/model/event_type.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
+import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
-import 'package:registro_elettronico/feature/agenda/presentation/widgets/select_date_dialog.dart';
-import 'package:registro_elettronico/feature/agenda/presentation/widgets/select_subject_dialog.dart';
+import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_date_dialog.dart';
+import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_subject_dialog.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class EditEventPage extends StatefulWidget {
-  final AgendaEvent event;
+  final AgendaEventDomainModel event;
   final EventType type;
 
   EditEventPage({
@@ -28,7 +29,7 @@ class EditEventPage extends StatefulWidget {
 }
 
 class _EditEventPageState extends State<EditEventPage> {
-  AgendaEvent event;
+  AgendaEventDomainModel event;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
@@ -45,7 +46,7 @@ class _EditEventPageState extends State<EditEventPage> {
 
   @override
   void initState() {
-    _initialSubject = widget.event.subjectDesc;
+    _initialSubject = widget.event.subjectName;
     _selectedDate = widget.event.begin;
 
     _timeOfDay = TimeOfDay(
@@ -94,7 +95,7 @@ class _EditEventPageState extends State<EditEventPage> {
   }
 
   void _updateEventInDb() async {
-    AgendaEvent event;
+    AgendaEventDomainModel event;
     final eventOriginal = widget.event;
 
     final DateTime _date = DateTime(
@@ -106,39 +107,39 @@ class _EditEventPageState extends State<EditEventPage> {
     );
 
     if (widget.type == EventType.memo) {
-      event = AgendaEvent(
+      event = AgendaEventDomainModel(
         subjectId: -1,
         isLocal: true,
         isFullDay: false,
-        evtCode: "",
+        code: "",
         begin: _date ?? eventOriginal.begin,
         end: _date ?? eventOriginal.begin,
-        subjectDesc: _selectedSubject != null
+        subjectName: _selectedSubject != null
             ? _selectedSubject.name
-            : eventOriginal.subjectDesc,
-        authorName: "",
-        classDesc: "",
-        evtId: eventOriginal.evtId,
+            : eventOriginal.subjectName,
+        author: "",
+        className: "",
+        id: eventOriginal.id,
         notes: _descriptionController.text,
         labelColor: _labelColor.value.toString(),
         title: _titleController.text,
       );
     } else {
-      event = AgendaEvent(
+      event = AgendaEventDomainModel(
         subjectId: _selectedSubject != null
             ? _selectedSubject.id
             : eventOriginal.subjectId,
         isLocal: true,
         isFullDay: false,
-        evtCode: "",
+        code: '',
         begin: _date ?? eventOriginal.begin,
         end: _date ?? eventOriginal.begin,
-        subjectDesc: _selectedSubject != null
+        subjectName: _selectedSubject != null
             ? _selectedSubject.name
-            : eventOriginal.subjectDesc,
-        authorName: "",
-        classDesc: "",
-        evtId: eventOriginal.evtId,
+            : eventOriginal.subjectName,
+        author: '',
+        className: '',
+        id: eventOriginal.id,
         notes: _descriptionController.text,
         labelColor: _labelColor.value.toString(),
         title: _titleController.text,
@@ -147,7 +148,8 @@ class _EditEventPageState extends State<EditEventPage> {
 
     Logger.info('Updated events');
 
-    await RepositoryProvider.of<AgendaRepository>(context).updateEvent(event);
+    final AgendaRepository agendaRepository = sl();
+    await agendaRepository.updateEvent(event: event);
 
     Navigator.pop(context, _date ?? eventOriginal.begin);
   }
