@@ -13,8 +13,8 @@ import 'package:registro_elettronico/feature/didactics/data/model/local/download
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
 import 'package:registro_elettronico/feature/grades/data/model/grade_local_model.dart';
 import 'package:registro_elettronico/feature/grades/data/model/local_grade_local_model.dart';
+import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_local_datasource.dart';
 import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
-import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/dao/notice_dao.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
@@ -71,7 +71,6 @@ LazyDatabase _openConnection() {
   DownloadedDocuments,
 ], daos: [
   ProfileDao,
-  LessonDao,
   SubjectDao,
   ProfessorDao,
   AbsenceDao,
@@ -82,7 +81,8 @@ LazyDatabase _openConnection() {
   TimetableDao,
   DocumentsDao,
   GradesLocalDatasource,
-  AgendaLocalDatasource
+  AgendaLocalDatasource,
+  LessonsLocalDatasource,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());

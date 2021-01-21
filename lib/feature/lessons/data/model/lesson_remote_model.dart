@@ -1,25 +1,4 @@
-class LessonsResponse {
-  List<LessonRemoteModel> lessons;
-
-  LessonsResponse({this.lessons});
-
-  LessonsResponse.fromJson(Map<String, dynamic> json) {
-    if (json['lessons'] != null) {
-      lessons = List<LessonRemoteModel>();
-      json['lessons'].forEach((v) {
-        lessons.add(LessonRemoteModel.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    if (this.lessons != null) {
-      data['lessons'] = this.lessons.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 class LessonRemoteModel {
   int evtId;
@@ -90,5 +69,22 @@ class LessonRemoteModel {
     data['lessonType'] = this.lessonType;
     data['lessonArg'] = this.lessonArg;
     return data;
+  }
+
+  LessonLocalModel toLocalModel() {
+    return LessonLocalModel(
+      eventId: this.evtId,
+      date: DateTime.parse(this.evtDate) ?? DateTime.now(),
+      code: this.evtCode ?? '',
+      position: this.evtHPos ?? -1,
+      duration: this.evtDuration ?? -1,
+      classe: this.classDesc ?? '',
+      author: this.authorName ?? '',
+      subjectId: this.subjectId ?? -1,
+      subjectCode: this.subjectCode ?? '',
+      subjectDescription: this.subjectDesc ?? '',
+      lessonType: this.lessonType ?? '',
+      lessonArg: this.lessonArg ?? '',
+    );
   }
 }

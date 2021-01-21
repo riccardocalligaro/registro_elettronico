@@ -123,7 +123,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
     yield* Rx.combineLatest2(
       agendaLocalDatasource.watchAllEvents(),
       lessonDao.watchAllLessons(),
-      (List<AgendaEventLocalModel> events, List<Lesson> lessons) {
+      (List<AgendaEventLocalModel> events, List<LessonLocalModel> lessons) {
         final domainEvents = events
             .map((l) => AgendaEventDomainModel.fromLocalModel(l))
             .toList();

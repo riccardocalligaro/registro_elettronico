@@ -451,7 +451,8 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   }
 }
 
-class Lesson extends DataClass implements Insertable<Lesson> {
+class LessonLocalModel extends DataClass
+    implements Insertable<LessonLocalModel> {
   final int eventId;
   final DateTime date;
   final String code;
@@ -464,7 +465,7 @@ class Lesson extends DataClass implements Insertable<Lesson> {
   final String subjectDescription;
   final String lessonType;
   final String lessonArg;
-  Lesson(
+  LessonLocalModel(
       {@required this.eventId,
       @required this.date,
       @required this.code,
@@ -477,13 +478,14 @@ class Lesson extends DataClass implements Insertable<Lesson> {
       @required this.subjectDescription,
       @required this.lessonType,
       @required this.lessonArg});
-  factory Lesson.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory LessonLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     final stringType = db.typeSystem.forDartType<String>();
-    return Lesson(
+    return LessonLocalModel(
       eventId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}event_id']),
       date:
@@ -586,10 +588,10 @@ class Lesson extends DataClass implements Insertable<Lesson> {
     );
   }
 
-  factory Lesson.fromJson(Map<String, dynamic> json,
+  factory LessonLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Lesson(
+    return LessonLocalModel(
       eventId: serializer.fromJson<int>(json['eventId']),
       date: serializer.fromJson<DateTime>(json['date']),
       code: serializer.fromJson<String>(json['code']),
@@ -624,7 +626,7 @@ class Lesson extends DataClass implements Insertable<Lesson> {
     };
   }
 
-  Lesson copyWith(
+  LessonLocalModel copyWith(
           {int eventId,
           DateTime date,
           String code,
@@ -637,7 +639,7 @@ class Lesson extends DataClass implements Insertable<Lesson> {
           String subjectDescription,
           String lessonType,
           String lessonArg}) =>
-      Lesson(
+      LessonLocalModel(
         eventId: eventId ?? this.eventId,
         date: date ?? this.date,
         code: code ?? this.code,
@@ -653,7 +655,7 @@ class Lesson extends DataClass implements Insertable<Lesson> {
       );
   @override
   String toString() {
-    return (StringBuffer('Lesson(')
+    return (StringBuffer('LessonLocalModel(')
           ..write('eventId: $eventId, ')
           ..write('date: $date, ')
           ..write('code: $code, ')
@@ -696,7 +698,7 @@ class Lesson extends DataClass implements Insertable<Lesson> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Lesson &&
+      (other is LessonLocalModel &&
           other.eventId == this.eventId &&
           other.date == this.date &&
           other.code == this.code &&
@@ -711,7 +713,7 @@ class Lesson extends DataClass implements Insertable<Lesson> {
           other.lessonArg == this.lessonArg);
 }
 
-class LessonsCompanion extends UpdateCompanion<Lesson> {
+class LessonsCompanion extends UpdateCompanion<LessonLocalModel> {
   final Value<int> eventId;
   final Value<DateTime> date;
   final Value<String> code;
@@ -762,7 +764,7 @@ class LessonsCompanion extends UpdateCompanion<Lesson> {
         subjectDescription = Value(subjectDescription),
         lessonType = Value(lessonType),
         lessonArg = Value(lessonArg);
-  static Insertable<Lesson> custom({
+  static Insertable<LessonLocalModel> custom({
     Expression<int> eventId,
     Expression<DateTime> date,
     Expression<String> code,
@@ -883,7 +885,8 @@ class LessonsCompanion extends UpdateCompanion<Lesson> {
   }
 }
 
-class $LessonsTable extends Lessons with TableInfo<$LessonsTable, Lesson> {
+class $LessonsTable extends Lessons
+    with TableInfo<$LessonsTable, LessonLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $LessonsTable(this._db, [this._alias]);
@@ -1057,7 +1060,7 @@ class $LessonsTable extends Lessons with TableInfo<$LessonsTable, Lesson> {
   @override
   final String actualTableName = 'lessons';
   @override
-  VerificationContext validateIntegrity(Insertable<Lesson> instance,
+  VerificationContext validateIntegrity(Insertable<LessonLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1143,9 +1146,9 @@ class $LessonsTable extends Lessons with TableInfo<$LessonsTable, Lesson> {
   @override
   Set<GeneratedColumn> get $primaryKey => {eventId};
   @override
-  Lesson map(Map<String, dynamic> data, {String tablePrefix}) {
+  LessonLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Lesson.fromData(data, _db, prefix: effectivePrefix);
+    return LessonLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -9370,8 +9373,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       _downloadedDocuments ??= $DownloadedDocumentsTable(this);
   ProfileDao _profileDao;
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
-  LessonDao _lessonDao;
-  LessonDao get lessonDao => _lessonDao ??= LessonDao(this as AppDatabase);
   SubjectDao _subjectDao;
   SubjectDao get subjectDao => _subjectDao ??= SubjectDao(this as AppDatabase);
   ProfessorDao _professorDao;
@@ -9400,6 +9401,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   AgendaLocalDatasource _agendaLocalDatasource;
   AgendaLocalDatasource get agendaLocalDatasource =>
       _agendaLocalDatasource ??= AgendaLocalDatasource(this as AppDatabase);
+  LessonsLocalDatasource _lessonsLocalDatasource;
+  LessonsLocalDatasource get lessonsLocalDatasource =>
+      _lessonsLocalDatasource ??= LessonsLocalDatasource(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

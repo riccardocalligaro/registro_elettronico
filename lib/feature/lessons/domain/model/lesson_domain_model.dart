@@ -29,7 +29,7 @@ class LessonDomainModel {
     this.lessonArgoment,
   });
 
-  LessonDomainModel.fromLocalModel(Lesson l) {
+  LessonDomainModel.fromLocalModel(LessonLocalModel l) {
     this.id = l.eventId;
     this.date = l.date;
     this.code = l.code;

@@ -30,15 +30,6 @@ abstract class SpaggiariClient {
   Future<Either<LoginResponse, ParentsLoginResponse>> loginUser(
       @Body() LoginRequest loginRequest);
 
-  /// Gets lesson of today
-  @GET("/students/{studentId}/lessons/today")
-  Future<LessonsResponse> getTodayLessons(@Path() String studentId);
-
-  /// Gets lesson between date 1 and date 2
-  @GET("/students/{studentId}/lessons/{start}/{end}")
-  Future<LessonsResponse> getLessonBetweenDates(@Path() String studentId,
-      @Path("start") String start, @Path("end") String end);
-
   // Subjects
   @GET("/students/{studentId}/subjects")
   Future<SubjectsResponse> getSubjects(@Path() String studentId);
@@ -152,46 +143,6 @@ class _SpaggiariClient implements SpaggiariClient {
     return Left(LoginResponse.fromJson(_result.data));
 
     //return Future.value(value);
-  }
-
-  @override
-  getTodayLessons(studentId) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/lessons/today',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = LessonsResponse.fromJson(_result.data);
-    return Future.value(value);
-  }
-
-  @override
-  getLessonBetweenDates(studentId, start, end) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    ArgumentError.checkNotNull(start, 'start');
-    ArgumentError.checkNotNull(end, 'end');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/lessons/$start/$end',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = LessonsResponse.fromJson(_result.data);
-    return Future.value(value);
   }
 
   @override

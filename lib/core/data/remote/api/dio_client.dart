@@ -37,6 +37,10 @@ class DioClient {
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       //? We need to add the token when we are not loggin in
+      if (options.path.contains('{studentId}')) {
+        options.path
+            .replaceAll('{studentId}', profileRepository.currentStudentId());
+      }
       if (options.path != "/auth/login") {
         // temporarily lock the requests
         dio.lock();
