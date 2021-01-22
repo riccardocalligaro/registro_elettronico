@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/agenda_page.dart';
 import 'package:registro_elettronico/feature/grades/presentation/grades_page.dart';
-import 'package:registro_elettronico/feature/home/presentation/home_page.dart';
+import 'package:registro_elettronico/feature/home/home_page.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/noticeboard_page.dart';
 import 'package:registro_elettronico/feature/settings/settings_page.dart';
 

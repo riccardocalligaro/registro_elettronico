@@ -36,7 +36,9 @@ void main() async {
       exception: Exception(e.toString()),
       stacktrace: s,
     );
-    FirebaseCrashlytics.instance.recordError(e, s);
+    if (!kDebugMode) {
+      FirebaseCrashlytics.instance.recordError(e, s);
+    }
   });
 }
 

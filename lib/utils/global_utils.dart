@@ -136,7 +136,7 @@ class GlobalUtils {
   static Future<PeriodDomainModel> getPeriodFromDate(DateTime date) async {
     final PeriodsLocalDatasource periodsLocalDatasource = sl();
 
-    final localPeriods = await periodsLocalDatasource.getAllPeriods();
+    final localPeriods = await periodsLocalDatasource.getPeriods();
     final domainPeriods =
         localPeriods.map((e) => PeriodDomainModel.fromLocalModel(e)).toList();
     for (var i = 0; i < domainPeriods.length; i++) {

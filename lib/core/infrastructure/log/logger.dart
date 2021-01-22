@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:f_logs/f_logs.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stack_trace/stack_trace.dart';
@@ -39,7 +40,10 @@ class Logger {
     String text, {
     DataLogType type = DataLogType.DEFAULT,
   }) {
-    FirebaseCrashlytics.instance.log(text);
+    if (!kDebugMode) {
+      FirebaseCrashlytics.instance.log(text);
+    }
+
     FLog.info(
       text: 'ℹ️ $text',
       dataLogType: type.toString(),
@@ -96,8 +100,8 @@ class Logger {
   }
 
   static void networkError(
-    String text,
-    Object exception, {
+    String text, {
+    Object exception,
     StackTrace trace,
     DataLogType type = DataLogType.DEFAULT,
     String className,
@@ -105,7 +109,6 @@ class Logger {
   }) {
     FLog.error(
       text: '⛔️ $text',
-      exception: Exception(error.toString()),
       stacktrace: trace,
     );
   }
@@ -124,11 +127,13 @@ class Logger {
     String className,
     String methodName,
   }) {
-    FirebaseCrashlytics.instance.recordError(
-      Exception(error.toString()),
-      StackTrace.fromString(Trace.from(stacktrace).toString()),
-      reason: '⛔️ ${Trace.from(stacktrace).frames[0].member.toString()}',
-    );
+    if (!kDebugMode) {
+      FirebaseCrashlytics.instance.recordError(
+        Exception(error.toString()),
+        StackTrace.fromString(Trace.from(stacktrace).toString()),
+        reason: '⛔️ ${Trace.from(stacktrace).frames[0].member.toString()}',
+      );
+    }
     if (Trace.from(stacktrace).frames.isNotEmpty) {
       FLog.error(
         className: className ??
@@ -160,11 +165,13 @@ class Logger {
     String className,
     String methodName,
   }) {
-    FirebaseCrashlytics.instance.recordError(
-      Exception(error.toString()),
-      StackTrace.fromString(Trace.from(trace).toString()),
-      reason: text,
-    );
+    if (!kDebugMode) {
+      FirebaseCrashlytics.instance.recordError(
+        Exception(error.toString()),
+        StackTrace.fromString(Trace.from(trace).toString()),
+        reason: text,
+      );
+    }
 
     FLog.error(
       className:

@@ -4,7 +4,7 @@ import 'package:registro_elettronico/core/infrastructure/localizations/app_local
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/gradient_red_button.dart';
-import 'package:registro_elettronico/feature/home/presentation/home_page.dart';
+import 'package:registro_elettronico/feature/home/home_page.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -91,12 +91,13 @@ class _LoginPageState extends State<LoginPage> {
             }
 
             if (state is SignInSuccess) {
-              await Navigator.of(context)
-                  .pushReplacement(MaterialPageRoute(builder: (context) {
-                return HomePage(
-                  fromSignIn: true,
-                );
-              }));
+              await Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return HomePage();
+                  },
+                ),
+              );
             }
 
             /// Sets the valide data to true

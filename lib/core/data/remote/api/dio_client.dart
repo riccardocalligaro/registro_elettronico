@@ -34,119 +34,126 @@ class DioClient {
 
     dio.options.baseUrl = 'https://web.spaggiari.eu/rest/v1';
 
-    dio.interceptors
-        .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
-      //? We need to add the token when we are not loggin in
-      if (options.path.contains('{studentId}')) {
-        options.path
-            .replaceAll('{studentId}', profileRepository.currentStudentId());
-      }
-      if (options.path != "/auth/login") {
-        // temporarily lock the requests
-        dio.lock();
-        // get the profile from the database
-        final profile = await profileRepository.getProfile();
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (RequestOptions options) async {
+          //? We need to add the token when we are not loggin in
+          if (options.path.contains('{studentId}')) {
+            final replaced = options.path.replaceAll(
+                '{studentId}', profileRepository.currentStudentId());
+            options.path = replaced;
+          }
+          if (options.path != "/auth/login") {
+            // temporarily lock the requests
+            dio.lock();
+            // get the profile from the database
+            final profile = await profileRepository.getProfile();
 
-        print(profile);
+            print(profile);
 
-        final expireDate = DateTime.parse(profile.expire);
+            final expireDate = DateTime.parse(profile.expire);
 
-        //? This checks if the profile exires before now, so if this  results true the token is expired
-        if (expireDate.isBefore(DateTime.now()) || profile.token == "") {
-          Logger.info(
-            '🔒 [DioINTERCEPTOR] Need to request new token - ${profile.expire.toString()}',
-          );
-          // this gets the password from flutter secure storage which is saved using the ident
-          final password = await flutterSecureStorage.read(key: profile.ident);
+            //? This checks if the profile exires before now, so if this  results true the token is expired
+            if (expireDate.isBefore(DateTime.now()) || profile.token == "") {
+              Logger.info(
+                '🔒 [DioINTERCEPTOR] Need to request new token - ${profile.expire.toString()}',
+              );
+              // this gets the password from flutter secure storage which is saved using the ident
+              final password =
+                  await flutterSecureStorage.read(key: profile.ident);
 
-          // we create a dio client for requesting the token to spaggiari
-          final tokenDio = Dio();
-          tokenDio.options.baseUrl = "${ApiConfig.baseApiUrl}";
-          tokenDio.options.headers["Content-Type"] = Headers.jsonContentType;
-          tokenDio.options.headers["User-Agent"] = "${ApiConfig.baseUserAgent}";
-          tokenDio.options.headers["Z-Dev-Apikey"] = "${ApiConfig.apiKey}";
+              // we create a dio client for requesting the token to spaggiari
+              final tokenDio = Dio();
+              tokenDio.options.baseUrl = "${ApiConfig.baseApiUrl}";
+              tokenDio.options.headers["Content-Type"] =
+                  Headers.jsonContentType;
+              tokenDio.options.headers["User-Agent"] =
+                  "${ApiConfig.baseUserAgent}";
+              tokenDio.options.headers["Z-Dev-Apikey"] = "${ApiConfig.apiKey}";
 
-          tokenDio.interceptors.add(
-            InterceptorsWrapper(
-              onError: (DioError error) async {
-                if (error.response != null &&
-                    error.response.statusCode == 422) {
-                  await flutterSecureStorage.deleteAll();
-                  await sharedPreferences.clear();
-                  // ignore: unawaited_futures
-                  navigator.currentState.pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => LoginPage(),
-                    ),
-                  );
+              tokenDio.interceptors.add(
+                InterceptorsWrapper(
+                  onError: (DioError error) async {
+                    if (error.response != null &&
+                        error.response.statusCode == 422) {
+                      await flutterSecureStorage.deleteAll();
+                      await sharedPreferences.clear();
+                      // ignore: unawaited_futures
+                      navigator.currentState.pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => LoginPage(),
+                        ),
+                      );
 
-                  return null;
-                }
-                Logger.e(text: error.toString());
-              },
-            ),
-          );
+                      return null;
+                    }
+                    Logger.e(text: error.toString());
+                  },
+                ),
+              );
 
-          // we make a request to auth login to get the new token
-          final res = await tokenDio.post("/auth/login", data: {
-            "ident": profile.ident,
-            "pass": password,
-            "uid": profile.ident
-          });
+              // we make a request to auth login to get the new token
+              final res = await tokenDio.post("/auth/login", data: {
+                "ident": profile.ident,
+                "pass": password,
+                "uid": profile.ident
+              });
 
-          if (res.statusCode != 200) {
-            throw ServerException.fromJson(res.data);
+              if (res.statusCode != 200) {
+                throw ServerException.fromJson(res.data);
+              }
+
+              // this converts the response data to a login response
+              final loginResponse = LoginResponse.fromJson(res.data);
+
+              // finally we update the db with the new token
+
+              final updatedProfile =
+                  ProfileMapper.mapLoginResponseProfileToProfileEntity(
+                loginResponse,
+              );
+
+              await sharedPreferences.setString(
+                  PrefsConstants.profile, updatedProfile.toJson());
+
+              //profileRepository.updateProfile();
+              Logger.info(
+                '🔒 [DioINTERCEPTOR] Got a new token - proceeding with request',
+              );
+              // this sets the token as the new one we just got from the api
+              options.headers["Z-Auth-Token"] = loginResponse.token;
+            } else {
+              Logger.info(
+                '🆓 [DioINTERCEPTOR] No need for token - proceeding with request',
+              );
+              // If the token is still vaid we just use the one we got from the database
+              options.headers["Z-Auth-Token"] = profile.token;
+            }
+            // unlock and proceed
+            dio.unlock();
           }
 
-          // this converts the response data to a login response
-          final loginResponse = LoginResponse.fromJson(res.data);
-
-          // finally we update the db with the new token
-
-          final updatedProfile =
-              ProfileMapper.mapLoginResponseProfileToProfileEntity(
-            loginResponse,
-          );
-
-          await sharedPreferences.setString(
-              PrefsConstants.profile, updatedProfile.toJson());
-
-          //profileRepository.updateProfile();
+          return options;
+        },
+        onResponse: (Response response) {
           Logger.info(
-            '🔒 [DioINTERCEPTOR] Got a new token - proceeding with request',
+            '🌐 [DioEND] -> Response -> ${response.statusCode} [${response.request.path}] ${response.request.method}  ${response.request.responseType}',
           );
-          // this sets the token as the new one we just got from the api
-          options.headers["Z-Auth-Token"] = loginResponse.token;
-        } else {
-          Logger.info(
-            '🆓 [DioINTERCEPTOR] No need for token - proceeding with request',
-          );
-          // If the token is still vaid we just use the one we got from the database
-          options.headers["Z-Auth-Token"] = profile.token;
-        }
-        // unlock and proceed
-        dio.unlock();
-      }
 
-      return options;
-    }, onResponse: (Response response) {
-      Logger.info(
-        '🌐 [DioEND] -> Response -> ${response.statusCode} [${response.request.path}] ${response.request.method}  ${response.request.responseType}',
-      );
-
-      return response; // continue
-    }, onError: (DioError error) async {
-      if (error.response == null) {
-        Logger.e(text: error.toString());
-      } else {
-        Logger.networkError(
-          '🤮 [DioERROR] ${error.type}',
-          Exception(
-            'Url: [${error.request.baseUrl}] status:${error.response.statusCode} type:${error.type} Data: ${error.response.data} message: ${error.message}',
-          ),
-        );
-      }
-    }));
+          return response; // continue
+        },
+        onError: (DioError error) async {
+          if (error.response == null) {
+            Logger.e(text: error.toString());
+          } else {
+            Logger.networkError(
+              '🤮 [DioERROR] ${error.type} Url: [${error.request.baseUrl}${error.request.path}] status:${error.response.statusCode} type:${error.type} Data: ${error.response.data} message: ${error.message}',
+            );
+          }
+          return error;
+        },
+      ),
+    );
     return dio;
   }
 }

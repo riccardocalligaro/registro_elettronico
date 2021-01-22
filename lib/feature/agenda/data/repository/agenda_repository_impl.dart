@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -163,12 +164,44 @@ class AgendaRepositoryImpl implements AgendaRepository {
             lessonsMap: lessonsMap,
             events: eventsList,
             eventsMapString: eventsMapString,
+            eventsSpots: _getEventsSpotsForDays(events: eventsMapString),
           ),
         );
       },
     ).onErrorReturnWith((e) {
       return Resource.failed(error: handleStreamError(e));
     });
+  }
+
+  List<FlSpot> _getEventsSpotsForDays({
+    @required Map<String, List<AgendaEventDomainModel>> events,
+  }) {
+    List<FlSpot> spots = [];
+
+    DateTime today = DateTime.now();
+    DateTime firstDay;
+
+    if (today.weekday == DateTime.saturday) {
+      firstDay = today.add(Duration(days: 2));
+    } else if (today.weekday == DateTime.sunday) {
+      firstDay = today.add(Duration(days: 1));
+    } else {
+      firstDay = today.subtract(Duration(days: today.weekday - 1));
+    }
+
+    DateTime dayOfWeek = DateTime.utc(today.year, today.month, firstDay.day);
+    String currentString;
+
+    for (var i = 1; i <= 6; i++) {
+      currentString = DateUtils.convertDate(dayOfWeek);
+      final eventsForDay = events[currentString];
+      final numberOfEvents = eventsForDay != null ? eventsForDay.length : 0;
+
+      spots.add(FlSpot(i.toDouble(), numberOfEvents.toDouble()));
+      dayOfWeek = dayOfWeek.add(Duration(days: 1));
+    }
+
+    return spots;
   }
 
   /// This returns the [max interval] to fetch all the lessons / agendas

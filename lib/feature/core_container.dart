@@ -9,8 +9,8 @@ class CoreContainer {
   static Future<void> init() async {
     await ProfessorsContainer.init();
     await PeriodsContainer.init();
-    await ProfessorsContainer.init();
     await SubjectsContainer.init();
+    await LessonsContainer.init();
   }
 
   static List<BlocProvider> getBlocProviders() {
