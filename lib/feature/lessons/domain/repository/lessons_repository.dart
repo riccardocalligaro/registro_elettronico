@@ -14,7 +14,7 @@ abstract class LessonsRepository {
   Stream<Resource<List<LessonDomainModel>>> watchAllLessons();
 
   Stream<Resource<List<LessonWithDurationDomainModel>>>
-      watchAllLessonsWithDuration();
+      watchLatestLessonsWithDuration();
 
   Future<Either<Failure, Success>> updateAllLessons({
     @required bool ifNeeded,

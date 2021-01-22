@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
@@ -14,6 +15,7 @@ import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart'
 import 'package:dartz/dartz.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -146,12 +148,17 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
   @override
   Stream<Resource<List<LessonWithDurationDomainModel>>>
-      watchAllLessonsWithDuration() {
+      watchLatestLessonsWithDuration() {
     return lessonsLocalDatasource.watchLastLessons().map(
       (lessonLocalModels) {
         final domainModels = lessonLocalModels
             .map((e) => LessonDomainModel.fromLocalModel(e))
             .toList();
+
+        final lessonMaps = groupBy<LessonDomainModel, int>(
+          domainModels,
+          (e) => e.id,
+        );
 
         final groupedLessons = _getGroupedLessonsMap(domainModels);
 
@@ -159,11 +166,28 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
         groupedLessons.forEach(
           (key, value) {
+            LessonDomainModel lesson;
+
+            try {
+              lesson = domainModels
+                  .where(
+                    (l) =>
+                        l.lessonArgoment == key.argoment &&
+                        l.subjectId == key.subjectId,
+                  )
+                  .elementAt(0);
+
+              lesson.subjectDescription =
+                  GlobalUtils.reduceSubjectTitle(lesson.subjectDescription) ??
+                      lesson.subjectDescription;
+            } on RangeError catch (_) {
+              lesson = null;
+            }
+
             lessonsWithDurations.add(
               LessonWithDurationDomainModel(
                 duration: value,
-                lessonArgoment: key.argoment,
-                subject: key.subjectId,
+                lesson: lesson,
               ),
             );
           },

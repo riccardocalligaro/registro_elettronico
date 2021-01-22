@@ -22,9 +22,15 @@ class HomePage extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             HomeHeader(),
+            // GRADES
             HomeGrades(),
-            HomeLessons(),
-            HomeEvents(),
+            // LESSONS
+            HomeLessonsHeader(),
+            SizedBox(
+              height: 120,
+              child: HomeLessons(),
+            ),
+            // HomeEvents(),
           ],
         ),
       ),

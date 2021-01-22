@@ -7,6 +7,7 @@ import 'package:registro_elettronico/feature/subjects/domain/model/subject_domai
 
 class GradesPagesDomainModel {
   List<GradeDomainModel> grades;
+  int newNotSeenGrades;
   int periods;
   List<PeriodWithGradesDomainModel> periodsWithGrades;
 
@@ -14,6 +15,7 @@ class GradesPagesDomainModel {
     @required this.grades,
     @required this.periodsWithGrades,
     @required this.periods,
+    @required this.newNotSeenGrades,
   });
 }
 

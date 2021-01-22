@@ -163,6 +163,7 @@ class GlobalUtils {
 
   static int getSubjectConstFromName(String subjectName) {
     final stringToCompare = subjectName.toUpperCase();
+
     if (stringToCompare.contains(RegExp(r'(MATEMATICA)'))) {
       return SubjectsConstants.MATEMATICA;
     }
@@ -212,6 +213,10 @@ class GlobalUtils {
         .contains(RegExp(r'(DISEGNO TECNICO|TECNICHE|GRAFICHE|GRAFICA)'))) {
       return SubjectsConstants.DISEGNO_TECNICO;
     }
+    if (stringToCompare.contains(RegExp(
+        r'(GESTIONE PROGETTO, ORGANIZZAZIONE D’IMPRESA| GESTIONE PROGETTO|ORGANIZZAZIONE IMPRESA)'))) {
+      return SubjectsConstants.GPOI;
+    }
     if (stringToCompare.contains(RegExp(r'(BIOLOGIA)'))) {
       return SubjectsConstants.BIOLOGIA;
     } else {
@@ -238,6 +243,9 @@ class GlobalUtils {
         break;
       case SubjectsConstants.INGLESE:
         return "INGLESE";
+        break;
+      case SubjectsConstants.GPOI:
+        return "GPOI";
         break;
       default:
         return "";

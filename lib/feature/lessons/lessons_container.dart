@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:registro_elettronico/feature/lessons/data/repository/lessons_repository_impl.dart';
+import 'package:registro_elettronico/feature/lessons/presentation/latest_watcher/latest_lessons_watcher_bloc.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/watcher/lessons_watcher_bloc.dart';
 
 import 'data/datasource/lessons_local_datasource.dart';
@@ -36,6 +37,11 @@ class LessonsContainer {
     return [
       BlocProvider<LessonsWatcherBloc>(
         create: (BuildContext context) => LessonsWatcherBloc(
+          lessonsRepository: _sl(),
+        ),
+      ),
+      BlocProvider<LatestLessonsWatcherBloc>(
+        create: (BuildContext context) => LatestLessonsWatcherBloc(
           lessonsRepository: _sl(),
         ),
       ),

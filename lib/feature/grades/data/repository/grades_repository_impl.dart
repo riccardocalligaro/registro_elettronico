@@ -151,8 +151,8 @@ class GradesRepositoryImpl extends GradesRepository {
   }
 
   @override
-  Stream<Resource<GradesPagesDomainModel>> watchAllGradesSections() async* {
-    Rx.combineLatest3(
+  Stream<Resource<GradesPagesDomainModel>> watchAllGradesSections() {
+    return Rx.combineLatest3(
       periodsLocalDatasource.watchAllPeriods(),
       subjectsLocalDatasource.watchAllSubjects(),
       gradesLocalDatasource.watchGrades(),
@@ -290,6 +290,7 @@ class GradesRepositoryImpl extends GradesRepository {
           grades: dividedGrades,
           periodsWithGrades: gradesPeriods,
           periods: domainPeriods.length,
+          newNotSeenGrades: notSeenGrades.length,
         );
 
         return Resource.success(data: gradesPagesDomainModel);

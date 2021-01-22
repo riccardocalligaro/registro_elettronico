@@ -101,6 +101,7 @@
   "justified": "Justified",
   "label": "Label",
   "last_grades": "Last grades",
+  "last_grades_new": "Last grades, {number} new",
   "last_lessons": "Last lessons",
   "last_update": "Last update",
   "last_year": "Last year",

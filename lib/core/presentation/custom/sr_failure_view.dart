@@ -14,7 +14,7 @@ class SRFailureView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: CustomPlaceHolder(
-        icon: Icons.timeline,
+        icon: Icons.error,
         text: failure.localizedDescription(context),
         showUpdate: false,
       ),

@@ -101,6 +101,7 @@
   "justified": "Giustificate",
   "label": "Etichetta",
   "last_grades": "Ultimi voti",
+  "last_grades_new": "Ultimi voti, {number} nuovi",
   "last_lessons": "Ultime lezioni",
   "last_update": "Ultimo aggiornamento",
   "last_year": "Anno precedente",
