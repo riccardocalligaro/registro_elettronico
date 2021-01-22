@@ -313,5 +313,7 @@
   "not_seen_grades": "Not seen",
   "empty_events": "No events",
   "empty_lessons": "No lessons",
-  "term_chip": "{number}° term"
+  "term_chip": "{number}° term",
+  "change_account": "Change account",
+  "other_section": "Other"
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
 
 class GradesFailure extends StatelessWidget {
   final Failure failure;
@@ -11,12 +12,9 @@ class GradesFailure extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TabBarView(
-      children: List.generate(
-        4,
-        (index) => Center(
-          child: Text(failure.toString()),
-        ),
+    return Center(
+      child: SRFailureView(
+        failure: failure,
       ),
     );
   }
