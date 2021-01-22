@@ -6,13 +6,14 @@ class LoginResponse {
   String release;
   String expire;
 
-  LoginResponse(
-      {this.ident,
-      this.firstName,
-      this.lastName,
-      this.token,
-      this.release,
-      this.expire});
+  LoginResponse({
+    this.ident,
+    this.firstName,
+    this.lastName,
+    this.token,
+    this.release,
+    this.expire,
+  });
 
   LoginResponse.fromJson(Map<String, dynamic> json) {
     ident = json['ident'];

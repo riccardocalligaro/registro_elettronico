@@ -9,7 +9,7 @@ class PeriodsRemoteDatasource {
     @required this.dio,
   });
 
-  Future<List<PeriodRemoteModel>> getTodayLessons() async {
+  Future<List<PeriodRemoteModel>> getPeriods() async {
     final response = await dio.get('/students/{studentId}/periods');
 
     List<PeriodRemoteModel> periods = List<PeriodRemoteModel>.from(

@@ -1,3 +1,6 @@
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
+
 class PeriodRemoteModel {
   String periodCode;
   int periodPos;
@@ -37,5 +40,20 @@ class PeriodRemoteModel {
     data['dateEnd'] = this.dateEnd;
     data['miurDivisionCode'] = this.miurDivisionCode;
     return data;
+  }
+
+  PeriodLocalModel toLocalModel(int index) {
+    return PeriodLocalModel(
+      code: this.periodCode ?? "",
+      position: this.periodPos ?? -1,
+      description: this.periodDesc ?? "",
+      isFinal: this.isFinal ?? "",
+      start: DateUtils.getDateFromApiString(this.dateStart) ??
+          DateTime.utc(DateTime.now().year, DateTime.september, 10),
+      end: DateUtils.getDateFromApiString(this.dateEnd) ??
+          DateTime.utc(DateTime.now().year, DateTime.june, 10),
+      miurDivisionCode: this.miurDivisionCode ?? "",
+      periodIndex: index ?? -1,
+    );
   }
 }

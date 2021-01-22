@@ -59,7 +59,7 @@ class StatsRepositoryImpl implements StatsRepository {
           )
           .toList();
 
-      final localPeriods = await periodsLocalDatasource.getAllPeriods();
+      final localPeriods = await periodsLocalDatasource.getPeriods();
       final periods = localPeriods
           .map(
             (l) => PeriodDomainModel.fromLocalModel(l),

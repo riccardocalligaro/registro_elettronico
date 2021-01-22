@@ -13,7 +13,7 @@ class PeriodsLocalDatasource extends DatabaseAccessor<AppDatabase>
 
   Stream<List<PeriodLocalModel>> watchAllPeriods() => select(periods).watch();
 
-  Future<List<PeriodLocalModel>> getAllPeriods() => select(periods).get();
+  Future<List<PeriodLocalModel>> getPeriods() => select(periods).get();
 
   Future deleteAllPeriods() => delete(periods).go();
 
