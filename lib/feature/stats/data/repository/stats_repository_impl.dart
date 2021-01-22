@@ -9,7 +9,7 @@ import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_do
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
-import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
 import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
 import 'package:registro_elettronico/feature/stats/domain/repository/stats_repository.dart';
 import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';

@@ -4099,7 +4099,8 @@ class $AbsencesTable extends Absences with TableInfo<$AbsencesTable, Absence> {
   }
 }
 
-class Period extends DataClass implements Insertable<Period> {
+class PeriodLocalModel extends DataClass
+    implements Insertable<PeriodLocalModel> {
   final String code;
   final int position;
   final String description;
@@ -4108,7 +4109,7 @@ class Period extends DataClass implements Insertable<Period> {
   final DateTime end;
   final String miurDivisionCode;
   final int periodIndex;
-  Period(
+  PeriodLocalModel(
       {@required this.code,
       @required this.position,
       @required this.description,
@@ -4117,14 +4118,15 @@ class Period extends DataClass implements Insertable<Period> {
       @required this.end,
       @required this.miurDivisionCode,
       @required this.periodIndex});
-  factory Period.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory PeriodLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final intType = db.typeSystem.forDartType<int>();
     final boolType = db.typeSystem.forDartType<bool>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    return Period(
+    return PeriodLocalModel(
       code: stringType.mapFromDatabaseResponse(data['${effectivePrefix}code']),
       position:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}position']),
@@ -4195,10 +4197,10 @@ class Period extends DataClass implements Insertable<Period> {
     );
   }
 
-  factory Period.fromJson(Map<String, dynamic> json,
+  factory PeriodLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Period(
+    return PeriodLocalModel(
       code: serializer.fromJson<String>(json['code']),
       position: serializer.fromJson<int>(json['position']),
       description: serializer.fromJson<String>(json['description']),
@@ -4224,7 +4226,7 @@ class Period extends DataClass implements Insertable<Period> {
     };
   }
 
-  Period copyWith(
+  PeriodLocalModel copyWith(
           {String code,
           int position,
           String description,
@@ -4233,7 +4235,7 @@ class Period extends DataClass implements Insertable<Period> {
           DateTime end,
           String miurDivisionCode,
           int periodIndex}) =>
-      Period(
+      PeriodLocalModel(
         code: code ?? this.code,
         position: position ?? this.position,
         description: description ?? this.description,
@@ -4245,7 +4247,7 @@ class Period extends DataClass implements Insertable<Period> {
       );
   @override
   String toString() {
-    return (StringBuffer('Period(')
+    return (StringBuffer('PeriodLocalModel(')
           ..write('code: $code, ')
           ..write('position: $position, ')
           ..write('description: $description, ')
@@ -4276,7 +4278,7 @@ class Period extends DataClass implements Insertable<Period> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Period &&
+      (other is PeriodLocalModel &&
           other.code == this.code &&
           other.position == this.position &&
           other.description == this.description &&
@@ -4287,7 +4289,7 @@ class Period extends DataClass implements Insertable<Period> {
           other.periodIndex == this.periodIndex);
 }
 
-class PeriodsCompanion extends UpdateCompanion<Period> {
+class PeriodsCompanion extends UpdateCompanion<PeriodLocalModel> {
   final Value<String> code;
   final Value<int> position;
   final Value<String> description;
@@ -4323,7 +4325,7 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
         end = Value(end),
         miurDivisionCode = Value(miurDivisionCode),
         periodIndex = Value(periodIndex);
-  static Insertable<Period> custom({
+  static Insertable<PeriodLocalModel> custom({
     Expression<String> code,
     Expression<int> position,
     Expression<String> description,
@@ -4412,7 +4414,8 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
   }
 }
 
-class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
+class $PeriodsTable extends Periods
+    with TableInfo<$PeriodsTable, PeriodLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $PeriodsTable(this._db, [this._alias]);
@@ -4536,7 +4539,7 @@ class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
   @override
   final String actualTableName = 'periods';
   @override
-  VerificationContext validateIntegrity(Insertable<Period> instance,
+  VerificationContext validateIntegrity(Insertable<PeriodLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -4600,9 +4603,9 @@ class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
   @override
   Set<GeneratedColumn> get $primaryKey => {start, end};
   @override
-  Period map(Map<String, dynamic> data, {String tablePrefix}) {
+  PeriodLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Period.fromData(data, _db, prefix: effectivePrefix);
+    return PeriodLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -9384,8 +9387,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   AbsenceDao _absenceDao;
   AbsenceDao get absenceDao => _absenceDao ??= AbsenceDao(this as AppDatabase);
-  PeriodDao _periodDao;
-  PeriodDao get periodDao => _periodDao ??= PeriodDao(this as AppDatabase);
   NoticeDao _noticeDao;
   NoticeDao get noticeDao => _noticeDao ??= NoticeDao(this as AppDatabase);
   NoteDao _noteDao;
@@ -9415,6 +9416,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   ProfessorLocalDatasource get professorLocalDatasource =>
       _professorLocalDatasource ??=
           ProfessorLocalDatasource(this as AppDatabase);
+  PeriodsLocalDatasource _periodsLocalDatasource;
+  PeriodsLocalDatasource get periodsLocalDatasource =>
+      _periodsLocalDatasource ??= PeriodsLocalDatasource(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

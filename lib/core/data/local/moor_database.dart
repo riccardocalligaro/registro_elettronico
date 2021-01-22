@@ -18,7 +18,7 @@ import 'package:registro_elettronico/feature/professors/data/datasource/professo
 import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/dao/notice_dao.dart';
-import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/feature/subjects/data/datasource/subject_local_datasource.dart';
 import 'package:registro_elettronico/feature/timetable/data/dao/timetable_dao.dart';
@@ -72,7 +72,6 @@ LazyDatabase _openConnection() {
 ], daos: [
   ProfileDao,
   AbsenceDao,
-  PeriodDao,
   NoticeDao,
   NoteDao,
   DidacticsDao,
@@ -83,6 +82,7 @@ LazyDatabase _openConnection() {
   LessonsLocalDatasource,
   SubjectsLocalDatasource,
   ProfessorLocalDatasource,
+  PeriodsLocalDatasource,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());

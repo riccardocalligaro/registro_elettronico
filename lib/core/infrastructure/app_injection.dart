@@ -28,7 +28,7 @@ import 'package:registro_elettronico/feature/notes/domain/repository/notes_repos
 import 'package:registro_elettronico/feature/noticeboard/data/dao/notice_dao.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/repository/notices_repository_impl.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
-import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
 import 'package:registro_elettronico/feature/periods/data/repository/periods_repository_impl.dart';
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';

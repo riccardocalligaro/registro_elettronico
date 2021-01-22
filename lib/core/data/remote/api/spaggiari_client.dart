@@ -43,8 +43,8 @@ abstract class SpaggiariClient {
   Future<AbsencesRemoteModel> getAbsences(@Path() String studentId);
 
   // Absences
-  @GET("/students/{studentId}/periods")
-  Future<PeriodsResponse> getPeriods(@Path() String studentId);
+  // @GET("/students/{studentId}/periods")
+  // Future<PeriodsResponse> getPeriods(@Path() String studentId);
 
   // Notice board
   @GET("/students/{studentId}/noticeboard")

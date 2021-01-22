@@ -21,7 +21,7 @@ class PeriodGradesList extends StatelessWidget {
 
         return PeriodGradeCard(
           subjectData: grade,
-          periodPos: periodWithGradesDomainModel.period.periodIndex,
+          periodPos: periodWithGradesDomainModel.period.position,
         );
       },
     );

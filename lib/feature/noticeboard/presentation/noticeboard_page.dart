@@ -12,6 +12,7 @@ import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/core/presentation/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/core/presentation/widgets/last_update_bottom_sheet.dart';
+import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,8 +32,8 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   final TextEditingController _filter = TextEditingController();
   String _searchText = "";
 
-  List<Lesson> lessons = List();
-  List<Lesson> filteredLessons = List();
+  List<LessonDomainModel> lessons = List();
+  List<LessonDomainModel> filteredLessons = List();
   Icon _searchIcon = Icon(Icons.search);
   Widget _appBarTitle = Text('Comunicazioni');
   int _noticeboardLastUpdate;

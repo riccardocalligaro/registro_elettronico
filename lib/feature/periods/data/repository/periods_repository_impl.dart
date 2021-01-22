@@ -1,60 +1,41 @@
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
-import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
-import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
-import 'package:registro_elettronico/feature/periods/data/model/period_mapper.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/periods_remote_datasource.dart';
+import 'package:registro_elettronico/feature/periods/domain/model/period_domain_model.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:dartz/dartz.dart';
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
-import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 
 class PeriodsRepositoryImpl implements PeriodsRepository {
-  final SpaggiariClient spaggiariClient;
-  final PeriodDao periodDao;
-  final ProfileDao profileDao;
-  final NetworkInfo networkInfo;
-  final ProfileRepository profileRepository;
+  static const String lastUpdateKey = 'periodsLastUpdate';
 
-  PeriodsRepositoryImpl(
-    this.spaggiariClient,
-    this.periodDao,
-    this.profileDao,
-    this.networkInfo,
-    this.profileRepository,
-  );
+  final PeriodsLocalDatasource periodsLocalDatasource;
+  final PeriodsRemoteDatasource periodsRemoteDatasource;
 
-  @override
-  Future updatePeriods() async {
-    if (await networkInfo.isConnected) {
-      final profile = await profileRepository.getProfile();
-      final periods = await spaggiariClient.getPeriods(profile.studentId);
-      List<Period> periodsList = [];
-      int periodIndex = 1;
-      periods.periods.forEach((period) {
-        periodsList.add(
-            PeriodMapper.convertEventEntityToInsertable(period, periodIndex));
-        periodIndex++;
-      });
+  PeriodsRepositoryImpl({
+    @required this.periodsLocalDatasource,
+    @required this.periodsRemoteDatasource,
+  });
 
-      Logger.info(
-        'Got ${periods.periods.length} periods from server, procceding to insert in database',
-      );
-      await periodDao.deleteAllPeriods();
+  // @override
+  // Future<Either<Failure, List<PeriodDomainModel>>> getAllPeriods() async {
+  //   try {
+  //     final periods = await periodsLocalDatasource.getAllPeriods();
+  //     final domainPeriods =
+  //         periods.map((l) => PeriodDomainModel.fromLocalModel(l)).toList();
 
-      await periodDao.insertPeriods(periodsList);
-    } else {
-      throw NotConntectedException();
-    }
-  }
+  //     return Right(domainPeriods);
+  //   } catch (e, s) {
+  //     return Left(handleError(e, s));
+  //   }
+  // }
 
   @override
-  Future<List<Period>> getAllPeriods() async {
-    return await periodDao.getAllPeriods();
-  }
-
-  @override
-  Stream<List<Period>> watchAllPeriods() {
-    return periodDao.watchAllPeriods();
+  Future<Either<Failure, Success>> updatePeriods({bool ifNeeded}) {
+    // TODO: implement updatePeriods
+    throw UnimplementedError();
   }
 }

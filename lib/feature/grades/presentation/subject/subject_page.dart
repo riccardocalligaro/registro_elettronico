@@ -16,6 +16,7 @@ import 'package:registro_elettronico/feature/grades/presentation/states/grades_l
 import 'package:registro_elettronico/feature/grades/presentation/states/widget/period/period_chart.dart';
 import 'package:registro_elettronico/feature/grades/presentation/subject/local_watcher/local_grades_watcher_bloc.dart';
 import 'package:registro_elettronico/feature/grades/presentation/subject/pageset/subject_grades_pageset_bloc.dart';
+import 'package:registro_elettronico/feature/professors/domain/model/professor_domain_model.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
@@ -128,7 +129,7 @@ class _SubjectGradesPage extends StatelessWidget {
 }
 
 class _ProfessorsCard extends StatelessWidget {
-  final List<Professor> professors;
+  final List<ProfessorDomainModel> professors;
 
   const _ProfessorsCard({
     Key key,
@@ -152,7 +153,7 @@ class _ProfessorsCard extends StatelessWidget {
   }
 
   String _getProfessorsText(
-    List<Professor> professors,
+    List<ProfessorDomainModel> professors,
     BuildContext context,
   ) {
     if (professors.isNotEmpty) {

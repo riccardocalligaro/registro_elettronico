@@ -18,11 +18,14 @@ import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_mo
 import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/subject_data_domain_model.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
-import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
+import 'package:registro_elettronico/feature/periods/domain/model/period_domain_model.dart';
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/feature/professors/data/datasource/professors_local_datasource.dart';
+import 'package:registro_elettronico/feature/professors/domain/model/professor_domain_model.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/feature/subjects/data/datasource/subject_local_datasource.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
@@ -35,7 +38,7 @@ class GradesRepositoryImpl extends GradesRepository {
   final GradesRemoteDatasource gradesRemoteDatasource;
   final GradesLocalDatasource gradesLocalDatasource;
 
-  final PeriodDao periodDao;
+  final PeriodsLocalDatasource periodsLocalDatasource;
   final SubjectsLocalDatasource subjectsLocalDatasource;
   final ProfessorLocalDatasource professorLocalDatasource;
   final LocalGradesLocalDatasource localGradesLocalDatasource;
@@ -54,7 +57,7 @@ class GradesRepositoryImpl extends GradesRepository {
     @required this.gradesLocalDatasource,
     @required this.networkInfo,
     @required this.sharedPreferences,
-    @required this.periodDao,
+    @required this.periodsLocalDatasource,
     @required this.subjectsLocalDatasource,
     @required this.professorLocalDatasource,
     @required this.localGradesLocalDatasource,
@@ -150,134 +153,148 @@ class GradesRepositoryImpl extends GradesRepository {
   @override
   Stream<Resource<GradesPagesDomainModel>> watchAllGradesSections() async* {
     Rx.combineLatest3(
-      streamA,
-      streamB,
-      streamC,
-      (a, b, c) => null,
-    );
-
-    periods.add(
-      Period(
-        code: 'general',
-        position: -1,
-        description: 'Generale',
-        isFinal: null,
-        start: null,
-        end: null,
-        miurDivisionCode: null,
-        periodIndex: null,
-      ),
-    );
-
-    bool showAsending =
-        sharedPreferences.getBool(PrefsConstants.SORTING_ASCENDING) ?? false;
-
-    yield* gradesLocalDatasource.watchGrades().map((localGrades) {
-      // dobbiamo convertire i modelli locali dividendoli in più periods
-
-      Map<int, int> objectives = Map();
-
-      final defaultObjective = sharedPreferences.getInt(
-            PrefsConstants.OVERALL_OBJECTIVE,
-          ) ??
-          6;
-
-      for (final mSubject in subjects) {
-        final obj = sharedPreferences.getInt('${mSubject.id}_objective') ??
-            defaultObjective;
-        objectives[mSubject.id] = obj;
-      }
-
-      localGrades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
-
-      final grades = localGrades
-          .map((localModel) => GradeDomainModel.fromLocalModel(localModel))
-          .toList();
-
-      List<PeriodWithGradesDomainModel> gradesPeriods = [];
-      List<GradeDomainModel> gradesForThisPeriod;
-      List<GradeDomainModel> filteredGradesForThisPeriod;
-
-      for (final period in periods) {
-        if (period.position == -1) {
-          gradesForThisPeriod = grades;
-        } else {
-          gradesForThisPeriod =
-              grades.where((g) => g.periodPos == period.position).toList();
-        }
-
-        filteredGradesForThisPeriod =
-            gradesForThisPeriod.where((g) => _isValidGrade(g)).toList();
-
-        filteredGradesForThisPeriod
-            .sort((b, a) => a.eventDate.compareTo(b.eventDate));
-
-        final average = _getAverageForPeriod(grades: gradesForThisPeriod);
-
-        final Map<int, GradeDomainModel> gradesMap = Map.fromIterable(
-          gradesForThisPeriod,
-          key: (g) => g.subjectId,
-          value: (g) => g,
+      periodsLocalDatasource.watchAllPeriods(),
+      subjectsLocalDatasource.watchAllSubjects(),
+      gradesLocalDatasource.watchGrades(),
+      (
+        List<PeriodLocalModel> localPeriods,
+        List<SubjectLocalModel> localSubjects,
+        List<GradeLocalModel> localGrades,
+      ) {
+        localPeriods.add(
+          PeriodLocalModel(
+            code: 'general',
+            position: -1,
+            description: 'Generale',
+            isFinal: null,
+            start: null,
+            end: null,
+            miurDivisionCode: null,
+            periodIndex: null,
+          ),
         );
 
-        List<PeriodGradeDomainModel> periodGradeDomainModels = [];
+        final domainPeriods = localPeriods
+            .map((e) => PeriodDomainModel.fromLocalModel(e))
+            .toList();
 
-        for (final subject in subjects) {
-          periodGradeDomainModels.add(
-            _getGradePeriodDomainModel(
-              gradesAndSubjectMap: gradesMap,
-              subject: subject,
+        final domainSubjects = localSubjects
+            .map(
+              (l) => SubjectDomainModel.fromLocalModel(
+                l: l,
+                professors: null,
+              ),
+            )
+            .toList();
+
+        bool showAsending =
+            sharedPreferences.getBool(PrefsConstants.SORTING_ASCENDING) ??
+                false;
+
+        Map<int, int> objectives = Map();
+
+        final defaultObjective = sharedPreferences.getInt(
+              PrefsConstants.OVERALL_OBJECTIVE,
+            ) ??
+            6;
+
+        for (final mSubject in domainSubjects) {
+          final obj = sharedPreferences.getInt('${mSubject.id}_objective') ??
+              defaultObjective;
+          objectives[mSubject.id] = obj;
+        }
+
+        localGrades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
+
+        final grades = localGrades
+            .map((localModel) => GradeDomainModel.fromLocalModel(localModel))
+            .toList();
+
+        List<PeriodWithGradesDomainModel> gradesPeriods = [];
+        List<GradeDomainModel> gradesForThisPeriod;
+        List<GradeDomainModel> filteredGradesForThisPeriod;
+
+        for (final period in domainPeriods) {
+          if (period.position == -1) {
+            gradesForThisPeriod = grades;
+          } else {
+            gradesForThisPeriod =
+                grades.where((g) => g.periodPos == period.position).toList();
+          }
+
+          filteredGradesForThisPeriod =
+              gradesForThisPeriod.where((g) => _isValidGrade(g)).toList();
+
+          filteredGradesForThisPeriod
+              .sort((b, a) => a.eventDate.compareTo(b.eventDate));
+
+          final average = _getAverageForPeriod(grades: gradesForThisPeriod);
+
+          final Map<int, GradeDomainModel> gradesMap = Map.fromIterable(
+            gradesForThisPeriod,
+            key: (g) => g.subjectId,
+            value: (g) => g,
+          );
+
+          List<PeriodGradeDomainModel> periodGradeDomainModels = [];
+
+          for (final subject in domainSubjects) {
+            periodGradeDomainModels.add(
+              _getGradePeriodDomainModel(
+                gradesAndSubjectMap: gradesMap,
+                subject: subject,
+                grades: gradesForThisPeriod,
+                objectives: objectives,
+                numberOfFilteredGrades: filteredGradesForThisPeriod
+                    .where((element) => element.subjectId == subject.id)
+                    .length,
+              ),
+            );
+          }
+
+          if (showAsending) {
+            periodGradeDomainModels
+                .sort((a, b) => a.average.compareTo(b.average));
+          } else {
+            periodGradeDomainModels
+                .sort((b, a) => a.average.compareTo(b.average));
+          }
+
+          final invertedFilteredGrades = filteredGradesForThisPeriod;
+          invertedFilteredGrades
+              .sort((a, b) => a.eventDate.compareTo(b.eventDate));
+
+          gradesPeriods.add(
+            PeriodWithGradesDomainModel(
+              gradesForList: periodGradeDomainModels,
+              period: period,
+              average: average,
               grades: gradesForThisPeriod,
-              objectives: objectives,
-              numberOfFilteredGrades: filteredGradesForThisPeriod
-                  .where((element) => element.subjectId == subject.id)
-                  .length,
+              normalSpots: _getNormalSpots(grades: invertedFilteredGrades),
+              averageSpots: _getAverageSpots(grades: invertedFilteredGrades),
+              overallObjective: defaultObjective,
+              filteredGrades: filteredGradesForThisPeriod,
             ),
           );
         }
 
-        if (showAsending) {
-          periodGradeDomainModels
-              .sort((a, b) => a.average.compareTo(b.average));
-        } else {
-          periodGradeDomainModels
-              .sort((b, a) => a.average.compareTo(b.average));
-        }
+        final notSeenGrades = grades.where((g) => !g.hasSeenIt);
+        final seenGrades = grades.where((g) => g.hasSeenIt);
 
-        final invertedFilteredGrades = filteredGradesForThisPeriod;
-        invertedFilteredGrades
-            .sort((a, b) => a.eventDate.compareTo(b.eventDate));
+        List<GradeDomainModel> dividedGrades = [
+          ...notSeenGrades,
+          ...seenGrades,
+        ];
 
-        gradesPeriods.add(
-          PeriodWithGradesDomainModel(
-            gradesForList: periodGradeDomainModels,
-            period: period,
-            average: average,
-            grades: gradesForThisPeriod,
-            normalSpots: _getNormalSpots(grades: invertedFilteredGrades),
-            averageSpots: _getAverageSpots(grades: invertedFilteredGrades),
-            overallObjective: defaultObjective,
-            filteredGrades: filteredGradesForThisPeriod,
-          ),
+        GradesPagesDomainModel gradesPagesDomainModel = GradesPagesDomainModel(
+          grades: dividedGrades,
+          periodsWithGrades: gradesPeriods,
+          periods: domainPeriods.length,
         );
-      }
 
-      final notSeenGrades = grades.where((g) => !g.hasSeenIt);
-      final seenGrades = grades.where((g) => g.hasSeenIt);
-
-      List<GradeDomainModel> dividedGrades = [
-        ...notSeenGrades,
-        ...seenGrades,
-      ];
-
-      GradesPagesDomainModel gradesPagesDomainModel = GradesPagesDomainModel(
-        grades: dividedGrades,
-        periodsWithGrades: gradesPeriods,
-        periods: periods.length,
-      );
-
-      return Resource.success(data: gradesPagesDomainModel);
-    }).onErrorReturnWith(
+        return Resource.success(data: gradesPagesDomainModel);
+      },
+    ).onErrorReturnWith(
       (e) {
         return Resource.failed(error: handleError(e));
       },
@@ -330,7 +347,7 @@ class GradesRepositoryImpl extends GradesRepository {
   }
 
   PeriodGradeDomainModel _getGradePeriodDomainModel({
-    @required Subject subject,
+    @required SubjectDomainModel subject,
     @required List<GradeDomainModel> grades,
     @required Map<int, GradeDomainModel> gradesAndSubjectMap,
     @required Map<int, int> objectives,
@@ -520,7 +537,7 @@ class GradesRepositoryImpl extends GradesRepository {
 
   @override
   Future<Either<Failure, Success>> changeSubjectObjective({
-    Subject subject,
+    SubjectDomainModel subject,
     int newValue,
   }) async {
     try {
@@ -541,10 +558,14 @@ class GradesRepositoryImpl extends GradesRepository {
       final professors = await professorLocalDatasource
           .getProfessorsForSubject(periodGradeDomainModel.subject.id);
 
+      final domainProfessors = await professors.map(
+        (l) => ProfessorDomainModel.fromLocalModel(l),
+      );
+
       return Right(
         SubjectDataDomainModel(
           data: periodGradeDomainModel,
-          professors: professors,
+          professors: domainProfessors,
           averages: _getSubjectAverages(
             grades: periodGradeDomainModel.grades,
           ),

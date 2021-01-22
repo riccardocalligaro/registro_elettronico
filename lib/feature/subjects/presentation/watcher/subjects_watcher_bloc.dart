@@ -35,9 +35,13 @@ class SubjectsWatcherBloc
       } else if (event.resource.status == Status.loading) {
         yield SubjectsWatcherLoading();
       }
-    } else if (event is RestartWatcher) {
+    } else if (event is SubjectsRestartWatcher) {
       await _subjectsStreamSubscription.cancel();
       _startStreamListener();
+    } else if (event is SubjectsStartWatcherIfNeeded) {
+      if (_subjectsStreamSubscription == null) {
+        _startStreamListener();
+      }
     }
   }
 

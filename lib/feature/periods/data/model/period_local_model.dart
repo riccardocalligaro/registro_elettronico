@@ -1,13 +1,6 @@
 import 'package:moor/moor.dart';
 
-/// "periodCode": "Q3",
-/// "periodPos": 3,
-/// "periodDesc": "Periodo (pentamestre)",
-/// "isFinal": true,
-/// "dateStart": "2019-12-22",
-/// "dateEnd": "2020-06-06",
-/// "miurDivisionCode": null
-
+@DataClassName('PeriodLocalModel')
 class Periods extends Table {
   TextColumn get code => text()();
   IntColumn get position => integer()();

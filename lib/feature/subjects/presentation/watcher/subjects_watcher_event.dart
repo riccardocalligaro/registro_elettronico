@@ -11,4 +11,6 @@ class SubjectsReceived extends SubjectsWatcherEvent {
   });
 }
 
-class RestartWatcher extends SubjectsWatcherEvent {}
+class SubjectsStartWatcherIfNeeded extends SubjectsWatcherEvent {}
+
+class SubjectsRestartWatcher extends SubjectsWatcherEvent {}

@@ -10,6 +10,7 @@ import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_do
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_date_dialog.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_subject_dialog.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
@@ -37,7 +38,7 @@ class _EditEventPageState extends State<EditEventPage> {
   DateTime _selectedDate;
 
   String _initialSubject;
-  Subject _selectedSubject;
+  SubjectDomainModel _selectedSubject;
   TimeOfDay _timeOfDay;
   // bool _notifyEvent = false;
   // Duration _beforeNotify = Duration(minutes: 30);

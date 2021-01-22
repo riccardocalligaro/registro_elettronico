@@ -1,26 +1,3 @@
-class PeriodsResponse {
-  List<PeriodRemoteModel> periods;
-
-  PeriodsResponse({this.periods});
-
-  PeriodsResponse.fromJson(Map<String, dynamic> json) {
-    if (json['periods'] != null) {
-      periods = List<PeriodRemoteModel>();
-      json['periods'].forEach((v) {
-        periods.add(PeriodRemoteModel.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    if (this.periods != null) {
-      data['periods'] = this.periods.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
 class PeriodRemoteModel {
   String periodCode;
   int periodPos;

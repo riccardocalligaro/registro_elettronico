@@ -1,10 +1,8 @@
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 
 abstract class PeriodsRepository {
-  // Updates the periods for the user. Q1 and Q2..
-  Future updatePeriods();
-  // Get all Pewriods
-  Future<List<Period>> getAllPeriods();
-  // Stream for periods
-  Stream<List<Period>> watchAllPeriods();
+  Future<Either<Failure, Success>> updatePeriods({@required bool ifNeeded});
 }

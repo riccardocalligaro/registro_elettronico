@@ -6,6 +6,7 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 
 part 'grades_operations_event.dart';
 part 'grades_operations_state.dart';
