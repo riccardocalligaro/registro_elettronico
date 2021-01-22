@@ -6,6 +6,7 @@ import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_local_datasource.dart';
 import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_remote_datasource.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_remote_model.dart';
+import 'package:registro_elettronico/feature/lessons/domain/model/last_lessons_domain_model.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
@@ -141,5 +142,60 @@ class LessonsRepositoryImpl implements LessonsRepository {
         lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
 
     return SuccessWithUpdate();
+  }
+
+  @override
+  Stream<Resource<List<LessonWithDurationDomainModel>>>
+      watchAllLessonsWithDuration() {
+    return lessonsLocalDatasource.watchLastLessons().map(
+      (lessonLocalModels) {
+        final domainModels = lessonLocalModels
+            .map((e) => LessonDomainModel.fromLocalModel(e))
+            .toList();
+
+        final groupedLessons = _getGroupedLessonsMap(domainModels);
+
+        List<LessonWithDurationDomainModel> lessonsWithDurations = [];
+
+        groupedLessons.forEach(
+          (key, value) {
+            lessonsWithDurations.add(
+              LessonWithDurationDomainModel(
+                duration: value,
+                lessonArgoment: key.argoment,
+                subject: key.subjectId,
+              ),
+            );
+          },
+        );
+
+        return Resource.success(data: lessonsWithDurations);
+      },
+    ).onErrorReturnWith((error) {
+      Logger.streamError(error.toString());
+      return Resource.failed(error: handleError(error));
+    });
+  }
+
+  Map<UniqueLessionDomainModel, int> _getGroupedLessonsMap(
+    List<LessonDomainModel> lessons,
+  ) {
+    final Map<UniqueLessionDomainModel, int> lessonsMap = Map.fromIterable(
+      lessons,
+      key: (e) => UniqueLessionDomainModel(
+        subjectId: e.subjectId,
+        argoment: e.lessonArgoment,
+      ),
+      value: (e) => lessons
+          .where(
+            (entry) =>
+                entry.lessonArgoment == e.lessonArgoment &&
+                entry.subjectId == e.subjectId &&
+                entry.author == e.author,
+          )
+          .length,
+    );
+
+    return lessonsMap;
   }
 }

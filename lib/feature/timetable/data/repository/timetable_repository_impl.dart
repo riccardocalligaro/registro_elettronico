@@ -1,14 +1,18 @@
+import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
+import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_local_datasource.dart';
 import 'package:registro_elettronico/feature/timetable/data/dao/timetable_dao.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/utils/entity/genius_timetable.dart';
 
 class TimetableRepositoryImpl implements TimetableRepository {
   final TimetableDao timetableDao;
-  final LessonDao lessonDao;
+  final LessonsLocalDatasource lessonsLocalDatasource;
 
-  TimetableRepositoryImpl(this.timetableDao, this.lessonDao);
+  TimetableRepositoryImpl({
+    @required this.timetableDao,
+    @required this.lessonsLocalDatasource,
+  });
 
   @override
   Future deleteTimetable() {
@@ -38,7 +42,8 @@ class TimetableRepositoryImpl implements TimetableRepository {
   @override
   Future updateTimeTable() async {
     await timetableDao.deleteTimetable();
-    List<GeniusTimetable> genius = await lessonDao.getGeniusTimetable();
+    List<GeniusTimetable> genius =
+        await lessonsLocalDatasource.getGeniusTimetable();
     await timetableDao.deleteTimetable();
 
     return genius.forEach((t) {

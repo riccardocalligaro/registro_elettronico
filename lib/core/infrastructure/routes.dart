@@ -35,7 +35,7 @@ class Routes {
     MAIN: (ctx) => SplashScreen(),
     LOGIN: (ctx) => LoginPage(),
     HOME: (ctx) => HomePage(),
-    LESSONS: (ctx) => LessonsPage(),
+    LESSONS: (ctx) => Subjects(),
     AGENDA: (ctx) => AgendaPage(),
     ABSENCES: (ctx) => AbsencesPage(),
     NOTES: (ctx) => NotesPage(),

@@ -2,6 +2,7 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:moor/moor.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_local_model.dart';
 import 'package:registro_elettronico/feature/professors/data/model/professor_local_model.dart';
+import 'package:registro_elettronico/utils/entity/genius_timetable.dart';
 
 part 'lessons_local_datasource.g.dart';
 
@@ -33,6 +34,17 @@ class LessonsLocalDatasource extends DatabaseAccessor<AppDatabase>
     }).watch();
   }
 
+  Stream<List<LessonLocalModel>> watchLastLessons() {
+    return customSelect(
+      "SELECT * FROM lessons WHERE date IN (SELECT max(date) FROM lessons) AND subject_code != 'SOST'",
+      readsFrom: {
+        lessons,
+      },
+    ).map((row) {
+      return LessonLocalModel.fromData(row.data, db);
+    }).watch();
+  }
+
   Future<void> insertLessons(List<LessonLocalModel> lessonsToInsert) async {
     await batch((batch) {
       batch.insertAllOnConflictUpdate(lessons, lessonsToInsert);
@@ -45,5 +57,34 @@ class LessonsLocalDatasource extends DatabaseAccessor<AppDatabase>
         batch.delete(lessons, entry);
       });
     });
+  }
+
+  // Thanks to Registro elettronico android by simone luconi
+  Future<List<GeniusTimetable>> getGeniusTimetable() {
+    return customSelect(""" SELECT `dayOfWeek`,`teacher`,`subject`, `subject_name`,`start`,`end` FROM
+      (select strftime('%w', date, 'unixepoch') as `dayOfWeek`,
+      `subject_id` as `subject`,
+      `subject_description` as `subject_name`,
+      (position) as `start`,
+      (position) as `end`,
+      author as `teacher`,
+      COUNT(duration) as `totalHours`
+      FROM `lessons`
+      WHERE subject_code NOT IN ('SUPZ', 'SOST') AND date>?
+      GROUP BY `dayOfWeek`, position, subject_code
+      ORDER BY `dayOfWeek`, position ASC) WHERE `totalHours`>1
+      GROUP BY `dayOfWeek`, `start`
+      """, readsFrom: {
+      lessons,
+      professors,
+    }, variables: [
+      Variable.withDateTime(
+        DateTime.now().subtract(
+          Duration(days: 30),
+        ),
+      ),
+    ]).map((row) {
+      return GeniusTimetable.fromData(row.data, db);
+    }).get();
   }
 }

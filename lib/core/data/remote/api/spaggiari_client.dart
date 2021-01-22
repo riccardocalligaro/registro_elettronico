@@ -4,7 +4,6 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
-import 'package:registro_elettronico/feature/lessons/data/model/lesson_remote_model.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_request_model.dart';
 import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';
 import 'package:registro_elettronico/feature/login/data/model/parent_response_remote_model.dart';
@@ -12,9 +11,7 @@ import 'package:registro_elettronico/feature/notes/data/model/remote/note_remote
 import 'package:registro_elettronico/feature/notes/data/model/remote/notes_read_remote_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/notice_read_remote_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/notice_remote_model.dart';
-import 'package:registro_elettronico/feature/periods/data/model/period_remote_model.dart';
 import 'package:registro_elettronico/feature/scrutini/data/model/document_remote_model.dart';
-import 'package:registro_elettronico/feature/subjects/data/model/subject_remote_model.dart';
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -180,25 +177,6 @@ class _SpaggiariClient implements SpaggiariClient {
             baseUrl: baseUrl),
         data: _data);
     final value = AbsencesRemoteModel.fromJson(_result.data);
-    return Future.value(value);
-  }
-
-  @override
-  getPeriods(studentId) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/periods',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = PeriodsResponse.fromJson(_result.data);
     return Future.value(value);
   }
 

@@ -11,7 +11,6 @@ import 'package:registro_elettronico/core/presentation/widgets/last_update_botto
 import 'package:registro_elettronico/feature/agenda/presentation/updater/agenda_updater_bloc.dart';
 import 'package:registro_elettronico/feature/grades/presentation/updater/grades_updater_bloc.dart';
 import 'package:registro_elettronico/feature/home/presentation/sections/last_grades_section.dart';
-import 'package:registro_elettronico/feature/lessons/presentation/bloc/lessons_bloc.dart';
 import 'package:registro_elettronico/feature/profile/data/model/profile_entity.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/utils/color_utils.dart';
@@ -22,9 +21,6 @@ import 'package:registro_elettronico/utils/string_utils.dart';
 import 'package:registro_elettronico/utils/update_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'blocs/lessons/lessons_dashboard_bloc.dart' as dash;
-import 'blocs/lessons/lessons_dashboard_bloc.dart';
-import 'sections/last_lessons_section.dart';
 import 'sections/next_events_section.dart';
 
 /// [Dashboard] where the user first lands

@@ -8,10 +8,8 @@ import 'package:registro_elettronico/feature/grades/domain/repository/grades_rep
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
-import 'package:registro_elettronico/feature/periods/presentation/bloc/periods_bloc.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
-import 'package:registro_elettronico/feature/subjects/presentation/bloc/subjects_bloc.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,8 +33,9 @@ class UpdateUtils {
         await sharedPreferences.setInt(PrefsConstants.lastUpdateVitalData,
             DateTime.now().millisecondsSinceEpoch);
 
-        BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
-        BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
+        // TODO: fix update utils
+        // BlocProvider.of<PeriodsBloc>(context).add(FetchPeriods());
+        // BlocProvider.of<SubjectsBloc>(context).add(UpdateSubjects());
       }
     }
   }

@@ -4,21 +4,18 @@ import 'package:registro_elettronico/core/data/repository/preferences_repository
 import 'package:registro_elettronico/core/domain/repository/preferences_repository.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/absences/presentation/bloc/absences_bloc.dart';
-import 'package:registro_elettronico/feature/agenda/agenda_container.dart'
-    hide sl;
+import 'package:registro_elettronico/feature/agenda/agenda_container.dart';
 import 'package:registro_elettronico/feature/core_container.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/bloc/attachments/didactics_attachments_bloc.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/bloc/didactics_bloc.dart';
 import 'package:registro_elettronico/feature/grades/grades_container.dart'
     hide sl;
-import 'package:registro_elettronico/feature/home/presentation/blocs/lessons/lessons_dashboard_bloc.dart';
 import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
 import 'package:registro_elettronico/feature/notes/presentation/bloc/attachments/note_attachments_bloc.dart';
 import 'package:registro_elettronico/feature/notes/presentation/bloc/notes_bloc.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/bloc/attachment_download/attachment_download_bloc.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/bloc/attachments/attachments_bloc.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/bloc/notices_bloc.dart';
-import 'package:registro_elettronico/feature/periods/presentation/bloc/periods_bloc.dart';
 import 'package:registro_elettronico/feature/profile/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/feature/profile/presentation/token/token_bloc.dart';
@@ -56,8 +53,8 @@ class AppBlocDelegate {
       ),
       RepositoryProvider<TimetableRepository>(
         create: (ctx) => TimetableRepositoryImpl(
-          sl(),
-          sl(),
+          lessonsLocalDatasource: sl(),
+          timetableDao: sl(),
         ),
       ),
       RepositoryProvider<PreferencesRepository>(
@@ -78,9 +75,6 @@ class AppBlocDelegate {
           loginRepository: sl(),
           sharedPreferences: sl(),
         ),
-      ),
-      BlocProvider<PeriodsBloc>(
-        create: (ctx) => PeriodsBloc(periodsRepository: sl()),
       ),
       BlocProvider<AbsencesBloc>(
         create: (ctx) => AbsencesBloc(absencesRepository: sl()),
@@ -106,17 +100,12 @@ class AppBlocDelegate {
       BlocProvider<TimetableBloc>(
         create: (ctx) => TimetableBloc(
           timetableRepository: sl(),
-          subjectsRepository: sl(),
+          subjectsLocalDatasource: sl(),
         ),
       ),
       BlocProvider<NoteAttachmentsBloc>(
         create: (ctx) => NoteAttachmentsBloc(
           notesRepository: sl(),
-        ),
-      ),
-      BlocProvider<LessonsDashboardBloc>(
-        create: (ctx) => LessonsDashboardBloc(
-          lessonsRepository: sl(),
         ),
       ),
       BlocProvider<DocumentsBloc>(

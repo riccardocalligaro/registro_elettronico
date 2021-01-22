@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
-import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 

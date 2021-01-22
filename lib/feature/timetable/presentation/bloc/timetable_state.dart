@@ -14,7 +14,7 @@ class TimetableError extends TimetableState {
 
 class TimetableLoaded extends TimetableState {
   final List<TimetableEntry> timetableEntries;
-  final List<Subject> subjects;
+  final List<SubjectDomainModel> subjects;
 
   TimetableLoaded({
     @required this.timetableEntries,

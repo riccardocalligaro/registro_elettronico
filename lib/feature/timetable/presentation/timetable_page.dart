@@ -5,6 +5,7 @@ import 'package:registro_elettronico/core/domain/repository/preferences_reposito
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/feature/timetable/presentation/views/new_timetable_entry.dart';
 import 'package:registro_elettronico/feature/timetable/presentation/widgets/timetable_card.dart';
@@ -124,14 +125,20 @@ ${AppLocalizations.of(context).translate('no_timetable_message')}""",
   // }
 
   Widget _buildTimetableGridView(
-      List<TimetableEntry> timetable, List<Subject> subjects) {
+    List<TimetableEntry> timetable,
+    List<SubjectDomainModel> subjects,
+  ) {
     final Map<int, Tuple2<String, Color>> subjectsMap =
         Map.fromIterable(subjects,
             key: (e) => e.id,
             value: (e) {
               final subject = subjects.where((s) => s.id == e.id);
-              return Tuple2(subject.elementAt(0).name,
-                  Color(int.parse(subject.elementAt(0).color)));
+              return Tuple2(
+                subject.elementAt(0).name,
+                Colors.green,
+                // TODO: fix color
+                // Color(int.parse(subject.elementAt(0).color)),
+              );
             });
 
     final Map<int, List<TimetableEntry>> timetableMap = Map.fromIterable(
@@ -311,7 +318,9 @@ ${AppLocalizations.of(context).translate('no_timetable_message')}""",
   }
 
   Widget _buildTimetableList(
-      List<TimetableEntry> timetable, List<Subject> subjects) {
+    List<TimetableEntry> timetable,
+    List<SubjectDomainModel> subjects,
+  ) {
     return ListView.builder(
       itemCount: 7,
       shrinkWrap: true,

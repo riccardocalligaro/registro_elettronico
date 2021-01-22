@@ -228,7 +228,7 @@ class _StatsPageState extends State<StatsPage> {
                   Text(AppLocalizations.of(context)
                       .translate('best_term')
                       .replaceAll('{number}',
-                          '${report.mostProfitablePeriod.periodIndex}° ${AppLocalizations.of(context).translate('term')}')),
+                          '${report.mostProfitablePeriod.position}° ${AppLocalizations.of(context).translate('term')}')),
                   const SizedBox(
                     height: 4,
                   ),

@@ -6,6 +6,7 @@ import 'package:registro_elettronico/core/infrastructure/localizations/app_local
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/presentation/widgets/app_drawer.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_subject_dialog.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/feature/timetable/presentation/bloc/timetable_bloc.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -26,7 +27,7 @@ class NewTimetableEntry extends StatefulWidget {
 }
 
 class _NewTimetableEntryState extends State<NewTimetableEntry> {
-  Subject _selectedSubject;
+  SubjectDomainModel _selectedSubject;
   bool _missingSubject = false;
 
   TimeOfDay _start;

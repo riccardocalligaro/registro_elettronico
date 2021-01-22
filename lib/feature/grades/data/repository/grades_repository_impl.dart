@@ -296,7 +296,7 @@ class GradesRepositoryImpl extends GradesRepository {
       },
     ).onErrorReturnWith(
       (e) {
-        return Resource.failed(error: handleError(e));
+        return Resource.failed(error: handleStreamError(e));
       },
     );
   }

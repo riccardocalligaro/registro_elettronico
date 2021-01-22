@@ -2,13 +2,14 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class LessonCard extends StatelessWidget {
-  final Lesson lesson;
+  final LessonDomainModel lesson;
   final int position;
   final int duration;
 
@@ -38,7 +39,7 @@ class LessonCard extends StatelessWidget {
               '${trans.translate('author')}: ${StringUtils.titleCase(lesson.author)}';
           message +=
               "\n${trans.translate('date')}: ${DateUtils.convertDateForLessons(lesson.date)}";
-          message += '\n${lesson.lessonArg}';
+          message += '\n${lesson.lessonArgoment}';
 
           Share.text(AppLocalizations.of(context).translate('share'), message,
               'text/plain');
@@ -57,7 +58,7 @@ class LessonCard extends StatelessWidget {
                 children: <Widget>[
                   SelectableText(
                       """${trans.translate('author')}: ${StringUtils.titleCase(lesson.author)}
-                      \n${trans.translate('argument')}: ${lesson.lessonArg}
+                      \n${trans.translate('argument')}: ${lesson.lessonArgoment}
                       \n${trans.translate('date')}: ${DateUtils.convertDateLocale(lesson.date, AppLocalizations.of(context).locale.toString())}
                       \n${trans.translate('type')}: ${lesson.lessonType}"""),
                 ],
@@ -136,9 +137,10 @@ class LessonCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      lesson.lessonArg.length > 25
-                          ? GlobalUtils.reduceLessonArgument(lesson.lessonArg)
-                          : lesson.lessonArg,
+                      lesson.lessonArgoment.length > 25
+                          ? GlobalUtils.reduceLessonArgument(
+                              lesson.lessonArgoment)
+                          : lesson.lessonArgoment,
                       style: TextStyle(fontSize: 10, color: Colors.white),
                     )
                   ],

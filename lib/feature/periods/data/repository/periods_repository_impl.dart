@@ -8,34 +8,25 @@ import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:dartz/dartz.dart';
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PeriodsRepositoryImpl implements PeriodsRepository {
   static const String lastUpdateKey = 'periodsLastUpdate';
 
   final PeriodsLocalDatasource periodsLocalDatasource;
   final PeriodsRemoteDatasource periodsRemoteDatasource;
+  final SharedPreferences sharedPreferences;
 
   PeriodsRepositoryImpl({
     @required this.periodsLocalDatasource,
     @required this.periodsRemoteDatasource,
+    @required this.sharedPreferences,
   });
 
-  // @override
-  // Future<Either<Failure, List<PeriodDomainModel>>> getAllPeriods() async {
-  //   try {
-  //     final periods = await periodsLocalDatasource.getAllPeriods();
-  //     final domainPeriods =
-  //         periods.map((l) => PeriodDomainModel.fromLocalModel(l)).toList();
-
-  //     return Right(domainPeriods);
-  //   } catch (e, s) {
-  //     return Left(handleError(e, s));
-  //   }
-  // }
-
   @override
-  Future<Either<Failure, Success>> updatePeriods({bool ifNeeded}) {
-    // TODO: implement updatePeriods
-    throw UnimplementedError();
+  Future<Either<Failure, Success>> updatePeriods({bool ifNeeded}) async {
+    try {} catch (e, s) {
+      return Left(handleError(e));
+    }
   }
 }

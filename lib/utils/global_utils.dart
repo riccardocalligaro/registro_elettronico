@@ -7,7 +7,10 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
+import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
+import 'package:registro_elettronico/feature/periods/domain/model/period_domain_model.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -84,17 +87,19 @@ class GlobalUtils {
 
   /// This method thakes a list of lessons and returns the lesson [grouped]
   /// checking the lesson argument and the subject id just in case
-  static List<Lesson> getGroupedLessonsList(List<Lesson> lessons) {
-    List<Lesson> lessonsList = [];
+  static List<LessonDomainModel> getGroupedLessonsList(
+    List<LessonDomainModel> lessons,
+  ) {
+    List<LessonDomainModel> lessonsList = [];
     int count = 1;
     for (var i = 0; i < lessons.length - 1; i++) {
       if (i == lessons.length - 1) {
-        if (lessons[i - 1].lessonArg == lessons[i].lessonArg &&
+        if (lessons[i - 1].lessonArgoment == lessons[i].lessonArgoment &&
             lessons[i - 1].subjectId == lessons[i].subjectId) {
           lessonsList.add(lessons[i].copyWith(duration: ++count));
         }
       }
-      if (lessons[i].lessonArg == lessons[i + 1].lessonArg &&
+      if (lessons[i].lessonArgoment == lessons[i + 1].lessonArgoment &&
           lessons[i].subjectId == lessons[i + 1].subjectId) {
         count++;
       } else {
@@ -107,7 +112,7 @@ class GlobalUtils {
   }
 
   static Map<Tuple2<int, String>, int> getGroupedLessonsMap(
-    List<Lesson> lessons,
+    List<LessonDomainModel> lessons,
   ) {
     final Map<Tuple2<int, String>, int> lessonsMap = Map.fromIterable(
       lessons,
@@ -118,34 +123,39 @@ class GlobalUtils {
       value: (e) => lessons
           .where(
             (entry) =>
-                entry.lessonArg == e.lessonArg &&
+                entry.lessonArgoment == e.lessonArgoment &&
                 entry.subjectId == e.subjectId &&
                 entry.author == e.author,
           )
           .length,
     );
+
     return lessonsMap;
   }
 
-  static Future<Period> getPeriodFromDate(DateTime date) async {
-    final PeriodDao periodDao = PeriodDao(sl());
-    final periods = await periodDao.getAllPeriods();
-    for (var i = 0; i < periods.length; i++) {
-      if (periods[i].start.isBefore(date) && periods[i].end.isAfter(date)) {
-        return periods[i];
+  static Future<PeriodDomainModel> getPeriodFromDate(DateTime date) async {
+    final PeriodsLocalDatasource periodsLocalDatasource = sl();
+
+    final localPeriods = await periodsLocalDatasource.getAllPeriods();
+    final domainPeriods =
+        localPeriods.map((e) => PeriodDomainModel.fromLocalModel(e)).toList();
+    for (var i = 0; i < domainPeriods.length; i++) {
+      if (domainPeriods[i].start.isBefore(date) &&
+          domainPeriods[i].end.isAfter(date)) {
+        return domainPeriods[i];
       }
     }
-    if (periods.isNotEmpty) {
+    if (domainPeriods.isNotEmpty) {
       int closestIndex = 0;
       int minDays = 366;
-      for (var i = 0; i < periods.length; i++) {
-        int diff = date.difference(periods[i].end).inDays;
+      for (var i = 0; i < domainPeriods.length; i++) {
+        int diff = date.difference(domainPeriods[i].end).inDays;
         if (diff < minDays) {
           minDays = diff;
           closestIndex = i;
         }
       }
-      return periods[closestIndex];
+      return domainPeriods[closestIndex];
     }
 
     return null;
@@ -234,7 +244,8 @@ class GlobalUtils {
     }
   }
 
-  static List<Subject> removeUnwantedSubject(List<Subject> subjects) {
+  static List<SubjectDomainModel> removeUnwantedSubject(
+      List<SubjectDomainModel> subjects) {
     subjects.removeWhere((subject) => isUnwanted(subject.name));
     return subjects;
   }
