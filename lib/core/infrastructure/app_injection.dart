@@ -14,13 +14,11 @@ import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart'
 import 'package:registro_elettronico/feature/absences/data/repository/absences_repository_impl.dart';
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/feature/agenda/agenda_container.dart';
+import 'package:registro_elettronico/feature/core_container.dart';
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/repository/didactics_repository_impl.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/feature/grades/grades_container.dart';
-import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
-import 'package:registro_elettronico/feature/lessons/data/repository/lessons_repository_impl.dart';
-import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/feature/login/data/repository/login_repository_impl.dart';
 import 'package:registro_elettronico/feature/login/domain/repository/login_repository.dart';
 import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
@@ -33,7 +31,6 @@ import 'package:registro_elettronico/feature/noticeboard/domain/repository/notic
 import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
 import 'package:registro_elettronico/feature/periods/data/repository/periods_repository_impl.dart';
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
-import 'package:registro_elettronico/feature/professors/data/dao/professor_dao.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/feature/profile/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
@@ -44,9 +41,6 @@ import 'package:registro_elettronico/feature/scrutini/domain/repository/document
 import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
 import 'package:registro_elettronico/feature/stats/data/repository/stats_repository_impl.dart';
 import 'package:registro_elettronico/feature/stats/domain/repository/stats_repository.dart';
-import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
-import 'package:registro_elettronico/feature/subjects/data/repository/subjects_respository_impl.dart';
-import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/feature/timetable/data/dao/timetable_dao.dart';
 import 'package:registro_elettronico/feature/timetable/data/repository/timetable_repository_impl.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
@@ -58,6 +52,7 @@ final sl = GetIt.instance;
 
 class AppInjector {
   static Future<void> init() async {
+    await CoreContainer.init();
     // Inject the application database
     injectDatabase();
     // Inject all the daos
@@ -84,9 +79,7 @@ class AppInjector {
   // All the DAOS (Data Access Objects)
   static void injectDaos() {
     sl.registerLazySingleton(() => ProfileDao(sl()));
-    sl.registerLazySingleton(() => LessonDao(sl()));
-    sl.registerLazySingleton(() => ProfessorDao(sl()));
-    sl.registerLazySingleton(() => SubjectDao(sl()));
+
     sl.registerLazySingleton(() => AbsenceDao(sl()));
     sl.registerLazySingleton(() => PeriodDao(sl()));
     sl.registerLazySingleton(() => NoticeDao(sl()));
@@ -128,12 +121,6 @@ class AppInjector {
           sl(),
           sl(),
         ));
-
-    sl.registerLazySingleton<LessonsRepository>(
-        () => LessonsRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
-
-    sl.registerLazySingleton<SubjectsRepository>(
-        () => SubjectsRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<AbsencesRepository>(
         () => AbsencesRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 
 class OverallStatsDomainModel {
   final double average;
@@ -7,8 +7,8 @@ class OverallStatsDomainModel {
   final int sufficienze;
   final double votoMin;
   final double votoMax;
-  final Subject bestSubject;
-  final Subject worstSubject;
+  final SubjectDomainModel bestSubject;
+  final SubjectDomainModel worstSubject;
 
   OverallStatsDomainModel({
     @required this.average,
@@ -26,8 +26,8 @@ class OverallStatsDomainModel {
     int sufficienze,
     double votoMin,
     double votoMax,
-    Subject bestSubject,
-    Subject worstSubject,
+    SubjectDomainModel bestSubject,
+    SubjectDomainModel worstSubject,
   }) {
     return OverallStatsDomainModel(
       average: average ?? this.average,

@@ -20,9 +20,9 @@ import 'package:registro_elettronico/feature/grades/domain/model/subject_data_do
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
-import 'package:registro_elettronico/feature/professors/data/dao/professor_dao.dart';
+import 'package:registro_elettronico/feature/professors/data/datasource/professors_local_datasource.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
-import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
+import 'package:registro_elettronico/feature/subjects/data/datasource/subject_local_datasource.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
@@ -36,8 +36,8 @@ class GradesRepositoryImpl extends GradesRepository {
   final GradesLocalDatasource gradesLocalDatasource;
 
   final PeriodDao periodDao;
-  final SubjectDao subjectDao;
-  final ProfessorDao professorDao;
+  final SubjectsLocalDatasource subjectsLocalDatasource;
+  final ProfessorLocalDatasource professorLocalDatasource;
   final LocalGradesLocalDatasource localGradesLocalDatasource;
 
   final NetworkInfo networkInfo;
@@ -55,8 +55,8 @@ class GradesRepositoryImpl extends GradesRepository {
     @required this.networkInfo,
     @required this.sharedPreferences,
     @required this.periodDao,
-    @required this.subjectDao,
-    @required this.professorDao,
+    @required this.subjectsLocalDatasource,
+    @required this.professorLocalDatasource,
     @required this.localGradesLocalDatasource,
     @required this.spaggiariClient,
     @required this.profileRepository,
@@ -149,36 +149,12 @@ class GradesRepositoryImpl extends GradesRepository {
 
   @override
   Stream<Resource<GradesPagesDomainModel>> watchAllGradesSections() async* {
-    List<Period> periods = await periodDao.getAllPeriods();
-
-    if (periods.isEmpty) {
-      final profile = await profileRepository.getProfile();
-      final remotePeriods = await spaggiariClient.getPeriods(profile.studentId);
-
-      if (remotePeriods.periods.isEmpty) {
-        yield Resource.failed(error: GenericFailure());
-        return;
-      } else {
-        await periodsRepository.updatePeriods();
-        periods = await periodDao.getAllPeriods();
-      }
-    }
-
-    List<Subject> subjects = await subjectDao.getAllSubjects();
-
-    if (subjects.isEmpty) {
-      final profile = await profileRepository.getProfile();
-      final remoteSubjects =
-          await spaggiariClient.getSubjects(profile.studentId);
-
-      if (remoteSubjects.subjects.isEmpty) {
-        yield Resource.failed(error: GenericFailure());
-        return;
-      } else {
-        await subjectsRepository.updateSubjects();
-        subjects = await subjectDao.getAllSubjects();
-      }
-    }
+    Rx.combineLatest3(
+      streamA,
+      streamB,
+      streamC,
+      (a, b, c) => null,
+    );
 
     periods.add(
       Period(
@@ -562,7 +538,7 @@ class GradesRepositoryImpl extends GradesRepository {
     @required PeriodGradeDomainModel periodGradeDomainModel,
   }) async {
     try {
-      final professors = await professorDao
+      final professors = await professorLocalDatasource
           .getProfessorsForSubject(periodGradeDomainModel.subject.id);
 
       return Right(

@@ -6,12 +6,12 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/absences/presentation/bloc/absences_bloc.dart';
 import 'package:registro_elettronico/feature/agenda/agenda_container.dart'
     hide sl;
+import 'package:registro_elettronico/feature/core_container.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/bloc/attachments/didactics_attachments_bloc.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/bloc/didactics_bloc.dart';
 import 'package:registro_elettronico/feature/grades/grades_container.dart'
     hide sl;
 import 'package:registro_elettronico/feature/home/presentation/blocs/lessons/lessons_dashboard_bloc.dart';
-import 'package:registro_elettronico/feature/lessons/presentation/bloc/lessons_bloc.dart';
 import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
 import 'package:registro_elettronico/feature/notes/presentation/bloc/attachments/note_attachments_bloc.dart';
 import 'package:registro_elettronico/feature/notes/presentation/bloc/notes_bloc.dart';
@@ -19,7 +19,6 @@ import 'package:registro_elettronico/feature/noticeboard/presentation/bloc/attac
 import 'package:registro_elettronico/feature/noticeboard/presentation/bloc/attachments/attachments_bloc.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/bloc/notices_bloc.dart';
 import 'package:registro_elettronico/feature/periods/presentation/bloc/periods_bloc.dart';
-import 'package:registro_elettronico/feature/professors/presentation/bloc/professors_bloc.dart';
 import 'package:registro_elettronico/feature/profile/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/feature/profile/presentation/token/token_bloc.dart';
@@ -28,9 +27,6 @@ import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini
 import 'package:registro_elettronico/feature/scrutini/presentation/bloc/document_attachment/document_attachment_bloc.dart';
 import 'package:registro_elettronico/feature/scrutini/presentation/bloc/documents_bloc.dart';
 import 'package:registro_elettronico/feature/stats/presentation/bloc/stats_bloc.dart';
-import 'package:registro_elettronico/feature/subjects/data/repository/subjects_respository_impl.dart';
-import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
-import 'package:registro_elettronico/feature/subjects/presentation/bloc/subjects_bloc.dart';
 import 'package:registro_elettronico/feature/timetable/data/repository/timetable_repository_impl.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/feature/timetable/presentation/bloc/timetable_bloc.dart';
@@ -69,38 +65,18 @@ class AppBlocDelegate {
           sl(),
         ),
       ),
-      RepositoryProvider<SubjectsRepository>(
-        create: (ctx) => SubjectsRepositoryImpl(
-          sl(),
-          sl(),
-          sl(),
-          sl(),
-          sl(),
-          sl(),
-        ),
-      ),
     ];
 
     _blocProviders = [
       ...GradesContainer.getBlocProviders(),
       ...AgendaContainer.getBlocProviders(),
+      ...CoreContainer.getBlocProviders(),
       BlocProvider<AuthBloc>(
         create: (bCtx) => AuthBloc(
           flutterSecureStorage: sl(),
           profileRepository: sl(),
           loginRepository: sl(),
           sharedPreferences: sl(),
-        ),
-      ),
-      BlocProvider<LessonsBloc>(
-        create: (ctx) => LessonsBloc(
-          lessonsRepository: sl(),
-        ),
-      ),
-      BlocProvider<SubjectsBloc>(
-        create: (ctx) => SubjectsBloc(
-          subjectsRepository: sl(),
-          profileRepository: sl(),
         ),
       ),
       BlocProvider<PeriodsBloc>(
@@ -141,11 +117,6 @@ class AppBlocDelegate {
       BlocProvider<LessonsDashboardBloc>(
         create: (ctx) => LessonsDashboardBloc(
           lessonsRepository: sl(),
-        ),
-      ),
-      BlocProvider<ProfessorsBloc>(
-        create: (ctx) => ProfessorsBloc(
-          subjectsRepository: sl(),
         ),
       ),
       BlocProvider<DocumentsBloc>(

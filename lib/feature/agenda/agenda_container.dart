@@ -10,27 +10,27 @@ import 'data/datasource/remote/agenda_remote_datasource.dart';
 import 'data/repository/agenda_repository_impl.dart';
 import 'domain/repository/agenda_repository.dart';
 
-final sl = GetIt.instance;
+final _sl = GetIt.instance;
 
 class AgendaContainer {
   static Future<void> init() async {
-    sl.registerLazySingleton(
-      () => AgendaLocalDatasource(sl()),
+    _sl.registerLazySingleton(
+      () => AgendaLocalDatasource(_sl()),
     );
 
-    sl.registerLazySingleton(
+    _sl.registerLazySingleton(
       () => AgendaRemoteDatasource(
-        dio: sl(),
-        profileRepository: sl(),
+        dio: _sl(),
+        profileRepository: _sl(),
       ),
     );
 
-    sl.registerLazySingleton<AgendaRepository>(
+    _sl.registerLazySingleton<AgendaRepository>(
       () => AgendaRepositoryImpl(
-        agendaRemoteDatasource: sl(),
-        agendaLocalDatasource: sl(),
-        sharedPreferences: sl(),
-        lessonDao: sl(),
+        agendaRemoteDatasource: _sl(),
+        agendaLocalDatasource: _sl(),
+        sharedPreferences: _sl(),
+        lessonsLocalDatasource: _sl(),
       ),
     );
   }
@@ -39,12 +39,12 @@ class AgendaContainer {
     return [
       BlocProvider<AgendaWatcherBloc>(
         create: (BuildContext context) => AgendaWatcherBloc(
-          agendaRepository: sl(),
+          agendaRepository: _sl(),
         ),
       ),
       BlocProvider<AgendaUpdaterBloc>(
         create: (BuildContext context) => AgendaUpdaterBloc(
-          agendaRepository: sl(),
+          agendaRepository: _sl(),
         ),
       ),
     ];

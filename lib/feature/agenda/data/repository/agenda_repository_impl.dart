@@ -15,7 +15,7 @@ import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_loca
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
-import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
+import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_local_datasource.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:rxdart/rxdart.dart' hide Subject;
@@ -27,7 +27,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
   final AgendaLocalDatasource agendaLocalDatasource;
   final AgendaRemoteDatasource agendaRemoteDatasource;
 
-  final LessonDao lessonDao;
+  final LessonsLocalDatasource lessonsLocalDatasource;
 
   final SharedPreferences sharedPreferences;
 
@@ -35,7 +35,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
     @required this.agendaLocalDatasource,
     @required this.agendaRemoteDatasource,
     @required this.sharedPreferences,
-    @required this.lessonDao,
+    @required this.lessonsLocalDatasource,
   });
 
   @override
@@ -122,7 +122,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
   Stream<Resource<AgendaDataDomainModel>> watchAgendaData() async* {
     yield* Rx.combineLatest2(
       agendaLocalDatasource.watchAllEvents(),
-      lessonDao.watchAllLessons(),
+      lessonsLocalDatasource.watchAllLessons(),
       (List<AgendaEventLocalModel> events, List<LessonLocalModel> lessons) {
         final domainEvents = events
             .map((l) => AgendaEventDomainModel.fromLocalModel(l))

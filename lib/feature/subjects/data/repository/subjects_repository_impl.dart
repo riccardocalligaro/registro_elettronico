@@ -99,7 +99,7 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
 
   @override
   Stream<Resource<List<SubjectDomainModel>>> watchAllSubjects() {
-    Rx.combineLatest2(
+    return Rx.combineLatest2(
       professorLocalDatasource.watchAllProfessors(),
       subjectsLocalDatasource.watchAllSubjects(),
       (
