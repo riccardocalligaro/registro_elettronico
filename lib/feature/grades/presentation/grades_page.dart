@@ -34,12 +34,22 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
                   AppLocalizations.of(context).translate('grades'),
                 ),
               ),
-              bottomNavigationBar: _buildBottomNavigationBar(
-                periods: state.gradesSections.periods,
-              ),
-              body: GradesLoaded(
-                gradesPagesDomainModel: state.gradesSections,
-                index: _currentPage,
+              // bottomNavigationBar: _buildBottomNavigationBar(
+              //   periods: state.gradesSections.periods,
+              // ),
+              body: Column(
+                children: [
+                  ActionChip(
+                    label: Text('Ultimi voti'),
+                    onPressed: () {},
+                  ),
+                  Expanded(
+                    child: GradesLoaded(
+                      gradesPagesDomainModel: state.gradesSections,
+                      index: _currentPage,
+                    ),
+                  ),
+                ],
               ),
             );
           } else if (state is GradesWatcherFailure) {

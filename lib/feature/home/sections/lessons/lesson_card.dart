@@ -25,7 +25,7 @@ class LessonCard extends StatelessWidget {
           children: [
             Container(
               height: double.infinity,
-              width: 45,
+              width: 35,
               decoration: BoxDecoration(
                 color: ColorUtils.getLessonCardColor(context),
                 borderRadius: BorderRadius.only(

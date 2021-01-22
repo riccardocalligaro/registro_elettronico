@@ -20,6 +20,7 @@ class HomePage extends StatelessWidget {
         onRefresh: () => _updateHomeData(context),
         child: ListView(
           padding: EdgeInsets.zero,
+          physics: ClampingScrollPhysics(),
           children: [
             HomeHeader(),
             // GRADES
@@ -27,10 +28,11 @@ class HomePage extends StatelessWidget {
             // LESSONS
             HomeLessonsHeader(),
             SizedBox(
-              height: 120,
+              height: 140,
               child: HomeLessons(),
             ),
-            // HomeEvents(),
+            HomeAgendaHeader(),
+            HomeEvents(),
           ],
         ),
       ),
