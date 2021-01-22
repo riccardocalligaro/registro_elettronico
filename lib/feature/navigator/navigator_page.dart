@@ -1,4 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/agenda_page.dart';
 import 'package:registro_elettronico/feature/grades/presentation/grades_page.dart';
 import 'package:registro_elettronico/feature/home/home_page.dart';
@@ -49,20 +53,25 @@ class _NavigatorPageState extends State<NavigatorPage> {
       items: [
         BottomNavigationBarItem(
           // title: Container(),
-          label: 'Home',
+          label: AppLocalizations.of(context).translate('home'),
           icon: Icon(Icons.home),
         ),
         BottomNavigationBarItem(
-          label: '',
-          icon: Icon(Icons.timeline),
+          label: AppLocalizations.of(context).translate('grades'),
+          icon: Icon(
+            Icons.class_,
+          ),
         ),
         BottomNavigationBarItem(
-          label: '',
-          icon: Icon(Icons.calendar_today),
+          label: AppLocalizations.of(context).translate('agenda'),
+          icon: Icon(
+            Icons.today,
+            size: 25,
+          ),
         ),
         BottomNavigationBarItem(
-          label: '',
-          icon: Icon(Icons.assessment),
+          label: AppLocalizations.of(context).translate('notice_board'),
+          icon: Icon(Icons.email),
         ),
         BottomNavigationBarItem(
           label: '',

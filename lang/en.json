@@ -312,5 +312,6 @@
   "seen_grades": "Seen",
   "not_seen_grades": "Not seen",
   "empty_events": "No events",
-  "empty_lessons": "No lessons"
+  "empty_lessons": "No lessons",
+  "term_chip": "{number}° term"
 }

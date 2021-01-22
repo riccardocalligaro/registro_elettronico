@@ -20,25 +20,21 @@ class PeriodTab extends StatelessWidget {
       return EmptyGradesPlaceholder();
     }
 
-    return RefreshIndicator(
-      onRefresh: () {
-        final GradesRepository gradesRepository = sl();
-        return gradesRepository.updateGrades(ifNeeded: false);
-      },
-      child: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
-          PeriodStatsCard(
-            periodWithGradesDomainModel: periodWithGradesDomainModel,
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          PeriodGradesList(
-            periodWithGradesDomainModel: periodWithGradesDomainModel,
-          )
-        ],
-      ),
+    return ListView(
+      shrinkWrap: true,
+      physics: ClampingScrollPhysics(),
+      padding: const EdgeInsets.all(16.0),
+      children: [
+        PeriodStatsCard(
+          periodWithGradesDomainModel: periodWithGradesDomainModel,
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        PeriodGradesList(
+          periodWithGradesDomainModel: periodWithGradesDomainModel,
+        ),
+      ],
     );
   }
 }

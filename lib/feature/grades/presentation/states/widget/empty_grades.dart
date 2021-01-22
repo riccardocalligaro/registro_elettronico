@@ -9,14 +9,17 @@ class EmptyGradesPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPlaceHolder(
-      icon: Icons.timeline,
-      showUpdate: true,
-      onTap: () {
-        final GradesRepository gradesRepository = sl();
-        return gradesRepository.updateGrades(ifNeeded: false);
-      },
-      text: AppLocalizations.of(context).translate('no_grades'),
+    return Padding(
+      padding: const EdgeInsets.only(top: 128),
+      child: CustomPlaceHolder(
+        icon: Icons.timeline,
+        showUpdate: true,
+        onTap: () {
+          final GradesRepository gradesRepository = sl();
+          return gradesRepository.updateGrades(ifNeeded: false);
+        },
+        text: AppLocalizations.of(context).translate('no_grades'),
+      ),
     );
   }
 }

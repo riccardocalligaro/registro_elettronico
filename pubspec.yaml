@@ -37,6 +37,7 @@ dependencies:
   flutter_secure_storage: ^3.3.5
   flutter_svg: null
   flutter_webview_plugin: ^0.3.11
+  font_awesome_flutter: ^8.11.0
   get_it: ^5.0.3
   injector: ^1.0.9
   intl: ^0.16.1
@@ -82,8 +83,8 @@ flutter:
     - lang/it.json
   uses-material-design: true
   fonts:
-   - family: Manrope
-     fonts:
+    - family: Manrope
+      fonts:
         - asset: assets/fonts/Gilroy-Regular.ttf
         - asset: assets/fonts/Gilroy-Heavy.ttf
           weight: 900

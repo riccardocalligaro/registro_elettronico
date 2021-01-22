@@ -9,6 +9,7 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 import 'agenda_timeline.dart';
+import 'next_events_page.dart';
 
 class HomeEvents extends StatelessWidget {
   const HomeEvents({Key key}) : super(key: key);
@@ -90,19 +91,15 @@ class _AgendaLoaded extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    if (e.title != '')
+                    if (e.notes != '' || e.title != '')
                       Text(
-                        '${e.notes ?? ''}',
+                        '${e.notes != '' ? e.notes : e.title}',
                         style: TextStyle(fontSize: 15.0),
                       ),
-                    if (e.title != '')
+                    if (e.notes != '' || e.title != '')
                       const SizedBox(
-                        height: 2.5,
+                        height: 8,
                       ),
-                    // Text(
-                    //   '${StringUtils.titleCase(GlobalUtils.getMockupName())} - ${_getDateMessage(e, context)}',
-                    //   style: TextStyle(fontSize: 12.0),
-                    // ),
                     Text(
                       '${StringUtils.titleCase(e.author)} - ${_getDateMessage(e, context)}',
                       style: TextStyle(fontSize: 12.0),
@@ -138,13 +135,13 @@ class _AgendaLoaded extends StatelessWidget {
                   width: double.infinity,
                   child: FlatButton(
                     onPressed: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) => NextEventsPage(
-                      //       events: events,
-                      //     ),
-                      //   ),
-                      // );
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => NextEventsPage(
+                            events: events,
+                          ),
+                        ),
+                      );
                     },
                     child: Text(AppLocalizations.of(context)
                         .translate('show_others')

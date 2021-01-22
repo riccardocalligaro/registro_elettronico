@@ -26,7 +26,9 @@ class GradesTab extends StatelessWidget {
         return gradesRepository.updateGrades(ifNeeded: false);
       },
       child: ListView.builder(
-        padding: const EdgeInsets.all(16.0),
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
         itemCount: grades.length,
         itemBuilder: (context, index) {
           if (index == 0 && !grades[0].hasSeenIt) {
