@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/data/model/event_type.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/core/presentation/widgets/unicorn_dialer.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
@@ -56,64 +57,69 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
         listener: (context, state) {
           _reactToListenerState(state);
         },
-        child: ListView(
-          children: [
-            TableCalendar(
-              initialCalendarFormat: CalendarFormat.twoWeeks,
-              calendarController: _calendarController,
-              events: widget.data.eventsMap,
-              initialSelectedDay: _initialDay,
-              onDaySelected: _onDaySelected,
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              locale: AppLocalizations.of(context).locale.toString(),
-              weekendDays: const [DateTime.sunday],
-              calendarStyle: CalendarStyle(
-                selectedColor: Theme.of(context).accentColor.withOpacity(0.7),
-                todayColor: Theme.of(context).accentColor.withAlpha(140),
-                markersColor: Colors.red[700],
-                outsideDaysVisible: false,
-                outsideStyle: TextStyle(color: Colors.grey[300]),
-                outsideWeekendStyle: TextStyle(
-                  color: Theme.of(context).accentColor.withOpacity(0.7),
+        child: RefreshIndicator(
+          onRefresh: () {
+            final AgendaRepository agendaRepository = sl();
+            return agendaRepository.updateAllAgenda(ifNeeded: false);
+          },
+          child: ListView(
+            children: [
+              TableCalendar(
+                calendarController: _calendarController,
+                events: widget.data.eventsMap,
+                initialSelectedDay: _initialDay,
+                onDaySelected: _onDaySelected,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                locale: AppLocalizations.of(context).locale.toString(),
+                weekendDays: const [DateTime.sunday],
+                calendarStyle: CalendarStyle(
+                  selectedColor: Theme.of(context).accentColor.withOpacity(0.7),
+                  todayColor: Theme.of(context).accentColor.withAlpha(140),
+                  markersColor: Colors.red[700],
+                  outsideDaysVisible: false,
+                  outsideStyle: TextStyle(color: Colors.grey[300]),
+                  outsideWeekendStyle: TextStyle(
+                    color: Theme.of(context).accentColor.withOpacity(0.7),
+                  ),
+                  weekendStyle: TextStyle(color: Theme.of(context).accentColor),
                 ),
-                weekendStyle: TextStyle(color: Theme.of(context).accentColor),
-              ),
-              daysOfWeekStyle: DaysOfWeekStyle(
-                weekendStyle: TextStyle(color: Theme.of(context).accentColor),
-              ),
-              headerStyle: HeaderStyle(
-                formatButtonTextStyle: const TextStyle()
-                    .copyWith(color: Colors.white, fontSize: 15.0),
-                formatButtonDecoration: BoxDecoration(
-                  color: Colors.deepOrange[400],
-                  borderRadius: BorderRadius.circular(16.0),
+                daysOfWeekStyle: DaysOfWeekStyle(
+                  weekendStyle: TextStyle(color: Theme.of(context).accentColor),
                 ),
-                formatButtonVisible: false,
+                headerStyle: HeaderStyle(
+                  formatButtonTextStyle: const TextStyle()
+                      .copyWith(color: Colors.white, fontSize: 15.0),
+                  formatButtonDecoration: BoxDecoration(
+                    color: Colors.deepOrange[400],
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                  formatButtonVisible: false,
+                ),
+                // onDaySelected: _onDaySelected,
+                builders: CalendarBuilders(
+                  singleMarkerBuilder: (context, date, event) {
+                    Color cor = _getLabelColor(event.labelColor);
+                    return Container(
+                      decoration:
+                          BoxDecoration(shape: BoxShape.circle, color: cor),
+                      width: 7.0,
+                      height: 7.0,
+                      margin: const EdgeInsets.symmetric(horizontal: 1.5),
+                    );
+                  },
+                ),
               ),
-              // onDaySelected: _onDaySelected,
-              builders: CalendarBuilders(
-                singleMarkerBuilder: (context, date, event) {
-                  Color cor = _getLabelColor(event.labelColor);
-                  return Container(
-                    decoration:
-                        BoxDecoration(shape: BoxShape.circle, color: cor),
-                    width: 7.0,
-                    height: 7.0,
-                    margin: const EdgeInsets.symmetric(horizontal: 1.5),
-                  );
-                },
+              const SizedBox(
+                height: 16,
               ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            AgendaEventsList(
-              events: widget.data.eventsMapString[_convertDate(_selectedDay)],
-            ),
-            LessonsList(
-              lessons: widget.data.lessonsMap[_convertDate(_selectedDay)],
-            ),
-          ],
+              AgendaEventsList(
+                events: widget.data.eventsMapString[_convertDate(_selectedDay)],
+              ),
+              LessonsList(
+                lessons: widget.data.lessonsMap[_convertDate(_selectedDay)],
+              ),
+            ],
+          ),
         ),
       ),
     );

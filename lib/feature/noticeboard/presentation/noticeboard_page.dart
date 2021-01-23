@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/model/notice_domain_model.dart';
+import 'package:registro_elettronico/feature/noticeboard/domain/repository/noticeboard_repository.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/watcher/noticeboard_watcher_bloc.dart';
 
 import 'notice_card.dart';
@@ -90,14 +92,20 @@ class _NoticesLoaded extends StatelessWidget {
       noticesToShow = notices;
     }
 
-    return ListView.builder(
-      itemCount: noticesToShow.length,
-      padding: const EdgeInsets.all(12.0),
-      itemBuilder: (context, index) {
-        return NoticeCard(
-          notice: noticesToShow[index],
-        );
+    return RefreshIndicator(
+      onRefresh: () {
+        final NoticeboardRepository noticeboardRepository = sl();
+        return noticeboardRepository.updateNotices(ifNeeded: false);
       },
+      child: ListView.builder(
+        itemCount: noticesToShow.length,
+        padding: const EdgeInsets.all(12.0),
+        itemBuilder: (context, index) {
+          return NoticeCard(
+            notice: noticesToShow[index],
+          );
+        },
+      ),
     );
   }
 

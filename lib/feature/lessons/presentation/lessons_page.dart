@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/watcher/lessons_watcher_bloc.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/string_utils.dart';
 
 class LessonsPage extends StatefulWidget {
   final int subjectId;
@@ -85,6 +88,9 @@ class _LessonsLoaded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int currentMonth = -1;
+    bool showMonth;
+
     List<LessonDomainModel> lessonsToShow;
 
     if (query.isNotEmpty) {
@@ -95,9 +101,69 @@ class _LessonsLoaded extends StatelessWidget {
 
     return ListView.builder(
       itemCount: lessonsToShow.length,
+      padding: const EdgeInsets.all(12),
       itemBuilder: (context, index) {
-        return Text(lessonsToShow[index].lessonArgoment);
+        final lesson = lessons[index];
+
+        if (lesson.date.month != currentMonth) {
+          showMonth = true;
+        } else {
+          showMonth = false;
+        }
+
+        currentMonth = lesson.date.month;
+
+        if (showMonth) {
+          var convertMonthLocale = DateUtils.convertMonthLocale(
+              lesson.date, AppLocalizations.of(context).locale.toString());
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 4.0,
+                  vertical: 8.0,
+                ),
+                child: Text(
+                  convertMonthLocale,
+                  style: TextStyle(color: Theme.of(context).accentColor),
+                ),
+              ),
+              _buildLessonCard(lesson)
+            ],
+          );
+        } else {
+          return _buildLessonCard(lesson);
+        }
       },
+    );
+  }
+
+  Widget _buildLessonCard(LessonDomainModel lesson) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 6),
+      child: Container(
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                lesson.lessonArgoment,
+                style: TextStyle(fontSize: 15),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Text(
+                '${StringUtils.titleCase(lesson.author)} - ${lesson.lessonType} - ${lesson.duration} H',
+                style: TextStyle(fontSize: 11),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

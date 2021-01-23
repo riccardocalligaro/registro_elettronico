@@ -142,6 +142,7 @@ class NoticeCard extends StatelessWidget {
                           final snackBar = SnackBar(
                             content: _DownloadAttachmentSnackbar(),
                             duration: Duration(minutes: 1),
+                            behavior: SnackBarBehavior.floating,
                           );
 
                           noticeboardScaffold.currentState
@@ -202,7 +203,8 @@ class _DownloadAttachmentSnackbar extends StatelessWidget {
             state is AttachmentDownloadFailure) {
           Future.delayed(Duration(seconds: 3)).then((value) =>
               noticeboardScaffold.currentState..removeCurrentSnackBar());
-        } else if (state is AttachmentDownloadSuccess) {
+        }
+        if (state is AttachmentDownloadSuccess) {
           OpenFile.open(state.downloadedAttachment.file.path);
         }
       },

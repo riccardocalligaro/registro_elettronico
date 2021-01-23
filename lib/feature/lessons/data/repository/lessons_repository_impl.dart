@@ -99,7 +99,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
   }) {
     return lessonsLocalDatasource.watchLessonsForSubject(subjectId).map(
       (lessonLocalModels) {
-        lessonLocalModels.sort((a, b) => a.date.compareTo(b.date));
+        lessonLocalModels.sort((b, a) => a.date.compareTo(b.date));
 
         final lessonDomainModels = lessonLocalModels
             .map((e) => LessonDomainModel.fromLocalModel(e))
