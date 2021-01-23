@@ -13,7 +13,6 @@ import 'package:registro_elettronico/feature/grades/grades_container.dart'
 import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
 import 'package:registro_elettronico/feature/notes/presentation/bloc/attachments/note_attachments_bloc.dart';
 import 'package:registro_elettronico/feature/notes/presentation/bloc/notes_bloc.dart';
-
 import 'package:registro_elettronico/feature/profile/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/feature/profile/presentation/token/token_bloc.dart';
@@ -22,9 +21,6 @@ import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini
 import 'package:registro_elettronico/feature/scrutini/presentation/bloc/document_attachment/document_attachment_bloc.dart';
 import 'package:registro_elettronico/feature/scrutini/presentation/bloc/documents_bloc.dart';
 import 'package:registro_elettronico/feature/stats/presentation/bloc/stats_bloc.dart';
-import 'package:registro_elettronico/feature/timetable/data/repository/timetable_repository_impl.dart';
-import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
-import 'package:registro_elettronico/feature/timetable/presentation/bloc/timetable_bloc.dart';
 
 class AppBlocDelegate {
   static AppBlocDelegate _instance;
@@ -47,12 +43,6 @@ class AppBlocDelegate {
           sl(),
           sl(),
           sl(),
-        ),
-      ),
-      RepositoryProvider<TimetableRepository>(
-        create: (ctx) => TimetableRepositoryImpl(
-          lessonsLocalDatasource: sl(),
-          timetableDao: sl(),
         ),
       ),
       RepositoryProvider<PreferencesRepository>(
@@ -85,12 +75,6 @@ class AppBlocDelegate {
       ),
       BlocProvider<DidacticsAttachmentsBloc>(
         create: (ctx) => DidacticsAttachmentsBloc(didacticsRepository: sl()),
-      ),
-      BlocProvider<TimetableBloc>(
-        create: (ctx) => TimetableBloc(
-          timetableRepository: sl(),
-          subjectsLocalDatasource: sl(),
-        ),
       ),
       BlocProvider<NoteAttachmentsBloc>(
         create: (ctx) => NoteAttachmentsBloc(

@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/professors/data/model/professor_remote_model.dart';
+import 'package:registro_elettronico/utils/color_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 
 class SubjectRemoteModel {
   int id;
@@ -37,12 +40,15 @@ class SubjectRemoteModel {
     return data;
   }
 
-  SubjectLocalModel toLocalModel() {
+  SubjectLocalModel toLocalModel(int index) {
     return SubjectLocalModel(
-      id: this.id,
-      name: this.description,
-      orderNumber: this.order,
-      color: '',
+      id: this.id ?? -1,
+      name: this.description ?? '',
+      orderNumber: this.order ?? -1,
+      color: GlobalUtils.getColorCode(
+            ColorUtils.getColorFromIndex(index) ?? Colors.red,
+          ) ??
+          Colors.red.value.toString(),
     );
   }
 }

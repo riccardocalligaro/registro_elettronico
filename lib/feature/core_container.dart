@@ -4,6 +4,7 @@ import 'package:registro_elettronico/feature/noticeboard/noticeboard_container.d
 import 'package:registro_elettronico/feature/periods/periods_container.dart';
 import 'package:registro_elettronico/feature/professors/professors_container.dart';
 import 'package:registro_elettronico/feature/subjects/subjects_container.dart';
+import 'package:registro_elettronico/feature/timetable/timetable_container.dart';
 
 class CoreContainer {
   static Future<void> init() async {
@@ -12,6 +13,7 @@ class CoreContainer {
     await SubjectsContainer.init();
     await LessonsContainer.init();
     await NoticeboardContainer.init();
+    await TimetableContainer.init();
   }
 
   static List<BlocProvider> getBlocProviders() {
@@ -19,6 +21,7 @@ class CoreContainer {
       ...LessonsContainer.getBlocProviders(),
       ...SubjectsContainer.getBlocProviders(),
       ...NoticeboardContainer.getBlocProviders(),
+      ...TimetableContainer.getBlocProviders(),
     ];
   }
 }

@@ -22,7 +22,6 @@ import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/feature/subjects/data/datasource/subject_local_datasource.dart';
-import 'package:registro_elettronico/feature/timetable/data/dao/timetable_dao.dart';
 import 'package:registro_elettronico/feature/absences/data/model/absence_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/content_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/folder_local_model.dart';
@@ -35,7 +34,8 @@ import 'package:registro_elettronico/feature/periods/data/model/period_local_mod
 import 'package:registro_elettronico/feature/professors/data/model/professor_local_model.dart';
 import 'package:registro_elettronico/feature/profile/data/model/profile_local_model.dart';
 import 'package:registro_elettronico/feature/subjects/data/model/subject_local_model.dart';
-import 'package:registro_elettronico/feature/timetable/data/model/timetale_local_model.dart';
+import 'package:registro_elettronico/feature/timetable/data/datasource/timetable_local_datasource.dart';
+import 'package:registro_elettronico/feature/timetable/data/model/timetable_entry_local_model.dart';
 
 part 'moor_database.g.dart';
 
@@ -74,7 +74,6 @@ LazyDatabase _openConnection() {
   AbsenceDao,
   NoteDao,
   DidacticsDao,
-  TimetableDao,
   DocumentsDao,
   GradesLocalDatasource,
   AgendaLocalDatasource,
@@ -83,6 +82,7 @@ LazyDatabase _openConnection() {
   ProfessorLocalDatasource,
   PeriodsLocalDatasource,
   NoticeboardLocalDatasource,
+  TimetableLocalDatasource,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());

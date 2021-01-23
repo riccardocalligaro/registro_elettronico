@@ -74,13 +74,11 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
               .toList());
         }
 
-        await subjectsLocalDatasource.insertSubjects(
-          remoteSubjects
-              .map(
-                (e) => e.toLocalModel(),
-              )
-              .toList(),
-        );
+        final insertableSubjects = remoteSubjects.asMap().entries.map((entry) {
+          return entry.value.toLocalModel(entry.key);
+        }).toList();
+
+        await subjectsLocalDatasource.insertSubjects(insertableSubjects);
 
         await professorLocalDatasource.insertProfessors(professors);
 

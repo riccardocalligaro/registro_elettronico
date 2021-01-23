@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'timetable_dao.dart';
+part of 'timetable_local_datasource.dart';
 
 // **************************************************************************
 // DaoGenerator
 // **************************************************************************
 
-mixin _$TimetableDaoMixin on DatabaseAccessor<AppDatabase> {
+mixin _$TimetableLocalDatasourceMixin on DatabaseAccessor<AppDatabase> {
   $TimetableEntriesTable get timetableEntries =>
       attachedDatabase.timetableEntries;
 }

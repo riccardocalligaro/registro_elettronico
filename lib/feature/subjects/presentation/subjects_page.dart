@@ -11,8 +11,20 @@ import 'package:registro_elettronico/feature/subjects/domain/model/subject_domai
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/feature/subjects/presentation/watcher/subjects_watcher_bloc.dart';
 
-class SubjectsPage extends StatelessWidget {
+class SubjectsPage extends StatefulWidget {
   const SubjectsPage({Key key}) : super(key: key);
+
+  @override
+  _SubjectsPageState createState() => _SubjectsPageState();
+}
+
+class _SubjectsPageState extends State<SubjectsPage> {
+  @override
+  void initState() {
+    BlocProvider.of<SubjectsWatcherBloc>(context)
+        .add(SubjectsStartWatcherIfNeeded());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

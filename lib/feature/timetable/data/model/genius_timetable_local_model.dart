@@ -1,6 +1,6 @@
 import 'package:moor/moor.dart';
 
-class GeniusTimetable {
+class GeniusTimetableLocalModel {
   String dayOfWeek;
   int subject;
   String teacher;
@@ -8,17 +8,23 @@ class GeniusTimetable {
   int end;
   String subjectName;
 
-  GeniusTimetable(this.dayOfWeek, this.teacher, this.subject, this.end,
-      this.start, this.subjectName);
+  GeniusTimetableLocalModel(
+    this.dayOfWeek,
+    this.teacher,
+    this.subject,
+    this.end,
+    this.start,
+    this.subjectName,
+  );
 
-  factory GeniusTimetable.fromData(
+  factory GeniusTimetableLocalModel.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
 
-    return GeniusTimetable(
+    return GeniusTimetableLocalModel(
       stringType.mapFromDatabaseResponse(data['${effectivePrefix}dayOfWeek']),
       stringType.mapFromDatabaseResponse(data['${effectivePrefix}teacher']),
       intType.mapFromDatabaseResponse(data['${effectivePrefix}subject']),

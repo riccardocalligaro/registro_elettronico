@@ -18,9 +18,7 @@ class SubjectsWatcherBloc
 
   SubjectsWatcherBloc({
     @required this.subjectsRepository,
-  }) : super(SubjectsWatcherInitial()) {
-    _startStreamListener();
-  }
+  }) : super(SubjectsWatcherInitial());
 
   @override
   Stream<SubjectsWatcherState> mapEventToState(

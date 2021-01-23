@@ -8245,27 +8245,28 @@ class $LocalGradesTable extends LocalGrades
   }
 }
 
-class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
+class TimetableEntryLocalModel extends DataClass
+    implements Insertable<TimetableEntryLocalModel> {
   final int id;
   final int start;
   final int end;
   final int dayOfWeek;
   final int subject;
   final String subjectName;
-  TimetableEntry(
+  TimetableEntryLocalModel(
       {this.id,
       @required this.start,
       @required this.end,
       @required this.dayOfWeek,
       @required this.subject,
       @required this.subjectName});
-  factory TimetableEntry.fromData(
+  factory TimetableEntryLocalModel.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    return TimetableEntry(
+    return TimetableEntryLocalModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       start: intType.mapFromDatabaseResponse(data['${effectivePrefix}start']),
       end: intType.mapFromDatabaseResponse(data['${effectivePrefix}end']),
@@ -8319,10 +8320,10 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
     );
   }
 
-  factory TimetableEntry.fromJson(Map<String, dynamic> json,
+  factory TimetableEntryLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return TimetableEntry(
+    return TimetableEntryLocalModel(
       id: serializer.fromJson<int>(json['id']),
       start: serializer.fromJson<int>(json['start']),
       end: serializer.fromJson<int>(json['end']),
@@ -8344,14 +8345,14 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
     };
   }
 
-  TimetableEntry copyWith(
+  TimetableEntryLocalModel copyWith(
           {int id,
           int start,
           int end,
           int dayOfWeek,
           int subject,
           String subjectName}) =>
-      TimetableEntry(
+      TimetableEntryLocalModel(
         id: id ?? this.id,
         start: start ?? this.start,
         end: end ?? this.end,
@@ -8361,7 +8362,7 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
       );
   @override
   String toString() {
-    return (StringBuffer('TimetableEntry(')
+    return (StringBuffer('TimetableEntryLocalModel(')
           ..write('id: $id, ')
           ..write('start: $start, ')
           ..write('end: $end, ')
@@ -8384,7 +8385,7 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is TimetableEntry &&
+      (other is TimetableEntryLocalModel &&
           other.id == this.id &&
           other.start == this.start &&
           other.end == this.end &&
@@ -8393,7 +8394,8 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
           other.subjectName == this.subjectName);
 }
 
-class TimetableEntriesCompanion extends UpdateCompanion<TimetableEntry> {
+class TimetableEntriesCompanion
+    extends UpdateCompanion<TimetableEntryLocalModel> {
   final Value<int> id;
   final Value<int> start;
   final Value<int> end;
@@ -8420,7 +8422,7 @@ class TimetableEntriesCompanion extends UpdateCompanion<TimetableEntry> {
         dayOfWeek = Value(dayOfWeek),
         subject = Value(subject),
         subjectName = Value(subjectName);
-  static Insertable<TimetableEntry> custom({
+  static Insertable<TimetableEntryLocalModel> custom({
     Expression<int> id,
     Expression<int> start,
     Expression<int> end,
@@ -8494,7 +8496,7 @@ class TimetableEntriesCompanion extends UpdateCompanion<TimetableEntry> {
 }
 
 class $TimetableEntriesTable extends TimetableEntries
-    with TableInfo<$TimetableEntriesTable, TimetableEntry> {
+    with TableInfo<$TimetableEntriesTable, TimetableEntryLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $TimetableEntriesTable(this._db, [this._alias]);
@@ -8579,7 +8581,8 @@ class $TimetableEntriesTable extends TimetableEntries
   @override
   final String actualTableName = 'timetable_entries';
   @override
-  VerificationContext validateIntegrity(Insertable<TimetableEntry> instance,
+  VerificationContext validateIntegrity(
+      Insertable<TimetableEntryLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -8624,9 +8627,11 @@ class $TimetableEntriesTable extends TimetableEntries
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  TimetableEntry map(Map<String, dynamic> data, {String tablePrefix}) {
+  TimetableEntryLocalModel map(Map<String, dynamic> data,
+      {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return TimetableEntry.fromData(data, _db, prefix: effectivePrefix);
+    return TimetableEntryLocalModel.fromData(data, _db,
+        prefix: effectivePrefix);
   }
 
   @override
@@ -9401,9 +9406,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   DidacticsDao _didacticsDao;
   DidacticsDao get didacticsDao =>
       _didacticsDao ??= DidacticsDao(this as AppDatabase);
-  TimetableDao _timetableDao;
-  TimetableDao get timetableDao =>
-      _timetableDao ??= TimetableDao(this as AppDatabase);
   DocumentsDao _documentsDao;
   DocumentsDao get documentsDao =>
       _documentsDao ??= DocumentsDao(this as AppDatabase);
@@ -9430,6 +9432,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   NoticeboardLocalDatasource get noticeboardLocalDatasource =>
       _noticeboardLocalDatasource ??=
           NoticeboardLocalDatasource(this as AppDatabase);
+  TimetableLocalDatasource _timetableLocalDatasource;
+  TimetableLocalDatasource get timetableLocalDatasource =>
+      _timetableLocalDatasource ??=
+          TimetableLocalDatasource(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

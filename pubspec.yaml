@@ -60,9 +60,14 @@ dependencies:
   shared_preferences: ^0.5.12+4
   sqlite3_flutter_libs: null
   table_calendar: ^2.3.3
+  timetable: ^0.2.7
   tinycolor: ^1.0.3
   tuple: ^1.0.3
   url_launcher: ^5.7.10
+  time_machine:
+    git:
+      url: https://github.com/Dana-Ferguson/time_machine
+      ref: 7753e0d
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +76,13 @@ dev_dependencies:
   json_serializable: ^3.5.1
   moor_generator: null
   retrofit_generator: null
+
+dependency_overrides:
+  rxdart: ^0.25.0
+  time_machine:
+    git:
+      url: https://github.com/Dana-Ferguson/time_machine
+      ref: 7753e0d
 
 flutter_icons:
   android: true
@@ -83,6 +95,9 @@ flutter:
     - assets/icons/subjects/
     - lang/en.json
     - lang/it.json
+    - packages/time_machine/data/cultures/cultures.bin
+    - packages/time_machine/data/tzdb/tzdb.bin
+
   uses-material-design: true
   fonts:
     - family: Manrope

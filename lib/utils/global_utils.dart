@@ -271,9 +271,7 @@ class GlobalUtils {
       if (reducedName != "") {
         return reducedName;
       } else {
-        reducedName = subjectName.substring(0, 13);
-        reducedName += "...";
-        return reducedName;
+        return subjectName;
       }
     } catch (_) {
       return subjectName;

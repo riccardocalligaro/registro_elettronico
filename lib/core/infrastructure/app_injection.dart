@@ -25,7 +25,6 @@ import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.d
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/repository/notes_repository_impl.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
-
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/feature/profile/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
@@ -36,9 +35,6 @@ import 'package:registro_elettronico/feature/scrutini/domain/repository/document
 import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
 import 'package:registro_elettronico/feature/stats/data/repository/stats_repository_impl.dart';
 import 'package:registro_elettronico/feature/stats/domain/repository/stats_repository.dart';
-import 'package:registro_elettronico/feature/timetable/data/dao/timetable_dao.dart';
-import 'package:registro_elettronico/feature/timetable/data/repository/timetable_repository_impl.dart';
-import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'network/network_info.dart';
@@ -77,7 +73,6 @@ class AppInjector {
     sl.registerLazySingleton(() => AbsenceDao(sl()));
     sl.registerLazySingleton(() => NoteDao(sl()));
     sl.registerLazySingleton(() => DidacticsDao(sl()));
-    sl.registerLazySingleton(() => TimetableDao(sl()));
     sl.registerLazySingleton(() => DocumentsDao(sl()));
   }
 
@@ -122,13 +117,6 @@ class AppInjector {
 
     sl.registerLazySingleton<DidacticsRepository>(
         () => DidacticsRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
-
-    sl.registerLazySingleton<TimetableRepository>(
-      () => TimetableRepositoryImpl(
-        lessonsLocalDatasource: sl(),
-        timetableDao: sl(),
-      ),
-    );
 
     sl.registerLazySingleton<DocumentsRepository>(
         () => DocumentsRepositoryImpl(sl(), sl(), sl(), sl(), sl()));

@@ -2,7 +2,7 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:moor/moor.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_local_model.dart';
 import 'package:registro_elettronico/feature/professors/data/model/professor_local_model.dart';
-import 'package:registro_elettronico/utils/entity/genius_timetable.dart';
+import 'package:registro_elettronico/feature/timetable/data/model/genius_timetable_local_model.dart';
 
 part 'lessons_local_datasource.g.dart';
 
@@ -60,7 +60,7 @@ class LessonsLocalDatasource extends DatabaseAccessor<AppDatabase>
   }
 
   // Thanks to Registro elettronico android by simone luconi
-  Future<List<GeniusTimetable>> getGeniusTimetable() {
+  Future<List<GeniusTimetableLocalModel>> getGeniusTimetable() {
     return customSelect(""" SELECT `dayOfWeek`,`teacher`,`subject`, `subject_name`,`start`,`end` FROM
       (select strftime('%w', date, 'unixepoch') as `dayOfWeek`,
       `subject_id` as `subject`,
@@ -84,7 +84,7 @@ class LessonsLocalDatasource extends DatabaseAccessor<AppDatabase>
         ),
       ),
     ]).map((row) {
-      return GeniusTimetable.fromData(row.data, db);
+      return GeniusTimetableLocalModel.fromData(row.data, db);
     }).get();
   }
 }

@@ -1,6 +1,6 @@
 import 'package:moor/moor.dart';
 
-@DataClassName('TimetableEntry')
+@DataClassName('TimetableEntryLocalModel')
 class TimetableEntries extends Table {
   IntColumn get id => integer().nullable().autoIncrement()();
   IntColumn get start => integer()();

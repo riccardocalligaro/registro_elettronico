@@ -100,6 +100,6 @@ class UpdateUtils {
       documentsRepository.updateDocuments(),
     ]);
 
-    await timetableRepository.updateTimeTable();
+    // await timetableRepository.updateTimeTable();
   }
 }

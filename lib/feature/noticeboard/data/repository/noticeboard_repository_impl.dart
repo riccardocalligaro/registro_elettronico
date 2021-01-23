@@ -2,22 +2,21 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/datasource/noticeboard_local_datasource.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/datasource/noticeboard_remote_datasource.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/attachment/attachment_file.dart';
-import 'package:registro_elettronico/feature/noticeboard/data/model/attachment/attachment_remote_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/model/attachment_domain_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/model/notice_domain_model.dart';
-import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
-import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
-import 'package:dartz/dartz.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/noticeboard_repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,9 +42,6 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
           (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
         final localNotices = await noticeboardLocalDatasource.getAllNotices();
 
-        final localAttachments =
-            await noticeboardLocalDatasource.getAllAttachments();
-
         final remoteNotices =
             await noticeboardRemoteDatasource.getNoticeboard();
 
@@ -59,23 +55,12 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
         }
 
         final remoteIds = remoteNotices.map((e) => e.pubId).toList();
-        final remoteAttachmentsIds = mappedRemoteAttachments
-            .map((e) => Tuple2(e.pubId, e.fileName))
-            .toList();
 
         List<NoticeLocalModel> noticesToDelete = [];
-        List<NoticeAttachmentLocalModel> attachmentsToDelete = [];
 
         for (final localNotice in localNotices) {
           if (!remoteIds.contains(localNotice.pubId)) {
             noticesToDelete.add(localNotice);
-          }
-        }
-
-        for (final localAttachment in localAttachments) {
-          if (!remoteAttachmentsIds.contains(
-              Tuple2(localAttachment.pubId, localAttachment.fileName))) {
-            attachmentsToDelete.add(localAttachment);
           }
         }
 
@@ -87,12 +72,13 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
               .toList(),
         );
 
+        await noticeboardLocalDatasource.deleteAllAttachments();
+
         await noticeboardLocalDatasource
             .insertAttachments(mappedRemoteAttachments);
 
         // delete the noticeboard that were removed from the remote source
         await noticeboardLocalDatasource.deleteNotices(noticesToDelete);
-        await noticeboardLocalDatasource.deleteAttachments(attachmentsToDelete);
 
         await sharedPreferences.setInt(
             lastUpdateKey, DateTime.now().millisecondsSinceEpoch);

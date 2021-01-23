@@ -50,6 +50,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  black_hole_flutter:
+    dependency: transitive
+    description:
+      name: black_hole_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.15"
   bloc:
     dependency: transitive
     description:
@@ -197,6 +204,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.10"
+  dartx:
+    dependency: transitive
+    description:
+      name: dartx
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.0"
   dartz:
     dependency: "direct main"
     description:
@@ -854,6 +868,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
+  resource:
+    dependency: transitive
+    description:
+      name: resource
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.7"
   retrofit:
     dependency: "direct main"
     description:
@@ -1062,6 +1083,29 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.19-nullsafety.2"
+  time:
+    dependency: transitive
+    description:
+      name: time
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.0"
+  time_machine:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "7753e0d"
+      resolved-ref: "7753e0d258880ad8070fc71a10d04a5056428837"
+      url: "https://github.com/Dana-Ferguson/time_machine"
+    source: git
+    version: "0.9.15"
+  timetable:
+    dependency: "direct main"
+    description:
+      name: timetable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.8"
   timezone:
     dependency: transitive
     description:
