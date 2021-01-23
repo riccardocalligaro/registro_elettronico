@@ -1,14 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/agenda_page.dart';
 import 'package:registro_elettronico/feature/grades/presentation/grades_page.dart';
 import 'package:registro_elettronico/feature/home/home_page.dart';
 import 'package:registro_elettronico/feature/navigator/more_page.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/noticeboard_page.dart';
-import 'package:registro_elettronico/feature/settings/settings_page.dart';
 
 class NavigatorPage extends StatefulWidget {
   NavigatorPage({Key key}) : super(key: key);

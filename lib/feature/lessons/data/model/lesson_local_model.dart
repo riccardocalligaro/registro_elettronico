@@ -1,6 +1,4 @@
 import 'package:moor/moor.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 
 @DataClassName('LessonLocalModel')
 class Lessons extends Table {

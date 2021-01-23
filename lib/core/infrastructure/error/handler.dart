@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:f_logs/f_logs.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
@@ -12,7 +13,21 @@ Failure handleStreamError(
   dynamic e, [
   StackTrace s,
 ]) {
-  Logger.streamError(e.toString());
+  // Logger.streamError(e.toString());
+
+  if (e is Exception) {
+  } else {
+    e = Exception(e.toString());
+  }
+
+  FLog.error(
+    text: '⛔️ [STREAM ERROR]',
+    exception: e,
+    stacktrace: s,
+    methodName: '',
+    className: '',
+  );
+
   return _handleError(e);
 }
 
@@ -25,7 +40,12 @@ Failure handleError(
   return _handleError(e);
 }
 
-Failure _handleError(Exception e) {
+Failure _handleError(dynamic e) {
+  if (e is Exception) {
+  } else {
+    e = Exception(e.toString());
+  }
+
   if (e is DioError) {
     if (e is TimeoutException || e is SocketException || e.response == null) {
       return NetworkFailure(dioError: e);

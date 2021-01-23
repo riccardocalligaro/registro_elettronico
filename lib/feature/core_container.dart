@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:registro_elettronico/feature/lessons/lessons_container.dart';
 import 'package:registro_elettronico/feature/periods/periods_container.dart';
 import 'package:registro_elettronico/feature/professors/professors_container.dart';

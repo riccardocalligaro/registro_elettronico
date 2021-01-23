@@ -10,6 +10,7 @@ class SubjectDomainModel {
   String name;
   int order;
   List<ProfessorDomainModel> professors;
+  Set<String> professorsSet;
 
   SubjectDomainModel({
     @required this.id,
@@ -19,13 +20,15 @@ class SubjectDomainModel {
   });
 
   SubjectDomainModel.fromLocalModel({
-    @required List<ProfessorDomainModel> professors,
+    @required List<ProfessorDomainModel> professorsList,
+    @required Set<String> professorsSet,
     @required SubjectLocalModel l,
   }) {
     this.id = l.id;
     this.name = l.name;
     this.order = l.orderNumber;
     this.professors = professors;
+    this.professorsSet = professorsSet;
   }
 
   String get professorsText {
@@ -35,13 +38,13 @@ class SubjectDomainModel {
       professorsText +=
           '${StringUtils.titleCase(GlobalUtils.getMockupName())}, ';
     } else {
-      if (this.professors == null) {
+      if (this.professorsSet == null) {
         return '';
       }
-      this.professors.forEach((prof) {
-        String name = StringUtils.titleCase(prof.name);
+      this.professorsSet.forEach((prof) {
+        String name = StringUtils.titleCase(prof);
         if (!professorsText.contains(name)) {
-          professorsText += "${StringUtils.titleCase(prof.name)}, ";
+          professorsText += "${StringUtils.titleCase(prof)}, ";
         }
       });
     }

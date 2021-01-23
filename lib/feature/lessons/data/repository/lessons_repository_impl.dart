@@ -1,7 +1,10 @@
-import 'package:collection/collection.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_local_datasource.dart';
@@ -9,10 +12,6 @@ import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_rem
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_remote_model.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/last_lessons_domain_model.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
-import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
-import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
-import 'package:dartz/dartz.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
@@ -154,11 +153,6 @@ class LessonsRepositoryImpl implements LessonsRepository {
         final domainModels = lessonLocalModels
             .map((e) => LessonDomainModel.fromLocalModel(e))
             .toList();
-
-        final lessonMaps = groupBy<LessonDomainModel, int>(
-          domainModels,
-          (e) => e.id,
-        );
 
         final groupedLessons = _getGroupedLessonsMap(domainModels);
 

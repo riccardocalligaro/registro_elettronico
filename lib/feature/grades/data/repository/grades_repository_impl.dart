@@ -18,6 +18,7 @@ import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_mo
 import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/subject_data_domain_model.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
+import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_local_datasource.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
 import 'package:registro_elettronico/feature/periods/domain/model/period_domain_model.dart';
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
@@ -42,6 +43,7 @@ class GradesRepositoryImpl extends GradesRepository {
   final SubjectsLocalDatasource subjectsLocalDatasource;
   final ProfessorLocalDatasource professorLocalDatasource;
   final LocalGradesLocalDatasource localGradesLocalDatasource;
+  final LessonsLocalDatasource lessonsLocalDatasource;
 
   final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
@@ -65,6 +67,7 @@ class GradesRepositoryImpl extends GradesRepository {
     @required this.profileRepository,
     @required this.subjectsRepository,
     @required this.periodsRepository,
+    @required this.lessonsLocalDatasource,
   });
 
   @override
@@ -182,7 +185,8 @@ class GradesRepositoryImpl extends GradesRepository {
             .map(
               (l) => SubjectDomainModel.fromLocalModel(
                 l: l,
-                professors: null,
+                professorsList: null,
+                professorsSet: null,
               ),
             )
             .toList();
@@ -559,9 +563,29 @@ class GradesRepositoryImpl extends GradesRepository {
       final professors = await professorLocalDatasource
           .getProfessorsForSubject(periodGradeDomainModel.subject.id);
 
-      final domainProfessors = await professors.map(
-        (l) => ProfessorDomainModel.fromLocalModel(l),
-      );
+      final lessons = await lessonsLocalDatasource.getAllLessons();
+
+      Set<String> additionalProfessors = Set();
+
+      final lastLessons = lessons
+          .where((l) =>
+              l.date.isAfter(DateTime.now().subtract(Duration(days: 45))))
+          .toList();
+      for (final lesson in lastLessons) {
+        if (lesson.subjectId == periodGradeDomainModel.subject.id) {
+          if (lesson.author != null) {
+            additionalProfessors.add(lesson.author);
+          }
+        }
+      }
+
+      final domainProfessors = await professors
+          .map(
+            (l) => ProfessorDomainModel.fromLocalModel(l),
+          )
+          .toList();
+
+      periodGradeDomainModel.subject.professorsSet = additionalProfessors;
 
       return Right(
         SubjectDataDomainModel(
@@ -575,7 +599,7 @@ class GradesRepositoryImpl extends GradesRepository {
         ),
       );
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleStreamError(e, s));
     }
   }
 

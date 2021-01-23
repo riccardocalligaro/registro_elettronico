@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/last_lessons_domain_model.dart';
 import 'package:registro_elettronico/utils/color_utils.dart';
 

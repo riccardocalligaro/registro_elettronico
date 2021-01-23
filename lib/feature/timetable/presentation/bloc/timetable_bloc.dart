@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/subjects/data/datasource/subject_local_datasource.dart';
 import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
-import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 
 part 'timetable_event.dart';
@@ -33,8 +32,13 @@ class TimetableBloc extends Bloc<TimetableEvent, TimetableState> {
         final subjects = await subjectsLocalDatasource.getAllSubjects();
 
         final domainSubjects = subjects
-            .map((e) =>
-                SubjectDomainModel.fromLocalModel(professors: null, l: e))
+            .map(
+              (e) => SubjectDomainModel.fromLocalModel(
+                professorsList: null,
+                l: e,
+                professorsSet: null,
+              ),
+            )
             .toList();
 
         Logger.info('BloC -> Got ${subjects.length} subjects');
@@ -62,8 +66,11 @@ class TimetableBloc extends Bloc<TimetableEvent, TimetableState> {
         final subjects = await subjectsLocalDatasource.getAllSubjects();
 
         final domainSubjects = subjects
-            .map((e) =>
-                SubjectDomainModel.fromLocalModel(professors: null, l: e))
+            .map((e) => SubjectDomainModel.fromLocalModel(
+                  professorsList: null,
+                  professorsSet: null,
+                  l: e,
+                ))
             .toList();
         final timetable = await timetableRepository.getTimetable();
 

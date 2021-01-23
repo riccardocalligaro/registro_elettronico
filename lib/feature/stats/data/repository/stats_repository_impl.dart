@@ -55,7 +55,11 @@ class StatsRepositoryImpl implements StatsRepository {
       final localSubjects = await subjectsLocalDatasource.getAllSubjects();
       final subjects = localSubjects
           .map(
-            (l) => SubjectDomainModel.fromLocalModel(professors: null, l: l),
+            (l) => SubjectDomainModel.fromLocalModel(
+              professorsList: null,
+              l: l,
+              professorsSet: null,
+            ),
           )
           .toList();
 

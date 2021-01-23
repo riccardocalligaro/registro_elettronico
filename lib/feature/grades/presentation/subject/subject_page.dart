@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/grade_card.dart';
@@ -16,9 +15,7 @@ import 'package:registro_elettronico/feature/grades/presentation/states/grades_l
 import 'package:registro_elettronico/feature/grades/presentation/states/widget/period/period_chart.dart';
 import 'package:registro_elettronico/feature/grades/presentation/subject/local_watcher/local_grades_watcher_bloc.dart';
 import 'package:registro_elettronico/feature/grades/presentation/subject/pageset/subject_grades_pageset_bloc.dart';
-import 'package:registro_elettronico/feature/professors/domain/model/professor_domain_model.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
-import 'package:registro_elettronico/utils/string_utils.dart';
 
 class SubjectGradesPage extends StatefulWidget {
   final PeriodGradeDomainModel periodGradeDomainModel;
@@ -92,7 +89,7 @@ class _SubjectGradesPage extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(16.0),
       children: [
-        _ProfessorsCard(professors: data.professors),
+        _ProfessorsCard(professors: data.data.subject.professorsText),
         const SizedBox(
           height: 8,
         ),
@@ -129,7 +126,7 @@ class _SubjectGradesPage extends StatelessWidget {
 }
 
 class _ProfessorsCard extends StatelessWidget {
-  final List<ProfessorDomainModel> professors;
+  final String professors;
 
   const _ProfessorsCard({
     Key key,
@@ -144,30 +141,10 @@ class _ProfessorsCard extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: ListTile(
           leading: const Icon(Icons.person),
-          title: Text(
-            _getProfessorsText(professors, context),
-          ),
+          title: Text(professors),
         ),
       ),
     );
-  }
-
-  String _getProfessorsText(
-    List<ProfessorDomainModel> professors,
-    BuildContext context,
-  ) {
-    if (professors.isNotEmpty) {
-      String professorsText = '';
-      professors.forEach((prof) {
-        String name = StringUtils.titleCase(prof.name);
-        if (!professorsText.contains(name)) {
-          professorsText += '${StringUtils.titleCase(prof.name)}, ';
-        }
-      });
-      professorsText = StringUtils.removeLastChar(professorsText);
-      return professorsText;
-    }
-    return AppLocalizations.of(context).translate('no_professors');
   }
 }
 

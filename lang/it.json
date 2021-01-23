@@ -315,5 +315,13 @@
   "empty_lessons": "Nessuna lezione",
   "term_chip": "{number}° periodo",
   "change_account": "Cambia account",
-  "other_section": "Altro"
+  "other_section": "Altro",
+  "generic_failure": "Errore",
+  "network_failure": "Errore di connessione, controlla il tuo collegamento",
+  "network_failure_generic": "Problema di connessione generico",
+  "server_failure_404": "Elemento non trovato",
+  "server_failure": "Errore del server",
+  "not_connected_failure": "Non connesso a internet",
+  "show_error": "Show errror",
+  "bug_report_alert": "Segnala"
 }

@@ -28,6 +28,7 @@ class SubjectsContainer {
         subjectsLocalDatasource: _sl(),
         sharedPreferences: _sl(),
         professorLocalDatasource: _sl(),
+        lessonsLocalDatasource: _sl(),
       ),
     );
   }

@@ -42,7 +42,7 @@ class CustomPlaceHolder extends StatelessWidget {
               ? FlatButton(
                   child: Text(
                     updateMessage ??
-                        AppLocalizations.of(context).translate('sync'),
+                        AppLocalizations.of(context).translate('show_error'),
                     style: TextStyle(
                       color: Colors.grey[600],
                     ),

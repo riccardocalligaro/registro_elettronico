@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
+import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_local_datasource.dart';
 import 'package:registro_elettronico/feature/professors/data/datasource/professors_local_datasource.dart';
 import 'package:registro_elettronico/feature/professors/domain/model/professor_domain_model.dart';
 import 'package:registro_elettronico/feature/subjects/data/datasource/subject_local_datasource.dart';
@@ -24,12 +25,14 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
   final SharedPreferences sharedPreferences;
 
   final ProfessorLocalDatasource professorLocalDatasource;
+  final LessonsLocalDatasource lessonsLocalDatasource;
 
   SubjectsRepositoryImpl({
     @required this.subjectsLocalDatasource,
     @required this.subjectsRemoteDatasource,
     @required this.sharedPreferences,
     @required this.professorLocalDatasource,
+    @required this.lessonsLocalDatasource,
   });
 
   @override
@@ -99,12 +102,14 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
 
   @override
   Stream<Resource<List<SubjectDomainModel>>> watchAllSubjects() {
-    return Rx.combineLatest2(
+    return Rx.combineLatest3(
       professorLocalDatasource.watchAllProfessors(),
       subjectsLocalDatasource.watchAllSubjects(),
+      lessonsLocalDatasource.watchAllLessons(),
       (
         List<ProfessorLocalModel> professors,
         List<SubjectLocalModel> subjects,
+        List<LessonLocalModel> lessons,
       ) {
         final domainProfessors = professors
             .map((l) => ProfessorDomainModel.fromLocalModel(l))
@@ -115,10 +120,31 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
           (e) => e.subjectId,
         );
 
+        Map<int, Set<String>> additionalProfessors = Map();
+
+        final lastLessons = lessons
+            .where((l) =>
+                l.date.isAfter(DateTime.now().subtract(Duration(days: 45))))
+            .toList();
+        for (final lesson in lastLessons) {
+          final list = additionalProfessors[lesson.subjectId];
+          if (lesson.author != null) {
+            if (list != null) {
+              additionalProfessors[lesson.subjectId].add(lesson.author);
+            } else {
+              additionalProfessors[lesson.subjectId] = Set();
+              additionalProfessors[lesson.subjectId].add(lesson.author);
+            }
+          }
+        }
+
         final domainSubjects = subjects
             .map(
               (l) => SubjectDomainModel.fromLocalModel(
-                  professors: subjectProfessors[l.id], l: l),
+                professorsList: subjectProfessors[l.id],
+                professorsSet: additionalProfessors[l.id],
+                l: l,
+              ),
             )
             .toList();
 

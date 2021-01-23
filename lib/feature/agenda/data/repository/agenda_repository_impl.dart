@@ -9,7 +9,6 @@ import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/remote/agenda_remote_datasource.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_local_model.dart';

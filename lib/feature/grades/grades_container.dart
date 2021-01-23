@@ -35,6 +35,7 @@ class GradesContainer {
 
     sl.registerLazySingleton<GradesRepository>(
       () => GradesRepositoryImpl(
+        lessonsLocalDatasource: sl(),
         networkInfo: sl(),
         gradesRemoteDatasource: sl(),
         gradesLocalDatasource: sl(),
