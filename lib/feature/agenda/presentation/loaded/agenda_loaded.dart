@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/data/model/event_type.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/core/presentation/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/core/presentation/widgets/unicorn_dialer.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';

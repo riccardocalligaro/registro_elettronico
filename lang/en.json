@@ -324,5 +324,6 @@
   "not_connected_failure": "Not connected to the internet",
   "show_error": "Show errror",
   "bug_report_alert": "Report",
-  "file_downloaded_success": "Downloaded"
+  "file_downloaded_success": "Downloaded",
+  "refresh": "Refresh"
 }

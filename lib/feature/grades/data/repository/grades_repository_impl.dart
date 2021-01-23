@@ -45,28 +45,16 @@ class GradesRepositoryImpl extends GradesRepository {
   final LocalGradesLocalDatasource localGradesLocalDatasource;
   final LessonsLocalDatasource lessonsLocalDatasource;
 
-  final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
-
-  final SpaggiariClient spaggiariClient;
-  final ProfileRepository profileRepository;
-
-  final SubjectsRepository subjectsRepository;
-  final PeriodsRepository periodsRepository;
 
   GradesRepositoryImpl({
     @required this.gradesRemoteDatasource,
     @required this.gradesLocalDatasource,
-    @required this.networkInfo,
     @required this.sharedPreferences,
     @required this.periodsLocalDatasource,
     @required this.subjectsLocalDatasource,
     @required this.professorLocalDatasource,
     @required this.localGradesLocalDatasource,
-    @required this.spaggiariClient,
-    @required this.profileRepository,
-    @required this.subjectsRepository,
-    @required this.periodsRepository,
     @required this.lessonsLocalDatasource,
   });
 
@@ -164,18 +152,20 @@ class GradesRepositoryImpl extends GradesRepository {
         List<SubjectLocalModel> localSubjects,
         List<GradeLocalModel> localGrades,
       ) {
-        localPeriods.add(
-          PeriodLocalModel(
-            code: 'general',
-            position: -1,
-            description: 'Generale',
-            isFinal: null,
-            start: null,
-            end: null,
-            miurDivisionCode: null,
-            periodIndex: null,
-          ),
-        );
+        if (localPeriods.last.position != -1) {
+          localPeriods.add(
+            PeriodLocalModel(
+              code: 'general',
+              position: -1,
+              description: 'Generale',
+              isFinal: null,
+              start: null,
+              end: null,
+              miurDivisionCode: null,
+              periodIndex: null,
+            ),
+          );
+        }
 
         final domainPeriods = localPeriods
             .map((e) => PeriodDomainModel.fromLocalModel(e))

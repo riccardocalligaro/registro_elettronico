@@ -36,7 +36,6 @@ class GradesContainer {
     sl.registerLazySingleton<GradesRepository>(
       () => GradesRepositoryImpl(
         lessonsLocalDatasource: sl(),
-        networkInfo: sl(),
         gradesRemoteDatasource: sl(),
         gradesLocalDatasource: sl(),
         sharedPreferences: sl(),
@@ -44,10 +43,6 @@ class GradesContainer {
         subjectsLocalDatasource: sl(),
         professorLocalDatasource: sl(),
         localGradesLocalDatasource: sl(),
-        spaggiariClient: sl(),
-        profileRepository: sl(),
-        subjectsRepository: sl(),
-        periodsRepository: sl(),
       ),
     );
   }

@@ -136,29 +136,6 @@ class _SpaggiariClient implements SpaggiariClient {
   }
 
   @override
-  getNotice(studentId, eventCode, pubId, attachNum) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    ArgumentError.checkNotNull(eventCode, 'eventCode');
-    ArgumentError.checkNotNull(pubId, 'pubId');
-    ArgumentError.checkNotNull(attachNum, 'attachNum');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<List<dynamic>> _result = await _dio.request(
-        '/students/$studentId/noticeboard/attach/$eventCode/$pubId/$attachNum',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl,
-            responseType: ResponseType.bytes),
-        data: _data);
-    final value = _result.data.cast<int>();
-    return Future.value(value);
-  }
-
-  @override
   getNotes(studentId) async {
     ArgumentError.checkNotNull(studentId, 'studentId');
     const _extra = <String, dynamic>{};
