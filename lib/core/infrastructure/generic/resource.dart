@@ -11,16 +11,18 @@ class Resource<T> {
   final T data;
   final String message;
   final Failure failure;
+  final double progress;
 
   const Resource({
     this.data,
     @required this.status,
     this.message,
     this.failure,
+    this.progress,
   });
 
-  static Resource<T> loading<T>({T data}) =>
-      Resource<T>(data: data, status: Status.loading);
+  static Resource<T> loading<T>({T data, double progress}) =>
+      Resource<T>(data: data, status: Status.loading, progress: progress);
 
   static Resource<T> failed<T>({Failure error, T data}) => Resource<T>(
         failure: error,

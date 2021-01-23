@@ -1,25 +1,7 @@
-class NoticeboardResponse {
-  List<NoticeRemoteModel> items;
-
-  NoticeboardResponse({this.items});
-
-  NoticeboardResponse.fromJson(Map<String, dynamic> json) {
-    if (json['items'] != null) {
-      items = List<NoticeRemoteModel>();
-      json['items'].forEach((v) {
-        items.add(NoticeRemoteModel.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    if (this.items != null) {
-      data['items'] = this.items.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/model/attachment/attachment_remote_model.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 
 class NoticeRemoteModel {
   int pubId;
@@ -40,25 +22,46 @@ class NoticeRemoteModel {
   bool needFile;
   List<AttachmentRemoteModel> attachments;
 
-  NoticeRemoteModel(
-      {this.pubId,
-      this.pubDT,
-      this.readStatus,
-      this.evtCode,
-      this.cntId,
-      this.cntValidFrom,
-      this.cntValidTo,
-      this.cntValidInRange,
-      this.cntStatus,
-      this.cntTitle,
-      this.cntCategory,
-      this.cntHasChanged,
-      this.cntHasAttach,
-      this.needJoin,
-      this.needReply,
-      this.needFile,
-      //this.eventoId,
-      this.attachments});
+  NoticeRemoteModel({
+    this.pubId,
+    this.pubDT,
+    this.readStatus,
+    this.evtCode,
+    this.cntId,
+    this.cntValidFrom,
+    this.cntValidTo,
+    this.cntValidInRange,
+    this.cntStatus,
+    this.cntTitle,
+    this.cntCategory,
+    this.cntHasChanged,
+    this.cntHasAttach,
+    this.needJoin,
+    this.needReply,
+    this.needFile,
+    this.attachments,
+  });
+
+  NoticeLocalModel toLocalModel() {
+    return NoticeLocalModel(
+      pubId: this.pubId ?? GlobalUtils.getRandomNumber(),
+      pubDate: DateTime.parse(this.pubDT) ?? DateTime.now(),
+      readStatus: this.readStatus ?? false,
+      eventCode: this.evtCode ?? "CF",
+      contentId: this.cntId ?? GlobalUtils.getRandomNumber(),
+      contentValidFrom: DateUtils.getDateFromApiString(this.cntValidFrom),
+      contentValidTo: DateUtils.getDateFromApiString(this.cntValidTo),
+      contentValidInRange: this.cntValidInRange ?? true,
+      contentStatus: this.cntStatus ?? "active",
+      contentTitle: this.cntTitle ?? "😶",
+      contentCategory: this.cntCategory ?? "😶",
+      contentHasAttach: this.cntHasAttach ?? false,
+      contentHasChanged: this.cntHasChanged ?? false,
+      needJoin: this.needJoin ?? false,
+      needReply: this.needReply ?? false,
+      needFile: this.needFile ?? false,
+    );
+  }
 
   NoticeRemoteModel.fromJson(Map<String, dynamic> json) {
     pubId = json['pubId'];
@@ -77,7 +80,7 @@ class NoticeRemoteModel {
     needJoin = json['needJoin'];
     needReply = json['needReply'];
     needFile = json['needFile'];
-    //eventoId = json['evento_id'] ?? json['pubId'].toString();
+
     if (json['attachments'] != null) {
       attachments = List<AttachmentRemoteModel>();
       json['attachments'].forEach((v) {
@@ -108,25 +111,6 @@ class NoticeRemoteModel {
     if (this.attachments != null) {
       data['attachments'] = this.attachments.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class AttachmentRemoteModel {
-  String fileName;
-  int attachNum;
-
-  AttachmentRemoteModel({this.fileName, this.attachNum});
-
-  AttachmentRemoteModel.fromJson(Map<String, dynamic> json) {
-    fileName = json['fileName'];
-    attachNum = json['attachNum'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['fileName'] = this.fileName;
-    data['attachNum'] = this.attachNum;
     return data;
   }
 }

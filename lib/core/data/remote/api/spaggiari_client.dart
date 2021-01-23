@@ -9,8 +9,6 @@ import 'package:registro_elettronico/feature/login/data/model/login_response_rem
 import 'package:registro_elettronico/feature/login/data/model/parent_response_remote_model.dart';
 import 'package:registro_elettronico/feature/notes/data/model/remote/note_remote_model.dart';
 import 'package:registro_elettronico/feature/notes/data/model/remote/notes_read_remote_model.dart';
-import 'package:registro_elettronico/feature/noticeboard/data/model/notice_read_remote_model.dart';
-import 'package:registro_elettronico/feature/noticeboard/data/model/notice_remote_model.dart';
 import 'package:registro_elettronico/feature/scrutini/data/model/document_remote_model.dart';
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
@@ -42,30 +40,6 @@ abstract class SpaggiariClient {
   // Absences
   // @GET("/students/{studentId}/periods")
   // Future<PeriodsResponse> getPeriods(@Path() String studentId);
-
-  // Notice board
-  @GET("/students/{studentId}/noticeboard")
-  Future<NoticeboardResponse> getNoticeBoard(@Path() String studentId);
-
-  // Notice board
-  @POST("/students/{studentId}/noticeboard/read/{eventCode}/{pubId}/101")
-  Future<NoticeboardReadResponse> readNotice(
-    @Path('studentId') String studentId,
-    @Path('eventCode') String eventCode,
-    @Path('pubId') String pubId,
-    @Body() String body,
-  );
-
-  /// After the post request to read the notice you can get the attachment
-  @GET(
-      "/students/{studentId}/noticeboard/attach/{eventCode}/{pubId}/{attachNumber}")
-  @DioResponseType(ResponseType.bytes)
-  Future<List<int>> getNotice(
-    @Path('studentId') String studentId,
-    @Path('eventCode') String eventCode,
-    @Path('pubId') String pubId,
-    @Path('attachNumber') String attachNum,
-  );
 
   @GET("/students/{studentId}/notes/all/")
   Future<NotesResponse> getNotes(@Path() String studentId);
@@ -158,47 +132,6 @@ class _SpaggiariClient implements SpaggiariClient {
             baseUrl: baseUrl),
         data: _data);
     final value = AbsencesRemoteModel.fromJson(_result.data);
-    return Future.value(value);
-  }
-
-  @override
-  getNoticeBoard(studentId) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/noticeboard',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = NoticeboardResponse.fromJson(_result.data);
-    return Future.value(value);
-  }
-
-  @override
-  readNotice(studentId, eventCode, pubId, body) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    ArgumentError.checkNotNull(eventCode, 'eventCode');
-    ArgumentError.checkNotNull(pubId, 'pubId');
-    ArgumentError.checkNotNull(body, 'body');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = body;
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/noticeboard/read/$eventCode/$pubId/101',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'POST',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = NoticeboardReadResponse.fromJson(_result.data);
     return Future.value(value);
   }
 

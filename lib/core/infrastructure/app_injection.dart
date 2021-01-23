@@ -25,9 +25,7 @@ import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.d
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/repository/notes_repository_impl.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
-import 'package:registro_elettronico/feature/noticeboard/data/dao/notice_dao.dart';
-import 'package:registro_elettronico/feature/noticeboard/data/repository/notices_repository_impl.dart';
-import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
+
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/feature/profile/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
@@ -76,9 +74,7 @@ class AppInjector {
   // All the DAOS (Data Access Objects)
   static void injectDaos() {
     sl.registerLazySingleton(() => ProfileDao(sl()));
-
     sl.registerLazySingleton(() => AbsenceDao(sl()));
-    sl.registerLazySingleton(() => NoticeDao(sl()));
     sl.registerLazySingleton(() => NoteDao(sl()));
     sl.registerLazySingleton(() => DidacticsDao(sl()));
     sl.registerLazySingleton(() => TimetableDao(sl()));
@@ -120,9 +116,6 @@ class AppInjector {
 
     sl.registerLazySingleton<AbsencesRepository>(
         () => AbsencesRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
-
-    sl.registerLazySingleton<NoticesRepository>(
-        () => NoticesRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<NotesRepository>(
         () => NotesRepositoryImpl(sl(), sl(), sl(), sl(), sl()));

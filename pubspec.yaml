@@ -50,6 +50,7 @@ dependencies:
   open_file: ^3.0.3
   package_info: ^0.4.3+2
   path_provider: ^1.6.24
+  pedantic: ^1.9.2
   percent_indicator: ^2.1.9
   pull_to_refresh: ^1.6.3
   random_string: ^2.1.0

@@ -323,5 +323,6 @@
   "server_failure": "Server error",
   "not_connected_failure": "Not connected to the internet",
   "show_error": "Show errror",
-  "bug_report_alert": "Report"
+  "bug_report_alert": "Report",
+  "file_downloaded_success": "Downloaded"
 }

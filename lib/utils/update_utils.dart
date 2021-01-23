@@ -6,7 +6,7 @@ import 'package:registro_elettronico/feature/didactics/domain/repository/didacti
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
-import 'package:registro_elettronico/feature/noticeboard/domain/repository/notices_repository.dart';
+import 'package:registro_elettronico/feature/noticeboard/domain/repository/noticeboard_repository.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
@@ -68,7 +68,7 @@ class UpdateUtils {
     final AbsencesRepository absencesRepository = sl();
     final AgendaRepository agendaRepository = sl();
     final LessonsRepository lessonsRepository = sl();
-    final NoticesRepository noticesRepository = sl();
+    final NoticeboardRepository noticesRepository = sl();
     final SubjectsRepository subjectsRepository = sl();
 
     final NotesRepository notesRepository = sl();

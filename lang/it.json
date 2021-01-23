@@ -71,7 +71,7 @@
   "edit_event": "Modifica evento",
   "email_message": "Fornisci una descrizione più dettagliata possibile del bug in questione. Grazie mille",
   "error": "Errore",
-  "error_download": "Errore nello scaricamento del file!",
+  "error_download": "Errore nello scaricamento del file",
   "error_emoji": "Errore ❌",
   "event": "Evento",
   "event_hour_day": "{date} alle {hour} ({days} giorni)",
@@ -323,5 +323,6 @@
   "server_failure": "Errore del server",
   "not_connected_failure": "Non connesso a internet",
   "show_error": "Show errror",
-  "bug_report_alert": "Segnala"
+  "bug_report_alert": "Segnala",
+  "file_downloaded_success": "Scaricato"
 }

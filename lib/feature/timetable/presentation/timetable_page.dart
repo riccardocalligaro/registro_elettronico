@@ -145,7 +145,6 @@ ${AppLocalizations.of(context).translate('no_timetable_message')}""",
         timetable,
         key: (e) => e.start,
         value: (e) => timetable.where((s) => s.start == e.start).toList());
-
     return Scrollbar(
       child: ListView(
         // controller: _controller,

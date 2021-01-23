@@ -4614,7 +4614,8 @@ class $PeriodsTable extends Periods
   }
 }
 
-class Notice extends DataClass implements Insertable<Notice> {
+class NoticeLocalModel extends DataClass
+    implements Insertable<NoticeLocalModel> {
   final int pubId;
   final DateTime pubDate;
   final bool readStatus;
@@ -4631,7 +4632,7 @@ class Notice extends DataClass implements Insertable<Notice> {
   final bool needJoin;
   final bool needReply;
   final bool needFile;
-  Notice(
+  NoticeLocalModel(
       {@required this.pubId,
       @required this.pubDate,
       @required this.readStatus,
@@ -4648,14 +4649,15 @@ class Notice extends DataClass implements Insertable<Notice> {
       @required this.needJoin,
       @required this.needReply,
       @required this.needFile});
-  factory Notice.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory NoticeLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     final boolType = db.typeSystem.forDartType<bool>();
     final stringType = db.typeSystem.forDartType<String>();
-    return Notice(
+    return NoticeLocalModel(
       pubId: intType.mapFromDatabaseResponse(data['${effectivePrefix}pub_id']),
       pubDate: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}pub_date']),
@@ -4795,10 +4797,10 @@ class Notice extends DataClass implements Insertable<Notice> {
     );
   }
 
-  factory Notice.fromJson(Map<String, dynamic> json,
+  factory NoticeLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Notice(
+    return NoticeLocalModel(
       pubId: serializer.fromJson<int>(json['pubId']),
       pubDate: serializer.fromJson<DateTime>(json['pubDate']),
       readStatus: serializer.fromJson<bool>(json['readStatus']),
@@ -4841,7 +4843,7 @@ class Notice extends DataClass implements Insertable<Notice> {
     };
   }
 
-  Notice copyWith(
+  NoticeLocalModel copyWith(
           {int pubId,
           DateTime pubDate,
           bool readStatus,
@@ -4858,7 +4860,7 @@ class Notice extends DataClass implements Insertable<Notice> {
           bool needJoin,
           bool needReply,
           bool needFile}) =>
-      Notice(
+      NoticeLocalModel(
         pubId: pubId ?? this.pubId,
         pubDate: pubDate ?? this.pubDate,
         readStatus: readStatus ?? this.readStatus,
@@ -4878,7 +4880,7 @@ class Notice extends DataClass implements Insertable<Notice> {
       );
   @override
   String toString() {
-    return (StringBuffer('Notice(')
+    return (StringBuffer('NoticeLocalModel(')
           ..write('pubId: $pubId, ')
           ..write('pubDate: $pubDate, ')
           ..write('readStatus: $readStatus, ')
@@ -4936,7 +4938,7 @@ class Notice extends DataClass implements Insertable<Notice> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Notice &&
+      (other is NoticeLocalModel &&
           other.pubId == this.pubId &&
           other.pubDate == this.pubDate &&
           other.readStatus == this.readStatus &&
@@ -4955,7 +4957,7 @@ class Notice extends DataClass implements Insertable<Notice> {
           other.needFile == this.needFile);
 }
 
-class NoticesCompanion extends UpdateCompanion<Notice> {
+class NoticesCompanion extends UpdateCompanion<NoticeLocalModel> {
   final Value<int> pubId;
   final Value<DateTime> pubDate;
   final Value<bool> readStatus;
@@ -5022,7 +5024,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
         needJoin = Value(needJoin),
         needReply = Value(needReply),
         needFile = Value(needFile);
-  static Insertable<Notice> custom({
+  static Insertable<NoticeLocalModel> custom({
     Expression<int> pubId,
     Expression<DateTime> pubDate,
     Expression<bool> readStatus,
@@ -5176,7 +5178,8 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
   }
 }
 
-class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
+class $NoticesTable extends Notices
+    with TableInfo<$NoticesTable, NoticeLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $NoticesTable(this._db, [this._alias]);
@@ -5414,7 +5417,7 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
   @override
   final String actualTableName = 'notices';
   @override
-  VerificationContext validateIntegrity(Insertable<Notice> instance,
+  VerificationContext validateIntegrity(Insertable<NoticeLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -5536,9 +5539,9 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
   @override
   Set<GeneratedColumn> get $primaryKey => {pubId};
   @override
-  Notice map(Map<String, dynamic> data, {String tablePrefix}) {
+  NoticeLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Notice.fromData(data, _db, prefix: effectivePrefix);
+    return NoticeLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -5547,22 +5550,24 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
   }
 }
 
-class Attachment extends DataClass implements Insertable<Attachment> {
+class NoticeAttachmentLocalModel extends DataClass
+    implements Insertable<NoticeAttachmentLocalModel> {
   final int id;
   final int pubId;
   final String fileName;
   final int attachNumber;
-  Attachment(
+  NoticeAttachmentLocalModel(
       {@required this.id,
       @required this.pubId,
       @required this.fileName,
       @required this.attachNumber});
-  factory Attachment.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory NoticeAttachmentLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    return Attachment(
+    return NoticeAttachmentLocalModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       pubId: intType.mapFromDatabaseResponse(data['${effectivePrefix}pub_id']),
       fileName: stringType
@@ -5603,10 +5608,10 @@ class Attachment extends DataClass implements Insertable<Attachment> {
     );
   }
 
-  factory Attachment.fromJson(Map<String, dynamic> json,
+  factory NoticeAttachmentLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Attachment(
+    return NoticeAttachmentLocalModel(
       id: serializer.fromJson<int>(json['id']),
       pubId: serializer.fromJson<int>(json['pubId']),
       fileName: serializer.fromJson<String>(json['fileName']),
@@ -5624,8 +5629,9 @@ class Attachment extends DataClass implements Insertable<Attachment> {
     };
   }
 
-  Attachment copyWith({int id, int pubId, String fileName, int attachNumber}) =>
-      Attachment(
+  NoticeAttachmentLocalModel copyWith(
+          {int id, int pubId, String fileName, int attachNumber}) =>
+      NoticeAttachmentLocalModel(
         id: id ?? this.id,
         pubId: pubId ?? this.pubId,
         fileName: fileName ?? this.fileName,
@@ -5633,7 +5639,7 @@ class Attachment extends DataClass implements Insertable<Attachment> {
       );
   @override
   String toString() {
-    return (StringBuffer('Attachment(')
+    return (StringBuffer('NoticeAttachmentLocalModel(')
           ..write('id: $id, ')
           ..write('pubId: $pubId, ')
           ..write('fileName: $fileName, ')
@@ -5648,14 +5654,14 @@ class Attachment extends DataClass implements Insertable<Attachment> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Attachment &&
+      (other is NoticeAttachmentLocalModel &&
           other.id == this.id &&
           other.pubId == this.pubId &&
           other.fileName == this.fileName &&
           other.attachNumber == this.attachNumber);
 }
 
-class AttachmentsCompanion extends UpdateCompanion<Attachment> {
+class AttachmentsCompanion extends UpdateCompanion<NoticeAttachmentLocalModel> {
   final Value<int> id;
   final Value<int> pubId;
   final Value<String> fileName;
@@ -5674,7 +5680,7 @@ class AttachmentsCompanion extends UpdateCompanion<Attachment> {
   })  : pubId = Value(pubId),
         fileName = Value(fileName),
         attachNumber = Value(attachNumber);
-  static Insertable<Attachment> custom({
+  static Insertable<NoticeAttachmentLocalModel> custom({
     Expression<int> id,
     Expression<int> pubId,
     Expression<String> fileName,
@@ -5732,7 +5738,7 @@ class AttachmentsCompanion extends UpdateCompanion<Attachment> {
 }
 
 class $AttachmentsTable extends Attachments
-    with TableInfo<$AttachmentsTable, Attachment> {
+    with TableInfo<$AttachmentsTable, NoticeAttachmentLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $AttachmentsTable(this._db, [this._alias]);
@@ -5792,7 +5798,8 @@ class $AttachmentsTable extends Attachments
   @override
   final String actualTableName = 'attachments';
   @override
-  VerificationContext validateIntegrity(Insertable<Attachment> instance,
+  VerificationContext validateIntegrity(
+      Insertable<NoticeAttachmentLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -5825,9 +5832,11 @@ class $AttachmentsTable extends Attachments
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Attachment map(Map<String, dynamic> data, {String tablePrefix}) {
+  NoticeAttachmentLocalModel map(Map<String, dynamic> data,
+      {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Attachment.fromData(data, _db, prefix: effectivePrefix);
+    return NoticeAttachmentLocalModel.fromData(data, _db,
+        prefix: effectivePrefix);
   }
 
   @override
@@ -9387,8 +9396,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   AbsenceDao _absenceDao;
   AbsenceDao get absenceDao => _absenceDao ??= AbsenceDao(this as AppDatabase);
-  NoticeDao _noticeDao;
-  NoticeDao get noticeDao => _noticeDao ??= NoticeDao(this as AppDatabase);
   NoteDao _noteDao;
   NoteDao get noteDao => _noteDao ??= NoteDao(this as AppDatabase);
   DidacticsDao _didacticsDao;
@@ -9419,6 +9426,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   PeriodsLocalDatasource _periodsLocalDatasource;
   PeriodsLocalDatasource get periodsLocalDatasource =>
       _periodsLocalDatasource ??= PeriodsLocalDatasource(this as AppDatabase);
+  NoticeboardLocalDatasource _noticeboardLocalDatasource;
+  NoticeboardLocalDatasource get noticeboardLocalDatasource =>
+      _noticeboardLocalDatasource ??=
+          NoticeboardLocalDatasource(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

@@ -13,9 +13,7 @@ import 'package:registro_elettronico/feature/grades/grades_container.dart'
 import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
 import 'package:registro_elettronico/feature/notes/presentation/bloc/attachments/note_attachments_bloc.dart';
 import 'package:registro_elettronico/feature/notes/presentation/bloc/notes_bloc.dart';
-import 'package:registro_elettronico/feature/noticeboard/presentation/bloc/attachment_download/attachment_download_bloc.dart';
-import 'package:registro_elettronico/feature/noticeboard/presentation/bloc/attachments/attachments_bloc.dart';
-import 'package:registro_elettronico/feature/noticeboard/presentation/bloc/notices_bloc.dart';
+
 import 'package:registro_elettronico/feature/profile/data/repository/profile_repository_impl.dart';
 import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
 import 'package:registro_elettronico/feature/profile/presentation/token/token_bloc.dart';
@@ -78,15 +76,6 @@ class AppBlocDelegate {
       ),
       BlocProvider<AbsencesBloc>(
         create: (ctx) => AbsencesBloc(absencesRepository: sl()),
-      ),
-      BlocProvider<NoticesBloc>(
-        create: (ctx) => NoticesBloc(noticesRepository: sl()),
-      ),
-      BlocProvider<AttachmentDownloadBloc>(
-        create: (ctx) => AttachmentDownloadBloc(noticesRepository: sl()),
-      ),
-      BlocProvider<AttachmentsBloc>(
-        create: (ctx) => AttachmentsBloc(noticesRepository: sl()),
       ),
       BlocProvider<NotesBloc>(
         create: (ctx) => NotesBloc(notesRepository: sl()),

@@ -1,23 +1,6 @@
 import 'package:moor/moor.dart';
 
-/// "pubId": 4911199,
-/// "pubDT": "2019-12-16T09:54:59+01:00",
-/// "readStatus": false,
-/// "evtCode": "CF",
-/// "cntId": 2788481,
-/// "cntValidFrom": "2019-12-16",
-/// "cntValidTo": "2020-05-31",
-/// "cntValidInRange": true,
-/// "cntStatus": "active",
-/// "cntTitle": "CIRC - 185 ESAME FINALE CORSO LINUX ESSENTIALS e compilazione scheda di gradimento  del 20 dicembre 2019",
-/// "cntCategory": "Circolare",
-/// "cntHasChanged": false,
-/// "cntHasAttach": true,
-/// "needJoin": false,
-/// "needReply": false,
-/// "needFile": false,
-/// "evento_id": "2788481",
-
+@DataClassName('NoticeLocalModel')
 class Notices extends Table {
   IntColumn get pubId => integer()();
   DateTimeColumn get pubDate => dateTime()();

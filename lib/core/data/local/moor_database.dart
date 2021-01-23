@@ -14,23 +14,23 @@ import 'package:registro_elettronico/feature/grades/data/datasource/normal/grade
 import 'package:registro_elettronico/feature/grades/data/model/grade_local_model.dart';
 import 'package:registro_elettronico/feature/grades/data/model/local_grade_local_model.dart';
 import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_local_datasource.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/datasource/noticeboard_local_datasource.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/model/attachment/attachment_local_model.dart';
 import 'package:registro_elettronico/feature/professors/data/datasource/professors_local_datasource.dart';
 import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
-import 'package:registro_elettronico/feature/noticeboard/data/dao/notice_dao.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
 import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
 import 'package:registro_elettronico/feature/subjects/data/datasource/subject_local_datasource.dart';
 import 'package:registro_elettronico/feature/timetable/data/dao/timetable_dao.dart';
 import 'package:registro_elettronico/feature/absences/data/model/absence_local_model.dart';
-import 'package:registro_elettronico/feature/noticeboard/data/model/attachment_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/content_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/folder_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/teacher_local_model.dart';
 import 'package:registro_elettronico/feature/scrutini/data/model/document_local_model.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_local_model.dart';
 import 'package:registro_elettronico/feature/notes/data/model/local/note_local_model.dart';
-import 'package:registro_elettronico/feature/noticeboard/data/model/notice_local_model.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/model/notice/notice_local_model.dart';
 import 'package:registro_elettronico/feature/periods/data/model/period_local_model.dart';
 import 'package:registro_elettronico/feature/professors/data/model/professor_local_model.dart';
 import 'package:registro_elettronico/feature/profile/data/model/profile_local_model.dart';
@@ -72,7 +72,6 @@ LazyDatabase _openConnection() {
 ], daos: [
   ProfileDao,
   AbsenceDao,
-  NoticeDao,
   NoteDao,
   DidacticsDao,
   TimetableDao,
@@ -83,6 +82,7 @@ LazyDatabase _openConnection() {
   SubjectsLocalDatasource,
   ProfessorLocalDatasource,
   PeriodsLocalDatasource,
+  NoticeboardLocalDatasource,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
@@ -104,6 +104,8 @@ class AppDatabase extends _$AppDatabase {
           if (from < 4) {
             await m.createTable(agendaEventsTable);
           }
+          // TODO: drop table attachments and noticeboard
+          // beacuse of file names
         },
       );
 
