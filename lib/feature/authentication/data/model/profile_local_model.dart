@@ -81,8 +81,8 @@ class ProfileLocalModel {
 
   String toJson() => json.encode(toMap());
 
-  factory ProfileLocalModel.fromJson(String source) =>
-      ProfileLocalModel.fromMap(json.decode(source));
+  factory ProfileLocalModel.fromJson(Map<String, dynamic> source) =>
+      ProfileLocalModel.fromMap(source);
 
   @override
   String toString() {

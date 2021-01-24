@@ -326,5 +326,6 @@
   "bug_report_alert": "Report",
   "file_downloaded_success": "Downloaded",
   "refresh": "Refresh",
-  "server_login": "The server seems down ({code})"
+  "server_login": "The server seems down ({code})",
+  "already_logged_in": "Already logged in"
 }

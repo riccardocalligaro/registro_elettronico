@@ -17,12 +17,18 @@ class ProfilesLocalDatasource {
         sharedPreferences.getString(PrefsConstants.profilesList);
 
     if (profilesBody != null) {
-      Iterable l = json.decode(profilesBody);
       List<ProfileLocalModel> profiles = List<ProfileLocalModel>.from(
-        l.map(
-          (model) => ProfileLocalModel.fromJson(model),
-        ),
+        json.decode(profilesBody).map(
+              (i) => ProfileLocalModel.fromJson(jsonDecode(i)),
+            ),
       );
+
+      // Iterable l = json.decode(profilesBody);
+      // List<ProfileLocalModel> profiles = List<ProfileLocalModel>.from(
+      //   l.map(
+      //     (model) => ProfileLocalModel.fromJson(model),
+      //   ),
+      // );
 
       return profiles;
     } else {
@@ -41,7 +47,9 @@ class ProfilesLocalDatasource {
     final profilesList = await getAllProfiles();
     profilesList.remove(profile);
     await sharedPreferences.setString(
-        PrefsConstants.profilesList, jsonEncode(profilesList));
+      PrefsConstants.profilesList,
+      jsonEncode(profilesList),
+    );
   }
 
   Future updateProfile(ProfileLocalModel profile) async {

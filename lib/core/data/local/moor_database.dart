@@ -122,6 +122,7 @@ class AppDatabase extends _$AppDatabase {
 
               await profilesLocalDatasource
                   .insertProfile(domainProfile.toLocalModel());
+
               await sharedPreferences.setString(
                 PrefsConstants.databaseName,
                 PrefsConstants.databaseNameBeforeMigration,

@@ -326,5 +326,6 @@
   "bug_report_alert": "Segnala",
   "file_downloaded_success": "Scaricato",
   "refresh": "Aggiorna",
-  "server_login": "Il server sembra offline ({code})"
+  "server_login": "Il server sembra offline ({code})",
+  "already_logged_in": "Account già loggato"
 }

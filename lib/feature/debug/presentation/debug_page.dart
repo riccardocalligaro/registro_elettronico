@@ -6,6 +6,7 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/fcm_service.dart';
+import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/login/login_response_remote_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
@@ -82,9 +83,18 @@ class _DebugPageState extends State<DebugPage> {
             },
           ),
           DebugButton(
-            title: 'Go to login',
+            title: 'Get all profiles',
             onTap: () async {
-              AppNavigator.instance.navToLogin(context);
+              final ProfilesLocalDatasource profilesLocalDatasource = sl();
+              final profiles = await profilesLocalDatasource.getAllProfiles();
+              print(profiles);
+            },
+          ),
+          DebugButton(
+            title: 'Clear shared preferences',
+            onTap: () async {
+              final SharedPreferences sharedPreferences = sl();
+              await sharedPreferences.clear();
             },
           ),
           DebugButton(

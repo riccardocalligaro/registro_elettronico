@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -86,6 +87,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     bool markCurrentAsInactive = false,
   }) async {
     try {
+      final users = await profilesLocalDatasource.getAllProfiles();
+      final loggedInIds = users.map((e) => e.studentId);
+
       final response = await authenticationRemoteDatasource.loginUser(
         loginRequestDomainModel: loginRequestDomainModel,
       );
@@ -103,14 +107,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
             loginResponse.ident,
           );
 
-          for (final user in otherAccounts) {
-            if (user.currentlyLoggedIn) {
-              await profilesLocalDatasource.updateProfile(
-                user.copyWith(currentlyLoggedIn: false),
-              );
-            }
-          }
-
           String dbName;
 
           if (otherAccounts.isEmpty) {
@@ -123,6 +119,18 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
             currentlyLoggedIn: true,
             dbName: dbName,
           );
+
+          if (loggedInIds.contains(localModel.studentId)) {
+            return Left(AlreadyLoggedInFailure());
+          }
+
+          for (final user in otherAccounts) {
+            if (user.currentlyLoggedIn) {
+              await profilesLocalDatasource.updateProfile(
+                user.copyWith(currentlyLoggedIn: false),
+              );
+            }
+          }
 
           await profilesLocalDatasource.insertProfile(localModel);
 
@@ -188,22 +196,28 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
         final newAccount = otherAccounts.first;
 
-        await profilesLocalDatasource
-            .updateProfile(newAccount.copyWith(currentlyLoggedIn: true));
+        await profilesLocalDatasource.updateProfile(
+          newAccount.copyWith(currentlyLoggedIn: true),
+        );
 
         final account = ProfileDomainModel.fromLocalModel(otherAccounts.first);
         _ProfileSingleton.instance.profile = account;
 
         // set the db name in the shared preferences
         await sharedPreferences.setString(
-            PrefsConstants.defaultDbName, newAccount.dbName);
+          PrefsConstants.databaseName,
+          newAccount.dbName,
+        );
 
         // chiama il metodo per riavviare l'app
         await _restartApp();
       } else {
         // se non sono presenti altri account nel database
-        await sharedPreferences.setString(PrefsConstants.defaultDbName,
-            PrefsConstants.databaseNameBeforeMigration);
+        await sharedPreferences.setString(
+          PrefsConstants.databaseName,
+          PrefsConstants.databaseNameBeforeMigration,
+        );
+
         _ProfileSingleton.instance.profile = null;
 
         await navigator.currentState.push(
@@ -233,8 +247,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     }
   }
 
-  Future<void> _restartApp() {
-    return platform.invokeMethod('restartApp');
+  Future _restartApp() {
+    if (!kDebugMode) {
+      return platform.invokeMethod('restartApp');
+    }
   }
 
   @override
@@ -263,15 +279,20 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       // we have to set also the shared preferences
       if (profileDomainModel.dbName.isNotEmpty) {
         await sharedPreferences.setString(
-          PrefsConstants.defaultDbName,
+          PrefsConstants.databaseName,
           profileDomainModel.dbName,
         );
       } else {
         return Left(FatalSwitchFailure());
       }
 
+      _ProfileSingleton.instance.profile =
+          ProfileDomainModel.fromLocalModel(localModel);
+
       // now that we have set all the variables we can restart the app
       await _restartApp();
+
+      return Right(Success());
     } catch (e, s) {
       return Left(handleError(e, s));
     }
@@ -284,6 +305,13 @@ class _ProfileSingleton {
   static _ProfileSingleton get instance => _singleton;
 
   ProfileDomainModel profile;
+}
+
+class AlreadyLoggedInFailure extends Failure {
+  @override
+  String localizedDescription(BuildContext context) {
+    return AppLocalizations.of(context).translate('already_logged_in');
+  }
 }
 
 class FatalSwitchFailure extends Failure {}
