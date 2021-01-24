@@ -25,17 +25,6 @@ class GlobalUtils {
   //   if(brightness == Brightness.dark) {
   //   }
   // }
-  static Profile getMockProfile() {
-    return Profile(
-      ident: '32',
-      firstName: 'x',
-      lastName: '',
-      release: DateTime.now(),
-      token: '',
-      studentId: '',
-      expire: DateTime.now(),
-    );
-  }
 
   static String getColorCode(Color color) {
     return color.value.toString();

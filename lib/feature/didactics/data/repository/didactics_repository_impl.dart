@@ -6,30 +6,30 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
+import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_local_datasource.dart';
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_mapper.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
-import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DidacticsRepositoryImpl implements DidacticsRepository {
   final SpaggiariClient spaggiariClient;
   final DidacticsDao didacticsDao;
-  final ProfileDao profileDao;
+  final ProfilesLocalDatasource profilesLocalDatasource;
   final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
-  final ProfileRepository profileRepository;
+  final AuthenticationRepository authenticationRepository;
 
   DidacticsRepositoryImpl(
     this.spaggiariClient,
     this.didacticsDao,
-    this.profileDao,
+    this.profilesLocalDatasource,
     this.networkInfo,
     this.sharedPreferences,
-    this.profileRepository,
+    this.authenticationRepository,
   );
 
   @override
@@ -40,7 +40,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future updateDidactics() async {
     if (await networkInfo.isConnected) {
-      final profile = await profileRepository.getProfile();
+      final profile = await authenticationRepository.getProfile();
 
       Logger.info('Updating didactics');
 
@@ -100,7 +100,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future<Response> getFileAttachment(int fileID) async {
     if (await networkInfo.isConnected) {
-      final profile = await profileRepository.getProfile();
+      final profile = await authenticationRepository.getProfile();
       Logger.info('Getting attachment for $fileID!');
       final res = await _getAttachmentFile(profile.studentId, fileID);
       Logger.info('Got attachment for $fileID!');
@@ -113,7 +113,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future<DownloadAttachmentTextResponse> getTextAtachment(int fileID) async {
     if (await networkInfo.isConnected) {
-      final profile = await profileRepository.getProfile();
+      final profile = await authenticationRepository.getProfile();
       Logger.info('Getting text attachment for $fileID!');
       final res = spaggiariClient.getAttachmentText(profile.studentId, fileID);
       Logger.info('Got text attachment for $fileID!');
@@ -126,7 +126,7 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future<DownloadAttachmentURLResponse> getURLAtachment(int fileID) async {
     if (await networkInfo.isConnected) {
-      final profile = await profileRepository.getProfile();
+      final profile = await authenticationRepository.getProfile();
       Logger.info('Getting URL attachment for $fileID!');
       final res = spaggiariClient.getAttachmentUrl(profile.studentId, fileID);
       Logger.info('Got URL attachment for $fileID!');
@@ -141,7 +141,12 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
 
     String baseUrl = 'https://web.spaggiari.eu/rest/v1';
 
-    final _dio = DioClient(sl(), sl(), sl());
+    final _dio = SRDioClient(
+      flutterSecureStorage: sl(),
+      sharedPreferences: sl(),
+      authenticationRepository: sl(),
+    );
+
     ArgumentError.checkNotNull(studentId, 'studentId');
     ArgumentError.checkNotNull(fileId, 'fileId');
     const _extra = <String, dynamic>{};

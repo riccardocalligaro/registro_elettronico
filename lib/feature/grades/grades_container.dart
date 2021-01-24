@@ -29,7 +29,7 @@ class GradesContainer {
     sl.registerLazySingleton(
       () => GradesRemoteDatasource(
         dio: sl(),
-        profileRepository: sl(),
+        authenticationRepository: sl(),
       ),
     );
 

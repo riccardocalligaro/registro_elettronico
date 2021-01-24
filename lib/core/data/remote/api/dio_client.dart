@@ -4,26 +4,26 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/core/data/remote/api/api_config.dart';
 import 'package:registro_elettronico/core/infrastructure/exception/server_exception.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
-import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';
-import 'package:registro_elettronico/feature/login/presentation/login_page.dart';
-import 'package:registro_elettronico/feature/profile/data/model/profile_mapper.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/feature/authentication/data/model/login/login_response_remote_model.dart';
+
+import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
+import 'package:registro_elettronico/feature/authentication/presentation/login_page.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final GlobalKey<NavigatorState> navigator =
     GlobalKey(); //Create a key for navigator
 
-class DioClient {
-  final ProfileRepository profileRepository;
+class SRDioClient {
+  final AuthenticationRepository authenticationRepository;
   final FlutterSecureStorage flutterSecureStorage;
   final SharedPreferences sharedPreferences;
 
-  DioClient(
-    this.profileRepository,
-    this.flutterSecureStorage,
-    this.sharedPreferences,
-  );
+  SRDioClient({
+    @required this.authenticationRepository,
+    @required this.flutterSecureStorage,
+    @required this.sharedPreferences,
+  });
 
   Dio createDio() {
     final dio = Dio();
@@ -38,20 +38,24 @@ class DioClient {
       InterceptorsWrapper(
         onRequest: (RequestOptions options) async {
           //? We need to add the token when we are not loggin in
+
           if (options.path.contains('{studentId}')) {
+            final studentId =
+                await authenticationRepository.getCurrentStudentId();
+
             final replaced = options.path.replaceAll(
-                '{studentId}', profileRepository.currentStudentId());
+              '{studentId}',
+              studentId,
+            );
             options.path = replaced;
           }
           if (options.path != "/auth/login") {
             // temporarily lock the requests
             dio.lock();
             // get the profile from the database
-            final profile = await profileRepository.getProfile();
+            final profile = await authenticationRepository.getProfile();
 
-            print(profile);
-
-            final expireDate = DateTime.parse(profile.expire);
+            final expireDate = profile.expire;
 
             //? This checks if the profile exires before now, so if this  results true the token is expired
             if (expireDate.isBefore(DateTime.now()) || profile.token == "") {
@@ -104,19 +108,16 @@ class DioClient {
               }
 
               // this converts the response data to a login response
-              final loginResponse = LoginResponse.fromJson(res.data);
+              final loginResponse =
+                  DefaultLoginResponseRemoteModel.fromJson(res.data);
 
               // finally we update the db with the new token
 
-              final updatedProfile =
-                  ProfileMapper.mapLoginResponseProfileToProfileEntity(
-                loginResponse,
+              await authenticationRepository.updateProfile(
+                responseRemoteModel: loginResponse,
               );
 
-              await sharedPreferences.setString(
-                  PrefsConstants.profile, updatedProfile.toJson());
-
-              //profileRepository.updateProfile();
+              //authenticationRepository.updateProfile();
               Logger.info(
                 '🔒 [DioINTERCEPTOR] Got a new token - proceeding with request',
               );

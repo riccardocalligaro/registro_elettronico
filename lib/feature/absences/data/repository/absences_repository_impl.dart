@@ -6,26 +6,26 @@ import 'package:registro_elettronico/core/infrastructure/network/network_info.da
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/absences/data/model/absence_mapper.dart';
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
-import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_local_datasource.dart';
+import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AbsencesRepositoryImpl implements AbsencesRepository {
   final SpaggiariClient spaggiariClient;
   final AbsenceDao absenceDao;
-  final ProfileDao profileDao;
+  final ProfilesLocalDatasource profilesLocalDatasource;
   final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;
-  final ProfileRepository profileRepository;
+  final AuthenticationRepository authenticationRepository;
 
   AbsencesRepositoryImpl(
     this.spaggiariClient,
     this.absenceDao,
-    this.profileDao,
+    this.profilesLocalDatasource,
     this.networkInfo,
     this.sharedPreferences,
-    this.profileRepository,
+    this.authenticationRepository,
   );
 
   @override
@@ -33,7 +33,7 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
     if (await networkInfo.isConnected) {
       Logger.info('Updating absences');
 
-      final profile = await profileRepository.getProfile();
+      final profile = await authenticationRepository.getProfile();
       final absences = await spaggiariClient.getAbsences(profile.studentId);
       List<Absence> absencesList = [];
       absences.events.forEach((event) {

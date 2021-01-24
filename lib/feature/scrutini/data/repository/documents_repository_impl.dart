@@ -7,7 +7,7 @@ import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart'
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
 import 'package:registro_elettronico/feature/scrutini/data/model/document_mapper.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
@@ -15,7 +15,7 @@ import 'package:registro_elettronico/utils/constants/preferences_constants.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DocumentsRepositoryImpl implements DocumentsRepository {
-  final ProfileRepository profileRepository;
+  final AuthenticationRepository authenticationRepository;
   final SpaggiariClient spaggiariClient;
   final DocumentsDao documentsDao;
   final NetworkInfo networkInfo;
@@ -23,7 +23,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
 
   DocumentsRepositoryImpl(
     this.spaggiariClient,
-    this.profileRepository,
+    this.authenticationRepository,
     this.documentsDao,
     this.networkInfo,
     this.sharedPreferences,
@@ -32,7 +32,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   @override
   Future updateDocuments() async {
     if (await networkInfo.isConnected) {
-      final profile = await profileRepository.getProfile();
+      final profile = await authenticationRepository.getProfile();
       final documents = await spaggiariClient.getDocuments(profile.studentId);
 
       List<Document> documentsList = [];
@@ -83,11 +83,11 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   @override
   Future<Either<Failure, bool>> checkDocument(String documentHash) async {
     if (await networkInfo.isConnected) {
-      final profile = profileRepository.getProfile();
+      final studentId = await authenticationRepository.getCurrentStudentId();
 
       try {
         final available = await spaggiariClient.checkDocumentAvailability(
-          profile.studentId,
+          studentId,
           documentHash,
         );
 
@@ -104,11 +104,11 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   Future<Either<Failure, String>> readDocument(String documentHash) async {
     if (await networkInfo.isConnected) {
       try {
-        final profile = profileRepository.getProfile();
+        final studentId = await authenticationRepository.getCurrentStudentId();
         Logger.info('Got profile');
 
         final document = await spaggiariClient.readDocument(
-          profile.studentId,
+          studentId,
           documentHash,
         );
         String filename = document.value2;

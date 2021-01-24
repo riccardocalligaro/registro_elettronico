@@ -1,16 +1,22 @@
-class ParentsLoginResponse {
+import 'package:flutter/material.dart';
+
+class ParentLoginResponseRemoteModel {
   String requestedAction;
-  List<Choices> choices;
+  List<LoginChoiceRemoteModel> choices;
   String message;
 
-  ParentsLoginResponse({this.requestedAction, this.choices, this.message});
+  ParentLoginResponseRemoteModel({
+    this.requestedAction,
+    this.choices,
+    this.message,
+  });
 
-  ParentsLoginResponse.fromJson(Map<String, dynamic> json) {
+  ParentLoginResponseRemoteModel.fromJson(Map<String, dynamic> json) {
     requestedAction = json['requestedAction'];
     if (json['choices'] != null) {
-      choices = List<Choices>();
+      choices = List<LoginChoiceRemoteModel>();
       json['choices'].forEach((v) {
-        choices.add(Choices.fromJson(v));
+        choices.add(LoginChoiceRemoteModel.fromJson(v));
       });
     }
     message = json['message'];
@@ -27,15 +33,20 @@ class ParentsLoginResponse {
   }
 }
 
-class Choices {
+class LoginChoiceRemoteModel {
   String cid;
   String ident;
   String name;
   String school;
 
-  Choices({this.cid, this.ident, this.name, this.school});
+  LoginChoiceRemoteModel({
+    @required this.cid,
+    @required this.ident,
+    @required this.name,
+    @required this.school,
+  });
 
-  Choices.fromJson(Map<String, dynamic> json) {
+  LoginChoiceRemoteModel.fromJson(Map<String, dynamic> json) {
     cid = json['cid'];
     ident = json['ident'];
     name = json['name'];

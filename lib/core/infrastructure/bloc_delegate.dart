@@ -5,17 +5,14 @@ import 'package:registro_elettronico/core/domain/repository/preferences_reposito
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/absences/presentation/bloc/absences_bloc.dart';
 import 'package:registro_elettronico/feature/agenda/agenda_container.dart';
+import 'package:registro_elettronico/feature/authentication/presentation/token/token_bloc.dart';
 import 'package:registro_elettronico/feature/core_container.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/bloc/attachments/didactics_attachments_bloc.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/bloc/didactics_bloc.dart';
 import 'package:registro_elettronico/feature/grades/grades_container.dart'
     hide sl;
-import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
 import 'package:registro_elettronico/feature/notes/presentation/bloc/attachments/note_attachments_bloc.dart';
 import 'package:registro_elettronico/feature/notes/presentation/bloc/notes_bloc.dart';
-import 'package:registro_elettronico/feature/profile/data/repository/profile_repository_impl.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
-import 'package:registro_elettronico/feature/profile/presentation/token/token_bloc.dart';
 import 'package:registro_elettronico/feature/scrutini/data/repository/scrutini_repository_impl.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
 import 'package:registro_elettronico/feature/scrutini/presentation/bloc/document_attachment/document_attachment_bloc.dart';
@@ -30,13 +27,6 @@ class AppBlocDelegate {
 
   AppBlocDelegate._(BuildContext context) {
     _repositoryProviders = [
-      RepositoryProvider<ProfileRepository>(
-        create: (ctx) => ProfileRepositoryImpl(
-          sl(),
-          sl(),
-          sl(),
-        ),
-      ),
       RepositoryProvider<ScrutiniRepository>(
         create: (ctx) => ScrutiniRepositoryImpl(
           sl(),
@@ -56,14 +46,6 @@ class AppBlocDelegate {
       ...GradesContainer.getBlocProviders(),
       ...AgendaContainer.getBlocProviders(),
       ...CoreContainer.getBlocProviders(),
-      BlocProvider<AuthBloc>(
-        create: (bCtx) => AuthBloc(
-          flutterSecureStorage: sl(),
-          profileRepository: sl(),
-          loginRepository: sl(),
-          sharedPreferences: sl(),
-        ),
-      ),
       BlocProvider<AbsencesBloc>(
         create: (ctx) => AbsencesBloc(absencesRepository: sl()),
       ),

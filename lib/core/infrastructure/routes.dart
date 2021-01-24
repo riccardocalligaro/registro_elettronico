@@ -1,7 +1,7 @@
 import 'package:registro_elettronico/feature/absences/presentation/absences_page.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/agenda_page.dart';
+import 'package:registro_elettronico/feature/authentication/presentation/login_page.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/didactics_page.dart';
-import 'package:registro_elettronico/feature/login/presentation/login_page.dart';
 import 'package:registro_elettronico/feature/navigator/navigator_page.dart';
 import 'package:registro_elettronico/feature/notes/presentation/notes_page.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/noticeboard_page.dart';

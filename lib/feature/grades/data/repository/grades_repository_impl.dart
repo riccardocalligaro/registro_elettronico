@@ -24,7 +24,7 @@ import 'package:registro_elettronico/feature/periods/domain/model/period_domain_
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/feature/professors/data/datasource/professors_local_datasource.dart';
 import 'package:registro_elettronico/feature/professors/domain/model/professor_domain_model.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/subjects/data/datasource/subject_local_datasource.dart';
 import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';

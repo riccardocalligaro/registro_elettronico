@@ -4,9 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
-import 'package:registro_elettronico/feature/login/data/model/login_request_model.dart';
-import 'package:registro_elettronico/feature/login/data/model/login_response_remote_model.dart';
-import 'package:registro_elettronico/feature/login/data/model/parent_response_remote_model.dart';
+
 import 'package:registro_elettronico/feature/notes/data/model/remote/note_remote_model.dart';
 import 'package:registro_elettronico/feature/notes/data/model/remote/notes_read_remote_model.dart';
 import 'package:registro_elettronico/feature/scrutini/data/model/document_remote_model.dart';
@@ -19,11 +17,6 @@ import 'package:retrofit/retrofit.dart';
 // for feature reasons I had to manually write the http calls
 abstract class SpaggiariClient {
   factory SpaggiariClient(Dio dio) = _SpaggiariClient;
-
-  /// Log in path
-  @POST("/auth/login")
-  Future<Either<LoginResponse, ParentsLoginResponse>> loginUser(
-      @Body() LoginRequest loginRequest);
 
   // Absences
   @GET("/students/{studentId}/absences/details")
@@ -76,33 +69,6 @@ class _SpaggiariClient implements SpaggiariClient {
   final Dio _dio;
 
   String baseUrl;
-
-  @override
-  loginUser(loginRequest) async {
-    ArgumentError.checkNotNull(loginRequest, 'loginRequest');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(loginRequest.toJson() ?? <String, dynamic>{});
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/auth/login',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'POST',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-
-    if (_result.statusCode == 200 &&
-        _result.data.containsKey('requestedAction')) {
-      return Right(ParentsLoginResponse.fromJson(_result.data));
-    }
-
-    return Left(LoginResponse.fromJson(_result.data));
-
-    //return Future.value(value);
-  }
 
   @override
   getAbsences(studentId) async {

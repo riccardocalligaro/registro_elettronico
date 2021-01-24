@@ -7,7 +7,8 @@ part of 'moor_database.dart';
 // **************************************************************************
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
-class Profile extends DataClass implements Insertable<Profile> {
+class ProfileLocalModel extends DataClass
+    implements Insertable<ProfileLocalModel> {
   final String studentId;
   final String ident;
   final String firstName;
@@ -15,20 +16,24 @@ class Profile extends DataClass implements Insertable<Profile> {
   final String token;
   final DateTime release;
   final DateTime expire;
-  Profile(
+  final bool currentlyLoggedIn;
+  ProfileLocalModel(
       {@required this.studentId,
       @required this.ident,
       @required this.firstName,
       @required this.lastName,
       @required this.token,
       @required this.release,
-      @required this.expire});
-  factory Profile.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      @required this.expire,
+      @required this.currentlyLoggedIn});
+  factory ProfileLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    return Profile(
+    final boolType = db.typeSystem.forDartType<bool>();
+    return ProfileLocalModel(
       studentId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}student_id']),
       ident:
@@ -43,6 +48,8 @@ class Profile extends DataClass implements Insertable<Profile> {
           .mapFromDatabaseResponse(data['${effectivePrefix}release']),
       expire: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}expire']),
+      currentlyLoggedIn: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}currently_logged_in']),
     );
   }
   @override
@@ -69,6 +76,9 @@ class Profile extends DataClass implements Insertable<Profile> {
     if (!nullToAbsent || expire != null) {
       map['expire'] = Variable<DateTime>(expire);
     }
+    if (!nullToAbsent || currentlyLoggedIn != null) {
+      map['currently_logged_in'] = Variable<bool>(currentlyLoggedIn);
+    }
     return map;
   }
 
@@ -92,13 +102,16 @@ class Profile extends DataClass implements Insertable<Profile> {
           : Value(release),
       expire:
           expire == null && nullToAbsent ? const Value.absent() : Value(expire),
+      currentlyLoggedIn: currentlyLoggedIn == null && nullToAbsent
+          ? const Value.absent()
+          : Value(currentlyLoggedIn),
     );
   }
 
-  factory Profile.fromJson(Map<String, dynamic> json,
+  factory ProfileLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Profile(
+    return ProfileLocalModel(
       studentId: serializer.fromJson<String>(json['studentId']),
       ident: serializer.fromJson<String>(json['ident']),
       firstName: serializer.fromJson<String>(json['firstName']),
@@ -106,6 +119,7 @@ class Profile extends DataClass implements Insertable<Profile> {
       token: serializer.fromJson<String>(json['token']),
       release: serializer.fromJson<DateTime>(json['release']),
       expire: serializer.fromJson<DateTime>(json['expire']),
+      currentlyLoggedIn: serializer.fromJson<bool>(json['currentlyLoggedIn']),
     );
   }
   @override
@@ -119,18 +133,20 @@ class Profile extends DataClass implements Insertable<Profile> {
       'token': serializer.toJson<String>(token),
       'release': serializer.toJson<DateTime>(release),
       'expire': serializer.toJson<DateTime>(expire),
+      'currentlyLoggedIn': serializer.toJson<bool>(currentlyLoggedIn),
     };
   }
 
-  Profile copyWith(
+  ProfileLocalModel copyWith(
           {String studentId,
           String ident,
           String firstName,
           String lastName,
           String token,
           DateTime release,
-          DateTime expire}) =>
-      Profile(
+          DateTime expire,
+          bool currentlyLoggedIn}) =>
+      ProfileLocalModel(
         studentId: studentId ?? this.studentId,
         ident: ident ?? this.ident,
         firstName: firstName ?? this.firstName,
@@ -138,17 +154,19 @@ class Profile extends DataClass implements Insertable<Profile> {
         token: token ?? this.token,
         release: release ?? this.release,
         expire: expire ?? this.expire,
+        currentlyLoggedIn: currentlyLoggedIn ?? this.currentlyLoggedIn,
       );
   @override
   String toString() {
-    return (StringBuffer('Profile(')
+    return (StringBuffer('ProfileLocalModel(')
           ..write('studentId: $studentId, ')
           ..write('ident: $ident, ')
           ..write('firstName: $firstName, ')
           ..write('lastName: $lastName, ')
           ..write('token: $token, ')
           ..write('release: $release, ')
-          ..write('expire: $expire')
+          ..write('expire: $expire, ')
+          ..write('currentlyLoggedIn: $currentlyLoggedIn')
           ..write(')'))
         .toString();
   }
@@ -162,22 +180,27 @@ class Profile extends DataClass implements Insertable<Profile> {
               firstName.hashCode,
               $mrjc(
                   lastName.hashCode,
-                  $mrjc(token.hashCode,
-                      $mrjc(release.hashCode, expire.hashCode)))))));
+                  $mrjc(
+                      token.hashCode,
+                      $mrjc(
+                          release.hashCode,
+                          $mrjc(expire.hashCode,
+                              currentlyLoggedIn.hashCode))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Profile &&
+      (other is ProfileLocalModel &&
           other.studentId == this.studentId &&
           other.ident == this.ident &&
           other.firstName == this.firstName &&
           other.lastName == this.lastName &&
           other.token == this.token &&
           other.release == this.release &&
-          other.expire == this.expire);
+          other.expire == this.expire &&
+          other.currentlyLoggedIn == this.currentlyLoggedIn);
 }
 
-class ProfilesCompanion extends UpdateCompanion<Profile> {
+class ProfilesCompanion extends UpdateCompanion<ProfileLocalModel> {
   final Value<String> studentId;
   final Value<String> ident;
   final Value<String> firstName;
@@ -185,6 +208,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<String> token;
   final Value<DateTime> release;
   final Value<DateTime> expire;
+  final Value<bool> currentlyLoggedIn;
   const ProfilesCompanion({
     this.studentId = const Value.absent(),
     this.ident = const Value.absent(),
@@ -193,6 +217,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.token = const Value.absent(),
     this.release = const Value.absent(),
     this.expire = const Value.absent(),
+    this.currentlyLoggedIn = const Value.absent(),
   });
   ProfilesCompanion.insert({
     @required String studentId,
@@ -202,14 +227,16 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     @required String token,
     @required DateTime release,
     @required DateTime expire,
+    @required bool currentlyLoggedIn,
   })  : studentId = Value(studentId),
         ident = Value(ident),
         firstName = Value(firstName),
         lastName = Value(lastName),
         token = Value(token),
         release = Value(release),
-        expire = Value(expire);
-  static Insertable<Profile> custom({
+        expire = Value(expire),
+        currentlyLoggedIn = Value(currentlyLoggedIn);
+  static Insertable<ProfileLocalModel> custom({
     Expression<String> studentId,
     Expression<String> ident,
     Expression<String> firstName,
@@ -217,6 +244,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Expression<String> token,
     Expression<DateTime> release,
     Expression<DateTime> expire,
+    Expression<bool> currentlyLoggedIn,
   }) {
     return RawValuesInsertable({
       if (studentId != null) 'student_id': studentId,
@@ -226,6 +254,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       if (token != null) 'token': token,
       if (release != null) 'release': release,
       if (expire != null) 'expire': expire,
+      if (currentlyLoggedIn != null) 'currently_logged_in': currentlyLoggedIn,
     });
   }
 
@@ -236,7 +265,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<String> lastName,
       Value<String> token,
       Value<DateTime> release,
-      Value<DateTime> expire}) {
+      Value<DateTime> expire,
+      Value<bool> currentlyLoggedIn}) {
     return ProfilesCompanion(
       studentId: studentId ?? this.studentId,
       ident: ident ?? this.ident,
@@ -245,6 +275,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       token: token ?? this.token,
       release: release ?? this.release,
       expire: expire ?? this.expire,
+      currentlyLoggedIn: currentlyLoggedIn ?? this.currentlyLoggedIn,
     );
   }
 
@@ -272,6 +303,9 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     if (expire.present) {
       map['expire'] = Variable<DateTime>(expire.value);
     }
+    if (currentlyLoggedIn.present) {
+      map['currently_logged_in'] = Variable<bool>(currentlyLoggedIn.value);
+    }
     return map;
   }
 
@@ -284,13 +318,15 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write('lastName: $lastName, ')
           ..write('token: $token, ')
           ..write('release: $release, ')
-          ..write('expire: $expire')
+          ..write('expire: $expire, ')
+          ..write('currentlyLoggedIn: $currentlyLoggedIn')
           ..write(')'))
         .toString();
   }
 }
 
-class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
+class $ProfilesTable extends Profiles
+    with TableInfo<$ProfilesTable, ProfileLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $ProfilesTable(this._db, [this._alias]);
@@ -378,9 +414,31 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     );
   }
 
+  final VerificationMeta _currentlyLoggedInMeta =
+      const VerificationMeta('currentlyLoggedIn');
+  GeneratedBoolColumn _currentlyLoggedIn;
   @override
-  List<GeneratedColumn> get $columns =>
-      [studentId, ident, firstName, lastName, token, release, expire];
+  GeneratedBoolColumn get currentlyLoggedIn =>
+      _currentlyLoggedIn ??= _constructCurrentlyLoggedIn();
+  GeneratedBoolColumn _constructCurrentlyLoggedIn() {
+    return GeneratedBoolColumn(
+      'currently_logged_in',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        studentId,
+        ident,
+        firstName,
+        lastName,
+        token,
+        release,
+        expire,
+        currentlyLoggedIn
+      ];
   @override
   $ProfilesTable get asDslTable => this;
   @override
@@ -388,7 +446,7 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   @override
   final String actualTableName = 'profiles';
   @override
-  VerificationContext validateIntegrity(Insertable<Profile> instance,
+  VerificationContext validateIntegrity(Insertable<ProfileLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -434,15 +492,23 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     } else if (isInserting) {
       context.missing(_expireMeta);
     }
+    if (data.containsKey('currently_logged_in')) {
+      context.handle(
+          _currentlyLoggedInMeta,
+          currentlyLoggedIn.isAcceptableOrUnknown(
+              data['currently_logged_in'], _currentlyLoggedInMeta));
+    } else if (isInserting) {
+      context.missing(_currentlyLoggedInMeta);
+    }
     return context;
   }
 
   @override
   Set<GeneratedColumn> get $primaryKey => {ident};
   @override
-  Profile map(Map<String, dynamic> data, {String tablePrefix}) {
+  ProfileLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Profile.fromData(data, _db, prefix: effectivePrefix);
+    return ProfileLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -9397,8 +9463,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $DownloadedDocumentsTable _downloadedDocuments;
   $DownloadedDocumentsTable get downloadedDocuments =>
       _downloadedDocuments ??= $DownloadedDocumentsTable(this);
-  ProfileDao _profileDao;
-  ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
   AbsenceDao _absenceDao;
   AbsenceDao get absenceDao => _absenceDao ??= AbsenceDao(this as AppDatabase);
   NoteDao _noteDao;
@@ -9436,6 +9500,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   TimetableLocalDatasource get timetableLocalDatasource =>
       _timetableLocalDatasource ??=
           TimetableLocalDatasource(this as AppDatabase);
+  ProfilesLocalDatasource _profilesLocalDatasource;
+  ProfilesLocalDatasource get profilesLocalDatasource =>
+      _profilesLocalDatasource ??= ProfilesLocalDatasource(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

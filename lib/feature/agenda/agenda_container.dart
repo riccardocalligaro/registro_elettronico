@@ -21,7 +21,7 @@ class AgendaContainer {
     _sl.registerLazySingleton(
       () => AgendaRemoteDatasource(
         dio: _sl(),
-        profileRepository: _sl(),
+        authenticationRepository: _sl(),
       ),
     );
 

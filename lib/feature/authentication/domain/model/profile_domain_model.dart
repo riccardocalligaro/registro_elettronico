@@ -1,17 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/utils/profile_utils.dart';
 
-class Profile {
+class ProfileDomainModel {
   String ident;
   String firstName;
   String lastName;
   String token;
-  String release;
-  String expire;
+  DateTime release;
+  DateTime expire;
   String studentId;
 
-  Profile({
+  ProfileDomainModel({
     @required this.ident,
     @required this.firstName,
     @required this.lastName,
@@ -21,7 +23,30 @@ class Profile {
     @required this.studentId,
   });
 
-  Profile copyWith({
+  ProfileLocalModel toLocalModel() {
+    return ProfileLocalModel(
+      ident: this.ident,
+      studentId: ProfileUtils.getIdFromIdent(this.ident),
+      firstName: this.firstName ?? "",
+      lastName: this.lastName ?? "",
+      token: this.token ?? "",
+      release: this.release ?? DateTime.now(),
+      expire: this.expire ?? DateTime.now(),
+      currentlyLoggedIn: true,
+    );
+  }
+
+  ProfileDomainModel.fromLocalModel(ProfileLocalModel l) {
+    this.ident = l.ident;
+    this.firstName = l.firstName;
+    this.lastName = l.lastName;
+    this.token = l.token;
+    this.release = l.release;
+    this.expire = l.expire;
+    this.studentId = l.studentId;
+  }
+
+  ProfileDomainModel copyWith({
     String ident,
     String firstName,
     String lastName,
@@ -30,7 +55,7 @@ class Profile {
     String expire,
     String studentId,
   }) {
-    return Profile(
+    return ProfileDomainModel(
       ident: ident ?? this.ident,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
@@ -53,10 +78,10 @@ class Profile {
     };
   }
 
-  factory Profile.fromMap(Map<String, dynamic> map) {
+  factory ProfileDomainModel.fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
 
-    return Profile(
+    return ProfileDomainModel(
       ident: map['ident'],
       firstName: map['firstName'],
       lastName: map['lastName'],
@@ -69,8 +94,8 @@ class Profile {
 
   String toJson() => json.encode(toMap());
 
-  factory Profile.fromJson(String source) =>
-      Profile.fromMap(json.decode(source));
+  factory ProfileDomainModel.fromJson(String source) =>
+      ProfileDomainModel.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -81,7 +106,7 @@ class Profile {
   bool operator ==(Object o) {
     if (identical(this, o)) return true;
 
-    return o is Profile &&
+    return o is ProfileDomainModel &&
         o.ident == ident &&
         o.firstName == firstName &&
         o.lastName == lastName &&

@@ -25,9 +25,9 @@ import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.d
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/repository/notes_repository_impl.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
-import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/feature/profile/data/dao/profiles_local_datasource.dart';
 import 'package:registro_elettronico/feature/profile/data/repository/profile_repository_impl.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/feature/profile/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
 import 'package:registro_elettronico/feature/scrutini/data/repository/documents_repository_impl.dart';
 import 'package:registro_elettronico/feature/scrutini/data/repository/scrutini_repository_impl.dart';
@@ -69,7 +69,6 @@ class AppInjector {
 
   // All the DAOS (Data Access Objects)
   static void injectDaos() {
-    sl.registerLazySingleton(() => ProfileDao(sl()));
     sl.registerLazySingleton(() => AbsenceDao(sl()));
     sl.registerLazySingleton(() => NoteDao(sl()));
     sl.registerLazySingleton(() => DidacticsDao(sl()));
@@ -102,12 +101,6 @@ class AppInjector {
   static void injectRepository() {
     sl.registerLazySingleton<LoginRepository>(
         () => LoginRepositoryImpl(sl(), sl(), sl()));
-
-    sl.registerLazySingleton<ProfileRepository>(() => ProfileRepositoryImpl(
-          sl(),
-          sl(),
-          sl(),
-        ));
 
     sl.registerLazySingleton<AbsencesRepository>(
         () => AbsencesRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));

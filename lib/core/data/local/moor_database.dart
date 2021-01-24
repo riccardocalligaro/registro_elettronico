@@ -8,6 +8,7 @@ import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_local_model.dart';
+import 'package:registro_elettronico/feature/authentication/domain/model/profile_domain_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/downloaded_file_local_model.dart';
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
@@ -20,7 +21,7 @@ import 'package:registro_elettronico/feature/professors/data/datasource/professo
 import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
-import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
+import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_local_datasource.dart';
 import 'package:registro_elettronico/feature/subjects/data/datasource/subject_local_datasource.dart';
 import 'package:registro_elettronico/feature/absences/data/model/absence_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/content_local_model.dart';
@@ -32,10 +33,12 @@ import 'package:registro_elettronico/feature/notes/data/model/local/note_local_m
 import 'package:registro_elettronico/feature/noticeboard/data/model/notice/notice_local_model.dart';
 import 'package:registro_elettronico/feature/periods/data/model/period_local_model.dart';
 import 'package:registro_elettronico/feature/professors/data/model/professor_local_model.dart';
-import 'package:registro_elettronico/feature/profile/data/model/profile_local_model.dart';
+import 'package:registro_elettronico/feature/authentication/data/model/profile_local_model.dart';
 import 'package:registro_elettronico/feature/subjects/data/model/subject_local_model.dart';
 import 'package:registro_elettronico/feature/timetable/data/datasource/timetable_local_datasource.dart';
 import 'package:registro_elettronico/feature/timetable/data/model/timetable_entry_local_model.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'moor_database.g.dart';
 
@@ -70,7 +73,6 @@ LazyDatabase _openConnection() {
   SchoolReports,
   DownloadedDocuments,
 ], daos: [
-  ProfileDao,
   AbsenceDao,
   NoteDao,
   DidacticsDao,
@@ -83,6 +85,7 @@ LazyDatabase _openConnection() {
   PeriodsLocalDatasource,
   NoticeboardLocalDatasource,
   TimetableLocalDatasource,
+  ProfilesLocalDatasource,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
@@ -102,6 +105,20 @@ class AppDatabase extends _$AppDatabase {
             await m.addColumn(grades, grades.hasSeenIt);
           }
           if (from < 4) {
+            final sharedPreferences = await SharedPreferences.getInstance();
+            final profile = sharedPreferences.getString(PrefsConstants.profile);
+
+            if (profile != null) {
+              final domainProfile = ProfileDomainModel.fromJson(profile);
+              await m.deleteTable(profiles.actualTableName);
+              await m.createTable(profiles).then((value) async {
+                await into(profiles).insert(domainProfile.toLocalModel());
+              });
+            } else {
+              await m.deleteTable(profiles.actualTableName);
+              await m.createTable(profiles);
+            }
+
             await m.createTable(agendaEventsTable);
           }
           // TODO: drop table attachments and noticeboard

@@ -1,11 +1,11 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'profile_dao.dart';
+part of 'profiles_local_datasource.dart';
 
 // **************************************************************************
 // DaoGenerator
 // **************************************************************************
 
-mixin _$ProfileDaoMixin on DatabaseAccessor<AppDatabase> {
+mixin _$ProfilesLocalDatasourceMixin on DatabaseAccessor<AppDatabase> {
   $ProfilesTable get profiles => attachedDatabase.profiles;
 }
