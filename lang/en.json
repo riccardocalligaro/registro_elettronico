@@ -259,7 +259,7 @@
   "update_yesterday": "Yesterday",
   "updating_lessons": "Updating lessons",
   "username_form_login_placeholder": "Username",
-  "username_password_doesent_match": "The username and password doesn't match!",
+  "username_password_doesent_match": "The username or is invalid",
   "view": "View",
   "view_all": "View all",
   "view_source_code": "View source code",
@@ -325,5 +325,6 @@
   "show_error": "Show errror",
   "bug_report_alert": "Report",
   "file_downloaded_success": "Downloaded",
-  "refresh": "Refresh"
+  "refresh": "Refresh",
+  "server_login": "The server seems down ({code})"
 }

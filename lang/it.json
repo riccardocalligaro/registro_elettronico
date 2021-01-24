@@ -259,7 +259,7 @@
   "update_yesterday": "Ieri",
   "updating_lessons": "Aggiornamento lezioni in corso",
   "username_form_login_placeholder": "Ident o email",
-  "username_password_doesent_match": "Il nome utente e la password inseriti non sono validi.",
+  "username_password_doesent_match": "Il nome utente o la password inseriti non sono corretti.",
   "view": "Mostra",
   "view_all": "Mostra",
   "view_source_code": "Visualizza codice sorgente",
@@ -325,5 +325,6 @@
   "show_error": "Show errror",
   "bug_report_alert": "Segnala",
   "file_downloaded_success": "Scaricato",
-  "refresh": "Aggiorna"
+  "refresh": "Aggiorna",
+  "server_login": "Il server sembra offline ({code})"
 }

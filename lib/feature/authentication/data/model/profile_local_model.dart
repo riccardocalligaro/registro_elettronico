@@ -10,6 +10,7 @@ class Profiles extends Table {
   DateTimeColumn get release => dateTime()();
   DateTimeColumn get expire => dateTime()();
   BoolColumn get currentlyLoggedIn => boolean()();
+  TextColumn get dbName => text()();
 
   @override
   Set<Column> get primaryKey => {ident};

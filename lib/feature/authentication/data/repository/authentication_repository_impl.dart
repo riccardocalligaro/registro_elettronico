@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/authentication/data/datasource/authentication_remote_datasource.dart';
 import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_local_datasource.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/login/generic_login_response.dart';
@@ -140,11 +141,15 @@ class LoginFailure extends Failure {
 
   @override
   String localizedDescription(BuildContext context) {
-    if (dioError.response.statusCode == 422) {
-      // TODO: better response
-      return 'PAssword sbagliata';
-    } else if (dioError.response.statusCode >= 500) {
-      return 'Server down';
+    if (dioError.response != null) {
+      if (dioError.response.statusCode == 422) {
+        return AppLocalizations.of(context)
+            .translate('username_password_doesent_match');
+      } else if (dioError.response.statusCode >= 500) {
+        return AppLocalizations.of(context)
+            .translate('server_login')
+            .replaceAll('{code}', dioError.response.statusCode.toString());
+      }
     }
 
     return super.localizedDescription(context);

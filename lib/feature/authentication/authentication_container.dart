@@ -6,6 +6,7 @@ import 'package:registro_elettronico/feature/authentication/data/datasource/prof
 import 'package:registro_elettronico/feature/authentication/data/repository/authentication_repository_impl.dart';
 import 'package:registro_elettronico/feature/authentication/presentation/bloc/authentication_bloc.dart';
 
+import 'data/datasource/authentication_dio.dart';
 import 'data/datasource/authentication_remote_datasource.dart';
 
 import 'data/repository/authentication_repository_impl.dart';
@@ -21,7 +22,7 @@ class AuthenticationContainer {
 
     _sl.registerLazySingleton(
       () => AuthenticationRemoteDatasource(
-        dio: Dio(),
+        dio: SRAuthenticationClient.createDio(),
       ),
     );
 

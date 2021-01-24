@@ -37,10 +37,7 @@ void main() async {
   runZonedGuarded(() {
     runApp(SrApp());
   }, (e, s) {
-    Logger.e(
-      exception: Exception(e.toString()),
-      stacktrace: s,
-    );
+    Logger.e(exception: e, stacktrace: s);
     if (!kDebugMode) {
       FirebaseCrashlytics.instance.recordError(e, s);
     }

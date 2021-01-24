@@ -51,4 +51,5 @@ class PrefsConstants {
   static const themeType = 'themeType';
 
   static const databaseName = 'databaseName';
+  static const databaseNameBeforeMigration = 'dbBeforeMigration';
 }

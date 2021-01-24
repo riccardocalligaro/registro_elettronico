@@ -129,7 +129,7 @@ class Logger {
   }) {
     if (!kDebugMode) {
       FirebaseCrashlytics.instance.recordError(
-        Exception(error.toString()),
+        Exception(exception.toString()),
         StackTrace.fromString(Trace.from(stacktrace).toString()),
         reason: '⛔️ ${Trace.from(stacktrace).frames[0].member.toString()}',
       );
@@ -143,14 +143,14 @@ class Logger {
             Trace.from(stacktrace).frames[0].member.toString() ??
             'Unknown',
         text: '⛔️ ${Trace.from(stacktrace).frames[0].member.toString()}',
-        exception: Exception(error.toString()),
+        exception: Exception(exception.toString()),
         stacktrace: stacktrace,
         dataLogType: type.toString(),
       );
     } else {
       FLog.error(
         text: '⛔️ [UKNOWN ERROR]',
-        exception: Exception(error.toString()),
+        exception: Exception(exception.toString()),
         stacktrace: stacktrace,
         dataLogType: type.toString(),
       );

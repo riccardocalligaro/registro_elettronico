@@ -1,14 +1,16 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 class LoginRequestDomainModel {
   String ident;
   String pass;
   String uid;
 
   LoginRequestDomainModel({
-    this.ident,
-    this.pass,
-    this.uid,
+    @required this.ident,
+    @required this.pass,
+    @required this.uid,
   });
 
   LoginRequestDomainModel copyWith({
