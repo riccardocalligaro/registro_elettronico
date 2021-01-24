@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/feature/authentication/data/model/profile_local_model.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/profile_utils.dart';
 
@@ -39,8 +38,7 @@ class ProfileDomainModel {
       release: this.release ?? DateTime.now(),
       expire: this.expire ?? DateTime.now(),
       currentlyLoggedIn: this.currentlyLoggedIn ?? true,
-      dbName:
-          this.currentlyLoggedIn ?? PrefsConstants.databaseNameBeforeMigration,
+      dbName: this.dbName ?? PrefsConstants.databaseNameBeforeMigration,
     );
   }
 
@@ -102,11 +100,11 @@ class ProfileDomainModel {
       firstName: map['firstName'],
       lastName: map['lastName'],
       token: map['token'],
-      release: DateTime.fromMillisecondsSinceEpoch(map['release']),
-      expire: DateTime.fromMillisecondsSinceEpoch(map['expire']),
+      release: DateTime.parse(map['release']),
+      expire: DateTime.parse(map['expire']),
       studentId: map['studentId'],
       currentlyLoggedIn: map['currentlyLoggedIn'] ?? true,
-      dbName: map['dbName'] ?? PrefsConstants.databaseName,
+      dbName: map['dbName'] ?? PrefsConstants.databaseNameBeforeMigration,
     );
   }
 

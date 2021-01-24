@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/profile_domain_model.dart';
 import 'package:registro_elettronico/utils/profile_utils.dart';
+
+import '../profile_local_model.dart';
 
 class DefaultLoginResponseRemoteModel {
   String ident;
@@ -19,6 +20,23 @@ class DefaultLoginResponseRemoteModel {
     @required this.release,
     @required this.expire,
   });
+
+  ProfileLocalModel toLocalModelFromLogin({
+    bool currentlyLoggedIn,
+    String dbName,
+  }) {
+    return ProfileLocalModel(
+      ident: this.ident,
+      studentId: ProfileUtils.getIdFromIdent(this.ident),
+      firstName: this.firstName ?? "",
+      lastName: this.lastName ?? "",
+      token: this.token ?? "",
+      release: DateTime.parse(this.release) ?? DateTime.now(),
+      expire: DateTime.parse(this.expire) ?? DateTime.now(),
+      currentlyLoggedIn: currentlyLoggedIn,
+      dbName: dbName,
+    );
+  }
 
   ProfileLocalModel toLocalModel(ProfileDomainModel d) {
     return ProfileLocalModel(

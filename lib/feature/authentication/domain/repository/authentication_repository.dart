@@ -19,8 +19,11 @@ abstract class AuthenticationRepository {
 
   Future<CredentialsDomainModel> getCredentials();
 
+  Future<Either<Failure, List<ProfileDomainModel>>> getNonActiveAccounts();
+
   Future<Either<Failure, GenericLoginResponse>> loginUser({
     @required LoginRequestDomainModel loginRequestDomainModel,
+    bool markCurrentAsInactive = false,
   });
 
   Future updateProfile({
@@ -29,4 +32,8 @@ abstract class AuthenticationRepository {
   });
 
   Future<Either<Failure, Success>> logoutCurrentUser();
+
+  Future<Either<Failure, Success>> switchToAccount({
+    @required ProfileDomainModel profileDomainModel,
+  });
 }

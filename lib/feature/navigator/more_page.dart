@@ -4,6 +4,7 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
+import 'package:registro_elettronico/feature/authentication/presentation/change_account_dialog.dart';
 import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
 import 'package:registro_elettronico/feature/settings/widgets/header_text.dart';
 import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view.dart';
@@ -137,7 +138,10 @@ class MorePage extends StatelessWidget {
               AppLocalizations.of(context).translate('change_account'),
             ),
             onTap: () {
-              AppNavigator.instance.navToSettings(context);
+              showDialog(
+                context: context,
+                builder: (context) => ChangeAccountDialog(),
+              );
             },
           ),
           ListTile(
@@ -146,9 +150,9 @@ class MorePage extends StatelessWidget {
               AppLocalizations.of(context).translate('logout'),
             ),
             onTap: () async {
+              // TODO: add dialog
               final AuthenticationRepository authenticationRepository = sl();
               await authenticationRepository.logoutCurrentUser();
-              AppNavigator.instance.navToLogin(context);
             },
           ),
         ],

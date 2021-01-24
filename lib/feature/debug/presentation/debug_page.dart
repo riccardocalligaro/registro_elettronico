@@ -4,9 +4,12 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/fcm_service.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/login/login_response_remote_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DebugPage extends StatefulWidget {
   DebugPage({Key key}) : super(key: key);
@@ -27,12 +30,6 @@ class _DebugPageState extends State<DebugPage> {
       ),
       body: Column(
         children: <Widget>[
-          DebugButton(
-            title: 'Crash and restart',
-            onTap: () {
-              platform.invokeMethod('restartApp');
-            },
-          ),
           DebugButton(
             title: 'Cancel token',
             onTap: () async {
@@ -66,10 +63,36 @@ class _DebugPageState extends State<DebugPage> {
             },
           ),
           DebugButton(
+            title: 'Current db name',
+            onTap: () {
+              final SharedPreferences sharedPreferences = sl();
+              final dbName =
+                  sharedPreferences.getString(PrefsConstants.databaseName);
+
+              print(dbName);
+            },
+          ),
+          DebugButton(
             title: 'Reset DB',
+            dangerous: true,
+            context: context,
             onTap: () async {
               final AppDatabase db = sl();
               await db.resetDb();
+            },
+          ),
+          DebugButton(
+            title: 'Go to login',
+            onTap: () async {
+              AppNavigator.instance.navToLogin(context);
+            },
+          ),
+          DebugButton(
+            title: 'Crash and restart',
+            dangerous: true,
+            context: context,
+            onTap: () {
+              platform.invokeMethod('restartApp');
             },
           ),
           DebugButton(

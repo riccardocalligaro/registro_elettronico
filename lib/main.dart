@@ -17,6 +17,7 @@ import 'core/infrastructure/log/logger.dart';
 import 'core/infrastructure/log/logger_bloc.dart';
 import 'core/infrastructure/notification/fcm_service.dart';
 import 'core/infrastructure/routes.dart';
+import 'feature/authentication/presentation/login_page.dart';
 
 FlutterLocalNotificationsPlugin globalLocalNotifications;
 
@@ -68,7 +69,7 @@ class SrApp extends StatelessWidget {
           // showPerformanceOverlay: true,
           debugShowCheckedModeBanner: false,
           routes: Routes.routes,
-          // home: TimetablePage(),
+          // home: LoginPage(),
           onUnknownRoute: (settings) {
             return MaterialPageRoute(builder: (ctx) => SplashScreen());
           },

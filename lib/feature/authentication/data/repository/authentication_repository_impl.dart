@@ -1,22 +1,30 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:registro_elettronico/core/data/remote/api/dio_client.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/authentication/data/datasource/authentication_remote_datasource.dart';
-import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_local_datasource.dart';
+import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/login/generic_login_response.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/login/login_response_remote_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/credentials_domain_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/login_request_domain_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/profile_domain_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
+import 'package:registro_elettronico/feature/authentication/presentation/login_page.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:registro_elettronico/utils/profile_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
+  static const platform =
+      MethodChannel('com.riccardocalligaro.registro_elettronico/multi-account');
+
   final AuthenticationRemoteDatasource authenticationRemoteDatasource;
   final ProfilesLocalDatasource profilesLocalDatasource;
   final FlutterSecureStorage flutterSecureStorage;
@@ -60,13 +68,13 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     if (profileSingleton.profile != null) {
       return profileSingleton.profile;
     } else {
-      final localProfile = await profilesLocalDatasource.getLoggedInUser();
+      final localProfiles = await profilesLocalDatasource.getLoggedInUser();
 
-      if (localProfile == null) {
+      if (localProfiles == null || localProfiles.isEmpty) {
         return null;
       }
       profileSingleton.profile =
-          ProfileDomainModel.fromLocalModel(localProfile);
+          ProfileDomainModel.fromLocalModel(localProfiles.first);
     }
 
     return profileSingleton.profile;
@@ -75,6 +83,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<Either<Failure, GenericLoginResponse>> loginUser({
     LoginRequestDomainModel loginRequestDomainModel,
+    bool markCurrentAsInactive = false,
   }) async {
     try {
       final response = await authenticationRemoteDatasource.loginUser(
@@ -87,7 +96,60 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
             response: Left(parentResponse),
           ));
         },
-        (loginResponse) {
+        (loginResponse) async {
+          // here we are logged in
+          // we need to insert the profile in the database
+          final otherAccounts = await profilesLocalDatasource.getOtherUsers(
+            loginResponse.ident,
+          );
+
+          for (final user in otherAccounts) {
+            if (user.currentlyLoggedIn) {
+              await profilesLocalDatasource.updateProfile(
+                user.copyWith(currentlyLoggedIn: false),
+              );
+            }
+          }
+
+          String dbName;
+
+          if (otherAccounts.isEmpty) {
+            dbName = PrefsConstants.databaseNameBeforeMigration;
+          } else {
+            dbName = ProfileUtils.dbNameFromIdent(loginResponse.ident);
+          }
+
+          final localModel = loginResponse.toLocalModelFromLogin(
+            currentlyLoggedIn: true,
+            dbName: dbName,
+          );
+
+          await profilesLocalDatasource.insertProfile(localModel);
+
+          final domainModel = ProfileDomainModel.fromLocalModel(localModel);
+
+          // we set the ingleton that we use for authentication
+          _ProfileSingleton.instance.profile = domainModel;
+
+          // se non ci sono altri account possiamo impostare il nome
+          // del db di default e evitiamo di riavviare l'app
+          if (otherAccounts.isEmpty) {
+            await sharedPreferences.setString(
+              PrefsConstants.databaseName,
+              PrefsConstants.databaseNameBeforeMigration,
+            );
+          } else {
+            // se ci sono altri account allora significa che attualmente stiamo
+            // su un altro db
+            // dobbiamo impostare il nuovo db nelle shared preferences e riavviare l'app
+            await sharedPreferences.setString(
+              PrefsConstants.databaseName,
+              dbName,
+            );
+
+            await _restartApp();
+          }
+
           return Right(GenericLoginResponse(
             response: Right(loginResponse),
           ));
@@ -119,8 +181,97 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final profile = await _getProfile();
       await profilesLocalDatasource.deleteProfile(profile.toLocalModel());
 
-      // TODO: set the dbname
+      final otherAccounts = await profilesLocalDatasource.getInactiveUsers();
+
+      if (otherAccounts.isNotEmpty) {
+        // se ci sono presenti altri account nel database
+
+        final newAccount = otherAccounts.first;
+
+        await profilesLocalDatasource
+            .updateProfile(newAccount.copyWith(currentlyLoggedIn: true));
+
+        final account = ProfileDomainModel.fromLocalModel(otherAccounts.first);
+        _ProfileSingleton.instance.profile = account;
+
+        // set the db name in the shared preferences
+        await sharedPreferences.setString(
+            PrefsConstants.defaultDbName, newAccount.dbName);
+
+        // chiama il metodo per riavviare l'app
+        await _restartApp();
+      } else {
+        // se non sono presenti altri account nel database
+        await sharedPreferences.setString(PrefsConstants.defaultDbName,
+            PrefsConstants.databaseNameBeforeMigration);
+        _ProfileSingleton.instance.profile = null;
+
+        await navigator.currentState.push(
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      }
+
       return Right(Success());
+    } catch (e, s) {
+      return Left(handleError(e, s));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ProfileDomainModel>>>
+      getNonActiveAccounts() async {
+    try {
+      final otherAccounts = await profilesLocalDatasource.getInactiveUsers();
+
+      final domainAccounts = otherAccounts
+          .map((e) => ProfileDomainModel.fromLocalModel(e))
+          .toList();
+
+      return Right(domainAccounts);
+    } catch (e, s) {
+      return Left(handleError(e, s));
+    }
+  }
+
+  Future<void> _restartApp() {
+    return platform.invokeMethod('restartApp');
+  }
+
+  @override
+  Future<Either<Failure, Success>> switchToAccount({
+    ProfileDomainModel profileDomainModel,
+  }) async {
+    try {
+      // set the other profiles to not logged in
+      // just for safety we do this for all of them
+      final otherAccounts = await profilesLocalDatasource.getOtherUsers(
+        profileDomainModel.ident,
+      );
+
+      for (final user in otherAccounts) {
+        if (user.currentlyLoggedIn) {
+          await profilesLocalDatasource
+              .updateProfile(user.copyWith(currentlyLoggedIn: false));
+        }
+      }
+
+      final localModel = profileDomainModel.toLocalModel();
+      // we set the current one to active
+      await profilesLocalDatasource
+          .updateProfile(localModel.copyWith(currentlyLoggedIn: true));
+
+      // we have to set also the shared preferences
+      if (profileDomainModel.dbName.isNotEmpty) {
+        await sharedPreferences.setString(
+          PrefsConstants.defaultDbName,
+          profileDomainModel.dbName,
+        );
+      } else {
+        return Left(FatalSwitchFailure());
+      }
+
+      // now that we have set all the variables we can restart the app
+      await _restartApp();
     } catch (e, s) {
       return Left(handleError(e, s));
     }
@@ -134,6 +285,8 @@ class _ProfileSingleton {
 
   ProfileDomainModel profile;
 }
+
+class FatalSwitchFailure extends Failure {}
 
 class LoginFailure extends Failure {
   DioError dioError;

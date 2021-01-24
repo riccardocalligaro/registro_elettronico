@@ -6,7 +6,7 @@ import 'package:registro_elettronico/core/infrastructure/network/network_info.da
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/absences/data/model/absence_mapper.dart';
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
-import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_local_datasource.dart';
+import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';

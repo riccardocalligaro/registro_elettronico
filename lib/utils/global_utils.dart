@@ -20,12 +20,6 @@ import 'constants/registro_constants.dart';
 import 'constants/subjects_constants.dart';
 
 class GlobalUtils {
-  // static void getNotificationBrightness(BuildContext context) {
-  //   final brightness = Theme.of(context).brightness;
-  //   if(brightness == Brightness.dark) {
-  //   }
-  // }
-
   static String getColorCode(Color color) {
     return color.value.toString();
   }

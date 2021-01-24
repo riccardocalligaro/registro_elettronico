@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 
 class SRFailureView extends StatelessWidget {
   final Failure failure;

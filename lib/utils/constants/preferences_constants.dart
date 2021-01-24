@@ -53,4 +53,6 @@ class PrefsConstants {
   static const String databaseName = 'databaseName';
   static const String databaseNameBeforeMigration = 'dbBeforeMigration';
   static const String defaultDbName = 'registro';
+
+  static const String profilesList = 'profilesList';
 }
