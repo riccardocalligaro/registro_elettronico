@@ -3,7 +3,6 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
-import 'package:registro_elettronico/utils/update_utils.dart';
 
 import '../header_text.dart';
 
@@ -67,7 +66,7 @@ class ResetDialog extends StatelessWidget {
             appDatabase.resetDbWithoutProfile();
 
             // ignore: unawaited_futures
-            UpdateUtils.updateAllData(fromLogin: true);
+            // UpdateUtils.updateAllData(fromLogin: true);
           },
         )
       ],

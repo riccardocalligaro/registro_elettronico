@@ -40,11 +40,11 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future updateDidactics() async {
     if (await networkInfo.isConnected) {
-      final profile = await authenticationRepository.getProfile();
+      final studentId = await authenticationRepository.getCurrentStudentId();
 
       Logger.info('Updating didactics');
 
-      final didactics = await spaggiariClient.getDidactics(profile.studentId);
+      final didactics = await spaggiariClient.getDidactics(studentId);
 
       await deleteAllDidactics();
 
@@ -100,9 +100,9 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future<Response> getFileAttachment(int fileID) async {
     if (await networkInfo.isConnected) {
-      final profile = await authenticationRepository.getProfile();
+      final studentId = await authenticationRepository.getCurrentStudentId();
       Logger.info('Getting attachment for $fileID!');
-      final res = await _getAttachmentFile(profile.studentId, fileID);
+      final res = await _getAttachmentFile(studentId, fileID);
       Logger.info('Got attachment for $fileID!');
       return res;
     } else {
@@ -113,9 +113,9 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future<DownloadAttachmentTextResponse> getTextAtachment(int fileID) async {
     if (await networkInfo.isConnected) {
-      final profile = await authenticationRepository.getProfile();
+      final studentId = await authenticationRepository.getCurrentStudentId();
       Logger.info('Getting text attachment for $fileID!');
-      final res = spaggiariClient.getAttachmentText(profile.studentId, fileID);
+      final res = spaggiariClient.getAttachmentText(studentId, fileID);
       Logger.info('Got text attachment for $fileID!');
       return res;
     } else {
@@ -126,9 +126,9 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
   @override
   Future<DownloadAttachmentURLResponse> getURLAtachment(int fileID) async {
     if (await networkInfo.isConnected) {
-      final profile = await authenticationRepository.getProfile();
+      final studentId = await authenticationRepository.getCurrentStudentId();
       Logger.info('Getting URL attachment for $fileID!');
-      final res = spaggiariClient.getAttachmentUrl(profile.studentId, fileID);
+      final res = spaggiariClient.getAttachmentUrl(studentId, fileID);
       Logger.info('Got URL attachment for $fileID!');
       return res;
     } else {

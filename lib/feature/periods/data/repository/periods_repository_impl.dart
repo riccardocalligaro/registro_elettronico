@@ -35,27 +35,10 @@ class PeriodsRepositoryImpl implements PeriodsRepository {
           return entry.value.toLocalModel(entry.key);
         }).toList();
 
-        final localPeriods = await periodsLocalDatasource.getPeriods();
-
-        // get the ids
-        final remoteIds =
-            remoteConvertedPeriods.map((e) => Tuple2(e.start, e.end)).toList();
-
-        List<PeriodLocalModel> periodsToDelete = [];
-
-        for (final localPeriod in localPeriods) {
-          if (!remoteIds.contains(Tuple2(
-            localPeriod.start,
-            localPeriod.end,
-          ))) {
-            periodsToDelete.add(localPeriod);
-          }
-        }
+        // delete the periods that were removed from the remote source
+        await periodsLocalDatasource.deleteAllPeriods();
 
         await periodsLocalDatasource.insertPeriods(remoteConvertedPeriods);
-
-        // delete the periods that were removed from the remote source
-        await periodsLocalDatasource.deletePeriods(periodsToDelete);
 
         await sharedPreferences.setInt(
             lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
@@ -63,8 +46,32 @@ class PeriodsRepositoryImpl implements PeriodsRepository {
         return Right(SuccessWithUpdate());
       }
       return Right(SuccessWithoutUpdate());
-    } catch (e) {
-      return Left(handleError(e));
+    } catch (e, s) {
+      return Left(handleError(e, s));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> needToUpdatePeriods() async {
+    try {
+      // controlliamo i periodi presenti nel db
+      final periods = await periodsLocalDatasource.getPeriods();
+
+      if (periods.isEmpty) {
+        return Right(true);
+      }
+
+      periods.sort((a, b) => a.position.compareTo(b.position));
+
+      final today = DateTime.now();
+
+      if (periods.last.end.isBefore(today)) {
+        return Right(true);
+      }
+
+      return Right(false);
+    } catch (e, s) {
+      return Left(handleError(e, s));
     }
   }
 }

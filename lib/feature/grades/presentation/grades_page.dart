@@ -3,13 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/grades_failure.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/grades_loading.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/tabs/grades_tab.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/tabs/period_tab.dart';
-import 'package:registro_elettronico/feature/grades/presentation/states/widget/empty_grades.dart';
 import 'package:registro_elettronico/feature/grades/presentation/watcher/grades_watcher_bloc.dart';
+import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
+import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 
 class GradesPage extends StatefulWidget {
   GradesPage({Key key}) : super(key: key);
@@ -33,7 +35,11 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
         builder: (context, state) {
           if (state is GradesWatcherLoadSuccess) {
             if (state.gradesSections == null) {
-              return _EmptyGrades();
+              return _EmptyGrades(
+                onTap: () {
+                  _refreshData(state.gradesSections);
+                },
+              );
             }
             final widgets = [
               GradesTab(
@@ -52,8 +58,7 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
 
             return RefreshIndicator(
               onRefresh: () {
-                final GradesRepository gradesRepository = sl();
-                return gradesRepository.updateGrades(ifNeeded: false);
+                return _refreshData(state.gradesSections);
               },
               child: ListView(
                 children: [
@@ -118,6 +123,30 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
     );
   }
 
+  Future<void> _refreshData(GradesPagesDomainModel gradesSections) {
+    final GradesRepository gradesRepository = sl();
+    final PeriodsRepository periodsRepository = sl();
+    final SubjectsRepository subjectsRepository = sl();
+
+    List<Future> updates = [];
+
+    if (gradesSections == null ||
+        gradesSections.grades.isEmpty ||
+        gradesSections.periodsWithGrades.isEmpty ||
+        gradesSections.periodsWithGrades.first.gradesForList.isEmpty) {
+      updates.add(
+        periodsRepository.updatePeriods(ifNeeded: false),
+      );
+      updates.add(
+        subjectsRepository.updateSubjects(ifNeeded: false),
+      );
+    }
+
+    updates.add(gradesRepository.updateGrades(ifNeeded: false));
+
+    return Future.wait(updates);
+  }
+
   Color _chipBackgroundColor(int index) {
     if (index == _currentPage) {
       return Theme.of(context).accentColor;
@@ -127,7 +156,9 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
 }
 
 class _EmptyGrades extends StatelessWidget {
-  const _EmptyGrades({Key key}) : super(key: key);
+  final Function() onTap;
+
+  const _EmptyGrades({Key key, @required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -135,10 +166,7 @@ class _EmptyGrades extends StatelessWidget {
       child: CustomPlaceHolder(
         icon: Icons.timeline,
         showUpdate: true,
-        onTap: () {
-          final GradesRepository gradesRepository = sl();
-          return gradesRepository.updateGrades(ifNeeded: false);
-        },
+        onTap: onTap,
         text: AppLocalizations.of(context).translate('no_grades'),
       ),
     );

@@ -42,29 +42,7 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
     try {
       if (!ifNeeded |
           (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
-        final localSubjects = await subjectsLocalDatasource.getAllSubjects();
-        final localProfessors =
-            await professorLocalDatasource.getAllProfessors();
-
         final remoteSubjects = await subjectsRemoteDatasource.getSubjects();
-
-        final remoteIds = remoteSubjects.map((e) => e.id).toList();
-        final remoteProfsIds = localProfessors.map((e) => e.id).toList();
-
-        List<SubjectLocalModel> subjectsToDelete = [];
-        List<ProfessorLocalModel> professorsToDelete = [];
-
-        for (final localSubject in localSubjects) {
-          if (!remoteIds.contains(localSubject.id)) {
-            subjectsToDelete.add(localSubject);
-          }
-        }
-
-        for (final localProfessor in localProfessors) {
-          if (!remoteProfsIds.contains(localProfessor.id)) {
-            professorsToDelete.add(localProfessor);
-          }
-        }
 
         // we also need to insert the teachers
         List<ProfessorLocalModel> professors = [];
@@ -78,13 +56,12 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
           return entry.value.toLocalModel(entry.key);
         }).toList();
 
-        await subjectsLocalDatasource.insertSubjects(insertableSubjects);
-
-        await professorLocalDatasource.insertProfessors(professors);
-
         // delete the subjects that were removed from the remote source
-        await subjectsLocalDatasource.deleteSubjects(subjectsToDelete);
-        await professorLocalDatasource.deleteProfessors(subjectsToDelete);
+        await subjectsLocalDatasource.deleteAllSubjects();
+        await professorLocalDatasource.deleteAllProfessors();
+
+        await subjectsLocalDatasource.insertSubjects(insertableSubjects);
+        await professorLocalDatasource.insertProfessors(professors);
 
         await sharedPreferences.setInt(
             lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
@@ -151,5 +128,15 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
     )..onErrorReturnWith((e) {
         return Resource.failed(error: handleStreamError(e));
       });
+  }
+
+  @override
+  Future<Either<Failure, bool>> needToUpdateSubjects() async {
+    try {
+      final subjects = await subjectsLocalDatasource.getAllSubjects();
+      return Right(subjects.isEmpty);
+    } catch (e, s) {
+      return Left(handleError(e, s));
+    }
   }
 }

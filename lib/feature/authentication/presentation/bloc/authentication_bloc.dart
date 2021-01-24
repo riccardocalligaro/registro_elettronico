@@ -46,8 +46,6 @@ class AuthenticationBloc
           );
         },
       );
-      // TODO: sign outs
-    } else if (event is SignOut) {
-    } else if (event is SignOutFromAllUsers) {}
+    }
   }
 }

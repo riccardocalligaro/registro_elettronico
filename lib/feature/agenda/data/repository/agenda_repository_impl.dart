@@ -249,15 +249,8 @@ class AgendaRepositoryImpl implements AgendaRepository {
         key: (v) => v.evtId,
         value: (v) => v);
 
-    final remoteIds = remoteAgendaEvents.map((e) => e.evtId).toList();
-
-    List<AgendaEventLocalModel> agendasToDelete = [];
-
-    for (final localAgendaEvent in localAgendaEvents) {
-      if (!remoteIds.contains(localAgendaEvent.evtId)) {
-        agendasToDelete.add(localAgendaEvent);
-      }
-    }
+    // delete the agendas that were removed from the remote source
+    await agendaLocalDatasource.deleteAllEvents();
 
     await agendaLocalDatasource.insertEvents(
       remoteAgendaEvents
@@ -269,9 +262,6 @@ class AgendaRepositoryImpl implements AgendaRepository {
           )
           .toList(),
     );
-
-    // delete the agendas that were removed from the remote source
-    await agendaLocalDatasource.deleteEvents(agendasToDelete);
 
     await sharedPreferences.setInt(
         lastUpdateKey, DateTime.now().millisecondsSinceEpoch);

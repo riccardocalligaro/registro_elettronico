@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:f_logs/f_logs.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';

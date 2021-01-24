@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
 import 'package:registro_elettronico/feature/home/sections/lessons/lesson_card.dart';
-import 'package:registro_elettronico/feature/home/sections/lessons/old_lesson_card.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/last_lessons_domain_model.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/latest_watcher/latest_lessons_watcher_bloc.dart';
 
@@ -62,14 +61,9 @@ class _LatestLessonsLoaded extends StatelessWidget {
       itemCount: lessons.length,
       itemBuilder: (context, index) {
         return OldLessonCard(
-            lesson: lessons[index].lesson, position: index, duration: 1);
-        return Padding(
-          padding: index == 0
-              ? EdgeInsets.only(left: 16)
-              : EdgeInsets.symmetric(horizontal: 8),
-          child: LessonCard(
-            lesson: lessons[index],
-          ),
+          lesson: lessons[index].lesson,
+          position: index,
+          duration: 1,
         );
       },
     );

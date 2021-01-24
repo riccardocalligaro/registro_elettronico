@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/gradient_red_button.dart';
@@ -8,8 +9,10 @@ import 'package:registro_elettronico/feature/authentication/data/model/login/par
 import 'package:registro_elettronico/feature/authentication/domain/model/login_request_domain_model.dart';
 import 'package:registro_elettronico/feature/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
+import 'package:registro_elettronico/feature/grades/grades_container.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/update_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginPage extends StatefulWidget {
@@ -51,6 +54,9 @@ class _LoginPageState extends State<LoginPage> {
             });
           } else if (state is AuthenticationSuccess) {
             AppNavigator.instance.navToHome(context);
+
+            final SRUpdateManager srUpdateManager = sl();
+            unawaited(srUpdateManager.checkForUpdates());
           } else if (state is AuthenticationNeedsAccountSelection) {
             showDialog(
               context: context,

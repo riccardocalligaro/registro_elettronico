@@ -40,8 +40,6 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
     try {
       if (!ifNeeded |
           (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
-        final localNotices = await noticeboardLocalDatasource.getAllNotices();
-
         final remoteNotices =
             await noticeboardRemoteDatasource.getNoticeboard();
 
@@ -54,15 +52,8 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
           mappedRemoteAttachments.addAll(localAttachments);
         }
 
-        final remoteIds = remoteNotices.map((e) => e.pubId).toList();
-
-        List<NoticeLocalModel> noticesToDelete = [];
-
-        for (final localNotice in localNotices) {
-          if (!remoteIds.contains(localNotice.pubId)) {
-            noticesToDelete.add(localNotice);
-          }
-        }
+        // delete the noticeboard that were removed from the remote source
+        await noticeboardLocalDatasource.deleteAllNotices();
 
         await noticeboardLocalDatasource.insertNotices(
           remoteNotices
@@ -76,9 +67,6 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
 
         await noticeboardLocalDatasource
             .insertAttachments(mappedRemoteAttachments);
-
-        // delete the noticeboard that were removed from the remote source
-        await noticeboardLocalDatasource.deleteNotices(noticesToDelete);
 
         await sharedPreferences.setInt(
             lastUpdateKey, DateTime.now().millisecondsSinceEpoch);

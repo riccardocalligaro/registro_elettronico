@@ -19,6 +19,7 @@ import 'package:registro_elettronico/feature/periods/periods_container.dart';
 import 'package:registro_elettronico/feature/professors/professors_container.dart';
 import 'package:registro_elettronico/feature/subjects/subjects_container.dart';
 import 'package:registro_elettronico/feature/timetable/timetable_container.dart';
+import 'package:registro_elettronico/utils/update_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'grades/grades_container.dart';
@@ -66,6 +67,23 @@ class CoreContainer {
     await NoticeboardContainer.init();
     await TimetableContainer.init();
     await GradesContainer.init();
+
+    _sl.registerLazySingleton(() {
+      return SRUpdateManager(
+        sharedPreferences: _sl(),
+        absencesRepository: _sl(),
+        agendaRepository: _sl(),
+        didacticsRepository: _sl(),
+        gradesRepository: _sl(),
+        lessonsRepository: _sl(),
+        noticesRepository: _sl(),
+        periodsRepository: _sl(),
+        subjectsRepository: _sl(),
+        documentsRepository: _sl(),
+        notesRepository: _sl(),
+        timetableRepository: _sl(),
+      );
+    });
   }
 
   static List<BlocProvider> getBlocProviders() {

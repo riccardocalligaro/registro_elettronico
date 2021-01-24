@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/utils/bug_report.dart';
 
 class SRFailureView extends StatelessWidget {
   final Failure failure;
@@ -60,8 +61,11 @@ class SRFailureView extends StatelessWidget {
                             Text(AppLocalizations.of(context).translate('ok')),
                       ),
                       FlatButton(
-                        onPressed: () {
-                          // TODO: send bogs
+                        onPressed: () async {
+                          await ReportManager.sendEmail(
+                            context,
+                            failure: failure,
+                          );
                         },
                         child: Text(
                           AppLocalizations.of(context)

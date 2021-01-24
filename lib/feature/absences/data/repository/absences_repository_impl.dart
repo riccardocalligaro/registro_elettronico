@@ -33,8 +33,8 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
     if (await networkInfo.isConnected) {
       Logger.info('Updating absences');
 
-      final profile = await authenticationRepository.getProfile();
-      final absences = await spaggiariClient.getAbsences(profile.studentId);
+      final studentId = await authenticationRepository.getCurrentStudentId();
+      final absences = await spaggiariClient.getAbsences(studentId);
       List<Absence> absencesList = [];
       absences.events.forEach((event) {
         absencesList.add(AbsenceMapper.convertEventEntityToInsertable(event));

@@ -31,4 +31,6 @@ class SubjectsLocalDatasource extends DatabaseAccessor<AppDatabase>
       });
     });
   }
+
+  Future deleteAllSubjects() => delete(subjects).go();
 }

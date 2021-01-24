@@ -55,6 +55,8 @@ class NoticeboardLocalDatasource extends DatabaseAccessor<AppDatabase>
     });
   }
 
+  Future<void> deleteAllNotices() => delete(notices).go();
+
   Future<void> deleteAllAttachments() => delete(attachments).go();
 
   Future updateNotice(NoticeLocalModel notice) =>

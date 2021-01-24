@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
-import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/fcm_service.dart';
 import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/login/login_response_remote_model.dart';
@@ -87,6 +87,11 @@ class _DebugPageState extends State<DebugPage> {
             onTap: () async {
               final ProfilesLocalDatasource profilesLocalDatasource = sl();
               final profiles = await profilesLocalDatasource.getAllProfiles();
+
+              final FlutterSecureStorage flutterSecureStorage = sl();
+              final psw = await flutterSecureStorage.read(key: 'X5605613Y');
+              print(psw);
+              // 5605613 X5605613Y
               print(profiles);
             },
           ),

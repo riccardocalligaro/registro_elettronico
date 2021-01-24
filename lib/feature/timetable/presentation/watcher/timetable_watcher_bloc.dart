@@ -5,9 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/feature/timetable/domain/model/timetable_data_domain_model.dart';
-import 'package:registro_elettronico/feature/timetable/domain/model/timetable_entry_domain_model.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
-import 'package:registro_elettronico/feature/timetable/presentation/model/timetable_entry_presentation_model.dart';
 
 part 'timetable_watcher_event.dart';
 part 'timetable_watcher_state.dart';

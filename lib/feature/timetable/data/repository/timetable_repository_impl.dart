@@ -109,7 +109,6 @@ class TimetableRepositoryImpl implements TimetableRepository {
         List<SubjectLocalModel> localSubjects,
         List<TimetableEntryLocalModel> localEntries,
       ) {
-        // TODO: investigate starting day
         final Map<int, Color> colorsMap = Map.fromIterable(
           localSubjects,
           key: (e) => e.id,

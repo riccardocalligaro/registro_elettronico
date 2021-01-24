@@ -29,6 +29,8 @@ class AgendaLocalDatasource extends DatabaseAccessor<AppDatabase>
   Future<void> deleteEvent(AgendaEventLocalModel event) =>
       delete(agendaEventsTable).delete(event);
 
+  Future<void> deleteAllEvents() => delete(agendaEventsTable).go();
+
   Future deleteEventWithId(int id) {
     return (delete(agendaEventsTable)..where((t) => t.evtId.equals(id))).go();
   }

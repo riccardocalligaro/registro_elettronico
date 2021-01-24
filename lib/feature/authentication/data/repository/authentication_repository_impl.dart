@@ -139,6 +139,11 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
           // we set the ingleton that we use for authentication
           _ProfileSingleton.instance.profile = domainModel;
 
+          await flutterSecureStorage.write(
+            key: domainModel.ident,
+            value: loginRequestDomainModel.pass,
+          );
+
           // se non ci sono altri account possiamo impostare il nome
           // del db di default e evitiamo di riavviare l'app
           if (otherAccounts.isEmpty) {
@@ -247,10 +252,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     }
   }
 
-  Future _restartApp() {
-    if (!kDebugMode) {
-      return platform.invokeMethod('restartApp');
-    }
+  Future<void> _restartApp() {
+    // if (!kDebugMode) {
+    return platform.invokeMethod('restartApp');
+    // }
   }
 
   @override

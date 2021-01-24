@@ -43,9 +43,9 @@ class NotesRepositoryImpl implements NotesRepository {
   @override
   Future updateNotes() async {
     if (await networkInfo.isConnected) {
-      final profile = await authenticationRepository.getProfile();
+      final studentId = await authenticationRepository.getCurrentStudentId();
 
-      final notesResponse = await spaggiariClient.getNotes(profile.studentId);
+      final notesResponse = await spaggiariClient.getNotes(studentId);
 
       List<Note> notes = [];
       notesResponse.notesNTCL.forEach((note) =>
@@ -81,10 +81,9 @@ class NotesRepositoryImpl implements NotesRepository {
   @override
   Future<NotesReadResponse> readNote(String type, int eventId) async {
     if (await networkInfo.isConnected) {
-      final profile = await authenticationRepository.getProfile();
+      final studentId = await authenticationRepository.getCurrentStudentId();
 
-      final res =
-          await spaggiariClient.markNote(profile.studentId, type, eventId, "");
+      final res = await spaggiariClient.markNote(studentId, type, eventId, "");
       return res;
     } else {
       throw NotConntectedException();
@@ -99,15 +98,14 @@ class NotesRepositoryImpl implements NotesRepository {
   @override
   Future<NotesAttachment> getAttachmentForNote(String type, int eventId) async {
     if (await networkInfo.isConnected) {
-      final profile = await authenticationRepository.getProfile();
+      final studentId = await authenticationRepository.getCurrentStudentId();
       final attachments = await noteDao.getAllAttachments();
 
       for (var attachment in attachments) {
         if (attachment.id == eventId) return attachment;
       }
 
-      final res =
-          await spaggiariClient.markNote(profile.studentId, type, eventId, "");
+      final res = await spaggiariClient.markNote(studentId, type, eventId, "");
       final insertable =
           NoteMapper.convertNoteAttachmentResponseToInsertable(res);
 

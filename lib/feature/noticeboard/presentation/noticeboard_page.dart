@@ -25,7 +25,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   SearchBar _searchBar;
   String _searchQuery = '';
 
-  // TODO: fix read status
   @override
   void initState() {
     _searchBar = SearchBar(

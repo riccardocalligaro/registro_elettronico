@@ -17,6 +17,12 @@ class _NavigatorPageState extends State<NavigatorPage> {
   int _currentPage = 0;
 
   @override
+  void initState() {
+    super.initState();
+    // check for updates
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: _buildBottomNavigationBar(),

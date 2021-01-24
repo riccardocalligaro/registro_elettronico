@@ -6,7 +6,6 @@ import 'package:registro_elettronico/core/infrastructure/localizations/app_local
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
 import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
-import 'package:registro_elettronico/feature/timetable/data/datasource/timetable_local_datasource.dart';
 import 'package:registro_elettronico/feature/timetable/domain/model/timetable_entry_domain_model.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/feature/timetable/presentation/timetable_event.dart';

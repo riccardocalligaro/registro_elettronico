@@ -32,8 +32,8 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   @override
   Future updateDocuments() async {
     if (await networkInfo.isConnected) {
-      final profile = await authenticationRepository.getProfile();
-      final documents = await spaggiariClient.getDocuments(profile.studentId);
+      final studentId = await authenticationRepository.getCurrentStudentId();
+      final documents = await spaggiariClient.getDocuments(studentId);
 
       List<Document> documentsList = [];
       List<SchoolReport> reportsList = [];
