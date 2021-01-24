@@ -20,14 +20,6 @@ Failure handleStreamError(
     e = Exception(e.toString());
   }
 
-  FLog.error(
-    text: '⛔️ [STREAM ERROR]',
-    exception: e,
-    stacktrace: s,
-    methodName: '',
-    className: '',
-  );
-
   return _handleError(e);
 }
 

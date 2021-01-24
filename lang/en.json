@@ -327,5 +327,8 @@
   "file_downloaded_success": "Downloaded",
   "refresh": "Refresh",
   "server_login": "The server seems down ({code})",
-  "already_logged_in": "Already logged in"
+  "already_logged_in": "Already logged in",
+  "no_notices": "No notices",
+  "more_page": "More",
+  "logout_message_title": "Do you want to log out?"
 }

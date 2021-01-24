@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/watcher/agenda_watcher_bloc.dart';
+import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/home/sections/header/week_summary_chart.dart';
 import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/string_utils.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({Key key}) : super(key: key);
@@ -47,14 +49,12 @@ class HomeHeader extends StatelessWidget {
   }
 
   Widget _buildNameText(BuildContext context) {
-    AuthenticationRepository authenticationRepository = sl();
-    // TODO: make this work
-    final profile = authenticationRepository.getProfile();
+    ProfilesLocalDatasource profilesLocalDatasource = sl();
+    final profile = profilesLocalDatasource.getLoggedInUserSync();
 
     if (profile != null) {
       return Text(
-        '${DateUtils.localizedTimeMessage(context)}',
-        // '${DateUtils.localizedTimeMessage(context)}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
+        '${DateUtils.localizedTimeMessage(context)}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
         style: TextStyle(
           color: Colors.white,
           fontSize: 24,

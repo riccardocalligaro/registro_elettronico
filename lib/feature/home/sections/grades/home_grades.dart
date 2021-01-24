@@ -18,6 +18,9 @@ class HomeGrades extends StatelessWidget {
     return BlocBuilder<GradesWatcherBloc, GradesWatcherState>(
       builder: (context, state) {
         if (state is GradesWatcherLoadSuccess) {
+          if (state.gradesSections == null) {
+            return _LastGradesLoading();
+          }
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
@@ -141,7 +144,7 @@ class _LastGradesLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 24.0),
+      padding: const EdgeInsets.symmetric(vertical: 48.0),
       child: Center(
         child: Column(
           children: <Widget>[

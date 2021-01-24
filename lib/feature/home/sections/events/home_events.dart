@@ -18,6 +18,9 @@ class HomeEvents extends StatelessWidget {
     return BlocBuilder<AgendaWatcherBloc, AgendaWatcherState>(
       builder: (context, state) {
         if (state is AgendaWatcherLoadSuccess) {
+          if (state.agendaDataDomainModel.events.isEmpty) {
+            return _AgendaEmpty();
+          }
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: _AgendaLoaded(events: state.agendaDataDomainModel.events),

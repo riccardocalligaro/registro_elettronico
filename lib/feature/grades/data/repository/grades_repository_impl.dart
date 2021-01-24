@@ -147,6 +147,10 @@ class GradesRepositoryImpl extends GradesRepository {
         List<SubjectLocalModel> localSubjects,
         List<GradeLocalModel> localGrades,
       ) {
+        if (localPeriods.isEmpty) {
+          return Resource.success(data: null);
+        }
+
         if (localPeriods.last.position != -1) {
           localPeriods.add(
             PeriodLocalModel(
@@ -284,7 +288,9 @@ class GradesRepositoryImpl extends GradesRepository {
 
         return Resource.success(data: gradesPagesDomainModel);
       },
-    ).onErrorReturnWith(
+    ).handleError((e, s) {
+      Logger.e(exception: e, stacktrace: s);
+    }).onErrorReturnWith(
       (e) {
         return Resource.failed(error: handleStreamError(e));
       },

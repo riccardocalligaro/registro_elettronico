@@ -327,5 +327,8 @@
   "file_downloaded_success": "Scaricato",
   "refresh": "Aggiorna",
   "server_login": "Il server sembra offline ({code})",
-  "already_logged_in": "Account già loggato"
+  "already_logged_in": "Account già loggato",
+  "no_notices": "Nessuna circolare",
+  "more_page": "Altro",
+  "logout_message_title": "Vuoi uscire da questo account?"
 }

@@ -71,7 +71,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
           icon: Icon(Icons.email),
         ),
         BottomNavigationBarItem(
-          label: '',
+          label: AppLocalizations.of(context).translate('more_page'),
           icon: Icon(Icons.more_horiz),
         ),
       ],

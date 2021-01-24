@@ -149,14 +149,48 @@ class MorePage extends StatelessWidget {
             title: Text(
               AppLocalizations.of(context).translate('logout'),
             ),
-            onTap: () async {
-              // TODO: add dialog
-              final AuthenticationRepository authenticationRepository = sl();
-              await authenticationRepository.logoutCurrentUser();
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => _LogoutDialog(),
+              );
             },
           ),
         ],
       ),
+    );
+  }
+}
+
+class _LogoutDialog extends StatelessWidget {
+  const _LogoutDialog({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        AppLocalizations.of(context).translate('logout_message_title'),
+      ),
+      content: Text(
+        AppLocalizations.of(context).translate('logout_message'),
+      ),
+      actions: [
+        FlatButton(
+          child: Text(AppLocalizations.of(context).translate('no')),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        FlatButton(
+          child: Text(AppLocalizations.of(context).translate('yes')),
+          onPressed: () async {
+            Navigator.pop(context);
+
+            final AuthenticationRepository authenticationRepository = sl();
+            await authenticationRepository.logoutCurrentUser();
+          },
+        ),
+      ],
     );
   }
 }

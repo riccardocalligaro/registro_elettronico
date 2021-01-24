@@ -15,6 +15,10 @@ class HomeLessons extends StatelessWidget {
     return BlocBuilder<LatestLessonsWatcherBloc, LatestLessonsWatcherState>(
       builder: (context, state) {
         if (state is LatestLessonsWatcherLoadSuccess) {
+          if (state.lessons.isEmpty) {
+            return _LatestLessonsEmpty();
+          }
+
           return _LatestLessonsLoaded(
             lessons: state.lessons,
           );
@@ -78,7 +82,7 @@ class _LatestLessonsEmpty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 54.0),
+      padding: const EdgeInsets.symmetric(vertical: 23.0),
       child: Center(
         child: Column(
           children: <Widget>[

@@ -62,7 +62,7 @@ class _EmptyList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 38.0),
+      padding: const EdgeInsets.only(top: 38.0, bottom: 38),
       child: CustomPlaceHolder(
         icon: Icons.subject,
         text: AppLocalizations.of(context).translate('empty_lessons'),

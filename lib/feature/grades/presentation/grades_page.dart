@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/grades_failure.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/grades_loading.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/tabs/grades_tab.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/tabs/period_tab.dart';
+import 'package:registro_elettronico/feature/grades/presentation/states/widget/empty_grades.dart';
 import 'package:registro_elettronico/feature/grades/presentation/watcher/grades_watcher_bloc.dart';
 
 class GradesPage extends StatefulWidget {
@@ -30,6 +32,9 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
       body: BlocBuilder<GradesWatcherBloc, GradesWatcherState>(
         builder: (context, state) {
           if (state is GradesWatcherLoadSuccess) {
+            if (state.gradesSections == null) {
+              return _EmptyGrades();
+            }
             final widgets = [
               GradesTab(
                 grades: state.gradesSections.grades,
@@ -118,5 +123,24 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
       return Theme.of(context).accentColor;
     }
     return null;
+  }
+}
+
+class _EmptyGrades extends StatelessWidget {
+  const _EmptyGrades({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: CustomPlaceHolder(
+        icon: Icons.timeline,
+        showUpdate: true,
+        onTap: () {
+          final GradesRepository gradesRepository = sl();
+          return gradesRepository.updateGrades(ifNeeded: false);
+        },
+        text: AppLocalizations.of(context).translate('no_grades'),
+      ),
+    );
   }
 }

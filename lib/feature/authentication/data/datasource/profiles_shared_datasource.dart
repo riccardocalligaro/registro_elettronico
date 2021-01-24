@@ -23,12 +23,22 @@ class ProfilesLocalDatasource {
             ),
       );
 
-      // Iterable l = json.decode(profilesBody);
-      // List<ProfileLocalModel> profiles = List<ProfileLocalModel>.from(
-      //   l.map(
-      //     (model) => ProfileLocalModel.fromJson(model),
-      //   ),
-      // );
+      return profiles;
+    } else {
+      return [];
+    }
+  }
+
+  List<ProfileLocalModel> _getAllProfilesSync() {
+    final profilesBody =
+        sharedPreferences.getString(PrefsConstants.profilesList);
+
+    if (profilesBody != null) {
+      List<ProfileLocalModel> profiles = List<ProfileLocalModel>.from(
+        json.decode(profilesBody).map(
+              (i) => ProfileLocalModel.fromJson(jsonDecode(i)),
+            ),
+      );
 
       return profiles;
     } else {
@@ -70,6 +80,12 @@ class ProfilesLocalDatasource {
     final loggedProfiles =
         profilesList.where((p) => p.currentlyLoggedIn).toList();
     return loggedProfiles;
+  }
+
+  ProfileLocalModel getLoggedInUserSync() {
+    final profilesList = _getAllProfilesSync();
+    final profile = profilesList.where((p) => p.currentlyLoggedIn).first;
+    return profile;
   }
 
   Future<List<ProfileLocalModel>> getOtherUsers(String ident) async {

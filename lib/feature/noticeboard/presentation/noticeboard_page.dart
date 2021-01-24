@@ -5,6 +5,7 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
+import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/model/notice_domain_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/noticeboard_repository.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/watcher/noticeboard_watcher_bloc.dart';
@@ -47,6 +48,10 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
       body: BlocBuilder<NoticeboardWatcherBloc, NoticeboardWatcherState>(
         builder: (context, state) {
           if (state is NoticeboardWatcherLoadSuccess) {
+            if (state.notices.isEmpty) {
+              return _NoticesEmpty();
+            }
+
             return _NoticesLoaded(
               notices: state.notices,
               query: _searchQuery,
@@ -69,6 +74,23 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
       actions: [
         _searchBar.getSearchAction(context),
       ],
+    );
+  }
+}
+
+class _NoticesEmpty extends StatelessWidget {
+  const _NoticesEmpty({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPlaceHolder(
+      icon: Icons.email,
+      showUpdate: true,
+      onTap: () {
+        final NoticeboardRepository noticeboardRepository = sl();
+        return noticeboardRepository.updateNotices(ifNeeded: false);
+      },
+      text: AppLocalizations.of(context).translate('no_notices'),
     );
   }
 }
