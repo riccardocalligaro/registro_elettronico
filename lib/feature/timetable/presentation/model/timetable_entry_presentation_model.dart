@@ -38,8 +38,8 @@ class TimetableEntryPresentationModel extends Event {
     // abbiamo il numero del giorno
     // dobbiamo trovare il giorno della settimana più vicino a quella data
 
-    final _firstDayOfWeek =
-        DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1));
+    final _firstDayOfWeek = _findFirstDateOfTheWeek(DateTime.now());
+    print(_firstDayOfWeek);
 
     final day = DateTime(_firstDayOfWeek.year, _firstDayOfWeek.month,
         _firstDayOfWeek.day + l.dayOfWeek, 8);
@@ -58,6 +58,10 @@ class TimetableEntryPresentationModel extends Event {
       subjectId: l.subject,
       subjectName: l.subjectName,
     );
+  }
+
+  static DateTime _findFirstDateOfTheWeek(DateTime dateTime) {
+    return dateTime.subtract(Duration(days: dateTime.weekday - 1));
   }
 
   @override

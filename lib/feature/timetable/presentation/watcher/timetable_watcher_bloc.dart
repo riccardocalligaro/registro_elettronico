@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
+import 'package:registro_elettronico/feature/timetable/domain/model/timetable_data_domain_model.dart';
 import 'package:registro_elettronico/feature/timetable/domain/model/timetable_entry_domain_model.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/feature/timetable/presentation/model/timetable_entry_presentation_model.dart';
@@ -29,7 +30,7 @@ class TimetableWatcherBloc
       if (event.resource.status == Status.failed) {
         yield TimetableWatcherFailure(failure: event.resource.failure);
       } else if (event.resource.status == Status.success) {
-        yield TimetableWatcherLoadSuccess(timetable: event.resource.data);
+        yield TimetableWatcherLoadSuccess(timetableData: event.resource.data);
       } else if (event.resource.status == Status.loading) {
         yield TimetableWatcherLoading();
       }
@@ -45,7 +46,7 @@ class TimetableWatcherBloc
 
   void _startStreamListener() {
     _timetableStreamSubscription =
-        timetableRepository.watchEntries().listen((resource) {
+        timetableRepository.watchTimetableData().listen((resource) {
       add(TimetableReceived(resource: resource));
     });
   }

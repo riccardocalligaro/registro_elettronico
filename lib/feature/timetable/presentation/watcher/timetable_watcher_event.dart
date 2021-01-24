@@ -4,7 +4,7 @@ part of 'timetable_watcher_bloc.dart';
 abstract class TimetableWatcherEvent {}
 
 class TimetableReceived extends TimetableWatcherEvent {
-  final Resource<List<TimetableEntryPresentationModel>> resource;
+  final Resource<TimetableDataDomainModel> resource;
 
   TimetableReceived({
     @required this.resource,

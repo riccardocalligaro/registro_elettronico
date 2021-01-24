@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/feature/timetable/presentation/model/timetable_entry_presentation_model.dart';
 
 class TimetableEntryDomainModel {
   int id;

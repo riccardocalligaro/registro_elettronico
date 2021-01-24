@@ -31,4 +31,8 @@ class TimetableLocalDatasource extends DatabaseAccessor<AppDatabase>
 
   Future updateTimetableEntry(TimetableEntryLocalModel entry) =>
       update(timetableEntries).replace(entry);
+
+  Future deleteEntryWithId(int id) {
+    return (delete(timetableEntries)..where((t) => t.id.equals(id))).go();
+  }
 }
