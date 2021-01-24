@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -13,6 +14,9 @@ class DebugPage extends StatefulWidget {
 }
 
 class _DebugPageState extends State<DebugPage> {
+  static const platform = const MethodChannel(
+      'com.riccardocalligaro.registro_elettronico/multi-account');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +25,12 @@ class _DebugPageState extends State<DebugPage> {
       ),
       body: Column(
         children: <Widget>[
+          DebugButton(
+            title: 'Crash and restart',
+            onTap: () {
+              platform.invokeMethod('restartApp');
+            },
+          ),
           DebugButton(
             title: 'Open DB',
             onTap: () {

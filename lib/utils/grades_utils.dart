@@ -4,7 +4,6 @@ import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_mo
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 
 import 'constants/registro_constants.dart';
-import 'entity/subject_averages.dart';
 
 class GradesUtils {
   static double getDifferencePercentage({
@@ -69,69 +68,6 @@ class GradesUtils {
     }
 
     return 0;
-  }
-
-  static double getAverageWithoutSubjectId(List<GradeLocalModel> grades) {
-    double sum = 0;
-    int count = 0;
-
-    grades.forEach((grade) {
-      if (grade.decimalValue != -1.00 ||
-          grade.cancelled == true ||
-          grade.localllyCancelled == true) {
-        sum += grade.decimalValue;
-
-        count++;
-      }
-    });
-    return sum / count;
-  }
-
-  static SubjectAverages getSubjectAveragesFromGradeLocalModels(
-      List<GradeDomainModel> grades, int subjectId) {
-    // Declare variables for the different type of averages
-    double sumAverage = 0;
-    double countAverage = 0;
-
-    double sumPratico = 0;
-    double countPratico = 0;
-
-    double sumOrale = 0;
-    double countOrale = 0;
-
-    double sumScritto = 0;
-    double countScritto = 0;
-
-    grades.forEach((grade) {
-      final decimalValue = grade.decimalValue;
-      if (isValidGrade(grade) && grade.subjectId == subjectId) {
-        // always check the average for all grades
-        sumAverage += decimalValue;
-        countAverage++;
-        // Orale
-        if (grade.componentDesc == RegistroConstants.ORALE) {
-          sumOrale += decimalValue;
-          countOrale++;
-        }
-        // Scritto
-        if (grade.componentDesc == RegistroConstants.SCRITTO) {
-          sumScritto += decimalValue;
-          countScritto++;
-        }
-        // Pratico
-        if (grade.componentDesc == RegistroConstants.PRATICO) {
-          sumPratico += decimalValue;
-          countPratico++;
-        }
-      }
-    });
-
-    return SubjectAverages(
-      average: sumAverage / countAverage,
-      praticoAverage: sumPratico / countPratico,
-      scrittoAverage: sumScritto / countScritto,
-      oraleAverage: sumOrale / countOrale,
-    );
   }
 
   static double getAverageForPratica(List<GradeLocalModel> grades) {

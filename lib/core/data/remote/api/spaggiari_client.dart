@@ -25,21 +25,9 @@ abstract class SpaggiariClient {
   Future<Either<LoginResponse, ParentsLoginResponse>> loginUser(
       @Body() LoginRequest loginRequest);
 
-  // // Subjects
-  // @GET("/students/{studentId}/subjects")
-  // Future<SubjectsResponse> getSubjects(@Path() String studentId);
-
-  // Subjects
-  // @GET("/students/{studentId}/grades")
-  // Future<GradesResponse> getGrades(@Path() String studentId);
-
   // Absences
   @GET("/students/{studentId}/absences/details")
   Future<AbsencesRemoteModel> getAbsences(@Path() String studentId);
-
-  // Absences
-  // @GET("/students/{studentId}/periods")
-  // Future<PeriodsResponse> getPeriods(@Path() String studentId);
 
   @GET("/students/{studentId}/notes/all/")
   Future<NotesResponse> getNotes(@Path() String studentId);

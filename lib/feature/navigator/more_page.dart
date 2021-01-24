@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
+import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
 import 'package:registro_elettronico/feature/settings/widgets/header_text.dart';
 import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view.dart';
 
@@ -21,6 +23,16 @@ class MorePage extends StatelessWidget {
               text: AppLocalizations.of(context).translate('general'),
             ),
           ),
+          if (kDebugMode)
+            ListTile(
+              leading: Icon(Icons.bug_report),
+              title: Text('Debug'),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => DebugPage(),
+                ));
+              },
+            ),
           ListTile(
             leading: Icon(Icons.library_books),
             title: Text(
