@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -8,7 +7,6 @@ import 'package:registro_elettronico/feature/authentication/presentation/bloc/au
 
 import 'data/datasource/authentication_dio.dart';
 import 'data/datasource/authentication_remote_datasource.dart';
-
 import 'data/repository/authentication_repository_impl.dart';
 import 'domain/repository/authentication_repository.dart';
 

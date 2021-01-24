@@ -10,7 +10,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:registro_elettronico/application.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/splash/presentation/splash_screen.dart';
-import 'package:registro_elettronico/feature/timetable/presentation/timetable_page.dart';
 import 'package:time_machine/time_machine.dart';
 
 import 'core/data/remote/api/dio_client.dart';

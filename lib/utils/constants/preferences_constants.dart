@@ -47,9 +47,10 @@ class PrefsConstants {
 
   static const profile = 'profile';
 
-  static const themeColor = 'themeColor';
-  static const themeType = 'themeType';
+  static const String themeColor = 'themeColor';
+  static const String themeType = 'themeType';
 
-  static const databaseName = 'databaseName';
-  static const databaseNameBeforeMigration = 'dbBeforeMigration';
+  static const String databaseName = 'databaseName';
+  static const String databaseNameBeforeMigration = 'dbBeforeMigration';
+  static const String defaultDbName = 'registro';
 }

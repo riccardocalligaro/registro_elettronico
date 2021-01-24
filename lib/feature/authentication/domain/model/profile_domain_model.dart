@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/profile_utils.dart';
 
 class ProfileDomainModel {
@@ -13,6 +14,8 @@ class ProfileDomainModel {
   DateTime release;
   DateTime expire;
   String studentId;
+  bool currentlyLoggedIn;
+  String dbName;
 
   ProfileDomainModel({
     @required this.ident,
@@ -22,6 +25,8 @@ class ProfileDomainModel {
     @required this.release,
     @required this.expire,
     @required this.studentId,
+    @required this.currentlyLoggedIn,
+    @required this.dbName,
   });
 
   ProfileLocalModel toLocalModel() {
@@ -33,7 +38,9 @@ class ProfileDomainModel {
       token: this.token ?? "",
       release: this.release ?? DateTime.now(),
       expire: this.expire ?? DateTime.now(),
-      currentlyLoggedIn: true,
+      currentlyLoggedIn: this.currentlyLoggedIn ?? true,
+      dbName:
+          this.currentlyLoggedIn ?? PrefsConstants.databaseNameBeforeMigration,
     );
   }
 
@@ -45,6 +52,8 @@ class ProfileDomainModel {
     this.release = l.release;
     this.expire = l.expire;
     this.studentId = l.studentId;
+    this.currentlyLoggedIn = l.currentlyLoggedIn;
+    this.dbName = l.dbName;
   }
 
   ProfileDomainModel copyWith({
@@ -55,6 +64,8 @@ class ProfileDomainModel {
     DateTime release,
     DateTime expire,
     String studentId,
+    bool currentlyLoggedIn,
+    String dbName,
   }) {
     return ProfileDomainModel(
       ident: ident ?? this.ident,
@@ -64,6 +75,8 @@ class ProfileDomainModel {
       release: release ?? this.release,
       expire: expire ?? this.expire,
       studentId: studentId ?? this.studentId,
+      currentlyLoggedIn: currentlyLoggedIn ?? this.currentlyLoggedIn,
+      dbName: dbName ?? this.dbName,
     );
   }
 
@@ -76,6 +89,8 @@ class ProfileDomainModel {
       'release': release?.millisecondsSinceEpoch,
       'expire': expire?.millisecondsSinceEpoch,
       'studentId': studentId,
+      'currentlyLoggedIn': currentlyLoggedIn,
+      'dbName': dbName,
     };
   }
 
@@ -87,9 +102,11 @@ class ProfileDomainModel {
       firstName: map['firstName'],
       lastName: map['lastName'],
       token: map['token'],
-      release: DateTime.tryParse(map['release']) ?? DateTime.now(),
-      expire: DateTime.tryParse(map['expire']) ?? DateTime.now(),
+      release: DateTime.fromMillisecondsSinceEpoch(map['release']),
+      expire: DateTime.fromMillisecondsSinceEpoch(map['expire']),
       studentId: map['studentId'],
+      currentlyLoggedIn: map['currentlyLoggedIn'] ?? true,
+      dbName: map['dbName'] ?? PrefsConstants.databaseName,
     );
   }
 
@@ -100,7 +117,7 @@ class ProfileDomainModel {
 
   @override
   String toString() {
-    return 'ProfileDomainModel(ident: $ident, firstName: $firstName, lastName: $lastName, token: $token, release: $release, expire: $expire, studentId: $studentId)';
+    return 'ProfileDomainModel(ident: $ident, firstName: $firstName, lastName: $lastName, token: $token, release: $release, expire: $expire, studentId: $studentId, currentlyLoggedIn: $currentlyLoggedIn, dbName: $dbName)';
   }
 
   @override
@@ -114,7 +131,9 @@ class ProfileDomainModel {
         o.token == token &&
         o.release == release &&
         o.expire == expire &&
-        o.studentId == studentId;
+        o.studentId == studentId &&
+        o.currentlyLoggedIn == currentlyLoggedIn &&
+        o.dbName == dbName;
   }
 
   @override
@@ -125,6 +144,8 @@ class ProfileDomainModel {
         token.hashCode ^
         release.hashCode ^
         expire.hashCode ^
-        studentId.hashCode;
+        studentId.hashCode ^
+        currentlyLoggedIn.hashCode ^
+        dbName.hashCode;
   }
 }

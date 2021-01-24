@@ -103,8 +103,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future updateProfile({
     DefaultLoginResponseRemoteModel responseRemoteModel,
+    ProfileDomainModel profileDomainModel,
   }) async {
-    final localModel = responseRemoteModel.toLocalModel();
+    final localModel = responseRemoteModel.toLocalModel(profileDomainModel);
     await profilesLocalDatasource.updateProfile(localModel);
     final domainModel = ProfileDomainModel.fromLocalModel(localModel);
     // we update the singleton

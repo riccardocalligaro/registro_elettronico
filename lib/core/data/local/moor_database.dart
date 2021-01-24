@@ -4,6 +4,7 @@ import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
@@ -45,7 +46,15 @@ part 'moor_database.g.dart';
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'registro.sqlite'));
+    final SharedPreferences sharedPreferences = sl();
+    String dbName = sharedPreferences.getString(PrefsConstants.databaseName);
+
+    if (dbName == null ||
+        dbName == PrefsConstants.databaseNameBeforeMigration) {
+      dbName = PrefsConstants.defaultDbName;
+    }
+
+    final file = File(p.join(dbFolder.path, '$dbName.sqlite'));
     return VmDatabase(file, logStatements: true);
   });
 }
@@ -112,8 +121,13 @@ class AppDatabase extends _$AppDatabase {
               final domainProfile = ProfileDomainModel.fromJson(profile);
               print(domainProfile);
               await m.deleteTable(profiles.actualTableName);
+
               await m.createTable(profiles).then((value) async {
                 await into(profiles).insert(domainProfile.toLocalModel());
+                await sharedPreferences.setString(
+                  PrefsConstants.databaseName,
+                  PrefsConstants.databaseNameBeforeMigration,
+                );
               });
             } else {
               await m.deleteTable(profiles.actualTableName);

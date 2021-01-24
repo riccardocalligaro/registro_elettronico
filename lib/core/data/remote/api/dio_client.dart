@@ -106,13 +106,15 @@ class SRDioClient {
               }
 
               // this converts the response data to a login response
-              final loginResponse =
-                  DefaultLoginResponseRemoteModel.fromJson(res.data);
+              final loginResponse = DefaultLoginResponseRemoteModel.fromJson(
+                res.data,
+              );
 
               // finally we update the db with the new token
 
               await authenticationRepository.updateProfile(
                 responseRemoteModel: loginResponse,
+                profileDomainModel: profile,
               );
 
               Logger.info(

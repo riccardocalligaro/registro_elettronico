@@ -5,7 +5,6 @@ import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/login/parent_response_remote_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/login_request_domain_model.dart';
-import 'package:registro_elettronico/feature/authentication/domain/model/profile_domain_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 
 part 'authentication_event.dart';

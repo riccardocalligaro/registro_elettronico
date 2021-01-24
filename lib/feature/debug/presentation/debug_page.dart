@@ -7,7 +7,6 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/fcm_service.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/login/login_response_remote_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
-import 'package:registro_elettronico/utils/date_utils.dart';
 
 class DebugPage extends StatefulWidget {
   DebugPage({Key key}) : super(key: key);
@@ -17,8 +16,8 @@ class DebugPage extends StatefulWidget {
 }
 
 class _DebugPageState extends State<DebugPage> {
-  static const platform = const MethodChannel(
-      'com.riccardocalligaro.registro_elettronico/multi-account');
+  static const platform =
+      MethodChannel('com.riccardocalligaro.registro_elettronico/multi-account');
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +52,7 @@ class _DebugPageState extends State<DebugPage> {
                       .subtract(Duration(days: 2))
                       .toIso8601String(),
                 ),
+                profileDomainModel: profile,
               );
               print(profile.toString());
             },

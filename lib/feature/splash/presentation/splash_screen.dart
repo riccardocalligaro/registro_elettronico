@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/presentation/custom/no_animation_route.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
