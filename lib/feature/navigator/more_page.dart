@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
+import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
 import 'package:registro_elettronico/feature/settings/widgets/header_text.dart';
 import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view.dart';
@@ -136,6 +138,17 @@ class MorePage extends StatelessWidget {
             ),
             onTap: () {
               AppNavigator.instance.navToSettings(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text(
+              AppLocalizations.of(context).translate('logout'),
+            ),
+            onTap: () async {
+              final AuthenticationRepository authenticationRepository = sl();
+              await authenticationRepository.logoutCurrentUser();
+              AppNavigator.instance.navToLogin(context);
             },
           ),
         ],

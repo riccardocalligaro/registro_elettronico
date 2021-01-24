@@ -49,4 +49,6 @@ class PrefsConstants {
 
   static const themeColor = 'themeColor';
   static const themeType = 'themeType';
+
+  static const databaseName = 'databaseName';
 }

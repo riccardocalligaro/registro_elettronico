@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/profile_utils.dart';
 
 class DefaultLoginResponseRemoteModel {
@@ -26,9 +27,8 @@ class DefaultLoginResponseRemoteModel {
       firstName: this.firstName ?? "",
       lastName: this.lastName ?? "",
       token: this.token ?? "",
-      release: this.release ?? DateTime.now(),
-      expire: this.expire ?? DateTime.now(),
-      // TODO: check this better
+      release: DateTime.parse(this.release) ?? DateTime.now(),
+      expire: DateTime.parse(this.expire) ?? DateTime.now(),
       currentlyLoggedIn: true,
     );
   }

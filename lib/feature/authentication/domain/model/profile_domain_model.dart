@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/utils/profile_utils.dart';
 
@@ -51,8 +52,8 @@ class ProfileDomainModel {
     String firstName,
     String lastName,
     String token,
-    String release,
-    String expire,
+    DateTime release,
+    DateTime expire,
     String studentId,
   }) {
     return ProfileDomainModel(
@@ -72,8 +73,8 @@ class ProfileDomainModel {
       'firstName': firstName,
       'lastName': lastName,
       'token': token,
-      'release': release,
-      'expire': expire,
+      'release': release?.millisecondsSinceEpoch,
+      'expire': expire?.millisecondsSinceEpoch,
       'studentId': studentId,
     };
   }
@@ -86,8 +87,8 @@ class ProfileDomainModel {
       firstName: map['firstName'],
       lastName: map['lastName'],
       token: map['token'],
-      release: map['release'],
-      expire: map['expire'],
+      release: DateTime.tryParse(map['release']) ?? DateTime.now(),
+      expire: DateTime.tryParse(map['expire']) ?? DateTime.now(),
       studentId: map['studentId'],
     );
   }
@@ -99,7 +100,7 @@ class ProfileDomainModel {
 
   @override
   String toString() {
-    return 'Profile(ident: $ident, firstName: $firstName, lastName: $lastName, token: $token, release: $release, expire: $expire, studentId: $studentId)';
+    return 'ProfileDomainModel(ident: $ident, firstName: $firstName, lastName: $lastName, token: $token, release: $release, expire: $expire, studentId: $studentId)';
   }
 
   @override

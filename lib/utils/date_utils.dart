@@ -130,9 +130,9 @@ class DateUtils {
   static DateTime getDateFromApiString(String date) {
     final parts = date.split('-');
     return DateTime.utc(
-      int.parse(parts[0]),
-      int.parse(parts[1]),
-      int.parse(parts[2]),
+      int.tryParse(parts[0]),
+      int.tryParse(parts[1]),
+      int.tryParse(parts[2]),
     );
   }
 

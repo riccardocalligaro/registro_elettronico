@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/feature/authentication/data/datasource/authentication_remote_datasource.dart';
 import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_local_datasource.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/login/generic_login_response.dart';
@@ -49,7 +50,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<String> getCurrentStudentId() async {
     final profile = await _getProfile();
-    return profile.ident;
+    return profile.studentId;
   }
 
   Future<ProfileDomainModel> _getProfile() async {
@@ -59,6 +60,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return profileSingleton.profile;
     } else {
       final localProfile = await profilesLocalDatasource.getLoggedInUser();
+
+      if (localProfile == null) {
+        return null;
+      }
       profileSingleton.profile =
           ProfileDomainModel.fromLocalModel(localProfile);
     }
@@ -103,6 +108,20 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     final domainModel = ProfileDomainModel.fromLocalModel(localModel);
     // we update the singleton
     _ProfileSingleton.instance.profile = domainModel;
+  }
+
+  @override
+  Future<Either<Failure, Success>> logoutCurrentUser() async {
+    try {
+      // delete the user from the database
+      final profile = await _getProfile();
+      await profilesLocalDatasource.deleteProfile(profile.toLocalModel());
+
+      // TODO: set the dbname
+      return Right(Success());
+    } catch (e, s) {
+      return Left(handleError(e, s));
+    }
   }
 }
 

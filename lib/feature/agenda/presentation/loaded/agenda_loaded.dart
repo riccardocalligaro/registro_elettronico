@@ -130,7 +130,7 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
   }
 
   Color _getLabelColor(String eventColor) {
-    return Color(int.parse(eventColor));
+    return Color(int.tryParse(eventColor) ?? Colors.red.value);
   }
 
   void _onDaySelected(DateTime day, List events, List events2) {

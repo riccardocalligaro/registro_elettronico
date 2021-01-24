@@ -17,7 +17,7 @@ class DidacticsMapper {
     return db.DidacticsFolder(
       teacherId: teacherId ?? "",
       name: folder.folderName ?? "",
-      lastShare: DateTime.parse(folder.lastShareDT) ?? DateTime.now(),
+      lastShare: DateTime.tryParse(folder.lastShareDT) ?? DateTime.now(),
       id: folder.folderId ?? -1,
     );
   }
@@ -27,7 +27,7 @@ class DidacticsMapper {
     return db.DidacticsContent(
       folderId: folderId,
       name: content.contentName,
-      date: DateTime.parse(content.shareDT) ?? DateTime.now(),
+      date: DateTime.tryParse(content.shareDT) ?? DateTime.now(),
       objectId: content.objectId,
       type: content.objectType,
       id: content.contentId,

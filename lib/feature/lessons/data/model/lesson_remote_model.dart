@@ -74,7 +74,7 @@ class LessonRemoteModel {
   LessonLocalModel toLocalModel() {
     return LessonLocalModel(
       eventId: this.evtId ?? -1,
-      date: DateTime.parse(this.evtDate) ?? DateTime.now(),
+      date: DateTime.tryParse(this.evtDate) ?? DateTime.now(),
       code: this.evtCode ?? '',
       position: this.evtHPos ?? -1,
       duration: this.evtDuration ?? -1,

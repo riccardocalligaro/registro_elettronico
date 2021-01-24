@@ -43,7 +43,7 @@ class GradeLocalModelConverter {
       subjectDesc: remoteModel.subjectDesc ?? '',
       evtId: remoteModel.evtId ?? -1,
       evtCode: remoteModel.evtCode ?? '',
-      eventDate: DateTime.parse(remoteModel.evtDate) ?? DateTime.now(),
+      eventDate: DateTime.tryParse(remoteModel.evtDate) ?? DateTime.now(),
       decimalValue: remoteModel.decimalValue ?? -1,
       displayValue: remoteModel.displayValue ?? '',
       displayPos: remoteModel.displaPos ?? -1,

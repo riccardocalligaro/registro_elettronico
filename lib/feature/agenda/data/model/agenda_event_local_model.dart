@@ -34,8 +34,8 @@ class AgendaEventLocalModelConverter {
     return AgendaEventLocalModel(
       evtId: r.evtId ?? -1,
       evtCode: r.evtCode ?? '',
-      begin: DateTime.parse(r.evtDatetimeBegin) ?? DateTime.now(),
-      end: DateTime.parse(r.evtDatetimeEnd) ?? DateTime.now(),
+      begin: DateTime.tryParse(r.evtDatetimeBegin) ?? DateTime.now(),
+      end: DateTime.tryParse(r.evtDatetimeEnd) ?? DateTime.now(),
       isFullDay: r.isFullDay ?? false,
       notes: r.notes ?? '',
       authorName: r.authorName ?? '',

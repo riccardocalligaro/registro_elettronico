@@ -55,7 +55,7 @@ class TimetableRepositoryImpl implements TimetableRepository {
           TimetableEntryLocalModel(
             start: entry.start,
             end: entry.end,
-            dayOfWeek: int.parse(entry.dayOfWeek),
+            dayOfWeek: int.tryParse(entry.dayOfWeek) ?? -1,
             id: null,
             subject: entry.subject,
             subjectName: entry.subjectName,

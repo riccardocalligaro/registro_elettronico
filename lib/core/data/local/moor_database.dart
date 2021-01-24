@@ -110,6 +110,7 @@ class AppDatabase extends _$AppDatabase {
 
             if (profile != null) {
               final domainProfile = ProfileDomainModel.fromJson(profile);
+              print(domainProfile);
               await m.deleteTable(profiles.actualTableName);
               await m.createTable(profiles).then((value) async {
                 await into(profiles).insert(domainProfile.toLocalModel());

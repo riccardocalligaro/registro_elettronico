@@ -45,7 +45,7 @@ class NoticeRemoteModel {
   NoticeLocalModel toLocalModel() {
     return NoticeLocalModel(
       pubId: this.pubId ?? GlobalUtils.getRandomNumber(),
-      pubDate: DateTime.parse(this.pubDT) ?? DateTime.now(),
+      pubDate: DateTime.tryParse(this.pubDT) ?? DateTime.now(),
       readStatus: this.readStatus ?? false,
       eventCode: this.evtCode ?? "CF",
       contentId: this.cntId ?? GlobalUtils.getRandomNumber(),

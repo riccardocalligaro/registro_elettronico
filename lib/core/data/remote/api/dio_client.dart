@@ -5,10 +5,8 @@ import 'package:registro_elettronico/core/data/remote/api/api_config.dart';
 import 'package:registro_elettronico/core/infrastructure/exception/server_exception.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/login/login_response_remote_model.dart';
-
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/authentication/presentation/login_page.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final GlobalKey<NavigatorState> navigator =
@@ -117,7 +115,6 @@ class SRDioClient {
                 responseRemoteModel: loginResponse,
               );
 
-              //authenticationRepository.updateProfile();
               Logger.info(
                 '🔒 [DioINTERCEPTOR] Got a new token - proceeding with request',
               );
@@ -145,7 +142,7 @@ class SRDioClient {
         },
         onError: (DioError error) async {
           if (error.response == null) {
-            Logger.e(text: error.toString());
+            Logger.streamError(error.toString());
           } else {
             Logger.networkError(
               '🤮 [DioERROR] ${error.type} Url: [${error.request.baseUrl}${error.request.path}] status:${error.response.statusCode} type:${error.type} Data: ${error.response.data} message: ${error.message}',

@@ -26,17 +26,13 @@ class _SplashScreenState extends State<SplashScreen> {
     final authenticated = await authenticationRepository.isLoggedIn();
 
     if (authenticated) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).pushReplacement(NoAnimationMaterialPageRoute(
-          builder: (context) => NavigatorPage(),
-        ));
-      });
+      await Navigator.of(context).pushReplacement(NoAnimationMaterialPageRoute(
+        builder: (context) => NavigatorPage(),
+      ));
     } else {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).pushReplacement(NoAnimationMaterialPageRoute(
-          builder: (context) => LoginPage(),
-        ));
-      });
+      await Navigator.of(context).pushReplacement(NoAnimationMaterialPageRoute(
+        builder: (context) => LoginPage(),
+      ));
     }
   }
 

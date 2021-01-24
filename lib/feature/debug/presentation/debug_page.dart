@@ -5,6 +5,9 @@ import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/fcm_service.dart';
+import 'package:registro_elettronico/feature/authentication/data/model/login/login_response_remote_model.dart';
+import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 
 class DebugPage extends StatefulWidget {
   DebugPage({Key key}) : super(key: key);
@@ -29,6 +32,29 @@ class _DebugPageState extends State<DebugPage> {
             title: 'Crash and restart',
             onTap: () {
               platform.invokeMethod('restartApp');
+            },
+          ),
+          DebugButton(
+            title: 'Cancel token',
+            onTap: () async {
+              final AuthenticationRepository authenticationRepository = sl();
+              final profile = await authenticationRepository.getProfile();
+
+              await authenticationRepository.updateProfile(
+                responseRemoteModel: DefaultLoginResponseRemoteModel(
+                  ident: profile.ident,
+                  firstName: profile.firstName,
+                  lastName: profile.lastName,
+                  token: profile.token,
+                  release: DateTime.now()
+                      .subtract(Duration(days: 2))
+                      .toIso8601String(),
+                  expire: DateTime.now()
+                      .subtract(Duration(days: 2))
+                      .toIso8601String(),
+                ),
+              );
+              print(profile.toString());
             },
           ),
           DebugButton(
