@@ -5,9 +5,9 @@ import 'package:registro_elettronico/feature/periods/data/model/period_local_mod
 part 'periods_local_datasource.g.dart';
 
 @UseDao(tables: [Periods])
-class PeriodsLocalDatasource extends DatabaseAccessor<AppDatabase>
+class PeriodsLocalDatasource extends DatabaseAccessor<SRDatabase>
     with _$PeriodsLocalDatasourceMixin {
-  AppDatabase db;
+  SRDatabase db;
 
   PeriodsLocalDatasource(this.db) : super(db);
 

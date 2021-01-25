@@ -8900,8 +8900,8 @@ class $DownloadedDocumentsTable extends DownloadedDocuments
   }
 }
 
-abstract class _$AppDatabase extends GeneratedDatabase {
-  _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+abstract class _$SRDatabase extends GeneratedDatabase {
+  _$SRDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $LessonsTable _lessons;
   $LessonsTable get lessons => _lessons ??= $LessonsTable(this);
   $SubjectsTable _subjects;
@@ -8952,42 +8952,42 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $DownloadedDocumentsTable get downloadedDocuments =>
       _downloadedDocuments ??= $DownloadedDocumentsTable(this);
   AbsenceDao _absenceDao;
-  AbsenceDao get absenceDao => _absenceDao ??= AbsenceDao(this as AppDatabase);
+  AbsenceDao get absenceDao => _absenceDao ??= AbsenceDao(this as SRDatabase);
   NoteDao _noteDao;
-  NoteDao get noteDao => _noteDao ??= NoteDao(this as AppDatabase);
+  NoteDao get noteDao => _noteDao ??= NoteDao(this as SRDatabase);
   DidacticsDao _didacticsDao;
   DidacticsDao get didacticsDao =>
-      _didacticsDao ??= DidacticsDao(this as AppDatabase);
+      _didacticsDao ??= DidacticsDao(this as SRDatabase);
   DocumentsDao _documentsDao;
   DocumentsDao get documentsDao =>
-      _documentsDao ??= DocumentsDao(this as AppDatabase);
+      _documentsDao ??= DocumentsDao(this as SRDatabase);
   GradesLocalDatasource _gradesLocalDatasource;
   GradesLocalDatasource get gradesLocalDatasource =>
-      _gradesLocalDatasource ??= GradesLocalDatasource(this as AppDatabase);
+      _gradesLocalDatasource ??= GradesLocalDatasource(this as SRDatabase);
   AgendaLocalDatasource _agendaLocalDatasource;
   AgendaLocalDatasource get agendaLocalDatasource =>
-      _agendaLocalDatasource ??= AgendaLocalDatasource(this as AppDatabase);
+      _agendaLocalDatasource ??= AgendaLocalDatasource(this as SRDatabase);
   LessonsLocalDatasource _lessonsLocalDatasource;
   LessonsLocalDatasource get lessonsLocalDatasource =>
-      _lessonsLocalDatasource ??= LessonsLocalDatasource(this as AppDatabase);
+      _lessonsLocalDatasource ??= LessonsLocalDatasource(this as SRDatabase);
   SubjectsLocalDatasource _subjectsLocalDatasource;
   SubjectsLocalDatasource get subjectsLocalDatasource =>
-      _subjectsLocalDatasource ??= SubjectsLocalDatasource(this as AppDatabase);
+      _subjectsLocalDatasource ??= SubjectsLocalDatasource(this as SRDatabase);
   ProfessorLocalDatasource _professorLocalDatasource;
   ProfessorLocalDatasource get professorLocalDatasource =>
       _professorLocalDatasource ??=
-          ProfessorLocalDatasource(this as AppDatabase);
+          ProfessorLocalDatasource(this as SRDatabase);
   PeriodsLocalDatasource _periodsLocalDatasource;
   PeriodsLocalDatasource get periodsLocalDatasource =>
-      _periodsLocalDatasource ??= PeriodsLocalDatasource(this as AppDatabase);
+      _periodsLocalDatasource ??= PeriodsLocalDatasource(this as SRDatabase);
   NoticeboardLocalDatasource _noticeboardLocalDatasource;
   NoticeboardLocalDatasource get noticeboardLocalDatasource =>
       _noticeboardLocalDatasource ??=
-          NoticeboardLocalDatasource(this as AppDatabase);
+          NoticeboardLocalDatasource(this as SRDatabase);
   TimetableLocalDatasource _timetableLocalDatasource;
   TimetableLocalDatasource get timetableLocalDatasource =>
       _timetableLocalDatasource ??=
-          TimetableLocalDatasource(this as AppDatabase);
+          TimetableLocalDatasource(this as SRDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

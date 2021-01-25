@@ -6,7 +6,7 @@ part of 'agenda_local_datasource.dart';
 // DaoGenerator
 // **************************************************************************
 
-mixin _$AgendaLocalDatasourceMixin on DatabaseAccessor<AppDatabase> {
+mixin _$AgendaLocalDatasourceMixin on DatabaseAccessor<SRDatabase> {
   $AgendaEventsTableTable get agendaEventsTable =>
       attachedDatabase.agendaEventsTable;
 }

@@ -35,7 +35,7 @@ class CoreContainer {
     _sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(_sl()));
     _sl.registerLazySingleton(() => FlutterSecureStorage());
 
-    _sl.registerLazySingleton<AppDatabase>(() => AppDatabase());
+    _sl.registerLazySingleton<SRDatabase>(() => SRDatabase());
 
     await AuthenticationContainer.init();
 

@@ -6,7 +6,7 @@ part of 'didactics_dao.dart';
 // DaoGenerator
 // **************************************************************************
 
-mixin _$DidacticsDaoMixin on DatabaseAccessor<AppDatabase> {
+mixin _$DidacticsDaoMixin on DatabaseAccessor<SRDatabase> {
   $DidacticsTeachersTable get didacticsTeachers =>
       attachedDatabase.didacticsTeachers;
   $DidacticsFoldersTable get didacticsFolders =>

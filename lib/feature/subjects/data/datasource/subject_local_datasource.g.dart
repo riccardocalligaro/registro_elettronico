@@ -6,6 +6,6 @@ part of 'subject_local_datasource.dart';
 // DaoGenerator
 // **************************************************************************
 
-mixin _$SubjectsLocalDatasourceMixin on DatabaseAccessor<AppDatabase> {
+mixin _$SubjectsLocalDatasourceMixin on DatabaseAccessor<SRDatabase> {
   $SubjectsTable get subjects => attachedDatabase.subjects;
 }

@@ -93,8 +93,8 @@ LazyDatabase _openConnection() {
   NoticeboardLocalDatasource,
   TimetableLocalDatasource,
 ])
-class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(_openConnection());
+class SRDatabase extends _$SRDatabase {
+  SRDatabase() : super(_openConnection());
 
   @override
   int get schemaVersion => 4;

@@ -6,7 +6,7 @@ part of 'timetable_local_datasource.dart';
 // DaoGenerator
 // **************************************************************************
 
-mixin _$TimetableLocalDatasourceMixin on DatabaseAccessor<AppDatabase> {
+mixin _$TimetableLocalDatasourceMixin on DatabaseAccessor<SRDatabase> {
   $TimetableEntriesTable get timetableEntries =>
       attachedDatabase.timetableEntries;
 }

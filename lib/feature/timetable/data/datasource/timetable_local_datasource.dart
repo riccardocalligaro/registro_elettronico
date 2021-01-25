@@ -5,9 +5,9 @@ import 'package:registro_elettronico/feature/timetable/data/model/timetable_entr
 part 'timetable_local_datasource.g.dart';
 
 @UseDao(tables: [TimetableEntries])
-class TimetableLocalDatasource extends DatabaseAccessor<AppDatabase>
+class TimetableLocalDatasource extends DatabaseAccessor<SRDatabase>
     with _$TimetableLocalDatasourceMixin {
-  AppDatabase db;
+  SRDatabase db;
 
   TimetableLocalDatasource(this.db) : super(db);
 

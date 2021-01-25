@@ -58,7 +58,7 @@ class _DebugPageState extends State<DebugPage> {
           DebugButton(
             title: 'Open DB',
             onTap: () {
-              final AppDatabase db = sl();
+              final SRDatabase db = sl();
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => MoorDbViewer(db)));
             },
@@ -78,7 +78,7 @@ class _DebugPageState extends State<DebugPage> {
             dangerous: true,
             context: context,
             onTap: () async {
-              final AppDatabase db = sl();
+              final SRDatabase db = sl();
               await db.resetDb();
             },
           ),

@@ -9,9 +9,9 @@ part 'document_dao.g.dart';
   SchoolReports,
   DownloadedDocuments,
 ])
-class DocumentsDao extends DatabaseAccessor<AppDatabase>
+class DocumentsDao extends DatabaseAccessor<SRDatabase>
     with _$DocumentsDaoMixin {
-  AppDatabase db;
+  SRDatabase db;
 
   DocumentsDao(this.db) : super(db);
 

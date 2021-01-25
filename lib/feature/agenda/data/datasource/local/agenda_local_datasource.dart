@@ -5,9 +5,9 @@ import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_loca
 part 'agenda_local_datasource.g.dart';
 
 @UseDao(tables: [AgendaEventsTable])
-class AgendaLocalDatasource extends DatabaseAccessor<AppDatabase>
+class AgendaLocalDatasource extends DatabaseAccessor<SRDatabase>
     with _$AgendaLocalDatasourceMixin {
-  AppDatabase db;
+  SRDatabase db;
 
   AgendaLocalDatasource(this.db) : super(db);
 

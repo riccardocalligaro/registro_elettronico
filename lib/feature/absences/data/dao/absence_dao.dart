@@ -5,8 +5,8 @@ import 'package:registro_elettronico/feature/absences/data/model/absence_local_m
 part 'absence_dao.g.dart';
 
 @UseDao(tables: [Absences])
-class AbsenceDao extends DatabaseAccessor<AppDatabase> with _$AbsenceDaoMixin {
-  AppDatabase db;
+class AbsenceDao extends DatabaseAccessor<SRDatabase> with _$AbsenceDaoMixin {
+  SRDatabase db;
   AbsenceDao(this.db) : super(db);
 
   Stream<List<Absence>> watchAllAbsences() => select(absences).watch();

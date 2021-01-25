@@ -61,9 +61,9 @@ class ResetDialog extends StatelessWidget {
             Navigator.pop(context);
             AppNavigator.instance.navToHome(context);
 
-            final AppDatabase appDatabase = sl();
+            final SRDatabase srDatabase = sl();
             // ignore: unawaited_futures
-            appDatabase.resetDbWithoutProfile();
+            srDatabase.resetDbWithoutProfile();
 
             // ignore: unawaited_futures
             // UpdateUtils.updateAllData(fromLogin: true);

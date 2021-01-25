@@ -7,9 +7,9 @@ part 'subject_local_datasource.g.dart';
 @UseDao(tables: [
   Subjects,
 ])
-class SubjectsLocalDatasource extends DatabaseAccessor<AppDatabase>
+class SubjectsLocalDatasource extends DatabaseAccessor<SRDatabase>
     with _$SubjectsLocalDatasourceMixin {
-  AppDatabase db;
+  SRDatabase db;
 
   SubjectsLocalDatasource(this.db) : super(db);
 

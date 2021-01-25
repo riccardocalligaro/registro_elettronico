@@ -13,9 +13,9 @@ part 'didactics_dao.g.dart';
   DidacticsContents,
   DidacticsDownloadedFiles
 ])
-class DidacticsDao extends DatabaseAccessor<AppDatabase>
+class DidacticsDao extends DatabaseAccessor<SRDatabase>
     with _$DidacticsDaoMixin {
-  AppDatabase db;
+  SRDatabase db;
 
   DidacticsDao(this.db) : super(db);
 

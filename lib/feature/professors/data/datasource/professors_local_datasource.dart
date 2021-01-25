@@ -5,9 +5,9 @@ import 'package:registro_elettronico/feature/professors/data/model/professor_loc
 part 'professors_local_datasource.g.dart';
 
 @UseDao(tables: [Professors])
-class ProfessorLocalDatasource extends DatabaseAccessor<AppDatabase>
+class ProfessorLocalDatasource extends DatabaseAccessor<SRDatabase>
     with _$ProfessorLocalDatasourceMixin {
-  AppDatabase db;
+  SRDatabase db;
 
   ProfessorLocalDatasource(this.db) : super(db);
 

@@ -9,9 +9,9 @@ part 'noticeboard_local_datasource.g.dart';
   Notices,
   Attachments,
 ])
-class NoticeboardLocalDatasource extends DatabaseAccessor<AppDatabase>
+class NoticeboardLocalDatasource extends DatabaseAccessor<SRDatabase>
     with _$NoticeboardLocalDatasourceMixin {
-  AppDatabase db;
+  SRDatabase db;
 
   NoticeboardLocalDatasource(this.db) : super(db);
 

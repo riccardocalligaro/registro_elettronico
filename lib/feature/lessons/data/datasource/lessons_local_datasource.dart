@@ -10,9 +10,9 @@ part 'lessons_local_datasource.g.dart';
   Lessons,
   Professors,
 ])
-class LessonsLocalDatasource extends DatabaseAccessor<AppDatabase>
+class LessonsLocalDatasource extends DatabaseAccessor<SRDatabase>
     with _$LessonsLocalDatasourceMixin {
-  AppDatabase db;
+  SRDatabase db;
 
   LessonsLocalDatasource(this.db) : super(db);
 
