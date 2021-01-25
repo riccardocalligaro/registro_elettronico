@@ -1,191 +1,313 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/data/remote/api/sr_dio_client.dart';
-import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
-import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
-import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
-import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
-import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
-import 'package:registro_elettronico/feature/didactics/data/model/didactics_mapper.dart';
-import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
+import 'package:registro_elettronico/feature/didactics/data/datasource/didactics_local_datasource.dart';
+import 'package:registro_elettronico/feature/didactics/data/datasource/didactics_remote_datasource.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/remote/attachment/url_content_remote_model.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/remote/attachment/text_content_remote_model.dart';
+import 'package:registro_elettronico/feature/didactics/domain/model/didactics_file.dart';
+import 'package:registro_elettronico/feature/didactics/domain/model/content_domain_model.dart';
+import 'package:registro_elettronico/feature/didactics/domain/model/folder_domain_model.dart';
+import 'package:registro_elettronico/feature/didactics/domain/model/teacher_domain_model.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:dartz/dartz.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
-import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/model/attachment/attachment_file.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DidacticsRepositoryImpl implements DidacticsRepository {
-  final SpaggiariClient spaggiariClient;
-  final DidacticsDao didacticsDao;
-  final ProfilesLocalDatasource profilesLocalDatasource;
-  final NetworkInfo networkInfo;
-  final SharedPreferences sharedPreferences;
-  final AuthenticationRepository authenticationRepository;
+  static const String lastUpdateKey = 'didacticsLastUpdate';
 
-  DidacticsRepositoryImpl(
-    this.spaggiariClient,
-    this.didacticsDao,
-    this.profilesLocalDatasource,
-    this.networkInfo,
-    this.sharedPreferences,
-    this.authenticationRepository,
-  );
+  final DidacticsLocalDatasource didacticsLocalDatasource;
+  final DidacticsRemoteDatasource didacticsRemoteDatasource;
+  final SharedPreferences sharedPreferences;
+
+  DidacticsRepositoryImpl({
+    @required this.didacticsLocalDatasource,
+    @required this.didacticsRemoteDatasource,
+    @required this.sharedPreferences,
+  });
 
   @override
-  Future<List<int>> getDidacticsFile() {
-    return null;
+  Future<Either<Failure, Success>> updateMaterials({
+    bool ifNeeded,
+  }) async {
+    try {
+      if (!ifNeeded |
+          (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
+        final remoteTeachers =
+            await didacticsRemoteDatasource.getTeachersMaterials();
+
+        List<int> remoteContentIds = [];
+
+        // iteriamo ogni professore
+        for (final teacher in remoteTeachers) {
+          for (final folder in teacher.folders) {
+            remoteContentIds.addAll(folder.contents.map((e) => e.contentId));
+          }
+        }
+
+        // get local content ids
+        final localDownlaodedContents =
+            await didacticsLocalDatasource.getAllDownloadedFiles();
+
+        List<DidacticsDownloadedFileLocalModel> filesToDelete = [];
+
+        for (final localContent in localDownlaodedContents) {
+          if (!remoteContentIds.contains(localContent.contentId)) {
+            filesToDelete.add(localContent);
+          }
+        }
+
+        // insert the new files
+        List<TeacherLocalModel> localTeachers = [];
+        List<FolderLocalModel> localFolders = [];
+        List<ContentLocalModel> localContents = [];
+
+        for (final teacher in remoteTeachers) {
+          // aggiungiamo alla lista
+          localTeachers.add(teacher.toLocalModel());
+
+          List<FolderLocalModel> tempFolders = [];
+          List<ContentLocalModel> tempContents = [];
+
+          for (final folder in teacher.folders) {
+            tempFolders.add(folder.toLocalModel(teacherId: teacher.teacherId));
+            for (final content in folder.contents) {
+              tempContents.add(content.toLocalModel(folderId: folder.folderId));
+            }
+          }
+
+          // aggiungiamo alla lista
+          localFolders.addAll(tempFolders);
+          localContents.addAll(tempContents);
+        }
+
+        // Cancelliamo quelli locali
+        await didacticsLocalDatasource.deleteTeachers();
+        await didacticsLocalDatasource.deleteFolders();
+        await didacticsLocalDatasource.deleteContents();
+
+        await didacticsLocalDatasource.insertUpdateData(
+          teachersList: localTeachers,
+          foldersList: localFolders,
+          contentsList: localContents,
+        );
+
+        // cancelliamo i file non presenti remotamente
+        await didacticsLocalDatasource.deleteDownloadedFiles(filesToDelete);
+
+        await sharedPreferences.setInt(
+            lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
+
+        return Right(SuccessWithUpdate());
+      }
+      return Right(SuccessWithoutUpdate());
+    } catch (e, s) {
+      return Left(handleError(e, s));
+    }
   }
 
   @override
-  Future updateDidactics() async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
+  Stream<Resource<List<DidacticsTeacherDomainModel>>> watchTeachersMaterials() {
+    return Rx.combineLatest4(
+      didacticsLocalDatasource.watchAllTeachers(),
+      didacticsLocalDatasource.watchAllFolders(),
+      didacticsLocalDatasource.watchAllContents(),
+      didacticsLocalDatasource.watchAllDownloadedFiles(),
+      (
+        List<TeacherLocalModel> localTeachers,
+        List<FolderLocalModel> localFolders,
+        List<ContentLocalModel> localContents,
+        List<DidacticsDownloadedFileLocalModel> localDownloadedFiles,
+      ) {
+        final foldersMap = groupBy<FolderLocalModel, String>(
+          localFolders,
+          (e) => e.teacherId,
+        );
 
-      Logger.info('Updating didactics');
+        final contentsMap = groupBy<ContentLocalModel, int>(
+          localContents,
+          (e) => e.folderId,
+        );
 
-      final didactics = await spaggiariClient.getDidactics(studentId);
+        final filesMap = groupBy<DidacticsDownloadedFileLocalModel, int>(
+          localDownloadedFiles,
+          (e) => e.contentId,
+        );
 
-      await deleteAllDidactics();
+        final convertedTeachers = localTeachers.map((teacher) {
+          final teacherMap = foldersMap[teacher.id];
 
-      List<DidacticsTeacher> teachers = [];
-      didactics.teachers.forEach((teacher) {
-        List<DidacticsFolder> folders = [];
-        final teacherDb =
-            DidacticsMapper.convertTeacherEntityToInsertable(teacher);
-        teacher.folders.forEach((folder) {
-          folders.add(
-            DidacticsMapper.convertFolderEntityToInsertable(
-                folder, teacherDb.id),
+          if (teacherMap == null) {
+            return null;
+          }
+
+          return DidacticsTeacherDomainModel.fromLocalModel(
+            localModel: teacher,
+            folders: foldersMap[teacher.id].map((f) {
+              final contentsFroMap = contentsMap[f.id];
+
+              if (contentsFroMap == null) {
+                return FolderDomainModel.fromLocalModel(
+                  l: f,
+                  contents: null,
+                );
+              }
+
+              return FolderDomainModel.fromLocalModel(
+                l: f,
+                contents: contentsFroMap.map((c) {
+                  final filesFromMap = filesMap[c.id];
+
+                  if (filesFromMap == null) {
+                    return ContentDomainModel.fromLocalModel(
+                      l: c,
+                      files: null,
+                    );
+                  }
+                  return ContentDomainModel.fromLocalModel(
+                    l: c,
+                    files: filesFromMap
+                        .map((file) => DidacticsFile.fromLocalModel(file))
+                        .toList(),
+                  );
+                }).toList(),
+              );
+            }).toList(),
           );
-          List<DidacticsContent> contents = [];
-          folder.contents.forEach((content) {
-            contents.add(DidacticsMapper.convertContentEntityToInsertable(
-                content, folder.folderId));
-          });
-          didacticsDao.insertContents(contents);
+        }).toList();
+
+        return Resource.success(data: convertedTeachers);
+      },
+    ).handleError((e, s) {
+      Logger.e(exception: e, stacktrace: s);
+    }).onErrorReturnWith(
+      (e) {
+        return Resource.failed(error: handleStreamError(e));
+      },
+    );
+  }
+
+  @override
+  Stream<Resource<DidacticsFile>> downloadFile({
+    ContentDomainModel contentDomainModel,
+  }) async* {
+    StreamController<Resource<DidacticsFile>> resourceStreamController =
+        StreamController();
+
+    try {
+      resourceStreamController.add(Resource.loading(progress: 0));
+
+      unawaited(_localPath.then((path) {
+        didacticsRemoteDatasource
+            .downloadFile(
+          content: contentDomainModel,
+          onProgress: (received, total) {
+            resourceStreamController.add(
+              Resource.loading(progress: received / total),
+            );
+          },
+          path: path,
+        )
+            .then((response) async {
+          final fileName = _fileName(
+            path: path,
+            headers: response.headers,
+          );
+
+          // insert into the database
+          await didacticsLocalDatasource.insertDownloadedFile(
+            DidacticsDownloadedFileLocalModel(
+              name: contentDomainModel.name,
+              path: fileName,
+              contentId: contentDomainModel.id,
+            ),
+          );
+
+          // add to the resource contrailer
+          resourceStreamController.add(
+            Resource.success(
+              data: DidacticsFile(
+                contentId: contentDomainModel.id,
+                name: contentDomainModel.name,
+                file: File(fileName),
+              ),
+            ),
+          );
+
+          await resourceStreamController.close();
         });
+      }).catchError(
+        (e) => resourceStreamController.add(
+          Resource.failed(
+            error: handleStreamError(e),
+          ),
+        ),
+      ));
 
-        didacticsDao.insertFolders(folders);
-        teachers.add(teacherDb);
-      });
+      yield* resourceStreamController.stream;
+    } catch (e, s) {
+      yield Resource.failed(error: handleStreamError(e, s));
+      await resourceStreamController.close();
+    }
+  }
 
-      Logger.info(
-        'Got ${didactics.teachers} teachers events from server, procceding to insert in database',
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
+  String _fileName({
+    @required String path,
+    @required Headers headers,
+  }) {
+    String filename = headers.value('content-disposition') ?? "";
+    filename = filename.replaceAll('attachment; filename=', '');
+    filename = filename.replaceAll(RegExp('\"'), '');
+    filename = filename.trim();
+    return '$path/$filename';
+  }
+
+  @override
+  Future<Either<Failure, TextContentRemoteModel>> downloadText({
+    ContentDomainModel contentDomainModel,
+  }) async {
+    try {
+      final text = await didacticsRemoteDatasource.getTextContent(
+        fileId: contentDomainModel.id,
       );
 
-      await didacticsDao.insertTeachers(teachers);
-      await sharedPreferences.setInt(PrefsConstants.lastUpdateSchoolMaterial,
-          DateTime.now().millisecondsSinceEpoch);
-    } else {
-      throw NotConntectedException();
+      return Right(text);
+    } catch (e, s) {
+      return Left(handleError(e, s));
     }
   }
 
   @override
-  Future<List<DidacticsTeacher>> getTeachersGrouped() {
-    return didacticsDao.getTeachersGrouped();
-  }
+  Future<Either<Failure, URLContentRemoteModel>> downloadURL({
+    ContentDomainModel contentDomainModel,
+  }) async {
+    try {
+      final url = await didacticsRemoteDatasource.getURLContent(
+        fileId: contentDomainModel.id,
+      );
 
-  @override
-  Future<List<DidacticsFolder>> getFolders() {
-    return didacticsDao.getAllFolders();
-  }
-
-  @override
-  Future<List<DidacticsContent>> getContents() {
-    return didacticsDao.getAllContents();
-  }
-
-  @override
-  Future<Response> getFileAttachment(int fileID) async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
-      Logger.info('Getting attachment for $fileID!');
-      final res = await _getAttachmentFile(studentId, fileID);
-      Logger.info('Got attachment for $fileID!');
-      return res;
-    } else {
-      throw NotConntectedException();
+      return Right(url);
+    } catch (e, s) {
+      return Left(handleError(e, s));
     }
-  }
-
-  @override
-  Future<DownloadAttachmentTextResponse> getTextAtachment(int fileID) async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
-      Logger.info('Getting text attachment for $fileID!');
-      final res = spaggiariClient.getAttachmentText(studentId, fileID);
-      Logger.info('Got text attachment for $fileID!');
-      return res;
-    } else {
-      throw NotConntectedException();
-    }
-  }
-
-  @override
-  Future<DownloadAttachmentURLResponse> getURLAtachment(int fileID) async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
-      Logger.info('Getting URL attachment for $fileID!');
-      final res = spaggiariClient.getAttachmentUrl(studentId, fileID);
-      Logger.info('Got URL attachment for $fileID!');
-      return res;
-    } else {
-      throw NotConntectedException();
-    }
-  }
-
-  Future<Response> _getAttachmentFile(String studentId, int fileId) async {
-    Logger.info('Getting attachment file for $fileId!');
-
-    String baseUrl = 'https://web.spaggiari.eu/rest/v1';
-
-    final _dio = SRDioClient(
-      flutterSecureStorage: sl(),
-      sharedPreferences: sl(),
-      authenticationRepository: sl(),
-    );
-
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    ArgumentError.checkNotNull(fileId, 'fileId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    return _dio.createDio().request(
-          '/students/$studentId/didactics/item/$fileId',
-          queryParameters: queryParameters,
-          options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl,
-            responseType: ResponseType.bytes,
-          ),
-          data: _data,
-        );
-  }
-
-  @override
-  Future<DidacticsDownloadedFile> getDownloadedFileFromContentId(
-      int contentId) {
-    return didacticsDao.getDownloadedFile(contentId);
-  }
-
-  @override
-  Future insertDownloadedFile(DidacticsDownloadedFile downloadedFile) {
-    return didacticsDao.insertDownloadedFile(downloadedFile);
-  }
-
-  @override
-  Future deleteDownloadedFile(DidacticsDownloadedFile downloadedFile) {
-    return didacticsDao.deleteDownloadedFile(downloadedFile);
-  }
-
-  @override
-  Future deleteAllDidactics() async {
-    await didacticsDao.deleteContents();
-    await didacticsDao.deleteFolders();
-    await didacticsDao.deleteTeachers();
   }
 }

@@ -12,7 +12,7 @@ import 'package:registro_elettronico/feature/authentication/domain/repository/au
 
 class NotesRepositoryImpl implements NotesRepository {
   final NoteDao noteDao;
-  final SpaggiariClient spaggiariClient;
+  final LegacySpaggiariClient spaggiariClient;
   final ProfilesLocalDatasource profilesLocalDatasource;
   final NetworkInfo networkInfo;
   final AuthenticationRepository authenticationRepository;

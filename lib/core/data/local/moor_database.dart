@@ -12,9 +12,9 @@ import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_local_model.dart';
 import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/profile_domain_model.dart';
-import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
+import 'package:registro_elettronico/feature/didactics/data/datasource/didactics_local_datasource.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/content_local_model.dart';
-import 'package:registro_elettronico/feature/didactics/data/model/local/downloaded_file_local_model.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/local/downloaded_files.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/folder_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/teacher_local_model.dart';
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
@@ -82,7 +82,6 @@ LazyDatabase _openConnection() {
 ], daos: [
   AbsenceDao,
   NoteDao,
-  DidacticsDao,
   DocumentsDao,
   GradesLocalDatasource,
   AgendaLocalDatasource,
@@ -92,6 +91,7 @@ LazyDatabase _openConnection() {
   PeriodsLocalDatasource,
   NoticeboardLocalDatasource,
   TimetableLocalDatasource,
+  DidacticsLocalDatasource,
 ])
 class SRDatabase extends _$SRDatabase {
   SRDatabase() : super(_openConnection());

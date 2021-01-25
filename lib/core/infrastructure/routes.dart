@@ -38,7 +38,7 @@ class Routes {
     AGENDA: (ctx) => AgendaPage(),
     ABSENCES: (ctx) => AbsencesPage(),
     NOTES: (ctx) => NotesPage(),
-    SCHOOL_MATERIAL: (ctx) => SchoolMaterialPage(),
+    SCHOOL_MATERIAL: (ctx) => DidacticsPage(),
     NOTICEBOARD: (ctx) => NoticeboardPage(),
     TIMETABLE: (ctx) => TimetablePage(),
     SCRUTINI: (ctx) => ScrutiniPage(),

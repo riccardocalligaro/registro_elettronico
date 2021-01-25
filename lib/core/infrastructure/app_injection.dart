@@ -1,8 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:registro_elettronico/feature/core_container.dart';
-import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
-import 'package:registro_elettronico/feature/didactics/data/repository/didactics_repository_impl.dart';
-import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/repository/notes_repository_impl.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
@@ -30,24 +27,12 @@ class AppInjector {
   // All the DAOS (Data Access Objects)
   static void injectDaos() {
     sl.registerLazySingleton(() => NoteDao(sl()));
-    sl.registerLazySingleton(() => DidacticsDao(sl()));
     sl.registerLazySingleton(() => DocumentsDao(sl()));
   }
 
   static void injectRepository() {
     sl.registerLazySingleton<NotesRepository>(
         () => NotesRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
-
-    sl.registerLazySingleton<DidacticsRepository>(
-      () => DidacticsRepositoryImpl(
-        sl(),
-        sl(),
-        sl(),
-        sl(),
-        sl(),
-        sl(),
-      ),
-    );
 
     sl.registerLazySingleton<DocumentsRepository>(
       () => DocumentsRepositoryImpl(

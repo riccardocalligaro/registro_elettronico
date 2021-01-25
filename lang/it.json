@@ -330,5 +330,7 @@
   "already_logged_in": "Account già loggato",
   "no_notices": "Nessuna circolare",
   "more_page": "Altro",
-  "logout_message_title": "Vuoi uscire da questo account?"
+  "logout_message_title": "Vuoi uscire da questo account?",
+  "no_materials": "Nessun materiale",
+  "function_not_activated": "La tua scuola non ha attivato questa funzionalità"
 }

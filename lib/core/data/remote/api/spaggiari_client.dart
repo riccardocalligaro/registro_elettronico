@@ -2,7 +2,6 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' hide Headers;
-import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
 import 'package:registro_elettronico/feature/notes/data/model/remote/note_remote_model.dart';
 import 'package:registro_elettronico/feature/notes/data/model/remote/notes_read_remote_model.dart';
 import 'package:registro_elettronico/feature/scrutini/data/model/document_remote_model.dart';
@@ -13,8 +12,9 @@ import 'package:retrofit/retrofit.dart';
 
 // This is written 'strangely' beacuse I used Retrofit to generate the calls but then
 // for feature reasons I had to manually write the http calls
-abstract class SpaggiariClient {
-  factory SpaggiariClient(Dio dio) = _SpaggiariClient;
+
+abstract class LegacySpaggiariClient {
+  factory LegacySpaggiariClient(Dio dio) = _SpaggiariClient;
 
   @GET("/students/{studentId}/notes/all/")
   Future<NotesResponse> getNotes(@Path() String studentId);
@@ -26,17 +26,6 @@ abstract class SpaggiariClient {
     @Path("layout_note") int note,
     @Body() String body,
   );
-
-  @GET("/students/{studentId}/didactics")
-  Future<DidacticsResponse> getDidactics(@Path() String studentId);
-
-  @GET("/students/{studentId}/didactics/item/{fileId}")
-  Future<DownloadAttachmentURLResponse> getAttachmentUrl(
-      @Path() String studentId, @Path("fileId") int fileId);
-
-  @GET("/students/{studentId}/didactics/item/{fileId}")
-  Future<DownloadAttachmentTextResponse> getAttachmentText(
-      @Path() String studentId, @Path("fileId") int fileId);
 
   @POST('/students/{studentId}/documents')
   Future<DocumentsResponse> getDocuments(@Path() String studentId);
@@ -54,7 +43,7 @@ abstract class SpaggiariClient {
   );
 }
 
-class _SpaggiariClient implements SpaggiariClient {
+class _SpaggiariClient implements LegacySpaggiariClient {
   _SpaggiariClient(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
     this.baseUrl ??= 'https://web.spaggiari.eu/rest/v1';
@@ -102,67 +91,6 @@ class _SpaggiariClient implements SpaggiariClient {
             baseUrl: baseUrl),
         data: _data);
     final value = NotesReadResponse.fromJson(_result.data);
-    return Future.value(value);
-  }
-
-  @override
-  getDidactics(studentId) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/didactics',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = DidacticsResponse.fromJson(_result.data);
-    return Future.value(value);
-  }
-
-  @override
-  getAttachmentUrl(studentId, fileId) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    ArgumentError.checkNotNull(fileId, 'fileId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/didactics/item/$fileId',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-
-    print(_result);
-    final value = DownloadAttachmentURLResponse.fromJson(_result.data);
-    return Future.value(value);
-  }
-
-  @override
-  getAttachmentText(studentId, fileId) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    ArgumentError.checkNotNull(fileId, 'fileId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/didactics/item/$fileId',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = DownloadAttachmentTextResponse.fromJson(_result.data);
     return Future.value(value);
   }
 

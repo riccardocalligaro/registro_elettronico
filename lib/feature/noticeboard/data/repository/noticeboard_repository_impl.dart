@@ -12,6 +12,7 @@ import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/datasource/noticeboard_local_datasource.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/datasource/noticeboard_remote_datasource.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/attachment/attachment_file.dart';
@@ -40,6 +41,11 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
     try {
       if (!ifNeeded |
           (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
+        final localNotices = await noticeboardLocalDatasource.getAllNotices();
+
+        final localAttachments =
+            await noticeboardLocalDatasource.getAllAttachments();
+
         final remoteNotices =
             await noticeboardRemoteDatasource.getNoticeboard();
 
@@ -52,8 +58,26 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
           mappedRemoteAttachments.addAll(localAttachments);
         }
 
-        // delete the noticeboard that were removed from the remote source
-        await noticeboardLocalDatasource.deleteAllNotices();
+        final remoteIds = remoteNotices.map((e) => e.pubId).toList();
+        final remoteAttachmentsIds = mappedRemoteAttachments
+            .map((e) => Tuple2(e.pubId, e.fileName))
+            .toList();
+
+        List<NoticeLocalModel> noticesToDelete = [];
+        List<NoticeAttachmentLocalModel> attachmentsToDelete = [];
+
+        for (final localNotice in localNotices) {
+          if (!remoteIds.contains(localNotice.pubId)) {
+            noticesToDelete.add(localNotice);
+          }
+        }
+
+        for (final localAttachment in localAttachments) {
+          if (!remoteAttachmentsIds.contains(
+              Tuple2(localAttachment.pubId, localAttachment.fileName))) {
+            attachmentsToDelete.add(localAttachment);
+          }
+        }
 
         await noticeboardLocalDatasource.insertNotices(
           remoteNotices
@@ -63,10 +87,12 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
               .toList(),
         );
 
-        await noticeboardLocalDatasource.deleteAllAttachments();
-
         await noticeboardLocalDatasource
             .insertAttachments(mappedRemoteAttachments);
+
+        // delete the noticeboard that were removed from the remote source
+        await noticeboardLocalDatasource.deleteNotices(noticesToDelete);
+        await noticeboardLocalDatasource.deleteAttachments(attachmentsToDelete);
 
         await sharedPreferences.setInt(
             lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
@@ -111,10 +137,12 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
 
         return Resource.success(data: domainNotices);
       },
-    ).onErrorReturnWith(
-      (error) => Resource.failed(
-        error: handleStreamError(error),
-      ),
+    ).handleError((e, s) {
+      Logger.e(exception: e, stacktrace: s);
+    }).onErrorReturnWith(
+      (e) {
+        return Resource.failed(error: handleStreamError(e));
+      },
     );
   }
 

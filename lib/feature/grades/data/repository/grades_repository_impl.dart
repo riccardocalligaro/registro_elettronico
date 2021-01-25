@@ -79,8 +79,16 @@ class GradesRepositoryImpl extends GradesRepository {
         final gradesMap = Map<int, GradeLocalModel>.fromIterable(localGrades,
             key: (v) => v.evtId, value: (v) => v);
 
-        // delete the grades that were removed from the remote source
-        await gradesLocalDatasource.deleteAllGrades();
+        // get the ids
+        final remoteIds = remoteGrades.map((e) => e.evtId).toList();
+
+        List<GradeLocalModel> gradesToDelete = [];
+
+        for (final localGrade in localGrades) {
+          if (!remoteIds.contains(localGrade.evtId)) {
+            gradesToDelete.add(localGrade);
+          }
+        }
 
         await gradesLocalDatasource.insertGrades(
           remoteGrades
@@ -98,6 +106,9 @@ class GradesRepositoryImpl extends GradesRepository {
               )
               .toList(),
         );
+
+        // delete the grades that were removed from the remote source
+        await gradesLocalDatasource.deleteGrades(gradesToDelete);
 
         await sharedPreferences.setInt(
             lastUpdateKey, DateTime.now().millisecondsSinceEpoch);

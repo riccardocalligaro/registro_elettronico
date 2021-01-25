@@ -75,6 +75,45 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildLoginForm() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minWidth: constraints.maxWidth,
+              minHeight: constraints.maxHeight,
+            ),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    const SizedBox(
+                      height: 90,
+                    ),
+                    _buildHeaderText(),
+                    _buildLoginInput(),
+                    Spacer(),
+                    FlatButton(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onPressed: () {},
+                      child: Text(
+                        'Aiuto',
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
     return Stack(
       children: <Widget>[
         SingleChildScrollView(
@@ -161,20 +200,20 @@ class _LoginPageState extends State<LoginPage> {
         const SizedBox(
           height: 20,
         ),
+        if (kDebugMode)
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => DebugPage(),
+                ),
+              );
+            },
+            child: Text('Debug'),
+          ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            if (kDebugMode)
-              FlatButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => DebugPage(),
-                    ),
-                  );
-                },
-                child: Text('Debug'),
-              ),
             Text(
               '${AppLocalizations.of(context).translate('secure')}. ',
               style: TextStyle(color: Colors.grey),
@@ -194,9 +233,9 @@ class _LoginPageState extends State<LoginPage> {
                   color: Theme.of(context).accentColor,
                 ),
               ),
-            )
+            ),
           ],
-        )
+        ),
       ],
     );
   }

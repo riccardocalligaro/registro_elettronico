@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'didactics_dao.dart';
+part of 'didactics_local_datasource.dart';
 
 // **************************************************************************
 // DaoGenerator
 // **************************************************************************
 
-mixin _$DidacticsDaoMixin on DatabaseAccessor<SRDatabase> {
+mixin _$DidacticsLocalDatasourceMixin on DatabaseAccessor<SRDatabase> {
   $DidacticsTeachersTable get didacticsTeachers =>
       attachedDatabase.didacticsTeachers;
   $DidacticsFoldersTable get didacticsFolders =>

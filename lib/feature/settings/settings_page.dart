@@ -1,7 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/about_app_dialog.dart';
+import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
+import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
+import 'package:registro_elettronico/feature/grades/grades_container.dart';
 import 'package:registro_elettronico/feature/settings/widgets/about/about_developers_page.dart';
 import 'package:registro_elettronico/feature/settings/widgets/account/account_settings.dart';
 import 'package:registro_elettronico/feature/settings/widgets/customization/customization_settings.dart';
@@ -20,9 +24,21 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   SharedPreferences sharedPrefs;
 
+  bool _showDebug = false;
+
   @override
   void initState() {
     super.initState();
+
+    ProfilesLocalDatasource profilesLocalDatasource = sl();
+    final profile = profilesLocalDatasource.getLoggedInUserSync();
+
+    // My personal ident
+    if (profile.ident == 'S6102171X') {
+      setState(() {
+        _showDebug = true;
+      });
+    }
   }
 
   @override
@@ -39,6 +55,16 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              if (kDebugMode)
+                ListTile(
+                  title: Text('Debug'),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => DebugPage(),
+                    ));
+                  },
+                ),
+
               /// General settings
               GeneralSettings(),
 

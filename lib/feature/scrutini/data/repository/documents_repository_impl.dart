@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DocumentsRepositoryImpl implements DocumentsRepository {
   final AuthenticationRepository authenticationRepository;
-  final SpaggiariClient spaggiariClient;
+  final LegacySpaggiariClient spaggiariClient;
   final DocumentsDao documentsDao;
   final NetworkInfo networkInfo;
   final SharedPreferences sharedPreferences;

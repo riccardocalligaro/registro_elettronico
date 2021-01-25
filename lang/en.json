@@ -330,5 +330,7 @@
   "already_logged_in": "Already logged in",
   "no_notices": "No notices",
   "more_page": "More",
-  "logout_message_title": "Do you want to log out?"
+  "logout_message_title": "Do you want to log out?",
+  "no_materials": "No materials",
+  "function_not_activated": "Your school didn't activate this feature"
 }

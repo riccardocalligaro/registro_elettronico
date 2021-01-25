@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
@@ -52,6 +53,10 @@ class SRUpdateManager {
   });
 
   Future<void> checkForUpdates() async {
+    // TODO: remove this
+    if (kDebugMode) {
+      return;
+    }
     // first we get the
 
     final String databaseName =
@@ -65,6 +70,9 @@ class SRUpdateManager {
 
       // update all the endpoints
       await updateAllData(databaseName);
+
+      // We also need to rigenerate the timetable
+      await timetableRepository.regenerateTimetable();
     } else {
       // se mancano dei dati essenziali
       final needToUpdateVitalData = await _needUpdateVitalData(
@@ -112,6 +120,12 @@ class SRUpdateManager {
 
     final updates = [update1, update2, update3];
 
+    _updateMultipleData(context: context, updates: updates);
+  }
+
+  Future<void> updateDidacticsData(BuildContext context) async {
+    final update1 = await didacticsRepository.updateMaterials(ifNeeded: false);
+    final updates = [update1];
     _updateMultipleData(context: context, updates: updates);
   }
 
@@ -217,9 +231,8 @@ class SRUpdateManager {
       absencesRepository.updateAbsences(),
       noticesRepository.updateNotices(ifNeeded: false),
       notesRepository.updateNotes(),
-      didacticsRepository.updateDidactics(),
+      didacticsRepository.updateMaterials(ifNeeded: false),
       documentsRepository.updateDocuments(),
-      timetableRepository.regenerateTimetable()
     ]);
   }
 

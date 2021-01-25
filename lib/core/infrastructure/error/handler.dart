@@ -42,6 +42,8 @@ Failure _handleError(dynamic e) {
       return NetworkFailure(dioError: e);
     } else if (e.response.statusCode >= 500) {
       return ServerFailure(e);
+    } else if (e.response.statusCode == 404) {
+      return FunctionNotActivatedFailure();
     } else {
       return NetworkFailure(dioError: e);
     }

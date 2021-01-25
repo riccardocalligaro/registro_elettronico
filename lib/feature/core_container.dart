@@ -23,6 +23,7 @@ import 'package:registro_elettronico/feature/timetable/timetable_container.dart'
 import 'package:registro_elettronico/utils/update_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'didactics/didactics_container.dart';
 import 'grades/grades_container.dart';
 
 final _sl = GetIt.instance;
@@ -50,7 +51,7 @@ class CoreContainer {
 
     _sl.registerLazySingleton(() => Dio(), instanceName: 'WebSpaggiariDio');
 
-    _sl.registerLazySingleton(() => SpaggiariClient(_sl()));
+    _sl.registerLazySingleton(() => LegacySpaggiariClient(_sl()));
     _sl.registerLazySingleton<WebSpaggiariClient>(() =>
         WebSpaggiariClientImpl(_sl.get<Dio>(instanceName: 'WebSpaggiariDio')));
 
@@ -69,6 +70,7 @@ class CoreContainer {
     await TimetableContainer.init();
     await GradesContainer.init();
     await AbsencesContainer.init();
+    await DidacticsContainer.init();
 
     _sl.registerLazySingleton(() {
       return SRUpdateManager(
@@ -97,6 +99,7 @@ class CoreContainer {
       ...AuthenticationContainer.getBlocProviders(),
       ...GradesContainer.getBlocProviders(),
       ...AgendaContainer.getBlocProviders(),
+      ...DidacticsContainer.getBlocProviders(),
     ];
   }
 }
