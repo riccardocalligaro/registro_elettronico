@@ -30,6 +30,7 @@ class AuthenticationContainer {
         profilesLocalDatasource: _sl(),
         sharedPreferences: _sl(),
         flutterSecureStorage: _sl(),
+        srDatabase: _sl(),
       ),
     );
   }

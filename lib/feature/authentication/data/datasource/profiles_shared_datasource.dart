@@ -53,9 +53,11 @@ class ProfilesLocalDatasource {
         PrefsConstants.profilesList, jsonEncode(profilesList));
   }
 
-  Future deleteProfile(ProfileLocalModel profile) async {
+  Future deleteWithIdent(String ident) async {
     final profilesList = await getAllProfiles();
-    profilesList.remove(profile);
+
+    profilesList.removeWhere((p) => p.ident == ident);
+
     await sharedPreferences.setString(
       PrefsConstants.profilesList,
       jsonEncode(profilesList),

@@ -9,7 +9,9 @@ class AgendaDataDomainModel {
   Map<String, List<AgendaEventDomainModel>> eventsMapString;
   List<FlSpot> eventsSpots;
 
+  List<AgendaEventDomainModel> allEvents;
   List<AgendaEventDomainModel> events;
+  List<LessonDomainModel> lessons;
 
   AgendaDataDomainModel({
     @required this.events,
@@ -17,5 +19,7 @@ class AgendaDataDomainModel {
     @required this.lessonsMap,
     @required this.eventsMapString,
     @required this.eventsSpots,
+    @required this.lessons,
+    @required this.allEvents,
   });
 }

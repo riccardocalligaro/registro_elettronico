@@ -5,6 +5,7 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
+import 'package:registro_elettronico/core/presentation/custom/sr_search_empty_view.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/didactics/domain/model/teacher_domain_model.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/teacher_card.dart';
@@ -33,6 +34,12 @@ class _DidacticsPageState extends State<DidacticsPage> {
         if (query.isNotEmpty) {
           setState(() => _searchQuery = query);
         }
+      },
+      onClosed: () {
+        setState(() => _searchQuery = '');
+      },
+      onCleared: () {
+        setState(() => _searchQuery = '');
       },
       buildDefaultAppBar: buildAppBar,
     );
@@ -110,6 +117,10 @@ class _DidacticsLoaded extends StatelessWidget {
       teachersToShow = teachers.where((l) => _showResult(query, l)).toList();
     } else {
       teachersToShow = teachers;
+    }
+
+    if (teachersToShow.isEmpty) {
+      return SrSearchEmptyView();
     }
 
     return ListView.builder(

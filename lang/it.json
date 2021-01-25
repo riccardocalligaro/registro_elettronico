@@ -350,5 +350,6 @@
   "help_page_title": "Aiuto",
   "change_profile_title": "Cambia profilo",
   "no_profiles": "Nessun profilo",
-  "add_account": "Aggiungi account"
+  "add_account": "Aggiungi account",
+  "search_no_results": "Nessun risultato"
 }

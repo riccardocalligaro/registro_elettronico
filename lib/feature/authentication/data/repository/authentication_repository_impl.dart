@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/remote/api/sr_dio_client.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
@@ -30,12 +31,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final ProfilesLocalDatasource profilesLocalDatasource;
   final FlutterSecureStorage flutterSecureStorage;
   final SharedPreferences sharedPreferences;
+  final SRDatabase srDatabase;
 
   AuthenticationRepositoryImpl({
     @required this.profilesLocalDatasource,
     @required this.flutterSecureStorage,
     @required this.sharedPreferences,
     @required this.authenticationRemoteDatasource,
+    @required this.srDatabase,
   });
 
   @override
@@ -89,6 +92,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
           );
 
           profileSingleton.profile = domainProfile;
+
+          await sharedPreferences.remove(PrefsConstants.profile);
           return domainProfile;
         }
         return null;
@@ -211,7 +216,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       // delete the user from the database
       final profile = await _getProfile();
-      await profilesLocalDatasource.deleteProfile(profile.toLocalModel());
+      await profilesLocalDatasource.deleteWithIdent(profile.ident);
+
+      await srDatabase.resetDb();
 
       final otherAccounts = await profilesLocalDatasource.getInactiveUsers();
 
@@ -243,6 +250,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         );
 
         _ProfileSingleton.instance.profile = null;
+
+        await flutterSecureStorage.write(key: profile.ident, value: '');
 
         await navigator.currentState.push(
           MaterialPageRoute(builder: (context) => LoginPage()),

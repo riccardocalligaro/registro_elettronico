@@ -164,6 +164,8 @@ class AgendaRepositoryImpl implements AgendaRepository {
             events: eventsList,
             eventsMapString: eventsMapString,
             eventsSpots: _getEventsSpotsForDays(events: eventsMapString),
+            lessons: domainLessons,
+            allEvents: domainEvents,
           ),
         );
       },

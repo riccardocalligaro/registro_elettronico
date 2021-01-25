@@ -53,9 +53,9 @@ class SRUpdateManager {
   });
 
   Future<void> checkForUpdates() async {
-    // if (kDebugMode) {
-    //   return;
-    // }
+    if (kDebugMode) {
+      return;
+    }
 
     final String databaseName =
         sharedPreferences.getString(PrefsConstants.databaseName);
@@ -198,6 +198,12 @@ class SRUpdateManager {
     Logger.info('🔄 [UpdateMANAGER] Updating periods and subjects');
 
     await Future.wait([
+      agendaRepository.updateAllAgenda(ifNeeded: false),
+      lessonsRepository.updateAllLessons(ifNeeded: false),
+      gradesRepository.updateGrades(ifNeeded: false),
+    ]);
+
+    await Future.wait([
       periodsRepository.updatePeriods(ifNeeded: false),
       subjectsRepository.updateSubjects(ifNeeded: false),
     ]);
@@ -223,9 +229,6 @@ class SRUpdateManager {
     );
 
     return Future.wait([
-      agendaRepository.updateAllAgenda(ifNeeded: false),
-      lessonsRepository.updateAllLessons(ifNeeded: false),
-      gradesRepository.updateGrades(ifNeeded: false),
       absencesRepository.updateAbsences(),
       noticesRepository.updateNotices(ifNeeded: false),
       notesRepository.updateNotes(),

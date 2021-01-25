@@ -6,6 +6,8 @@ import 'package:registro_elettronico/feature/home/sections/header/home_header.da
 import 'package:registro_elettronico/feature/home/sections/lessons/home_lessons.dart';
 import 'package:registro_elettronico/utils/update_manager.dart';
 
+final GlobalKey<RefreshIndicatorState> homeRefresherKey = GlobalKey();
+
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
 
@@ -13,6 +15,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: RefreshIndicator(
+        key: homeRefresherKey,
         onRefresh: () => _updateHomeData(context),
         child: ListView(
           padding: EdgeInsets.zero,

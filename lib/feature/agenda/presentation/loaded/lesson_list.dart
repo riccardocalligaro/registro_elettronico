@@ -28,30 +28,45 @@ class LessonsList extends StatelessWidget {
       itemBuilder: (ctx, index) {
         final lesson = lessons[index];
         return Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 6.0, 16.0, 0.0),
-          child: Card(
-            child: ListTile(
-              title: Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-                child: Text(
-                  PresentationConstants.isForPresentation
-                      ? GlobalUtils.getMockupName()
-                      : StringUtils.titleCase(lesson.author),
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
-              ),
-              subtitle: Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-                child: Text(
-                  lesson.lessonArgoment != ""
-                      ? lesson.lessonArgoment
-                      : lesson.lessonType,
-                ),
-              ),
-            ),
-          ),
-        );
+            padding: const EdgeInsets.fromLTRB(16.0, 6.0, 16.0, 0.0),
+            child: AgendaLessonCard(
+              lesson: lesson,
+            ));
       },
+    );
+  }
+}
+
+class AgendaLessonCard extends StatelessWidget {
+  final LessonDomainModel lesson;
+
+  const AgendaLessonCard({
+    Key key,
+    @required this.lesson,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Padding(
+          padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+          child: Text(
+            PresentationConstants.isForPresentation
+                ? GlobalUtils.getMockupName()
+                : StringUtils.titleCase(lesson.author),
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
+        ),
+        subtitle: Padding(
+          padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+          child: Text(
+            lesson.lessonArgoment != ""
+                ? lesson.lessonArgoment
+                : lesson.lessonType,
+          ),
+        ),
+      ),
     );
   }
 }

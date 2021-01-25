@@ -115,6 +115,10 @@ class NextEventsPage extends StatelessWidget {
                 style: TextStyle(fontSize: e.title != '' ? 12.0 : 15),
               ),
               if (e.notes != '')
+                const SizedBox(
+                  height: 2.5,
+                ),
+              if (e.notes != '')
                 Text(
                   '${e.notes}',
                   style: TextStyle(fontSize: 13.0),

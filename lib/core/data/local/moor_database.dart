@@ -10,8 +10,6 @@ import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart'
 import 'package:registro_elettronico/feature/absences/data/model/absence_local_model.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_local_model.dart';
-import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
-import 'package:registro_elettronico/feature/authentication/domain/model/profile_domain_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/datasource/didactics_local_datasource.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/content_local_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/local/downloaded_files.dart';

@@ -4,6 +4,7 @@ import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
+import 'package:registro_elettronico/core/presentation/custom/sr_search_empty_view.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/watcher/lessons_watcher_bloc.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -38,6 +39,12 @@ class _LessonsPageState extends State<LessonsPage> {
         if (query.isNotEmpty) {
           setState(() => _searchQuery = query);
         }
+      },
+      onClosed: () {
+        setState(() => _searchQuery = '');
+      },
+      onCleared: () {
+        setState(() => _searchQuery = '');
       },
       buildDefaultAppBar: buildAppBar,
     );
@@ -97,6 +104,10 @@ class _LessonsLoaded extends StatelessWidget {
       lessonsToShow = lessons.where((l) => _showResult(query, l)).toList();
     } else {
       lessonsToShow = lessons;
+    }
+
+    if (lessonsToShow.isEmpty) {
+      return SrSearchEmptyView();
     }
 
     return ListView.builder(

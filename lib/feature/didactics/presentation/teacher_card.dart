@@ -200,8 +200,9 @@ class _DownloadAttachmentSnackbar extends StatelessWidget {
             state is DidacticsAttachmentFileDownloadSuccess ||
             state is DidacticsAttachmentURLDownloadSuccess) {
           // ignore: unawaited_futures
-          Future.delayed(Duration(seconds: 3)).then((value) =>
-              didacticsScaffold.currentState..removeCurrentSnackBar());
+          Future.delayed(Duration(seconds: 3)).then(
+            (value) => didacticsScaffold.currentState..removeCurrentSnackBar(),
+          );
         }
 
         if (state is DidacticsAttachmentFileDownloadSuccess) {

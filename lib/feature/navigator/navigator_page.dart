@@ -18,12 +18,26 @@ class NavigatorPage extends StatefulWidget {
 
 class _NavigatorPageState extends State<NavigatorPage> {
   int _currentPage = 0;
+  List<Widget> _pages;
+  SRUpdateManager srUpdateManager;
+
+  static const int home = 0;
+  static const int grades = 1;
+  static const int agenda = 2;
+  static const int noticeboard = 3;
 
   @override
   void initState() {
-    final SRUpdateManager srUpdateManager = sl();
+    srUpdateManager = sl();
     unawaited(srUpdateManager.checkForUpdates());
 
+    _pages = [
+      HomePage(),
+      GradesPage(),
+      AgendaPage(),
+      NoticeboardPage(),
+      MorePage(),
+    ];
     super.initState();
   }
 
@@ -33,13 +47,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
       bottomNavigationBar: _buildBottomNavigationBar(),
       body: IndexedStack(
         index: _currentPage,
-        children: [
-          HomePage(),
-          GradesPage(),
-          AgendaPage(),
-          NoticeboardPage(),
-          MorePage(),
-        ],
+        children: _pages,
       ),
     );
   }
@@ -52,6 +60,25 @@ class _NavigatorPageState extends State<NavigatorPage> {
       showSelectedLabels: false,
       showUnselectedLabels: false,
       onTap: (int index) {
+        if (_currentPage == index) {
+          if (index == home) {
+            if (homeRefresherKey.currentState != null) {
+              homeRefresherKey.currentState.show();
+            }
+          } else if (index == agenda) {
+            if (agendaRefresherKey.currentState != null) {
+              agendaRefresherKey.currentState.show();
+            }
+          } else if (index == grades) {
+            if (gradesRefresherKey.currentState != null) {
+              gradesRefresherKey.currentState.show();
+            }
+          } else if (index == noticeboard) {
+            if (noticeboardRefresherKey.currentState != null) {
+              noticeboardRefresherKey.currentState.show();
+            }
+          }
+        }
         setState(() {
           _currentPage = index;
         });

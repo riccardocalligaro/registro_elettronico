@@ -136,6 +136,8 @@ class _AgendaLoaded extends StatelessWidget {
                 child: SizedBox(
                   width: double.infinity,
                   child: FlatButton(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(

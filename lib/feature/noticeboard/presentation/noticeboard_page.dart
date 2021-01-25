@@ -5,6 +5,7 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
+import 'package:registro_elettronico/core/presentation/custom/sr_search_empty_view.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/model/notice_domain_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/noticeboard_repository.dart';
@@ -14,6 +15,7 @@ import 'package:registro_elettronico/utils/update_manager.dart';
 import 'notice_card.dart';
 
 final GlobalKey<ScaffoldState> noticeboardScaffold = GlobalKey();
+final GlobalKey<RefreshIndicatorState> noticeboardRefresherKey = GlobalKey();
 
 class NoticeboardPage extends StatefulWidget {
   const NoticeboardPage({Key key}) : super(key: key);
@@ -36,6 +38,12 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         }
       },
       buildDefaultAppBar: buildAppBar,
+      onClosed: () {
+        setState(() => _searchQuery = '');
+      },
+      onCleared: () {
+        setState(() => _searchQuery = '');
+      },
     );
     super.initState();
   }
@@ -115,7 +123,12 @@ class _NoticesLoaded extends StatelessWidget {
       noticesToShow = notices;
     }
 
+    if (noticesToShow.isEmpty) {
+      return SrSearchEmptyView();
+    }
+
     return RefreshIndicator(
+      key: noticeboardRefresherKey,
       onRefresh: () {
         final SRUpdateManager srUpdateManager = sl();
         return srUpdateManager.updateNoticeboardData(context);

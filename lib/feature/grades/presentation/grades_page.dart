@@ -11,6 +11,8 @@ import 'package:registro_elettronico/feature/grades/presentation/states/tabs/per
 import 'package:registro_elettronico/feature/grades/presentation/watcher/grades_watcher_bloc.dart';
 import 'package:registro_elettronico/utils/update_manager.dart';
 
+final GlobalKey<RefreshIndicatorState> gradesRefresherKey = GlobalKey();
+
 class GradesPage extends StatefulWidget {
   GradesPage({Key key}) : super(key: key);
 
@@ -55,6 +57,7 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
             ];
 
             return RefreshIndicator(
+              key: gradesRefresherKey,
               onRefresh: () {
                 return _refreshData(state.gradesSections);
               },
