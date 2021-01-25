@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:pedantic/pedantic.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/agenda_page.dart';
 import 'package:registro_elettronico/feature/grades/presentation/grades_page.dart';
 import 'package:registro_elettronico/feature/home/home_page.dart';
 import 'package:registro_elettronico/feature/navigator/more_page.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/noticeboard_page.dart';
+import 'package:registro_elettronico/utils/update_manager.dart';
 
 class NavigatorPage extends StatefulWidget {
   NavigatorPage({Key key}) : super(key: key);
@@ -18,8 +21,10 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
   @override
   void initState() {
+    final SRUpdateManager srUpdateManager = sl();
+    unawaited(srUpdateManager.checkForUpdates());
+
     super.initState();
-    // check for updates
   }
 
   @override
@@ -42,8 +47,6 @@ class _NavigatorPageState extends State<NavigatorPage> {
   BottomNavigationBar _buildBottomNavigationBar() {
     return BottomNavigationBar(
       backgroundColor: Theme.of(context).cardTheme.color,
-      // selectedItemColor: CYColors.lightOrange,
-      // unselectedItemColor: CYColors.lightText,
       type: BottomNavigationBarType.fixed,
       currentIndex: _currentPage,
       showSelectedLabels: false,
@@ -55,7 +58,6 @@ class _NavigatorPageState extends State<NavigatorPage> {
       },
       items: [
         BottomNavigationBarItem(
-          // title: Container(),
           label: AppLocalizations.of(context).translate('home'),
           icon: Icon(Icons.home),
         ),

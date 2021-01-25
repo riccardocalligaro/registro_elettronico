@@ -9,6 +9,7 @@ import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholde
 import 'package:registro_elettronico/feature/noticeboard/domain/model/notice_domain_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/repository/noticeboard_repository.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/watcher/noticeboard_watcher_bloc.dart';
+import 'package:registro_elettronico/utils/update_manager.dart';
 
 import 'notice_card.dart';
 
@@ -116,8 +117,8 @@ class _NoticesLoaded extends StatelessWidget {
 
     return RefreshIndicator(
       onRefresh: () {
-        final NoticeboardRepository noticeboardRepository = sl();
-        return noticeboardRepository.updateNotices(ifNeeded: false);
+        final SRUpdateManager srUpdateManager = sl();
+        return srUpdateManager.updateNoticeboardData(context);
       },
       child: ListView.builder(
         itemCount: noticesToShow.length,

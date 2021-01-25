@@ -10,6 +10,7 @@ import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_rep
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/events_list.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/updater/agenda_updater_bloc.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:registro_elettronico/utils/update_manager.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'event/new_event_page.dart';
@@ -43,8 +44,8 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              final AgendaRepository agendaRepository = sl();
-              agendaRepository.updateAllAgenda(ifNeeded: false);
+              final SRUpdateManager srUpdateManager = sl();
+              return srUpdateManager.updateAgendaData(context);
             },
           )
         ],
@@ -58,8 +59,8 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
         },
         child: RefreshIndicator(
           onRefresh: () {
-            final AgendaRepository agendaRepository = sl();
-            return agendaRepository.updateAllAgenda(ifNeeded: false);
+            final SRUpdateManager srUpdateManager = sl();
+            return srUpdateManager.updateAgendaData(context);
           },
           child: ListView(
             children: [

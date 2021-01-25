@@ -1,7 +1,3 @@
-// @GET("/students/{studentId}/agenda/all/{start}/{end}")
-// Future<AgendaResponse> getAgenda(@Path() String studentId,
-//     @Path("start") String start, @Path("end") String end);
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_remote_model.dart';

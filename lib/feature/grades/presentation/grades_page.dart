@@ -12,6 +12,7 @@ import 'package:registro_elettronico/feature/grades/presentation/states/tabs/per
 import 'package:registro_elettronico/feature/grades/presentation/watcher/grades_watcher_bloc.dart';
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
+import 'package:registro_elettronico/utils/update_manager.dart';
 
 class GradesPage extends StatefulWidget {
   GradesPage({Key key}) : super(key: key);
@@ -124,27 +125,11 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
   }
 
   Future<void> _refreshData(GradesPagesDomainModel gradesSections) {
-    final GradesRepository gradesRepository = sl();
-    final PeriodsRepository periodsRepository = sl();
-    final SubjectsRepository subjectsRepository = sl();
-
-    List<Future> updates = [];
-
-    if (gradesSections == null ||
-        gradesSections.grades.isEmpty ||
-        gradesSections.periodsWithGrades.isEmpty ||
-        gradesSections.periodsWithGrades.first.gradesForList.isEmpty) {
-      updates.add(
-        periodsRepository.updatePeriods(ifNeeded: false),
-      );
-      updates.add(
-        subjectsRepository.updateSubjects(ifNeeded: false),
-      );
-    }
-
-    updates.add(gradesRepository.updateGrades(ifNeeded: false));
-
-    return Future.wait(updates);
+    final SRUpdateManager srUpdateManager = sl();
+    return srUpdateManager.updateGradesData(
+      gradesSections: gradesSections,
+      context: context,
+    );
   }
 
   Color _chipBackgroundColor(int index) {

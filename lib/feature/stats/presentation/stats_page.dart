@@ -37,13 +37,7 @@ class _StatsPageState extends State<StatsPage> {
   @override
   void initState() {
     super.initState();
-    restore();
     BlocProvider.of<StatsBloc>(context).add(GetStudentStats());
-  }
-
-  void restore() async {
-    SharedPreferences _prefs = sl();
-    objective = _prefs.getInt(PrefsConstants.OVERALL_OBJECTIVE);
   }
 
   @override

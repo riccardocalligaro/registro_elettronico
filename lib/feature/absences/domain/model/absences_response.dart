@@ -1,26 +1,3 @@
-class AbsencesRemoteModel {
-  List<AbsenceRemoteModel> events;
-
-  AbsencesRemoteModel({this.events});
-
-  AbsencesRemoteModel.fromJson(Map<String, dynamic> json) {
-    if (json['events'] != null) {
-      events = List<AbsenceRemoteModel>();
-      json['events'].forEach((v) {
-        events.add(AbsenceRemoteModel.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    if (this.events != null) {
-      data['events'] = this.events.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
 class AbsenceRemoteModel {
   int evtId;
   String evtCode;

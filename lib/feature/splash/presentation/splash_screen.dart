@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/presentation/custom/no_animation_route.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/authentication/presentation/login_page.dart';
 import 'package:registro_elettronico/feature/navigator/navigator_page.dart';
-import 'package:registro_elettronico/utils/update_manager.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
@@ -27,9 +25,6 @@ class _SplashScreenState extends State<SplashScreen> {
     final authenticated = await authenticationRepository.isLoggedIn();
 
     if (authenticated) {
-      final SRUpdateManager srUpdateManager = sl();
-      unawaited(srUpdateManager.checkForUpdates());
-
       await Navigator.of(context).pushReplacement(NoAnimationMaterialPageRoute(
         builder: (context) => NavigatorPage(),
       ));

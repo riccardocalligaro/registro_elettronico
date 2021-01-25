@@ -5,12 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/data/remote/api/dio_client.dart';
+import 'package:registro_elettronico/core/data/remote/api/sr_dio_client.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
 import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client.dart';
 import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client_impl.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/fcm_service.dart';
+import 'package:registro_elettronico/feature/absences/absences_container.dart';
 import 'package:registro_elettronico/feature/agenda/agenda_container.dart';
 import 'package:registro_elettronico/feature/authentication/authentication_container.dart';
 import 'package:registro_elettronico/feature/lessons/lessons_container.dart';
@@ -67,6 +68,7 @@ class CoreContainer {
     await NoticeboardContainer.init();
     await TimetableContainer.init();
     await GradesContainer.init();
+    await AbsencesContainer.init();
 
     _sl.registerLazySingleton(() {
       return SRUpdateManager(
@@ -93,6 +95,8 @@ class CoreContainer {
       ...NoticeboardContainer.getBlocProviders(),
       ...TimetableContainer.getBlocProviders(),
       ...AuthenticationContainer.getBlocProviders(),
+      ...GradesContainer.getBlocProviders(),
+      ...AgendaContainer.getBlocProviders(),
     ];
   }
 }

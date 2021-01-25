@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/data/repository/preferences_repository_impl.dart';
 import 'package:registro_elettronico/core/domain/repository/preferences_repository.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
-import 'package:registro_elettronico/feature/absences/presentation/bloc/absences_bloc.dart';
 import 'package:registro_elettronico/feature/agenda/agenda_container.dart';
 import 'package:registro_elettronico/feature/authentication/presentation/token/token_bloc.dart';
 import 'package:registro_elettronico/feature/core_container.dart';
@@ -23,32 +22,10 @@ class AppBlocDelegate {
   static AppBlocDelegate _instance;
 
   List<BlocProvider> _blocProviders;
-  List<RepositoryProvider> _repositoryProviders;
 
   AppBlocDelegate._(BuildContext context) {
-    _repositoryProviders = [
-      RepositoryProvider<ScrutiniRepository>(
-        create: (ctx) => ScrutiniRepositoryImpl(
-          sl(),
-          sl(),
-          sl(),
-          sl(),
-        ),
-      ),
-      RepositoryProvider<PreferencesRepository>(
-        create: (ctx) => PreferencesRepositoryImpl(
-          sl(),
-        ),
-      ),
-    ];
-
     _blocProviders = [
-      ...GradesContainer.getBlocProviders(),
-      ...AgendaContainer.getBlocProviders(),
       ...CoreContainer.getBlocProviders(),
-      BlocProvider<AbsencesBloc>(
-        create: (ctx) => AbsencesBloc(absencesRepository: sl()),
-      ),
       BlocProvider<NotesBloc>(
         create: (ctx) => NotesBloc(notesRepository: sl()),
       ),
@@ -94,6 +71,4 @@ class AppBlocDelegate {
   }
 
   List<BlocProvider> get blocProviders => _blocProviders;
-
-  List<RepositoryProvider> get repositoryProviders => _repositoryProviders;
 }

@@ -9,6 +9,7 @@ import 'package:registro_elettronico/feature/home/sections/grades/home_grades.da
 import 'package:registro_elettronico/feature/home/sections/header/home_header.dart';
 import 'package:registro_elettronico/feature/home/sections/lessons/home_lessons.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
+import 'package:registro_elettronico/utils/update_manager.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
@@ -40,23 +41,7 @@ class HomePage extends StatelessWidget {
   }
 
   Future<void> _updateHomeData(BuildContext context) async {
-    try {
-      final GradesRepository gradesRepository = sl();
-      final AgendaRepository agendaRepository = sl();
-      final LessonsRepository lessonsRepository = sl();
-
-      await gradesRepository.updateGrades(ifNeeded: false);
-      await agendaRepository.updateAllAgenda(ifNeeded: false);
-      await lessonsRepository.updateTodaysLessons(ifNeeded: false);
-    } catch (e) {
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            handleError(e).localizedDescription(context) ??
-                AppLocalizations.of(context).translate('update_error_snackbar'),
-          ),
-        ),
-      );
-    }
+    final SRUpdateManager srUpdateManager = sl();
+    return srUpdateManager.updateHomeData(context);
   }
 }

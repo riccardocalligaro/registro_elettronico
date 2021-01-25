@@ -26,16 +26,10 @@ class SchoolMaterialPage extends StatefulWidget {
 }
 
 class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
-  int _schoolMaterialLastUpdate;
-
   // Search box
   final TextEditingController _filter = TextEditingController();
 
   String _searchText = "";
-
-  // List<DidacticsContent> content = List();
-
-  // List<DidacticsContent> filteredContent = List();
 
   Icon _searchIcon = Icon(Icons.search);
 
@@ -61,8 +55,6 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
 
   @override
   void initState() {
-    restore();
-
     BlocProvider.of<DidacticsBloc>(context).add(GetDidactics());
     super.initState();
   }
@@ -72,15 +64,6 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
     _appBarTitle =
         Text(AppLocalizations.of(context).translate('school_material'));
     super.didChangeDependencies();
-  }
-
-  void restore() async {
-    SharedPreferences sharedPreferences = sl();
-
-    setState(() {
-      _schoolMaterialLastUpdate =
-          sharedPreferences.getInt(PrefsConstants.lastUpdateSchoolMaterial);
-    });
   }
 
   void _searchPressed() {
@@ -122,11 +105,6 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
           )
         ],
       ),
-      bottomSheet: LastUpdateBottomSheet(
-        millisecondsSinceEpoch: _schoolMaterialLastUpdate,
-      ),
-      floatingActionButton: const SizedBox(height: 1),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: MultiBlocListener(
         listeners: [
           BlocListener<DidacticsBloc, DidacticsState>(
@@ -137,12 +115,6 @@ class _SchoolMaterialPageState extends State<SchoolMaterialPage> {
                   ..showSnackBar(
                     AppNavigator.instance.getNetworkErrorSnackBar(context),
                   );
-              }
-              if (state is DidacticsUpdateLoaded) {
-                setState(() {
-                  _schoolMaterialLastUpdate =
-                      DateTime.now().millisecondsSinceEpoch;
-                });
               }
             },
           ),

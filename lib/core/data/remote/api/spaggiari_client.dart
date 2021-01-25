@@ -2,9 +2,7 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' hide Headers;
-import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
-
 import 'package:registro_elettronico/feature/notes/data/model/remote/note_remote_model.dart';
 import 'package:registro_elettronico/feature/notes/data/model/remote/notes_read_remote_model.dart';
 import 'package:registro_elettronico/feature/scrutini/data/model/document_remote_model.dart';
@@ -17,10 +15,6 @@ import 'package:retrofit/retrofit.dart';
 // for feature reasons I had to manually write the http calls
 abstract class SpaggiariClient {
   factory SpaggiariClient(Dio dio) = _SpaggiariClient;
-
-  // Absences
-  @GET("/students/{studentId}/absences/details")
-  Future<AbsencesRemoteModel> getAbsences(@Path() String studentId);
 
   @GET("/students/{studentId}/notes/all/")
   Future<NotesResponse> getNotes(@Path() String studentId);
@@ -69,25 +63,6 @@ class _SpaggiariClient implements SpaggiariClient {
   final Dio _dio;
 
   String baseUrl;
-
-  @override
-  getAbsences(studentId) async {
-    ArgumentError.checkNotNull(studentId, 'studentId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/absences/details',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AbsencesRemoteModel.fromJson(_result.data);
-    return Future.value(value);
-  }
 
   @override
   getNotes(studentId) async {

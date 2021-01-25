@@ -25,24 +25,10 @@ class ScrutiniPage extends StatefulWidget {
 }
 
 class _ScrutiniPageState extends State<ScrutiniPage> {
-  //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  int _scrutiniLastUpdate;
-
   @override
   void initState() {
     BlocProvider.of<DocumentsBloc>(context).add(GetDocuments());
-
-    restore();
     super.initState();
-  }
-
-  void restore() async {
-    SharedPreferences sharedPreferences = sl();
-
-    setState(() {
-      _scrutiniLastUpdate =
-          sharedPreferences.getInt(PrefsConstants.lastUpdateScrutini);
-    });
   }
 
   @override
@@ -52,11 +38,6 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
           brightness: Theme.of(context).brightness,
           title: Text(AppLocalizations.of(context).translate('scrutini')),
         ),
-        bottomSheet: LastUpdateBottomSheet(
-          millisecondsSinceEpoch: _scrutiniLastUpdate,
-        ),
-        floatingActionButton: const SizedBox(height: 1),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: MultiBlocListener(
           listeners: [
             BlocListener<TokenBloc, TokenState>(
@@ -205,11 +186,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
             ),
             BlocListener<DocumentsBloc, DocumentsState>(
               listener: (context, state) {
-                if (state is DocumentsUpdateLoadSuccess) {
-                  setState(() {
-                    _scrutiniLastUpdate = DateTime.now().millisecondsSinceEpoch;
-                  });
-                } else if (state is DocumentsLoadNotConnected) {
+                if (state is DocumentsLoadNotConnected) {
                   Scaffold.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(

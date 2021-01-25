@@ -18,22 +18,11 @@ class AbsencesPage extends StatefulWidget {
 }
 
 class _AbsencesPageState extends State<AbsencesPage> {
-  int _absencesLastUpdate;
-
   @override
   void initState() {
-    restore();
     super.initState();
 
     BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
-  }
-
-  void restore() async {
-    SharedPreferences sharedPreferences = sl();
-    setState(() {
-      _absencesLastUpdate =
-          sharedPreferences.getInt(PrefsConstants.lastUpdateAbsences);
-    });
   }
 
   @override
@@ -43,18 +32,8 @@ class _AbsencesPageState extends State<AbsencesPage> {
         brightness: Theme.of(context).brightness,
         title: Text(AppLocalizations.of(context).translate('absences')),
       ),
-      bottomSheet: LastUpdateBottomSheet(
-        millisecondsSinceEpoch: _absencesLastUpdate,
-      ),
-      floatingActionButton: const SizedBox(height: 1),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: BlocListener<AbsencesBloc, AbsencesState>(
         listener: (context, state) {
-          if (state is AbsencesUpdateLoaded) {
-            setState(() {
-              _absencesLastUpdate = DateTime.now().millisecondsSinceEpoch;
-            });
-          }
           if (state is AbsencesLoadErrorNotConnected) {
             Scaffold.of(context).showSnackBar(
               AppNavigator.instance.getNetworkErrorSnackBar(context),

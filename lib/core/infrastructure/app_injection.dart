@@ -1,7 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
-import 'package:registro_elettronico/feature/absences/data/repository/absences_repository_impl.dart';
-import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/feature/core_container.dart';
 import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
 import 'package:registro_elettronico/feature/didactics/data/repository/didactics_repository_impl.dart';
@@ -32,29 +29,55 @@ class AppInjector {
 
   // All the DAOS (Data Access Objects)
   static void injectDaos() {
-    sl.registerLazySingleton(() => AbsenceDao(sl()));
     sl.registerLazySingleton(() => NoteDao(sl()));
     sl.registerLazySingleton(() => DidacticsDao(sl()));
     sl.registerLazySingleton(() => DocumentsDao(sl()));
   }
 
   static void injectRepository() {
-    sl.registerLazySingleton<AbsencesRepository>(
-        () => AbsencesRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
-
     sl.registerLazySingleton<NotesRepository>(
         () => NotesRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
 
     sl.registerLazySingleton<DidacticsRepository>(
-        () => DidacticsRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl()));
+      () => DidacticsRepositoryImpl(
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+      ),
+    );
 
     sl.registerLazySingleton<DocumentsRepository>(
-        () => DocumentsRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
+      () => DocumentsRepositoryImpl(
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+      ),
+    );
 
     sl.registerLazySingleton<ScrutiniRepository>(
-        () => ScrutiniRepositoryImpl(sl(), sl(), sl(), sl()));
+      () => ScrutiniRepositoryImpl(
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+      ),
+    );
 
     sl.registerLazySingleton<StatsRepository>(
-        () => StatsRepositoryImpl(sl(), sl(), sl(), sl(), sl(), sl(), sl()));
+      () => StatsRepositoryImpl(
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+      ),
+    );
   }
 }

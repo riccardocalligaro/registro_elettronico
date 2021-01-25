@@ -12,7 +12,7 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/splash/presentation/splash_screen.dart';
 import 'package:time_machine/time_machine.dart';
 
-import 'core/data/remote/api/dio_client.dart';
+import 'core/data/remote/api/sr_dio_client.dart';
 import 'core/infrastructure/log/logger.dart';
 import 'core/infrastructure/log/logger_bloc.dart';
 import 'core/infrastructure/notification/fcm_service.dart';
