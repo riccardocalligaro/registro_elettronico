@@ -68,7 +68,7 @@ class _DebugPageState extends State<DebugPage> {
             onTap: () {
               final SharedPreferences sharedPreferences = sl();
               final dbName =
-                  sharedPreferences.getString(PrefsConstants.databaseName);
+                  sharedPreferences.getString(PrefsConstants.profile);
 
               print(dbName);
             },

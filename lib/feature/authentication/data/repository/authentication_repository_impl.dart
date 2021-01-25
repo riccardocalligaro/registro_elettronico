@@ -72,6 +72,25 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final localProfiles = await profilesLocalDatasource.getLoggedInUser();
 
       if (localProfiles == null || localProfiles.isEmpty) {
+        // check for legacy profile
+        final legacyProfile =
+            sharedPreferences.getString(PrefsConstants.profile);
+
+        if (legacyProfile != null && legacyProfile.isNotEmpty) {
+          // parse it
+          final domainProfile = ProfileDomainModel.fromJson(legacyProfile);
+
+          await profilesLocalDatasource
+              .insertProfile(domainProfile.toLocalModel());
+
+          await sharedPreferences.setString(
+            PrefsConstants.databaseName,
+            PrefsConstants.databaseNameBeforeMigration,
+          );
+
+          profileSingleton.profile = domainProfile;
+          return domainProfile;
+        }
         return null;
       }
       profileSingleton.profile =

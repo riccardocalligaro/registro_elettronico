@@ -111,26 +111,7 @@ class SRDatabase extends _$SRDatabase {
             await m.addColumn(grades, grades.hasSeenIt);
           }
           if (from < 4) {
-            final sharedPreferences = await SharedPreferences.getInstance();
-            final profilesLocalDatasource = ProfilesLocalDatasource(
-              sharedPreferences: sharedPreferences,
-            );
-            final profile = sharedPreferences.getString(PrefsConstants.profile);
-
-            if (profile != null) {
-              final domainProfile = ProfileDomainModel.fromJson(profile);
-
-              await profilesLocalDatasource
-                  .insertProfile(domainProfile.toLocalModel());
-
-              await sharedPreferences.setString(
-                PrefsConstants.databaseName,
-                PrefsConstants.databaseNameBeforeMigration,
-              );
-            } else {
-              await m.deleteTable('profiles');
-            }
-
+            await m.deleteTable('profiles');
             await m.createTable(agendaEventsTable);
             // attachments
             await m.deleteTable(attachments.actualTableName);
