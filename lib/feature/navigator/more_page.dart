@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
-import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/authentication/presentation/change_account_dialog.dart';
 import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
@@ -17,7 +16,7 @@ class MorePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('More'),
+        title: Text(AppLocalizations.of(context).translate('more_page')),
       ),
       body: ListView(
         children: [

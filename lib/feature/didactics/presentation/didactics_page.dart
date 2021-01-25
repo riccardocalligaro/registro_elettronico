@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
@@ -20,9 +21,21 @@ class DidacticsPage extends StatefulWidget {
 }
 
 class _DidacticsPageState extends State<DidacticsPage> {
+  SearchBar _searchBar;
+  String _searchQuery = '';
+
   @override
   void initState() {
     super.initState();
+    _searchBar = SearchBar(
+      setState: setState,
+      onChanged: (query) {
+        if (query.isNotEmpty) {
+          setState(() => _searchQuery = query);
+        }
+      },
+      buildDefaultAppBar: buildAppBar,
+    );
     BlocProvider.of<DidacticsWatcherBloc>(context)
         .add(DidacticsWatchAllStarted());
   }
@@ -31,11 +44,7 @@ class _DidacticsPageState extends State<DidacticsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: didacticsScaffold,
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context).translate('school_material'),
-        ),
-      ),
+      appBar: _searchBar.build(context),
       body: BlocBuilder<DidacticsWatcherBloc, DidacticsWatcherState>(
         builder: (context, state) {
           if (state is DidacticsWatcherLoadSuccess) {
@@ -46,6 +55,7 @@ class _DidacticsPageState extends State<DidacticsPage> {
               },
               child: _DidacticsLoaded(
                 teachers: state.teachers,
+                query: _searchQuery,
               ),
             );
           } else if (state is DidacticsWatcherFailure) {
@@ -57,18 +67,33 @@ class _DidacticsPageState extends State<DidacticsPage> {
       ),
     );
   }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      title: Text(
+        AppLocalizations.of(context).translate('school_material'),
+      ),
+      actions: [
+        _searchBar.getSearchAction(context),
+      ],
+    );
+  }
 }
 
 class _DidacticsLoaded extends StatelessWidget {
   final List<DidacticsTeacherDomainModel> teachers;
+  final String query;
 
   const _DidacticsLoaded({
     Key key,
     @required this.teachers,
+    @required this.query,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List<DidacticsTeacherDomainModel> teachersToShow;
+
     if (teachers.isEmpty) {
       return CustomPlaceHolder(
         text: AppLocalizations.of(context).translate('no_materials'),
@@ -80,10 +105,17 @@ class _DidacticsLoaded extends StatelessWidget {
         },
       );
     }
+
+    if (query.isNotEmpty && query.length >= 2) {
+      teachersToShow = teachers.where((l) => _showResult(query, l)).toList();
+    } else {
+      teachersToShow = teachers;
+    }
+
     return ListView.builder(
-      itemCount: teachers.length,
+      itemCount: teachersToShow.length,
       itemBuilder: (context, index) {
-        final teacher = teachers[index];
+        final teacher = teachersToShow[index];
 
         if (teacher.folders.isEmpty) {
           return Container();
@@ -92,5 +124,18 @@ class _DidacticsLoaded extends StatelessWidget {
         return TeacherCard(teacher: teacher);
       },
     );
+  }
+
+  bool _showResult(String query, DidacticsTeacherDomainModel teacher) {
+    final lQuery = query.toLowerCase().replaceAll(' ', '');
+
+    return teacher.name.toLowerCase().replaceAll(' ', '').contains(lQuery) ||
+        teacher.firstName.toLowerCase().replaceAll(' ', '').contains(lQuery) ||
+        teacher.lastName.toLowerCase().replaceAll(' ', '').contains(lQuery) ||
+        teacher.folders
+            .toString()
+            .toLowerCase()
+            .replaceAll(' ', '')
+            .contains(lQuery);
   }
 }

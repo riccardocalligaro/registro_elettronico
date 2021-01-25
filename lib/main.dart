@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:registro_elettronico/application.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/feature/core_container.dart';
 import 'package:registro_elettronico/feature/splash/presentation/splash_screen.dart';
 import 'package:time_machine/time_machine.dart';
 
@@ -23,13 +24,13 @@ FlutterLocalNotificationsPlugin globalLocalNotifications;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize time machine for the timetable library
   await TimeMachine.initialize({'rootBundle': rootBundle});
 
   await Firebase.initializeApp();
 
-  await AppInjector.init();
-
-  Bloc.observer = LoggerBlocDelegate();
+  // Dependency injection
+  await CoreContainer.init();
 
   initApp();
 
@@ -44,6 +45,8 @@ void main() async {
 }
 
 void initApp() async {
+  Bloc.observer = LoggerBlocDelegate();
+
   PushNotificationService pushNotificationService = sl();
   await pushNotificationService.initialise();
 
@@ -65,10 +68,7 @@ class SrApp extends StatelessWidget {
           supportedLocales: initData.supportedLocales,
           localizationsDelegates: initData.localizationsDelegates,
           localeResolutionCallback: initData.localeResolutionCallback,
-          // showPerformanceOverlay: true,
-          debugShowCheckedModeBanner: false,
           routes: Routes.routes,
-          // home: LoginPage(),
           onUnknownRoute: (settings) {
             return MaterialPageRoute(builder: (ctx) => SplashScreen());
           },

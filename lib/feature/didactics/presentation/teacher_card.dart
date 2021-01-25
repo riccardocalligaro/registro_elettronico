@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:pedantic/pedantic.dart';
-import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/feature/didactics/data/datasource/didactics_local_datasource.dart';
 import 'package:registro_elettronico/feature/didactics/domain/model/content_domain_model.dart';
 import 'package:registro_elettronico/feature/didactics/domain/model/folder_domain_model.dart';
 import 'package:registro_elettronico/feature/didactics/domain/model/teacher_domain_model.dart';
@@ -32,10 +30,6 @@ class TeacherCard extends StatelessWidget {
             teacher.name,
             style: TextStyle(color: Theme.of(context).accentColor),
           ),
-          // onTap: () {
-          //   final DidacticsLocalDatasource didacticsLocalDatasource = sl();
-          //   didacticsLocalDatasource.deleteTeacherWith(teacher.id);
-          // },
         ),
         _buildFolderList(
           folders: teacher.folders,
@@ -58,8 +52,9 @@ class TeacherCard extends StatelessWidget {
         final folderContents = folders[index].contents;
 
         return ExpandableTheme(
-          data:
-              ExpandableThemeData(iconColor: Theme.of(context).iconTheme.color),
+          data: ExpandableThemeData(
+            iconColor: Theme.of(context).iconTheme.color,
+          ),
           child: ExpandablePanel(
             theme: ExpandableThemeData(
               tapHeaderToExpand: true,
@@ -201,13 +196,17 @@ class _DownloadAttachmentSnackbar extends StatelessWidget {
     return BlocConsumer<DidacticsAttachmentBloc, DidacticsAttachmentState>(
       listener: (context, state) async {
         if (state is DidacticsAttachmentDownloadFailure ||
-            state is DidacticsAttachmentFileDownloadSuccess) {
-          await Future.delayed(Duration(seconds: 3)).then((value) =>
+            state is DidacticsAttachmentFileDownloadSuccess ||
+            state is DidacticsAttachmentFileDownloadSuccess ||
+            state is DidacticsAttachmentURLDownloadSuccess) {
+          // ignore: unawaited_futures
+          Future.delayed(Duration(seconds: 3)).then((value) =>
               didacticsScaffold.currentState..removeCurrentSnackBar());
         }
 
         if (state is DidacticsAttachmentFileDownloadSuccess) {
-          unawaited(OpenFile.open(state.didacticsFile.file.path));
+          // ignore: unawaited_futures
+          OpenFile.open(state.didacticsFile.file.path);
         } else if (state is DidacticsAttachmentURLDownloadSuccess) {
           final url = state.urlContentRemoteModel.item.link;
           if (await canLaunch(url)) {

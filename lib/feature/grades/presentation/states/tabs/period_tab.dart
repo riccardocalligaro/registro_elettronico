@@ -23,9 +23,10 @@ class PeriodTab extends StatelessWidget {
       physics: ClampingScrollPhysics(),
       padding: const EdgeInsets.all(16.0),
       children: [
-        PeriodStatsCard(
-          periodWithGradesDomainModel: periodWithGradesDomainModel,
-        ),
+        if (!periodWithGradesDomainModel.average.isNaN)
+          PeriodStatsCard(
+            periodWithGradesDomainModel: periodWithGradesDomainModel,
+          ),
         const SizedBox(
           height: 8,
         ),

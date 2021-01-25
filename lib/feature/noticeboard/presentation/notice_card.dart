@@ -54,8 +54,10 @@ class NoticeCard extends StatelessWidget {
               ..removeCurrentSnackBar()
               ..showSnackBar(SnackBar(
                 behavior: SnackBarBehavior.floating,
-                content: Text(AppLocalizations.of(context)
-                    .translate('delete_notice_snackbar_info')),
+                content: Text(
+                  AppLocalizations.of(context)
+                      .translate('delete_notice_snackbar_info'),
+                ),
               ));
           },
         ),

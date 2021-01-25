@@ -18,6 +18,13 @@ import 'package:registro_elettronico/feature/lessons/lessons_container.dart';
 import 'package:registro_elettronico/feature/noticeboard/noticeboard_container.dart';
 import 'package:registro_elettronico/feature/periods/periods_container.dart';
 import 'package:registro_elettronico/feature/professors/professors_container.dart';
+import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
+import 'package:registro_elettronico/feature/scrutini/data/repository/documents_repository_impl.dart';
+import 'package:registro_elettronico/feature/scrutini/data/repository/scrutini_repository_impl.dart';
+import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
+import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
+import 'package:registro_elettronico/feature/stats/data/repository/stats_repository_impl.dart';
+import 'package:registro_elettronico/feature/stats/domain/repository/stats_repository.dart';
 import 'package:registro_elettronico/feature/subjects/subjects_container.dart';
 import 'package:registro_elettronico/feature/timetable/timetable_container.dart';
 import 'package:registro_elettronico/utils/update_manager.dart';
@@ -25,11 +32,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'didactics/didactics_container.dart';
 import 'grades/grades_container.dart';
+import 'notes/data/dao/note_dao.dart';
+import 'notes/data/repository/notes_repository_impl.dart';
+import 'notes/domain/repository/notes_repository.dart';
 
 final _sl = GetIt.instance;
 
 class CoreContainer {
   static Future<void> init() async {
+    //! Services
+
     final sharedPreferences = await SharedPreferences.getInstance();
     _sl.registerLazySingleton(() => sharedPreferences);
 
@@ -71,6 +83,43 @@ class CoreContainer {
     await GradesContainer.init();
     await AbsencesContainer.init();
     await DidacticsContainer.init();
+
+    sl.registerLazySingleton(() => NoteDao(sl()));
+    sl.registerLazySingleton(() => DocumentsDao(sl()));
+
+    sl.registerLazySingleton<NotesRepository>(
+        () => NotesRepositoryImpl(sl(), sl(), sl(), sl(), sl()));
+
+    sl.registerLazySingleton<DocumentsRepository>(
+      () => DocumentsRepositoryImpl(
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+      ),
+    );
+
+    sl.registerLazySingleton<ScrutiniRepository>(
+      () => ScrutiniRepositoryImpl(
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+      ),
+    );
+
+    sl.registerLazySingleton<StatsRepository>(
+      () => StatsRepositoryImpl(
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+      ),
+    );
 
     _sl.registerLazySingleton(() {
       return SRUpdateManager(

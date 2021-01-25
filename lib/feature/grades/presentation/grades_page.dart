@@ -4,14 +4,11 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
-import 'package:registro_elettronico/feature/grades/domain/repository/grades_repository.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/grades_failure.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/grades_loading.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/tabs/grades_tab.dart';
 import 'package:registro_elettronico/feature/grades/presentation/states/tabs/period_tab.dart';
 import 'package:registro_elettronico/feature/grades/presentation/watcher/grades_watcher_bloc.dart';
-import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
-import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/utils/update_manager.dart';
 
 class GradesPage extends StatefulWidget {

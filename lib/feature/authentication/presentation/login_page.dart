@@ -7,6 +7,7 @@ import 'package:registro_elettronico/core/presentation/widgets/gradient_red_butt
 import 'package:registro_elettronico/feature/authentication/data/model/login/parent_response_remote_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/login_request_domain_model.dart';
 import 'package:registro_elettronico/feature/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:registro_elettronico/feature/authentication/presentation/help_page.dart';
 import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -98,9 +99,16 @@ class _LoginPageState extends State<LoginPage> {
                     FlatButton(
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => HelpPage(),
+                          ),
+                        );
+                      },
                       child: Text(
-                        'Aiuto',
+                        AppLocalizations.of(context)
+                            .translate('help_page_title'),
                         style: TextStyle(
                           color: Colors.grey,
                         ),
@@ -113,26 +121,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       },
-    );
-    return Stack(
-      children: <Widget>[
-        SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(
-                  height: 90,
-                ),
-                _buildHeaderText(),
-                _buildLoginInput(),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 

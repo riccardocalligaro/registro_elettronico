@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/remote/attachment/text_content_remote_model.dart';

@@ -4,6 +4,7 @@ import 'package:package_info/package_info.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/about_app_dialog.dart';
 import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
+import 'package:registro_elettronico/feature/authentication/presentation/help_page.dart';
 import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
 import 'package:registro_elettronico/feature/grades/grades_container.dart';
 import 'package:registro_elettronico/feature/settings/widgets/about/about_developers_page.dart';
@@ -55,7 +56,7 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              if (kDebugMode)
+              if (_showDebug || kDebugMode)
                 ListTile(
                   title: Text('Debug'),
                   onTap: () {
@@ -122,8 +123,20 @@ class _SettingsPageState extends State<SettingsPage> {
             );
           },
         ),
+        ListTile(
+          title: Text(trans.translate('help_page_title')),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => HelpPage(
+                  fromSettings: true,
+                ),
+              ),
+            );
+          },
+        ),
         const SizedBox(
-          height: 8,
+          height: 16,
         ),
       ],
     );

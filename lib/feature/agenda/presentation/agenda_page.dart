@@ -5,7 +5,6 @@ import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart'
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/agenda_loaded.dart';
-import 'package:registro_elettronico/feature/agenda/presentation/updater/agenda_updater_bloc.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/watcher/agenda_watcher_bloc.dart';
 import 'package:registro_elettronico/utils/update_manager.dart';
 

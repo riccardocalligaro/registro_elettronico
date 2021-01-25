@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:registro_elettronico/core/data/local/moor_database.dart';

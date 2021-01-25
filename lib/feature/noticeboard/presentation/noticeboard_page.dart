@@ -109,7 +109,7 @@ class _NoticesLoaded extends StatelessWidget {
   Widget build(BuildContext context) {
     List<NoticeDomainModel> noticesToShow;
 
-    if (query.isNotEmpty) {
+    if (query.isNotEmpty && query.length >= 2) {
       noticesToShow = notices.where((l) => _showResult(query, l)).toList();
     } else {
       noticesToShow = notices;

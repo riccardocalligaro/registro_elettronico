@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/core/infrastructure/navigator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../header_text.dart';
 
@@ -59,11 +60,17 @@ class ResetDialog extends StatelessWidget {
           child: Text(AppLocalizations.of(context).translate('yes')),
           onPressed: () async {
             Navigator.pop(context);
-            AppNavigator.instance.navToHome(context);
 
             final SRDatabase srDatabase = sl();
             // ignore: unawaited_futures
-            srDatabase.resetDbWithoutProfile();
+            await srDatabase.resetDbWithoutProfile();
+
+            final SharedPreferences sharedPreferences = sl();
+            await sharedPreferences.clear();
+
+            const platform = MethodChannel(
+                'com.riccardocalligaro.registro_elettronico/multi-account');
+            return platform.invokeMethod('restartApp');
 
             // ignore: unawaited_futures
             // UpdateUtils.updateAllData(fromLogin: true);

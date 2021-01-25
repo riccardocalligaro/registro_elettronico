@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-
 import 'package:registro_elettronico/feature/didactics/domain/model/folder_domain_model.dart';
 
 class DidacticsTeacherDomainModel {

@@ -43,9 +43,6 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
           (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
         final localNotices = await noticeboardLocalDatasource.getAllNotices();
 
-        final localAttachments =
-            await noticeboardLocalDatasource.getAllAttachments();
-
         final remoteNotices =
             await noticeboardRemoteDatasource.getNoticeboard();
 
@@ -59,23 +56,12 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
         }
 
         final remoteIds = remoteNotices.map((e) => e.pubId).toList();
-        final remoteAttachmentsIds = mappedRemoteAttachments
-            .map((e) => Tuple2(e.pubId, e.fileName))
-            .toList();
 
         List<NoticeLocalModel> noticesToDelete = [];
-        List<NoticeAttachmentLocalModel> attachmentsToDelete = [];
 
         for (final localNotice in localNotices) {
           if (!remoteIds.contains(localNotice.pubId)) {
             noticesToDelete.add(localNotice);
-          }
-        }
-
-        for (final localAttachment in localAttachments) {
-          if (!remoteAttachmentsIds.contains(
-              Tuple2(localAttachment.pubId, localAttachment.fileName))) {
-            attachmentsToDelete.add(localAttachment);
           }
         }
 
@@ -87,12 +73,13 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
               .toList(),
         );
 
+        await noticeboardLocalDatasource.deleteAllAttachments();
+
         await noticeboardLocalDatasource
             .insertAttachments(mappedRemoteAttachments);
 
         // delete the noticeboard that were removed from the remote source
         await noticeboardLocalDatasource.deleteNotices(noticesToDelete);
-        await noticeboardLocalDatasource.deleteAttachments(attachmentsToDelete);
 
         await sharedPreferences.setInt(
             lastUpdateKey, DateTime.now().millisecondsSinceEpoch);

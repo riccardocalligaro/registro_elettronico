@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart' show Either;
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/profile_domain_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/authentication/presentation/login_page.dart';
@@ -19,7 +20,8 @@ class _ChangeAccountDialogState extends State<ChangeAccountDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Cambia profilo'),
+      title:
+          Text(AppLocalizations.of(context).translate('change_profile_title')),
       content: FutureBuilder<Either<Failure, List<ProfileDomainModel>>>(
         future: authenticationRepository.getNonActiveAccounts(),
         initialData: null,
@@ -29,10 +31,14 @@ class _ChangeAccountDialogState extends State<ChangeAccountDialog> {
         ) {
           if (snapshot.data != null) {
             return snapshot.data.fold(
-              (l) => Text('Errore'),
+              (l) => Text(
+                AppLocalizations.of(context).translate('generic_failure'),
+              ),
               (profiles) {
                 if (profiles.isEmpty) {
-                  return Text('Nessun profilo');
+                  return Text(
+                    AppLocalizations.of(context).translate('no_profiles'),
+                  );
                 }
                 return Container(
                   child: SingleChildScrollView(
@@ -79,7 +85,9 @@ class _ChangeAccountDialogState extends State<ChangeAccountDialog> {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('Chiudi'.toUpperCase()),
+          child: Text(
+            AppLocalizations.of(context).translate('cancel').toUpperCase(),
+          ),
         ),
         FlatButton(
           onPressed: () {
@@ -91,7 +99,9 @@ class _ChangeAccountDialogState extends State<ChangeAccountDialog> {
               ),
             );
           },
-          child: Text('Aggiungi account'.toUpperCase()),
+          child: Text(AppLocalizations.of(context)
+              .translate('add_account')
+              .toUpperCase()),
         ),
       ],
     );
