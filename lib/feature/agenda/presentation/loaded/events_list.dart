@@ -61,7 +61,7 @@ class EventCard extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
         child: Card(
-          color: Color(int.parse(event.labelColor)),
+          color: Color(int.tryParse(event.labelColor)),
           child: ListTile(
             onTap: () async {
               await _showBottomSheet(
@@ -108,7 +108,7 @@ class EventCard extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
           child: Card(
-            color: Color(int.parse(event.labelColor)) ?? Colors.red,
+            color: Color(int.tryParse(event.labelColor)) ?? Colors.red,
             child: ListTile(
               onTap: () async {
                 await _showBottomSheet(
@@ -130,7 +130,7 @@ class EventCard extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
         child: Card(
-          color: Color(int.parse(event.labelColor)) ?? Colors.red,
+          color: Color(int.tryParse(event.labelColor)) ?? Colors.red,
           child: ListTile(
             onTap: () async {
               await _showBottomSheet(

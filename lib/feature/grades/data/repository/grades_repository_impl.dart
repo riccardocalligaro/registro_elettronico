@@ -314,7 +314,8 @@ class GradesRepositoryImpl extends GradesRepository {
         count++;
         average = sum / count;
         // with num.parse(average.toStringAsFixed(2)) we cut the decimal digits
-        spots.add(FlSpot(i.toDouble(), num.parse(average.toStringAsFixed(2))));
+        spots.add(FlSpot(
+            i.toDouble(), num.tryParse(average.toStringAsFixed(2) ?? 0)));
 
         if (spots.length == 1) {
           spots.add(FlSpot(spots[0].x + 1, spots[0].y));

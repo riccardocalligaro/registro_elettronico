@@ -62,7 +62,7 @@ class _EditEventPageState extends State<EditEventPage> {
     }
     _descriptionController.text = widget.event.notes;
     _titleController.text = widget.event.title;
-    _labelColor = Color(int.parse(widget.event.labelColor));
+    _labelColor = Color(int.tryParse(widget.event.labelColor));
     super.initState();
   }
 
