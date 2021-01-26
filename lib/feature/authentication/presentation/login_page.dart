@@ -141,9 +141,10 @@ class _LoginPageState extends State<LoginPage> {
           TextField(
             controller: _usernameController,
             decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)
-                    .translate('login_username_input_field'),
-                errorText: _invalid ? _erorrMessage : null),
+              hintText: AppLocalizations.of(context)
+                  .translate('login_username_input_field'),
+              errorText: _invalid ? _erorrMessage : null,
+            ),
             autofillHints: [AutofillHints.username],
           ),
           const SizedBox(

@@ -22,6 +22,9 @@ class LightTheme {
         headline5: heaingSmall.copyWith(color: Colors.grey[900]),
         bodyText2: bodyStyle1.copyWith(color: Colors.grey[900]),
       ),
+      cursorColor: color,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      textSelectionHandleColor: color,
     );
   }
 }
