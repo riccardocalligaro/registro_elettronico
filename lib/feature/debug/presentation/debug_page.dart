@@ -89,10 +89,10 @@ class _DebugPageState extends State<DebugPage> {
               final profiles = await profilesLocalDatasource.getAllProfiles();
 
               final FlutterSecureStorage flutterSecureStorage = sl();
-              final psw = await flutterSecureStorage.read(key: 'X5605613Y');
+              final values = await flutterSecureStorage.readAll();
+              print(values);
+              final psw = await flutterSecureStorage.read(key: 'S6102171X');
               print(psw);
-              // 5605613 X5605613Y
-              print(profiles);
             },
           ),
           DebugButton(
