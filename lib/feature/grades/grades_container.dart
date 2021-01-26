@@ -29,24 +29,20 @@ class GradesContainer {
     sl.registerLazySingleton(
       () => GradesRemoteDatasource(
         dio: sl(),
-        profileRepository: sl(),
+        authenticationRepository: sl(),
       ),
     );
 
     sl.registerLazySingleton<GradesRepository>(
       () => GradesRepositoryImpl(
-        networkInfo: sl(),
+        lessonsLocalDatasource: sl(),
         gradesRemoteDatasource: sl(),
         gradesLocalDatasource: sl(),
         sharedPreferences: sl(),
-        periodDao: sl(),
-        subjectDao: sl(),
-        professorDao: sl(),
+        periodsLocalDatasource: sl(),
+        subjectsLocalDatasource: sl(),
+        professorLocalDatasource: sl(),
         localGradesLocalDatasource: sl(),
-        spaggiariClient: sl(),
-        profileRepository: sl(),
-        subjectsRepository: sl(),
-        periodsRepository: sl(),
       ),
     );
   }

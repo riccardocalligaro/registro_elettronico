@@ -9,11 +9,11 @@ part 'grades_local_datasource.g.dart';
   Grades,
   LocalGrades,
 ])
-class GradesLocalDatasource extends DatabaseAccessor<AppDatabase>
+class GradesLocalDatasource extends DatabaseAccessor<SRDatabase>
     with _$GradesLocalDatasourceMixin {
-  AppDatabase appDatabase;
+  SRDatabase srDatabase;
 
-  GradesLocalDatasource(this.appDatabase) : super(appDatabase);
+  GradesLocalDatasource(this.srDatabase) : super(srDatabase);
 
   Stream<List<GradeLocalModel>> watchGrades() => select(grades).watch();
 

@@ -1,20 +1,6 @@
 import 'package:moor/moor.dart';
 
-//   IntColumn get eventId => integer()();
-/// "id": 215867,
-///    "description": "INFORMATICA",
-///    "order": 8,
-///    "teachers": [
-///        {
-///            "teacherId": "A3175375",
-///            "teacherName": "CAZZIOLATO ALESSANDRO"
-///        },
-///        {
-///            "teacherId": "A3270031",
-///            "teacherName": "RONCHI GIANCARLO"
-///        }
-///    ]
-///},
+@DataClassName('SubjectLocalModel')
 class Subjects extends Table {
   IntColumn get id => integer()();
   TextColumn get name => text()();

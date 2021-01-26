@@ -17,7 +17,13 @@ class GradesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (grades.isEmpty) {
-      return EmptyGradesPlaceholder();
+      return Container(
+        height: MediaQuery.of(context).size.height -
+            170 -
+            MediaQuery.of(context).viewPadding.top,
+        width: MediaQuery.of(context).size.width,
+        child: EmptyGradesPlaceholder(),
+      );
     }
 
     return RefreshIndicator(
@@ -26,7 +32,9 @@ class GradesTab extends StatelessWidget {
         return gradesRepository.updateGrades(ifNeeded: false);
       },
       child: ListView.builder(
-        padding: const EdgeInsets.all(16.0),
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
         itemCount: grades.length,
         itemBuilder: (context, index) {
           if (index == 0 && !grades[0].hasSeenIt) {

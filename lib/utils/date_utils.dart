@@ -5,9 +5,12 @@ import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
 import 'package:tuple/tuple.dart';
 
 class DateUtils {
+  static final DateTime epoch = DateTime.fromMillisecondsSinceEpoch(0);
+
   /// Gives the date in the format [yyyyMMdd], no locale ->
   /// [Date]: 20191113
   static String convertDate(DateTime date) {
+    if (date == epoch) return '';
     final formatter = DateFormat('yyyyMMdd');
     return formatter.format(date);
   }
@@ -15,6 +18,8 @@ class DateUtils {
   /// Gives the date in the format [dd MMMM yyyy], no locale
   /// [Date]: 07 January 2020
   static String convertDateForLessons(DateTime date) {
+    if (date == epoch) return '';
+
     final formatter = DateFormat("dd MMMM yyyy");
     return formatter.format(date);
   }
@@ -22,17 +27,23 @@ class DateUtils {
   /// Gives the date in the format [dd MMMM yy], no locale
   /// [Date]: 07 January 20
   static String convertDateForDisplay(DateTime date) {
+    if (date == epoch) return '';
+
     final formatter = DateFormat('dd MMMM yy');
     return formatter.format(date);
   }
 
   static String convertMonthForDisplay(DateTime date, String locale) {
+    if (date == epoch) return '';
+
     final formatter = DateFormat.MMM(locale);
     return formatter.format(date);
   }
 
   /// [Hm] format
   static String convertTimeForDisplay(DateTime date, String locale) {
+    if (date == epoch) return '';
+
     final formatter = DateFormat.Hm(locale);
     return formatter.format(date);
   }
@@ -43,11 +54,15 @@ class DateUtils {
   }
 
   static String convertSingleDayShortForDisplay(DateTime date, String locale) {
+    if (date == epoch) return '';
+
     final formatter = DateFormat.E(locale);
     return formatter.format(date);
   }
 
   static String convertMonthLocale(DateTime date, String locale) {
+    if (date == epoch) return '';
+
     final formatter = DateFormat.MMMM(locale);
     return formatter.format(date);
   }
@@ -65,11 +80,15 @@ class DateUtils {
   }
 
   static String convertDateLocale(DateTime date, String locale) {
+    if (date == epoch) return '';
+
     final formatter = DateFormat.yMMMMd(locale);
     return formatter.format(date);
   }
 
   static String convertDateLocaleDashboard(DateTime date, String locale) {
+    if (date == epoch) return '';
+
     final formatter = DateFormat.MMMMEEEEd(locale);
     return formatter.format(date);
   }
@@ -128,11 +147,12 @@ class DateUtils {
   /// The spaggiari API returns the date in the following
   /// format: [20191112], this function converts this [string] into a [date]
   static DateTime getDateFromApiString(String date) {
+    if (date == null) return null;
     final parts = date.split('-');
     return DateTime.utc(
-      int.parse(parts[0]),
-      int.parse(parts[1]),
-      int.parse(parts[2]),
+      int.tryParse(parts[0]),
+      int.tryParse(parts[1]),
+      int.tryParse(parts[2]),
     );
   }
 

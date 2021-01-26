@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
+import 'package:registro_elettronico/feature/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
-import 'package:registro_elettronico/feature/login/presentation/bloc/auth_bloc.dart';
-import 'package:registro_elettronico/feature/profile/data/model/profile_entity.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/feature/authentication/domain/model/profile_domain_model.dart';
+import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/settings/widgets/account/account_settings.dart';
 import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view.dart';
 import 'package:registro_elettronico/utils/color_utils.dart';
@@ -136,7 +136,8 @@ class _AppDrawerState extends State<AppDrawer>
                             Text(AppLocalizations.of(context).translate('yes')),
                         onPressed: () {
                           Navigator.pop(context);
-                          BlocProvider.of<AuthBloc>(context).add(SignOut());
+                          BlocProvider.of<AuthenticationBloc>(context)
+                              .add(SignOut());
 
                           AppNavigator.instance.navToLogin(context);
                         },
@@ -353,9 +354,10 @@ class _AppDrawerState extends State<AppDrawer>
     );
   }
 
-  Future<Profile> _getUsername() async {
+  Future<ProfileDomainModel> _getUsername() async {
     final profile =
-        await RepositoryProvider.of<ProfileRepository>(context).getProfile();
+        await RepositoryProvider.of<AuthenticationRepository>(context)
+            .getProfile();
     return await profile;
   }
 

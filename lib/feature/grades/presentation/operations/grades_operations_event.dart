@@ -12,7 +12,7 @@ class ToggleGradeLocallyCancelledState extends GradesOperationsEvent {
 }
 
 class ChangeSubjectObjective extends GradesOperationsEvent {
-  final Subject subject;
+  final SubjectDomainModel subject;
   final int newValue;
 
   ChangeSubjectObjective({

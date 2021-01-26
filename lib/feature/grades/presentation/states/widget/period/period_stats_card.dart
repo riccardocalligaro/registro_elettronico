@@ -37,8 +37,11 @@ class PeriodStatsCard extends StatelessWidget {
                         ? Colors.white
                         : Colors.grey.withOpacity(0.3),
                     animationDuration: 300,
-                    center: Text(
-                        periodWithGradesDomainModel.average.toStringAsFixed(2)),
+                    center: Padding(
+                      padding: const EdgeInsets.only(top: 3),
+                      child: Text(periodWithGradesDomainModel.average
+                          .toStringAsFixed(2)),
+                    ),
                     progressColor: GlobalUtils.getColorFromAverage(
                       periodWithGradesDomainModel.average,
                     ),

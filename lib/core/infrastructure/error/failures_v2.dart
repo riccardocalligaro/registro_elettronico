@@ -39,6 +39,15 @@ class NetworkFailure extends Failure {
   }
 }
 
+class FunctionNotActivatedFailure extends Failure {
+  FunctionNotActivatedFailure();
+
+  @override
+  String localizedDescription(BuildContext context) {
+    return AppLocalizations.of(context).translate('function_not_activated');
+  }
+}
+
 class ServerFailure extends NetworkFailure {
   ServerFailure(this.dioError) : super(dioError: dioError);
 

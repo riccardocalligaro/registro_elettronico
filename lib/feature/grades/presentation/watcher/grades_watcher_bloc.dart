@@ -37,7 +37,10 @@ class GradesWatcherBloc extends Bloc<GradesWatcherEvent, GradesWatcherState> {
         yield GradesWatcherLoading();
       }
     } else if (event is RestartWatcher) {
-      await _gradesStreamSubscription.cancel();
+      if (_gradesStreamSubscription != null) {
+        await _gradesStreamSubscription.cancel();
+      }
+
       _gradesStreamSubscription =
           gradesRepository.watchAllGradesSections().listen((resource) {
         add(GradesReceived(resource: resource));

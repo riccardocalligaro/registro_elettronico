@@ -41,11 +41,12 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
               children: <Widget>[
                 Expanded(
                   child: Padding(
-                      padding: const EdgeInsets.only(
-                          right: 28.0, left: 0.0, top: 16.0),
-                      child: LineChart(
-                        absencesData(),
-                      )),
+                    padding: const EdgeInsets.only(
+                        right: 28.0, left: 0.0, top: 16.0),
+                    child: LineChart(
+                      absencesData(),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -122,7 +123,7 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
           reservedSize: 22,
           getTextStyles: (value) {
             return TextStyle(
-              color: const Color(0xff72719b),
+              color: Colors.white,
               fontSize: 12,
             );
           },

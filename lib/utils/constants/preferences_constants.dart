@@ -1,14 +1,4 @@
 class PrefsConstants {
-  static const NOTIFICATIONS = 'notifications';
-  static const GRADES_NOTIFICATIONS = 'grades_notifications';
-  static const AGENDA_NOTIFICATIONS = 'agenda_notifications';
-  static const LESSONS_NOTIFICATIONS = 'lessons_notifications';
-  static const NOTES_NOTIFICATIONS = 'notes_notifications';
-  static const ABSENCES_NOTIFICATIONS = 'absences_notifications';
-  static const FINAL_GRADES_NOTIFICATIONS = 'final_grades_notifications';
-  static const SCHOOL_MATERIAL_NOTIFICATIONS = 'school_material_notifications';
-  static const NOTICES_NOTIFICATIONS = 'notices_notifications';
-
   static const UPDATE_INTERVAL = 'update_interval';
   static const OVERALL_OBJECTIVE = 'overall_objective';
   static const PERIOD_TO_SHOW = 'period_to_show';
@@ -47,6 +37,12 @@ class PrefsConstants {
 
   static const profile = 'profile';
 
-  static const themeColor = 'themeColor';
-  static const themeType = 'themeType';
+  static const String themeColor = 'themeColor';
+  static const String themeType = 'themeType';
+
+  static const String databaseName = 'databaseName';
+  static const String databaseNameBeforeMigration = 'dbBeforeMigration';
+  static const String defaultDbName = 'registro';
+
+  static const String profilesList = 'profilesList';
 }

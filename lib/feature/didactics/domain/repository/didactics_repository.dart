@@ -1,32 +1,28 @@
-import 'package:dio/dio.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/feature/didactics/data/model/didactics_remote_models.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/remote/attachment/text_content_remote_model.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/remote/attachment/url_content_remote_model.dart';
+import 'package:registro_elettronico/feature/didactics/domain/model/content_domain_model.dart';
+import 'package:registro_elettronico/feature/didactics/domain/model/didactics_file.dart';
+import 'package:registro_elettronico/feature/didactics/domain/model/teacher_domain_model.dart';
 
 abstract class DidacticsRepository {
-  // Updates didactics from spaggiari
-  Future updateDidactics();
+  Stream<Resource<List<DidacticsTeacherDomainModel>>> watchTeachersMaterials();
 
-  // Read a file
-  Future<List<int>> getDidacticsFile();
+  Future<Either<Failure, Success>> updateMaterials({@required bool ifNeeded});
 
-  // Gets all the teachers
-  Future<List<DidacticsTeacher>> getTeachersGrouped();
+  Stream<Resource<DidacticsFile>> downloadFile({
+    @required ContentDomainModel contentDomainModel,
+  });
 
-  Future<List<DidacticsFolder>> getFolders();
+  Future<Either<Failure, TextContentRemoteModel>> downloadText({
+    @required ContentDomainModel contentDomainModel,
+  });
 
-  Future<List<DidacticsContent>> getContents();
-
-  Future<DownloadAttachmentTextResponse> getTextAtachment(int fileID);
-
-  Future<DownloadAttachmentURLResponse> getURLAtachment(int fileID);
-
-  Future<Response> getFileAttachment(int fileID);
-
-  Future insertDownloadedFile(DidacticsDownloadedFile downloadedFile);
-
-  Future<DidacticsDownloadedFile> getDownloadedFileFromContentId(int contentId);
-
-  Future deleteDownloadedFile(DidacticsDownloadedFile downloadedFile);
-
-  Future deleteAllDidactics();
+  Future<Either<Failure, URLContentRemoteModel>> downloadURL({
+    @required ContentDomainModel contentDomainModel,
+  });
 }

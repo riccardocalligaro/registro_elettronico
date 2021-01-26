@@ -13,7 +13,7 @@ class BlackTheme {
       // primaryColor: color,
       brightness: Brightness.dark,
       canvasColor: Colors.black,
-      fontFamily: 'Montserrat',
+      fontFamily: 'Manrope',
       appBarTheme: AppBarTheme(
         elevation: 0,
         color: Colors.black,
