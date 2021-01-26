@@ -20,9 +20,9 @@ class ProfessorRemoteModel {
 
   ProfessorLocalModel toLocalModel(int subjectId) {
     return ProfessorLocalModel(
-      id: this.teacherId,
-      subjectId: subjectId,
-      name: this.teacherName,
+      id: this.teacherId ?? -1,
+      subjectId: subjectId ?? -1,
+      name: this.teacherName ?? '',
     );
   }
 }

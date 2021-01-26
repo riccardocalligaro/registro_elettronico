@@ -85,9 +85,6 @@ class _DebugPageState extends State<DebugPage> {
           DebugButton(
             title: 'Get all profiles',
             onTap: () async {
-              final ProfilesLocalDatasource profilesLocalDatasource = sl();
-              final profiles = await profilesLocalDatasource.getAllProfiles();
-
               final FlutterSecureStorage flutterSecureStorage = sl();
               final values = await flutterSecureStorage.readAll();
               print(values);

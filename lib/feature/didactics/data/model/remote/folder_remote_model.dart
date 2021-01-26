@@ -23,7 +23,8 @@ class FolderRemoteModel {
       teacherId: teacherId ?? '',
       id: this.folderId ?? -1,
       name: this.folderName ?? -1,
-      lastShare: DateTime.parse(this.lastShareDT) ?? DateTime.now(),
+      lastShare: DateTime.tryParse(this.lastShareDT) ??
+          DateTime.fromMillisecondsSinceEpoch(0),
     );
   }
 

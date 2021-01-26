@@ -83,7 +83,7 @@ class GradeDomainModel {
     return LocalGrade(
       subjectId: this.subjectId ?? .1,
       id: this.evtId ?? -1,
-      eventDate: this.eventDate ?? DateTime.now(),
+      eventDate: this.eventDate ?? DateTime.fromMillisecondsSinceEpoch(0),
       decimalValue: this.decimalValue ?? -1,
       displayValue: this.displayValue ?? '',
       cancelled: this.cancelled ?? false,
@@ -98,7 +98,7 @@ class GradeDomainModel {
       subjectDesc: this.subjectDesc ?? '',
       evtId: this.evtId ?? -1,
       evtCode: this.evtCode ?? '',
-      eventDate: this.eventDate ?? DateTime.now(),
+      eventDate: this.eventDate ?? DateTime.fromMillisecondsSinceEpoch(0),
       decimalValue: this.decimalValue ?? -1,
       displayValue: this.displayValue ?? -1,
       displayPos: this.displayPos ?? -1,

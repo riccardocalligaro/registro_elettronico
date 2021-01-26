@@ -31,8 +31,9 @@ class DefaultLoginResponseRemoteModel {
       firstName: this.firstName ?? "",
       lastName: this.lastName ?? "",
       token: this.token ?? "",
-      release: DateTime.parse(this.release) ?? DateTime.now(),
-      expire: DateTime.parse(this.expire) ?? DateTime.now(),
+      release: DateTime.tryParse(this.release) ?? DateTime.now(),
+      expire: DateTime.tryParse(this.expire) ??
+          DateTime.fromMillisecondsSinceEpoch(0),
       currentlyLoggedIn: currentlyLoggedIn,
       dbName: dbName,
     );
@@ -45,8 +46,9 @@ class DefaultLoginResponseRemoteModel {
       firstName: this.firstName ?? "",
       lastName: this.lastName ?? "",
       token: this.token ?? "",
-      release: DateTime.parse(this.release) ?? DateTime.now(),
-      expire: DateTime.parse(this.expire) ?? DateTime.now(),
+      release: DateTime.tryParse(this.release) ?? DateTime.now(),
+      expire: DateTime.tryParse(this.expire) ??
+          DateTime.fromMillisecondsSinceEpoch(0),
       currentlyLoggedIn: d.currentlyLoggedIn,
       dbName: d.dbName,
     );

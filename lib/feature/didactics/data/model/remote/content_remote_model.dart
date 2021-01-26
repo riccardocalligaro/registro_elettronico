@@ -23,7 +23,8 @@ class ContentRemoteModel {
       name: this.contentName ?? '',
       objectId: this.objectId - 1,
       type: this.objectType ?? -1,
-      date: DateTime.parse(this.shareDT) ?? DateTime.now(),
+      date: DateTime.tryParse(this.shareDT) ??
+          DateTime.fromMillisecondsSinceEpoch(0),
     );
   }
 

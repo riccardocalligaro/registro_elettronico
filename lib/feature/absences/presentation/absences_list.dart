@@ -157,7 +157,7 @@ class AbsencesList extends StatelessWidget {
   /// The list of absences that are not justified
   Widget _buildNotJustifiedAbsences(
       Map<Absence, int> absences, BuildContext context) {
-    final notJustifiedAbsences = Map.fromIterable(
+    final Map<Absence, int> notJustifiedAbsences = Map.fromIterable(
         absences.keys.where((absence) => absence.isJustified == false),
         key: (k) => k,
         value: (k) => absences[k]);
@@ -176,6 +176,7 @@ class AbsencesList extends StatelessWidget {
               (index) {
                 final absence = notJustifiedAbsences.keys.elementAt(index);
                 final days = notJustifiedAbsences[absence];
+
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: AbsenceCard(
@@ -194,7 +195,7 @@ class AbsencesList extends StatelessWidget {
 
   Widget _buildJustifiedAbsences(
       Map<Absence, int> absences, BuildContext context) {
-    final justifiedAbsences = Map.fromIterable(
+    final Map<Absence, int> justifiedAbsences = Map.fromIterable(
         absences.keys.where((absence) => absence.isJustified == true),
         key: (k) => k,
         value: (k) => absences[k]);
@@ -262,6 +263,10 @@ class AbsencesList extends StatelessWidget {
     DateTime next = DateTime.now();
 
     for (int i = 0; i < absences.length; i++) {
+      if (absences[i].evtDate == DateTime.fromMillisecondsSinceEpoch(0)) {
+        continue;
+      }
+
       if (start == null) {
         start = absences[i];
         days = 1;

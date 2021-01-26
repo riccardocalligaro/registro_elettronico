@@ -17,7 +17,13 @@ class GradesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (grades.isEmpty) {
-      return EmptyGradesPlaceholder();
+      return Container(
+        height: MediaQuery.of(context).size.height -
+            170 -
+            MediaQuery.of(context).viewPadding.top,
+        width: MediaQuery.of(context).size.width,
+        child: EmptyGradesPlaceholder(),
+      );
     }
 
     return RefreshIndicator(

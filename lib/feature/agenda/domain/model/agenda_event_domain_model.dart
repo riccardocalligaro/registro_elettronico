@@ -51,17 +51,17 @@ class AgendaEventDomainModel {
 
   AgendaEventLocalModel toLocalModel() {
     return AgendaEventLocalModel(
-      evtId: this.id,
-      evtCode: this.code,
-      begin: this.begin,
-      end: this.end,
-      isFullDay: this.isFullDay,
-      notes: this.notes,
-      authorName: this.author,
-      classDesc: this.className,
+      evtId: this.id ?? -1,
+      evtCode: this.code ?? '',
+      begin: this.begin ?? DateTime.fromMillisecondsSinceEpoch(0),
+      end: this.end ?? DateTime.fromMillisecondsSinceEpoch(0),
+      isFullDay: this.isFullDay ?? false,
+      notes: this.notes ?? '',
+      authorName: this.author ?? '',
+      classDesc: this.className ?? '',
       subjectId: this.subjectId ?? 0,
       subjectDesc: this.subjectName ?? '',
-      isLocal: this.isLocal,
+      isLocal: this.isLocal ?? false,
       labelColor: this.labelColor,
       title: this.title ?? '',
     );

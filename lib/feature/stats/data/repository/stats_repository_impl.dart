@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
@@ -193,26 +194,32 @@ class StatsRepositoryImpl implements StatsRepository {
               GradesUtils.getMinSchoolCredits(secondTermAverage, year);
         }
 
-        final score = _getUserScore(
-          absences: absences,
-          grades: domainGrades,
-          notes: notes,
-          skippedTests: skippedTestsForAbsences,
-          average: average,
-          nearlySufficientSubjects: nearlySufficientiSubjectsCount,
-          insufficientSubjects: insufficientiSubjectsCount,
-          events: events,
-          nearlySufficientGrades: insufficienzeLieviCount,
-          insufficientGrades: insufficienzeCount,
-          sufficientGrades: sufficienzeCount,
-          gravementeInsufficientGrades: insufficienzeGraviCount,
-          totalGrades: gradesCount,
-          gravementeInsufficientSubjects: gravementeInsufficientiSubjectsCount,
-        );
+        double score;
+        try {
+          score = _getUserScore(
+            absences: absences,
+            grades: domainGrades,
+            notes: notes,
+            skippedTests: skippedTestsForAbsences,
+            average: average,
+            nearlySufficientSubjects: nearlySufficientiSubjectsCount,
+            insufficientSubjects: insufficientiSubjectsCount,
+            events: events,
+            nearlySufficientGrades: insufficienzeLieviCount,
+            insufficientGrades: insufficienzeCount,
+            sufficientGrades: sufficienzeCount,
+            gravementeInsufficientGrades: insufficienzeGraviCount,
+            totalGrades: gradesCount,
+            gravementeInsufficientSubjects:
+                gravementeInsufficientiSubjectsCount,
+          );
+        } catch (e, s) {
+          handleError(e, s);
+        }
 
         return Right(
           StudentReport(
-            score: score,
+            score: score ?? -1,
             average: average,
             firstTermAverage: firstTermAverage,
             secondTermAverage: secondTermAverage,
