@@ -15,7 +15,13 @@ class PeriodTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (periodWithGradesDomainModel.grades.isEmpty) {
-      return EmptyGradesPlaceholder();
+      return Container(
+        height: MediaQuery.of(context).size.height -
+            152 -
+            MediaQuery.of(context).viewPadding.top,
+        width: MediaQuery.of(context).size.width,
+        child: EmptyGradesPlaceholder(),
+      );
     }
 
     return ListView(

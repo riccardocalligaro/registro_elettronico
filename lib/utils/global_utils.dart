@@ -522,10 +522,25 @@ class GlobalUtils {
   /// `friday at the 4 hour`
   static String getEventDateMessage(
       BuildContext context, DateTime date, bool isFullDay) {
+    final now = DateTime.now();
+
+    if (DateUtils.areSameDay(now, date)) {
+      if (isFullDay) {
+        return '${AppLocalizations.of(context).translate('today_all_day').toLowerCase()}';
+      }
+      return AppLocalizations.of(context)
+          .translate('today_at')
+          .replaceAll(
+            '{hour}',
+            date.hour.toString(),
+          )
+          .toLowerCase();
+    }
+
+    final Duration diff = date.difference(now);
+
     String dateString = DateUtils.convertDateLocaleDashboard(
         date, AppLocalizations.of(context).locale.toString());
-
-    final Duration diff = date.difference(DateTime.now());
 
     if (diff.inDays == 0) {
       dateString =

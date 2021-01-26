@@ -135,10 +135,13 @@ class AbsencesList extends StatelessWidget {
           percent: percent,
           animation: withAnimation,
           animationDuration: 300,
-          center: Text(
-            numberOfEvent.toString(),
-            style: TextStyle(
-              fontSize: 18,
+          center: Padding(
+            padding: const EdgeInsets.only(top: 3),
+            child: Text(
+              numberOfEvent.toString(),
+              style: TextStyle(
+                fontSize: 18,
+              ),
             ),
           ),
           progressColor: color,

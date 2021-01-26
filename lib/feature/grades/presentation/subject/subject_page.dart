@@ -207,8 +207,11 @@ class _AveragesCard extends StatelessWidget {
       percent: (average / 10).isNaN ? 0.0 : average / 10,
       animation: true,
       animationDuration: 300,
-      center: Text(
-        average.isNaN ? "-" : average.toStringAsFixed(2),
+      center: Padding(
+        padding: const EdgeInsets.only(top: 3),
+        child: Text(
+          average.isNaN ? "-" : average.toStringAsFixed(2),
+        ),
       ),
       progressColor: GlobalUtils.getColorFromAverage(average),
     );

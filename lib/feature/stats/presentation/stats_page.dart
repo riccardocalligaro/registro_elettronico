@@ -247,7 +247,7 @@ class _StatsPageState extends State<StatsPage> {
               animation: true,
               animationDuration: 300,
               center: IconButton(
-                icon: Icon(Icons.info),
+                icon: const Icon(Icons.info),
                 onPressed: () async {
                   await showDialog(
                     context: context,
@@ -346,18 +346,21 @@ class _StatsPageState extends State<StatsPage> {
                       backgroundColor: Colors.white,
                       animation: true,
                       animationDuration: 300,
-                      center: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          AutoSizeText(report.firstTermAverage.isNaN
-                              ? '-'
-                              : report.firstTermAverage.toStringAsFixed(2)),
-                          AutoSizeText(
-                            'Q1',
-                            style: TextStyle(fontSize: 12),
-                            textScaleFactor: 1.0,
-                          )
-                        ],
+                      center: Padding(
+                        padding: const EdgeInsets.only(top: 3),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            AutoSizeText(report.firstTermAverage.isNaN
+                                ? '-'
+                                : report.firstTermAverage.toStringAsFixed(2)),
+                            AutoSizeText(
+                              'Q1',
+                              style: TextStyle(fontSize: 12),
+                              textScaleFactor: 1.0,
+                            )
+                          ],
+                        ),
                       ),
                       progressColor: GlobalUtils.getColorFromAverage(
                         report.firstTermAverage,
@@ -375,17 +378,20 @@ class _StatsPageState extends State<StatsPage> {
                       backgroundColor: Colors.white,
                       animation: true,
                       animationDuration: 300,
-                      center: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(report.secondTermAverage.isNaN
-                              ? '-'
-                              : report.secondTermAverage.toStringAsFixed(2)),
-                          Text(
-                            'Q2',
-                            style: TextStyle(fontSize: 12),
-                          )
-                        ],
+                      center: Padding(
+                        padding: const EdgeInsets.only(top: 3),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(report.secondTermAverage.isNaN
+                                ? '-'
+                                : report.secondTermAverage.toStringAsFixed(2)),
+                            Text(
+                              'Q2',
+                              style: TextStyle(fontSize: 12),
+                            )
+                          ],
+                        ),
                       ),
                       progressColor: GlobalUtils.getColorFromAverage(
                           report.secondTermAverage),
@@ -400,17 +406,20 @@ class _StatsPageState extends State<StatsPage> {
                       backgroundColor: Colors.white,
                       animation: true,
                       animationDuration: 300,
-                      center: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(report.average.isNaN
-                              ? '-'
-                              : report.average.toStringAsFixed(2)),
-                          Text(
-                            AppLocalizations.of(context).translate('year'),
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
+                      center: Padding(
+                        padding: const EdgeInsets.only(top: 3),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(report.average.isNaN
+                                ? '-'
+                                : report.average.toStringAsFixed(2)),
+                            Text(
+                              AppLocalizations.of(context).translate('year'),
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
                       ),
                       progressColor: GlobalUtils.getColorFromAverage(
                         report.average,

@@ -8,7 +8,6 @@ import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.da
 import 'package:registro_elettronico/core/presentation/custom/sr_search_empty_view.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/model/notice_domain_model.dart';
-import 'package:registro_elettronico/feature/noticeboard/domain/repository/noticeboard_repository.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/watcher/noticeboard_watcher_bloc.dart';
 import 'package:registro_elettronico/utils/update_manager.dart';
 
@@ -53,23 +52,30 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
     return Scaffold(
       appBar: _searchBar.build(context),
       key: noticeboardScaffold,
-      body: BlocBuilder<NoticeboardWatcherBloc, NoticeboardWatcherState>(
-        builder: (context, state) {
-          if (state is NoticeboardWatcherLoadSuccess) {
-            if (state.notices.isEmpty) {
-              return _NoticesEmpty();
+      body: RefreshIndicator(
+        key: noticeboardRefresherKey,
+        onRefresh: () {
+          final SRUpdateManager srUpdateManager = sl();
+          return srUpdateManager.updateNoticeboardData(context);
+        },
+        child: BlocBuilder<NoticeboardWatcherBloc, NoticeboardWatcherState>(
+          builder: (context, state) {
+            if (state is NoticeboardWatcherLoadSuccess) {
+              if (state.notices.isEmpty) {
+                return _NoticesEmpty();
+              }
+
+              return _NoticesLoaded(
+                notices: state.notices,
+                query: _searchQuery,
+              );
+            } else if (state is NoticeboardWatcherFailure) {
+              return SRFailureView(failure: state.failure);
             }
 
-            return _NoticesLoaded(
-              notices: state.notices,
-              query: _searchQuery,
-            );
-          } else if (state is NoticeboardWatcherFailure) {
-            return SRFailureView(failure: state.failure);
-          }
-
-          return SRLoadingView();
-        },
+            return SRLoadingView();
+          },
+        ),
       ),
     );
   }
@@ -95,8 +101,7 @@ class _NoticesEmpty extends StatelessWidget {
       icon: Icons.email,
       showUpdate: true,
       onTap: () {
-        final NoticeboardRepository noticeboardRepository = sl();
-        return noticeboardRepository.updateNotices(ifNeeded: false);
+        noticeboardRefresherKey.currentState.show();
       },
       text: AppLocalizations.of(context).translate('no_notices'),
     );
@@ -127,21 +132,14 @@ class _NoticesLoaded extends StatelessWidget {
       return SrSearchEmptyView();
     }
 
-    return RefreshIndicator(
-      key: noticeboardRefresherKey,
-      onRefresh: () {
-        final SRUpdateManager srUpdateManager = sl();
-        return srUpdateManager.updateNoticeboardData(context);
+    return ListView.builder(
+      itemCount: noticesToShow.length,
+      padding: const EdgeInsets.all(12.0),
+      itemBuilder: (context, index) {
+        return NoticeCard(
+          notice: noticesToShow[index],
+        );
       },
-      child: ListView.builder(
-        itemCount: noticesToShow.length,
-        padding: const EdgeInsets.all(12.0),
-        itemBuilder: (context, index) {
-          return NoticeCard(
-            notice: noticesToShow[index],
-          );
-        },
-      ),
     );
   }
 

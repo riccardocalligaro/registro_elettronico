@@ -34,85 +34,89 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
       body: BlocBuilder<GradesWatcherBloc, GradesWatcherState>(
         builder: (context, state) {
           if (state is GradesWatcherLoadSuccess) {
-            if (state.gradesSections == null) {
-              return _EmptyGrades(
-                onTap: () {
-                  _refreshData(state.gradesSections);
-                },
-              );
+            List<StatelessWidget> widgets;
+
+            if (state.gradesSections != null) {
+              widgets = [
+                GradesTab(
+                  grades: state.gradesSections.grades,
+                ),
+                ...List.generate(
+                  state.gradesSections.periods,
+                  (index) {
+                    return PeriodTab(
+                      periodWithGradesDomainModel:
+                          state.gradesSections.periodsWithGrades[index],
+                    );
+                  },
+                ),
+              ];
             }
-            final widgets = [
-              GradesTab(
-                grades: state.gradesSections.grades,
-              ),
-              ...List.generate(
-                state.gradesSections.periods,
-                (index) {
-                  return PeriodTab(
-                    periodWithGradesDomainModel:
-                        state.gradesSections.periodsWithGrades[index],
-                  );
-                },
-              ),
-            ];
 
             return RefreshIndicator(
               key: gradesRefresherKey,
               onRefresh: () {
                 return _refreshData(state.gradesSections);
               },
-              child: ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 0.0, 0),
-                    child: Container(
-                      height: 44,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: ActionChip(
-                              label: Text(AppLocalizations.of(context)
-                                  .translate('last_grades')),
-                              onPressed: () {
-                                setState(() {
-                                  _currentPage = 0;
-                                });
-                              },
-                              backgroundColor: _chipBackgroundColor(0),
+              child: state.gradesSections == null
+                  ? _EmptyGrades(
+                      onTap: () {
+                        gradesRefresherKey.currentState.show();
+                      },
+                    )
+                  : ListView(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 8, 0.0, 0),
+                          child: Container(
+                            height: 44,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: ActionChip(
+                                    label: Text(AppLocalizations.of(context)
+                                        .translate('last_grades')),
+                                    onPressed: () {
+                                      setState(() {
+                                        _currentPage = 0;
+                                      });
+                                    },
+                                    backgroundColor: _chipBackgroundColor(0),
+                                  ),
+                                ),
+                                ...List.generate(state.gradesSections.periods,
+                                    (index) {
+                                  final position = index + 1;
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: ActionChip(
+                                      label: Text(position ==
+                                              state.gradesSections.periods
+                                          ? AppLocalizations.of(context)
+                                              .translate('general')
+                                          : AppLocalizations.of(context)
+                                              .translate('term_chip')
+                                              .replaceAll('{number}',
+                                                  position.toString())),
+                                      onPressed: () {
+                                        setState(() {
+                                          _currentPage = position;
+                                        });
+                                      },
+                                      backgroundColor:
+                                          _chipBackgroundColor(position),
+                                    ),
+                                  );
+                                }),
+                              ],
                             ),
                           ),
-                          ...List.generate(state.gradesSections.periods,
-                              (index) {
-                            final position = index + 1;
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: ActionChip(
-                                label: Text(position ==
-                                        state.gradesSections.periods
-                                    ? AppLocalizations.of(context)
-                                        .translate('general')
-                                    : AppLocalizations.of(context)
-                                        .translate('term_chip')
-                                        .replaceAll(
-                                            '{number}', position.toString())),
-                                onPressed: () {
-                                  setState(() {
-                                    _currentPage = position;
-                                  });
-                                },
-                                backgroundColor: _chipBackgroundColor(position),
-                              ),
-                            );
-                          }),
-                        ],
-                      ),
+                        ),
+                        widgets.elementAt(_currentPage),
+                      ],
                     ),
-                  ),
-                  widgets.elementAt(_currentPage),
-                ],
-              ),
             );
           } else if (state is GradesWatcherFailure) {
             return GradesFailure(failure: state.failure);

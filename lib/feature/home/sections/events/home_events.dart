@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
+import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/watcher/agenda_watcher_bloc.dart';
+import 'package:registro_elettronico/feature/home/home_page.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
@@ -26,10 +28,18 @@ class HomeEvents extends StatelessWidget {
             child: _AgendaLoaded(events: state.agendaDataDomainModel.events),
           );
         } else if (state is AgendaWatcherFailure) {
-          return SRFailureView(failure: state.failure);
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 28.0),
+            child: SRFailureView(
+              failure: state.failure,
+              refresh: homeRefresherKey.currentState.show,
+            ),
+          );
         }
 
-        return _AgendaEmpty();
+        return _AgendaEmpty(
+          showUpdate: false,
+        );
       },
     );
   }
@@ -166,25 +176,23 @@ class _AgendaLoaded extends StatelessWidget {
 }
 
 class _AgendaEmpty extends StatelessWidget {
-  const _AgendaEmpty({Key key}) : super(key: key);
+  final bool showUpdate;
+  const _AgendaEmpty({
+    Key key,
+    this.showUpdate = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 54.0),
-      child: Center(
-        child: Column(
-          children: <Widget>[
-            Icon(
-              Icons.calendar_today,
-              size: 64,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(AppLocalizations.of(context).translate('no_events'))
-          ],
-        ),
+      child: CustomPlaceHolder(
+        text: AppLocalizations.of(context).translate('no_events'),
+        icon: Icons.event,
+        showUpdate: showUpdate,
+        onTap: () {
+          homeRefresherKey.currentState.show();
+        },
       ),
     );
   }

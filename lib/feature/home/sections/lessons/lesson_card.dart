@@ -7,12 +7,12 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
-class OldLessonCard extends StatelessWidget {
+class LessonCard extends StatelessWidget {
   final LessonDomainModel lesson;
   final int position;
   final int duration;
 
-  const OldLessonCard({
+  const LessonCard({
     Key key,
     @required this.lesson,
     @required this.position,
@@ -32,12 +32,12 @@ class OldLessonCard extends StatelessWidget {
         onLongPress: () {
           final trans = AppLocalizations.of(context);
 
-          String message = "";
+          String message = '';
 
           message +=
               '${trans.translate('author')}: ${StringUtils.titleCase(lesson.author)}';
           message +=
-              "\n${trans.translate('date')}: ${DateUtils.convertDateForLessons(lesson.date)}";
+              '\n${trans.translate('date')}: ${DateUtils.convertDateForLessons(lesson.date)}';
           message += '\n${lesson.lessonArgoment}';
 
           Share.text(AppLocalizations.of(context).translate('share'), message,

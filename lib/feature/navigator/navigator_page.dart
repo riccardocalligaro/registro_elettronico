@@ -112,4 +112,10 @@ class _NavigatorPageState extends State<NavigatorPage> {
       ],
     );
   }
+
+  void goToGradesPage() {
+    setState(() {
+      _currentPage = grades;
+    });
+  }
 }

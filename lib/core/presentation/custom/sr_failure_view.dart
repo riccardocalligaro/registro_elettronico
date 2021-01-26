@@ -28,7 +28,7 @@ class SRFailureView extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            padding: const EdgeInsets.symmetric(horizontal: 1.0),
             child: Text(
               failure.localizedDescription(context),
               textAlign: TextAlign.center,

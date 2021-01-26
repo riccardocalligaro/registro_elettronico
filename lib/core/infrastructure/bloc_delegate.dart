@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/feature/absences/presentation/bloc/absences_bloc.dart';
 import 'package:registro_elettronico/feature/authentication/presentation/token/token_bloc.dart';
 import 'package:registro_elettronico/feature/core_container.dart';
 import 'package:registro_elettronico/feature/notes/presentation/bloc/attachments/note_attachments_bloc.dart';
@@ -17,6 +18,9 @@ class AppBlocDelegate {
   AppBlocDelegate._(BuildContext context) {
     _blocProviders = [
       ...CoreContainer.getBlocProviders(),
+      BlocProvider<AbsencesBloc>(
+        create: (ctx) => AbsencesBloc(absencesRepository: sl()),
+      ),
       BlocProvider<NotesBloc>(
         create: (ctx) => NotesBloc(notesRepository: sl()),
       ),

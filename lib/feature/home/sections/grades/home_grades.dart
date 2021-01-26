@@ -1,3 +1,4 @@
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
@@ -6,6 +7,7 @@ import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholde
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/feature/grades/presentation/updater/grades_updater_bloc.dart';
 import 'package:registro_elettronico/feature/grades/presentation/watcher/grades_watcher_bloc.dart';
+import 'package:registro_elettronico/feature/home/home_page.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
@@ -49,11 +51,32 @@ class HomeGrades extends StatelessWidget {
             ),
           );
         } else if (state is GradesWatcherFailure) {
-          return _LastGradesError(failure: state.failure);
+          return _withHeading(
+            _LastGradesError(failure: state.failure),
+            context,
+          );
         }
 
-        return _LastGradesLoading();
+        return _withHeading(_LastGradesLoading(), context);
       },
+    );
+  }
+
+  Widget _withHeading(Widget widget, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 16,
+          ),
+          Text(
+            AppLocalizations.of(context).translate('last_grades'),
+          ),
+          widget
+        ],
+      ),
     );
   }
 }
@@ -84,53 +107,77 @@ class _LastGradesLoaded extends StatelessWidget {
         child: CustomPlaceHolder(
           icon: Icons.timeline,
           text: AppLocalizations.of(context).translate('no_grades'),
-          showUpdate: false,
+          showUpdate: true,
+          onTap: () {
+            homeRefresherKey.currentState.show();
+          },
         ),
       );
     }
   }
 
   Widget _buildListViewCard(GradeDomainModel grade, BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
-      child: ListTile(
-        leading: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),
-          child: Container(
-            height: 20,
-            width: 20,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: GlobalUtils.getColorFromGrade(grade),
+    return GestureDetector(
+      onLongPress: () {
+        final trans = AppLocalizations.of(context);
+
+        String message = "";
+
+        final gradeSubject = grade.subjectDesc.length > 35
+            ? StringUtils.titleCase(
+                GlobalUtils.reduceSubjectTitleWithLength(grade.subjectDesc, 34))
+            : StringUtils.titleCase(grade.subjectDesc);
+        final date = DateUtils.convertDateLocale(
+            grade.eventDate, AppLocalizations.of(context).locale.toString());
+
+        message += '${trans.translate('author')}: $gradeSubject';
+        message += "\n${trans.translate('date')}: $date";
+        message += '\n${grade.displayValue}';
+
+        Share.text(AppLocalizations.of(context).translate('share'), message,
+            'text/plain');
+      },
+      child: Card(
+        margin: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
+        child: ListTile(
+          leading: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),
+            child: Container(
+              height: 20,
+              width: 20,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: GlobalUtils.getColorFromGrade(grade),
+              ),
             ),
           ),
-        ),
-        title: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                grade.subjectDesc.length > 35
-                    ? StringUtils.titleCase(
-                        GlobalUtils.reduceSubjectTitleWithLength(
-                            grade.subjectDesc, 34))
-                    : StringUtils.titleCase(grade.subjectDesc),
-                style: TextStyle(fontSize: 15),
-              ),
-              Text(
-                DateUtils.convertDateLocale(grade.eventDate,
-                    AppLocalizations.of(context).locale.toString()),
-                style: TextStyle(fontSize: 11),
-              )
-            ],
+          title: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  grade.subjectDesc.length > 35
+                      ? StringUtils.titleCase(
+                          GlobalUtils.reduceSubjectTitleWithLength(
+                              grade.subjectDesc, 34))
+                      : StringUtils.titleCase(grade.subjectDesc),
+                  style: TextStyle(fontSize: 15),
+                ),
+                Text(
+                  DateUtils.convertDateLocale(grade.eventDate,
+                      AppLocalizations.of(context).locale.toString()),
+                  style: TextStyle(fontSize: 11),
+                )
+              ],
+            ),
           ),
-        ),
-        trailing: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            grade.displayValue,
-            style: TextStyle(fontSize: 18),
+          trailing: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              grade.displayValue,
+              style: TextStyle(fontSize: 18),
+            ),
           ),
         ),
       ),
@@ -144,7 +191,7 @@ class _LastGradesLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 48.0),
+      padding: const EdgeInsets.symmetric(vertical: 52.0),
       child: Center(
         child: Column(
           children: <Widget>[

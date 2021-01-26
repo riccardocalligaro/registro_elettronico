@@ -351,5 +351,7 @@
   "change_profile_title": "Cambia profilo",
   "no_profiles": "Nessun profilo",
   "add_account": "Aggiungi account",
-  "search_no_results": "Nessun risultato"
+  "search_no_results": "Nessun risultato",
+  "today_at": "Oggi alle {hour}",
+  "today_all_day":"Oggi tutto il giorno"
 }

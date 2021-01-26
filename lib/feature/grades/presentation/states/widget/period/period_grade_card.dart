@@ -54,10 +54,16 @@ class PeriodGradeCard extends StatelessWidget {
                       : Colors.grey.withOpacity(0.3),
                   animation: true,
                   animationDuration: 300,
-                  center: Text(
-                    subjectData.average <= 0
-                        ? '-'
-                        : subjectData.average.toStringAsFixed(2),
+                  center: Padding(
+                    padding: const EdgeInsets.only(top: 3),
+                    child: Text(
+                      subjectData.average <= 0
+                          ? '-'
+                          : subjectData.average.toStringAsFixed(2),
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
                   ),
                   progressColor: _getColorFromAverage(subjectData.average),
                 ),

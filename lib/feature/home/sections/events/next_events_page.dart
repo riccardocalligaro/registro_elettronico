@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
+import 'package:registro_elettronico/utils/update_manager.dart';
 
 class NextEventsPage extends StatelessWidget {
   final List<AgendaEventDomainModel> events;
@@ -16,6 +19,25 @@ class NextEventsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     int currentMonth = -1;
     bool showMonth;
+
+    if (events.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context).translate('next_events'),
+          ),
+        ),
+        body: CustomPlaceHolder(
+          text: AppLocalizations.of(context).translate('no_events'),
+          icon: Icons.event,
+          showUpdate: true,
+          onTap: () {
+            final SRUpdateManager srUpdateManager = sl();
+            srUpdateManager.updateAgendaData(context);
+          },
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
