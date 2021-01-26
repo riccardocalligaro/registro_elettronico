@@ -23,6 +23,23 @@ class _AgendaPageState extends State<AgendaPage> {
     return BlocBuilder<AgendaWatcherBloc, AgendaWatcherState>(
       builder: (context, state) {
         if (state is AgendaWatcherLoadSuccess) {
+          if (state.agendaDataDomainModel == null ||
+              state.agendaDataDomainModel.allEvents.isEmpty) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(AppLocalizations.of(context).translate('agenda')),
+              ),
+              body: CustomPlaceHolder(
+                text: AppLocalizations.of(context).translate('no_events'),
+                icon: Icons.event,
+                showUpdate: true,
+                onTap: () {
+                  final SRUpdateManager srUpdateManager = sl();
+                  return srUpdateManager.updateAgendaData(context);
+                },
+              ),
+            );
+          }
           return AgendaLoaded(
             data: state.agendaDataDomainModel,
           );

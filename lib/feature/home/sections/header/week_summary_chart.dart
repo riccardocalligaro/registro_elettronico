@@ -92,8 +92,9 @@ class WeekSummaryChart extends StatelessWidget {
           reservedSize: 22,
           getTextStyles: (value) {
             return TextStyle(
-                fontSize: 12,
-                color: Theme.of(context).textTheme.headline6.color);
+              fontSize: 12,
+              color: Theme.of(context).textTheme.headline6.color,
+            );
           },
           getTitles: (value) {
             if (value <= 7) {
@@ -114,13 +115,9 @@ class WeekSummaryChart extends StatelessWidget {
               fontSize: 11,
             );
           },
-
           getTitles: (value) {
             return value.toStringAsFixed(0);
           },
-          //margin: 3,
-          //reservedSize: 28,
-          // margin: 12,
         ),
       ),
       borderData: FlBorderData(
@@ -134,18 +131,27 @@ class WeekSummaryChart extends StatelessWidget {
         LineChartBarData(
           spots: events,
           isCurved: true,
-          colors: [ColorUtils.getLessonCardColor(context)],
+          colors: [
+            ColorUtils.getLessonCardColor(context),
+          ],
           preventCurveOverShooting: true,
           barWidth: 1,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: true,
-            getDotPainter: (spot, percent, barData, index) =>
-                FlDotCirclePainter(
-              radius: 3,
-              color: Colors.transparent,
-              strokeColor: ColorUtils.getLessonCardColor(context),
-            ),
+            getDotPainter: (spot, percent, barData, index) {
+              Color color = Colors.transparent;
+
+              if (index == DateTime.now().weekday - 1) {
+                color = Colors.red;
+              }
+
+              return FlDotCirclePainter(
+                radius: 3,
+                color: color,
+                strokeColor: ColorUtils.getLessonCardColor(context),
+              );
+            },
           ),
           belowBarData: BarAreaData(
             show: true,

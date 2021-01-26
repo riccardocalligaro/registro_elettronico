@@ -11,14 +11,14 @@ import 'package:registro_elettronico/feature/noticeboard/domain/model/notice_dom
 import 'package:registro_elettronico/feature/noticeboard/presentation/attachment/attachment_download_bloc.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 
-import 'noticeboard_page.dart';
-
 class NoticeCard extends StatelessWidget {
   final NoticeDomainModel notice;
+  final Function showDownloadSnackbar;
 
   const NoticeCard({
     Key key,
     @required this.notice,
+    @required this.showDownloadSnackbar,
   }) : super(key: key);
 
   @override
@@ -141,15 +141,8 @@ class NoticeCard extends StatelessWidget {
                               notice: notice,
                             ),
                           );
-                          final snackBar = SnackBar(
-                            content: _DownloadAttachmentSnackbar(),
-                            duration: Duration(minutes: 1),
-                            behavior: SnackBarBehavior.floating,
-                          );
 
-                          noticeboardScaffold.currentState
-                            ..removeCurrentSnackBar()
-                            ..showSnackBar(snackBar);
+                          showDownloadSnackbar();
 
                           Navigator.pop(context);
                         },
@@ -191,52 +184,6 @@ class NoticeCard extends StatelessWidget {
     } else {
       return Left(FileNotExists());
     }
-  }
-}
-
-class _DownloadAttachmentSnackbar extends StatelessWidget {
-  const _DownloadAttachmentSnackbar({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<AttachmentDownloadBloc, AttachmentDownloadState>(
-      listener: (context, state) {
-        if (state is AttachmentDownloadSuccess ||
-            state is AttachmentDownloadFailure) {
-          Future.delayed(Duration(seconds: 3)).then((value) =>
-              noticeboardScaffold.currentState..removeCurrentSnackBar());
-        }
-        if (state is AttachmentDownloadSuccess) {
-          OpenFile.open(state.downloadedAttachment.file.path);
-        }
-      },
-      builder: (context, state) {
-        if (state is AttachmentDownloadSuccess) {
-          return Text(AppLocalizations.of(context)
-              .translate('file_downloaded_success'));
-        } else if (state is AttachmentDownloadFailure) {
-          return Text(AppLocalizations.of(context).translate('error_download'));
-        } else if (state is AttachmentDownloadInProgress) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context).translate('downloading'),
-              ),
-              Container(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(
-                  value: state.percentage,
-                ),
-              )
-            ],
-          );
-        }
-
-        return Text('');
-      },
-    );
   }
 }
 

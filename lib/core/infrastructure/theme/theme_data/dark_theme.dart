@@ -15,6 +15,8 @@ class DarkTheme {
         color: Colors.grey[900],
         brightness: Brightness.dark,
       ),
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+
       primaryTextTheme: TextTheme(
         headline6: TextStyle(color: Colors.white),
         headline5: heaingSmall.copyWith(color: Colors.white),

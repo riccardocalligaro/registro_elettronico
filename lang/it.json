@@ -353,5 +353,6 @@
   "add_account": "Aggiungi account",
   "search_no_results": "Nessun risultato",
   "today_at": "Oggi alle {hour}",
-  "today_all_day":"Oggi tutto il giorno"
+  "today_all_day":"Oggi tutto il giorno",
+  "updating_home_data": "Aggiornamento in corso"
 }

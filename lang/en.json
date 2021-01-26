@@ -353,5 +353,6 @@
   "add_account": "Add account",
   "search_no_results": "No results",
   "today_at": "Today at {hour}",
-  "today_all_day":"Today all day"
+  "today_all_day": "Today all day",
+  "updating_home_data": "Updating home data"
 }

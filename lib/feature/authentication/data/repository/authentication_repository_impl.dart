@@ -281,9 +281,11 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   Future<void> _restartApp() {
-    // if (!kDebugMode) {
-    return platform.invokeMethod('restartApp');
-    // }
+    if (!kDebugMode) {
+      return platform.invokeMethod('restartApp');
+    }
+
+    return null;
   }
 
   @override

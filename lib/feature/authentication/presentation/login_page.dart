@@ -2,13 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/gradient_red_button.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/login/parent_response_remote_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/login_request_domain_model.dart';
 import 'package:registro_elettronico/feature/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:registro_elettronico/feature/authentication/presentation/help_page.dart';
 import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
+import 'package:registro_elettronico/feature/navigator/navigator_page.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -40,7 +40,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: widget.fromChangeAccount
           ? AppBar(
-              title: Text('Aggiungi account'),
+              title:
+                  Text(AppLocalizations.of(context).translate('add_account')),
             )
           : null,
       body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
@@ -51,7 +52,13 @@ class _LoginPageState extends State<LoginPage> {
               _erorrMessage = state.failure.localizedDescription(context);
             });
           } else if (state is AuthenticationSuccess) {
-            AppNavigator.instance.navToHome(context);
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NavigatorPage(
+                  fromLogin: true,
+                ),
+              ),
+            );
           } else if (state is AuthenticationNeedsAccountSelection) {
             showDialog(
               context: context,

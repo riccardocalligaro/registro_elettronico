@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:open_file/open_file.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
@@ -11,6 +12,7 @@ import 'package:registro_elettronico/feature/noticeboard/domain/model/notice_dom
 import 'package:registro_elettronico/feature/noticeboard/presentation/watcher/noticeboard_watcher_bloc.dart';
 import 'package:registro_elettronico/utils/update_manager.dart';
 
+import 'attachment/attachment_download_bloc.dart';
 import 'notice_card.dart';
 
 final GlobalKey<ScaffoldState> noticeboardScaffold = GlobalKey();
@@ -51,7 +53,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _searchBar.build(context),
-      key: noticeboardScaffold,
+      // key: noticeboardScaffold,
       body: RefreshIndicator(
         key: noticeboardRefresherKey,
         onRefresh: () {
@@ -138,6 +140,17 @@ class _NoticesLoaded extends StatelessWidget {
       itemBuilder: (context, index) {
         return NoticeCard(
           notice: noticesToShow[index],
+          showDownloadSnackbar: () {
+            final snackBar = SnackBar(
+              content: _DownloadAttachmentSnackbar(),
+              duration: Duration(minutes: 1),
+              behavior: SnackBarBehavior.floating,
+            );
+
+            Scaffold.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(snackBar);
+          },
         );
       },
     );
@@ -154,5 +167,51 @@ class _NoticesLoaded extends StatelessWidget {
             .toLowerCase()
             .replaceAll(' ', '')
             .contains(lQuery);
+  }
+}
+
+class _DownloadAttachmentSnackbar extends StatelessWidget {
+  const _DownloadAttachmentSnackbar({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<AttachmentDownloadBloc, AttachmentDownloadState>(
+      listener: (context, state) {
+        if (state is AttachmentDownloadSuccess ||
+            state is AttachmentDownloadFailure) {
+          Future.delayed(Duration(seconds: 3))
+              .then((value) => Scaffold.of(context)..removeCurrentSnackBar());
+        }
+        if (state is AttachmentDownloadSuccess) {
+          OpenFile.open(state.downloadedAttachment.file.path);
+        }
+      },
+      builder: (context, state) {
+        if (state is AttachmentDownloadSuccess) {
+          return Text(AppLocalizations.of(context)
+              .translate('file_downloaded_success'));
+        } else if (state is AttachmentDownloadFailure) {
+          return Text(AppLocalizations.of(context).translate('error_download'));
+        } else if (state is AttachmentDownloadInProgress) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppLocalizations.of(context).translate('downloading'),
+              ),
+              Container(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  value: state.percentage,
+                ),
+              )
+            ],
+          );
+        }
+
+        return Text('');
+      },
+    );
   }
 }

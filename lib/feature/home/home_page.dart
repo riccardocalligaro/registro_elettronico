@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/home/sections/events/home_events.dart';
 import 'package:registro_elettronico/feature/home/sections/grades/home_grades.dart';
 import 'package:registro_elettronico/feature/home/sections/header/home_header.dart';
@@ -8,8 +9,35 @@ import 'package:registro_elettronico/utils/update_manager.dart';
 
 final GlobalKey<RefreshIndicatorState> homeRefresherKey = GlobalKey();
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  final bool fromLogin;
+
+  const HomePage({
+    Key key,
+    this.fromLogin = false,
+  }) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    if (widget.fromLogin) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context).translate('updating_home_data'),
+            ),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      });
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +54,7 @@ class HomePage extends StatelessWidget {
             HomeGrades(),
             // LESSONS
             HomeLessonsHeader(),
+
             SizedBox(
               height: 140,
               child: HomeLessons(),

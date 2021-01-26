@@ -10,7 +10,12 @@ import 'package:registro_elettronico/feature/noticeboard/presentation/noticeboar
 import 'package:registro_elettronico/utils/update_manager.dart';
 
 class NavigatorPage extends StatefulWidget {
-  NavigatorPage({Key key}) : super(key: key);
+  final bool fromLogin;
+
+  NavigatorPage({
+    Key key,
+    this.fromLogin = false,
+  }) : super(key: key);
 
   @override
   _NavigatorPageState createState() => _NavigatorPageState();
@@ -32,7 +37,9 @@ class _NavigatorPageState extends State<NavigatorPage> {
     unawaited(srUpdateManager.checkForUpdates());
 
     _pages = [
-      HomePage(),
+      HomePage(
+        fromLogin: widget.fromLogin,
+      ),
       GradesPage(),
       AgendaPage(),
       NoticeboardPage(),
