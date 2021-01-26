@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
               _erorrMessage = state.failure.localizedDescription(context);
             });
           } else if (state is AuthenticationSuccess) {
-            Navigator.of(context).push(
+            Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => NavigatorPage(
                   fromLogin: true,
@@ -132,106 +132,110 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildLoginInput() {
-    return Column(
-      children: <Widget>[
-        const SizedBox(
-          height: 30,
-        ),
-        TextField(
-          controller: _usernameController,
-          decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)
-                  .translate('login_username_input_field'),
-              errorText: _invalid ? _erorrMessage : null),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        TextField(
-          controller: _passwordController,
-          obscureText: true,
-          decoration: InputDecoration(
-            hintText: 'Password',
-            errorText: _invalid ? _erorrMessage : null,
+    return AutofillGroup(
+      child: Column(
+        children: <Widget>[
+          const SizedBox(
+            height: 30,
           ),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        GradientRedButton(
-          center: Text(
-            AppLocalizations.of(context).translate('log_in'),
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 19),
+          TextField(
+            controller: _usernameController,
+            decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)
+                    .translate('login_username_input_field'),
+                errorText: _invalid ? _erorrMessage : null),
+            autofillHints: [AutofillHints.username],
           ),
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
+          const SizedBox(
+            height: 30,
+          ),
+          TextField(
+            controller: _passwordController,
+            obscureText: true,
+            decoration: InputDecoration(
+              hintText: 'Password',
+              errorText: _invalid ? _erorrMessage : null,
+            ),
+            autofillHints: [AutofillHints.password],
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          GradientRedButton(
+            center: Text(
+              AppLocalizations.of(context).translate('log_in'),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 19),
+            ),
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
 
-            final username = _usernameController.text;
-            final password = _passwordController.text;
+              final username = _usernameController.text;
+              final password = _passwordController.text;
 
-            if (username != '' && password != '') {
-              BlocProvider.of<AuthenticationBloc>(context).add(
-                SignIn(
-                  loginRequestDomainModel: LoginRequestDomainModel(
-                    ident: username,
-                    pass: password,
-                    uid: username,
+              if (username != '' && password != '') {
+                BlocProvider.of<AuthenticationBloc>(context).add(
+                  SignIn(
+                    loginRequestDomainModel: LoginRequestDomainModel(
+                      ident: username,
+                      pass: password,
+                      uid: username,
+                    ),
+                  ),
+                );
+              } else {
+                setState(() {
+                  _invalid = true;
+                  _erorrMessage = AppLocalizations.of(context)
+                      .translate('all_fields_message');
+                });
+              }
+            },
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          if (kDebugMode)
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => DebugPage(),
+                  ),
+                );
+              },
+              child: Text('Debug'),
+            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                '${AppLocalizations.of(context).translate('secure')}. ',
+                style: TextStyle(color: Colors.grey),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  final url = RegistroConstants.WEBSITE;
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                child: Text(
+                  'Open source.',
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
                   ),
                 ),
-              );
-            } else {
-              setState(() {
-                _invalid = true;
-                _erorrMessage = AppLocalizations.of(context)
-                    .translate('all_fields_message');
-              });
-            }
-          },
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        if (kDebugMode)
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => DebugPage(),
-                ),
-              );
-            },
-            child: Text('Debug'),
-          ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '${AppLocalizations.of(context).translate('secure')}. ',
-              style: TextStyle(color: Colors.grey),
-            ),
-            GestureDetector(
-              onTap: () async {
-                final url = RegistroConstants.WEBSITE;
-                if (await canLaunch(url)) {
-                  await launch(url);
-                } else {
-                  throw 'Could not launch $url';
-                }
-              },
-              child: Text(
-                'Open source.',
-                style: TextStyle(
-                  color: Theme.of(context).accentColor,
-                ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 

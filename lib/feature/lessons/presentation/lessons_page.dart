@@ -5,6 +5,7 @@ import 'package:registro_elettronico/core/infrastructure/localizations/app_local
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_search_empty_view.dart';
+import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/watcher/lessons_watcher_bloc.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -59,6 +60,13 @@ class _LessonsPageState extends State<LessonsPage> {
       body: BlocBuilder<LessonsWatcherBloc, LessonsWatcherState>(
         builder: (context, state) {
           if (state is LessonsWatcherLoadSuccess) {
+            if (state.lessons.isEmpty) {
+              return CustomPlaceHolder(
+                text: AppLocalizations.of(context).translate('no_lessons'),
+                icon: Icons.subject,
+                showUpdate: true,
+              );
+            }
             return _LessonsLoaded(
               lessons: state.lessons,
               query: _searchQuery,

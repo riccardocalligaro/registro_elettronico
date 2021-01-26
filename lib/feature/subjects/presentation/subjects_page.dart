@@ -4,11 +4,13 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
+import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/lessons_page.dart';
 import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/feature/subjects/presentation/watcher/subjects_watcher_bloc.dart';
+import 'package:registro_elettronico/utils/update_manager.dart';
 
 class SubjectsPage extends StatefulWidget {
   const SubjectsPage({Key key}) : super(key: key);
@@ -36,6 +38,17 @@ class _SubjectsPageState extends State<SubjectsPage> {
       body: BlocBuilder<SubjectsWatcherBloc, SubjectsWatcherState>(
         builder: (context, state) {
           if (state is SubjectsWatcherLoadSuccess) {
+            if (state.subjects.isEmpty) {
+              return CustomPlaceHolder(
+                text: AppLocalizations.of(context).translate('no_subjects'),
+                icon: Icons.subject,
+                showUpdate: true,
+                onTap: () {
+                  SRUpdateManager srUpdateManager = sl();
+                  srUpdateManager.updateVitalData();
+                },
+              );
+            }
             return RefreshIndicator(
               onRefresh: () {
                 return _refreshPage();
