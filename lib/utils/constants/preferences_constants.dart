@@ -45,4 +45,5 @@ class PrefsConstants {
   static const String defaultDbName = 'registro';
 
   static const String profilesList = 'profilesList';
+  static const String beforeUpdate9 = 'beforeUpdate9';
 }

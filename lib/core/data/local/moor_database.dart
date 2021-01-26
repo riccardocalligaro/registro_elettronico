@@ -100,13 +100,15 @@ class SRDatabase extends _$SRDatabase {
   @override
   MigrationStrategy get migration => MigrationStrategy(
         onUpgrade: (Migrator m, int from, int to) async {
+          Logger.info('🗄️ [MIGRATIONS] From $from to $to');
+
           if (from == 1) {
-            Logger.info('🗄️ [MIGRATIONS] From $from to $to');
             await m.deleteTable(attachments.actualTableName);
             await m.createTable(attachments);
           }
           if (from < 3 && to == 3) {
-            await m.addColumn(grades, grades.hasSeenIt);
+            await m.deleteTable(attachments.actualTableName);
+            await m.createTable(attachments);
           }
           if (from < 4) {
             await m.deleteTable('profiles');

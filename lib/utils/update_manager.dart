@@ -53,9 +53,9 @@ class SRUpdateManager {
   });
 
   Future<void> checkForUpdates() async {
-    if (kDebugMode) {
-      return;
-    }
+    // if (kDebugMode) {
+    //   return;
+    // }
 
     final String databaseName =
         sharedPreferences.getString(PrefsConstants.databaseName);
