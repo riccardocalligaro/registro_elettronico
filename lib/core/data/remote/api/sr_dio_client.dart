@@ -80,8 +80,7 @@ class SRDioClient {
                     if (error.response != null &&
                         error.response.statusCode == 422) {
                       await authenticationRepository.logoutCurrentUser();
-                      await flutterSecureStorage.write(
-                          key: profile.ident, value: '');
+
                       unawaited(navigator.currentState.pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => LoginPage(),
