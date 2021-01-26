@@ -95,7 +95,7 @@ class SRDatabase extends _$SRDatabase {
   SRDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -106,11 +106,11 @@ class SRDatabase extends _$SRDatabase {
             await m.deleteTable(attachments.actualTableName);
             await m.createTable(attachments);
           }
+
           if (from < 3 && to == 3) {
-            await m.deleteTable(attachments.actualTableName);
-            await m.createTable(attachments);
-          }
-          if (from < 4) {
+            await m.addColumn(grades, grades.hasSeenIt).then((value) async {
+              await customStatement('UPDATE grades SET has_seen_it = true');
+            });
             await m.deleteTable('profiles');
             await m.createTable(agendaEventsTable);
             // attachments
