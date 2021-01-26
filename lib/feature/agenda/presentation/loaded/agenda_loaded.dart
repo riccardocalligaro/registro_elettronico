@@ -9,7 +9,6 @@ import 'package:registro_elettronico/core/presentation/custom/sr_search_empty_vi
 import 'package:registro_elettronico/core/presentation/widgets/unicorn_dialer.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
-import 'package:registro_elettronico/feature/agenda/presentation/agenda_page.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/events_list.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/updater/agenda_updater_bloc.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -74,7 +73,6 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
           _reactToListenerState(state);
         },
         child: RefreshIndicator(
-          key: agendaRefresherKey,
           onRefresh: () {
             final SRUpdateManager srUpdateManager = sl();
             return srUpdateManager.updateAgendaData(context);

@@ -15,7 +15,6 @@ import 'package:registro_elettronico/utils/update_manager.dart';
 import 'attachment/attachment_download_bloc.dart';
 import 'notice_card.dart';
 
-final GlobalKey<ScaffoldState> noticeboardScaffold = GlobalKey();
 final GlobalKey<RefreshIndicatorState> noticeboardRefresherKey = GlobalKey();
 
 class NoticeboardPage extends StatefulWidget {

@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart' show Colors;
+import 'package:flutter/material.dart' show Color;
 import 'package:moor/moor.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_remote_model.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 
 @DataClassName('AgendaEventLocalModel')
 class AgendaEventsTable extends Table {
@@ -30,6 +31,7 @@ class AgendaEventLocalModelConverter {
   static AgendaEventLocalModel fromRemoteModel(
     AgendaEventRemoteModel r,
     AgendaEventLocalModel l,
+    Color color,
   ) {
     return AgendaEventLocalModel(
       evtId: r.evtId ?? -1,
@@ -45,7 +47,9 @@ class AgendaEventLocalModelConverter {
       subjectId: r.subjectId ?? 0,
       subjectDesc: r.subjectDesc ?? '',
       isLocal: l != null ? l.isLocal : false,
-      labelColor: l != null ? l.labelColor : Colors.green.value.toString(),
+      labelColor: (l != null && l.labelColor != null)
+          ? l.labelColor
+          : GlobalUtils.getColorCode(color),
       title: l != null ? l.title : '',
     );
   }

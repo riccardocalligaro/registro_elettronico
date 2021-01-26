@@ -73,9 +73,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
               homeRefresherKey.currentState.show();
             }
           } else if (index == agenda) {
-            if (agendaRefresherKey.currentState != null) {
-              agendaRefresherKey.currentState.show();
-            }
+            srUpdateManager.updateAgendaData(context);
           } else if (index == grades) {
             if (gradesRefresherKey.currentState != null) {
               gradesRefresherKey.currentState.show();

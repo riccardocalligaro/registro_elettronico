@@ -8,8 +8,6 @@ import 'package:registro_elettronico/feature/agenda/presentation/loaded/agenda_l
 import 'package:registro_elettronico/feature/agenda/presentation/watcher/agenda_watcher_bloc.dart';
 import 'package:registro_elettronico/utils/update_manager.dart';
 
-final GlobalKey<RefreshIndicatorState> agendaRefresherKey = GlobalKey();
-
 class AgendaPage extends StatefulWidget {
   AgendaPage({Key key}) : super(key: key);
 

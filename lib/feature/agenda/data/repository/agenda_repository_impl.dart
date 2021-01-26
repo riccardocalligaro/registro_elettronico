@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
@@ -12,12 +13,14 @@ import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/remote/agenda_remote_datasource.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_local_model.dart';
+import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_remote_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_local_datasource.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:rxdart/rxdart.dart' hide Subject;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -124,13 +127,18 @@ class AgendaRepositoryImpl implements AgendaRepository {
       agendaLocalDatasource.watchAllEvents(),
       lessonsLocalDatasource.watchAllLessons(),
       (List<AgendaEventLocalModel> events, List<LessonLocalModel> lessons) {
+        events.sort((a, b) => a.begin.compareTo(b.begin));
         final domainEvents = events
             .map((l) => AgendaEventDomainModel.fromLocalModel(l))
             .toList();
 
-        final eventsMap = groupBy<AgendaEventDomainModel, DateTime>(
-          domainEvents,
-          (e) => e.begin,
+        final Map<DateTime, List<AgendaEventDomainModel>> eventsMap =
+            Map.fromIterable(
+          events,
+          key: (e) => e.begin,
+          value: (e) => domainEvents
+              .where((event) => DateUtils.areSameDay(event.begin, e.begin))
+              .toList(),
         );
 
         final domainLessons =
@@ -153,7 +161,8 @@ class AgendaRepositoryImpl implements AgendaRepository {
             .where(
               (e) =>
                   e.begin.isAfter(today) ||
-                  DateUtils.areSameDay(e.begin, today),
+                  (DateUtils.areSameDay(e.begin, today) &&
+                      DateTime.now().hour <= 14),
             )
             .toList();
 
@@ -267,6 +276,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
             (e) => AgendaEventLocalModelConverter.fromRemoteModel(
               e,
               agendasMap[e.evtId],
+              _eventColor(e),
             ),
           )
           .toList(),
@@ -280,6 +290,16 @@ class AgendaRepositoryImpl implements AgendaRepository {
 
     return SuccessWithUpdate();
   }
+}
+
+Color _eventColor(AgendaEventRemoteModel event) {
+  Color color;
+  if (GlobalUtils.isVerificaOrInterrogazione(event.notes)) {
+    color = Colors.red;
+  } else {
+    color = Colors.green;
+  }
+  return color;
 }
 
 class _DateTimeInterval {
