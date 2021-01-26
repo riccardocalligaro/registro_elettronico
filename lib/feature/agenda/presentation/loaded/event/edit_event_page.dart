@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/model/event_type.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
@@ -10,6 +9,7 @@ import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_do
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_date_dialog.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_subject_dialog.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
@@ -37,7 +37,7 @@ class _EditEventPageState extends State<EditEventPage> {
   DateTime _selectedDate;
 
   String _initialSubject;
-  Subject _selectedSubject;
+  SubjectDomainModel _selectedSubject;
   TimeOfDay _timeOfDay;
   // bool _notifyEvent = false;
   // Duration _beforeNotify = Duration(minutes: 30);
@@ -62,7 +62,7 @@ class _EditEventPageState extends State<EditEventPage> {
     }
     _descriptionController.text = widget.event.notes;
     _titleController.text = widget.event.title;
-    _labelColor = Color(int.parse(widget.event.labelColor));
+    _labelColor = Color(int.tryParse(widget.event.labelColor));
     super.initState();
   }
 

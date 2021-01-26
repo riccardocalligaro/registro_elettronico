@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/model/event_type.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
@@ -13,6 +12,7 @@ import 'package:registro_elettronico/feature/agenda/presentation/agenda_page.dar
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_date_dialog.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_notifications_time_alert.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_subject_dialog.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
@@ -41,7 +41,7 @@ class _NewEventPageState extends State<NewEventPage> {
   TimeOfDay _timeOfDay = TimeOfDay(hour: 9, minute: 0);
   // Duration _repeat = Duration(milliseconds: 0);
 
-  Subject _selectedSubject;
+  SubjectDomainModel _selectedSubject;
 
   bool _notifyEvent = false;
   Duration _beforeNotify = Duration(minutes: 30);

@@ -7,11 +7,11 @@ part 'local_grades_local_datasource.g.dart';
 @UseDao(tables: [
   LocalGrades,
 ])
-class LocalGradesLocalDatasource extends DatabaseAccessor<AppDatabase>
+class LocalGradesLocalDatasource extends DatabaseAccessor<SRDatabase>
     with _$LocalGradesLocalDatasourceMixin {
-  AppDatabase appDatabase;
+  SRDatabase srDatabase;
 
-  LocalGradesLocalDatasource(this.appDatabase) : super(appDatabase);
+  LocalGradesLocalDatasource(this.srDatabase) : super(srDatabase);
 
   Stream<List<LocalGrade>> watchGrades() => select(localGrades).watch();
 

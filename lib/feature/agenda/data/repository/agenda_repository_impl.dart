@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -8,14 +9,13 @@ import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/remote/agenda_remote_datasource.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_local_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
-import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
+import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_local_datasource.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:rxdart/rxdart.dart' hide Subject;
@@ -27,7 +27,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
   final AgendaLocalDatasource agendaLocalDatasource;
   final AgendaRemoteDatasource agendaRemoteDatasource;
 
-  final LessonDao lessonDao;
+  final LessonsLocalDatasource lessonsLocalDatasource;
 
   final SharedPreferences sharedPreferences;
 
@@ -35,7 +35,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
     @required this.agendaLocalDatasource,
     @required this.agendaRemoteDatasource,
     @required this.sharedPreferences,
-    @required this.lessonDao,
+    @required this.lessonsLocalDatasource,
   });
 
   @override
@@ -122,8 +122,8 @@ class AgendaRepositoryImpl implements AgendaRepository {
   Stream<Resource<AgendaDataDomainModel>> watchAgendaData() async* {
     yield* Rx.combineLatest2(
       agendaLocalDatasource.watchAllEvents(),
-      lessonDao.watchAllLessons(),
-      (List<AgendaEventLocalModel> events, List<Lesson> lessons) {
+      lessonsLocalDatasource.watchAllLessons(),
+      (List<AgendaEventLocalModel> events, List<LessonLocalModel> lessons) {
         final domainEvents = events
             .map((l) => AgendaEventDomainModel.fromLocalModel(l))
             .toList();
@@ -163,13 +163,46 @@ class AgendaRepositoryImpl implements AgendaRepository {
             lessonsMap: lessonsMap,
             events: eventsList,
             eventsMapString: eventsMapString,
+            eventsSpots: _getEventsSpotsForDays(events: eventsMapString),
+            lessons: domainLessons,
+            allEvents: domainEvents,
           ),
         );
       },
     ).onErrorReturnWith((e) {
-      Logger.streamError(e.toString());
-      return Resource.failed(error: e);
+      return Resource.failed(error: handleStreamError(e));
     });
+  }
+
+  List<FlSpot> _getEventsSpotsForDays({
+    @required Map<String, List<AgendaEventDomainModel>> events,
+  }) {
+    List<FlSpot> spots = [];
+
+    DateTime today = DateTime.now();
+    DateTime firstDay;
+
+    if (today.weekday == DateTime.saturday) {
+      firstDay = today.add(Duration(days: 2));
+    } else if (today.weekday == DateTime.sunday) {
+      firstDay = today.add(Duration(days: 1));
+    } else {
+      firstDay = today.subtract(Duration(days: today.weekday - 1));
+    }
+
+    DateTime dayOfWeek = DateTime.utc(today.year, today.month, firstDay.day);
+    String currentString;
+
+    for (var i = 1; i <= 6; i++) {
+      currentString = DateUtils.convertDate(dayOfWeek);
+      final eventsForDay = events[currentString];
+      final numberOfEvents = eventsForDay != null ? eventsForDay.length : 0;
+
+      spots.add(FlSpot(i.toDouble(), numberOfEvents.toDouble()));
+      dayOfWeek = dayOfWeek.add(Duration(days: 1));
+    }
+
+    return spots;
   }
 
   /// This returns the [max interval] to fetch all the lessons / agendas

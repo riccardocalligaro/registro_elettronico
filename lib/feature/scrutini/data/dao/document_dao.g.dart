@@ -6,7 +6,7 @@ part of 'document_dao.dart';
 // DaoGenerator
 // **************************************************************************
 
-mixin _$DocumentsDaoMixin on DatabaseAccessor<AppDatabase> {
+mixin _$DocumentsDaoMixin on DatabaseAccessor<SRDatabase> {
   $DocumentsTable get documents => attachedDatabase.documents;
   $SchoolReportsTable get schoolReports => attachedDatabase.schoolReports;
   $DownloadedDocumentsTable get downloadedDocuments =>

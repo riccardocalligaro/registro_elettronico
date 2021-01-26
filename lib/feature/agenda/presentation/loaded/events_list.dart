@@ -37,7 +37,7 @@ class AgendaEventsList extends StatelessWidget {
       shrinkWrap: true,
       itemCount: events.length,
       itemBuilder: (context, index) {
-        return _EventCard(
+        return EventCard(
           event: events[index],
         );
       },
@@ -45,12 +45,14 @@ class AgendaEventsList extends StatelessWidget {
   }
 }
 
-class _EventCard extends StatelessWidget {
+class EventCard extends StatelessWidget {
   final AgendaEventDomainModel event;
+  final String additionalTitle;
 
-  const _EventCard({
+  const EventCard({
     Key key,
     @required this.event,
+    this.additionalTitle = '',
   }) : super(key: key);
 
   @override
@@ -59,7 +61,7 @@ class _EventCard extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
         child: Card(
-          color: Color(int.parse(event.labelColor)),
+          color: Color(int.tryParse(event.labelColor)),
           child: ListTile(
             onTap: () async {
               await _showBottomSheet(
@@ -84,7 +86,7 @@ class _EventCard extends StatelessWidget {
             title: Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
               child: Text(
-                '${event.title.trim()} - ${event.subjectName.toLowerCase()}',
+                '$additionalTitle${event.title.trim()} - ${event.subjectName.toLowerCase()}',
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
               ),
@@ -106,17 +108,17 @@ class _EventCard extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
           child: Card(
-            color: Color(int.parse(event.labelColor)) ?? Colors.red,
+            color: Color(int.tryParse(event.labelColor)) ?? Colors.red,
             child: ListTile(
-              onTap: () {
-                _showBottomSheet(
+              onTap: () async {
+                await _showBottomSheet(
                   agendaEventDomainModel: event,
                   context: context,
                 );
               },
               leading: _buildEventLeading(event: event, context: context),
               title: Text(
-                '${event.author.isNotEmpty ? StringUtils.titleCase(event.author) : AppLocalizations.of(context).translate('no_name_author')}',
+                '$additionalTitle${event.author.isNotEmpty ? StringUtils.titleCase(event.author) : AppLocalizations.of(context).translate('no_name_author')}',
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
               ),
@@ -128,7 +130,7 @@ class _EventCard extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
         child: Card(
-          color: Color(int.parse(event.labelColor)) ?? Colors.red,
+          color: Color(int.tryParse(event.labelColor)) ?? Colors.red,
           child: ListTile(
             onTap: () async {
               await _showBottomSheet(
@@ -140,7 +142,7 @@ class _EventCard extends StatelessWidget {
             title: Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
               child: Text(
-                '${event.author.isNotEmpty ? StringUtils.titleCase(event.author) : AppLocalizations.of(context).translate('no_name_author')}',
+                '$additionalTitle${event.author.isNotEmpty ? StringUtils.titleCase(event.author) : AppLocalizations.of(context).translate('no_name_author')}',
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
               ),

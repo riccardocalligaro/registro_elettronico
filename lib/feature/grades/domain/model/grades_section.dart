@@ -1,10 +1,12 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
+import 'package:registro_elettronico/feature/periods/domain/model/period_domain_model.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 
 class GradesPagesDomainModel {
   List<GradeDomainModel> grades;
+  int newNotSeenGrades;
   int periods;
   List<PeriodWithGradesDomainModel> periodsWithGrades;
 
@@ -12,6 +14,7 @@ class GradesPagesDomainModel {
     @required this.grades,
     @required this.periodsWithGrades,
     @required this.periods,
+    @required this.newNotSeenGrades,
   });
 }
 
@@ -25,7 +28,7 @@ class PeriodWithGradesDomainModel {
   /// The subject, the average, the grade you need for this objective
   List<PeriodGradeDomainModel> gradesForList;
 
-  Period period;
+  PeriodDomainModel period;
 
   /// The average grade for this period
   double average;
@@ -47,7 +50,7 @@ class PeriodWithGradesDomainModel {
 }
 
 class PeriodGradeDomainModel {
-  Subject subject;
+  SubjectDomainModel subject;
   double average;
   GradeNeededDomainModel gradeNeededForObjective;
   List<GradeDomainModel> grades;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/feature/subjects/presentation/bloc/subjects_bloc.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
+import 'package:registro_elettronico/feature/subjects/presentation/watcher/subjects_watcher_bloc.dart';
 
 class SelectSubjectDialog extends StatefulWidget {
-  final Subject selectedSubject;
+  final SubjectDomainModel selectedSubject;
 
   SelectSubjectDialog({Key key, this.selectedSubject}) : super(key: key);
 
@@ -16,24 +16,18 @@ class SelectSubjectDialog extends StatefulWidget {
 class _SelectSubjectDialogState extends State<SelectSubjectDialog> {
   @override
   void initState() {
-    BlocProvider.of<SubjectsBloc>(context).add(GetSubjectsAndProfessors());
     super.initState();
+    BlocProvider.of<SubjectsWatcherBloc>(context)
+        .add(SubjectsStartWatcherIfNeeded());
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(AppLocalizations.of(context).translate('select_subject')),
-      content: BlocBuilder<SubjectsBloc, SubjectsState>(
+      content: BlocBuilder<SubjectsWatcherBloc, SubjectsWatcherState>(
         builder: (context, state) {
-          if (state is SubjectsAndProfessorsLoadInProgress) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: CircularProgressIndicator(),
-              ),
-            );
-          } else if (state is SubjectsAndProfessorsLoadSuccess) {
+          if (state is SubjectsWatcherLoadSuccess) {
             return Container(
               height: 350,
               child: SingleChildScrollView(
@@ -42,14 +36,14 @@ class _SelectSubjectDialogState extends State<SelectSubjectDialog> {
                   children: List<Widget>.generate(
                     state.subjects.length,
                     (int index) {
-                      return RadioListTile(
+                      return RadioListTile<SubjectDomainModel>(
                         title: Text(
                           state.subjects[index].name,
                           style: TextStyle(fontSize: 13),
                         ),
                         value: state.subjects[index],
                         groupValue: widget.selectedSubject,
-                        onChanged: (Subject subj) {
+                        onChanged: (SubjectDomainModel subj) {
                           Navigator.pop(context, subj);
                         },
                         //groupValue: 312,
@@ -60,7 +54,13 @@ class _SelectSubjectDialogState extends State<SelectSubjectDialog> {
               ),
             );
           }
-          return Container();
+
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: CircularProgressIndicator(),
+            ),
+          );
         },
       ),
     );

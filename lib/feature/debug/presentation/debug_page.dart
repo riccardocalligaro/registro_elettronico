@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/fcm_service.dart';
+import 'package:registro_elettronico/feature/authentication/data/model/login/login_response_remote_model.dart';
+import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DebugPage extends StatefulWidget {
   DebugPage({Key key}) : super(key: key);
@@ -13,6 +19,9 @@ class DebugPage extends StatefulWidget {
 }
 
 class _DebugPageState extends State<DebugPage> {
+  static const platform =
+      MethodChannel('com.riccardocalligaro.registro_elettronico/multi-account');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,18 +31,79 @@ class _DebugPageState extends State<DebugPage> {
       body: Column(
         children: <Widget>[
           DebugButton(
+            title: 'Cancel token',
+            onTap: () async {
+              final AuthenticationRepository authenticationRepository = sl();
+              final profile = await authenticationRepository.getProfile();
+
+              await authenticationRepository.updateProfile(
+                responseRemoteModel: DefaultLoginResponseRemoteModel(
+                  ident: profile.ident,
+                  firstName: profile.firstName,
+                  lastName: profile.lastName,
+                  token: profile.token,
+                  release: DateTime.now()
+                      .subtract(Duration(days: 2))
+                      .toIso8601String(),
+                  expire: DateTime.now()
+                      .subtract(Duration(days: 2))
+                      .toIso8601String(),
+                ),
+                profileDomainModel: profile,
+              );
+              print(profile.toString());
+            },
+          ),
+          DebugButton(
             title: 'Open DB',
             onTap: () {
-              final AppDatabase db = sl();
+              final SRDatabase db = sl();
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => MoorDbViewer(db)));
             },
           ),
           DebugButton(
+            title: 'Current db name',
+            onTap: () {
+              final SharedPreferences sharedPreferences = sl();
+              final dbName =
+                  sharedPreferences.getString(PrefsConstants.profile);
+
+              print(dbName);
+            },
+          ),
+          DebugButton(
             title: 'Reset DB',
+            dangerous: true,
+            context: context,
             onTap: () async {
-              final AppDatabase db = sl();
+              final SRDatabase db = sl();
               await db.resetDb();
+            },
+          ),
+          DebugButton(
+            title: 'Get all profiles',
+            onTap: () async {
+              final FlutterSecureStorage flutterSecureStorage = sl();
+              final values = await flutterSecureStorage.readAll();
+              print(values);
+              final psw = await flutterSecureStorage.read(key: 'S6102171X');
+              print(psw);
+            },
+          ),
+          DebugButton(
+            title: 'Clear shared preferences',
+            onTap: () async {
+              final SharedPreferences sharedPreferences = sl();
+              await sharedPreferences.clear();
+            },
+          ),
+          DebugButton(
+            title: 'Crash and restart',
+            dangerous: true,
+            context: context,
+            onTap: () {
+              platform.invokeMethod('restartApp');
             },
           ),
           DebugButton(

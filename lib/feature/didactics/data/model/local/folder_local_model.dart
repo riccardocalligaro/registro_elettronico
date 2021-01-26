@@ -1,8 +1,6 @@
 import 'package:moor/moor.dart';
 
-/// "folderId": 14842214,
-/// "folderName": "Primo Soccorso",
-/// "lastShareDT": "2019-10-21T11:55:34+02:00",
+@DataClassName('FolderLocalModel')
 class DidacticsFolders extends Table {
   TextColumn get teacherId => text()();
   IntColumn get id => integer()();

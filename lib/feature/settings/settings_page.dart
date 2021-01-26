@@ -1,19 +1,18 @@
-import 'dart:io';
-
-import 'package:f_logs/f_logs.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info/package_info.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/about_app_dialog.dart';
+import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
+import 'package:registro_elettronico/feature/authentication/presentation/help_page.dart';
+import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
+import 'package:registro_elettronico/feature/grades/grades_container.dart';
 import 'package:registro_elettronico/feature/settings/widgets/about/about_developers_page.dart';
 import 'package:registro_elettronico/feature/settings/widgets/account/account_settings.dart';
 import 'package:registro_elettronico/feature/settings/widgets/customization/customization_settings.dart';
 import 'package:registro_elettronico/feature/settings/widgets/general/general_settings.dart';
 import 'package:registro_elettronico/feature/settings/widgets/header_text.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
+import 'package:registro_elettronico/utils/bug_report.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -26,9 +25,21 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   SharedPreferences sharedPrefs;
 
+  bool _showDebug = false;
+
   @override
   void initState() {
     super.initState();
+
+    ProfilesLocalDatasource profilesLocalDatasource = sl();
+    final profile = profilesLocalDatasource.getLoggedInUserSync();
+
+    // My personal ident
+    if (profile.ident == 'S6102171X') {
+      setState(() {
+        _showDebug = true;
+      });
+    }
   }
 
   @override
@@ -45,6 +56,16 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              if (_showDebug || kDebugMode)
+                ListTile(
+                  title: Text('Debug'),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => DebugPage(),
+                    ));
+                  },
+                ),
+
               /// General settings
               GeneralSettings(),
 
@@ -85,29 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
           subtitle: Text(
               AppLocalizations.of(context).translate('report_bug_message')),
           onTap: () async {
-            await FLog.exportLogs();
-            final path = await _localPath + "/" + PrefsConstants.DIRECTORY_NAME;
-
-            final random = GlobalUtils.getRandomNumber();
-            final subject =
-                'Bug report #$random - ${DateTime.now().toString()}';
-            String userMessage = '';
-            final packageInfo = await PackageInfo.fromPlatform();
-            userMessage +=
-                "Versione app: ${packageInfo.version}+${packageInfo.buildNumber}";
-
-            userMessage += "\nPiattaforma: ${Platform.operatingSystem}\n";
-            userMessage +=
-                '${AppLocalizations.of(context).translate("email_message")}\n  -';
-
-            final Email reportEmail = Email(
-              body: userMessage,
-              subject: subject,
-              recipients: ['registroelettronico.mobileapp@gmail.com'],
-              attachmentPaths: ['$path/flog.txt'],
-              isHTML: false,
-            );
-            await FlutterEmailSender.send(reportEmail);
+            await ReportManager.sendEmail(context);
           },
         ),
         // DonateTile(),
@@ -124,22 +123,22 @@ class _SettingsPageState extends State<SettingsPage> {
             );
           },
         ),
+        ListTile(
+          title: Text(trans.translate('help_page_title')),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => HelpPage(
+                  fromSettings: true,
+                ),
+              ),
+            );
+          },
+        ),
         const SizedBox(
-          height: 8,
+          height: 16,
         ),
       ],
     );
-  }
-
-  Future<String> get _localPath async {
-    var directory;
-
-    if (Platform.isIOS) {
-      directory = await getApplicationDocumentsDirectory();
-    } else {
-      directory = await getExternalStorageDirectory();
-    }
-
-    return directory.path;
   }
 }

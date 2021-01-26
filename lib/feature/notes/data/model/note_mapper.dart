@@ -16,13 +16,14 @@ class NoteMapper {
   static db.Note convertNotetEntityToInsertable(
       NoteRemoteModel note, String type) {
     return db.Note(
-      author: note.authorName ?? "",
-      date: DateUtils.getDateFromApiString(note.evtDate) ?? DateTime.now(),
+      author: note.authorName ?? '',
+      date: DateUtils.getDateFromApiString(note.evtDate) ??
+          DateTime.fromMillisecondsSinceEpoch(0),
       id: note.evtId ?? GlobalUtils.getRandomNumber(),
       status: note.readStatus ?? false,
-      description: note.extText ?? "",
-      warning: note.warningType ?? "",
-      type: type ?? "",
+      description: note.extText ?? '',
+      warning: note.warningType ?? '',
+      type: type ?? '',
     );
   }
 
@@ -30,9 +31,9 @@ class NoteMapper {
     NotesReadResponse res,
   ) {
     return db.NotesAttachment(
-      id: res.event.evtId,
-      type: res.event.evtCode,
-      description: res.event.evtText,
+      id: res.event.evtId ?? -1,
+      type: res.event.evtCode ?? '',
+      description: res.event.evtText ?? '',
     );
   }
 }

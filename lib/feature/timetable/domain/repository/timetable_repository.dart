@@ -1,25 +1,25 @@
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
+import 'package:registro_elettronico/feature/timetable/domain/model/timetable_data_domain_model.dart';
+import 'package:registro_elettronico/feature/timetable/domain/model/timetable_entry_domain_model.dart';
 
 abstract class TimetableRepository {
-  /// Checks the lessons and [updates] the timetable
-  Future updateTimeTable();
+  Stream<Resource<TimetableDataDomainModel>> watchTimetableData();
 
-  /// Gets [all] events of the [timetable]
-  Future<List<TimetableEntry>> getTimetable();
+  Future<Either<Failure, Success>> regenerateTimetable();
 
-  /// Deletes [all] events from the timetable
-  Future deleteTimetable();
+  Future<Either<Failure, Success>> deleteTimetableEntry({
+    @required int id,
+  });
 
-  /// Inserts [multiple] entries
-  Future insertTimetableEntries(List<TimetableEntry> entries);
+  Future<Either<Failure, Success>> insertTimetableEntry({
+    @required TimetableEntryDomainModel entry,
+  });
 
-  /// Inserts a [single] entry
-  Future insertTimetableEntry(TimetableEntry entry);
-
-  /// Updates an entry looking at the [eventId]
-  Future updateTimetableEntry(TimetableEntry entry);
-
-  Future deleteTimetableEntry(TimetableEntry entry);
-
-  Future deleteTimetableEntryWithDate(int dayOfWeek, int begin, int end);
+  Future<Either<Failure, Success>> updateTimetableEntry({
+    @required TimetableEntryDomainModel entry,
+  });
 }

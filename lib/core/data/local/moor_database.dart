@@ -4,51 +4,59 @@ import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
+import 'package:registro_elettronico/feature/absences/data/model/absence_local_model.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_local_model.dart';
-import 'package:registro_elettronico/feature/didactics/data/dao/didactics_dao.dart';
-import 'package:registro_elettronico/feature/didactics/data/model/local/downloaded_file_local_model.dart';
+import 'package:registro_elettronico/feature/didactics/data/datasource/didactics_local_datasource.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/local/content_local_model.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/local/downloaded_files.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/local/folder_local_model.dart';
+import 'package:registro_elettronico/feature/didactics/data/model/local/teacher_local_model.dart';
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
 import 'package:registro_elettronico/feature/grades/data/model/grade_local_model.dart';
 import 'package:registro_elettronico/feature/grades/data/model/local_grade_local_model.dart';
-import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
-import 'package:registro_elettronico/feature/lessons/data/dao/lesson_dao.dart';
-import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
-import 'package:registro_elettronico/feature/noticeboard/data/dao/notice_dao.dart';
-import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
-import 'package:registro_elettronico/feature/professors/data/dao/professor_dao.dart';
-import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
-import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
-import 'package:registro_elettronico/feature/timetable/data/dao/timetable_dao.dart';
-import 'package:registro_elettronico/feature/absences/data/model/absence_local_model.dart';
-import 'package:registro_elettronico/feature/noticeboard/data/model/attachment_local_model.dart';
-import 'package:registro_elettronico/feature/didactics/data/model/local/content_local_model.dart';
-import 'package:registro_elettronico/feature/didactics/data/model/local/folder_local_model.dart';
-import 'package:registro_elettronico/feature/didactics/data/model/local/teacher_local_model.dart';
-import 'package:registro_elettronico/feature/scrutini/data/model/document_local_model.dart';
+import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_local_datasource.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_local_model.dart';
+import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/model/local/note_local_model.dart';
-import 'package:registro_elettronico/feature/noticeboard/data/model/notice_local_model.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/datasource/noticeboard_local_datasource.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/model/attachment/attachment_local_model.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/model/notice/notice_local_model.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
 import 'package:registro_elettronico/feature/periods/data/model/period_local_model.dart';
-import 'package:registro_elettronico/feature/professors/data/model/professor_table.dart';
-import 'package:registro_elettronico/feature/profile/data/model/profile_local_model.dart';
+import 'package:registro_elettronico/feature/professors/data/datasource/professors_local_datasource.dart';
+import 'package:registro_elettronico/feature/professors/data/model/professor_local_model.dart';
+import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
+import 'package:registro_elettronico/feature/scrutini/data/model/document_local_model.dart';
+import 'package:registro_elettronico/feature/subjects/data/datasource/subject_local_datasource.dart';
 import 'package:registro_elettronico/feature/subjects/data/model/subject_local_model.dart';
-import 'package:registro_elettronico/feature/timetable/data/model/timetale_local_model.dart';
+import 'package:registro_elettronico/feature/timetable/data/datasource/timetable_local_datasource.dart';
+import 'package:registro_elettronico/feature/timetable/data/model/timetable_entry_local_model.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'moor_database.g.dart';
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'registro.sqlite'));
+    final SharedPreferences sharedPreferences = sl();
+    String dbName = sharedPreferences.getString(PrefsConstants.databaseName);
+
+    if (dbName == null ||
+        dbName == PrefsConstants.databaseNameBeforeMigration) {
+      dbName = PrefsConstants.defaultDbName;
+    }
+
+    final file = File(p.join(dbFolder.path, '$dbName.sqlite'));
     return VmDatabase(file, logStatements: true);
   });
 }
 
 @UseMoor(tables: [
-  Profiles,
   Lessons,
   Subjects,
   Professors,
@@ -70,22 +78,21 @@ LazyDatabase _openConnection() {
   SchoolReports,
   DownloadedDocuments,
 ], daos: [
-  ProfileDao,
-  LessonDao,
-  SubjectDao,
-  ProfessorDao,
   AbsenceDao,
-  PeriodDao,
-  NoticeDao,
   NoteDao,
-  DidacticsDao,
-  TimetableDao,
   DocumentsDao,
   GradesLocalDatasource,
-  AgendaLocalDatasource
+  AgendaLocalDatasource,
+  LessonsLocalDatasource,
+  SubjectsLocalDatasource,
+  ProfessorLocalDatasource,
+  PeriodsLocalDatasource,
+  NoticeboardLocalDatasource,
+  TimetableLocalDatasource,
+  DidacticsLocalDatasource,
 ])
-class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(_openConnection());
+class SRDatabase extends _$SRDatabase {
+  SRDatabase() : super(_openConnection());
 
   @override
   int get schemaVersion => 4;
@@ -102,7 +109,14 @@ class AppDatabase extends _$AppDatabase {
             await m.addColumn(grades, grades.hasSeenIt);
           }
           if (from < 4) {
+            await m.deleteTable('profiles');
             await m.createTable(agendaEventsTable);
+            // attachments
+            await m.deleteTable(attachments.actualTableName);
+            await m.deleteTable(notices.actualTableName);
+
+            await m.createTable(attachments);
+            await m.createTable(notices);
           }
         },
       );

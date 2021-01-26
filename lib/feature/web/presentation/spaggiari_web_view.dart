@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 
 class SpaggiariWebView extends StatefulWidget {
   final String url;
@@ -21,24 +21,19 @@ class SpaggiariWebView extends StatefulWidget {
 
 class _SpaggiariWebViewState extends State<SpaggiariWebView> {
   final flutterWebviewPlugin = FlutterWebviewPlugin();
-  bool loggedIn = false;
   Map<String, String> headers;
 
   @override
   void initState() {
-    flutterWebviewPlugin.onUrlChanged.listen((url) {
-      if (url != widget.url) {
-        loggedIn = true;
-      }
-    });
     flutterWebviewPlugin.onStateChanged.listen((state) async {
-      if (state.type == WebViewState.finishLoad && !loggedIn) {
-        final userInfo = await RepositoryProvider.of<ProfileRepository>(context)
-            .getUserAndPassword();
+      if (state.type == WebViewState.finishLoad && state.url == widget.url) {
+        final AuthenticationRepository authenticationRepository = sl();
+        final userInfo = await authenticationRepository.getCredentials();
+
         await flutterWebviewPlugin.evalJavascript(
-            '\$("#login").val("${widget.email ?? userInfo.item1.ident}");');
+            '\$("#login").val("${widget.email ?? userInfo.profile.ident}");');
         await flutterWebviewPlugin
-            .evalJavascript('\$("#password").val("${userInfo.item2}");');
+            .evalJavascript('\$("#password").val("${userInfo.password}");');
 
         await flutterWebviewPlugin.evalJavascript('\$(".check-auth").click();');
       }

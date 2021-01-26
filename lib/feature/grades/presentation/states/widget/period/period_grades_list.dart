@@ -18,10 +18,9 @@ class PeriodGradesList extends StatelessWidget {
       itemCount: periodWithGradesDomainModel.gradesForList.length,
       itemBuilder: (context, index) {
         final grade = periodWithGradesDomainModel.gradesForList[index];
-
         return PeriodGradeCard(
           subjectData: grade,
-          periodPos: periodWithGradesDomainModel.period.periodIndex,
+          periodPos: periodWithGradesDomainModel.period.position,
         );
       },
     );

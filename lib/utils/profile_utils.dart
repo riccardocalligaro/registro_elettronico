@@ -10,6 +10,10 @@ class ProfileUtils {
     return base64Url.encode(values);
   }
 
+  static String dbNameFromIdent(String ident) {
+    return 'registro_${getIdFromIdent(ident)}';
+  }
+
   /// Classeviva in the request requires and id, that you can
   /// obtain by removing the letters and keeping onyl the numbers
   ///  S6102171X -> 6102171

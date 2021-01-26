@@ -5,13 +5,8 @@ class GradesLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TabBarView(
-      children: List.generate(
-        4,
-        (index) => Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
+    return Center(
+      child: CircularProgressIndicator(),
     );
   }
 }

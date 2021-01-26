@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/agenda_loaded.dart';
-import 'package:registro_elettronico/feature/agenda/presentation/updater/agenda_updater_bloc.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/watcher/agenda_watcher_bloc.dart';
+import 'package:registro_elettronico/utils/update_manager.dart';
+
+final GlobalKey<RefreshIndicatorState> agendaRefresherKey = GlobalKey();
 
 class AgendaPage extends StatefulWidget {
   AgendaPage({Key key}) : super(key: key);
@@ -68,9 +71,8 @@ class _AgendaFailure extends StatelessWidget {
         icon: Icons.error,
         showUpdate: true,
         onTap: () {
-          BlocProvider.of<AgendaUpdaterBloc>(context).add(UpdateAgenda(
-            onlyLastDays: false,
-          ));
+          final SRUpdateManager srUpdateManager = sl();
+          return srUpdateManager.updateAgendaData(context);
         },
       ),
     );

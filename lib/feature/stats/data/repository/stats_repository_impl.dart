@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
@@ -9,10 +10,12 @@ import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_do
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
-import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
+import 'package:registro_elettronico/feature/periods/domain/model/period_domain_model.dart';
 import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
 import 'package:registro_elettronico/feature/stats/domain/repository/stats_repository.dart';
-import 'package:registro_elettronico/feature/subjects/data/dao/subject_dao.dart';
+import 'package:registro_elettronico/feature/subjects/data/datasource/subject_local_datasource.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -23,8 +26,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class StatsRepositoryImpl implements StatsRepository {
   final GradesLocalDatasource gradeDao;
   final AbsenceDao absenceDao;
-  final SubjectDao subjectDao;
-  final PeriodDao periodDao;
+  final SubjectsLocalDatasource subjectsLocalDatasource;
+  final PeriodsLocalDatasource periodsLocalDatasource;
   final NoteDao noteDao;
   final AgendaLocalDatasource agendaDao;
   final SharedPreferences sharedPreferences;
@@ -32,8 +35,8 @@ class StatsRepositoryImpl implements StatsRepository {
   StatsRepositoryImpl(
     this.gradeDao,
     this.absenceDao,
-    this.subjectDao,
-    this.periodDao,
+    this.subjectsLocalDatasource,
+    this.periodsLocalDatasource,
     this.noteDao,
     this.agendaDao,
     this.sharedPreferences,
@@ -49,8 +52,25 @@ class StatsRepositoryImpl implements StatsRepository {
           grades.map((l) => GradeDomainModel.fromLocalModel(l)).toList();
 
       final absences = await absenceDao.getAllAbsences();
-      final subjects = await subjectDao.getAllSubjects();
-      final periods = await periodDao.getAllPeriods();
+
+      final localSubjects = await subjectsLocalDatasource.getAllSubjects();
+      final subjects = localSubjects
+          .map(
+            (l) => SubjectDomainModel.fromLocalModel(
+              professorsList: null,
+              l: l,
+              professorsSet: null,
+            ),
+          )
+          .toList();
+
+      final localPeriods = await periodsLocalDatasource.getPeriods();
+      final periods = localPeriods
+          .map(
+            (l) => PeriodDomainModel.fromLocalModel(l),
+          )
+          .toList();
+
       final notes = await noteDao.getAllNotes();
       final localEvents = await agendaDao.getAllEvents();
       final events = localEvents
@@ -68,11 +88,11 @@ class StatsRepositoryImpl implements StatsRepository {
         int firstTermGradesCount = 0;
         int secondTermGradesCount = 0;
 
-        Period mostProfitablePeriod;
+        PeriodDomainModel mostProfitablePeriod;
 
         // We get the best and worst subject
-        Subject bestSubject;
-        Subject worstSubject;
+        SubjectDomainModel bestSubject;
+        SubjectDomainModel worstSubject;
         double subjectAverage = 0.0;
         double maxAverage = -1.0;
         double minAverage = 11.0;
@@ -82,8 +102,8 @@ class StatsRepositoryImpl implements StatsRepository {
         int insufficienzeLieviCount = 0;
         int insufficienzeCount = 0;
 
-        List<Subject> insufficientiSubjects = [];
-        List<Subject> sufficientiSubjects = [];
+        List<SubjectDomainModel> insufficientiSubjects = [];
+        List<SubjectDomainModel> sufficientiSubjects = [];
 
         int nearlySufficientiSubjectsCount = 0;
         int sufficientiSubjectsCount = 0;
@@ -174,26 +194,32 @@ class StatsRepositoryImpl implements StatsRepository {
               GradesUtils.getMinSchoolCredits(secondTermAverage, year);
         }
 
-        final score = _getUserScore(
-          absences: absences,
-          grades: domainGrades,
-          notes: notes,
-          skippedTests: skippedTestsForAbsences,
-          average: average,
-          nearlySufficientSubjects: nearlySufficientiSubjectsCount,
-          insufficientSubjects: insufficientiSubjectsCount,
-          events: events,
-          nearlySufficientGrades: insufficienzeLieviCount,
-          insufficientGrades: insufficienzeCount,
-          sufficientGrades: sufficienzeCount,
-          gravementeInsufficientGrades: insufficienzeGraviCount,
-          totalGrades: gradesCount,
-          gravementeInsufficientSubjects: gravementeInsufficientiSubjectsCount,
-        );
+        double score;
+        try {
+          score = _getUserScore(
+            absences: absences,
+            grades: domainGrades,
+            notes: notes,
+            skippedTests: skippedTestsForAbsences,
+            average: average,
+            nearlySufficientSubjects: nearlySufficientiSubjectsCount,
+            insufficientSubjects: insufficientiSubjectsCount,
+            events: events,
+            nearlySufficientGrades: insufficienzeLieviCount,
+            insufficientGrades: insufficienzeCount,
+            sufficientGrades: sufficienzeCount,
+            gravementeInsufficientGrades: insufficienzeGraviCount,
+            totalGrades: gradesCount,
+            gravementeInsufficientSubjects:
+                gravementeInsufficientiSubjectsCount,
+          );
+        } catch (e, s) {
+          handleError(e, s);
+        }
 
         return Right(
           StudentReport(
-            score: score,
+            score: score ?? -1,
             average: average,
             firstTermAverage: firstTermAverage,
             secondTermAverage: secondTermAverage,
