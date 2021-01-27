@@ -82,7 +82,7 @@ class GradeDomainModel {
   LocalGrade toLocalGrade() {
     return LocalGrade(
       subjectId: this.subjectId ?? .1,
-      id: this.evtId ?? -1,
+      id: this.evtId,
       eventDate: this.eventDate ?? DateTime.fromMillisecondsSinceEpoch(0),
       decimalValue: this.decimalValue ?? -1,
       displayValue: this.displayValue ?? '',

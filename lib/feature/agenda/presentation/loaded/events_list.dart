@@ -4,10 +4,12 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:registro_elettronico/core/data/model/event_type.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/presentation_constants.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 import 'event/edit_event_page.dart';
@@ -86,7 +88,7 @@ class EventCard extends StatelessWidget {
             title: Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
               child: Text(
-                '$additionalTitle${event.title.trim()} - ${event.subjectName.toLowerCase()}',
+                '$additionalTitle${event.title.trim()} ${event.subjectName.isNotEmpty ? '-' : ''} ${event.subjectName.toLowerCase()}',
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
               ),
@@ -142,7 +144,7 @@ class EventCard extends StatelessWidget {
             title: Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
               child: Text(
-                '$additionalTitle${event.author.isNotEmpty ? StringUtils.titleCase(event.author) : AppLocalizations.of(context).translate('no_name_author')}',
+                '$additionalTitle${PresentationConstants.isForPresentation ? GlobalUtils.getMockupName() : event.author.isNotEmpty ? StringUtils.titleCase(event.author) : AppLocalizations.of(context).translate('no_name_author')}',
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
               ),

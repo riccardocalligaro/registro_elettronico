@@ -10,6 +10,7 @@ import 'package:registro_elettronico/feature/timetable/domain/model/timetable_en
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/feature/timetable/presentation/timetable_event.dart';
 import 'package:registro_elettronico/feature/timetable/presentation/watcher/timetable_watcher_bloc.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:timetable/timetable.dart';
@@ -112,6 +113,23 @@ class _TimetableLoaded extends StatelessWidget {
   Widget build(BuildContext context) {
     return Timetable<TimetableEntryPresentationModel>(
       controller: timetableController,
+      dateHeaderBuilder: (context, date) {
+        return Padding(
+          padding: EdgeInsets.all(16),
+          child: Text(
+            DateUtils.convertSingleDayForDisplay(
+              date.toDateTimeUnspecified(),
+              AppLocalizations.of(context).locale.toString(),
+            ),
+            style: TextStyle(
+              color: date == LocalDate.today()
+                  ? Theme.of(context).accentColor
+                  : null,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        );
+      },
       eventBuilder: (event) => TimetableEventWidget(
         event,
       ),

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/infrastructure/presentation_constants.dart';
 import 'package:registro_elettronico/feature/didactics/domain/model/content_domain_model.dart';
 import 'package:registro_elettronico/feature/didactics/domain/model/folder_domain_model.dart';
 import 'package:registro_elettronico/feature/didactics/domain/model/teacher_domain_model.dart';
@@ -11,6 +12,7 @@ import 'package:registro_elettronico/feature/didactics/presentation/attachment/d
 import 'package:registro_elettronico/feature/didactics/presentation/didactics_page.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/text_view_page.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TeacherCard extends StatelessWidget {
@@ -27,7 +29,9 @@ class TeacherCard extends StatelessWidget {
       children: <Widget>[
         ListTile(
           title: Text(
-            teacher.name,
+            PresentationConstants.isForPresentation
+                ? GlobalUtils.getMockupName().toUpperCase()
+                : teacher.name,
             style: TextStyle(color: Theme.of(context).accentColor),
           ),
         ),

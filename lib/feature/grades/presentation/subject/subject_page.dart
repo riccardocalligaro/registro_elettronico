@@ -495,6 +495,7 @@ class _LocalGrades extends StatelessWidget {
                                 cancelled: false,
                                 displayValue: value.toString(),
                                 underlined: false,
+                                evtId: null,
                               );
                               final GradesRepository gradesRepository = sl();
                               final res = await gradesRepository.addLocalGrade(
