@@ -17,6 +17,7 @@ class MorePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('more_page')),
+        brightness: Theme.of(context).brightness,
       ),
       body: ListView(
         children: [

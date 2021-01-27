@@ -68,7 +68,7 @@ class SrApp extends StatelessWidget {
           supportedLocales: initData.supportedLocales,
           localizationsDelegates: initData.localizationsDelegates,
           localeResolutionCallback: initData.localeResolutionCallback,
-          debugShowCheckedModeBanner: false,
+          // debugShowCheckedModeBanner: false,
           routes: Routes.routes,
           onUnknownRoute: (settings) {
             return MaterialPageRoute(builder: (ctx) => SplashScreen());

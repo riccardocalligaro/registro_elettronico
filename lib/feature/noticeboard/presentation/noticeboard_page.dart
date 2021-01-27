@@ -83,6 +83,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
+      brightness: Theme.of(context).brightness,
       title: Text(
         AppLocalizations.of(context).translate('notice_board'),
       ),

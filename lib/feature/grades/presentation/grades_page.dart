@@ -30,6 +30,7 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
         title: Text(
           AppLocalizations.of(context).translate('grades'),
         ),
+        brightness: Theme.of(context).brightness,
       ),
       body: BlocBuilder<GradesWatcherBloc, GradesWatcherState>(
         builder: (context, state) {

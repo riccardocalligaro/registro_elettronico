@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/home/sections/events/home_events.dart';
@@ -41,27 +42,33 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: RefreshIndicator(
-        key: homeRefresherKey,
-        onRefresh: () => _updateHomeData(context),
-        child: ListView(
-          padding: EdgeInsets.zero,
-          physics: ClampingScrollPhysics(),
-          children: [
-            HomeHeader(),
-            // GRADES
-            HomeGrades(),
-            // LESSONS
-            HomeLessonsHeader(),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        systemNavigationBarColor: null,
+        statusBarIconBrightness: Brightness.light,
+      ),
+      child: Scaffold(
+        body: RefreshIndicator(
+          key: homeRefresherKey,
+          onRefresh: () => _updateHomeData(context),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            physics: ClampingScrollPhysics(),
+            children: [
+              HomeHeader(),
+              // GRADES
+              HomeGrades(),
+              // LESSONS
+              HomeLessonsHeader(),
 
-            SizedBox(
-              height: 140,
-              child: HomeLessons(),
-            ),
-            HomeAgendaHeader(),
-            HomeEvents(),
-          ],
+              SizedBox(
+                height: 140,
+                child: HomeLessons(),
+              ),
+              HomeAgendaHeader(),
+              HomeEvents(),
+            ],
+          ),
         ),
       ),
     );

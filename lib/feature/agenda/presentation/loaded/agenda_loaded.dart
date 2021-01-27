@@ -153,6 +153,7 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
+      brightness: Theme.of(context).brightness,
       title: Text(
         AppLocalizations.of(context).translate('agenda'),
       ),
