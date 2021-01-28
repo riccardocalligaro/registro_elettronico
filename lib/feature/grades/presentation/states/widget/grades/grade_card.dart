@@ -63,13 +63,7 @@ class SRGradeCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    grade.subjectDesc.length > 20
-                        ? GlobalUtils.reduceSubjectTitle(grade.subjectDesc)
-                        : grade.subjectDesc,
-                    style: const TextStyle(color: Colors.white),
-                    maxLines: 1,
-                  ),
+                  _buildGradeTitle(grade),
                   _buildLessonArgument(grade),
                   Text(
                     DateUtils.convertDateLocale(
@@ -86,6 +80,27 @@ class SRGradeCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildGradeTitle(GradeDomainModel grade) {
+    final subjectName = grade.subjectDesc.length > 20
+        ? GlobalUtils.reduceSubjectTitle(grade.subjectDesc)
+        : grade.subjectDesc;
+
+    String text = '$subjectName - ${grade.componentDesc}';
+    if (text.isNotEmpty) {
+      if (text.length > 35) {
+        text = text.substring(0, 35);
+        text += "...";
+      }
+      return Text(
+        text,
+        style: TextStyle(color: Colors.white),
+        overflow: TextOverflow.ellipsis,
+      );
+    }
+
+    return Text(text);
   }
 
   Widget _buildLessonArgument(GradeDomainModel grade) {
@@ -149,7 +164,14 @@ class SRGradeCard extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  '${trans.translate('term')}: ${grade.periodDesc.toLowerCase()}',
+                  '${trans.translate('term')}: ${grade.periodPos}° ${grade.periodDesc.toLowerCase()}',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  '${trans.translate('type')}: ${grade.componentDesc}',
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(

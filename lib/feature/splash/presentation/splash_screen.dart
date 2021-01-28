@@ -26,7 +26,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (authenticated) {
       await Navigator.of(context).pushReplacement(NoAnimationMaterialPageRoute(
-        builder: (context) => NavigatorPage(),
+        builder: (context) => NavigatorPage(
+          fromLogin: true,
+        ),
       ));
     } else {
       await Navigator.of(context).pushReplacement(NoAnimationMaterialPageRoute(
