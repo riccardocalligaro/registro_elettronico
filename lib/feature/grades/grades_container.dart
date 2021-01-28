@@ -43,6 +43,7 @@ class GradesContainer {
         subjectsLocalDatasource: sl(),
         professorLocalDatasource: sl(),
         localGradesLocalDatasource: sl(),
+        agendaLocalDatasource: sl(),
       ),
     );
   }

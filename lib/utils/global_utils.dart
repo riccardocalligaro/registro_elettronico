@@ -515,7 +515,12 @@ class GlobalUtils {
         event.contains('esame') ||
         event.contains('examen') ||
         event.contains('debito') ||
-        event.contains('test'));
+        event.contains('test') ||
+        event.contains('проверка') ||
+        event.contains('verificación') ||
+        event.contains('quiz') ||
+        event.contains('exam') ||
+        event.contains('考试'));
   }
 
   /// `venerdi alla 4 ora`

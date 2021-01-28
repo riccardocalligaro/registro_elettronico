@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
@@ -8,6 +9,7 @@ import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
+import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
 import 'package:registro_elettronico/feature/grades/data/datasource/local/local_grades_local_datasource.dart';
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_remote_datasource.dart';
@@ -25,6 +27,8 @@ import 'package:registro_elettronico/feature/subjects/data/datasource/subject_lo
 import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/constants/registro_constants.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
+import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:rxdart/rxdart.dart' hide Subject;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,6 +44,8 @@ class GradesRepositoryImpl extends GradesRepository {
   final LocalGradesLocalDatasource localGradesLocalDatasource;
   final LessonsLocalDatasource lessonsLocalDatasource;
 
+  final AgendaLocalDatasource agendaLocalDatasource;
+
   final SharedPreferences sharedPreferences;
 
   GradesRepositoryImpl({
@@ -51,6 +57,7 @@ class GradesRepositoryImpl extends GradesRepository {
     @required this.professorLocalDatasource,
     @required this.localGradesLocalDatasource,
     @required this.lessonsLocalDatasource,
+    @required this.agendaLocalDatasource,
   });
 
   @override
@@ -138,14 +145,18 @@ class GradesRepositoryImpl extends GradesRepository {
 
   @override
   Stream<Resource<GradesPagesDomainModel>> watchAllGradesSections() {
-    return Rx.combineLatest3(
+    return Rx.combineLatest5(
       periodsLocalDatasource.watchAllPeriods(),
       subjectsLocalDatasource.watchAllSubjects(),
       gradesLocalDatasource.watchGrades(),
+      agendaLocalDatasource.watchAllEvents(),
+      lessonsLocalDatasource.watchAllLessons(),
       (
         List<PeriodLocalModel> localPeriods,
         List<SubjectLocalModel> localSubjects,
         List<GradeLocalModel> localGrades,
+        List<AgendaEventLocalModel> localEvents,
+        List<LessonLocalModel> localLessons,
       ) {
         if (localPeriods.isEmpty) {
           return Resource.success(data: null);
@@ -199,9 +210,63 @@ class GradesRepositoryImpl extends GradesRepository {
 
         localGrades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
 
-        final grades = localGrades
+        List<GradeDomainModel> grades = localGrades
             .map((localModel) => GradeDomainModel.fromLocalModel(localModel))
             .toList();
+
+        if (localEvents.isNotEmpty &&
+            localLessons.isNotEmpty &&
+            localSubjects.isNotEmpty) {
+          Map<int, Set<String>> additionalProfessors = Map();
+
+          final lastLessons = localLessons
+              .where((l) =>
+                  l.date.isAfter(DateTime.now().subtract(Duration(days: 45))))
+              .toList();
+
+          for (final lesson in lastLessons) {
+            final list = additionalProfessors[lesson.subjectId];
+            if (lesson.author != null) {
+              if (list != null) {
+                additionalProfessors[lesson.subjectId].add(lesson.author);
+              } else {
+                additionalProfessors[lesson.subjectId] = Set();
+                additionalProfessors[lesson.subjectId].add(lesson.author);
+              }
+            }
+          }
+
+          // get the map
+          final Map<String, List<AgendaEventLocalModel>> eventsMap =
+              Map.fromIterable(
+            localEvents,
+            key: (e) => _convertDate(e.begin),
+            value: (e) => localEvents
+                .where((event) => DateUtils.areSameDay(event.begin, e.begin))
+                .toList(),
+          );
+
+          // once we got the map we can check the grades
+          for (final grade in grades) {
+            if (grade.notesForFamily.isEmpty) {
+              // check events for that day
+              final eventsForThatDay = eventsMap[_convertDate(grade.eventDate)];
+
+              if (eventsForThatDay == null) continue;
+
+              for (final event in eventsForThatDay) {
+                final professors = additionalProfessors[grade.subjectId];
+                if (professors.contains(event.authorName)) {
+                  if (GlobalUtils.isVerificaOrInterrogazione(
+                      '${event.notes} ${event.title}')) {
+                    grade.notesForFamily = '${event.notes} ${event.title}';
+                    continue;
+                  }
+                }
+              }
+            }
+          }
+        }
 
         List<PeriodWithGradesDomainModel> gradesPeriods = [];
         List<GradeDomainModel> gradesForThisPeriod;
@@ -295,6 +360,11 @@ class GradesRepositoryImpl extends GradesRepository {
         return Resource.failed(error: handleStreamError(e));
       },
     );
+  }
+
+  String _convertDate(DateTime date) {
+    final formatter = DateFormat('yyyyMMdd');
+    return formatter.format(date);
   }
 
   List<FlSpot> _getAverageSpots({
