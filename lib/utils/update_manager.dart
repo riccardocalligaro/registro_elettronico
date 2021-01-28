@@ -103,11 +103,13 @@ class SRUpdateManager {
     }
   }
 
-  Future<void> updateVitalData() async {
-    return Future.wait([
-      periodsRepository.updatePeriods(ifNeeded: false),
-      subjectsRepository.updateSubjects(ifNeeded: false),
-    ]);
+  Future<void> updateVitalData(BuildContext context) async {
+    final update1 = await periodsRepository.updatePeriods(ifNeeded: false);
+    final update2 = await subjectsRepository.updateSubjects(ifNeeded: false);
+    final update3 = await lessonsRepository.updateAllLessons(ifNeeded: false);
+    final updates = [update1, update2, update3];
+
+    _updateMultipleData(context: context, updates: updates);
   }
 
   Future<void> updateHomeData(BuildContext context) async {
@@ -135,6 +137,14 @@ class SRUpdateManager {
 
   Future<void> updateAgendaData(BuildContext context) async {
     final update1 = await agendaRepository.updateAllAgenda(ifNeeded: false);
+    final update2 = await lessonsRepository.updateAllLessons(ifNeeded: false);
+
+    final updates = [update1, update2];
+    _updateMultipleData(context: context, updates: updates);
+  }
+
+  Future<void> updateSubjects(BuildContext context) async {
+    final update1 = await subjectsRepository.updateSubjects(ifNeeded: false);
     final update2 = await lessonsRepository.updateAllLessons(ifNeeded: false);
 
     final updates = [update1, update2];

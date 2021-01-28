@@ -5,11 +5,16 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:moor_db_viewer/moor_db_viewer.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/fcm_service.dart';
+import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/login/login_response_remote_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
+import 'package:registro_elettronico/utils/bug_report.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'logs_page.dart';
 
 class DebugPage extends StatefulWidget {
   DebugPage({Key key}) : super(key: key);
@@ -22,14 +27,43 @@ class _DebugPageState extends State<DebugPage> {
   static const platform =
       MethodChannel('com.riccardocalligaro.registro_elettronico/multi-account');
 
+  String dbName = '';
+  String profiles = '';
+
+  @override
+  void initState() {
+    final SharedPreferences sharedPreferences = sl();
+    final _dbName = sharedPreferences.getString(PrefsConstants.databaseName);
+    setState(() {
+      dbName = _dbName;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Debug mode'),
       ),
-      body: Column(
+      body: ListView(
         children: <Widget>[
+          SectionDivider(text: '📝 Logs'),
+          DebugButton(
+            title: 'Send logs',
+            onTap: () {
+              ReportManager.sendEmail(context);
+            },
+          ),
+          DebugButton(
+            title: 'View logs',
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => LogsPage(),
+              ));
+            },
+          ),
+          SectionDivider(text: '🔒 Authentication'),
           DebugButton(
             title: 'Cancel token',
             onTap: () async {
@@ -51,9 +85,9 @@ class _DebugPageState extends State<DebugPage> {
                 ),
                 profileDomainModel: profile,
               );
-              print(profile.toString());
             },
           ),
+          SectionDivider(text: '🗄️ Database'),
           DebugButton(
             title: 'Open DB',
             onTap: () {
@@ -63,7 +97,8 @@ class _DebugPageState extends State<DebugPage> {
             },
           ),
           DebugButton(
-            title: 'Current db name',
+            title: 'Current database name',
+            subtitle: dbName,
             onTap: () {
               final SharedPreferences sharedPreferences = sl();
               final dbName =
@@ -73,39 +108,22 @@ class _DebugPageState extends State<DebugPage> {
             },
           ),
           DebugButton(
-            title: 'Reset DB',
-            dangerous: true,
-            context: context,
-            onTap: () async {
-              final SRDatabase db = sl();
-              await db.resetDb();
-            },
-          ),
-          DebugButton(
             title: 'Get all profiles',
             onTap: () async {
-              final FlutterSecureStorage flutterSecureStorage = sl();
-              final values = await flutterSecureStorage.readAll();
-              print(values);
-              final psw = await flutterSecureStorage.read(key: 'S6102171X');
-              print(psw);
+              final ProfilesLocalDatasource profilesLocalDatasource = sl();
+              final _profiles = await profilesLocalDatasource.getAllProfiles();
+              setState(() {
+                profiles = _profiles.toString();
+              });
+              Logger.info(profiles.toString());
             },
           ),
-          DebugButton(
-            title: 'Clear shared preferences',
-            onTap: () async {
-              final SharedPreferences sharedPreferences = sl();
-              await sharedPreferences.clear();
-            },
-          ),
-          DebugButton(
-            title: 'Crash and restart',
-            dangerous: true,
-            context: context,
-            onTap: () {
-              platform.invokeMethod('restartApp');
-            },
-          ),
+          if (profiles.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              child: Text(profiles),
+            ),
+          SectionDivider(text: '📚 Other'),
           DebugButton(
             title: 'Send notification',
             subtitle: 'With the local notifications plugin',
@@ -152,6 +170,37 @@ class _DebugPageState extends State<DebugPage> {
               );
             },
           ),
+          SectionDivider(
+            text: '⚠️  Danger zone',
+            textColor: Colors.white,
+            color: Colors.red,
+          ),
+          DebugButton(
+            title: 'Clear shared preferences',
+            dangerous: true,
+            context: context,
+            onTap: () async {
+              final SharedPreferences sharedPreferences = sl();
+              await sharedPreferences.clear();
+            },
+          ),
+          DebugButton(
+            title: 'Crash and restart',
+            dangerous: true,
+            context: context,
+            onTap: () {
+              platform.invokeMethod('restartApp');
+            },
+          ),
+          DebugButton(
+            title: 'Reset DB',
+            dangerous: true,
+            context: context,
+            onTap: () async {
+              final SRDatabase db = sl();
+              await db.resetDb();
+            },
+          ),
         ],
       ),
     );
@@ -182,7 +231,10 @@ class DebugButton extends ListTile {
     );
     Widget continueButton = FlatButton(
       child: Text("Yup"),
-      onPressed: callback,
+      onPressed: () {
+        callback();
+        Navigator.pop(context);
+      },
     );
 
     // set up the AlertDialog
@@ -201,6 +253,35 @@ class DebugButton extends ListTile {
       builder: (BuildContext context) {
         return alert;
       },
+    );
+  }
+}
+
+class SectionDivider extends StatelessWidget {
+  final String text;
+  final Color color;
+  final Color textColor;
+
+  const SectionDivider({
+    Key key,
+    @required this.text,
+    this.color,
+    this.textColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: textColor,
+          ),
+        ),
+      ),
+      color: color ?? Theme.of(context).accentColor.withOpacity(0.4),
     );
   }
 }

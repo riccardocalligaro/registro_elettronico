@@ -14,6 +14,9 @@ class LightTheme {
         elevation: 1,
         color: Colors.white,
       ),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+      ),
       cardTheme: CardTheme(elevation: 0.5),
       primaryIconTheme: IconThemeData(color: Colors.grey[900], opacity: 0.50),
       primaryTextTheme: TextTheme(

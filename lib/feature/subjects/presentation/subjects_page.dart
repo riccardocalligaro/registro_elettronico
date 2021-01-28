@@ -5,10 +5,8 @@ import 'package:registro_elettronico/core/infrastructure/localizations/app_local
 import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
-import 'package:registro_elettronico/feature/lessons/domain/repository/lessons_repository.dart';
 import 'package:registro_elettronico/feature/lessons/presentation/lessons_page.dart';
 import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
-import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:registro_elettronico/feature/subjects/presentation/watcher/subjects_watcher_bloc.dart';
 import 'package:registro_elettronico/utils/update_manager.dart';
 
@@ -45,7 +43,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
                 showUpdate: true,
                 onTap: () {
                   SRUpdateManager srUpdateManager = sl();
-                  srUpdateManager.updateVitalData();
+                  return srUpdateManager.updateVitalData(context);
                 },
               );
             }
@@ -71,13 +69,8 @@ class _SubjectsPageState extends State<SubjectsPage> {
   }
 
   Future<void> _refreshPage() {
-    final SubjectsRepository subjectsRepository = sl();
-    final LessonsRepository lessonsRepository = sl();
-
-    return Future.wait([
-      subjectsRepository.updateSubjects(ifNeeded: false),
-      lessonsRepository.updateAllLessons(ifNeeded: false),
-    ]);
+    SRUpdateManager srUpdateManager = sl();
+    return srUpdateManager.updateSubjects(context);
   }
 }
 

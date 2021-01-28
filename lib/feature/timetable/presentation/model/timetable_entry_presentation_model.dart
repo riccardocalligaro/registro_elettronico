@@ -38,10 +38,11 @@ class TimetableEntryPresentationModel extends Event {
     // abbiamo il numero del giorno
     // dobbiamo trovare il giorno della settimana più vicino a quella data
 
-    final _firstDayOfWeek = _findFirstDateOfTheWeek(DateTime.now());
+    final _firstDayOfWeek =
+        _findFirstDateOfTheWeek(DateTime.now().add(Duration(hours: 6)));
 
     final day = DateTime(_firstDayOfWeek.year, _firstDayOfWeek.month,
-        _firstDayOfWeek.day + l.dayOfWeek, 8);
+        _firstDayOfWeek.day + l.dayOfWeek - 1, 8);
 
     final localTime = LocalDateTime.dateTime(day);
     localTime.addHours(l.start);

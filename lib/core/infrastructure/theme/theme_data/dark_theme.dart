@@ -15,6 +15,9 @@ class DarkTheme {
         color: Colors.grey[900],
         brightness: Brightness.dark,
       ),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+      ),
       primaryTextTheme: TextTheme(
         headline6: TextStyle(color: Colors.white),
         headline5: heaingSmall.copyWith(color: Colors.white),

@@ -21,7 +21,9 @@ class HomeGrades extends StatelessWidget {
       builder: (context, state) {
         if (state is GradesWatcherLoadSuccess) {
           if (state.gradesSections == null) {
-            return _LastGradesLoading();
+            return _LastGradesLoading(
+              showUpdate: true,
+            );
           }
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -186,23 +188,41 @@ class _LastGradesLoaded extends StatelessWidget {
 }
 
 class _LastGradesLoading extends StatelessWidget {
-  const _LastGradesLoading({Key key}) : super(key: key);
+  final bool showUpdate;
+
+  const _LastGradesLoading({
+    Key key,
+    this.showUpdate = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 52.0),
+      padding: EdgeInsets.fromLTRB(16, 52, 16, showUpdate ? 16 : 42),
       child: Center(
         child: Column(
           children: <Widget>[
             Icon(
               Icons.timeline,
               size: 64,
+              color: Colors.grey,
             ),
             const SizedBox(
               height: 10,
             ),
-            Text(AppLocalizations.of(context).translate('no_grades'))
+            Text(AppLocalizations.of(context).translate('no_grades')),
+            if (showUpdate)
+              FlatButton(
+                child: Text(
+                  AppLocalizations.of(context).translate('sync'),
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                  ),
+                ),
+                onPressed: () {
+                  homeRefresherKey.currentState.show();
+                },
+              )
           ],
         ),
       ),
