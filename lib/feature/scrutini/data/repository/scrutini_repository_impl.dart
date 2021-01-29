@@ -5,18 +5,18 @@ import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client.d
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
 
 class ScrutiniRepositoryImpl implements ScrutiniRepository {
   final WebSpaggiariClient webSpaggiariClient;
-  final ProfileRepository profileRepository;
+  final AuthenticationRepository authenticationRepository;
   final FlutterSecureStorage flutterSecureStorage;
   final NetworkInfo networkInfo;
 
   ScrutiniRepositoryImpl(
     this.webSpaggiariClient,
-    this.profileRepository,
+    this.authenticationRepository,
     this.flutterSecureStorage,
     this.networkInfo,
   );
@@ -26,7 +26,7 @@ class ScrutiniRepositoryImpl implements ScrutiniRepository {
     bool lastYear,
   }) async {
     if (await networkInfo.isConnected) {
-      final profile = profileRepository.getProfile();
+      final profile = await authenticationRepository.getProfile();
       final password = await flutterSecureStorage.read(key: profile.ident);
 
       try {

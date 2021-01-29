@@ -1,60 +1,77 @@
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
-import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
-import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
-import 'package:registro_elettronico/feature/periods/data/model/period_mapper.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/periods_remote_datasource.dart';
 import 'package:registro_elettronico/feature/periods/domain/repository/periods_repository.dart';
-import 'package:registro_elettronico/feature/profile/data/dao/profile_dao.dart';
-import 'package:registro_elettronico/feature/profile/domain/repository/profile_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PeriodsRepositoryImpl implements PeriodsRepository {
-  final SpaggiariClient spaggiariClient;
-  final PeriodDao periodDao;
-  final ProfileDao profileDao;
-  final NetworkInfo networkInfo;
-  final ProfileRepository profileRepository;
+  static const String lastUpdateKey = 'periodsLastUpdate';
 
-  PeriodsRepositoryImpl(
-    this.spaggiariClient,
-    this.periodDao,
-    this.profileDao,
-    this.networkInfo,
-    this.profileRepository,
-  );
+  final PeriodsLocalDatasource periodsLocalDatasource;
+  final PeriodsRemoteDatasource periodsRemoteDatasource;
+  final SharedPreferences sharedPreferences;
+
+  PeriodsRepositoryImpl({
+    @required this.periodsLocalDatasource,
+    @required this.periodsRemoteDatasource,
+    @required this.sharedPreferences,
+  });
 
   @override
-  Future updatePeriods() async {
-    if (await networkInfo.isConnected) {
-      final profile = await profileRepository.getProfile();
-      final periods = await spaggiariClient.getPeriods(profile.studentId);
-      List<Period> periodsList = [];
-      int periodIndex = 1;
-      periods.periods.forEach((period) {
-        periodsList.add(
-            PeriodMapper.convertEventEntityToInsertable(period, periodIndex));
-        periodIndex++;
-      });
+  Future<Either<Failure, Success>> updatePeriods({bool ifNeeded}) async {
+    try {
+      if (!ifNeeded |
+          (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
+        final remotePeriods = await periodsRemoteDatasource.getPeriods();
 
-      Logger.info(
-        'Got ${periods.periods.length} periods from server, procceding to insert in database',
-      );
-      await periodDao.deleteAllPeriods();
+        final List<PeriodLocalModel> remoteConvertedPeriods =
+            remotePeriods.asMap().entries.map((entry) {
+          return entry.value.toLocalModel(entry.key);
+        }).toList();
 
-      await periodDao.insertPeriods(periodsList);
-    } else {
-      throw NotConntectedException();
+        // delete the periods that were removed from the remote source
+        await periodsLocalDatasource.deleteAllPeriods();
+
+        await periodsLocalDatasource.insertPeriods(remoteConvertedPeriods);
+
+        await sharedPreferences.setInt(
+            lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
+
+        return Right(SuccessWithUpdate());
+      }
+      return Right(SuccessWithoutUpdate());
+    } catch (e, s) {
+      return Left(handleError(e, s));
     }
   }
 
   @override
-  Future<List<Period>> getAllPeriods() async {
-    return await periodDao.getAllPeriods();
-  }
+  Future<Either<Failure, bool>> needToUpdatePeriods() async {
+    try {
+      // controlliamo i periodi presenti nel db
+      final periods = await periodsLocalDatasource.getPeriods();
 
-  @override
-  Stream<List<Period>> watchAllPeriods() {
-    return periodDao.watchAllPeriods();
+      if (periods.isEmpty) {
+        return Right(true);
+      }
+
+      periods.sort((a, b) => a.position.compareTo(b.position));
+
+      final today = DateTime.now();
+
+      if (periods.last.end.isBefore(today)) {
+        return Right(true);
+      }
+
+      return Right(false);
+    } catch (e, s) {
+      return Left(handleError(e, s));
+    }
   }
 }

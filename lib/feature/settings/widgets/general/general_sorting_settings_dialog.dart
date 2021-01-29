@@ -30,7 +30,7 @@ class _GeneralSortingSettingsDialogState
               Text(AppLocalizations.of(context).translate('average_ascending')),
           value: true,
           groupValue: _ascending,
-          activeColor: Theme.of(context).primaryColor,
+          activeColor: Theme.of(context).accentColor,
           onChanged: (value) {
             setState(() {
               _ascending = value;
@@ -43,7 +43,7 @@ class _GeneralSortingSettingsDialogState
               AppLocalizations.of(context).translate('average_descending')),
           value: false,
           groupValue: _ascending,
-          activeColor: Theme.of(context).primaryColor,
+          activeColor: Theme.of(context).accentColor,
           onChanged: (value) {
             setState(() {
               _ascending = value;

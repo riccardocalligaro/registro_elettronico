@@ -6,11 +6,12 @@ import '../localizations_delegates.dart';
 
 class LocaleBlocBuilder extends StatelessWidget {
   final Widget Function(
-      BuildContext context,
-      Locale locale,
-      List<Locale> supportedLocales,
-      List<LocalizationsDelegate> localizationsDelegates,
-      Function localeResolutionCallback) builder;
+    BuildContext context,
+    Locale locale,
+    List<Locale> supportedLocales,
+    List<LocalizationsDelegate> localizationsDelegates,
+    Function localeResolutionCallback,
+  ) builder;
 
   LocaleBlocBuilder({@required this.builder});
 
@@ -19,14 +20,16 @@ class LocaleBlocBuilder extends StatelessWidget {
     return BlocProvider<LocalizationsBloc>(
       create: (BuildContext context) => LocalizationsBloc.instance,
       child: BlocBuilder<LocalizationsBloc, LocalizationsState>(
-          builder: (bCtx, localeState) {
-        return builder(
+        builder: (bCtx, localeState) {
+          return builder(
             bCtx,
             localeState.locale,
             LocalizationsDelegates.instance.supportedLocales,
             LocalizationsDelegates.instance.localizationsDelegates,
-            LocalizationsDelegates.instance.localeResolutionCallback);
-      }),
+            LocalizationsDelegates.instance.localeResolutionCallback,
+          );
+        },
+      ),
     );
   }
 }

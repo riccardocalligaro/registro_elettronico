@@ -7,451 +7,8 @@ part of 'moor_database.dart';
 // **************************************************************************
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
-class Profile extends DataClass implements Insertable<Profile> {
-  final String studentId;
-  final String ident;
-  final String firstName;
-  final String lastName;
-  final String token;
-  final DateTime release;
-  final DateTime expire;
-  Profile(
-      {@required this.studentId,
-      @required this.ident,
-      @required this.firstName,
-      @required this.lastName,
-      @required this.token,
-      @required this.release,
-      @required this.expire});
-  factory Profile.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String prefix}) {
-    final effectivePrefix = prefix ?? '';
-    final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    return Profile(
-      studentId: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}student_id']),
-      ident:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}ident']),
-      firstName: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}first_name']),
-      lastName: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}last_name']),
-      token:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}token']),
-      release: dateTimeType
-          .mapFromDatabaseResponse(data['${effectivePrefix}release']),
-      expire: dateTimeType
-          .mapFromDatabaseResponse(data['${effectivePrefix}expire']),
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || studentId != null) {
-      map['student_id'] = Variable<String>(studentId);
-    }
-    if (!nullToAbsent || ident != null) {
-      map['ident'] = Variable<String>(ident);
-    }
-    if (!nullToAbsent || firstName != null) {
-      map['first_name'] = Variable<String>(firstName);
-    }
-    if (!nullToAbsent || lastName != null) {
-      map['last_name'] = Variable<String>(lastName);
-    }
-    if (!nullToAbsent || token != null) {
-      map['token'] = Variable<String>(token);
-    }
-    if (!nullToAbsent || release != null) {
-      map['release'] = Variable<DateTime>(release);
-    }
-    if (!nullToAbsent || expire != null) {
-      map['expire'] = Variable<DateTime>(expire);
-    }
-    return map;
-  }
-
-  ProfilesCompanion toCompanion(bool nullToAbsent) {
-    return ProfilesCompanion(
-      studentId: studentId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(studentId),
-      ident:
-          ident == null && nullToAbsent ? const Value.absent() : Value(ident),
-      firstName: firstName == null && nullToAbsent
-          ? const Value.absent()
-          : Value(firstName),
-      lastName: lastName == null && nullToAbsent
-          ? const Value.absent()
-          : Value(lastName),
-      token:
-          token == null && nullToAbsent ? const Value.absent() : Value(token),
-      release: release == null && nullToAbsent
-          ? const Value.absent()
-          : Value(release),
-      expire:
-          expire == null && nullToAbsent ? const Value.absent() : Value(expire),
-    );
-  }
-
-  factory Profile.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Profile(
-      studentId: serializer.fromJson<String>(json['studentId']),
-      ident: serializer.fromJson<String>(json['ident']),
-      firstName: serializer.fromJson<String>(json['firstName']),
-      lastName: serializer.fromJson<String>(json['lastName']),
-      token: serializer.fromJson<String>(json['token']),
-      release: serializer.fromJson<DateTime>(json['release']),
-      expire: serializer.fromJson<DateTime>(json['expire']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'studentId': serializer.toJson<String>(studentId),
-      'ident': serializer.toJson<String>(ident),
-      'firstName': serializer.toJson<String>(firstName),
-      'lastName': serializer.toJson<String>(lastName),
-      'token': serializer.toJson<String>(token),
-      'release': serializer.toJson<DateTime>(release),
-      'expire': serializer.toJson<DateTime>(expire),
-    };
-  }
-
-  Profile copyWith(
-          {String studentId,
-          String ident,
-          String firstName,
-          String lastName,
-          String token,
-          DateTime release,
-          DateTime expire}) =>
-      Profile(
-        studentId: studentId ?? this.studentId,
-        ident: ident ?? this.ident,
-        firstName: firstName ?? this.firstName,
-        lastName: lastName ?? this.lastName,
-        token: token ?? this.token,
-        release: release ?? this.release,
-        expire: expire ?? this.expire,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('Profile(')
-          ..write('studentId: $studentId, ')
-          ..write('ident: $ident, ')
-          ..write('firstName: $firstName, ')
-          ..write('lastName: $lastName, ')
-          ..write('token: $token, ')
-          ..write('release: $release, ')
-          ..write('expire: $expire')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => $mrjf($mrjc(
-      studentId.hashCode,
-      $mrjc(
-          ident.hashCode,
-          $mrjc(
-              firstName.hashCode,
-              $mrjc(
-                  lastName.hashCode,
-                  $mrjc(token.hashCode,
-                      $mrjc(release.hashCode, expire.hashCode)))))));
-  @override
-  bool operator ==(dynamic other) =>
-      identical(this, other) ||
-      (other is Profile &&
-          other.studentId == this.studentId &&
-          other.ident == this.ident &&
-          other.firstName == this.firstName &&
-          other.lastName == this.lastName &&
-          other.token == this.token &&
-          other.release == this.release &&
-          other.expire == this.expire);
-}
-
-class ProfilesCompanion extends UpdateCompanion<Profile> {
-  final Value<String> studentId;
-  final Value<String> ident;
-  final Value<String> firstName;
-  final Value<String> lastName;
-  final Value<String> token;
-  final Value<DateTime> release;
-  final Value<DateTime> expire;
-  const ProfilesCompanion({
-    this.studentId = const Value.absent(),
-    this.ident = const Value.absent(),
-    this.firstName = const Value.absent(),
-    this.lastName = const Value.absent(),
-    this.token = const Value.absent(),
-    this.release = const Value.absent(),
-    this.expire = const Value.absent(),
-  });
-  ProfilesCompanion.insert({
-    @required String studentId,
-    @required String ident,
-    @required String firstName,
-    @required String lastName,
-    @required String token,
-    @required DateTime release,
-    @required DateTime expire,
-  })  : studentId = Value(studentId),
-        ident = Value(ident),
-        firstName = Value(firstName),
-        lastName = Value(lastName),
-        token = Value(token),
-        release = Value(release),
-        expire = Value(expire);
-  static Insertable<Profile> custom({
-    Expression<String> studentId,
-    Expression<String> ident,
-    Expression<String> firstName,
-    Expression<String> lastName,
-    Expression<String> token,
-    Expression<DateTime> release,
-    Expression<DateTime> expire,
-  }) {
-    return RawValuesInsertable({
-      if (studentId != null) 'student_id': studentId,
-      if (ident != null) 'ident': ident,
-      if (firstName != null) 'first_name': firstName,
-      if (lastName != null) 'last_name': lastName,
-      if (token != null) 'token': token,
-      if (release != null) 'release': release,
-      if (expire != null) 'expire': expire,
-    });
-  }
-
-  ProfilesCompanion copyWith(
-      {Value<String> studentId,
-      Value<String> ident,
-      Value<String> firstName,
-      Value<String> lastName,
-      Value<String> token,
-      Value<DateTime> release,
-      Value<DateTime> expire}) {
-    return ProfilesCompanion(
-      studentId: studentId ?? this.studentId,
-      ident: ident ?? this.ident,
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      token: token ?? this.token,
-      release: release ?? this.release,
-      expire: expire ?? this.expire,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (studentId.present) {
-      map['student_id'] = Variable<String>(studentId.value);
-    }
-    if (ident.present) {
-      map['ident'] = Variable<String>(ident.value);
-    }
-    if (firstName.present) {
-      map['first_name'] = Variable<String>(firstName.value);
-    }
-    if (lastName.present) {
-      map['last_name'] = Variable<String>(lastName.value);
-    }
-    if (token.present) {
-      map['token'] = Variable<String>(token.value);
-    }
-    if (release.present) {
-      map['release'] = Variable<DateTime>(release.value);
-    }
-    if (expire.present) {
-      map['expire'] = Variable<DateTime>(expire.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('ProfilesCompanion(')
-          ..write('studentId: $studentId, ')
-          ..write('ident: $ident, ')
-          ..write('firstName: $firstName, ')
-          ..write('lastName: $lastName, ')
-          ..write('token: $token, ')
-          ..write('release: $release, ')
-          ..write('expire: $expire')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
-  final GeneratedDatabase _db;
-  final String _alias;
-  $ProfilesTable(this._db, [this._alias]);
-  final VerificationMeta _studentIdMeta = const VerificationMeta('studentId');
-  GeneratedTextColumn _studentId;
-  @override
-  GeneratedTextColumn get studentId => _studentId ??= _constructStudentId();
-  GeneratedTextColumn _constructStudentId() {
-    return GeneratedTextColumn(
-      'student_id',
-      $tableName,
-      false,
-    );
-  }
-
-  final VerificationMeta _identMeta = const VerificationMeta('ident');
-  GeneratedTextColumn _ident;
-  @override
-  GeneratedTextColumn get ident => _ident ??= _constructIdent();
-  GeneratedTextColumn _constructIdent() {
-    return GeneratedTextColumn(
-      'ident',
-      $tableName,
-      false,
-    );
-  }
-
-  final VerificationMeta _firstNameMeta = const VerificationMeta('firstName');
-  GeneratedTextColumn _firstName;
-  @override
-  GeneratedTextColumn get firstName => _firstName ??= _constructFirstName();
-  GeneratedTextColumn _constructFirstName() {
-    return GeneratedTextColumn(
-      'first_name',
-      $tableName,
-      false,
-    );
-  }
-
-  final VerificationMeta _lastNameMeta = const VerificationMeta('lastName');
-  GeneratedTextColumn _lastName;
-  @override
-  GeneratedTextColumn get lastName => _lastName ??= _constructLastName();
-  GeneratedTextColumn _constructLastName() {
-    return GeneratedTextColumn(
-      'last_name',
-      $tableName,
-      false,
-    );
-  }
-
-  final VerificationMeta _tokenMeta = const VerificationMeta('token');
-  GeneratedTextColumn _token;
-  @override
-  GeneratedTextColumn get token => _token ??= _constructToken();
-  GeneratedTextColumn _constructToken() {
-    return GeneratedTextColumn(
-      'token',
-      $tableName,
-      false,
-    );
-  }
-
-  final VerificationMeta _releaseMeta = const VerificationMeta('release');
-  GeneratedDateTimeColumn _release;
-  @override
-  GeneratedDateTimeColumn get release => _release ??= _constructRelease();
-  GeneratedDateTimeColumn _constructRelease() {
-    return GeneratedDateTimeColumn(
-      'release',
-      $tableName,
-      false,
-    );
-  }
-
-  final VerificationMeta _expireMeta = const VerificationMeta('expire');
-  GeneratedDateTimeColumn _expire;
-  @override
-  GeneratedDateTimeColumn get expire => _expire ??= _constructExpire();
-  GeneratedDateTimeColumn _constructExpire() {
-    return GeneratedDateTimeColumn(
-      'expire',
-      $tableName,
-      false,
-    );
-  }
-
-  @override
-  List<GeneratedColumn> get $columns =>
-      [studentId, ident, firstName, lastName, token, release, expire];
-  @override
-  $ProfilesTable get asDslTable => this;
-  @override
-  String get $tableName => _alias ?? 'profiles';
-  @override
-  final String actualTableName = 'profiles';
-  @override
-  VerificationContext validateIntegrity(Insertable<Profile> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('student_id')) {
-      context.handle(_studentIdMeta,
-          studentId.isAcceptableOrUnknown(data['student_id'], _studentIdMeta));
-    } else if (isInserting) {
-      context.missing(_studentIdMeta);
-    }
-    if (data.containsKey('ident')) {
-      context.handle(
-          _identMeta, ident.isAcceptableOrUnknown(data['ident'], _identMeta));
-    } else if (isInserting) {
-      context.missing(_identMeta);
-    }
-    if (data.containsKey('first_name')) {
-      context.handle(_firstNameMeta,
-          firstName.isAcceptableOrUnknown(data['first_name'], _firstNameMeta));
-    } else if (isInserting) {
-      context.missing(_firstNameMeta);
-    }
-    if (data.containsKey('last_name')) {
-      context.handle(_lastNameMeta,
-          lastName.isAcceptableOrUnknown(data['last_name'], _lastNameMeta));
-    } else if (isInserting) {
-      context.missing(_lastNameMeta);
-    }
-    if (data.containsKey('token')) {
-      context.handle(
-          _tokenMeta, token.isAcceptableOrUnknown(data['token'], _tokenMeta));
-    } else if (isInserting) {
-      context.missing(_tokenMeta);
-    }
-    if (data.containsKey('release')) {
-      context.handle(_releaseMeta,
-          release.isAcceptableOrUnknown(data['release'], _releaseMeta));
-    } else if (isInserting) {
-      context.missing(_releaseMeta);
-    }
-    if (data.containsKey('expire')) {
-      context.handle(_expireMeta,
-          expire.isAcceptableOrUnknown(data['expire'], _expireMeta));
-    } else if (isInserting) {
-      context.missing(_expireMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {ident};
-  @override
-  Profile map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Profile.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  $ProfilesTable createAlias(String alias) {
-    return $ProfilesTable(_db, alias);
-  }
-}
-
-class Lesson extends DataClass implements Insertable<Lesson> {
+class LessonLocalModel extends DataClass
+    implements Insertable<LessonLocalModel> {
   final int eventId;
   final DateTime date;
   final String code;
@@ -464,7 +21,7 @@ class Lesson extends DataClass implements Insertable<Lesson> {
   final String subjectDescription;
   final String lessonType;
   final String lessonArg;
-  Lesson(
+  LessonLocalModel(
       {@required this.eventId,
       @required this.date,
       @required this.code,
@@ -477,13 +34,14 @@ class Lesson extends DataClass implements Insertable<Lesson> {
       @required this.subjectDescription,
       @required this.lessonType,
       @required this.lessonArg});
-  factory Lesson.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory LessonLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     final stringType = db.typeSystem.forDartType<String>();
-    return Lesson(
+    return LessonLocalModel(
       eventId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}event_id']),
       date:
@@ -586,10 +144,10 @@ class Lesson extends DataClass implements Insertable<Lesson> {
     );
   }
 
-  factory Lesson.fromJson(Map<String, dynamic> json,
+  factory LessonLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Lesson(
+    return LessonLocalModel(
       eventId: serializer.fromJson<int>(json['eventId']),
       date: serializer.fromJson<DateTime>(json['date']),
       code: serializer.fromJson<String>(json['code']),
@@ -624,7 +182,7 @@ class Lesson extends DataClass implements Insertable<Lesson> {
     };
   }
 
-  Lesson copyWith(
+  LessonLocalModel copyWith(
           {int eventId,
           DateTime date,
           String code,
@@ -637,7 +195,7 @@ class Lesson extends DataClass implements Insertable<Lesson> {
           String subjectDescription,
           String lessonType,
           String lessonArg}) =>
-      Lesson(
+      LessonLocalModel(
         eventId: eventId ?? this.eventId,
         date: date ?? this.date,
         code: code ?? this.code,
@@ -653,7 +211,7 @@ class Lesson extends DataClass implements Insertable<Lesson> {
       );
   @override
   String toString() {
-    return (StringBuffer('Lesson(')
+    return (StringBuffer('LessonLocalModel(')
           ..write('eventId: $eventId, ')
           ..write('date: $date, ')
           ..write('code: $code, ')
@@ -696,7 +254,7 @@ class Lesson extends DataClass implements Insertable<Lesson> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Lesson &&
+      (other is LessonLocalModel &&
           other.eventId == this.eventId &&
           other.date == this.date &&
           other.code == this.code &&
@@ -711,7 +269,7 @@ class Lesson extends DataClass implements Insertable<Lesson> {
           other.lessonArg == this.lessonArg);
 }
 
-class LessonsCompanion extends UpdateCompanion<Lesson> {
+class LessonsCompanion extends UpdateCompanion<LessonLocalModel> {
   final Value<int> eventId;
   final Value<DateTime> date;
   final Value<String> code;
@@ -762,7 +320,7 @@ class LessonsCompanion extends UpdateCompanion<Lesson> {
         subjectDescription = Value(subjectDescription),
         lessonType = Value(lessonType),
         lessonArg = Value(lessonArg);
-  static Insertable<Lesson> custom({
+  static Insertable<LessonLocalModel> custom({
     Expression<int> eventId,
     Expression<DateTime> date,
     Expression<String> code,
@@ -883,7 +441,8 @@ class LessonsCompanion extends UpdateCompanion<Lesson> {
   }
 }
 
-class $LessonsTable extends Lessons with TableInfo<$LessonsTable, Lesson> {
+class $LessonsTable extends Lessons
+    with TableInfo<$LessonsTable, LessonLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $LessonsTable(this._db, [this._alias]);
@@ -1057,7 +616,7 @@ class $LessonsTable extends Lessons with TableInfo<$LessonsTable, Lesson> {
   @override
   final String actualTableName = 'lessons';
   @override
-  VerificationContext validateIntegrity(Insertable<Lesson> instance,
+  VerificationContext validateIntegrity(Insertable<LessonLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1143,9 +702,9 @@ class $LessonsTable extends Lessons with TableInfo<$LessonsTable, Lesson> {
   @override
   Set<GeneratedColumn> get $primaryKey => {eventId};
   @override
-  Lesson map(Map<String, dynamic> data, {String tablePrefix}) {
+  LessonLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Lesson.fromData(data, _db, prefix: effectivePrefix);
+    return LessonLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -1154,22 +713,24 @@ class $LessonsTable extends Lessons with TableInfo<$LessonsTable, Lesson> {
   }
 }
 
-class Subject extends DataClass implements Insertable<Subject> {
+class SubjectLocalModel extends DataClass
+    implements Insertable<SubjectLocalModel> {
   final int id;
   final String name;
   final int orderNumber;
   final String color;
-  Subject(
+  SubjectLocalModel(
       {@required this.id,
       @required this.name,
       @required this.orderNumber,
       @required this.color});
-  factory Subject.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory SubjectLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    return Subject(
+    return SubjectLocalModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       orderNumber: intType
@@ -1208,10 +769,10 @@ class Subject extends DataClass implements Insertable<Subject> {
     );
   }
 
-  factory Subject.fromJson(Map<String, dynamic> json,
+  factory SubjectLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Subject(
+    return SubjectLocalModel(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       orderNumber: serializer.fromJson<int>(json['orderNumber']),
@@ -1229,8 +790,9 @@ class Subject extends DataClass implements Insertable<Subject> {
     };
   }
 
-  Subject copyWith({int id, String name, int orderNumber, String color}) =>
-      Subject(
+  SubjectLocalModel copyWith(
+          {int id, String name, int orderNumber, String color}) =>
+      SubjectLocalModel(
         id: id ?? this.id,
         name: name ?? this.name,
         orderNumber: orderNumber ?? this.orderNumber,
@@ -1238,7 +800,7 @@ class Subject extends DataClass implements Insertable<Subject> {
       );
   @override
   String toString() {
-    return (StringBuffer('Subject(')
+    return (StringBuffer('SubjectLocalModel(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('orderNumber: $orderNumber, ')
@@ -1253,14 +815,14 @@ class Subject extends DataClass implements Insertable<Subject> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Subject &&
+      (other is SubjectLocalModel &&
           other.id == this.id &&
           other.name == this.name &&
           other.orderNumber == this.orderNumber &&
           other.color == this.color);
 }
 
-class SubjectsCompanion extends UpdateCompanion<Subject> {
+class SubjectsCompanion extends UpdateCompanion<SubjectLocalModel> {
   final Value<int> id;
   final Value<String> name;
   final Value<int> orderNumber;
@@ -1279,7 +841,7 @@ class SubjectsCompanion extends UpdateCompanion<Subject> {
   })  : name = Value(name),
         orderNumber = Value(orderNumber),
         color = Value(color);
-  static Insertable<Subject> custom({
+  static Insertable<SubjectLocalModel> custom({
     Expression<int> id,
     Expression<String> name,
     Expression<int> orderNumber,
@@ -1336,7 +898,8 @@ class SubjectsCompanion extends UpdateCompanion<Subject> {
   }
 }
 
-class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
+class $SubjectsTable extends Subjects
+    with TableInfo<$SubjectsTable, SubjectLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $SubjectsTable(this._db, [this._alias]);
@@ -1399,7 +962,7 @@ class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
   @override
   final String actualTableName = 'subjects';
   @override
-  VerificationContext validateIntegrity(Insertable<Subject> instance,
+  VerificationContext validateIntegrity(Insertable<SubjectLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1432,9 +995,9 @@ class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Subject map(Map<String, dynamic> data, {String tablePrefix}) {
+  SubjectLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Subject.fromData(data, _db, prefix: effectivePrefix);
+    return SubjectLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -1443,17 +1006,20 @@ class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
   }
 }
 
-class Professor extends DataClass implements Insertable<Professor> {
+class ProfessorLocalModel extends DataClass
+    implements Insertable<ProfessorLocalModel> {
   final String id;
   final int subjectId;
   final String name;
-  Professor({@required this.id, @required this.subjectId, @required this.name});
-  factory Professor.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  ProfessorLocalModel(
+      {@required this.id, @required this.subjectId, @required this.name});
+  factory ProfessorLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final intType = db.typeSystem.forDartType<int>();
-    return Professor(
+    return ProfessorLocalModel(
       id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       subjectId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
@@ -1485,10 +1051,10 @@ class Professor extends DataClass implements Insertable<Professor> {
     );
   }
 
-  factory Professor.fromJson(Map<String, dynamic> json,
+  factory ProfessorLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Professor(
+    return ProfessorLocalModel(
       id: serializer.fromJson<String>(json['id']),
       subjectId: serializer.fromJson<int>(json['subjectId']),
       name: serializer.fromJson<String>(json['name']),
@@ -1504,14 +1070,15 @@ class Professor extends DataClass implements Insertable<Professor> {
     };
   }
 
-  Professor copyWith({String id, int subjectId, String name}) => Professor(
+  ProfessorLocalModel copyWith({String id, int subjectId, String name}) =>
+      ProfessorLocalModel(
         id: id ?? this.id,
         subjectId: subjectId ?? this.subjectId,
         name: name ?? this.name,
       );
   @override
   String toString() {
-    return (StringBuffer('Professor(')
+    return (StringBuffer('ProfessorLocalModel(')
           ..write('id: $id, ')
           ..write('subjectId: $subjectId, ')
           ..write('name: $name')
@@ -1525,13 +1092,13 @@ class Professor extends DataClass implements Insertable<Professor> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Professor &&
+      (other is ProfessorLocalModel &&
           other.id == this.id &&
           other.subjectId == this.subjectId &&
           other.name == this.name);
 }
 
-class ProfessorsCompanion extends UpdateCompanion<Professor> {
+class ProfessorsCompanion extends UpdateCompanion<ProfessorLocalModel> {
   final Value<String> id;
   final Value<int> subjectId;
   final Value<String> name;
@@ -1547,7 +1114,7 @@ class ProfessorsCompanion extends UpdateCompanion<Professor> {
   })  : id = Value(id),
         subjectId = Value(subjectId),
         name = Value(name);
-  static Insertable<Professor> custom({
+  static Insertable<ProfessorLocalModel> custom({
     Expression<String> id,
     Expression<int> subjectId,
     Expression<String> name,
@@ -1595,7 +1162,7 @@ class ProfessorsCompanion extends UpdateCompanion<Professor> {
 }
 
 class $ProfessorsTable extends Professors
-    with TableInfo<$ProfessorsTable, Professor> {
+    with TableInfo<$ProfessorsTable, ProfessorLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $ProfessorsTable(this._db, [this._alias]);
@@ -1644,7 +1211,8 @@ class $ProfessorsTable extends Professors
   @override
   final String actualTableName = 'professors';
   @override
-  VerificationContext validateIntegrity(Insertable<Professor> instance,
+  VerificationContext validateIntegrity(
+      Insertable<ProfessorLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1671,9 +1239,9 @@ class $ProfessorsTable extends Professors
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Professor map(Map<String, dynamic> data, {String tablePrefix}) {
+  ProfessorLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Professor.fromData(data, _db, prefix: effectivePrefix);
+    return ProfessorLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -1682,7 +1250,7 @@ class $ProfessorsTable extends Professors
   }
 }
 
-class Grade extends DataClass implements Insertable<Grade> {
+class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
   final int subjectId;
   final String subjectDesc;
   final int evtId;
@@ -1702,7 +1270,8 @@ class Grade extends DataClass implements Insertable<Grade> {
   final int skillId;
   final int gradeMasterId;
   final bool localllyCancelled;
-  Grade(
+  final bool hasSeenIt;
+  GradeLocalModel(
       {@required this.subjectId,
       @required this.subjectDesc,
       @required this.evtId,
@@ -1721,8 +1290,10 @@ class Grade extends DataClass implements Insertable<Grade> {
       @required this.weightFactor,
       @required this.skillId,
       @required this.gradeMasterId,
-      @required this.localllyCancelled});
-  factory Grade.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      @required this.localllyCancelled,
+      @required this.hasSeenIt});
+  factory GradeLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
@@ -1730,7 +1301,7 @@ class Grade extends DataClass implements Insertable<Grade> {
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     final doubleType = db.typeSystem.forDartType<double>();
     final boolType = db.typeSystem.forDartType<bool>();
-    return Grade(
+    return GradeLocalModel(
       subjectId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
       subjectDesc: stringType
@@ -1768,6 +1339,8 @@ class Grade extends DataClass implements Insertable<Grade> {
           .mapFromDatabaseResponse(data['${effectivePrefix}grade_master_id']),
       localllyCancelled: boolType.mapFromDatabaseResponse(
           data['${effectivePrefix}locallly_cancelled']),
+      hasSeenIt: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}has_seen_it']),
     );
   }
   @override
@@ -1830,6 +1403,9 @@ class Grade extends DataClass implements Insertable<Grade> {
     if (!nullToAbsent || localllyCancelled != null) {
       map['locallly_cancelled'] = Variable<bool>(localllyCancelled);
     }
+    if (!nullToAbsent || hasSeenIt != null) {
+      map['has_seen_it'] = Variable<bool>(hasSeenIt);
+    }
     return map;
   }
 
@@ -1891,13 +1467,16 @@ class Grade extends DataClass implements Insertable<Grade> {
       localllyCancelled: localllyCancelled == null && nullToAbsent
           ? const Value.absent()
           : Value(localllyCancelled),
+      hasSeenIt: hasSeenIt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(hasSeenIt),
     );
   }
 
-  factory Grade.fromJson(Map<String, dynamic> json,
+  factory GradeLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Grade(
+    return GradeLocalModel(
       subjectId: serializer.fromJson<int>(json['subjectId']),
       subjectDesc: serializer.fromJson<String>(json['subjectDesc']),
       evtId: serializer.fromJson<int>(json['evtId']),
@@ -1917,6 +1496,7 @@ class Grade extends DataClass implements Insertable<Grade> {
       skillId: serializer.fromJson<int>(json['skillId']),
       gradeMasterId: serializer.fromJson<int>(json['gradeMasterId']),
       localllyCancelled: serializer.fromJson<bool>(json['localllyCancelled']),
+      hasSeenIt: serializer.fromJson<bool>(json['hasSeenIt']),
     );
   }
   @override
@@ -1942,10 +1522,11 @@ class Grade extends DataClass implements Insertable<Grade> {
       'skillId': serializer.toJson<int>(skillId),
       'gradeMasterId': serializer.toJson<int>(gradeMasterId),
       'localllyCancelled': serializer.toJson<bool>(localllyCancelled),
+      'hasSeenIt': serializer.toJson<bool>(hasSeenIt),
     };
   }
 
-  Grade copyWith(
+  GradeLocalModel copyWith(
           {int subjectId,
           String subjectDesc,
           int evtId,
@@ -1964,8 +1545,9 @@ class Grade extends DataClass implements Insertable<Grade> {
           int weightFactor,
           int skillId,
           int gradeMasterId,
-          bool localllyCancelled}) =>
-      Grade(
+          bool localllyCancelled,
+          bool hasSeenIt}) =>
+      GradeLocalModel(
         subjectId: subjectId ?? this.subjectId,
         subjectDesc: subjectDesc ?? this.subjectDesc,
         evtId: evtId ?? this.evtId,
@@ -1985,10 +1567,11 @@ class Grade extends DataClass implements Insertable<Grade> {
         skillId: skillId ?? this.skillId,
         gradeMasterId: gradeMasterId ?? this.gradeMasterId,
         localllyCancelled: localllyCancelled ?? this.localllyCancelled,
+        hasSeenIt: hasSeenIt ?? this.hasSeenIt,
       );
   @override
   String toString() {
-    return (StringBuffer('Grade(')
+    return (StringBuffer('GradeLocalModel(')
           ..write('subjectId: $subjectId, ')
           ..write('subjectDesc: $subjectDesc, ')
           ..write('evtId: $evtId, ')
@@ -2007,7 +1590,8 @@ class Grade extends DataClass implements Insertable<Grade> {
           ..write('weightFactor: $weightFactor, ')
           ..write('skillId: $skillId, ')
           ..write('gradeMasterId: $gradeMasterId, ')
-          ..write('localllyCancelled: $localllyCancelled')
+          ..write('localllyCancelled: $localllyCancelled, ')
+          ..write('hasSeenIt: $hasSeenIt')
           ..write(')'))
         .toString();
   }
@@ -2053,12 +1637,13 @@ class Grade extends DataClass implements Insertable<Grade> {
                                                                       $mrjc(
                                                                           gradeMasterId
                                                                               .hashCode,
-                                                                          localllyCancelled
-                                                                              .hashCode)))))))))))))))))));
+                                                                          $mrjc(
+                                                                              localllyCancelled.hashCode,
+                                                                              hasSeenIt.hashCode))))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Grade &&
+      (other is GradeLocalModel &&
           other.subjectId == this.subjectId &&
           other.subjectDesc == this.subjectDesc &&
           other.evtId == this.evtId &&
@@ -2077,10 +1662,11 @@ class Grade extends DataClass implements Insertable<Grade> {
           other.weightFactor == this.weightFactor &&
           other.skillId == this.skillId &&
           other.gradeMasterId == this.gradeMasterId &&
-          other.localllyCancelled == this.localllyCancelled);
+          other.localllyCancelled == this.localllyCancelled &&
+          other.hasSeenIt == this.hasSeenIt);
 }
 
-class GradesCompanion extends UpdateCompanion<Grade> {
+class GradesCompanion extends UpdateCompanion<GradeLocalModel> {
   final Value<int> subjectId;
   final Value<String> subjectDesc;
   final Value<int> evtId;
@@ -2100,6 +1686,7 @@ class GradesCompanion extends UpdateCompanion<Grade> {
   final Value<int> skillId;
   final Value<int> gradeMasterId;
   final Value<bool> localllyCancelled;
+  final Value<bool> hasSeenIt;
   const GradesCompanion({
     this.subjectId = const Value.absent(),
     this.subjectDesc = const Value.absent(),
@@ -2120,6 +1707,7 @@ class GradesCompanion extends UpdateCompanion<Grade> {
     this.skillId = const Value.absent(),
     this.gradeMasterId = const Value.absent(),
     this.localllyCancelled = const Value.absent(),
+    this.hasSeenIt = const Value.absent(),
   });
   GradesCompanion.insert({
     @required int subjectId,
@@ -2141,6 +1729,7 @@ class GradesCompanion extends UpdateCompanion<Grade> {
     @required int skillId,
     @required int gradeMasterId,
     @required bool localllyCancelled,
+    this.hasSeenIt = const Value.absent(),
   })  : subjectId = Value(subjectId),
         subjectDesc = Value(subjectDesc),
         evtCode = Value(evtCode),
@@ -2159,7 +1748,7 @@ class GradesCompanion extends UpdateCompanion<Grade> {
         skillId = Value(skillId),
         gradeMasterId = Value(gradeMasterId),
         localllyCancelled = Value(localllyCancelled);
-  static Insertable<Grade> custom({
+  static Insertable<GradeLocalModel> custom({
     Expression<int> subjectId,
     Expression<String> subjectDesc,
     Expression<int> evtId,
@@ -2179,6 +1768,7 @@ class GradesCompanion extends UpdateCompanion<Grade> {
     Expression<int> skillId,
     Expression<int> gradeMasterId,
     Expression<bool> localllyCancelled,
+    Expression<bool> hasSeenIt,
   }) {
     return RawValuesInsertable({
       if (subjectId != null) 'subject_id': subjectId,
@@ -2200,6 +1790,7 @@ class GradesCompanion extends UpdateCompanion<Grade> {
       if (skillId != null) 'skill_id': skillId,
       if (gradeMasterId != null) 'grade_master_id': gradeMasterId,
       if (localllyCancelled != null) 'locallly_cancelled': localllyCancelled,
+      if (hasSeenIt != null) 'has_seen_it': hasSeenIt,
     });
   }
 
@@ -2222,7 +1813,8 @@ class GradesCompanion extends UpdateCompanion<Grade> {
       Value<int> weightFactor,
       Value<int> skillId,
       Value<int> gradeMasterId,
-      Value<bool> localllyCancelled}) {
+      Value<bool> localllyCancelled,
+      Value<bool> hasSeenIt}) {
     return GradesCompanion(
       subjectId: subjectId ?? this.subjectId,
       subjectDesc: subjectDesc ?? this.subjectDesc,
@@ -2243,6 +1835,7 @@ class GradesCompanion extends UpdateCompanion<Grade> {
       skillId: skillId ?? this.skillId,
       gradeMasterId: gradeMasterId ?? this.gradeMasterId,
       localllyCancelled: localllyCancelled ?? this.localllyCancelled,
+      hasSeenIt: hasSeenIt ?? this.hasSeenIt,
     );
   }
 
@@ -2306,6 +1899,9 @@ class GradesCompanion extends UpdateCompanion<Grade> {
     if (localllyCancelled.present) {
       map['locallly_cancelled'] = Variable<bool>(localllyCancelled.value);
     }
+    if (hasSeenIt.present) {
+      map['has_seen_it'] = Variable<bool>(hasSeenIt.value);
+    }
     return map;
   }
 
@@ -2330,13 +1926,15 @@ class GradesCompanion extends UpdateCompanion<Grade> {
           ..write('weightFactor: $weightFactor, ')
           ..write('skillId: $skillId, ')
           ..write('gradeMasterId: $gradeMasterId, ')
-          ..write('localllyCancelled: $localllyCancelled')
+          ..write('localllyCancelled: $localllyCancelled, ')
+          ..write('hasSeenIt: $hasSeenIt')
           ..write(')'))
         .toString();
   }
 }
 
-class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
+class $GradesTable extends Grades
+    with TableInfo<$GradesTable, GradeLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $GradesTable(this._db, [this._alias]);
@@ -2586,6 +2184,15 @@ class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
     );
   }
 
+  final VerificationMeta _hasSeenItMeta = const VerificationMeta('hasSeenIt');
+  GeneratedBoolColumn _hasSeenIt;
+  @override
+  GeneratedBoolColumn get hasSeenIt => _hasSeenIt ??= _constructHasSeenIt();
+  GeneratedBoolColumn _constructHasSeenIt() {
+    return GeneratedBoolColumn('has_seen_it', $tableName, false,
+        defaultValue: const Constant(true));
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         subjectId,
@@ -2606,7 +2213,8 @@ class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
         weightFactor,
         skillId,
         gradeMasterId,
-        localllyCancelled
+        localllyCancelled,
+        hasSeenIt
       ];
   @override
   $GradesTable get asDslTable => this;
@@ -2615,7 +2223,7 @@ class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
   @override
   final String actualTableName = 'grades';
   @override
-  VerificationContext validateIntegrity(Insertable<Grade> instance,
+  VerificationContext validateIntegrity(Insertable<GradeLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -2755,15 +2363,19 @@ class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
     } else if (isInserting) {
       context.missing(_localllyCancelledMeta);
     }
+    if (data.containsKey('has_seen_it')) {
+      context.handle(_hasSeenItMeta,
+          hasSeenIt.isAcceptableOrUnknown(data['has_seen_it'], _hasSeenItMeta));
+    }
     return context;
   }
 
   @override
   Set<GeneratedColumn> get $primaryKey => {evtId};
   @override
-  Grade map(Map<String, dynamic> data, {String tablePrefix}) {
+  GradeLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Grade.fromData(data, _db, prefix: effectivePrefix);
+    return GradeLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -2772,7 +2384,8 @@ class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
   }
 }
 
-class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
+class AgendaEventLocalModel extends DataClass
+    implements Insertable<AgendaEventLocalModel> {
   final int evtId;
   final String evtCode;
   final DateTime begin;
@@ -2786,7 +2399,7 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
   final bool isLocal;
   final String labelColor;
   final String title;
-  AgendaEvent(
+  AgendaEventLocalModel(
       {@required this.evtId,
       @required this.evtCode,
       @required this.begin,
@@ -2800,14 +2413,15 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
       @required this.isLocal,
       @required this.labelColor,
       @required this.title});
-  factory AgendaEvent.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory AgendaEventLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     final boolType = db.typeSystem.forDartType<bool>();
-    return AgendaEvent(
+    return AgendaEventLocalModel(
       evtId: intType.mapFromDatabaseResponse(data['${effectivePrefix}evt_id']),
       evtCode: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}evt_code']),
@@ -2879,8 +2493,8 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
     return map;
   }
 
-  AgendaEventsCompanion toCompanion(bool nullToAbsent) {
-    return AgendaEventsCompanion(
+  AgendaEventsTableCompanion toCompanion(bool nullToAbsent) {
+    return AgendaEventsTableCompanion(
       evtId:
           evtId == null && nullToAbsent ? const Value.absent() : Value(evtId),
       evtCode: evtCode == null && nullToAbsent
@@ -2917,10 +2531,10 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
     );
   }
 
-  factory AgendaEvent.fromJson(Map<String, dynamic> json,
+  factory AgendaEventLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return AgendaEvent(
+    return AgendaEventLocalModel(
       evtId: serializer.fromJson<int>(json['evtId']),
       evtCode: serializer.fromJson<String>(json['evtCode']),
       begin: serializer.fromJson<DateTime>(json['begin']),
@@ -2956,7 +2570,7 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
     };
   }
 
-  AgendaEvent copyWith(
+  AgendaEventLocalModel copyWith(
           {int evtId,
           String evtCode,
           DateTime begin,
@@ -2970,7 +2584,7 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
           bool isLocal,
           String labelColor,
           String title}) =>
-      AgendaEvent(
+      AgendaEventLocalModel(
         evtId: evtId ?? this.evtId,
         evtCode: evtCode ?? this.evtCode,
         begin: begin ?? this.begin,
@@ -2987,7 +2601,7 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
       );
   @override
   String toString() {
-    return (StringBuffer('AgendaEvent(')
+    return (StringBuffer('AgendaEventLocalModel(')
           ..write('evtId: $evtId, ')
           ..write('evtCode: $evtCode, ')
           ..write('begin: $begin, ')
@@ -3033,7 +2647,7 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is AgendaEvent &&
+      (other is AgendaEventLocalModel &&
           other.evtId == this.evtId &&
           other.evtCode == this.evtCode &&
           other.begin == this.begin &&
@@ -3049,7 +2663,8 @@ class AgendaEvent extends DataClass implements Insertable<AgendaEvent> {
           other.title == this.title);
 }
 
-class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
+class AgendaEventsTableCompanion
+    extends UpdateCompanion<AgendaEventLocalModel> {
   final Value<int> evtId;
   final Value<String> evtCode;
   final Value<DateTime> begin;
@@ -3063,7 +2678,7 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
   final Value<bool> isLocal;
   final Value<String> labelColor;
   final Value<String> title;
-  const AgendaEventsCompanion({
+  const AgendaEventsTableCompanion({
     this.evtId = const Value.absent(),
     this.evtCode = const Value.absent(),
     this.begin = const Value.absent(),
@@ -3078,7 +2693,7 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
     this.labelColor = const Value.absent(),
     this.title = const Value.absent(),
   });
-  AgendaEventsCompanion.insert({
+  AgendaEventsTableCompanion.insert({
     this.evtId = const Value.absent(),
     @required String evtCode,
     @required DateTime begin,
@@ -3104,7 +2719,7 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
         isLocal = Value(isLocal),
         labelColor = Value(labelColor),
         title = Value(title);
-  static Insertable<AgendaEvent> custom({
+  static Insertable<AgendaEventLocalModel> custom({
     Expression<int> evtId,
     Expression<String> evtCode,
     Expression<DateTime> begin,
@@ -3136,7 +2751,7 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
     });
   }
 
-  AgendaEventsCompanion copyWith(
+  AgendaEventsTableCompanion copyWith(
       {Value<int> evtId,
       Value<String> evtCode,
       Value<DateTime> begin,
@@ -3150,7 +2765,7 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
       Value<bool> isLocal,
       Value<String> labelColor,
       Value<String> title}) {
-    return AgendaEventsCompanion(
+    return AgendaEventsTableCompanion(
       evtId: evtId ?? this.evtId,
       evtCode: evtCode ?? this.evtCode,
       begin: begin ?? this.begin,
@@ -3214,7 +2829,7 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
 
   @override
   String toString() {
-    return (StringBuffer('AgendaEventsCompanion(')
+    return (StringBuffer('AgendaEventsTableCompanion(')
           ..write('evtId: $evtId, ')
           ..write('evtCode: $evtCode, ')
           ..write('begin: $begin, ')
@@ -3233,11 +2848,11 @@ class AgendaEventsCompanion extends UpdateCompanion<AgendaEvent> {
   }
 }
 
-class $AgendaEventsTable extends AgendaEvents
-    with TableInfo<$AgendaEventsTable, AgendaEvent> {
+class $AgendaEventsTableTable extends AgendaEventsTable
+    with TableInfo<$AgendaEventsTableTable, AgendaEventLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
-  $AgendaEventsTable(this._db, [this._alias]);
+  $AgendaEventsTableTable(this._db, [this._alias]);
   final VerificationMeta _evtIdMeta = const VerificationMeta('evtId');
   GeneratedIntColumn _evtId;
   @override
@@ -3413,13 +3028,14 @@ class $AgendaEventsTable extends AgendaEvents
         title
       ];
   @override
-  $AgendaEventsTable get asDslTable => this;
+  $AgendaEventsTableTable get asDslTable => this;
   @override
   String get $tableName => _alias ?? 'agenda_events';
   @override
   final String actualTableName = 'agenda_events';
   @override
-  VerificationContext validateIntegrity(Insertable<AgendaEvent> instance,
+  VerificationContext validateIntegrity(
+      Insertable<AgendaEventLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -3511,14 +3127,14 @@ class $AgendaEventsTable extends AgendaEvents
   @override
   Set<GeneratedColumn> get $primaryKey => {evtId};
   @override
-  AgendaEvent map(Map<String, dynamic> data, {String tablePrefix}) {
+  AgendaEventLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return AgendaEvent.fromData(data, _db, prefix: effectivePrefix);
+    return AgendaEventLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $AgendaEventsTable createAlias(String alias) {
-    return $AgendaEventsTable(_db, alias);
+  $AgendaEventsTableTable createAlias(String alias) {
+    return $AgendaEventsTableTable(_db, alias);
   }
 }
 
@@ -4039,7 +3655,8 @@ class $AbsencesTable extends Absences with TableInfo<$AbsencesTable, Absence> {
   }
 }
 
-class Period extends DataClass implements Insertable<Period> {
+class PeriodLocalModel extends DataClass
+    implements Insertable<PeriodLocalModel> {
   final String code;
   final int position;
   final String description;
@@ -4048,7 +3665,7 @@ class Period extends DataClass implements Insertable<Period> {
   final DateTime end;
   final String miurDivisionCode;
   final int periodIndex;
-  Period(
+  PeriodLocalModel(
       {@required this.code,
       @required this.position,
       @required this.description,
@@ -4057,14 +3674,15 @@ class Period extends DataClass implements Insertable<Period> {
       @required this.end,
       @required this.miurDivisionCode,
       @required this.periodIndex});
-  factory Period.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory PeriodLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final intType = db.typeSystem.forDartType<int>();
     final boolType = db.typeSystem.forDartType<bool>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    return Period(
+    return PeriodLocalModel(
       code: stringType.mapFromDatabaseResponse(data['${effectivePrefix}code']),
       position:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}position']),
@@ -4135,10 +3753,10 @@ class Period extends DataClass implements Insertable<Period> {
     );
   }
 
-  factory Period.fromJson(Map<String, dynamic> json,
+  factory PeriodLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Period(
+    return PeriodLocalModel(
       code: serializer.fromJson<String>(json['code']),
       position: serializer.fromJson<int>(json['position']),
       description: serializer.fromJson<String>(json['description']),
@@ -4164,7 +3782,7 @@ class Period extends DataClass implements Insertable<Period> {
     };
   }
 
-  Period copyWith(
+  PeriodLocalModel copyWith(
           {String code,
           int position,
           String description,
@@ -4173,7 +3791,7 @@ class Period extends DataClass implements Insertable<Period> {
           DateTime end,
           String miurDivisionCode,
           int periodIndex}) =>
-      Period(
+      PeriodLocalModel(
         code: code ?? this.code,
         position: position ?? this.position,
         description: description ?? this.description,
@@ -4185,7 +3803,7 @@ class Period extends DataClass implements Insertable<Period> {
       );
   @override
   String toString() {
-    return (StringBuffer('Period(')
+    return (StringBuffer('PeriodLocalModel(')
           ..write('code: $code, ')
           ..write('position: $position, ')
           ..write('description: $description, ')
@@ -4216,7 +3834,7 @@ class Period extends DataClass implements Insertable<Period> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Period &&
+      (other is PeriodLocalModel &&
           other.code == this.code &&
           other.position == this.position &&
           other.description == this.description &&
@@ -4227,7 +3845,7 @@ class Period extends DataClass implements Insertable<Period> {
           other.periodIndex == this.periodIndex);
 }
 
-class PeriodsCompanion extends UpdateCompanion<Period> {
+class PeriodsCompanion extends UpdateCompanion<PeriodLocalModel> {
   final Value<String> code;
   final Value<int> position;
   final Value<String> description;
@@ -4263,7 +3881,7 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
         end = Value(end),
         miurDivisionCode = Value(miurDivisionCode),
         periodIndex = Value(periodIndex);
-  static Insertable<Period> custom({
+  static Insertable<PeriodLocalModel> custom({
     Expression<String> code,
     Expression<int> position,
     Expression<String> description,
@@ -4352,7 +3970,8 @@ class PeriodsCompanion extends UpdateCompanion<Period> {
   }
 }
 
-class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
+class $PeriodsTable extends Periods
+    with TableInfo<$PeriodsTable, PeriodLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $PeriodsTable(this._db, [this._alias]);
@@ -4476,7 +4095,7 @@ class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
   @override
   final String actualTableName = 'periods';
   @override
-  VerificationContext validateIntegrity(Insertable<Period> instance,
+  VerificationContext validateIntegrity(Insertable<PeriodLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -4540,9 +4159,9 @@ class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
   @override
   Set<GeneratedColumn> get $primaryKey => {start, end};
   @override
-  Period map(Map<String, dynamic> data, {String tablePrefix}) {
+  PeriodLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Period.fromData(data, _db, prefix: effectivePrefix);
+    return PeriodLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -4551,7 +4170,8 @@ class $PeriodsTable extends Periods with TableInfo<$PeriodsTable, Period> {
   }
 }
 
-class Notice extends DataClass implements Insertable<Notice> {
+class NoticeLocalModel extends DataClass
+    implements Insertable<NoticeLocalModel> {
   final int pubId;
   final DateTime pubDate;
   final bool readStatus;
@@ -4568,7 +4188,7 @@ class Notice extends DataClass implements Insertable<Notice> {
   final bool needJoin;
   final bool needReply;
   final bool needFile;
-  Notice(
+  NoticeLocalModel(
       {@required this.pubId,
       @required this.pubDate,
       @required this.readStatus,
@@ -4585,14 +4205,15 @@ class Notice extends DataClass implements Insertable<Notice> {
       @required this.needJoin,
       @required this.needReply,
       @required this.needFile});
-  factory Notice.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory NoticeLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     final boolType = db.typeSystem.forDartType<bool>();
     final stringType = db.typeSystem.forDartType<String>();
-    return Notice(
+    return NoticeLocalModel(
       pubId: intType.mapFromDatabaseResponse(data['${effectivePrefix}pub_id']),
       pubDate: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}pub_date']),
@@ -4732,10 +4353,10 @@ class Notice extends DataClass implements Insertable<Notice> {
     );
   }
 
-  factory Notice.fromJson(Map<String, dynamic> json,
+  factory NoticeLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Notice(
+    return NoticeLocalModel(
       pubId: serializer.fromJson<int>(json['pubId']),
       pubDate: serializer.fromJson<DateTime>(json['pubDate']),
       readStatus: serializer.fromJson<bool>(json['readStatus']),
@@ -4778,7 +4399,7 @@ class Notice extends DataClass implements Insertable<Notice> {
     };
   }
 
-  Notice copyWith(
+  NoticeLocalModel copyWith(
           {int pubId,
           DateTime pubDate,
           bool readStatus,
@@ -4795,7 +4416,7 @@ class Notice extends DataClass implements Insertable<Notice> {
           bool needJoin,
           bool needReply,
           bool needFile}) =>
-      Notice(
+      NoticeLocalModel(
         pubId: pubId ?? this.pubId,
         pubDate: pubDate ?? this.pubDate,
         readStatus: readStatus ?? this.readStatus,
@@ -4815,7 +4436,7 @@ class Notice extends DataClass implements Insertable<Notice> {
       );
   @override
   String toString() {
-    return (StringBuffer('Notice(')
+    return (StringBuffer('NoticeLocalModel(')
           ..write('pubId: $pubId, ')
           ..write('pubDate: $pubDate, ')
           ..write('readStatus: $readStatus, ')
@@ -4873,7 +4494,7 @@ class Notice extends DataClass implements Insertable<Notice> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Notice &&
+      (other is NoticeLocalModel &&
           other.pubId == this.pubId &&
           other.pubDate == this.pubDate &&
           other.readStatus == this.readStatus &&
@@ -4892,7 +4513,7 @@ class Notice extends DataClass implements Insertable<Notice> {
           other.needFile == this.needFile);
 }
 
-class NoticesCompanion extends UpdateCompanion<Notice> {
+class NoticesCompanion extends UpdateCompanion<NoticeLocalModel> {
   final Value<int> pubId;
   final Value<DateTime> pubDate;
   final Value<bool> readStatus;
@@ -4959,7 +4580,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
         needJoin = Value(needJoin),
         needReply = Value(needReply),
         needFile = Value(needFile);
-  static Insertable<Notice> custom({
+  static Insertable<NoticeLocalModel> custom({
     Expression<int> pubId,
     Expression<DateTime> pubDate,
     Expression<bool> readStatus,
@@ -5113,7 +4734,8 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
   }
 }
 
-class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
+class $NoticesTable extends Notices
+    with TableInfo<$NoticesTable, NoticeLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $NoticesTable(this._db, [this._alias]);
@@ -5351,7 +4973,7 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
   @override
   final String actualTableName = 'notices';
   @override
-  VerificationContext validateIntegrity(Insertable<Notice> instance,
+  VerificationContext validateIntegrity(Insertable<NoticeLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -5473,9 +5095,9 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
   @override
   Set<GeneratedColumn> get $primaryKey => {pubId};
   @override
-  Notice map(Map<String, dynamic> data, {String tablePrefix}) {
+  NoticeLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Notice.fromData(data, _db, prefix: effectivePrefix);
+    return NoticeLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -5484,22 +5106,24 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
   }
 }
 
-class Attachment extends DataClass implements Insertable<Attachment> {
+class NoticeAttachmentLocalModel extends DataClass
+    implements Insertable<NoticeAttachmentLocalModel> {
   final int id;
   final int pubId;
   final String fileName;
   final int attachNumber;
-  Attachment(
+  NoticeAttachmentLocalModel(
       {@required this.id,
       @required this.pubId,
       @required this.fileName,
       @required this.attachNumber});
-  factory Attachment.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory NoticeAttachmentLocalModel.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    return Attachment(
+    return NoticeAttachmentLocalModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       pubId: intType.mapFromDatabaseResponse(data['${effectivePrefix}pub_id']),
       fileName: stringType
@@ -5540,10 +5164,10 @@ class Attachment extends DataClass implements Insertable<Attachment> {
     );
   }
 
-  factory Attachment.fromJson(Map<String, dynamic> json,
+  factory NoticeAttachmentLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Attachment(
+    return NoticeAttachmentLocalModel(
       id: serializer.fromJson<int>(json['id']),
       pubId: serializer.fromJson<int>(json['pubId']),
       fileName: serializer.fromJson<String>(json['fileName']),
@@ -5561,8 +5185,9 @@ class Attachment extends DataClass implements Insertable<Attachment> {
     };
   }
 
-  Attachment copyWith({int id, int pubId, String fileName, int attachNumber}) =>
-      Attachment(
+  NoticeAttachmentLocalModel copyWith(
+          {int id, int pubId, String fileName, int attachNumber}) =>
+      NoticeAttachmentLocalModel(
         id: id ?? this.id,
         pubId: pubId ?? this.pubId,
         fileName: fileName ?? this.fileName,
@@ -5570,7 +5195,7 @@ class Attachment extends DataClass implements Insertable<Attachment> {
       );
   @override
   String toString() {
-    return (StringBuffer('Attachment(')
+    return (StringBuffer('NoticeAttachmentLocalModel(')
           ..write('id: $id, ')
           ..write('pubId: $pubId, ')
           ..write('fileName: $fileName, ')
@@ -5585,14 +5210,14 @@ class Attachment extends DataClass implements Insertable<Attachment> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Attachment &&
+      (other is NoticeAttachmentLocalModel &&
           other.id == this.id &&
           other.pubId == this.pubId &&
           other.fileName == this.fileName &&
           other.attachNumber == this.attachNumber);
 }
 
-class AttachmentsCompanion extends UpdateCompanion<Attachment> {
+class AttachmentsCompanion extends UpdateCompanion<NoticeAttachmentLocalModel> {
   final Value<int> id;
   final Value<int> pubId;
   final Value<String> fileName;
@@ -5611,7 +5236,7 @@ class AttachmentsCompanion extends UpdateCompanion<Attachment> {
   })  : pubId = Value(pubId),
         fileName = Value(fileName),
         attachNumber = Value(attachNumber);
-  static Insertable<Attachment> custom({
+  static Insertable<NoticeAttachmentLocalModel> custom({
     Expression<int> id,
     Expression<int> pubId,
     Expression<String> fileName,
@@ -5669,7 +5294,7 @@ class AttachmentsCompanion extends UpdateCompanion<Attachment> {
 }
 
 class $AttachmentsTable extends Attachments
-    with TableInfo<$AttachmentsTable, Attachment> {
+    with TableInfo<$AttachmentsTable, NoticeAttachmentLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $AttachmentsTable(this._db, [this._alias]);
@@ -5729,7 +5354,8 @@ class $AttachmentsTable extends Attachments
   @override
   final String actualTableName = 'attachments';
   @override
-  VerificationContext validateIntegrity(Insertable<Attachment> instance,
+  VerificationContext validateIntegrity(
+      Insertable<NoticeAttachmentLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -5762,9 +5388,11 @@ class $AttachmentsTable extends Attachments
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Attachment map(Map<String, dynamic> data, {String tablePrefix}) {
+  NoticeAttachmentLocalModel map(Map<String, dynamic> data,
+      {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Attachment.fromData(data, _db, prefix: effectivePrefix);
+    return NoticeAttachmentLocalModel.fromData(data, _db,
+        prefix: effectivePrefix);
   }
 
   @override
@@ -6455,23 +6083,23 @@ class $NotesAttachmentsTable extends NotesAttachments
   }
 }
 
-class DidacticsTeacher extends DataClass
-    implements Insertable<DidacticsTeacher> {
+class TeacherLocalModel extends DataClass
+    implements Insertable<TeacherLocalModel> {
   final String id;
   final String name;
   final String firstName;
   final String lastName;
-  DidacticsTeacher(
+  TeacherLocalModel(
       {@required this.id,
       @required this.name,
       @required this.firstName,
       @required this.lastName});
-  factory DidacticsTeacher.fromData(
+  factory TeacherLocalModel.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
-    return DidacticsTeacher(
+    return TeacherLocalModel(
       id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       firstName: stringType
@@ -6511,10 +6139,10 @@ class DidacticsTeacher extends DataClass
     );
   }
 
-  factory DidacticsTeacher.fromJson(Map<String, dynamic> json,
+  factory TeacherLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return DidacticsTeacher(
+    return TeacherLocalModel(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       firstName: serializer.fromJson<String>(json['firstName']),
@@ -6532,9 +6160,9 @@ class DidacticsTeacher extends DataClass
     };
   }
 
-  DidacticsTeacher copyWith(
+  TeacherLocalModel copyWith(
           {String id, String name, String firstName, String lastName}) =>
-      DidacticsTeacher(
+      TeacherLocalModel(
         id: id ?? this.id,
         name: name ?? this.name,
         firstName: firstName ?? this.firstName,
@@ -6542,7 +6170,7 @@ class DidacticsTeacher extends DataClass
       );
   @override
   String toString() {
-    return (StringBuffer('DidacticsTeacher(')
+    return (StringBuffer('TeacherLocalModel(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('firstName: $firstName, ')
@@ -6557,14 +6185,14 @@ class DidacticsTeacher extends DataClass
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is DidacticsTeacher &&
+      (other is TeacherLocalModel &&
           other.id == this.id &&
           other.name == this.name &&
           other.firstName == this.firstName &&
           other.lastName == this.lastName);
 }
 
-class DidacticsTeachersCompanion extends UpdateCompanion<DidacticsTeacher> {
+class DidacticsTeachersCompanion extends UpdateCompanion<TeacherLocalModel> {
   final Value<String> id;
   final Value<String> name;
   final Value<String> firstName;
@@ -6584,7 +6212,7 @@ class DidacticsTeachersCompanion extends UpdateCompanion<DidacticsTeacher> {
         name = Value(name),
         firstName = Value(firstName),
         lastName = Value(lastName);
-  static Insertable<DidacticsTeacher> custom({
+  static Insertable<TeacherLocalModel> custom({
     Expression<String> id,
     Expression<String> name,
     Expression<String> firstName,
@@ -6642,7 +6270,7 @@ class DidacticsTeachersCompanion extends UpdateCompanion<DidacticsTeacher> {
 }
 
 class $DidacticsTeachersTable extends DidacticsTeachers
-    with TableInfo<$DidacticsTeachersTable, DidacticsTeacher> {
+    with TableInfo<$DidacticsTeachersTable, TeacherLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $DidacticsTeachersTable(this._db, [this._alias]);
@@ -6703,7 +6331,7 @@ class $DidacticsTeachersTable extends DidacticsTeachers
   @override
   final String actualTableName = 'didactics_teachers';
   @override
-  VerificationContext validateIntegrity(Insertable<DidacticsTeacher> instance,
+  VerificationContext validateIntegrity(Insertable<TeacherLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -6736,9 +6364,9 @@ class $DidacticsTeachersTable extends DidacticsTeachers
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  DidacticsTeacher map(Map<String, dynamic> data, {String tablePrefix}) {
+  TeacherLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DidacticsTeacher.fromData(data, _db, prefix: effectivePrefix);
+    return TeacherLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -6747,24 +6375,25 @@ class $DidacticsTeachersTable extends DidacticsTeachers
   }
 }
 
-class DidacticsFolder extends DataClass implements Insertable<DidacticsFolder> {
+class FolderLocalModel extends DataClass
+    implements Insertable<FolderLocalModel> {
   final String teacherId;
   final int id;
   final String name;
   final DateTime lastShare;
-  DidacticsFolder(
+  FolderLocalModel(
       {@required this.teacherId,
       @required this.id,
       @required this.name,
       @required this.lastShare});
-  factory DidacticsFolder.fromData(
+  factory FolderLocalModel.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final intType = db.typeSystem.forDartType<int>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    return DidacticsFolder(
+    return FolderLocalModel(
       teacherId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}teacher_id']),
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
@@ -6804,10 +6433,10 @@ class DidacticsFolder extends DataClass implements Insertable<DidacticsFolder> {
     );
   }
 
-  factory DidacticsFolder.fromJson(Map<String, dynamic> json,
+  factory FolderLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return DidacticsFolder(
+    return FolderLocalModel(
       teacherId: serializer.fromJson<String>(json['teacherId']),
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
@@ -6825,9 +6454,9 @@ class DidacticsFolder extends DataClass implements Insertable<DidacticsFolder> {
     };
   }
 
-  DidacticsFolder copyWith(
+  FolderLocalModel copyWith(
           {String teacherId, int id, String name, DateTime lastShare}) =>
-      DidacticsFolder(
+      FolderLocalModel(
         teacherId: teacherId ?? this.teacherId,
         id: id ?? this.id,
         name: name ?? this.name,
@@ -6835,7 +6464,7 @@ class DidacticsFolder extends DataClass implements Insertable<DidacticsFolder> {
       );
   @override
   String toString() {
-    return (StringBuffer('DidacticsFolder(')
+    return (StringBuffer('FolderLocalModel(')
           ..write('teacherId: $teacherId, ')
           ..write('id: $id, ')
           ..write('name: $name, ')
@@ -6850,14 +6479,14 @@ class DidacticsFolder extends DataClass implements Insertable<DidacticsFolder> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is DidacticsFolder &&
+      (other is FolderLocalModel &&
           other.teacherId == this.teacherId &&
           other.id == this.id &&
           other.name == this.name &&
           other.lastShare == this.lastShare);
 }
 
-class DidacticsFoldersCompanion extends UpdateCompanion<DidacticsFolder> {
+class DidacticsFoldersCompanion extends UpdateCompanion<FolderLocalModel> {
   final Value<String> teacherId;
   final Value<int> id;
   final Value<String> name;
@@ -6876,7 +6505,7 @@ class DidacticsFoldersCompanion extends UpdateCompanion<DidacticsFolder> {
   })  : teacherId = Value(teacherId),
         name = Value(name),
         lastShare = Value(lastShare);
-  static Insertable<DidacticsFolder> custom({
+  static Insertable<FolderLocalModel> custom({
     Expression<String> teacherId,
     Expression<int> id,
     Expression<String> name,
@@ -6934,7 +6563,7 @@ class DidacticsFoldersCompanion extends UpdateCompanion<DidacticsFolder> {
 }
 
 class $DidacticsFoldersTable extends DidacticsFolders
-    with TableInfo<$DidacticsFoldersTable, DidacticsFolder> {
+    with TableInfo<$DidacticsFoldersTable, FolderLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $DidacticsFoldersTable(this._db, [this._alias]);
@@ -6995,7 +6624,7 @@ class $DidacticsFoldersTable extends DidacticsFolders
   @override
   final String actualTableName = 'didactics_folders';
   @override
-  VerificationContext validateIntegrity(Insertable<DidacticsFolder> instance,
+  VerificationContext validateIntegrity(Insertable<FolderLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -7026,9 +6655,9 @@ class $DidacticsFoldersTable extends DidacticsFolders
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  DidacticsFolder map(Map<String, dynamic> data, {String tablePrefix}) {
+  FolderLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DidacticsFolder.fromData(data, _db, prefix: effectivePrefix);
+    return FolderLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -7037,29 +6666,29 @@ class $DidacticsFoldersTable extends DidacticsFolders
   }
 }
 
-class DidacticsContent extends DataClass
-    implements Insertable<DidacticsContent> {
+class ContentLocalModel extends DataClass
+    implements Insertable<ContentLocalModel> {
   final int folderId;
   final int id;
   final String name;
   final int objectId;
   final String type;
   final DateTime date;
-  DidacticsContent(
+  ContentLocalModel(
       {@required this.folderId,
       @required this.id,
       @required this.name,
       @required this.objectId,
       @required this.type,
       @required this.date});
-  factory DidacticsContent.fromData(
+  factory ContentLocalModel.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    return DidacticsContent(
+    return ContentLocalModel(
       folderId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}folder_id']),
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
@@ -7110,10 +6739,10 @@ class DidacticsContent extends DataClass
     );
   }
 
-  factory DidacticsContent.fromJson(Map<String, dynamic> json,
+  factory ContentLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return DidacticsContent(
+    return ContentLocalModel(
       folderId: serializer.fromJson<int>(json['folderId']),
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
@@ -7135,14 +6764,14 @@ class DidacticsContent extends DataClass
     };
   }
 
-  DidacticsContent copyWith(
+  ContentLocalModel copyWith(
           {int folderId,
           int id,
           String name,
           int objectId,
           String type,
           DateTime date}) =>
-      DidacticsContent(
+      ContentLocalModel(
         folderId: folderId ?? this.folderId,
         id: id ?? this.id,
         name: name ?? this.name,
@@ -7152,7 +6781,7 @@ class DidacticsContent extends DataClass
       );
   @override
   String toString() {
-    return (StringBuffer('DidacticsContent(')
+    return (StringBuffer('ContentLocalModel(')
           ..write('folderId: $folderId, ')
           ..write('id: $id, ')
           ..write('name: $name, ')
@@ -7173,7 +6802,7 @@ class DidacticsContent extends DataClass
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is DidacticsContent &&
+      (other is ContentLocalModel &&
           other.folderId == this.folderId &&
           other.id == this.id &&
           other.name == this.name &&
@@ -7182,7 +6811,7 @@ class DidacticsContent extends DataClass
           other.date == this.date);
 }
 
-class DidacticsContentsCompanion extends UpdateCompanion<DidacticsContent> {
+class DidacticsContentsCompanion extends UpdateCompanion<ContentLocalModel> {
   final Value<int> folderId;
   final Value<int> id;
   final Value<String> name;
@@ -7209,7 +6838,7 @@ class DidacticsContentsCompanion extends UpdateCompanion<DidacticsContent> {
         objectId = Value(objectId),
         type = Value(type),
         date = Value(date);
-  static Insertable<DidacticsContent> custom({
+  static Insertable<ContentLocalModel> custom({
     Expression<int> folderId,
     Expression<int> id,
     Expression<String> name,
@@ -7283,7 +6912,7 @@ class DidacticsContentsCompanion extends UpdateCompanion<DidacticsContent> {
 }
 
 class $DidacticsContentsTable extends DidacticsContents
-    with TableInfo<$DidacticsContentsTable, DidacticsContent> {
+    with TableInfo<$DidacticsContentsTable, ContentLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $DidacticsContentsTable(this._db, [this._alias]);
@@ -7369,7 +6998,7 @@ class $DidacticsContentsTable extends DidacticsContents
   @override
   final String actualTableName = 'didactics_contents';
   @override
-  VerificationContext validateIntegrity(Insertable<DidacticsContent> instance,
+  VerificationContext validateIntegrity(Insertable<ContentLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -7412,9 +7041,9 @@ class $DidacticsContentsTable extends DidacticsContents
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  DidacticsContent map(Map<String, dynamic> data, {String tablePrefix}) {
+  ContentLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DidacticsContent.fromData(data, _db, prefix: effectivePrefix);
+    return ContentLocalModel.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
@@ -7423,20 +7052,20 @@ class $DidacticsContentsTable extends DidacticsContents
   }
 }
 
-class DidacticsDownloadedFile extends DataClass
-    implements Insertable<DidacticsDownloadedFile> {
+class DidacticsDownloadedFileLocalModel extends DataClass
+    implements Insertable<DidacticsDownloadedFileLocalModel> {
   final String name;
   final String path;
   final int contentId;
-  DidacticsDownloadedFile(
+  DidacticsDownloadedFileLocalModel(
       {@required this.name, @required this.path, @required this.contentId});
-  factory DidacticsDownloadedFile.fromData(
+  factory DidacticsDownloadedFileLocalModel.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final intType = db.typeSystem.forDartType<int>();
-    return DidacticsDownloadedFile(
+    return DidacticsDownloadedFileLocalModel(
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       path: stringType.mapFromDatabaseResponse(data['${effectivePrefix}path']),
       contentId:
@@ -7468,10 +7097,10 @@ class DidacticsDownloadedFile extends DataClass
     );
   }
 
-  factory DidacticsDownloadedFile.fromJson(Map<String, dynamic> json,
+  factory DidacticsDownloadedFileLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return DidacticsDownloadedFile(
+    return DidacticsDownloadedFileLocalModel(
       name: serializer.fromJson<String>(json['name']),
       path: serializer.fromJson<String>(json['path']),
       contentId: serializer.fromJson<int>(json['contentId']),
@@ -7487,15 +7116,16 @@ class DidacticsDownloadedFile extends DataClass
     };
   }
 
-  DidacticsDownloadedFile copyWith({String name, String path, int contentId}) =>
-      DidacticsDownloadedFile(
+  DidacticsDownloadedFileLocalModel copyWith(
+          {String name, String path, int contentId}) =>
+      DidacticsDownloadedFileLocalModel(
         name: name ?? this.name,
         path: path ?? this.path,
         contentId: contentId ?? this.contentId,
       );
   @override
   String toString() {
-    return (StringBuffer('DidacticsDownloadedFile(')
+    return (StringBuffer('DidacticsDownloadedFileLocalModel(')
           ..write('name: $name, ')
           ..write('path: $path, ')
           ..write('contentId: $contentId')
@@ -7509,14 +7139,14 @@ class DidacticsDownloadedFile extends DataClass
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is DidacticsDownloadedFile &&
+      (other is DidacticsDownloadedFileLocalModel &&
           other.name == this.name &&
           other.path == this.path &&
           other.contentId == this.contentId);
 }
 
 class DidacticsDownloadedFilesCompanion
-    extends UpdateCompanion<DidacticsDownloadedFile> {
+    extends UpdateCompanion<DidacticsDownloadedFileLocalModel> {
   final Value<String> name;
   final Value<String> path;
   final Value<int> contentId;
@@ -7531,7 +7161,7 @@ class DidacticsDownloadedFilesCompanion
     this.contentId = const Value.absent(),
   })  : name = Value(name),
         path = Value(path);
-  static Insertable<DidacticsDownloadedFile> custom({
+  static Insertable<DidacticsDownloadedFileLocalModel> custom({
     Expression<String> name,
     Expression<String> path,
     Expression<int> contentId,
@@ -7579,7 +7209,9 @@ class DidacticsDownloadedFilesCompanion
 }
 
 class $DidacticsDownloadedFilesTable extends DidacticsDownloadedFiles
-    with TableInfo<$DidacticsDownloadedFilesTable, DidacticsDownloadedFile> {
+    with
+        TableInfo<$DidacticsDownloadedFilesTable,
+            DidacticsDownloadedFileLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $DidacticsDownloadedFilesTable(this._db, [this._alias]);
@@ -7629,7 +7261,7 @@ class $DidacticsDownloadedFilesTable extends DidacticsDownloadedFiles
   final String actualTableName = 'didactics_downloaded_files';
   @override
   VerificationContext validateIntegrity(
-      Insertable<DidacticsDownloadedFile> instance,
+      Insertable<DidacticsDownloadedFileLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -7655,9 +7287,11 @@ class $DidacticsDownloadedFilesTable extends DidacticsDownloadedFiles
   @override
   Set<GeneratedColumn> get $primaryKey => {contentId};
   @override
-  DidacticsDownloadedFile map(Map<String, dynamic> data, {String tablePrefix}) {
+  DidacticsDownloadedFileLocalModel map(Map<String, dynamic> data,
+      {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DidacticsDownloadedFile.fromData(data, _db, prefix: effectivePrefix);
+    return DidacticsDownloadedFileLocalModel.fromData(data, _db,
+        prefix: effectivePrefix);
   }
 
   @override
@@ -8173,27 +7807,28 @@ class $LocalGradesTable extends LocalGrades
   }
 }
 
-class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
+class TimetableEntryLocalModel extends DataClass
+    implements Insertable<TimetableEntryLocalModel> {
   final int id;
   final int start;
   final int end;
   final int dayOfWeek;
   final int subject;
   final String subjectName;
-  TimetableEntry(
+  TimetableEntryLocalModel(
       {this.id,
       @required this.start,
       @required this.end,
       @required this.dayOfWeek,
       @required this.subject,
       @required this.subjectName});
-  factory TimetableEntry.fromData(
+  factory TimetableEntryLocalModel.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    return TimetableEntry(
+    return TimetableEntryLocalModel(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       start: intType.mapFromDatabaseResponse(data['${effectivePrefix}start']),
       end: intType.mapFromDatabaseResponse(data['${effectivePrefix}end']),
@@ -8247,10 +7882,10 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
     );
   }
 
-  factory TimetableEntry.fromJson(Map<String, dynamic> json,
+  factory TimetableEntryLocalModel.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return TimetableEntry(
+    return TimetableEntryLocalModel(
       id: serializer.fromJson<int>(json['id']),
       start: serializer.fromJson<int>(json['start']),
       end: serializer.fromJson<int>(json['end']),
@@ -8272,14 +7907,14 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
     };
   }
 
-  TimetableEntry copyWith(
+  TimetableEntryLocalModel copyWith(
           {int id,
           int start,
           int end,
           int dayOfWeek,
           int subject,
           String subjectName}) =>
-      TimetableEntry(
+      TimetableEntryLocalModel(
         id: id ?? this.id,
         start: start ?? this.start,
         end: end ?? this.end,
@@ -8289,7 +7924,7 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
       );
   @override
   String toString() {
-    return (StringBuffer('TimetableEntry(')
+    return (StringBuffer('TimetableEntryLocalModel(')
           ..write('id: $id, ')
           ..write('start: $start, ')
           ..write('end: $end, ')
@@ -8312,7 +7947,7 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is TimetableEntry &&
+      (other is TimetableEntryLocalModel &&
           other.id == this.id &&
           other.start == this.start &&
           other.end == this.end &&
@@ -8321,7 +7956,8 @@ class TimetableEntry extends DataClass implements Insertable<TimetableEntry> {
           other.subjectName == this.subjectName);
 }
 
-class TimetableEntriesCompanion extends UpdateCompanion<TimetableEntry> {
+class TimetableEntriesCompanion
+    extends UpdateCompanion<TimetableEntryLocalModel> {
   final Value<int> id;
   final Value<int> start;
   final Value<int> end;
@@ -8348,7 +7984,7 @@ class TimetableEntriesCompanion extends UpdateCompanion<TimetableEntry> {
         dayOfWeek = Value(dayOfWeek),
         subject = Value(subject),
         subjectName = Value(subjectName);
-  static Insertable<TimetableEntry> custom({
+  static Insertable<TimetableEntryLocalModel> custom({
     Expression<int> id,
     Expression<int> start,
     Expression<int> end,
@@ -8422,7 +8058,7 @@ class TimetableEntriesCompanion extends UpdateCompanion<TimetableEntry> {
 }
 
 class $TimetableEntriesTable extends TimetableEntries
-    with TableInfo<$TimetableEntriesTable, TimetableEntry> {
+    with TableInfo<$TimetableEntriesTable, TimetableEntryLocalModel> {
   final GeneratedDatabase _db;
   final String _alias;
   $TimetableEntriesTable(this._db, [this._alias]);
@@ -8507,7 +8143,8 @@ class $TimetableEntriesTable extends TimetableEntries
   @override
   final String actualTableName = 'timetable_entries';
   @override
-  VerificationContext validateIntegrity(Insertable<TimetableEntry> instance,
+  VerificationContext validateIntegrity(
+      Insertable<TimetableEntryLocalModel> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -8552,9 +8189,11 @@ class $TimetableEntriesTable extends TimetableEntries
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  TimetableEntry map(Map<String, dynamic> data, {String tablePrefix}) {
+  TimetableEntryLocalModel map(Map<String, dynamic> data,
+      {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return TimetableEntry.fromData(data, _db, prefix: effectivePrefix);
+    return TimetableEntryLocalModel.fromData(data, _db,
+        prefix: effectivePrefix);
   }
 
   @override
@@ -9267,10 +8906,8 @@ class $DownloadedDocumentsTable extends DownloadedDocuments
   }
 }
 
-abstract class _$AppDatabase extends GeneratedDatabase {
-  _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  $ProfilesTable _profiles;
-  $ProfilesTable get profiles => _profiles ??= $ProfilesTable(this);
+abstract class _$SRDatabase extends GeneratedDatabase {
+  _$SRDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $LessonsTable _lessons;
   $LessonsTable get lessons => _lessons ??= $LessonsTable(this);
   $SubjectsTable _subjects;
@@ -9279,9 +8916,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $ProfessorsTable get professors => _professors ??= $ProfessorsTable(this);
   $GradesTable _grades;
   $GradesTable get grades => _grades ??= $GradesTable(this);
-  $AgendaEventsTable _agendaEvents;
-  $AgendaEventsTable get agendaEvents =>
-      _agendaEvents ??= $AgendaEventsTable(this);
+  $AgendaEventsTableTable _agendaEventsTable;
+  $AgendaEventsTableTable get agendaEventsTable =>
+      _agendaEventsTable ??= $AgendaEventsTableTable(this);
   $AbsencesTable _absences;
   $AbsencesTable get absences => _absences ??= $AbsencesTable(this);
   $PeriodsTable _periods;
@@ -9320,46 +8957,53 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $DownloadedDocumentsTable _downloadedDocuments;
   $DownloadedDocumentsTable get downloadedDocuments =>
       _downloadedDocuments ??= $DownloadedDocumentsTable(this);
-  ProfileDao _profileDao;
-  ProfileDao get profileDao => _profileDao ??= ProfileDao(this as AppDatabase);
-  LessonDao _lessonDao;
-  LessonDao get lessonDao => _lessonDao ??= LessonDao(this as AppDatabase);
-  SubjectDao _subjectDao;
-  SubjectDao get subjectDao => _subjectDao ??= SubjectDao(this as AppDatabase);
-  ProfessorDao _professorDao;
-  ProfessorDao get professorDao =>
-      _professorDao ??= ProfessorDao(this as AppDatabase);
-  GradeDao _gradeDao;
-  GradeDao get gradeDao => _gradeDao ??= GradeDao(this as AppDatabase);
-  AgendaDao _agendaDao;
-  AgendaDao get agendaDao => _agendaDao ??= AgendaDao(this as AppDatabase);
   AbsenceDao _absenceDao;
-  AbsenceDao get absenceDao => _absenceDao ??= AbsenceDao(this as AppDatabase);
-  PeriodDao _periodDao;
-  PeriodDao get periodDao => _periodDao ??= PeriodDao(this as AppDatabase);
-  NoticeDao _noticeDao;
-  NoticeDao get noticeDao => _noticeDao ??= NoticeDao(this as AppDatabase);
+  AbsenceDao get absenceDao => _absenceDao ??= AbsenceDao(this as SRDatabase);
   NoteDao _noteDao;
-  NoteDao get noteDao => _noteDao ??= NoteDao(this as AppDatabase);
-  DidacticsDao _didacticsDao;
-  DidacticsDao get didacticsDao =>
-      _didacticsDao ??= DidacticsDao(this as AppDatabase);
-  TimetableDao _timetableDao;
-  TimetableDao get timetableDao =>
-      _timetableDao ??= TimetableDao(this as AppDatabase);
+  NoteDao get noteDao => _noteDao ??= NoteDao(this as SRDatabase);
   DocumentsDao _documentsDao;
   DocumentsDao get documentsDao =>
-      _documentsDao ??= DocumentsDao(this as AppDatabase);
+      _documentsDao ??= DocumentsDao(this as SRDatabase);
+  GradesLocalDatasource _gradesLocalDatasource;
+  GradesLocalDatasource get gradesLocalDatasource =>
+      _gradesLocalDatasource ??= GradesLocalDatasource(this as SRDatabase);
+  AgendaLocalDatasource _agendaLocalDatasource;
+  AgendaLocalDatasource get agendaLocalDatasource =>
+      _agendaLocalDatasource ??= AgendaLocalDatasource(this as SRDatabase);
+  LessonsLocalDatasource _lessonsLocalDatasource;
+  LessonsLocalDatasource get lessonsLocalDatasource =>
+      _lessonsLocalDatasource ??= LessonsLocalDatasource(this as SRDatabase);
+  SubjectsLocalDatasource _subjectsLocalDatasource;
+  SubjectsLocalDatasource get subjectsLocalDatasource =>
+      _subjectsLocalDatasource ??= SubjectsLocalDatasource(this as SRDatabase);
+  ProfessorLocalDatasource _professorLocalDatasource;
+  ProfessorLocalDatasource get professorLocalDatasource =>
+      _professorLocalDatasource ??=
+          ProfessorLocalDatasource(this as SRDatabase);
+  PeriodsLocalDatasource _periodsLocalDatasource;
+  PeriodsLocalDatasource get periodsLocalDatasource =>
+      _periodsLocalDatasource ??= PeriodsLocalDatasource(this as SRDatabase);
+  NoticeboardLocalDatasource _noticeboardLocalDatasource;
+  NoticeboardLocalDatasource get noticeboardLocalDatasource =>
+      _noticeboardLocalDatasource ??=
+          NoticeboardLocalDatasource(this as SRDatabase);
+  TimetableLocalDatasource _timetableLocalDatasource;
+  TimetableLocalDatasource get timetableLocalDatasource =>
+      _timetableLocalDatasource ??=
+          TimetableLocalDatasource(this as SRDatabase);
+  DidacticsLocalDatasource _didacticsLocalDatasource;
+  DidacticsLocalDatasource get didacticsLocalDatasource =>
+      _didacticsLocalDatasource ??=
+          DidacticsLocalDatasource(this as SRDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
-        profiles,
         lessons,
         subjects,
         professors,
         grades,
-        agendaEvents,
+        agendaEventsTable,
         absences,
         periods,
         notices,

@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/core/presentation/widgets/custom_refresher.dart';
-import 'package:registro_elettronico/core/presentation/widgets/last_update_bottom_sheet.dart';
-import 'package:registro_elettronico/feature/profile/presentation/token/token_bloc.dart';
+import 'package:registro_elettronico/feature/authentication/presentation/token/token_bloc.dart';
 import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view_no_persistency.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc/document_attachment/document_attachment_bloc.dart';
 import 'bloc/documents_bloc.dart';
@@ -25,24 +21,10 @@ class ScrutiniPage extends StatefulWidget {
 }
 
 class _ScrutiniPageState extends State<ScrutiniPage> {
-  //GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  int _scrutiniLastUpdate;
-
   @override
   void initState() {
     BlocProvider.of<DocumentsBloc>(context).add(GetDocuments());
-
-    restore();
     super.initState();
-  }
-
-  void restore() async {
-    SharedPreferences sharedPreferences = sl();
-
-    setState(() {
-      _scrutiniLastUpdate =
-          sharedPreferences.getInt(PrefsConstants.lastUpdateScrutini);
-    });
   }
 
   @override
@@ -52,11 +34,6 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
           brightness: Theme.of(context).brightness,
           title: Text(AppLocalizations.of(context).translate('scrutini')),
         ),
-        bottomSheet: LastUpdateBottomSheet(
-          millisecondsSinceEpoch: _scrutiniLastUpdate,
-        ),
-        floatingActionButton: const SizedBox(height: 1),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: MultiBlocListener(
           listeners: [
             BlocListener<TokenBloc, TokenState>(
@@ -205,11 +182,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
             ),
             BlocListener<DocumentsBloc, DocumentsState>(
               listener: (context, state) {
-                if (state is DocumentsUpdateLoadSuccess) {
-                  setState(() {
-                    _scrutiniLastUpdate = DateTime.now().millisecondsSinceEpoch;
-                  });
-                } else if (state is DocumentsLoadNotConnected) {
+                if (state is DocumentsLoadNotConnected) {
                   Scaffold.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(

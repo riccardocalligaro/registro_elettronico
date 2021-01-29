@@ -1,21 +1,6 @@
 import 'package:moor/moor.dart';
 
-/// Resposnee from classeviva
-/// {
-///   "evtId": 4773759,
-///   "evtDate": "2019-11-08",
-///   "evtCode": "LSS0",
-///   "evtHPos": 3,
-///   "evtDuration": 1,
-///   "classDesc": "4IA INFORMATICA",
-///   "authorName": "GIULIANO ANDREINA",
-///   "subjectId": 5,
-///   "subjectCode": "SOST",
-///   "subjectDesc": "SOSTEGNO",
-///   "lessonType": "Compresenza",
-///   "lessonArg": ""
-/// }
-
+@DataClassName('LessonLocalModel')
 class Lessons extends Table {
   IntColumn get eventId => integer()();
   DateTimeColumn get date => dateTime()();

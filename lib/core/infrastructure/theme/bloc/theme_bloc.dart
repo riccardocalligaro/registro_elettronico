@@ -68,6 +68,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
           statusBarBrightness: Brightness.dark,
         ));
       }
+
       final MaterialColor color = event.color ??
           ColorUtils.createMaterialColor(Color(
               prefs.getInt(PrefsConstants.themeColor) ?? Colors.red.value));
@@ -75,7 +76,10 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
       await _saveSettings(_themeType, color);
 
       yield ThemeState(
-        materialThemeData: _getThemeData(_themeType, color),
+        materialThemeData: _getThemeData(
+          _themeType,
+          color,
+        ),
       );
     }
   }

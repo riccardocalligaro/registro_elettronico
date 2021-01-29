@@ -13,11 +13,14 @@ class BlackTheme {
       // primaryColor: color,
       brightness: Brightness.dark,
       canvasColor: Colors.black,
-      fontFamily: 'Montserrat',
+      fontFamily: 'Manrope',
       appBarTheme: AppBarTheme(
         elevation: 0,
         color: Colors.black,
         brightness: Brightness.dark,
+      ),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
       ),
       primaryTextTheme: TextTheme(
         headline6: TextStyle(color: Colors.white),
@@ -25,6 +28,9 @@ class BlackTheme {
         bodyText2: bodyStyle1.copyWith(color: Colors.white),
       ),
       cardTheme: CardTheme(color: Color(0xff0f0f0f)),
+      cursorColor: color,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      textSelectionHandleColor: color,
     );
   }
 }

@@ -19,6 +19,7 @@ class NotesPage extends StatefulWidget {
 }
 
 class _NotesPageState extends State<NotesPage> {
+  final ExpandableController expandableController = ExpandableController();
   @override
   void initState() {
     BlocProvider.of<NotesBloc>(context).add(GetNotes());
@@ -109,31 +110,23 @@ class _NotesPageState extends State<NotesPage> {
           itemCount: notes.length,
           itemBuilder: (context, index) {
             final note = notes[index];
-            print(note.toString());
-            return ExpandableTheme(
-              data: ExpandableThemeData(
-                iconColor: Theme.of(context).iconTheme.color,
-              ),
-              child: ExpandablePanel(
-                theme: ExpandableThemeData(
-                  hasIcon: false,
-                  tapHeaderToExpand: true,
-                ),
-                header: ListTile(
-                  // onLongPress: () {
-                  //   final AppDatabase appDatabase = AppDatabase();
-                  //   final NoteDao noteDao = NoteDao(appDatabase);
+            return ListTile(
+              title: Text('${note.author}'),
+              subtitle: Text(
+                  '${AppLocalizations.of(context).translate(note.type.toLowerCase()) ?? ""} - ${DateUtils.convertDateLocale(note.date, AppLocalizations.of(context).locale.toString())}'),
+              onTap: () {
+                BlocProvider.of<NoteAttachmentsBloc>(context)
+                    .add(ReadNote(eventId: note.id, type: note.type));
 
-                  //   noteDao.deleteAllNotes();
-                  // },
-                  title: Text('${note.author}'),
-                  subtitle: Text(
-                      '${AppLocalizations.of(context).translate(note.type.toLowerCase()) ?? ""} - ${DateUtils.convertDateLocale(note.date, AppLocalizations.of(context).locale.toString())}'),
-                ),
-                expanded: ExpandedNote(
-                  note: note,
-                ),
-              ),
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      content: NoteDialog(),
+                    );
+                  },
+                );
+              },
             );
           },
         ),
@@ -157,29 +150,31 @@ class _NotesPageState extends State<NotesPage> {
   // }
 }
 
-class ExpandedNote extends StatelessWidget {
-  final Note note;
-  const ExpandedNote({
+class NoteDialog extends StatelessWidget {
+  const NoteDialog({
     Key key,
-    @required this.note,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<NoteAttachmentsBloc>(context)
-        .add(ReadNote(eventId: note.id, type: note.type));
     return BlocBuilder<NoteAttachmentsBloc, NoteAttachmentsState>(
       builder: (context, state) {
         if (state is NoteAttachmentsLoadInProgress) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: CircularProgressIndicator(),
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: CircularProgressIndicator(),
+              ),
+            ],
           );
         } else if (state is NoteAttachmentsLoadSuccess) {
           final attachment = state.attachment;
           return ListTile(
             title: Text(
-                "${AppLocalizations.of(context).translate('description')}: ${attachment.description}"),
+              "${AppLocalizations.of(context).translate('description')}: ${attachment.description}",
+            ),
           );
         } else if (state is NoteAttachmentsLoadError) {
           return Padding(

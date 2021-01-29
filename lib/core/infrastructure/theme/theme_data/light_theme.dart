@@ -8,12 +8,16 @@ class LightTheme {
       primarySwatch: color,
       accentColor: color,
       brightness: Brightness.light,
-      fontFamily: 'Montserrat',
+      fontFamily: 'Manrope',
       //canvasColor: Colors.white,
       appBarTheme: AppBarTheme(
         elevation: 1,
         color: Colors.white,
       ),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+      ),
+      cardTheme: CardTheme(elevation: 0.5),
       primaryIconTheme: IconThemeData(color: Colors.grey[900], opacity: 0.50),
       primaryTextTheme: TextTheme(
         headline6: TextStyle(
@@ -22,6 +26,9 @@ class LightTheme {
         headline5: heaingSmall.copyWith(color: Colors.grey[900]),
         bodyText2: bodyStyle1.copyWith(color: Colors.grey[900]),
       ),
+      cursorColor: color,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      textSelectionHandleColor: color,
     );
   }
 }

@@ -1,27 +1,31 @@
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
+import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
+import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 
 abstract class AgendaRepository {
-  ///Insert an event into the agenda
-  Future insertEvent(AgendaEvent event);
-  // updates the events in the agenda
-  Future updateAllAgenda();
+  Stream<Resource<AgendaDataDomainModel>> watchAgendaData();
 
-  Future updateAgendaStartingFromDate(DateTime begin);
+  Future<Either<Failure, Success>> updateAllAgenda({@required bool ifNeeded});
 
-  Future updateAgendaBetweenDates(DateTime begin, DateTime end);
+  Future<Either<Failure, Success>> updateAgendaLatestDays({
+    @required bool ifNeeded,
+  });
 
-  ///Gets all events
-  Future<List<AgendaEvent>> getAllEvents();
+  // Local events CRUD
 
-  ///Gets last events of a date
-  Future<List<AgendaEvent>> getLastEvents(DateTime date, {int numbersOfEvents});
+  Future<Either<Failure, Success>> insertEvent({
+    @required AgendaEventDomainModel event,
+  });
 
-  ///Delete all events
-  Future deleteAllEvents();
+  Future<Either<Failure, Success>> updateEvent({
+    @required AgendaEventDomainModel event,
+  });
 
-  Future insertLocalEvent(AgendaEvent event);
-
-  Future deleteEvent(AgendaEvent event);
-
-  Future updateEvent(AgendaEvent event);
+  Future<Either<Failure, Success>> deleteEvent({
+    @required AgendaEventDomainModel event,
+  });
 }

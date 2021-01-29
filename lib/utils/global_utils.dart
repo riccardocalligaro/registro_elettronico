@@ -6,7 +6,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/feature/periods/data/dao/period_dao.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
+import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
+import 'package:registro_elettronico/feature/periods/data/dao/periods_local_datasource.dart';
+import 'package:registro_elettronico/feature/periods/domain/model/period_domain_model.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/utils/constants/subjects_constants.dart';
 import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -16,23 +20,6 @@ import 'constants/registro_constants.dart';
 import 'constants/subjects_constants.dart';
 
 class GlobalUtils {
-  // static void getNotificationBrightness(BuildContext context) {
-  //   final brightness = Theme.of(context).brightness;
-  //   if(brightness == Brightness.dark) {
-  //   }
-  // }
-  static Profile getMockProfile() {
-    return Profile(
-      ident: '32',
-      firstName: 'x',
-      lastName: '',
-      release: DateTime.now(),
-      token: '',
-      studentId: '',
-      expire: DateTime.now(),
-    );
-  }
-
   static String getColorCode(Color color) {
     return color.value.toString();
   }
@@ -83,17 +70,19 @@ class GlobalUtils {
 
   /// This method thakes a list of lessons and returns the lesson [grouped]
   /// checking the lesson argument and the subject id just in case
-  static List<Lesson> getGroupedLessonsList(List<Lesson> lessons) {
-    List<Lesson> lessonsList = [];
+  static List<LessonDomainModel> getGroupedLessonsList(
+    List<LessonDomainModel> lessons,
+  ) {
+    List<LessonDomainModel> lessonsList = [];
     int count = 1;
     for (var i = 0; i < lessons.length - 1; i++) {
       if (i == lessons.length - 1) {
-        if (lessons[i - 1].lessonArg == lessons[i].lessonArg &&
+        if (lessons[i - 1].lessonArgoment == lessons[i].lessonArgoment &&
             lessons[i - 1].subjectId == lessons[i].subjectId) {
           lessonsList.add(lessons[i].copyWith(duration: ++count));
         }
       }
-      if (lessons[i].lessonArg == lessons[i + 1].lessonArg &&
+      if (lessons[i].lessonArgoment == lessons[i + 1].lessonArgoment &&
           lessons[i].subjectId == lessons[i + 1].subjectId) {
         count++;
       } else {
@@ -106,7 +95,7 @@ class GlobalUtils {
   }
 
   static Map<Tuple2<int, String>, int> getGroupedLessonsMap(
-    List<Lesson> lessons,
+    List<LessonDomainModel> lessons,
   ) {
     final Map<Tuple2<int, String>, int> lessonsMap = Map.fromIterable(
       lessons,
@@ -117,34 +106,39 @@ class GlobalUtils {
       value: (e) => lessons
           .where(
             (entry) =>
-                entry.lessonArg == e.lessonArg &&
+                entry.lessonArgoment == e.lessonArgoment &&
                 entry.subjectId == e.subjectId &&
                 entry.author == e.author,
           )
           .length,
     );
+
     return lessonsMap;
   }
 
-  static Future<Period> getPeriodFromDate(DateTime date) async {
-    final PeriodDao periodDao = PeriodDao(sl());
-    final periods = await periodDao.getAllPeriods();
-    for (var i = 0; i < periods.length; i++) {
-      if (periods[i].start.isBefore(date) && periods[i].end.isAfter(date)) {
-        return periods[i];
+  static Future<PeriodDomainModel> getPeriodFromDate(DateTime date) async {
+    final PeriodsLocalDatasource periodsLocalDatasource = sl();
+
+    final localPeriods = await periodsLocalDatasource.getPeriods();
+    final domainPeriods =
+        localPeriods.map((e) => PeriodDomainModel.fromLocalModel(e)).toList();
+    for (var i = 0; i < domainPeriods.length; i++) {
+      if (domainPeriods[i].start.isBefore(date) &&
+          domainPeriods[i].end.isAfter(date)) {
+        return domainPeriods[i];
       }
     }
-    if (periods.isNotEmpty) {
+    if (domainPeriods.isNotEmpty) {
       int closestIndex = 0;
       int minDays = 366;
-      for (var i = 0; i < periods.length; i++) {
-        int diff = date.difference(periods[i].end).inDays;
+      for (var i = 0; i < domainPeriods.length; i++) {
+        int diff = date.difference(domainPeriods[i].end).inDays;
         if (diff < minDays) {
           minDays = diff;
           closestIndex = i;
         }
       }
-      return periods[closestIndex];
+      return domainPeriods[closestIndex];
     }
 
     return null;
@@ -152,6 +146,7 @@ class GlobalUtils {
 
   static int getSubjectConstFromName(String subjectName) {
     final stringToCompare = subjectName.toUpperCase();
+
     if (stringToCompare.contains(RegExp(r'(MATEMATICA)'))) {
       return SubjectsConstants.MATEMATICA;
     }
@@ -201,6 +196,10 @@ class GlobalUtils {
         .contains(RegExp(r'(DISEGNO TECNICO|TECNICHE|GRAFICHE|GRAFICA)'))) {
       return SubjectsConstants.DISEGNO_TECNICO;
     }
+    if (stringToCompare.contains(RegExp(
+        r'(GESTIONE PROGETTO, ORGANIZZAZIONE D’IMPRESA| GESTIONE PROGETTO|ORGANIZZAZIONE IMPRESA)'))) {
+      return SubjectsConstants.GPOI;
+    }
     if (stringToCompare.contains(RegExp(r'(BIOLOGIA)'))) {
       return SubjectsConstants.BIOLOGIA;
     } else {
@@ -228,12 +227,16 @@ class GlobalUtils {
       case SubjectsConstants.INGLESE:
         return "INGLESE";
         break;
+      case SubjectsConstants.GPOI:
+        return "GPOI";
+        break;
       default:
         return "";
     }
   }
 
-  static List<Subject> removeUnwantedSubject(List<Subject> subjects) {
+  static List<SubjectDomainModel> removeUnwantedSubject(
+      List<SubjectDomainModel> subjects) {
     subjects.removeWhere((subject) => isUnwanted(subject.name));
     return subjects;
   }
@@ -251,9 +254,7 @@ class GlobalUtils {
       if (reducedName != "") {
         return reducedName;
       } else {
-        reducedName = subjectName.substring(0, 13);
-        reducedName += "...";
-        return reducedName;
+        return subjectName;
       }
     } catch (_) {
       return subjectName;
@@ -434,7 +435,7 @@ class GlobalUtils {
   /// This function returns the color of a grade, it checks if it is because grades
   /// that are null are stored in the database with -1 value, so if it is -1 it must be
   /// canelled or an annotation
-  static Color getColorFromGrade(Grade grade) {
+  static Color getColorFromGrade(GradeDomainModel grade) {
     if (grade.cancelled ||
         grade.decimalValue == -1.00 ||
         grade.localllyCancelled) {
@@ -514,17 +515,37 @@ class GlobalUtils {
         event.contains('esame') ||
         event.contains('examen') ||
         event.contains('debito') ||
-        event.contains('test'));
+        event.contains('test') ||
+        event.contains('проверка') ||
+        event.contains('verificación') ||
+        event.contains('quiz') ||
+        event.contains('exam') ||
+        event.contains('考试'));
   }
 
   /// `venerdi alla 4 ora`
   /// `friday at the 4 hour`
   static String getEventDateMessage(
       BuildContext context, DateTime date, bool isFullDay) {
+    final now = DateTime.now();
+
+    if (DateUtils.areSameDay(now, date)) {
+      if (isFullDay) {
+        return '${AppLocalizations.of(context).translate('today_all_day').toLowerCase()}';
+      }
+      return AppLocalizations.of(context)
+          .translate('today_at')
+          .replaceAll(
+            '{hour}',
+            date.hour.toString(),
+          )
+          .toLowerCase();
+    }
+
+    final Duration diff = date.difference(now);
+
     String dateString = DateUtils.convertDateLocaleDashboard(
         date, AppLocalizations.of(context).locale.toString());
-
-    final Duration diff = date.difference(DateTime.now());
 
     if (diff.inDays == 0) {
       dateString =

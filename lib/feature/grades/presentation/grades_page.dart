@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/core/infrastructure/navigator.dart';
-import 'package:registro_elettronico/core/presentation/widgets/last_update_bottom_sheet.dart';
-import 'package:registro_elettronico/feature/grades/presentation/views/last_grades_page.dart';
-import 'package:registro_elettronico/feature/grades/presentation/views/term_grades_page.dart';
-import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
-import 'package:registro_elettronico/utils/constants/tabs_constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
+import 'package:registro_elettronico/feature/grades/presentation/states/grades_failure.dart';
+import 'package:registro_elettronico/feature/grades/presentation/states/grades_loading.dart';
+import 'package:registro_elettronico/feature/grades/presentation/states/tabs/grades_tab.dart';
+import 'package:registro_elettronico/feature/grades/presentation/states/tabs/period_tab.dart';
+import 'package:registro_elettronico/feature/grades/presentation/watcher/grades_watcher_bloc.dart';
+import 'package:registro_elettronico/utils/update_manager.dart';
 
-import 'bloc/subjects_grades/subjects_grades_bloc.dart';
+final GlobalKey<RefreshIndicatorState> gradesRefresherKey = GlobalKey();
 
 class GradesPage extends StatefulWidget {
   GradesPage({Key key}) : super(key: key);
@@ -19,211 +20,145 @@ class GradesPage extends StatefulWidget {
   _GradesPageState createState() => _GradesPageState();
 }
 
-class _GradesPageState extends State<GradesPage> {
-  int _lastUpdateGrades;
-
-  @override
-  void initState() {
-    getPreferences();
-    super.initState();
-    BlocProvider.of<SubjectsGradesBloc>(context).add(GetGradesAndSubjects());
-  }
-
-  void getPreferences() async {
-    SharedPreferences sharedPreferences = sl();
-    setState(() {
-      _lastUpdateGrades =
-          sharedPreferences.getInt(PrefsConstants.lastUpdateGrades);
-    });
-  }
+class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
+  int _currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SubjectsGradesBloc, SubjectsGradesState>(
-      builder: (context, state) {
-        if (state is SubjectsGradesLoadSuccess) {
-          state.grades.sort((b, a) => a.eventDate.compareTo(b.eventDate));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          AppLocalizations.of(context).translate('grades'),
+        ),
+        brightness: Theme.of(context).brightness,
+      ),
+      body: BlocBuilder<GradesWatcherBloc, GradesWatcherState>(
+        builder: (context, state) {
+          if (state is GradesWatcherLoadSuccess) {
+            List<StatelessWidget> widgets;
 
-          return DefaultTabController(
-            length: 4,
-            child: Scaffold(
-              appBar: AppBar(
-                brightness: Theme.of(context).brightness,
-                elevation: 0.0,
-                textTheme: Theme.of(context).textTheme,
-                iconTheme: Theme.of(context).primaryIconTheme,
-                bottom: TabBar(
-                  isScrollable: true,
-                  indicatorColor: Theme.of(context).accentColor,
-                  labelColor:
-                      Theme.of(context).primaryTextTheme.headline5.color,
-                  tabs: _getTabBar(),
+            if (state.gradesSections != null) {
+              widgets = [
+                GradesTab(
+                  grades: state.gradesSections.grades,
                 ),
-                title: Text(AppLocalizations.of(context).translate('grades')),
-              ),
-              bottomSheet: LastUpdateBottomSheet(
-                millisecondsSinceEpoch: _lastUpdateGrades,
-              ),
-              floatingActionButton: const SizedBox(height: 1),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
-              body: BlocListener<SubjectsGradesBloc, SubjectsGradesState>(
-                listener: (context, state2) {
-                  if (state2 is SubjectsGradesUpdateLoadSuccess) {
-                    setState(() {
-                      _lastUpdateGrades = DateTime.now().millisecondsSinceEpoch;
-                    });
-                  }
+                ...List.generate(
+                  state.gradesSections.periods,
+                  (index) {
+                    return PeriodTab(
+                      periodWithGradesDomainModel:
+                          state.gradesSections.periodsWithGrades[index],
+                    );
+                  },
+                ),
+              ];
+            }
 
-                  if (state2 is SubjectsGradesLoadNotConnected) {
-                    Scaffold.of(context)
-                      ..removeCurrentSnackBar()
-                      ..showSnackBar(AppNavigator.instance
-                          .getNetworkErrorSnackBar(context));
-                  }
-                },
-                child: state.periods.isNotEmpty
-                    ? TabBarView(
-                        children: <Widget>[
-                          LastGradesPage(
-                            grades: state.grades,
+            return RefreshIndicator(
+              key: gradesRefresherKey,
+              onRefresh: () {
+                return _refreshData(state.gradesSections);
+              },
+              child: state.gradesSections == null
+                  ? _EmptyGrades(
+                      onTap: () {
+                        gradesRefresherKey.currentState.show();
+                      },
+                    )
+                  : ListView(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 8, 0.0, 0),
+                          child: Container(
+                            height: 44,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: ActionChip(
+                                    label: Text(AppLocalizations.of(context)
+                                        .translate('last_grades')),
+                                    onPressed: () {
+                                      setState(() {
+                                        _currentPage = 0;
+                                      });
+                                    },
+                                    backgroundColor: _chipBackgroundColor(0),
+                                  ),
+                                ),
+                                ...List.generate(state.gradesSections.periods,
+                                    (index) {
+                                  final position = index + 1;
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: ActionChip(
+                                      label: Text(position ==
+                                              state.gradesSections.periods
+                                          ? AppLocalizations.of(context)
+                                              .translate('general')
+                                          : AppLocalizations.of(context)
+                                              .translate('term_chip')
+                                              .replaceAll('{number}',
+                                                  position.toString())),
+                                      onPressed: () {
+                                        setState(() {
+                                          _currentPage = position;
+                                        });
+                                      },
+                                      backgroundColor:
+                                          _chipBackgroundColor(position),
+                                    ),
+                                  );
+                                }),
+                              ],
+                            ),
                           ),
-                          TermGradesPage(
-                            grades: state.grades,
-                            subjects: state.subjects,
-                            objectives: state.objectives,
-                            periodPosition: state.periods
-                                .where((p) => p.periodIndex == 1)
-                                .single
-                                .position,
-                            generalObjective: state.generalObjective,
-                          ),
-                          TermGradesPage(
-                            grades: state.grades,
-                            subjects: state.subjects,
-                            objectives: state.objectives,
-                            periodPosition: state.periods
-                                .where((p) => p.periodIndex == 2)
-                                .single
-                                .position,
-                            generalObjective: state.generalObjective,
-                          ),
-                          TermGradesPage(
-                            grades: state.grades,
-                            subjects: state.subjects,
-                            objectives: state.objectives,
-                            periodPosition: TabsConstants.GENERALE,
-                            generalObjective: state.generalObjective,
-                          )
-                        ],
-                      )
-                    : TabBarView(
-                        children: <Widget>[
-                          LastGradesPage(
-                            grades: state.grades,
-                          ),
-                          TermGradesPage(
-                            grades: state.grades,
-                            subjects: state.subjects,
-                            objectives: state.objectives,
-                            periodPosition: 1,
-                            generalObjective: state.generalObjective,
-                          ),
-                          TermGradesPage(
-                            grades: state.grades,
-                            subjects: state.subjects,
-                            objectives: state.objectives,
-                            periodPosition: 2,
-                            generalObjective: state.generalObjective,
-                          ),
-                          TermGradesPage(
-                            grades: state.grades,
-                            subjects: state.subjects,
-                            objectives: state.objectives,
-                            periodPosition: TabsConstants.GENERALE,
-                            generalObjective: state.generalObjective,
-                          )
-                        ],
-                      ),
-              ),
-            ),
-          );
-        } else {
-          return DefaultTabController(
-            length: 4,
-            child: Scaffold(
-              appBar: AppBar(
-                brightness: Theme.of(context).brightness,
-                elevation: 0.0,
-                textTheme: Theme.of(context).textTheme,
-                iconTheme: Theme.of(context).primaryIconTheme,
-                bottom: TabBar(
-                  isScrollable: true,
-                  indicatorColor: Theme.of(context).accentColor,
-                  labelColor:
-                      Theme.of(context).primaryTextTheme.headline5.color,
-                  tabs: _getTabBar(),
-                ),
-                title: Text(AppLocalizations.of(context).translate('grades')),
-              ),
-              bottomSheet: LastUpdateBottomSheet(
-                millisecondsSinceEpoch: _lastUpdateGrades,
-              ),
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
-          );
-        }
-      },
+                        ),
+                        widgets.elementAt(_currentPage),
+                      ],
+                    ),
+            );
+          } else if (state is GradesWatcherFailure) {
+            return GradesFailure(failure: state.failure);
+          }
+
+          return GradesLoading();
+        },
+      ),
     );
   }
 
-  List<Widget> _getTabBar() {
-    List<Widget> tabs = [];
+  Future<void> _refreshData(GradesPagesDomainModel gradesSections) {
+    final SRUpdateManager srUpdateManager = sl();
+    return srUpdateManager.updateGradesData(
+      gradesSections: gradesSections,
+      context: context,
+    );
+  }
 
-    tabs.add(
-      Container(
-        width: 140,
-        child: Tab(
-          child: Text(AppLocalizations.of(context)
-              .translate('last_grades')
-              .toUpperCase()),
-        ),
+  Color _chipBackgroundColor(int index) {
+    if (index == _currentPage) {
+      return Theme.of(context).accentColor;
+    }
+    return null;
+  }
+}
+
+class _EmptyGrades extends StatelessWidget {
+  final Function() onTap;
+
+  const _EmptyGrades({Key key, @required this.onTap}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: CustomPlaceHolder(
+        icon: Icons.timeline,
+        showUpdate: true,
+        onTap: onTap,
+        text: AppLocalizations.of(context).translate('no_grades'),
       ),
     );
-
-    tabs.add(
-      Container(
-        width: 140,
-        child: Tab(
-          child: Text(
-              "1° ${AppLocalizations.of(context).translate('term').toUpperCase()}"),
-        ),
-      ),
-    );
-
-    tabs.add(
-      Container(
-        width: 140,
-        child: Tab(
-          child: Text(
-              "2° ${AppLocalizations.of(context).translate('term').toUpperCase()}"),
-        ),
-      ),
-    );
-
-    tabs.add(
-      Container(
-        width: 140,
-        child: Tab(
-          child: Text(
-            AppLocalizations.of(context).translate('overall').toUpperCase(),
-          ),
-        ),
-      ),
-    );
-
-    return tabs;
   }
 }

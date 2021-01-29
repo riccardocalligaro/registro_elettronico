@@ -1,31 +1,26 @@
-import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
+import 'package:registro_elettronico/feature/lessons/domain/model/last_lessons_domain_model.dart';
+import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 
 abstract class LessonsRepository {
-  /// Updates the lessons only for the [current] day
-  Future upadateTodayLessons();
+  Stream<Resource<List<LessonDomainModel>>> watchLessonsForSubjectId({
+    @required int subjectId,
+  });
 
-  /// Updates [all] the lessons
-  Future updateAllLessons();
+  Stream<Resource<List<LessonDomainModel>>> watchAllLessons();
 
-  /// Gets the [last] lessons of the [last day] where there are lessons
-  /// It ignores [sostegno]
-  Future<List<Lesson>> getLastLessons();
+  Stream<Resource<List<LessonWithDurationDomainModel>>>
+      watchLatestLessonsWithDuration();
 
-  /// Gets lessons of a [date] by checking the day, month and year
-  Future<List<Lesson>> getLessonsByDate(DateTime date);
+  Future<Either<Failure, Success>> updateAllLessons({
+    @required bool ifNeeded,
+  });
 
-  /// Gets of [all] the lessons
-  Future<List<Lesson>> getLessons();
-
-  /// Gets lessons for a [subject]
-  Future<List<Lesson>> getLessonsForSubject(int subjectId);
-
-  ///Delete all lessons
-  Future deleteAllLessons();
-
-  /// Inserts a single lesson
-  Future insertLesson(Lesson lesson);
-
-  /// Inserts a list of lessons
-  Future insertLessons(List<Lesson> lessonsToInsert);
+  Future<Either<Failure, Success>> updateTodaysLessons({
+    @required bool ifNeeded,
+  });
 }

@@ -5,8 +5,8 @@ import 'package:registro_elettronico/feature/notes/data/model/local/note_local_m
 part 'note_dao.g.dart';
 
 @UseDao(tables: [Notes, NotesAttachments])
-class NoteDao extends DatabaseAccessor<AppDatabase> with _$NoteDaoMixin {
-  AppDatabase db;
+class NoteDao extends DatabaseAccessor<SRDatabase> with _$NoteDaoMixin {
+  SRDatabase db;
 
   NoteDao(this.db) : super(db);
 

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
+import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
+import 'package:registro_elettronico/feature/periods/domain/model/period_domain_model.dart';
+import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 
 /// A student report that contains useful information that is displayed
 /// in the [report] section
@@ -15,13 +19,13 @@ class StudentReport {
   final double secondTermAverage;
 
   /// The period where the user has the best average
-  final Period mostProfitablePeriod;
+  final PeriodDomainModel mostProfitablePeriod;
 
   /// Overall best subject
-  final Subject bestSubject;
+  final SubjectDomainModel bestSubject;
 
   /// Overall worst subject
-  final Subject worstSubject;
+  final SubjectDomainModel worstSubject;
 
   // /// The [number] of max [consecutive]
   // /// sufficienze `grade >= 6`
@@ -55,22 +59,22 @@ class StudentReport {
   /// Subjects where the average for the current period is `>6`
   final int sufficientiSubjectsCount;
 
-  final List<Subject> insufficientiSubjects;
+  final List<SubjectDomainModel> insufficientiSubjects;
 
-  final List<Subject> sufficientiSubjects;
+  final List<SubjectDomainModel> sufficientiSubjects;
 
   /// Total grades for the [first] and [second period]
   final int totalGrades;
 
-  final List<Grade> grades;
+  final List<GradeDomainModel> grades;
 
   final List<Absence> absences;
 
-  final List<Subject> subjects;
+  final List<SubjectDomainModel> subjects;
 
-  final List<Period> periods;
+  final List<PeriodDomainModel> periods;
 
-  final List<AgendaEvent> agendaEvents;
+  final List<AgendaEventDomainModel> agendaEvents;
 
   final Duration timeRemainingToSchoolFinish;
 

@@ -41,6 +41,7 @@ class LocalizationsBloc extends Bloc<LocalizationsEvent, LocalizationsState> {
     if (localeString != null) {
       ui.Locale locale =
           ui.Locale(localeString.elementAt(0), localeString.elementAt(1));
+
       add(LocaleChanged(locale: locale));
     }
   }

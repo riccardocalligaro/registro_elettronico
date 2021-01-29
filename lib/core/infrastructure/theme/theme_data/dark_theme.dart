@@ -9,11 +9,14 @@ class DarkTheme {
       accentColor: color,
       // primaryColor: color,
       brightness: Brightness.dark,
-      fontFamily: 'Montserrat',
+      fontFamily: 'Manrope',
       appBarTheme: AppBarTheme(
         elevation: 0,
         color: Colors.grey[900],
         brightness: Brightness.dark,
+      ),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
       ),
       primaryTextTheme: TextTheme(
         headline6: TextStyle(color: Colors.white),
@@ -21,6 +24,9 @@ class DarkTheme {
         bodyText2: bodyStyle1.copyWith(color: Colors.white),
       ),
       cardTheme: CardTheme(color: Colors.grey[900]),
+      cursorColor: color,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      textSelectionHandleColor: color,
     );
   }
 }
