@@ -12,8 +12,6 @@ Failure handleStreamError(
   dynamic e, [
   StackTrace s,
 ]) {
-  // Logger.streamError(e.toString());
-
   if (e is Exception) {
   } else {
     e = Exception(e.toString());

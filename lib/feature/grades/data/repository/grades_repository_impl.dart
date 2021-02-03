@@ -256,7 +256,8 @@ class GradesRepositoryImpl extends GradesRepository {
 
               for (final event in eventsForThatDay) {
                 final professors = additionalProfessors[grade.subjectId];
-                if (professors.contains(event.authorName)) {
+                if (professors != null &&
+                    professors.contains(event.authorName)) {
                   if (GlobalUtils.isVerificaOrInterrogazione(
                       '${event.notes} ${event.title}')) {
                     grade.notesForFamily = '${event.notes} ${event.title}';
