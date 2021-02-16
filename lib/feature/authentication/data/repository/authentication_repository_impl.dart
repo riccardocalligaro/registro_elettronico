@@ -216,6 +216,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       // delete the user from the database
       final profile = await _getProfile();
+
       await profilesLocalDatasource.deleteWithIdent(profile.ident);
 
       await srDatabase.resetDb();
