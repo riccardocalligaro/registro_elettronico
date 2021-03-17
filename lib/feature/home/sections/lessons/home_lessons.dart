@@ -111,8 +111,10 @@ class _LatestLessonsEmpty extends StatelessWidget {
                 AppLocalizations.of(context).translate('no_lessons'),
               ),
             if (showUpdate)
-              FlatButton(
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              TextButton(
+                style: ButtonStyle(
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
                 onPressed: () {
                   homeRefresherKey.currentState.show();
                 },

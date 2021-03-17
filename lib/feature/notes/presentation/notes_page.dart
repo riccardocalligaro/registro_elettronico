@@ -38,7 +38,7 @@ class _NotesPageState extends State<NotesPage> {
           BlocListener<NotesBloc, NotesState>(
             listener: (context, state) {
               if (state is NotesLoadErrorNotConnected) {
-                Scaffold.of(context)
+                ScaffoldMessenger.of(context)
                   ..removeCurrentSnackBar()
                   ..showSnackBar(
                     AppNavigator.instance.getNetworkErrorSnackBar(context),
@@ -49,7 +49,7 @@ class _NotesPageState extends State<NotesPage> {
           BlocListener<NoteAttachmentsBloc, NoteAttachmentsState>(
             listener: (context, state) {
               if (state is NoteAttachmentsLoadNotConnected) {
-                Scaffold.of(context)
+                ScaffoldMessenger.of(context)
                   ..removeCurrentSnackBar()
                   ..showSnackBar(
                     AppNavigator.instance.getNetworkErrorSnackBar(context),
@@ -113,7 +113,7 @@ class _NotesPageState extends State<NotesPage> {
             return ListTile(
               title: Text('${note.author}'),
               subtitle: Text(
-                  '${AppLocalizations.of(context).translate(note.type.toLowerCase()) ?? ""} - ${DateUtils.convertDateLocale(note.date, AppLocalizations.of(context).locale.toString())}'),
+                  '${AppLocalizations.of(context).translate(note.type.toLowerCase()) ?? ""} - ${SRDateUtils.convertDateLocale(note.date, AppLocalizations.of(context).locale.toString())}'),
               onTap: () {
                 BlocProvider.of<NoteAttachmentsBloc>(context)
                     .add(ReadNote(eventId: note.id, type: note.type));

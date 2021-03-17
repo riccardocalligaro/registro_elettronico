@@ -51,7 +51,7 @@ class _NewEventPageState extends State<NewEventPage> {
   @override
   void initState() {
     _selectedDate = widget.initialDate;
-    if (DateUtils.areSameDay(_selectedDate, DateTime.now())) {
+    if (SRDateUtils.areSameDay(_selectedDate, DateTime.now())) {
       final addedHour = DateTime.now().add(Duration(hours: 2));
       _timeOfDay = TimeOfDay(hour: addedHour.hour, minute: 0);
     }
@@ -242,8 +242,8 @@ class _NewEventPageState extends State<NewEventPage> {
               const SizedBox(
                 width: 30.0,
               ),
-              Text(
-                  DateUtils.getBeforeNotifyTimeMessage(_beforeNotify, context)),
+              Text(SRDateUtils.getBeforeNotifyTimeMessage(
+                  _beforeNotify, context)),
             ],
           ),
         ),
@@ -339,7 +339,7 @@ class _NewEventPageState extends State<NewEventPage> {
             ListTile(
               leading: Icon(Icons.today),
               title: Text(AppLocalizations.of(context).translate('date')),
-              trailing: Text(DateUtils.getNewEventDateMessage(
+              trailing: Text(SRDateUtils.getNewEventDateMessage(
                 _selectedDate,
                 AppLocalizations.of(context).locale.toString(),
                 context,

@@ -132,44 +132,44 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
             final locale = AppLocalizations.of(context).locale.toString();
             switch (value.toInt()) {
               case 1:
-                return DateUtils.convertMonthForDisplay(
+                return SRDateUtils.convertMonthForDisplay(
                         DateTime.utc(2019, 9, 1), locale)
                     .toUpperCase();
               case 2:
-                return DateUtils.convertMonthForDisplay(
+                return SRDateUtils.convertMonthForDisplay(
                         DateTime.utc(2019, 10, 1), locale)
                     .toUpperCase();
               case 3:
-                return DateUtils.convertMonthForDisplay(
+                return SRDateUtils.convertMonthForDisplay(
                         DateTime.utc(2019, 11, 1), locale)
                     .toUpperCase();
               case 4:
-                return DateUtils.convertMonthForDisplay(
+                return SRDateUtils.convertMonthForDisplay(
                         DateTime.utc(2019, 12, 1), locale)
                     .toUpperCase();
               case 5:
-                return DateUtils.convertMonthForDisplay(
+                return SRDateUtils.convertMonthForDisplay(
                         DateTime.utc(2019, 1, 1), locale)
                     .toUpperCase();
               case 6:
-                return DateUtils.convertMonthForDisplay(
+                return SRDateUtils.convertMonthForDisplay(
                         DateTime.utc(2019, 2, 1), locale)
                     .toUpperCase();
               case 7:
-                return DateUtils.convertMonthForDisplay(
+                return SRDateUtils.convertMonthForDisplay(
                         DateTime.utc(2019, 3, 1), locale)
                     .toUpperCase();
 
               case 8:
-                return DateUtils.convertMonthForDisplay(
+                return SRDateUtils.convertMonthForDisplay(
                         DateTime.utc(2019, 4, 1), locale)
                     .toUpperCase();
               case 9:
-                return DateUtils.convertMonthForDisplay(
+                return SRDateUtils.convertMonthForDisplay(
                         DateTime.utc(2019, 5, 1), locale)
                     .toUpperCase();
               case 10:
-                return DateUtils.convertMonthForDisplay(
+                return SRDateUtils.convertMonthForDisplay(
                         DateTime.utc(2019, 6, 1), locale)
                     .toUpperCase();
             }

@@ -99,7 +99,7 @@ class WeekSummaryChart extends StatelessWidget {
           getTitles: (value) {
             if (value <= 7) {
               final locale = AppLocalizations.of(context).locale.toString();
-              return DateUtils.convertSingleDayShortForDisplay(
+              return SRDateUtils.convertSingleDayShortForDisplay(
                       DateTime.utc(2019, 9, value.toInt() + 1), locale)
                   .toUpperCase();
             } else {

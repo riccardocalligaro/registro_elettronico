@@ -200,7 +200,7 @@ class _UnicornDialer extends State<UnicornDialer>
 
       var childButtonsList = widget.childButtons == null ||
               widget.childButtons.isEmpty
-          ? List<Widget>()
+          ? []
           : List.generate(widget.childButtons.length, (index) {
               var intervalValue = index == 0
                   ? 0.9
@@ -274,15 +274,22 @@ class _UnicornDialer extends State<UnicornDialer>
             });
 
       var unicornDialWidget = Container(
-          margin: widget.hasNotch ? EdgeInsets.only(bottom: 15.0) : null,
-          height: double.infinity,
-          child: Stack(
-              //fit: StackFit.expand,
-              alignment: Alignment.bottomCenter,
-              overflow: Overflow.visible,
-              children: childButtonsList.toList()
-                ..add(Positioned(
-                    right: null, bottom: null, child: mainFloatingButton))));
+        margin: widget.hasNotch ? EdgeInsets.only(bottom: 15.0) : null,
+        height: double.infinity,
+        child: Stack(
+          //fit: StackFit.expand,
+          alignment: Alignment.bottomCenter,
+          clipBehavior: Clip.none,
+          children: childButtonsList.toList()
+            ..add(
+              Positioned(
+                right: null,
+                bottom: null,
+                child: mainFloatingButton,
+              ),
+            ),
+        ),
+      );
 
       var modal = ScaleTransition(
         scale: CurvedAnimation(
@@ -303,11 +310,12 @@ class _UnicornDialer extends State<UnicornDialer>
       return widget.hasBackground
           ? Stack(
               alignment: Alignment.topCenter,
-              overflow: Overflow.visible,
+              clipBehavior: Clip.none,
               children: [
-                  Positioned(right: -16.0, bottom: -16.0, child: modal),
-                  unicornDialWidget
-                ])
+                Positioned(right: -16.0, bottom: -16.0, child: modal),
+                unicornDialWidget
+              ],
+            )
           : unicornDialWidget;
     }
 

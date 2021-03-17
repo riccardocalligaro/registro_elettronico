@@ -7,7 +7,7 @@ class AbsenceMapper {
     return db.Absence(
       evtId: event.evtId ?? 0,
       evtCode: event.evtCode ?? "",
-      evtDate: DateUtils.getDateFromApiString(event.evtDate) ??
+      evtDate: SRDateUtils.getDateFromApiString(event.evtDate) ??
           DateTime.fromMillisecondsSinceEpoch(0),
       evtHPos: event.evtHPos ?? 0,
       evtValue: event.evtValue ?? 0,

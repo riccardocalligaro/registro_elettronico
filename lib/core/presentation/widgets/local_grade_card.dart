@@ -43,7 +43,7 @@ class LocalGradeCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    DateUtils.convertDateLocale(localGrade.eventDate,
+                    SRDateUtils.convertDateLocale(localGrade.eventDate,
                         AppLocalizations.of(context).locale.toString()),
                     style: TextStyle(color: Colors.white),
                   )

@@ -32,7 +32,7 @@ class TeacherRemoteModel {
     teacherFirstName = json['teacherFirstName'];
     teacherLastName = json['teacherLastName'];
     if (json['folders'] != null) {
-      folders = List<FolderRemoteModel>();
+      folders = <FolderRemoteModel>[];
       json['folders'].forEach((v) {
         folders.add(FolderRemoteModel.fromJson(v));
       });

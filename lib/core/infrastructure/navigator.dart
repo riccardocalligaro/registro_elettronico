@@ -86,7 +86,7 @@ class AppNavigator {
         title: Text(title),
         content: Text(message),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(AppLocalizations.of(context).translate('ok')),
             onPressed: () => Navigator.of(bCtx).pop(),
           )
@@ -96,7 +96,8 @@ class AppNavigator {
   }
 
   void showSnackBar(BuildContext context, String content) {
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text(content)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(content)));
   }
 
   SnackBar getNetworkErrorSnackBar(BuildContext context) {
@@ -124,24 +125,29 @@ class AppNavigator {
       actions = [];
     }
     BuildContext alertContext;
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (bCtx) {
-          alertContext = bCtx;
-          return AlertDialog(
-            title: title,
-            content: content,
-            actions: actions
-              ..add(FlatButton(
-                onPressed: () => Navigator.of(bCtx).pop(),
-                child: Text(AppLocalizations.of(context).translate('close')),
-              )),
-          );
-        },
-      );
-    });
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (bCtx) {
+            alertContext = bCtx;
+            return AlertDialog(
+              title: title,
+              content: content,
+              actions: actions
+                ..add(
+                  TextButton(
+                    onPressed: () => Navigator.of(bCtx).pop(),
+                    child:
+                        Text(AppLocalizations.of(context).translate('close')),
+                  ),
+                ),
+            );
+          },
+        );
+      },
+    );
     return alertContext;
   }
 }

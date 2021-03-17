@@ -4,7 +4,7 @@ import 'package:registro_elettronico/core/infrastructure/localizations/app_local
 import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
 import 'package:tuple/tuple.dart';
 
-class DateUtils {
+class SRDateUtils {
   static final DateTime epoch = DateTime.fromMillisecondsSinceEpoch(0);
 
   /// Gives the date in the format [yyyyMMdd], no locale ->

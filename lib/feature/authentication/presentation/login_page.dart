@@ -103,9 +103,12 @@ class _LoginPageState extends State<LoginPage> {
                     _buildHeaderText(),
                     _buildLoginInput(),
                     Spacer(),
-                    FlatButton(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
+                    TextButton(
+                      style: ButtonStyle(
+                        overlayColor: MaterialStateColor.resolveWith(
+                          (states) => Colors.transparent,
+                        ),
+                      ),
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -200,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
             height: 20,
           ),
           if (kDebugMode)
-            FlatButton(
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
@@ -257,7 +260,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Align(
         alignment: Alignment.bottomLeft,
         child: Text(
-          "${DateUtils.localizedTimeMessage(context)}, ",
+          "${SRDateUtils.localizedTimeMessage(context)}, ",
           style: Theme.of(context).textTheme.headline5,
         ),
       ),

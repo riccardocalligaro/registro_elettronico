@@ -147,7 +147,7 @@ class _NoticesLoaded extends StatelessWidget {
               behavior: SnackBarBehavior.floating,
             );
 
-            Scaffold.of(context)
+            ScaffoldMessenger.of(context)
               ..removeCurrentSnackBar()
               ..showSnackBar(snackBar);
           },
@@ -179,8 +179,8 @@ class _DownloadAttachmentSnackbar extends StatelessWidget {
       listener: (context, state) {
         if (state is AttachmentDownloadSuccess ||
             state is AttachmentDownloadFailure) {
-          Future.delayed(Duration(seconds: 3))
-              .then((value) => Scaffold.of(context)..removeCurrentSnackBar());
+          Future.delayed(Duration(seconds: 3)).then((value) =>
+              ScaffoldMessenger.of(context)..removeCurrentSnackBar());
         }
         if (state is AttachmentDownloadSuccess) {
           OpenFile.open(state.downloadedAttachment.file.path);

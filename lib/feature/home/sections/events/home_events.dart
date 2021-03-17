@@ -145,9 +145,12 @@ class _AgendaLoaded extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: SizedBox(
                   width: double.infinity,
-                  child: FlatButton(
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      overlayColor: MaterialStateColor.resolveWith(
+                        (states) => Colors.transparent,
+                      ),
+                    ),
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(

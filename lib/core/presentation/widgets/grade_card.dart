@@ -74,7 +74,7 @@ class GradeCard extends StatelessWidget {
                           ),
                           _buildLessonArgument(grade),
                           AutoSizeText(
-                            DateUtils.convertDateLocale(grade.eventDate,
+                            SRDateUtils.convertDateLocale(grade.eventDate,
                                 AppLocalizations.of(context).locale.toString()),
                             style: TextStyle(color: Colors.white),
                             maxLines: 1,
@@ -131,7 +131,7 @@ class GradeCard extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  '${trans.translate('date')}: ${DateUtils.convertDateLocale(grade.eventDate, trans.locale.toString())}',
+                  '${trans.translate('date')}: ${SRDateUtils.convertDateLocale(grade.eventDate, trans.locale.toString())}',
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(
@@ -164,7 +164,7 @@ class GradeCard extends StatelessWidget {
                   .translate('delete_grade_title_cancel')),
           //content: Text(grades[index].localllyCancelled.toString()),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(
                 AppLocalizations.of(context).translate('no').toUpperCase(),
               ),
@@ -172,10 +172,11 @@ class GradeCard extends StatelessWidget {
                 Navigator.pop(context);
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text(
                   AppLocalizations.of(context).translate('yes').toUpperCase()),
               onPressed: () async {
+                // TODO: look at this
                 // if (grade.localllyCancelled) {
                 //   await RepositoryProvider.of<GradesRepository>(context)
                 //       .updateGrade(grade.copyWith(localllyCancelled: false));

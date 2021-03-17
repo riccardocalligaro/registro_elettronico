@@ -49,9 +49,9 @@ class NoticeRemoteModel {
       readStatus: this.readStatus ?? false,
       eventCode: this.evtCode ?? "CF",
       contentId: this.cntId ?? GlobalUtils.getRandomNumber(),
-      contentValidFrom: DateUtils.getDateFromApiString(this.cntValidFrom) ??
+      contentValidFrom: SRDateUtils.getDateFromApiString(this.cntValidFrom) ??
           DateTime.fromMillisecondsSinceEpoch(0),
-      contentValidTo: DateUtils.getDateFromApiString(this.cntValidTo) ??
+      contentValidTo: SRDateUtils.getDateFromApiString(this.cntValidTo) ??
           DateTime.fromMillisecondsSinceEpoch(0),
       contentValidInRange: this.cntValidInRange ?? true,
       contentStatus: this.cntStatus ?? "active",
@@ -84,7 +84,7 @@ class NoticeRemoteModel {
     needFile = json['needFile'];
 
     if (json['attachments'] != null) {
-      attachments = List<AttachmentRemoteModel>();
+      attachments = <AttachmentRemoteModel>[];
       json['attachments'].forEach((v) {
         attachments.add(AttachmentRemoteModel.fromJson(v));
       });

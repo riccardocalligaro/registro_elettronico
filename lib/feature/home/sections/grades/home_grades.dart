@@ -129,7 +129,7 @@ class _LastGradesLoaded extends StatelessWidget {
             ? StringUtils.titleCase(
                 GlobalUtils.reduceSubjectTitleWithLength(grade.subjectDesc, 34))
             : StringUtils.titleCase(grade.subjectDesc);
-        final date = DateUtils.convertDateLocale(
+        final date = SRDateUtils.convertDateLocale(
             grade.eventDate, AppLocalizations.of(context).locale.toString());
 
         message += '${trans.translate('author')}: $gradeSubject';
@@ -167,7 +167,7 @@ class _LastGradesLoaded extends StatelessWidget {
                   style: TextStyle(fontSize: 15),
                 ),
                 Text(
-                  DateUtils.convertDateLocale(grade.eventDate,
+                  SRDateUtils.convertDateLocale(grade.eventDate,
                       AppLocalizations.of(context).locale.toString()),
                   style: TextStyle(fontSize: 11),
                 )
@@ -212,7 +212,7 @@ class _LastGradesLoading extends StatelessWidget {
             ),
             Text(AppLocalizations.of(context).translate('no_grades')),
             if (showUpdate)
-              FlatButton(
+              TextButton(
                 child: Text(
                   AppLocalizations.of(context).translate('sync'),
                   style: TextStyle(

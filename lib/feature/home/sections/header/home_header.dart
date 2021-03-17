@@ -28,7 +28,7 @@ class HomeHeader extends StatelessWidget {
               ),
               _buildNameText(context),
               Text(
-                DateUtils.convertDateLocale(
+                SRDateUtils.convertDateLocale(
                   DateTime.now(),
                   AppLocalizations.of(context).locale.toString(),
                 ),
@@ -53,7 +53,7 @@ class HomeHeader extends StatelessWidget {
 
     if (profile != null) {
       return Text(
-        '${DateUtils.localizedTimeMessage(context)}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
+        '${SRDateUtils.localizedTimeMessage(context)}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
         style: TextStyle(
           color: Colors.white,
           fontSize: 24,
@@ -62,7 +62,7 @@ class HomeHeader extends StatelessWidget {
       );
     }
     return Text(
-      '${DateUtils.localizedTimeMessage(context)}.',
+      '${SRDateUtils.localizedTimeMessage(context)}.',
       style: TextStyle(
         color: Colors.white,
         fontSize: 24,

@@ -81,7 +81,7 @@ class _ChangeAccountDialogState extends State<ChangeAccountDialog> {
         },
       ),
       actions: [
-        FlatButton(
+        TextButton(
           onPressed: () {
             Navigator.pop(context);
           },
@@ -89,7 +89,7 @@ class _ChangeAccountDialogState extends State<ChangeAccountDialog> {
             AppLocalizations.of(context).translate('cancel').toUpperCase(),
           ),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(

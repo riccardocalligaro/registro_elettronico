@@ -137,7 +137,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
           events,
           key: (e) => e.begin,
           value: (e) => domainEvents
-              .where((event) => DateUtils.areSameDay(event.begin, e.begin))
+              .where((event) => SRDateUtils.areSameDay(event.begin, e.begin))
               .toList(),
         );
 
@@ -161,7 +161,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
             .where(
               (e) =>
                   e.begin.isAfter(today) ||
-                  (DateUtils.areSameDay(e.begin, today) &&
+                  (SRDateUtils.areSameDay(e.begin, today) &&
                       DateTime.now().hour <= 14),
             )
             .toList();
@@ -203,7 +203,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
     String currentString;
 
     for (var i = 1; i <= 6; i++) {
-      currentString = DateUtils.convertDate(dayOfWeek);
+      currentString = SRDateUtils.convertDate(dayOfWeek);
       final eventsForDay = events[currentString];
       final numberOfEvents = eventsForDay != null ? eventsForDay.length : 0;
 

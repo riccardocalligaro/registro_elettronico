@@ -31,7 +31,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
       body: BlocListener<AbsencesBloc, AbsencesState>(
         listener: (context, state) {
           if (state is AbsencesLoadErrorNotConnected) {
-            Scaffold.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               AppNavigator.instance.getNetworkErrorSnackBar(context),
             );
           }

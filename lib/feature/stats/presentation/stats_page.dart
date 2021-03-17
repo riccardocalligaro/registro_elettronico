@@ -72,7 +72,7 @@ class _StatsPageState extends State<StatsPage> {
                   bytes.buffer.asUint8List(),
                   'image/png',
                   text:
-                      '${AppLocalizations.of(context).translate('statistics')} ${DateUtils.convertDateLocaleDashboard(DateTime.now(), AppLocalizations.of(context).locale.toString())}',
+                      '${AppLocalizations.of(context).translate('statistics')} ${SRDateUtils.convertDateLocaleDashboard(DateTime.now(), AppLocalizations.of(context).locale.toString())}',
                 );
               }).catchError((onError) {
                 Logger.info('Coudlnt create stats image file for sharing');
@@ -258,7 +258,7 @@ class _StatsPageState extends State<StatsPage> {
                         content: Text(AppLocalizations.of(context)
                             .translate('score_description')),
                         actions: <Widget>[
-                          FlatButton(
+                          TextButton(
                             child: Text(
                               AppLocalizations.of(context).translate('ok'),
                             ),

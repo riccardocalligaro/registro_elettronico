@@ -242,7 +242,7 @@ class GradesRepositoryImpl extends GradesRepository {
             localEvents,
             key: (e) => _convertDate(e.begin),
             value: (e) => localEvents
-                .where((event) => DateUtils.areSameDay(event.begin, e.begin))
+                .where((event) => SRDateUtils.areSameDay(event.begin, e.begin))
                 .toList(),
           );
 
@@ -371,7 +371,7 @@ class GradesRepositoryImpl extends GradesRepository {
   List<FlSpot> _getAverageSpots({
     @required List<GradeDomainModel> grades,
   }) {
-    List<FlSpot> spots = List<FlSpot>();
+    List<FlSpot> spots = <FlSpot>[];
 
     // simple algorithm to calculate avg
     double sum = 0;
@@ -398,7 +398,7 @@ class GradesRepositoryImpl extends GradesRepository {
   }
 
   List<FlSpot> _getNormalSpots({@required List<GradeDomainModel> grades}) {
-    List<FlSpot> spots = List<FlSpot>();
+    List<FlSpot> spots = <FlSpot>[];
 
     // if we don't want to see the average we want to see the single grades during that time
     for (int i = 0; i < grades.length; i++) {

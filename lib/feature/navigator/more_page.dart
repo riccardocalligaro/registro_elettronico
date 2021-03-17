@@ -176,13 +176,13 @@ class _LogoutDialog extends StatelessWidget {
         AppLocalizations.of(context).translate('logout_message'),
       ),
       actions: [
-        FlatButton(
+        TextButton(
           child: Text(AppLocalizations.of(context).translate('no')),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        FlatButton(
+        TextButton(
           child: Text(AppLocalizations.of(context).translate('yes')),
           onPressed: () async {
             Navigator.pop(context);

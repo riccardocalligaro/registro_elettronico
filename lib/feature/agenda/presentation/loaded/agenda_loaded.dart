@@ -214,7 +214,8 @@ class _AgendaResultsList extends StatelessWidget {
         final event = eventsToShow[index];
         return EventCard(
           event: event,
-          additionalTitle: '${DateUtils.convertDateForDisplay(event.begin)} - ',
+          additionalTitle:
+              '${SRDateUtils.convertDateForDisplay(event.begin)} - ',
         );
       },
     );

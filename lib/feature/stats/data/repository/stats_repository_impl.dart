@@ -312,7 +312,7 @@ class StatsRepositoryImpl implements StatsRepository {
 
     absences.forEach((absence) {
       final absenceDayEvents = events
-          .where((e) => DateUtils.areSameDay(e.begin, absence.evtDate))
+          .where((e) => SRDateUtils.areSameDay(e.begin, absence.evtDate))
           .toList();
 
       // If there are events in the day of the event

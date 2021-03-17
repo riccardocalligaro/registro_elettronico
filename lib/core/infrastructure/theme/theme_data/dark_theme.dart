@@ -24,9 +24,11 @@ class DarkTheme {
         bodyText2: bodyStyle1.copyWith(color: Colors.white),
       ),
       cardTheme: CardTheme(color: Colors.grey[900]),
-      cursorColor: color,
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: color,
+        selectionHandleColor: color,
+      ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      textSelectionHandleColor: color,
     );
   }
 }

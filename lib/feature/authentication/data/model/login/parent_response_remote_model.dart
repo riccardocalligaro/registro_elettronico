@@ -14,7 +14,7 @@ class ParentLoginResponseRemoteModel {
   ParentLoginResponseRemoteModel.fromJson(Map<String, dynamic> json) {
     requestedAction = json['requestedAction'];
     if (json['choices'] != null) {
-      choices = List<LoginChoiceRemoteModel>();
+      choices = [];
       json['choices'].forEach((v) {
         choices.add(LoginChoiceRemoteModel.fromJson(v));
       });

@@ -39,7 +39,7 @@ class CustomPlaceHolder extends StatelessWidget {
             ),
           ),
           showUpdate
-              ? FlatButton(
+              ? TextButton(
                   child: Text(
                     updateMessage ??
                         AppLocalizations.of(context).translate('sync'),

@@ -224,11 +224,11 @@ class DebugButton extends ListTile {
         );
 
   static void safe(BuildContext context, VoidCallback callback) {
-    Widget cancelButton = FlatButton(
+    Widget cancelButton = TextButton(
       child: Text("Nope"),
       onPressed: () => Navigator.of(context).pop(),
     );
-    Widget continueButton = FlatButton(
+    Widget continueButton = TextButton(
       child: Text("Yup"),
       onPressed: () {
         callback();

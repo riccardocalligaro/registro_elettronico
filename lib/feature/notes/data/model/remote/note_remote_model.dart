@@ -13,25 +13,25 @@ class NotesResponse {
 
   NotesResponse.fromJson(Map<String, dynamic> json) {
     if (json['NTTE'] != null) {
-      notesNTTE = List<NoteRemoteModel>();
+      notesNTTE = <NoteRemoteModel>[];
       json['NTTE'].forEach((v) {
         notesNTTE.add(NoteRemoteModel.fromJson(v));
       });
     }
     if (json['NTCL'] != null) {
-      notesNTCL = List<NoteRemoteModel>();
+      notesNTCL = <NoteRemoteModel>[];
       json['NTCL'].forEach((v) {
         notesNTCL.add(NoteRemoteModel.fromJson(v));
       });
     }
     if (json['NTWN'] != null) {
-      notesNTWN = List<NoteRemoteModel>();
+      notesNTWN = <NoteRemoteModel>[];
       json['NTWN'].forEach((v) {
         notesNTWN.add(NoteRemoteModel.fromJson(v));
       });
     }
     if (json['NTST'] != null) {
-      notesNTST = List<NoteRemoteModel>();
+      notesNTST = <NoteRemoteModel>[];
       json['NTST'].forEach((v) {
         notesNTST.add(NoteRemoteModel.fromJson(v));
       });

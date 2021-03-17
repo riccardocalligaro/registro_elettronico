@@ -42,7 +42,7 @@ class TimetableEventWidget extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.calendar_today),
                     title: Text(
-                      DateUtils.convertSingleDayForDisplay(
+                      SRDateUtils.convertSingleDayForDisplay(
                         event.start.toDateTimeLocal(),
                         AppLocalizations.of(context).locale.toString(),
                       ),
@@ -57,7 +57,7 @@ class TimetableEventWidget extends StatelessWidget {
                 ],
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   onPressed: () async {
                     final TimetableRepository timetableRepository = sl();
                     await timetableRepository.deleteTimetableEntry(
@@ -70,7 +70,7 @@ class TimetableEventWidget extends StatelessWidget {
                       .translate('delete')
                       .toUpperCase()),
                 ),
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },

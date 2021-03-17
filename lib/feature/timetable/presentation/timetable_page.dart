@@ -117,7 +117,7 @@ class _TimetableLoaded extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.all(16),
           child: Text(
-            DateUtils.convertSingleDayForDisplay(
+            SRDateUtils.convertSingleDayForDisplay(
               date.toDateTimeUnspecified(),
               AppLocalizations.of(context).locale.toString(),
             ),
@@ -199,7 +199,7 @@ class _AddEntryDialogState extends State<_AddEntryDialog> {
       title: _buildTitle(),
       content: _buildContent(),
       actions: [
-        FlatButton(
+        TextButton(
           onPressed: () {
             if (status == AddEntryStatus.start) {
               Navigator.pop(context);
@@ -218,7 +218,7 @@ class _AddEntryDialogState extends State<_AddEntryDialog> {
               : 'Indietro'.toUpperCase()),
         ),
         if (status == AddEntryStatus.start)
-          FlatButton(
+          TextButton(
             onPressed: () {
               setState(() {
                 status = AddEntryStatus.duration;
@@ -227,7 +227,7 @@ class _AddEntryDialogState extends State<_AddEntryDialog> {
             child: Text('Avanti'.toUpperCase()),
           ),
         if (status == AddEntryStatus.duration)
-          FlatButton(
+          TextButton(
             onPressed: () {
               setState(() {
                 status = AddEntryStatus.subject;
@@ -236,7 +236,7 @@ class _AddEntryDialogState extends State<_AddEntryDialog> {
             child: Text('Avanti'.toUpperCase()),
           ),
         if (status == AddEntryStatus.subject)
-          FlatButton(
+          TextButton(
             onPressed: () async {
               final entry = TimetableEntryDomainModel(
                 id: null,

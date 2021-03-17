@@ -21,9 +21,11 @@ class SectionHeader extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText2,
           ),
           onTap != null
-              ? FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
+              ? TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
                   ),
                   onPressed: onTap,
                   child: Padding(

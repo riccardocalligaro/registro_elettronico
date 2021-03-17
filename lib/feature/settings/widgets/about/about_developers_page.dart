@@ -92,7 +92,7 @@ class AboutDevelopersPage extends StatelessWidget {
               title: Text(trans.translate('app_description')),
             ),
             ListTile(
-              title: FlatButton(
+              title: TextButton(
                 child: Text(trans.translate('view_source_code')),
                 onPressed: () async {
                   const url =

@@ -33,7 +33,7 @@ class FolderRemoteModel {
     folderName = json['folderName'];
     lastShareDT = json['lastShareDT'];
     if (json['contents'] != null) {
-      contents = List<ContentRemoteModel>();
+      contents = <ContentRemoteModel>[];
       json['contents'].forEach((v) {
         contents.add(ContentRemoteModel.fromJson(v));
       });

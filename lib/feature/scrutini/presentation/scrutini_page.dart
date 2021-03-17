@@ -39,7 +39,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
             BlocListener<TokenBloc, TokenState>(
               listener: (context, state) {
                 if (state is TokenLoadInProgress) {
-                  Scaffold.of(context).showSnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       behavior: SnackBarBehavior.floating,
                       content: Row(
@@ -60,7 +60,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                     ),
                   );
                 } else if (state is TokenSchoolReportLoadSuccess) {
-                  Scaffold.of(context)..removeCurrentSnackBar();
+                  ScaffoldMessenger.of(context)..removeCurrentSnackBar();
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => SpaggiariWebViewNoPersistency(
@@ -71,9 +71,9 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                     ),
                   );
                 } else if (state is TokenLoadError) {
-                  Scaffold.of(context)..removeCurrentSnackBar();
+                  ScaffoldMessenger.of(context)..removeCurrentSnackBar();
 
-                  Scaffold.of(context).showSnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       behavior: SnackBarBehavior.floating,
                       content: Text(
@@ -83,7 +83,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                     ),
                   );
                 } else if (state is TokenLoadNotConnected) {
-                  Scaffold.of(context)
+                  ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(
                         AppNavigator.instance.getNetworkErrorSnackBar(context));
@@ -93,7 +93,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
             BlocListener<DocumentAttachmentBloc, DocumentAttachmentState>(
               listener: (context, state) {
                 if (state is DocumentLoadInProgress) {
-                  Scaffold.of(context)
+                  ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(
                       SnackBar(
@@ -117,7 +117,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                       ),
                     );
                 } else if (state is DocumentNotAvailable) {
-                  Scaffold.of(context)
+                  ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(
                       SnackBar(
@@ -128,7 +128,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                     );
                 } else if (state is DocumentLoadSuccess) {
                   Logger.info(state.path);
-                  Scaffold.of(context)
+                  ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(
                       SnackBar(
@@ -149,10 +149,10 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                       ),
                     );
                 } else if (state is DocumentLoadedLocally) {
-                  Scaffold.of(context)..removeCurrentSnackBar();
+                  ScaffoldMessenger.of(context)..removeCurrentSnackBar();
                   OpenFile.open(state.path);
                 } else if (state is DocumentAttachmentDeleteSuccess) {
-                  Scaffold.of(context)
+                  ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(
                       SnackBar(
@@ -162,7 +162,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                       ),
                     );
                 } else if (state is DocumentAttachmentError) {
-                  Scaffold.of(context)
+                  ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(
                       SnackBar(
@@ -172,7 +172,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                       ),
                     );
                 } else if (state is DocumentLoadNotConnected) {
-                  Scaffold.of(context)
+                  ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(
                         AppNavigator.instance.getNetworkErrorSnackBar(context));
@@ -183,7 +183,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
             BlocListener<DocumentsBloc, DocumentsState>(
               listener: (context, state) {
                 if (state is DocumentsLoadNotConnected) {
-                  Scaffold.of(context)
+                  ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(
                         AppNavigator.instance.getNetworkErrorSnackBar(context));
@@ -308,7 +308,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                       content: Text(AppLocalizations.of(context)
                           .translate('the_file_will_be_deleted')),
                       actions: <Widget>[
-                        FlatButton(
+                        TextButton(
                           child: Text(
                             AppLocalizations.of(context)
                                 .translate('cancel')
@@ -318,7 +318,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                             Navigator.pop(context);
                           },
                         ),
-                        FlatButton(
+                        TextButton(
                           child: Text(
                             AppLocalizations.of(context)
                                 .translate('delete')

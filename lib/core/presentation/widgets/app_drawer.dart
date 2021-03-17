@@ -124,14 +124,14 @@ class _AppDrawerState extends State<AppDrawer>
                     content: Text(AppLocalizations.of(context)
                         .translate('logout_message')),
                     actions: <Widget>[
-                      FlatButton(
+                      TextButton(
                         child:
                             Text(AppLocalizations.of(context).translate('no')),
                         onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
-                      FlatButton(
+                      TextButton(
                         child:
                             Text(AppLocalizations.of(context).translate('yes')),
                         onPressed: () {

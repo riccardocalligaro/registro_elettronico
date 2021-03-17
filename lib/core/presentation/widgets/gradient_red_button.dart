@@ -22,11 +22,14 @@ class GradientRedButton extends StatefulWidget {
 class _GradientRedButtonState extends State<GradientRedButton> {
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return ElevatedButton(
       onPressed: widget.onTap,
-      textColor: Colors.white,
-      padding: const EdgeInsets.all(0.0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+      style: ElevatedButton.styleFrom(
+        onPrimary: Colors.white,
+        padding: const EdgeInsets.all(0.0),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+      ),
       child: Container(
         width: widget.width ?? 220,
         height: widget.height ?? 43,

@@ -37,7 +37,7 @@ class LessonCard extends StatelessWidget {
           message +=
               '${trans.translate('author')}: ${StringUtils.titleCase(lesson.author)}';
           message +=
-              '\n${trans.translate('date')}: ${DateUtils.convertDateForLessons(lesson.date)}';
+              '\n${trans.translate('date')}: ${SRDateUtils.convertDateForLessons(lesson.date)}';
           message += '\n${lesson.lessonArgoment}';
 
           Share.text(AppLocalizations.of(context).translate('share'), message,
@@ -58,12 +58,12 @@ class LessonCard extends StatelessWidget {
                   SelectableText(
                       """${trans.translate('author')}: ${StringUtils.titleCase(lesson.author)}
                       \n${trans.translate('argument')}: ${lesson.lessonArgoment}
-                      \n${trans.translate('date')}: ${DateUtils.convertDateLocale(lesson.date, AppLocalizations.of(context).locale.toString())}
+                      \n${trans.translate('date')}: ${SRDateUtils.convertDateLocale(lesson.date, AppLocalizations.of(context).locale.toString())}
                       \n${trans.translate('type')}: ${lesson.lessonType}"""),
                 ],
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text(AppLocalizations.of(context).translate('ok')),
                   onPressed: () => Navigator.of(bCtx).pop(),
                 )

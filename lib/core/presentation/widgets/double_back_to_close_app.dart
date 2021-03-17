@@ -75,14 +75,14 @@ class DoubleBackToCloseAppState extends State<DoubleBackToCloseApp> {
       return true;
     } else {
       lastTimeBackButtonWasTapped = DateTime.now();
-      Scaffold.of(context).showSnackBar(widget.snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(widget.snackBar);
       return false;
     }
   }
 
   /// Throws a [StateError] if this widget was not wrapped in a [Scaffold].
   void ensureThatContextContainsScaffold() {
-    if (Scaffold.of(context, nullOk: true) == null) {
+    if (ScaffoldMessenger.of(context) == null) {
       throw StateError(
         '`DoubleBackToCloseApp` must be wrapped in a `Scaffold`.',
       );

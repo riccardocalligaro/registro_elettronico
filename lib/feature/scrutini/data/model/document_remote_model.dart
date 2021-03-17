@@ -6,13 +6,13 @@ class DocumentsResponse {
 
   DocumentsResponse.fromJson(Map<String, dynamic> json) {
     if (json['documents'] != null) {
-      documents = List<DocumentRemoteModel>();
+      documents = <DocumentRemoteModel>[];
       json['documents'].forEach((v) {
         documents.add(DocumentRemoteModel.fromJson(v));
       });
     }
     if (json['schoolReports'] != null) {
-      schoolReports = List<SchoolReportRemoteModel>();
+      schoolReports = <SchoolReportRemoteModel>[];
       json['schoolReports'].forEach((v) {
         schoolReports.add(SchoolReportRemoteModel.fromJson(v));
       });

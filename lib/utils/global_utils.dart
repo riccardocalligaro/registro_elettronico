@@ -559,7 +559,7 @@ class GlobalUtils {
       BuildContext context, DateTime date, bool isFullDay) {
     final now = DateTime.now();
 
-    if (DateUtils.areSameDay(now, date)) {
+    if (SRDateUtils.areSameDay(now, date)) {
       if (isFullDay) {
         return '${AppLocalizations.of(context).translate('today_all_day').toLowerCase()}';
       }
@@ -574,7 +574,7 @@ class GlobalUtils {
 
     final Duration diff = date.difference(now);
 
-    String dateString = DateUtils.convertDateLocaleDashboard(
+    String dateString = SRDateUtils.convertDateLocaleDashboard(
         date, AppLocalizations.of(context).locale.toString());
 
     if (diff.inDays == 0) {
@@ -703,10 +703,10 @@ class GlobalUtils {
       } else {
         final from = AppLocalizations.of(context).translate('from_absences');
         final to = AppLocalizations.of(context).translate('to_absences');
-        return "$from ${startDateOfAbsence.day} $to ${absence.evtDate.day} ${DateUtils.convertMonthLocale(absence.evtDate, AppLocalizations.of(context).locale.toString())}";
+        return "$from ${startDateOfAbsence.day} $to ${absence.evtDate.day} ${SRDateUtils.convertMonthLocale(absence.evtDate, AppLocalizations.of(context).locale.toString())}";
       }
     }
-    return DateUtils.convertDateLocale(
+    return SRDateUtils.convertDateLocale(
         absence.evtDate, AppLocalizations.of(context).locale.toString());
   }
 }

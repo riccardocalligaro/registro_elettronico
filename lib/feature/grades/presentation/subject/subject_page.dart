@@ -397,7 +397,7 @@ class _LocalGrades extends StatelessWidget {
                                       .translate('local_grade_will_be_removed'),
                                 ),
                                 actions: <Widget>[
-                                  FlatButton(
+                                  TextButton(
                                     child: Text(
                                       AppLocalizations.of(context)
                                           .translate('cancel')
@@ -407,7 +407,7 @@ class _LocalGrades extends StatelessWidget {
                                       Navigator.pop(context);
                                     },
                                   ),
-                                  FlatButton(
+                                  TextButton(
                                     child: Text(
                                       AppLocalizations.of(context)
                                           .translate('delete')
@@ -422,7 +422,8 @@ class _LocalGrades extends StatelessWidget {
                                                   localGrades[index]);
 
                                       if (res.isLeft()) {
-                                        Scaffold.of(context).showSnackBar(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
                                           SnackBar(
                                             content: Text(
                                               AppLocalizations.of(context)
@@ -461,7 +462,7 @@ class _LocalGrades extends StatelessWidget {
                 ButtonBar(
                   buttonPadding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
                   children: <Widget>[
-                    FlatButton(
+                    TextButton(
                       child: Text(
                         AppLocalizations.of(context)
                             .translate('add')
@@ -502,7 +503,7 @@ class _LocalGrades extends StatelessWidget {
                                   gradeDomainModel: gradeToInsert);
 
                               if (res.isLeft()) {
-                                Scaffold.of(context).showSnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
                                       AppLocalizations.of(context)

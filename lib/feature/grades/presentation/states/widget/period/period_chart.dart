@@ -67,7 +67,7 @@ class _GradesChartState extends State<GradesChart> {
           SizedBox(
             width: 60,
             height: 34,
-            child: FlatButton(
+            child: TextButton(
               onPressed: () {
                 setState(() {
                   showAvg = !showAvg;

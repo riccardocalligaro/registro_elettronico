@@ -42,7 +42,7 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
 
     grades.sort((a, b) => a.eventDate.compareTo(b.eventDate));
     // spots for the graph
-    List<FlSpot> spots = List<FlSpot>();
+    List<FlSpot> spots = <FlSpot>[];
 
     // if we are viewing the average we want to use the average in our points
     if (showAvg) {
@@ -106,7 +106,7 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
           SizedBox(
             width: 60,
             height: 34,
-            child: FlatButton(
+            child: TextButton(
               onPressed: () {
                 setState(() {
                   showAvg = !showAvg;

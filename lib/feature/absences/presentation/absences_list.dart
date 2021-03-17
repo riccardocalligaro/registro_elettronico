@@ -27,7 +27,7 @@ class AbsencesList extends StatelessWidget {
         }
 
         if (state is AbsencesLoaded) {
-          final List<Absence> absences = state.absences ?? List<Absence>();
+          final List<Absence> absences = state.absences ?? [];
           final map = getAbsencesMap(
               absences..sort((b, a) => a.evtDate.compareTo(b.evtDate)));
 

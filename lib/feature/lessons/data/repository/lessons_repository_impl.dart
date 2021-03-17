@@ -36,7 +36,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
     try {
       if (!ifNeeded |
           (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
-        final interval = DateUtils.getDateInerval();
+        final interval = SRDateUtils.getDateInerval();
         final remoteModels =
             await lessonsRemoteDatasource.getLessonBetweenDates(
           interval.begin,
@@ -58,7 +58,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
     try {
       if (!ifNeeded |
           (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
-        final interval = DateUtils.getDateInerval();
+        final interval = SRDateUtils.getDateInerval();
         final remoteModels =
             await lessonsRemoteDatasource.getLessonBetweenDates(
           interval.begin,

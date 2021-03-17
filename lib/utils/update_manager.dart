@@ -192,7 +192,7 @@ class SRUpdateManager {
   }
 
   void _showErrorSnackbar(BuildContext context, String failure) {
-    Scaffold.of(context).showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           failure ??

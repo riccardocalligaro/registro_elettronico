@@ -48,8 +48,8 @@ class PeriodRemoteModel {
       position: this.periodPos ?? -1,
       description: this.periodDesc ?? '',
       isFinal: this.isFinal ?? '',
-      start: DateUtils.getDateFromApiString(this.dateStart),
-      end: DateUtils.getDateFromApiString(this.dateEnd),
+      start: SRDateUtils.getDateFromApiString(this.dateStart),
+      end: SRDateUtils.getDateFromApiString(this.dateEnd),
       miurDivisionCode: this.miurDivisionCode ?? "",
       periodIndex: index ?? -1,
     );

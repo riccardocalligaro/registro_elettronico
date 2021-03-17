@@ -230,7 +230,7 @@ class _EditEventPageState extends State<EditEventPage> {
               leading: Icon(Icons.today),
               title: Text(AppLocalizations.of(context).translate('date')),
               trailing: Text(
-                DateUtils.getNewEventDateMessage(_selectedDate,
+                SRDateUtils.getNewEventDateMessage(_selectedDate,
                     AppLocalizations.of(context).locale.toString(), context),
               ),
               onTap: () {

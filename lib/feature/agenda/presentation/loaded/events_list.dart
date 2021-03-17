@@ -79,7 +79,7 @@ class EventCard extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
                 Text(
-                  DateUtils.convertTimeForDisplay(event.begin,
+                  SRDateUtils.convertTimeForDisplay(event.begin,
                       AppLocalizations.of(context).locale.toString()),
                   style: TextStyle(color: Colors.white),
                 )
@@ -227,7 +227,7 @@ class EventCard extends StatelessWidget {
 
                   message += trans.translate('date_event').replaceAll(
                         '{date}',
-                        DateUtils.convertDateLocaleDashboard(
+                        SRDateUtils.convertDateLocaleDashboard(
                           event.begin,
                           AppLocalizations.of(context).locale.toString(),
                         ),

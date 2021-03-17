@@ -30,7 +30,7 @@ class NoticeCard extends StatelessWidget {
         child: ListTile(
           title: Text(notice.contentTitle),
           subtitle: Text(
-            DateUtils.convertDateLocale(
+            SRDateUtils.convertDateLocale(
               notice.date,
               AppLocalizations.of(context).locale.toString(),
             ),
@@ -50,7 +50,7 @@ class NoticeCard extends StatelessWidget {
             }
           },
           onLongPress: () {
-            Scaffold.of(context)
+            ScaffoldMessenger.of(context)
               ..removeCurrentSnackBar()
               ..showSnackBar(SnackBar(
                 behavior: SnackBarBehavior.floating,
@@ -99,7 +99,7 @@ class NoticeCard extends StatelessWidget {
                               title: Text(AppLocalizations.of(context)
                                   .translate('delete_notice_alert_title')),
                               actions: <Widget>[
-                                FlatButton(
+                                TextButton(
                                   child: Text(AppLocalizations.of(context)
                                       .translate('no')
                                       .toUpperCase()),
@@ -107,7 +107,7 @@ class NoticeCard extends StatelessWidget {
                                     Navigator.pop(context);
                                   },
                                 ),
-                                FlatButton(
+                                TextButton(
                                   child: Text(
                                     AppLocalizations.of(context)
                                         .translate('yes')

@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     if (widget.fromLogin) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Scaffold.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               AppLocalizations.of(context).translate('updating_home_data'),

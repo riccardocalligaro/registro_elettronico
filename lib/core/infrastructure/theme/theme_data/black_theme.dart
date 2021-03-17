@@ -28,9 +28,12 @@ class BlackTheme {
         bodyText2: bodyStyle1.copyWith(color: Colors.white),
       ),
       cardTheme: CardTheme(color: Color(0xff0f0f0f)),
-      cursorColor: color,
+
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: color,
+        selectionHandleColor: color,
+      ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      textSelectionHandleColor: color,
     );
   }
 }

@@ -50,13 +50,13 @@ class ResetDialog extends StatelessWidget {
         AppLocalizations.of(context).translate('reset_db_alert_message'),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: Text(AppLocalizations.of(context).translate('no')),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        FlatButton(
+        TextButton(
           child: Text(AppLocalizations.of(context).translate('yes')),
           onPressed: () async {
             Navigator.pop(context);
@@ -73,7 +73,7 @@ class ResetDialog extends StatelessWidget {
             return platform.invokeMethod('restartApp');
 
             // ignore: unawaited_futures
-            // UpdateUtils.updateAllData(fromLogin: true);
+            // UpSRDateUtils.updateAllData(fromLogin: true);
           },
         )
       ],

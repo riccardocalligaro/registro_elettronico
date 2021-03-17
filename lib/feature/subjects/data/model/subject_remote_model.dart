@@ -22,7 +22,7 @@ class SubjectRemoteModel {
     description = json['description'];
     order = json['order'];
     if (json['teachers'] != null) {
-      professors = List<ProfessorRemoteModel>();
+      professors = [];
       json['teachers'].forEach((v) {
         professors.add(ProfessorRemoteModel.fromJson(v));
       });

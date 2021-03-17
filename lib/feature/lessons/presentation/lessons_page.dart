@@ -133,7 +133,7 @@ class _LessonsLoaded extends StatelessWidget {
         currentMonth = lesson.date.month;
 
         if (showMonth) {
-          var convertMonthLocale = DateUtils.convertMonthLocale(
+          var convertMonthLocale = SRDateUtils.convertMonthLocale(
               lesson.date, AppLocalizations.of(context).locale.toString());
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

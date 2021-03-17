@@ -38,7 +38,7 @@ class SRFailureView extends StatelessWidget {
             const SizedBox(
               height: 12,
             ),
-          FlatButton(
+          TextButton(
             child: Text(
               AppLocalizations.of(context).translate('show_error'),
               style: TextStyle(
@@ -53,14 +53,14 @@ class SRFailureView extends StatelessWidget {
                     title: Text(failure.localizedDescription(context)),
                     content: SelectableText(failure.e.toString()),
                     actions: [
-                      FlatButton(
+                      TextButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
                         child:
                             Text(AppLocalizations.of(context).translate('ok')),
                       ),
-                      FlatButton(
+                      TextButton(
                         onPressed: () async {
                           await ReportManager.sendEmail(
                             context,
@@ -79,7 +79,7 @@ class SRFailureView extends StatelessWidget {
             },
           ),
           if (refresh != null)
-            FlatButton(
+            TextButton(
               child: Text(
                 AppLocalizations.of(context).translate('refresh'),
                 style: TextStyle(

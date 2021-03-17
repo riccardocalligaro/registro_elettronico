@@ -66,7 +66,7 @@ class SRGradeCard extends StatelessWidget {
                   _buildGradeTitle(grade),
                   _buildLessonArgument(grade),
                   Text(
-                    DateUtils.convertDateLocale(
+                    SRDateUtils.convertDateLocale(
                       grade.eventDate,
                       AppLocalizations.of(context).locale.toString(),
                     ),
@@ -157,7 +157,7 @@ class SRGradeCard extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  '${trans.translate('date')}: ${DateUtils.convertDateLocale(grade.eventDate, trans.locale.toString())}',
+                  '${trans.translate('date')}: ${SRDateUtils.convertDateLocale(grade.eventDate, trans.locale.toString())}',
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(
@@ -196,7 +196,7 @@ class SRGradeCard extends StatelessWidget {
               : AppLocalizations.of(context)
                   .translate('delete_grade_title_cancel')),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(
                 AppLocalizations.of(context).translate('no').toUpperCase(),
               ),
@@ -204,7 +204,7 @@ class SRGradeCard extends StatelessWidget {
                 Navigator.pop(context);
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text(
                   AppLocalizations.of(context).translate('yes').toUpperCase()),
               onPressed: () async {

@@ -70,7 +70,7 @@ class TeacherCard extends StatelessWidget {
                 _getFolderText(folders[index].name, context),
               ),
               subtitle: Text(
-                DateUtils.convertDateLocale(
+                SRDateUtils.convertDateLocale(
                   folders[index].lastShareDate,
                   AppLocalizations.of(context).locale.toString(),
                 ),
@@ -129,7 +129,7 @@ class TeacherCard extends StatelessWidget {
                 behavior: SnackBarBehavior.floating,
               );
 
-              didacticsScaffold.currentState
+              ScaffoldMessenger.of(context)
                 ..removeCurrentSnackBar()
                 ..showSnackBar(snackBar);
             }
@@ -148,7 +148,7 @@ class TeacherCard extends StatelessWidget {
                       content: Text(AppLocalizations.of(context)
                           .translate('the_file_will_be_deleted')),
                       actions: <Widget>[
-                        FlatButton(
+                        TextButton(
                           child: Text(
                             AppLocalizations.of(context)
                                 .translate('cancel')
@@ -158,7 +158,7 @@ class TeacherCard extends StatelessWidget {
                             Navigator.pop(context);
                           },
                         ),
-                        FlatButton(
+                        TextButton(
                           child: Text(
                             AppLocalizations.of(context)
                                 .translate('delete')
@@ -207,7 +207,7 @@ class _DownloadAttachmentSnackbar extends StatelessWidget {
           Future.delayed(Duration(seconds: 3)).then(
             (value) {
               if (didacticsScaffold.currentState != null) {
-                didacticsScaffold.currentState..removeCurrentSnackBar();
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
               }
             },
           );

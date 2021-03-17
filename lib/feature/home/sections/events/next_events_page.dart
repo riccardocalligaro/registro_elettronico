@@ -60,7 +60,7 @@ class NextEventsPage extends StatelessWidget {
           currentMonth = event.begin.month;
 
           if (showMonth) {
-            var convertMonthLocale = DateUtils.convertMonthLocale(
+            var convertMonthLocale = SRDateUtils.convertMonthLocale(
                 event.begin, AppLocalizations.of(context).locale.toString());
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,

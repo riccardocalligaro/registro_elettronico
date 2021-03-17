@@ -17,7 +17,7 @@ class NoteMapper {
       NoteRemoteModel note, String type) {
     return db.Note(
       author: note.authorName ?? '',
-      date: DateUtils.getDateFromApiString(note.evtDate) ??
+      date: SRDateUtils.getDateFromApiString(note.evtDate) ??
           DateTime.fromMillisecondsSinceEpoch(0),
       id: note.evtId ?? GlobalUtils.getRandomNumber(),
       status: note.readStatus ?? false,
