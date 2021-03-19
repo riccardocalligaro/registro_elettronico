@@ -210,7 +210,7 @@ class Logger {
   }
 
   static Future<File> getLogsFile() async {
-    FLog.exportLogs();
+    await FLog.exportLogs();
 
     Directory directory = await _getLogsDirectory();
 

@@ -19,7 +19,7 @@ class PushNotificationService {
     Logger.info('🔔 [FCM] Called initialisation...');
 
     if (Platform.isIOS) {
-      fcm.requestNotificationPermissions(IosNotificationSettings());
+      await fcm.requestPermission();
     }
 
     if (kDebugMode) {
@@ -62,24 +62,16 @@ class PushNotificationService {
       iOS: iOSPlatformChannelSpecifics,
     );
 
-    fcm.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        Logger.info("🔔 [FCM] Got FCM Message $message");
+    FirebaseMessaging.onMessage.listen((message) async {
+      Logger.info('🔔 [FCM] Got FCM Message $message');
 
-        await flutterLocalNotificationsPlugin.show(
-          _randomId(),
-          message['notification']['title'],
-          message['notification']['body'],
-          platformChannelSpecifics,
-        );
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        Logger.info('🔔 [FCM] Launched push notification service $message');
-      },
-      onResume: (Map<String, dynamic> message) async {
-        Logger.info('🔔 [FCM] Resumed push notification service $message');
-      },
-    );
+      await flutterLocalNotificationsPlugin.show(
+        _randomId(),
+        message.notification.title,
+        message.notification.body,
+        platformChannelSpecifics,
+      );
+    });
   }
 
   int _randomId() {

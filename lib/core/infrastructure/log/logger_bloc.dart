@@ -5,19 +5,31 @@ import 'logger.dart';
 
 class LoggerBlocDelegate extends BlocObserver {
   @override
-  void onEvent(Cubit bloc, Object event) {
+  void onChange(BlocBase bloc, Change change) {
+    Logger.info('📟 [BLOC] $bloc Change: $change');
+    super.onChange(bloc, change);
+  }
+
+  @override
+  void onEvent(Bloc bloc, Object event) {
     Logger.info('📟 [BLOC] $bloc Event: $event');
     super.onEvent(bloc, event);
   }
 
   @override
-  void onTransition(Cubit bloc, Transition transition) {
-    Logger.info('📟 [BLOC] $transition');
+  void onClose(BlocBase bloc) {
+    Logger.info('📟 Close BLOC $bloc');
+    super.onClose(bloc);
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    Logger.info('📟 [BLOC] $bloc Transition: $transition');
     super.onTransition(bloc, transition);
   }
 
   @override
-  void onError(Cubit bloc, Object e, StackTrace s) {
+  void onError(BlocBase bloc, Object e, StackTrace s) {
     Object ex;
     if (e is Exception) {
     } else {

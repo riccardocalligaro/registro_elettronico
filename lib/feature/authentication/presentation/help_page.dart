@@ -30,6 +30,7 @@ class HelpPage extends StatelessWidget {
         child: ListView(
           children: [
             ExpandablePanel(
+              collapsed: null,
               header: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
@@ -45,6 +46,7 @@ class HelpPage extends StatelessWidget {
               ),
             ),
             ExpandablePanel(
+              collapsed: null,
               header: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
@@ -58,6 +60,7 @@ class HelpPage extends StatelessWidget {
               ),
             ),
             ExpandablePanel(
+              collapsed: null,
               header: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
@@ -71,6 +74,7 @@ class HelpPage extends StatelessWidget {
               ),
             ),
             ExpandablePanel(
+              collapsed: null,
               header: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
@@ -86,6 +90,7 @@ class HelpPage extends StatelessWidget {
               ),
             ),
             ExpandablePanel(
+              collapsed: null,
               header: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
@@ -101,6 +106,7 @@ class HelpPage extends StatelessWidget {
               ),
             ),
             ExpandablePanel(
+              collapsed: null,
               header: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(

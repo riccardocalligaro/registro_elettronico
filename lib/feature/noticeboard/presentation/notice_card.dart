@@ -45,6 +45,7 @@ class NoticeCard extends StatelessWidget {
                   color: Colors.red,
                 ),
           onTap: () {
+            print(notice.toString());
             if (notice.attachments != null) {
               _showDownloadDialog(context);
             }

@@ -5,8 +5,6 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:registro_elettronico/feature/notes/data/model/remote/note_remote_model.dart';
 import 'package:registro_elettronico/feature/notes/data/model/remote/notes_read_remote_model.dart';
 import 'package:registro_elettronico/feature/scrutini/data/model/document_remote_model.dart';
-import 'package:retrofit/http.dart';
-import 'package:retrofit/retrofit.dart';
 
 // part 'spaggiari_client.g.dart';
 
@@ -16,30 +14,22 @@ import 'package:retrofit/retrofit.dart';
 abstract class LegacySpaggiariClient {
   factory LegacySpaggiariClient(Dio dio) = _SpaggiariClient;
 
-  @GET("/students/{studentId}/notes/all/")
-  Future<NotesResponse> getNotes(@Path() String studentId);
+  Future<NotesResponse> getNotes(String studentId);
 
-  @POST("/students/{studentId}/notes/{type}/read/{layout_note}")
   Future<NotesReadResponse> markNote(
-    @Path('studentId') String studentId,
-    @Path("type") String type,
-    @Path("layout_note") int note,
-    @Body() String body,
+    String studentId,
+    String type,
+    int note,
+    String body,
   );
 
-  @POST('/students/{studentId}/documents')
-  Future<DocumentsResponse> getDocuments(@Path() String studentId);
+  Future<DocumentsResponse> getDocuments(String studentId);
 
-  @POST('/students/{studentId}/documents/check/{documentHash}')
-  Future<bool> checkDocumentAvailability(
-    @Path() String studentId,
-    @Path() String documentHash,
-  );
+  Future<bool> checkDocumentAvailability(String studentId, String documentHash);
 
-  @POST('/students/{studentId}/documents/check/{documentHash}')
   Future<Tuple2<List<int>, String>> readDocument(
-    @Path() String studentId,
-    @Path() String documentHash,
+    String studentId,
+    String documentHash,
   );
 }
 

@@ -60,6 +60,7 @@ class TeacherCard extends StatelessWidget {
             iconColor: Theme.of(context).iconTheme.color,
           ),
           child: ExpandablePanel(
+            collapsed: null,
             theme: ExpandableThemeData(
               tapHeaderToExpand: true,
               hasIcon: true,
