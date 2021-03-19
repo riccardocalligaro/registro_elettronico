@@ -45,9 +45,10 @@ class NoticeCard extends StatelessWidget {
                   color: Colors.red,
                 ),
           onTap: () {
-            print(notice.toString());
             if (notice.attachments != null) {
               _showDownloadDialog(context);
+            } else {
+              _downloadNoAttachmentsNotice(context);
             }
           },
           onLongPress: () {
@@ -64,6 +65,17 @@ class NoticeCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _downloadNoAttachmentsNotice(BuildContext context) {
+    BlocProvider.of<AttachmentDownloadBloc>(context).add(
+      DownloadAttachment(
+        attachment: null,
+        notice: notice,
+      ),
+    );
+
+    showDownloadSnackbar();
   }
 
   void _showDownloadDialog(BuildContext context) {

@@ -10,7 +10,7 @@ import 'package:registro_elettronico/feature/noticeboard/domain/model/notice_dom
 abstract class NoticeboardRepository {
   Stream<Resource<List<NoticeDomainModel>>> watchAllNotices();
 
-  Stream<Resource<AttachmentFile>> downloadFile({
+  Stream<Resource<GenericAttachment>> downloadFile({
     @required NoticeDomainModel notice,
     @required AttachmentDomainModel attachment,
   });

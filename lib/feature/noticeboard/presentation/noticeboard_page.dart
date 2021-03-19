@@ -8,6 +8,8 @@ import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.da
 import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_search_empty_view.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
+import 'package:registro_elettronico/feature/didactics/presentation/text_view_page.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/model/attachment/attachment_file.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/model/notice_domain_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/watcher/noticeboard_watcher_bloc.dart';
 import 'package:registro_elettronico/utils/update_manager.dart';
@@ -177,13 +179,30 @@ class _DownloadAttachmentSnackbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AttachmentDownloadBloc, AttachmentDownloadState>(
       listener: (context, state) {
-        if (state is AttachmentDownloadSuccess ||
-            state is AttachmentDownloadFailure) {
+        if (state is AttachmentDownloadFailure) {
           Future.delayed(Duration(seconds: 3)).then((value) =>
               ScaffoldMessenger.of(context)..removeCurrentSnackBar());
         }
+
         if (state is AttachmentDownloadSuccess) {
-          OpenFile.open(state.downloadedAttachment.file.path);
+          ScaffoldMessenger.of(context)..removeCurrentSnackBar();
+        }
+
+        if (state is AttachmentDownloadSuccess) {
+          if (state.downloadedAttachment is AttachmentFile) {
+            final file = state.downloadedAttachment as AttachmentFile;
+            OpenFile.open(file.file.path);
+          } else if (state.downloadedAttachment is AttachmentText) {
+            final text = state.downloadedAttachment as AttachmentText;
+
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => TextViewPage(
+                  text: text.text,
+                ),
+              ),
+            );
+          }
         }
       },
       builder: (context, state) {

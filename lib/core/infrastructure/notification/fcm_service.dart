@@ -1,16 +1,13 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 
 class PushNotificationService {
-  final FirebaseMessaging fcm;
-
-  PushNotificationService(this.fcm);
-
   static const channelId = 'com.registroelettronico/notification';
   static const channelName = 'Registro elettronico';
   static const channelDescription = 'Send and receive notifications';
@@ -19,11 +16,11 @@ class PushNotificationService {
     Logger.info('🔔 [FCM] Called initialisation...');
 
     if (Platform.isIOS) {
-      await fcm.requestPermission();
+      await FirebaseMessaging.instance.requestPermission();
     }
 
     if (kDebugMode) {
-      final token = await fcm.getToken();
+      final token = await FirebaseMessaging.instance.getToken();
       Logger.info("🔔 [FCM] Got token $token");
     }
 

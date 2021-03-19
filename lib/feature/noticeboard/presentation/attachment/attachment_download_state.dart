@@ -14,11 +14,22 @@ class AttachmentDownloadInProgress extends AttachmentDownloadState {
 }
 
 class AttachmentDownloadSuccess extends AttachmentDownloadState {
-  final AttachmentFile downloadedAttachment;
+  final GenericAttachment downloadedAttachment;
 
   AttachmentDownloadSuccess({
     @required this.downloadedAttachment,
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is AttachmentDownloadSuccess &&
+        other.downloadedAttachment == downloadedAttachment;
+  }
+
+  @override
+  int get hashCode => downloadedAttachment.hashCode;
 }
 
 class AttachmentDownloadFailure extends AttachmentDownloadState {

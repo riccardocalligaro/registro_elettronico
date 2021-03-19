@@ -20,7 +20,7 @@ class AttachmentDownloadErrorEvent extends AttachmentDownloadEvent {
 }
 
 class AttachmentDownloadFinishedEvent extends AttachmentDownloadEvent {
-  final AttachmentFile file;
+  final GenericAttachment file;
 
   AttachmentDownloadFinishedEvent({
     @required this.file,

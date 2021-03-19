@@ -66,7 +66,9 @@ class CoreContainer {
     _sl.registerLazySingleton<WebSpaggiariClient>(() =>
         WebSpaggiariClientImpl(_sl.get<Dio>(instanceName: 'WebSpaggiariDio')));
 
-    _sl.registerLazySingleton(() => PushNotificationService(_sl()));
+    _sl.registerLazySingleton(
+      () => PushNotificationService(),
+    );
 
     await ProfessorsContainer.init();
     await PeriodsContainer.init();

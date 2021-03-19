@@ -134,61 +134,102 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
   }
 
   @override
-  Stream<Resource<AttachmentFile>> downloadFile({
+  Stream<Resource<GenericAttachment>> downloadFile({
     NoticeDomainModel notice,
     AttachmentDomainModel attachment,
   }) async* {
-    StreamController<Resource<AttachmentFile>> resourceStreamController =
+    StreamController<Resource<GenericAttachment>> resourceStreamController =
         StreamController();
 
-    try {
-      resourceStreamController.add(Resource.loading(progress: 0));
-      unawaited(
-        _readNoticeAndGetPath(attachment: attachment, notice: notice).then(
-          (filePath) {
-            noticeboardRemoteDatasource
-                .downloadNotice(
-                  notice: notice,
-                  attachment: attachment,
-                  savePath: filePath,
-                  onProgress: (received, total) {
-                    resourceStreamController.add(
-                      Resource.loading(progress: received / total),
-                    );
-                  },
-                )
-                .then(
-                  (_) async {
-                    final localModel = notice.toLocalModel();
+    if (attachment == null) {
+      try {
+        resourceStreamController.add(Resource.loading(progress: 0));
 
-                    await noticeboardLocalDatasource
-                        .updateNotice(localModel.copyWith(readStatus: true));
-
-                    File file = File(filePath);
-                    resourceStreamController.add(
-                      Resource.success(
-                        data: AttachmentFile(file),
-                      ),
-                    );
-                  },
-                )
-                .catchError(
-                  (e) => resourceStreamController.add(
-                    Resource.failed(
-                      error: handleStreamError(e),
+        unawaited(
+          _readNoticeAndGetContent(notice: notice)
+              .then(
+                (textContent) async {
+                  resourceStreamController.add(
+                    Resource.success(
+                      data: AttachmentText(textContent),
                     ),
+                  );
+                },
+              )
+              .catchError(
+                (e) => resourceStreamController.add(
+                  Resource.failed(
+                    error: handleStreamError(e),
                   ),
-                )
-                .whenComplete(() => resourceStreamController.close());
-          },
-        ),
-      );
+                ),
+              )
+              .whenComplete(() => resourceStreamController.close()),
+        );
 
-      yield* resourceStreamController.stream;
-    } catch (e, s) {
-      yield Resource.failed(error: handleStreamError(e, s));
-      await resourceStreamController.close();
+        yield* resourceStreamController.stream;
+      } catch (e, s) {
+        yield Resource.failed(error: handleStreamError(e, s));
+        await resourceStreamController.close();
+      }
+    } else {
+      try {
+        resourceStreamController.add(Resource.loading(progress: 0));
+        unawaited(
+          _readNoticeAndGetPath(attachment: attachment, notice: notice).then(
+            (filePath) {
+              noticeboardRemoteDatasource
+                  .downloadNotice(
+                    notice: notice,
+                    attachment: attachment,
+                    savePath: filePath,
+                    onProgress: (received, total) {
+                      resourceStreamController.add(
+                        Resource.loading(progress: received / total),
+                      );
+                    },
+                  )
+                  .then(
+                    (_) async {
+                      final localModel = notice.toLocalModel();
+
+                      await noticeboardLocalDatasource
+                          .updateNotice(localModel.copyWith(readStatus: true));
+
+                      File file = File(filePath);
+                      resourceStreamController.add(
+                        Resource.success(
+                          data: AttachmentFile(file),
+                        ),
+                      );
+                    },
+                  )
+                  .catchError(
+                    (e) => resourceStreamController.add(
+                      Resource.failed(
+                        error: handleStreamError(e),
+                      ),
+                    ),
+                  )
+                  .whenComplete(() => resourceStreamController.close());
+            },
+          ),
+        );
+
+        yield* resourceStreamController.stream;
+      } catch (e, s) {
+        yield Resource.failed(error: handleStreamError(e, s));
+        await resourceStreamController.close();
+      }
     }
+  }
+
+  Future<String> _readNoticeAndGetContent({
+    @required NoticeDomainModel notice,
+  }) async {
+    final page =
+        await noticeboardRemoteDatasource.readNotice(notice.code, notice.id);
+
+    return page.data['item']['text'];
   }
 
   Future<String> _readNoticeAndGetPath({
