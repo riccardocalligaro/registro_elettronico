@@ -1,8 +1,8 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/entity/datetime_interval.dart';
-import 'package:tuple/tuple.dart';
 
 class SRDateUtils {
   static final DateTime epoch = DateTime.fromMillisecondsSinceEpoch(0);

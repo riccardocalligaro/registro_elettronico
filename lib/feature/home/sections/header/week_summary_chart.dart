@@ -21,7 +21,7 @@ class WeekSummaryChart extends StatelessWidget {
           height: 24,
         ),
         AspectRatio(
-          aspectRatio: 3.30,
+          aspectRatio: MediaQuery.of(context).size.width > 800 ? 3.30 : 3.60,
           child: Padding(
             padding: const EdgeInsets.only(
               right: 1.0,

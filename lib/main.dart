@@ -11,6 +11,7 @@ import 'package:registro_elettronico/application.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/core_container.dart';
 import 'package:registro_elettronico/feature/splash/presentation/splash_screen.dart';
+import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:time_machine/time_machine.dart';
 
 import 'core/data/remote/api/sr_dio_client.dart';
@@ -69,6 +70,24 @@ class SrApp extends StatelessWidget {
           localizationsDelegates: initData.localizationsDelegates,
           localeResolutionCallback: initData.localeResolutionCallback,
           // debugShowCheckedModeBanner: false,
+          builder: (context, child) => ResponsiveWrapper.builder(
+            child,
+            maxWidth: 1200,
+            minWidth: 480,
+            defaultScale: false,
+            breakpoints: [
+              ResponsiveBreakpoint.autoScale(
+                700,
+                name: TABLET,
+                scaleFactor: 1.15,
+              ),
+              ResponsiveBreakpoint.autoScale(
+                900,
+                name: DESKTOP,
+                scaleFactor: 1.3,
+              ),
+            ],
+          ),
           routes: Routes.routes,
           onUnknownRoute: (settings) {
             return MaterialPageRoute(builder: (ctx) => SplashScreen());

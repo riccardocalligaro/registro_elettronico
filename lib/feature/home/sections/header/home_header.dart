@@ -83,9 +83,9 @@ class _WeekEventsChart extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
       ),
       elevation: 2,
-      child: Container(
-        height: 140,
-        width: double.infinity,
+      child: AspectRatio(
+        aspectRatio: 3,
+        // width: double.infinity,
         child: BlocBuilder<AgendaWatcherBloc, AgendaWatcherState>(
           builder: (context, state) {
             if (state is AgendaWatcherLoadSuccess) {
