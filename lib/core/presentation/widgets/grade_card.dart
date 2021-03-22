@@ -176,21 +176,6 @@ class GradeCard extends StatelessWidget {
               child: Text(
                   AppLocalizations.of(context).translate('yes').toUpperCase()),
               onPressed: () async {
-                // TODO: look at this
-                // if (grade.localllyCancelled) {
-                //   await RepositoryProvider.of<GradesRepository>(context)
-                //       .updateGrade(grade.copyWith(localllyCancelled: false));
-                //   BlocProvider.of<GradesBloc>(context).add(GetGrades());
-                //   BlocProvider.of<SubjectsGradesBloc>(context)
-                //       .add(GetGradesAndSubjects());
-                // } else {
-                //   await RepositoryProvider.of<GradesRepository>(context)
-                //       .updateGrade(grade.copyWith(localllyCancelled: true));
-                //   BlocProvider.of<GradesBloc>(context).add(GetGrades());
-                //   BlocProvider.of<SubjectsGradesBloc>(context)
-                //       .add(GetGradesAndSubjects());
-                // }
-
                 Navigator.pop(context);
               },
             )
