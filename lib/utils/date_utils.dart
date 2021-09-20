@@ -168,7 +168,7 @@ class SRDateUtils {
     int yearEnd = now.year;
 
     // if we are before sempember we need to fetch from the last year
-    if (now.month > DateTime.september) {
+    if (now.month >= DateTime.september) {
       yearEnd += 1;
     } else {
       yearBegin -= 1;

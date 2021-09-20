@@ -3,23 +3,12 @@ description: Better and faster of the original.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 2.5.1+10
+version: 2.5.4+13
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
-  flutter_localizations:
-    sdk: flutter
-  f_logs:
-    git:
-      url: https://github.com/Saerlig-Software-Development/Flogs
-  time_machine:
-    git:
-      url: https://github.com/Dana-Ferguson/time_machine
-      ref: 7753e0d
   auto_size_text: ^2.1.0
   collection: ^1.15.0
   cupertino_icons: null
@@ -28,16 +17,23 @@ dependencies:
   dio: ^3.0.10
   esys_flutter_share: ^1.0.2
   expandable: ^5.0.1
+  f_logs:
+    git:
+      url: https://github.com/Saerlig-Software-Development/Flogs
   firebase_analytics: ^7.1.1
   firebase_core: ^1.0.1
   firebase_crashlytics: ^1.0.0
   firebase_messaging: ^9.0.0
   fl_chart: ^0.20.1
+  flutter:
+    sdk: flutter
   flutter_bloc: ^7.0.0
   flutter_circular_chart: ^0.1.0
   flutter_colorpicker: ^0.3.5
   flutter_email_sender: ^5.0.0
   flutter_local_notifications: ^4.0.1+2
+  flutter_localizations:
+    sdk: flutter
   flutter_search_bar: ^2.1.0
   flutter_secure_storage: ^4.1.0
   flutter_svg: null
@@ -57,18 +53,21 @@ dependencies:
   rxdart: ^0.24.0
   screenshot: ^0.2.0
   shared_preferences: ^0.5.12+4
-  sqlite3_flutter_libs: null
+  sqlite3_flutter_libs: ^0.5.0
   table_calendar: ^2.3.3
+  time_machine:
+    git:
+      url: https://github.com/Dana-Ferguson/time_machine
+      ref: 7753e0d
   timetable: ^0.2.9
   tinycolor: ^1.0.3
   url_launcher: ^6.0.2
 
 dev_dependencies:
+  build_runner: null
   flutter_test:
     sdk: flutter
-  build_runner: null
   moor_generator: null
-
 
 dependency_overrides:
   time_machine:
@@ -78,7 +77,6 @@ dependency_overrides:
   # Override for `flutter_local_notifications`:
   plugin_platform_interface: ^2.0.0
   provider: ^5.0.0
-
 
 flutter:
   assets:
