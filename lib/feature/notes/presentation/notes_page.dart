@@ -12,7 +12,7 @@ import 'bloc/attachments/note_attachments_bloc.dart';
 import 'bloc/notes_bloc.dart';
 
 class NotesPage extends StatefulWidget {
-  const NotesPage({Key key}) : super(key: key);
+  const NotesPage({Key? key}) : super(key: key);
 
   @override
   _NotesPageState createState() => _NotesPageState();
@@ -31,7 +31,7 @@ class _NotesPageState extends State<NotesPage> {
     return Scaffold(
       appBar: AppBar(
         brightness: Theme.of(context).brightness,
-        title: Text(AppLocalizations.of(context).translate('notes')),
+        title: Text(AppLocalizations.of(context)!.translate('notes')!),
       ),
       body: MultiBlocListener(
         listeners: [
@@ -41,7 +41,7 @@ class _NotesPageState extends State<NotesPage> {
                 ScaffoldMessenger.of(context)
                   ..removeCurrentSnackBar()
                   ..showSnackBar(
-                    AppNavigator.instance.getNetworkErrorSnackBar(context),
+                    AppNavigator.instance!.getNetworkErrorSnackBar(context),
                   );
               }
             },
@@ -52,7 +52,7 @@ class _NotesPageState extends State<NotesPage> {
                 ScaffoldMessenger.of(context)
                   ..removeCurrentSnackBar()
                   ..showSnackBar(
-                    AppNavigator.instance.getNetworkErrorSnackBar(context),
+                    AppNavigator.instance!.getNetworkErrorSnackBar(context),
                   );
               }
             },
@@ -79,7 +79,7 @@ class _NotesPageState extends State<NotesPage> {
         if (state is NotesError || state is NotesUpdateError) {
           return CustomPlaceHolder(
             icon: Icons.error,
-            text: AppLocalizations.of(context)
+            text: AppLocalizations.of(context)!
                 .translate('unexcepted_error_single'),
             showUpdate: true,
             onTap: () {
@@ -113,7 +113,7 @@ class _NotesPageState extends State<NotesPage> {
             return ListTile(
               title: Text('${note.author}'),
               subtitle: Text(
-                  '${AppLocalizations.of(context).translate(note.type.toLowerCase()) ?? ""} - ${SRDateUtils.convertDateLocale(note.date, AppLocalizations.of(context).locale.toString())}'),
+                  '${AppLocalizations.of(context)!.translate(note.type!.toLowerCase()) ?? ""} - ${SRDateUtils.convertDateLocale(note.date, AppLocalizations.of(context)!.locale.toString())}'),
               onTap: () {
                 BlocProvider.of<NoteAttachmentsBloc>(context)
                     .add(ReadNote(eventId: note.id, type: note.type));
@@ -134,7 +134,7 @@ class _NotesPageState extends State<NotesPage> {
     } else {
       return CustomPlaceHolder(
         icon: Icons.info,
-        text: AppLocalizations.of(context).translate('no_notes'),
+        text: AppLocalizations.of(context)!.translate('no_notes'),
         showUpdate: true,
         onTap: () {
           BlocProvider.of<NotesBloc>(context).add(UpdateNotes());
@@ -152,7 +152,7 @@ class _NotesPageState extends State<NotesPage> {
 
 class NoteDialog extends StatelessWidget {
   const NoteDialog({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -173,7 +173,7 @@ class NoteDialog extends StatelessWidget {
           final attachment = state.attachment;
           return ListTile(
             title: Text(
-              "${AppLocalizations.of(context).translate('description')}: ${attachment.description}",
+              "${AppLocalizations.of(context)!.translate('description')}: ${attachment.description}",
             ),
           );
         } else if (state is NoteAttachmentsLoadError) {

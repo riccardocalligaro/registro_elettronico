@@ -15,7 +15,7 @@ class StatsLoadInProgress extends StatsState {}
 class StatsLoadSuccess extends StatsState {
   final StudentReport studentReport;
 
-  StatsLoadSuccess({@required this.studentReport});
+  StatsLoadSuccess({required this.studentReport});
 }
 
 class StatsLoadError extends StatsState {}

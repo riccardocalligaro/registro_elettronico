@@ -21,24 +21,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LessonsRepositoryImpl implements LessonsRepository {
   static const String lastUpdateKey = 'lessonsLastUpdate';
 
-  final LessonsRemoteDatasource lessonsRemoteDatasource;
-  final LessonsLocalDatasource lessonsLocalDatasource;
-  final SharedPreferences sharedPreferences;
+  final LessonsRemoteDatasource? lessonsRemoteDatasource;
+  final LessonsLocalDatasource? lessonsLocalDatasource;
+  final SharedPreferences? sharedPreferences;
 
   LessonsRepositoryImpl({
-    @required this.lessonsRemoteDatasource,
-    @required this.lessonsLocalDatasource,
-    @required this.sharedPreferences,
+    required this.lessonsRemoteDatasource,
+    required this.lessonsLocalDatasource,
+    required this.sharedPreferences,
   });
 
   @override
-  Future<Either<Failure, Success>> updateAllLessons({bool ifNeeded}) async {
+  Future<Either<Failure, Success>> updateAllLessons({required bool ifNeeded}) async {
     try {
       if (!ifNeeded |
-          (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
+          (ifNeeded && needUpdate(sharedPreferences!.getInt(lastUpdateKey)))) {
         final interval = SRDateUtils.getDateInerval();
         final remoteModels =
-            await lessonsRemoteDatasource.getLessonBetweenDates(
+            await lessonsRemoteDatasource!.getLessonBetweenDates(
           interval.begin,
           interval.end,
         );
@@ -54,13 +54,13 @@ class LessonsRepositoryImpl implements LessonsRepository {
   }
 
   @override
-  Future<Either<Failure, Success>> updateTodaysLessons({bool ifNeeded}) async {
+  Future<Either<Failure, Success>> updateTodaysLessons({required bool ifNeeded}) async {
     try {
       if (!ifNeeded |
-          (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
+          (ifNeeded && needUpdate(sharedPreferences!.getInt(lastUpdateKey)))) {
         final interval = SRDateUtils.getDateInerval();
         final remoteModels =
-            await lessonsRemoteDatasource.getLessonBetweenDates(
+            await lessonsRemoteDatasource!.getLessonBetweenDates(
           interval.begin,
           interval.end,
         );
@@ -77,9 +77,9 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
   @override
   Stream<Resource<List<LessonDomainModel>>> watchAllLessons() {
-    return lessonsLocalDatasource.watchAllLessons().map(
+    return lessonsLocalDatasource!.watchAllLessons().map(
       (lessonLocalModels) {
-        lessonLocalModels.sort((a, b) => a.date.compareTo(b.date));
+        lessonLocalModels.sort((a, b) => a.date!.compareTo(b.date!));
 
         final lessonDomainModels = lessonLocalModels
             .map((e) => LessonDomainModel.fromLocalModel(e))
@@ -95,11 +95,11 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
   @override
   Stream<Resource<List<LessonDomainModel>>> watchLessonsForSubjectId({
-    int subjectId,
+    int? subjectId,
   }) {
-    return lessonsLocalDatasource.watchLessonsForSubject(subjectId).map(
+    return lessonsLocalDatasource!.watchLessonsForSubject(subjectId!).map(
       (lessonLocalModels) {
-        lessonLocalModels.sort((b, a) => a.date.compareTo(b.date));
+        lessonLocalModels.sort((b, a) => a.date!.compareTo(b.date!));
 
         final lessonDomainModels = lessonLocalModels
             .map((e) => LessonDomainModel.fromLocalModel(e))
@@ -114,9 +114,9 @@ class LessonsRepositoryImpl implements LessonsRepository {
   }
 
   Future<Success> _updateLessons({
-    @required List<LessonRemoteModel> remoteLessons,
+    required List<LessonRemoteModel> remoteLessons,
   }) async {
-    final localLessons = await lessonsLocalDatasource.getAllLessons();
+    final localLessons = await lessonsLocalDatasource!.getAllLessons();
 
     final remoteIds = remoteLessons.map((e) => e.evtId).toList();
 
@@ -128,7 +128,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
       }
     }
 
-    await lessonsLocalDatasource.insertLessons(
+    await lessonsLocalDatasource!.insertLessons(
       remoteLessons
           .map(
             (e) => e.toLocalModel(),
@@ -137,9 +137,9 @@ class LessonsRepositoryImpl implements LessonsRepository {
     );
 
     // delete the lessons that were removed from the remote source
-    await lessonsLocalDatasource.deleteLessons(lessonsToDelete);
+    await lessonsLocalDatasource!.deleteLessons(lessonsToDelete);
 
-    await sharedPreferences.setInt(
+    await sharedPreferences!.setInt(
         lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
 
     return SuccessWithUpdate();
@@ -148,7 +148,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
   @override
   Stream<Resource<List<LessonWithDurationDomainModel>>>
       watchLatestLessonsWithDuration() {
-    return lessonsLocalDatasource.watchLastLessons().map(
+    return lessonsLocalDatasource!.watchLastLessons().map(
       (lessonLocalModels) {
         final domainModels = lessonLocalModels
             .map((e) => LessonDomainModel.fromLocalModel(e))
@@ -160,7 +160,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
         groupedLessons.forEach(
           (key, value) {
-            LessonDomainModel lesson;
+            LessonDomainModel? lesson;
 
             try {
               lesson = domainModels
@@ -172,7 +172,7 @@ class LessonsRepositoryImpl implements LessonsRepository {
                   .elementAt(0);
 
               lesson.subjectDescription =
-                  GlobalUtils.reduceSubjectTitle(lesson.subjectDescription) ??
+                  GlobalUtils.reduceSubjectTitle(lesson.subjectDescription!) ??
                       lesson.subjectDescription;
             } on RangeError catch (_) {
               lesson = null;

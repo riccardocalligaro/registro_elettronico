@@ -11,7 +11,7 @@ class AuthenticationNeedsAccountSelection extends AuthenticationState {
   final ParentLoginResponseRemoteModel parentLoginResponseRemoteModel;
 
   AuthenticationNeedsAccountSelection({
-    @required this.parentLoginResponseRemoteModel,
+    required this.parentLoginResponseRemoteModel,
   });
 }
 
@@ -21,7 +21,7 @@ class AuthenticationFailure extends AuthenticationState {
   final Failure failure;
 
   AuthenticationFailure({
-    @required this.failure,
+    required this.failure,
   });
 }
 

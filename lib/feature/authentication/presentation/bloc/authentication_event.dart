@@ -4,7 +4,7 @@ part of 'authentication_bloc.dart';
 abstract class AuthenticationEvent {}
 
 class SignIn extends AuthenticationEvent {
-  final LoginRequestDomainModel loginRequestDomainModel;
+  final LoginRequestDomainModel? loginRequestDomainModel;
 
   SignIn({this.loginRequestDomainModel});
 }

@@ -6,9 +6,9 @@ abstract class DidacticsWatcherEvent {}
 class DidacticsWatchAllStarted extends DidacticsWatcherEvent {}
 
 class DidacticsDataReceived extends DidacticsWatcherEvent {
-  final Resource<List<DidacticsTeacherDomainModel>> resource;
+  final Resource<List<DidacticsTeacherDomainModel?>> resource;
 
   DidacticsDataReceived({
-    @required this.resource,
+    required this.resource,
   });
 }

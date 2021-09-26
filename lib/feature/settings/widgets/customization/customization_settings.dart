@@ -6,7 +6,7 @@ import '../header_text.dart';
 import 'customization_theme_dialog.dart';
 
 class CustomizationSettings extends StatefulWidget {
-  CustomizationSettings({Key key}) : super(key: key);
+  CustomizationSettings({Key? key}) : super(key: key);
 
   @override
   _CustomizationSettingsState createState() => _CustomizationSettingsState();
@@ -21,13 +21,13 @@ class _CustomizationSettingsState extends State<CustomizationSettings> {
         Padding(
           padding: const EdgeInsets.only(top: 8.0, left: 16.0),
           child: HeaderText(
-            text: AppLocalizations.of(context).translate('customization'),
+            text: AppLocalizations.of(context)!.translate('customization'),
           ),
         ),
         ListTile(
-          title: Text(AppLocalizations.of(context).translate('theme')),
+          title: Text(AppLocalizations.of(context)!.translate('theme')!),
           subtitle:
-              Text(AppLocalizations.of(context).translate('change_the_theme')),
+              Text(AppLocalizations.of(context)!.translate('change_the_theme')!),
           onTap: () {
             showDialog(
               context: context,
@@ -41,9 +41,9 @@ class _CustomizationSettingsState extends State<CustomizationSettings> {
         ),
         ListTile(
           title:
-              Text(AppLocalizations.of(context).translate('theme_color_title')),
+              Text(AppLocalizations.of(context)!.translate('theme_color_title')!),
           subtitle: Text(
-              AppLocalizations.of(context).translate('theme_color_subtitle')),
+              AppLocalizations.of(context)!.translate('theme_color_subtitle')!),
           onTap: () {
             showDialog(
               context: context,

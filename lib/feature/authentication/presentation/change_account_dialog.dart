@@ -8,36 +8,36 @@ import 'package:registro_elettronico/feature/authentication/domain/repository/au
 import 'package:registro_elettronico/feature/authentication/presentation/login_page.dart';
 
 class ChangeAccountDialog extends StatefulWidget {
-  ChangeAccountDialog({Key key}) : super(key: key);
+  ChangeAccountDialog({Key? key}) : super(key: key);
 
   @override
   _ChangeAccountDialogState createState() => _ChangeAccountDialogState();
 }
 
 class _ChangeAccountDialogState extends State<ChangeAccountDialog> {
-  final AuthenticationRepository authenticationRepository = sl();
+  final AuthenticationRepository? authenticationRepository = sl();
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title:
-          Text(AppLocalizations.of(context).translate('change_profile_title')),
+          Text(AppLocalizations.of(context)!.translate('change_profile_title')!),
       content: FutureBuilder<Either<Failure, List<ProfileDomainModel>>>(
-        future: authenticationRepository.getNonActiveAccounts(),
+        future: authenticationRepository!.getNonActiveAccounts(),
         initialData: null,
         builder: (
           BuildContext context,
           AsyncSnapshot<Either<Failure, List<ProfileDomainModel>>> snapshot,
         ) {
           if (snapshot.data != null) {
-            return snapshot.data.fold(
+            return snapshot.data!.fold(
               (l) => Text(
-                AppLocalizations.of(context).translate('generic_failure'),
+                AppLocalizations.of(context)!.translate('generic_failure')!,
               ),
               (profiles) {
                 if (profiles.isEmpty) {
                   return Text(
-                    AppLocalizations.of(context).translate('no_profiles'),
+                    AppLocalizations.of(context)!.translate('no_profiles')!,
                   );
                 }
                 return Container(
@@ -52,10 +52,10 @@ class _ChangeAccountDialogState extends State<ChangeAccountDialog> {
                             title: Text(
                               '${profile.firstName} ${profile.lastName}',
                             ),
-                            subtitle: Text(profile.ident),
+                            subtitle: Text(profile.ident!),
                             onTap: () async {
                               final switchProfile =
-                                  await authenticationRepository
+                                  await authenticationRepository!
                                       .switchToAccount(
                                 profileDomainModel: profile,
                               );
@@ -86,7 +86,7 @@ class _ChangeAccountDialogState extends State<ChangeAccountDialog> {
             Navigator.pop(context);
           },
           child: Text(
-            AppLocalizations.of(context).translate('cancel').toUpperCase(),
+            AppLocalizations.of(context)!.translate('cancel')!.toUpperCase(),
           ),
         ),
         TextButton(
@@ -99,8 +99,8 @@ class _ChangeAccountDialogState extends State<ChangeAccountDialog> {
               ),
             );
           },
-          child: Text(AppLocalizations.of(context)
-              .translate('add_account')
+          child: Text(AppLocalizations.of(context)!
+              .translate('add_account')!
               .toUpperCase()),
         ),
       ],

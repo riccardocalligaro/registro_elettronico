@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../header_text.dart';
 
 class AccountSettings extends StatefulWidget {
-  AccountSettings({Key key}) : super(key: key);
+  AccountSettings({Key? key}) : super(key: key);
 
   @override
   _AccountSettingsState createState() => _AccountSettingsState();
@@ -23,13 +23,13 @@ class _AccountSettingsState extends State<AccountSettings> {
         Padding(
           padding: const EdgeInsets.only(top: 8.0, left: 16.0),
           child: HeaderText(
-            text: AppLocalizations.of(context).translate('account'),
+            text: AppLocalizations.of(context)!.translate('account'),
           ),
         ),
         ListTile(
-          title: Text(AppLocalizations.of(context).translate('reset_data')),
+          title: Text(AppLocalizations.of(context)!.translate('reset_data')!),
           subtitle: Text(
-              AppLocalizations.of(context).translate('reset_data_message')),
+              AppLocalizations.of(context)!.translate('reset_data_message')!),
           onTap: () {
             showDialog(context: context, builder: (context) => ResetDialog());
           },
@@ -40,24 +40,24 @@ class _AccountSettingsState extends State<AccountSettings> {
 }
 
 class ResetDialog extends StatelessWidget {
-  const ResetDialog({Key key}) : super(key: key);
+  const ResetDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).translate('reset_db_alert')),
+      title: Text(AppLocalizations.of(context)!.translate('reset_db_alert')!),
       content: Text(
-        AppLocalizations.of(context).translate('reset_db_alert_message'),
+        AppLocalizations.of(context)!.translate('reset_db_alert_message')!,
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(AppLocalizations.of(context).translate('no')),
+          child: Text(AppLocalizations.of(context)!.translate('no')!),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         TextButton(
-          child: Text(AppLocalizations.of(context).translate('yes')),
+          child: Text(AppLocalizations.of(context)!.translate('yes')!),
           onPressed: () async {
             Navigator.pop(context);
 

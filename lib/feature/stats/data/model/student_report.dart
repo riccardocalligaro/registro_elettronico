@@ -22,10 +22,10 @@ class StudentReport {
   final PeriodDomainModel mostProfitablePeriod;
 
   /// Overall best subject
-  final SubjectDomainModel bestSubject;
+  final SubjectDomainModel? bestSubject;
 
   /// Overall worst subject
-  final SubjectDomainModel worstSubject;
+  final SubjectDomainModel? worstSubject;
 
   // /// The [number] of max [consecutive]
   // /// sufficienze `grade >= 6`
@@ -81,30 +81,30 @@ class StudentReport {
   final int schoolCredits;
 
   StudentReport({
-    @required this.score,
-    @required this.average,
-    @required this.firstTermAverage,
-    @required this.secondTermAverage,
-    @required this.mostProfitablePeriod,
-    @required this.bestSubject,
-    @required this.worstSubject,
-    @required this.insufficienzeGraviCount,
-    @required this.insufficienzeLieviCount,
-    @required this.sufficienzeCount,
-    @required this.skippedTestsForAbsences,
-    @required this.insufficientiSubjects,
-    @required this.sufficientiSubjects,
-    @required this.totalGrades,
-    @required this.grades,
-    @required this.absences,
-    @required this.subjects,
-    @required this.periods,
-    @required this.timeRemainingToSchoolFinish,
-    @required this.schoolCredits,
-    @required this.agendaEvents,
-    @required this.insufficientiSubjectsCount,
-    @required this.nearlySufficientiSubjectsCount,
-    @required this.sufficientiSubjectsCount,
+    required this.score,
+    required this.average,
+    required this.firstTermAverage,
+    required this.secondTermAverage,
+    required this.mostProfitablePeriod,
+    required this.bestSubject,
+    required this.worstSubject,
+    required this.insufficienzeGraviCount,
+    required this.insufficienzeLieviCount,
+    required this.sufficienzeCount,
+    required this.skippedTestsForAbsences,
+    required this.insufficientiSubjects,
+    required this.sufficientiSubjects,
+    required this.totalGrades,
+    required this.grades,
+    required this.absences,
+    required this.subjects,
+    required this.periods,
+    required this.timeRemainingToSchoolFinish,
+    required this.schoolCredits,
+    required this.agendaEvents,
+    required this.insufficientiSubjectsCount,
+    required this.nearlySufficientiSubjectsCount,
+    required this.sufficientiSubjectsCount,
   });
 
   @override

@@ -12,10 +12,10 @@ part 'documents_event.dart';
 part 'documents_state.dart';
 
 class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
-  final DocumentsRepository documentsRepository;
+  final DocumentsRepository? documentsRepository;
 
   DocumentsBloc({
-    @required this.documentsRepository,
+    required this.documentsRepository,
   }) : super(DocumentsInitial());
 
   @override
@@ -33,7 +33,7 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
     yield DocumentsLoadInProgress();
     try {
       Logger.info('Getting documents and school reports');
-      final data = await documentsRepository.getDocumentsAndSchoolReports();
+      final data = await documentsRepository!.getDocumentsAndSchoolReports();
       Logger.info('Got documents and school reports');
       Logger.info('BloC -> Got ${data.value1.length} school reports');
       Logger.info('BloC -> Got ${data.value2.length} documents');
@@ -56,7 +56,7 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
     yield DocumentsUpdateLoadInProgress();
     try {
       Logger.info('Updating documents and school reports');
-      await documentsRepository.updateDocuments();
+      await documentsRepository!.updateDocuments();
       Logger.info('Successfully updated documents and school reports');
       yield DocumentsUpdateLoadSuccess();
     } on NotConntectedException {

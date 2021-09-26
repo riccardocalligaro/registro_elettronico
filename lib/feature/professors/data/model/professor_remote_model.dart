@@ -1,8 +1,8 @@
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 class ProfessorRemoteModel {
-  String teacherId;
-  String teacherName;
+  String? teacherId;
+  String? teacherName;
 
   ProfessorRemoteModel({this.teacherId, this.teacherName});
 
@@ -18,9 +18,9 @@ class ProfessorRemoteModel {
     return data;
   }
 
-  ProfessorLocalModel toLocalModel(int subjectId) {
+  ProfessorLocalModel toLocalModel(int? subjectId) {
     return ProfessorLocalModel(
-      id: this.teacherId ?? -1,
+      id: this.teacherId ?? -1 as String?,
       subjectId: subjectId ?? -1,
       name: this.teacherName ?? '',
     );

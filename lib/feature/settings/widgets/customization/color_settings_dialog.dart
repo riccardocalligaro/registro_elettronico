@@ -4,7 +4,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:registro_elettronico/core/infrastructure/theme/bloc/bloc.dart';
 
 class ColorSettingsDialog extends StatelessWidget {
-  const ColorSettingsDialog({Key key}) : super(key: key);
+  const ColorSettingsDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class ColorSettingsDialog extends StatelessWidget {
         onColorChanged: (color) {
           Navigator.of(context).pop();
           BlocProvider.of<ThemeBloc>(context)
-              .add(ThemeChanged(type: null, color: color));
+              .add(ThemeChanged(type: null, color: color as MaterialColor?));
         },
         itemBuilder: (color, isCurrentColor, changeColor) {
           return Container(

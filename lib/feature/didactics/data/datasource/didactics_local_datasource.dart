@@ -65,9 +65,9 @@ class DidacticsLocalDatasource extends DatabaseAccessor<SRDatabase>
   }
 
   Future<void> insertUpdateData({
-    @required List<TeacherLocalModel> teachersList,
-    @required List<FolderLocalModel> foldersList,
-    @required List<ContentLocalModel> contentsList,
+    required List<TeacherLocalModel> teachersList,
+    required List<FolderLocalModel> foldersList,
+    required List<ContentLocalModel> contentsList,
   }) async {
     await batch((batch) {
       batch.insertAllOnConflictUpdate(didacticsTeachers, teachersList);

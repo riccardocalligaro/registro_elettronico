@@ -12,10 +12,10 @@ part 'notes_event.dart';
 part 'notes_state.dart';
 
 class NotesBloc extends Bloc<NotesEvent, NotesState> {
-  final NotesRepository notesRepository;
+  final NotesRepository? notesRepository;
 
   NotesBloc({
-    @required this.notesRepository,
+    required this.notesRepository,
   }) : super(NotesInitial());
 
   @override
@@ -33,8 +33,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     yield NotesUpdateLoading();
     Logger.info('Updating notes');
     try {
-      await notesRepository.deleteAllNotes();
-      await notesRepository.updateNotes();
+      await notesRepository!.deleteAllNotes();
+      await notesRepository!.updateNotes();
       Logger.info('Updated notes');
     } on NotConntectedException {
       yield NotesLoadErrorNotConnected();
@@ -48,7 +48,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   Stream<NotesState> _mapGetNotesToState() async* {
     yield NotesLoading();
     try {
-      final notes = await notesRepository.getAllNotes();
+      final notes = await notesRepository!.getAllNotes();
       Logger.info('BloC -> Loaded ${notes.length} notes');
       yield NotesLoaded(notes);
     } on Exception catch (e, s) {

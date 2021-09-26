@@ -3,38 +3,38 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class ProfileLocalModel {
-  final String studentId;
-  final String ident;
-  final String firstName;
-  final String lastName;
-  final String token;
+  final String? studentId;
+  final String? ident;
+  final String? firstName;
+  final String? lastName;
+  final String? token;
   final DateTime release;
   final DateTime expire;
-  final bool currentlyLoggedIn;
-  final String dbName;
+  final bool? currentlyLoggedIn;
+  final String? dbName;
 
   ProfileLocalModel({
-    @required this.studentId,
-    @required this.ident,
-    @required this.firstName,
-    @required this.lastName,
-    @required this.token,
-    @required this.release,
-    @required this.expire,
-    @required this.currentlyLoggedIn,
-    @required this.dbName,
+    required this.studentId,
+    required this.ident,
+    required this.firstName,
+    required this.lastName,
+    required this.token,
+    required this.release,
+    required this.expire,
+    required this.currentlyLoggedIn,
+    required this.dbName,
   });
 
   ProfileLocalModel copyWith({
-    String studentId,
-    String ident,
-    String firstName,
-    String lastName,
-    String token,
-    DateTime release,
-    DateTime expire,
-    bool currentlyLoggedIn,
-    String dbName,
+    String? studentId,
+    String? ident,
+    String? firstName,
+    String? lastName,
+    String? token,
+    DateTime? release,
+    DateTime? expire,
+    bool? currentlyLoggedIn,
+    String? dbName,
   }) {
     return ProfileLocalModel(
       studentId: studentId ?? this.studentId,
@@ -63,7 +63,7 @@ class ProfileLocalModel {
     };
   }
 
-  factory ProfileLocalModel.fromMap(Map<String, dynamic> map) {
+  factory ProfileLocalModel.fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return ProfileLocalModel(
@@ -81,7 +81,7 @@ class ProfileLocalModel {
 
   String toJson() => json.encode(toMap());
 
-  factory ProfileLocalModel.fromJson(Map<String, dynamic> source) =>
+  factory ProfileLocalModel.fromJson(Map<String, dynamic>? source) =>
       ProfileLocalModel.fromMap(source);
 
   @override

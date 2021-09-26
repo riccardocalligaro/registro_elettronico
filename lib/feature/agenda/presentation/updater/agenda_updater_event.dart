@@ -7,7 +7,7 @@ class UpdateAgendaIfNeeded extends AgendaUpdaterEvent {
   final bool onlyLastDays;
 
   UpdateAgendaIfNeeded({
-    @required this.onlyLastDays,
+    required this.onlyLastDays,
   });
 }
 
@@ -15,6 +15,6 @@ class UpdateAgenda extends AgendaUpdaterEvent {
   final bool onlyLastDays;
 
   UpdateAgenda({
-    @required this.onlyLastDays,
+    required this.onlyLastDays,
   });
 }

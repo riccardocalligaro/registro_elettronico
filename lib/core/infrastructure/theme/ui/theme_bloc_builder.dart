@@ -6,14 +6,14 @@ import '../bloc/bloc.dart';
 
 class ThemeBlocBuilder extends StatelessWidget {
   final Widget Function(BuildContext context, ThemeData themeData,
-      CupertinoThemeData cupertinoThemeData) builder;
+      CupertinoThemeData? cupertinoThemeData) builder;
 
-  ThemeBlocBuilder({@required this.builder});
+  ThemeBlocBuilder({required this.builder});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ThemeBloc>(
-      create: (BuildContext context) => ThemeBloc.instance,
+      create: (BuildContext context) => ThemeBloc.instance!,
       child: BlocBuilder<ThemeBloc, ThemeState>(builder: (ctx, themeState) {
         return builder(
           context,

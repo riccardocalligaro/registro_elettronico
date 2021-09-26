@@ -12,12 +12,12 @@ part 'subjects_watcher_state.dart';
 
 class SubjectsWatcherBloc
     extends Bloc<SubjectsWatcherEvent, SubjectsWatcherState> {
-  final SubjectsRepository subjectsRepository;
+  final SubjectsRepository? subjectsRepository;
 
-  StreamSubscription _subjectsStreamSubscription;
+  StreamSubscription? _subjectsStreamSubscription;
 
   SubjectsWatcherBloc({
-    @required this.subjectsRepository,
+    required this.subjectsRepository,
   }) : super(SubjectsWatcherInitial());
 
   @override
@@ -33,7 +33,7 @@ class SubjectsWatcherBloc
         yield SubjectsWatcherLoading();
       }
     } else if (event is SubjectsRestartWatcher) {
-      await _subjectsStreamSubscription.cancel();
+      await _subjectsStreamSubscription!.cancel();
       _startStreamListener();
     } else if (event is SubjectsStartWatcherIfNeeded) {
       if (_subjectsStreamSubscription == null) {
@@ -44,14 +44,14 @@ class SubjectsWatcherBloc
 
   void _startStreamListener() {
     _subjectsStreamSubscription =
-        subjectsRepository.watchAllSubjects().listen((resource) {
+        subjectsRepository!.watchAllSubjects().listen((resource) {
       add(SubjectsReceived(resource: resource));
     });
   }
 
   @override
   Future<void> close() {
-    _subjectsStreamSubscription.cancel();
+    _subjectsStreamSubscription!.cancel();
     return super.close();
   }
 }

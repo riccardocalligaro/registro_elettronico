@@ -7,7 +7,7 @@ import 'absences_list.dart';
 import 'bloc/absences_bloc.dart';
 
 class AbsencesPage extends StatefulWidget {
-  const AbsencesPage({Key key}) : super(key: key);
+  const AbsencesPage({Key? key}) : super(key: key);
 
   @override
   _AbsencesPageState createState() => _AbsencesPageState();
@@ -26,13 +26,13 @@ class _AbsencesPageState extends State<AbsencesPage> {
     return Scaffold(
       appBar: AppBar(
         brightness: Theme.of(context).brightness,
-        title: Text(AppLocalizations.of(context).translate('absences')),
+        title: Text(AppLocalizations.of(context)!.translate('absences')!),
       ),
       body: BlocListener<AbsencesBloc, AbsencesState>(
         listener: (context, state) {
           if (state is AbsencesLoadErrorNotConnected) {
             ScaffoldMessenger.of(context).showSnackBar(
-              AppNavigator.instance.getNetworkErrorSnackBar(context),
+              AppNavigator.instance!.getNetworkErrorSnackBar(context),
             );
           }
         },

@@ -5,7 +5,7 @@ import 'package:registro_elettronico/core/infrastructure/theme/theme_data/text_s
 class LightTheme {
   static ThemeData getThemeData(Color color) {
     return ThemeData(
-      primarySwatch: color,
+      primarySwatch: color as MaterialColor?,
       accentColor: color,
       brightness: Brightness.light,
       fontFamily: 'Manrope',

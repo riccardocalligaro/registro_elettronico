@@ -7,7 +7,7 @@ class TimetableReceived extends TimetableWatcherEvent {
   final Resource<TimetableDataDomainModel> resource;
 
   TimetableReceived({
-    @required this.resource,
+    required this.resource,
   });
 }
 

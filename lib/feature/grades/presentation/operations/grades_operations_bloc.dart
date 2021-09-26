@@ -12,10 +12,10 @@ part 'grades_operations_state.dart';
 
 class GradesOperationsBloc
     extends Bloc<GradesOperationsEvent, GradesOperationsState> {
-  final GradesRepository gradesRepository;
+  final GradesRepository? gradesRepository;
 
   GradesOperationsBloc({
-    @required this.gradesRepository,
+    required this.gradesRepository,
   }) : super(GradesOperationsInitial());
 
   @override
@@ -32,7 +32,7 @@ class GradesOperationsBloc
   Stream<GradesOperationsState> _mapChangeSubjectObjective(
     ChangeSubjectObjective event,
   ) async* {
-    final res = await gradesRepository.changeSubjectObjective(
+    final res = await gradesRepository!.changeSubjectObjective(
       newValue: event.newValue,
       subject: event.subject,
     );
@@ -50,7 +50,7 @@ class GradesOperationsBloc
   Stream<GradesOperationsState> _mapDeleteGradeLocallyToState(
     ToggleGradeLocallyCancelledState event,
   ) async* {
-    final res = await gradesRepository.toggleGradeLocallyCancelledStatus(
+    final res = await gradesRepository!.toggleGradeLocallyCancelledStatus(
         gradeDomainModel: event.gradeDomainModel);
 
     yield* res.fold(

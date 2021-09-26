@@ -6,11 +6,11 @@ class LocalNotification {
   static const CHANNEL_NAME = "Registro elettronico";
   static const CHANNEL_DESCRIPTION = "Send and receive notifications";
 
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   LocalNotification(
-    Future onSelectNotification(String payload), {
-    String icon,
+    Future onSelectNotification(String? payload), {
+    String? icon,
   }) {
     var initializationSettingsAndroid =
         AndroidInitializationSettings(icon ?? 'app_icon');
@@ -29,7 +29,7 @@ class LocalNotification {
     int id,
     String title,
     String message, {
-    String payload,
+    String? payload,
   }) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         CHANNEL_ID, CHANNEL_NAME, CHANNEL_DESCRIPTION,
@@ -52,7 +52,7 @@ class LocalNotification {
   Future showNotificationWithoutSound(
     String title,
     String message, {
-    String payload,
+    String? payload,
   }) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       CHANNEL_ID,
@@ -78,10 +78,10 @@ class LocalNotification {
   }
 
   Future scheduleNotification({
-    @required int eventId,
-    @required String title,
-    @required String message,
-    @required DateTime scheduledTime,
+    required int eventId,
+    required String title,
+    required String message,
+    required DateTime scheduledTime,
   }) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         CHANNEL_ID, CHANNEL_NAME, CHANNEL_DESCRIPTION,
@@ -97,7 +97,7 @@ class LocalNotification {
       eventId,
       title,
       message,
-      scheduledTime,
+      scheduledTime as TZDateTime,
       platformChannelSpecifics,
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:

@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 
 class CustomPlaceHolder extends StatelessWidget {
-  final String text;
+  final String? text;
   final IconData icon;
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
   final bool showUpdate;
-  final String updateMessage;
+  final String? updateMessage;
 
   const CustomPlaceHolder({
-    Key key,
+    Key? key,
     this.onTap,
-    @required this.text,
-    @required this.icon,
-    @required this.showUpdate,
+    required this.text,
+    required this.icon,
+    required this.showUpdate,
     this.updateMessage,
   }) : super(key: key);
 
@@ -34,7 +34,7 @@ class CustomPlaceHolder extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Text(
-              text,
+              text!,
               textAlign: TextAlign.center,
             ),
           ),
@@ -42,7 +42,7 @@ class CustomPlaceHolder extends StatelessWidget {
               ? TextButton(
                   child: Text(
                     updateMessage ??
-                        AppLocalizations.of(context).translate('sync'),
+                        AppLocalizations.of(context)!.translate('sync')!,
                     style: TextStyle(
                       color: Colors.grey[600],
                     ),

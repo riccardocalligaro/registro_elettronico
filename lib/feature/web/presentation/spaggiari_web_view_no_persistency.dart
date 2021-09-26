@@ -3,14 +3,14 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class SpaggiariWebViewNoPersistency extends StatefulWidget {
   final String phpSessid;
-  final String url;
-  final String appBarTitle;
+  final String? url;
+  final String? appBarTitle;
 
   const SpaggiariWebViewNoPersistency({
-    Key key,
-    @required this.phpSessid,
-    @required this.url,
-    @required this.appBarTitle,
+    Key? key,
+    required this.phpSessid,
+    required this.url,
+    required this.appBarTitle,
   }) : super(key: key);
 
   @override
@@ -21,7 +21,7 @@ class SpaggiariWebViewNoPersistency extends StatefulWidget {
 class _SpaggiariWebViewNoPersistencyState
     extends State<SpaggiariWebViewNoPersistency> {
   final flutterWebviewPlugin = FlutterWebviewPlugin();
-  Map<String, String> headers;
+  Map<String, String>? headers;
   @override
   void initState() {
     headers = {
@@ -33,7 +33,7 @@ class _SpaggiariWebViewNoPersistencyState
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey _scaffoldkey;
+    GlobalKey? _scaffoldkey;
     return Scaffold(
       key: _scaffoldkey,
       body: WebviewScaffold(
@@ -45,7 +45,7 @@ class _SpaggiariWebViewNoPersistencyState
         clearCache: false,
         clearCookies: true,
         appCacheEnabled: false,
-        url: widget.url,
+        url: widget.url!,
         hidden: true,
         headers: headers,
         appBar: AppBar(

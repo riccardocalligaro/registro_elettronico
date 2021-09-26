@@ -4,12 +4,12 @@ import 'package:registro_elettronico/core/infrastructure/localizations/app_local
 import 'package:registro_elettronico/utils/bug_report.dart';
 
 class SRFailureView extends StatelessWidget {
-  final Failure failure;
-  final Function refresh;
+  final Failure? failure;
+  final Function? refresh;
 
   const SRFailureView({
-    Key key,
-    @required this.failure,
+    Key? key,
+    required this.failure,
     this.refresh,
   }) : super(key: key);
 
@@ -30,7 +30,7 @@ class SRFailureView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
             child: Text(
-              failure.localizedDescription(context),
+              failure!.localizedDescription(context)!,
               textAlign: TextAlign.center,
             ),
           ),
@@ -40,7 +40,7 @@ class SRFailureView extends StatelessWidget {
             ),
           TextButton(
             child: Text(
-              AppLocalizations.of(context).translate('show_error'),
+              AppLocalizations.of(context)!.translate('show_error')!,
               style: TextStyle(
                 color: Colors.grey[600],
               ),
@@ -50,15 +50,15 @@ class SRFailureView extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text(failure.localizedDescription(context)),
-                    content: SelectableText(failure.e.toString()),
+                    title: Text(failure!.localizedDescription(context)!),
+                    content: SelectableText(failure!.e.toString()),
                     actions: [
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
                         child:
-                            Text(AppLocalizations.of(context).translate('ok')),
+                            Text(AppLocalizations.of(context)!.translate('ok')!),
                       ),
                       TextButton(
                         onPressed: () async {
@@ -68,8 +68,8 @@ class SRFailureView extends StatelessWidget {
                           );
                         },
                         child: Text(
-                          AppLocalizations.of(context)
-                              .translate('bug_report_alert'),
+                          AppLocalizations.of(context)!
+                              .translate('bug_report_alert')!,
                         ),
                       ),
                     ],
@@ -81,13 +81,13 @@ class SRFailureView extends StatelessWidget {
           if (refresh != null)
             TextButton(
               child: Text(
-                AppLocalizations.of(context).translate('refresh'),
+                AppLocalizations.of(context)!.translate('refresh')!,
                 style: TextStyle(
                   color: Colors.grey[600],
                 ),
               ),
               onPressed: () {
-                refresh();
+                refresh!();
               },
             )
         ],

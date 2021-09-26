@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class ThemeItem extends StatelessWidget {
-  final Function onTap;
-  final Color color;
+  final Function? onTap;
+  final Color? color;
   final String name;
 
   ThemeItem({
     this.onTap,
-    @required this.color,
-    @required this.name,
+    required this.color,
+    required this.name,
   });
 
   @override
@@ -36,7 +36,7 @@ class ThemeItem extends StatelessWidget {
       title: Text(
         StringUtils.capitalize(name.toString().split('.')[1]),
       ),
-      onTap: onTap,
+      onTap: onTap as void Function()?,
     );
   }
 }

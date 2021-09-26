@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget {
   final bool fromChangeAccount;
 
   LoginPage({
-    Key key,
+    Key? key,
     this.fromChangeAccount = false,
   }) : super(key: key);
 
@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _invalid = false;
 
   /// Text that changes in case of a login [error]
-  String _erorrMessage = "";
+  String? _erorrMessage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
       appBar: widget.fromChangeAccount
           ? AppBar(
               title:
-                  Text(AppLocalizations.of(context).translate('add_account')),
+                  Text(AppLocalizations.of(context)!.translate('add_account')!),
             )
           : null,
       body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
@@ -117,8 +117,8 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: Text(
-                        AppLocalizations.of(context)
-                            .translate('help_page_title'),
+                        AppLocalizations.of(context)!
+                            .translate('help_page_title')!,
                         style: TextStyle(
                           color: Colors.grey,
                         ),
@@ -144,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
           TextField(
             controller: _usernameController,
             decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)
+              hintText: AppLocalizations.of(context)!
                   .translate('login_username_input_field'),
               errorText: _invalid ? _erorrMessage : null,
             ),
@@ -167,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           GradientRedButton(
             center: Text(
-              AppLocalizations.of(context).translate('log_in'),
+              AppLocalizations.of(context)!.translate('log_in')!,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 19),
             ),
@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
               } else {
                 setState(() {
                   _invalid = true;
-                  _erorrMessage = AppLocalizations.of(context)
+                  _erorrMessage = AppLocalizations.of(context)!
                       .translate('all_fields_message');
                 });
               }
@@ -217,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                '${AppLocalizations.of(context).translate('secure')}. ',
+                '${AppLocalizations.of(context)!.translate('secure')}. ',
                 style: TextStyle(color: Colors.grey),
               ),
               GestureDetector(
@@ -247,14 +247,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildHeaderText() {
     return Column(
       children: <Widget>[
-        _buildWelcomeText(AppLocalizations.of(context).translate('welcome')),
+        _buildWelcomeText(AppLocalizations.of(context)!.translate('welcome')),
         _buildLoginMessageText(
-            AppLocalizations.of(context).translate('login_with')),
+            AppLocalizations.of(context)!.translate('login_with')),
       ],
     );
   }
 
-  Container _buildWelcomeText(String welcomeMessage) {
+  Container _buildWelcomeText(String? welcomeMessage) {
     return Container(
       //padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
       child: Align(
@@ -267,7 +267,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Row _buildLoginMessageText(String loginMessage) {
+  Row _buildLoginMessageText(String? loginMessage) {
     return Row(
       children: <Widget>[
         Container(
@@ -286,30 +286,30 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 class _MultiAccountChoiceDialog extends StatelessWidget {
-  final List<LoginChoiceRemoteModel> choices;
+  final List<LoginChoiceRemoteModel>? choices;
   final String password;
 
   const _MultiAccountChoiceDialog({
-    Key key,
-    @required this.choices,
-    @required this.password,
+    Key? key,
+    required this.choices,
+    required this.password,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: Text(AppLocalizations.of(context).translate('select_a_profile')),
+      title: Text(AppLocalizations.of(context)!.translate('select_a_profile')!),
       children: <Widget>[
         Container(
           width: double.maxFinite,
           child: ListView.builder(
             shrinkWrap: true,
-            itemCount: choices.length,
+            itemCount: choices!.length,
             itemBuilder: (context, index) {
-              final user = choices[index];
+              final user = choices![index];
               return ListTile(
-                title: Text(user.name),
-                subtitle: Text(user.school),
+                title: Text(user.name!),
+                subtitle: Text(user.school!),
                 onTap: () {
                   BlocProvider.of<AuthenticationBloc>(context).add(
                     SignIn(

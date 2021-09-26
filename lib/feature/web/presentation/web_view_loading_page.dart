@@ -8,15 +8,15 @@ import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view
 /// In init state a token is requested to Spaggiari and when loaded
 /// A new route with a web view is pushed
 class WebViewLoadingPage extends StatefulWidget {
-  final bool lastYear;
+  final bool? lastYear;
   final String url;
   final String title;
 
   WebViewLoadingPage({
-    @required this.url,
-    @required this.title,
+    required this.url,
+    required this.title,
     this.lastYear,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

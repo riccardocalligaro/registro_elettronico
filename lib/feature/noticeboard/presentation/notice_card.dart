@@ -16,9 +16,9 @@ class NoticeCard extends StatelessWidget {
   final Function showDownloadSnackbar;
 
   const NoticeCard({
-    Key key,
-    @required this.notice,
-    @required this.showDownloadSnackbar,
+    Key? key,
+    required this.notice,
+    required this.showDownloadSnackbar,
   }) : super(key: key);
 
   @override
@@ -28,14 +28,14 @@ class NoticeCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: ListTile(
-          title: Text(notice.contentTitle),
+          title: Text(notice.contentTitle!),
           subtitle: Text(
             SRDateUtils.convertDateLocale(
               notice.date,
-              AppLocalizations.of(context).locale.toString(),
+              AppLocalizations.of(context)!.locale.toString(),
             ),
           ),
-          trailing: notice.readStatus
+          trailing: notice.readStatus!
               ? Icon(
                   Icons.mail,
                   color: Colors.green,
@@ -57,8 +57,8 @@ class NoticeCard extends StatelessWidget {
               ..showSnackBar(SnackBar(
                 behavior: SnackBarBehavior.floating,
                 content: Text(
-                  AppLocalizations.of(context)
-                      .translate('delete_notice_snackbar_info'),
+                  AppLocalizations.of(context)!
+                      .translate('delete_notice_snackbar_info')!,
                 ),
               ));
           },
@@ -83,7 +83,7 @@ class NoticeCard extends StatelessWidget {
       context: context,
       builder: (context) => SimpleDialog(
         title: Text(
-          AppLocalizations.of(context).translate('select_attachment'),
+          AppLocalizations.of(context)!.translate('select_attachment')!,
         ),
         children: <Widget>[
           Container(
@@ -91,12 +91,12 @@ class NoticeCard extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: notice.attachments.length,
+              itemCount: notice.attachments!.length,
               itemBuilder: (ctx, index) {
-                if (notice.attachments.isNotEmpty) {
-                  final attachment = notice.attachments[index];
+                if (notice.attachments!.isNotEmpty) {
+                  final attachment = notice.attachments![index];
                   return ListTile(
-                    title: Text(attachment.fileName),
+                    title: Text(attachment.fileName!),
                     onLongPress: () async {
                       final fileExists = await _checkIfFileExists(
                         notice: notice,
@@ -109,12 +109,12 @@ class NoticeCard extends StatelessWidget {
                           await showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: Text(AppLocalizations.of(context)
-                                  .translate('delete_notice_alert_title')),
+                              title: Text(AppLocalizations.of(context)!
+                                  .translate('delete_notice_alert_title')!),
                               actions: <Widget>[
                                 TextButton(
-                                  child: Text(AppLocalizations.of(context)
-                                      .translate('no')
+                                  child: Text(AppLocalizations.of(context)!
+                                      .translate('no')!
                                       .toUpperCase()),
                                   onPressed: () {
                                     Navigator.pop(context);
@@ -122,8 +122,8 @@ class NoticeCard extends StatelessWidget {
                                 ),
                                 TextButton(
                                   child: Text(
-                                    AppLocalizations.of(context)
-                                        .translate('yes')
+                                    AppLocalizations.of(context)!
+                                        .translate('yes')!
                                         .toUpperCase(),
                                   ),
                                   onPressed: () async {
@@ -168,7 +168,7 @@ class NoticeCard extends StatelessWidget {
                 }
                 return Center(
                   child: Text(
-                    AppLocalizations.of(context).translate('no_attachments'),
+                    AppLocalizations.of(context)!.translate('no_attachments')!,
                   ),
                 );
               },
@@ -180,16 +180,16 @@ class NoticeCard extends StatelessWidget {
   }
 
   Future<Either<FileNotExists, File>> _checkIfFileExists({
-    @required NoticeDomainModel notice,
-    @required AttachmentDomainModel attachment,
+    required NoticeDomainModel notice,
+    required AttachmentDomainModel attachment,
   }) async {
     final directory = await getApplicationDocumentsDirectory();
 
     final path = directory.path;
-    final ext = attachment.fileName.split('.').last;
+    final ext = attachment.fileName!.split('.').last;
 
     final file = File(
-      '$path/${notice.contentTitle.replaceAll('/', '').replaceAll(' ', '_')}-${attachment.pubId}${attachment.attachNumber}.$ext',
+      '$path/${notice.contentTitle!.replaceAll('/', '').replaceAll(' ', '_')}-${attachment.pubId}${attachment.attachNumber}.$ext',
     );
 
     if (await file.exists()) {

@@ -11,7 +11,7 @@ abstract class NotesRepository {
 
   Future insertNote(Note note);
 
-  Future<NotesAttachment> getAttachmentForNote(String type, int eventId);
+  Future<NotesAttachment> getAttachmentForNote(String? type, int? eventId);
 
   Future deleteAllNotes();
 

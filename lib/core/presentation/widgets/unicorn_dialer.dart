@@ -8,16 +8,16 @@ class UnicornOrientation {
 
 class UnicornButton extends FloatingActionButton {
   final FloatingActionButton currentButton;
-  final String labelText;
+  final String? labelText;
   final double labelFontSize;
-  final Color labelColor;
-  final Color labelBackgroundColor;
-  final Color labelShadowColor;
+  final Color? labelColor;
+  final Color? labelBackgroundColor;
+  final Color? labelShadowColor;
   final bool labelHasShadow;
   final bool hasLabel;
 
   UnicornButton(
-      {this.currentButton,
+      {required this.currentButton,
       this.labelText,
       this.labelFontSize = 14.0,
       this.labelColor,
@@ -35,7 +35,7 @@ class UnicornButton extends FloatingActionButton {
                   BoxShadow(
                     color: this.labelShadowColor == null
                         ? Color.fromRGBO(204, 204, 204, 1.0)
-                        : this.labelShadowColor,
+                        : this.labelShadowColor!,
                     blurRadius: 3.0,
                   ),
                 ]
@@ -46,7 +46,7 @@ class UnicornButton extends FloatingActionButton {
           borderRadius: BorderRadius.circular(3.0)), //color: Colors.white,
       padding: EdgeInsets.all(5.0),
       child: Text(
-        this.labelText,
+        this.labelText!,
         style: TextStyle(
           fontSize: this.labelFontSize,
           fontWeight: FontWeight.w600,
@@ -67,19 +67,19 @@ class UnicornButton extends FloatingActionButton {
 class UnicornDialer extends StatefulWidget {
   final int orientation;
   final Icon parentButton;
-  final Icon finalButtonIcon;
+  final Icon? finalButtonIcon;
   final bool hasBackground;
-  final Color parentButtonBackground;
-  final List<UnicornButton> childButtons;
+  final Color? parentButtonBackground;
+  final List<UnicornButton>? childButtons;
   final int animationDuration;
   final double childPadding;
   final Color backgroundColor;
-  final Function onMainButtonPressed;
+  final Function? onMainButtonPressed;
   final Object parentHeroTag;
   final bool hasNotch;
 
   UnicornDialer({
-    this.parentButton,
+    required this.parentButton,
     this.parentButtonBackground,
     this.childButtons,
     this.onMainButtonPressed,
@@ -99,8 +99,8 @@ class UnicornDialer extends StatefulWidget {
 
 class _UnicornDialer extends State<UnicornDialer>
     with TickerProviderStateMixin {
-  AnimationController _animationController;
-  AnimationController _parentController;
+  late AnimationController _animationController;
+  late AnimationController _parentController;
 
   bool isOpen = false;
 
@@ -151,11 +151,11 @@ class _UnicornDialer extends State<UnicornDialer>
     this._animationController.reverse();
 
     var hasChildButtons =
-        widget.childButtons != null && widget.childButtons.isNotEmpty;
+        widget.childButtons != null && widget.childButtons!.isNotEmpty;
 
     var mainFAB = AnimatedBuilder(
         animation: this._parentController,
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           return Transform(
               transform: Matrix4.diagonal3(vector.Vector3(
                   _parentController.value,
@@ -169,14 +169,14 @@ class _UnicornDialer extends State<UnicornDialer>
                   onPressed: () {
                     mainActionButtonOnPressed();
                     if (widget.onMainButtonPressed != null) {
-                      widget.onMainButtonPressed();
+                      widget.onMainButtonPressed!();
                     }
                   },
                   child: !hasChildButtons
                       ? widget.parentButton
                       : AnimatedBuilder(
                           animation: this._animationController,
-                          builder: (BuildContext context, Widget child) {
+                          builder: (BuildContext context, Widget? child) {
                             return Transform(
                               transform: Matrix4.rotationZ(
                                   this._animationController.value * 0.8),
@@ -185,7 +185,7 @@ class _UnicornDialer extends State<UnicornDialer>
                                   ? widget.parentButton.icon
                                   : widget.finalButtonIcon == null
                                       ? Icons.close
-                                      : widget.finalButtonIcon.icon),
+                                      : widget.finalButtonIcon!.icon),
                             );
                           })));
         });
@@ -193,19 +193,19 @@ class _UnicornDialer extends State<UnicornDialer>
     if (hasChildButtons) {
       var mainFloatingButton = AnimatedBuilder(
           animation: this._animationController,
-          builder: (BuildContext context, Widget child) {
+          builder: (BuildContext context, Widget? child) {
             return Transform.rotate(
                 angle: this._animationController.value * 0.8, child: mainFAB);
           });
 
       var childButtonsList = widget.childButtons == null ||
-              widget.childButtons.isEmpty
+              widget.childButtons!.isEmpty
           ? []
-          : List.generate(widget.childButtons.length, (index) {
+          : List.generate(widget.childButtons!.length, (index) {
               var intervalValue = index == 0
                   ? 0.9
-                  : ((widget.childButtons.length - index) /
-                          widget.childButtons.length) -
+                  : ((widget.childButtons!.length - index) /
+                          widget.childButtons!.length) -
                       0.2;
 
               intervalValue =
@@ -213,37 +213,37 @@ class _UnicornDialer extends State<UnicornDialer>
 
               var childFAB = FloatingActionButton(
                   onPressed: () {
-                    if (widget.childButtons[index].currentButton.onPressed !=
+                    if (widget.childButtons![index].currentButton.onPressed !=
                         null) {
-                      widget.childButtons[index].currentButton.onPressed();
+                      widget.childButtons![index].currentButton.onPressed!();
                     }
 
                     this._animationController.reverse();
                   },
-                  child: widget.childButtons[index].currentButton.child,
-                  heroTag: widget.childButtons[index].currentButton.heroTag,
+                  child: widget.childButtons![index].currentButton.child,
+                  heroTag: widget.childButtons![index].currentButton.heroTag,
                   backgroundColor:
-                      widget.childButtons[index].currentButton.backgroundColor,
-                  mini: widget.childButtons[index].currentButton.mini,
-                  tooltip: widget.childButtons[index].currentButton.tooltip,
-                  key: widget.childButtons[index].currentButton.key,
-                  elevation: widget.childButtons[index].currentButton.elevation,
+                      widget.childButtons![index].currentButton.backgroundColor,
+                  mini: widget.childButtons![index].currentButton.mini,
+                  tooltip: widget.childButtons![index].currentButton.tooltip,
+                  key: widget.childButtons![index].currentButton.key,
+                  elevation: widget.childButtons![index].currentButton.elevation,
                   foregroundColor:
-                      widget.childButtons[index].currentButton.foregroundColor,
+                      widget.childButtons![index].currentButton.foregroundColor,
                   highlightElevation: widget
-                      .childButtons[index].currentButton.highlightElevation,
+                      .childButtons![index].currentButton.highlightElevation,
                   isExtended:
-                      widget.childButtons[index].currentButton.isExtended,
-                  shape: widget.childButtons[index].currentButton.shape);
+                      widget.childButtons![index].currentButton.isExtended,
+                  shape: widget.childButtons![index].currentButton.shape);
 
               return Positioned(
                 right: widget.orientation == UnicornOrientation.VERTICAL
-                    ? widget.childButtons[index].currentButton.mini
+                    ? widget.childButtons![index].currentButton.mini
                         ? 4.0
                         : 0.0
-                    : ((widget.childButtons.length - index) * 55.0) + 15,
+                    : ((widget.childButtons!.length - index) * 55.0) + 15,
                 bottom: widget.orientation == UnicornOrientation.VERTICAL
-                    ? ((widget.childButtons.length - index) * 55.0) + 15
+                    ? ((widget.childButtons!.length - index) * 55.0) + 15
                     : 8.0,
                 child: Row(children: [
                   ScaleTransition(
@@ -253,14 +253,14 @@ class _UnicornDialer extends State<UnicornDialer>
                             Interval(intervalValue, 1.0, curve: Curves.linear),
                       ),
                       alignment: FractionalOffset.center,
-                      child: (!widget.childButtons[index].hasLabel) ||
+                      child: (!widget.childButtons![index].hasLabel) ||
                               widget.orientation ==
                                   UnicornOrientation.HORIZONTAL
                           ? Container()
                           : Container(
                               padding:
                                   EdgeInsets.only(right: widget.childPadding),
-                              child: widget.childButtons[index].returnLabel())),
+                              child: widget.childButtons![index].returnLabel())),
                   ScaleTransition(
                       scale: CurvedAnimation(
                         parent: this._animationController,
@@ -280,7 +280,7 @@ class _UnicornDialer extends State<UnicornDialer>
           //fit: StackFit.expand,
           alignment: Alignment.bottomCenter,
           clipBehavior: Clip.none,
-          children: childButtonsList.toList()
+          children: childButtonsList.toList() as List<Widget>
             ..add(
               Positioned(
                 right: null,

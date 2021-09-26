@@ -9,7 +9,7 @@ class GradeOperationFailure extends GradesOperationsState {
   final Failure failure;
 
   GradeOperationFailure({
-    @required this.failure,
+    required this.failure,
   });
 }
 

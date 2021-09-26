@@ -13,7 +13,7 @@ class NavigatorPage extends StatefulWidget {
   final bool fromLogin;
 
   NavigatorPage({
-    Key key,
+    Key? key,
     this.fromLogin = false,
   }) : super(key: key);
 
@@ -23,8 +23,8 @@ class NavigatorPage extends StatefulWidget {
 
 class _NavigatorPageState extends State<NavigatorPage> {
   int _currentPage = 0;
-  List<Widget> _pages;
-  SRUpdateManager srUpdateManager;
+  late List<Widget> _pages;
+  SRUpdateManager? srUpdateManager;
 
   static const int home = 0;
   static const int grades = 1;
@@ -34,7 +34,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
   @override
   void initState() {
     srUpdateManager = sl();
-    unawaited(srUpdateManager.checkForUpdates());
+    unawaited(srUpdateManager!.checkForUpdates());
 
     _pages = [
       HomePage(
@@ -70,17 +70,17 @@ class _NavigatorPageState extends State<NavigatorPage> {
         if (_currentPage == index) {
           if (index == home) {
             if (homeRefresherKey.currentState != null) {
-              homeRefresherKey.currentState.show();
+              homeRefresherKey.currentState!.show();
             }
           } else if (index == agenda) {
-            srUpdateManager.updateAgendaData(context);
+            srUpdateManager!.updateAgendaData(context);
           } else if (index == grades) {
             if (gradesRefresherKey.currentState != null) {
-              gradesRefresherKey.currentState.show();
+              gradesRefresherKey.currentState!.show();
             }
           } else if (index == noticeboard) {
             if (noticeboardRefresherKey.currentState != null) {
-              noticeboardRefresherKey.currentState.show();
+              noticeboardRefresherKey.currentState!.show();
             }
           }
         }
@@ -90,28 +90,28 @@ class _NavigatorPageState extends State<NavigatorPage> {
       },
       items: [
         BottomNavigationBarItem(
-          label: AppLocalizations.of(context).translate('home'),
+          label: AppLocalizations.of(context)!.translate('home'),
           icon: Icon(Icons.home),
         ),
         BottomNavigationBarItem(
-          label: AppLocalizations.of(context).translate('grades'),
+          label: AppLocalizations.of(context)!.translate('grades'),
           icon: Icon(
             Icons.class_,
           ),
         ),
         BottomNavigationBarItem(
-          label: AppLocalizations.of(context).translate('agenda'),
+          label: AppLocalizations.of(context)!.translate('agenda'),
           icon: Icon(
             Icons.today,
             size: 25,
           ),
         ),
         BottomNavigationBarItem(
-          label: AppLocalizations.of(context).translate('notice_board'),
+          label: AppLocalizations.of(context)!.translate('notice_board'),
           icon: Icon(Icons.email),
         ),
         BottomNavigationBarItem(
-          label: AppLocalizations.of(context).translate('more_page'),
+          label: AppLocalizations.of(context)!.translate('more_page'),
           icon: Icon(Icons.more_horiz),
         ),
       ],

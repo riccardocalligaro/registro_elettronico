@@ -7,11 +7,11 @@ import 'package:registro_elettronico/feature/grades/presentation/grades_page.dar
 import 'localizations/app_localizations.dart';
 
 class AppNavigator {
-  static AppNavigator _instance;
+  static AppNavigator? _instance;
 
   AppNavigator._();
 
-  static AppNavigator get instance {
+  static AppNavigator? get instance {
     if (_instance == null) {
       _instance = AppNavigator._();
     }
@@ -87,7 +87,7 @@ class AppNavigator {
         content: Text(message),
         actions: <Widget>[
           TextButton(
-            child: Text(AppLocalizations.of(context).translate('ok')),
+            child: Text(AppLocalizations.of(context)!.translate('ok')!),
             onPressed: () => Navigator.of(bCtx).pop(),
           )
         ],
@@ -104,7 +104,7 @@ class AppNavigator {
     return SnackBar(
       behavior: SnackBarBehavior.floating,
       content: Text(
-          AppLocalizations.of(context).translate('not_conntected_snackbar')),
+          AppLocalizations.of(context)!.translate('not_conntected_snackbar')!),
     );
   }
 
@@ -112,20 +112,20 @@ class AppNavigator {
     return SnackBar(
       behavior: SnackBarBehavior.floating,
       content: Text(
-        AppLocalizations.of(context).translate('leave_snackbar'),
+        AppLocalizations.of(context)!.translate('leave_snackbar')!,
       ),
     );
   }
 
-  BuildContext showAlertDialog(BuildContext context,
-      {@required Widget content,
+  BuildContext? showAlertDialog(BuildContext context,
+      {required Widget content,
       Widget title = const Text('Attention'),
-      List<Widget> actions}) {
+      List<Widget>? actions}) {
     if (actions == null) {
       actions = [];
     }
-    BuildContext alertContext;
-    SchedulerBinding.instance.addPostFrameCallback(
+    BuildContext? alertContext;
+    SchedulerBinding.instance!.addPostFrameCallback(
       (_) {
         showDialog(
           context: context,
@@ -135,12 +135,12 @@ class AppNavigator {
             return AlertDialog(
               title: title,
               content: content,
-              actions: actions
+              actions: actions!
                 ..add(
                   TextButton(
                     onPressed: () => Navigator.of(bCtx).pop(),
                     child:
-                        Text(AppLocalizations.of(context).translate('close')),
+                        Text(AppLocalizations.of(context)!.translate('close')!),
                   ),
                 ),
             );

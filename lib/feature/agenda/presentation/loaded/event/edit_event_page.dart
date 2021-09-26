@@ -15,11 +15,11 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class EditEventPage extends StatefulWidget {
-  final AgendaEventDomainModel event;
-  final EventType type;
+  final AgendaEventDomainModel? event;
+  final EventType? type;
 
   EditEventPage({
-    Key key,
+    Key? key,
     this.type,
     this.event,
   }) : super(key: key);
@@ -29,16 +29,16 @@ class EditEventPage extends StatefulWidget {
 }
 
 class _EditEventPageState extends State<EditEventPage> {
-  AgendaEventDomainModel event;
+  AgendaEventDomainModel? event;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
-  Color _labelColor;
-  DateTime _selectedDate;
+  Color? _labelColor;
+  DateTime? _selectedDate;
 
-  String _initialSubject;
-  SubjectDomainModel _selectedSubject;
-  TimeOfDay _timeOfDay;
+  String? _initialSubject;
+  SubjectDomainModel? _selectedSubject;
+  late TimeOfDay _timeOfDay;
   // bool _notifyEvent = false;
   // Duration _beforeNotify = Duration(minutes: 30);
 
@@ -46,12 +46,12 @@ class _EditEventPageState extends State<EditEventPage> {
 
   @override
   void initState() {
-    _initialSubject = widget.event.subjectName;
-    _selectedDate = widget.event.begin;
+    _initialSubject = widget.event!.subjectName;
+    _selectedDate = widget.event!.begin;
 
     _timeOfDay = TimeOfDay(
-      hour: _selectedDate.hour,
-      minute: _selectedDate.minute,
+      hour: _selectedDate!.hour,
+      minute: _selectedDate!.minute,
     );
     if (widget.type == EventType.test) {
       _labelColor = Colors.orange;
@@ -60,9 +60,9 @@ class _EditEventPageState extends State<EditEventPage> {
     } else {
       _labelColor = Colors.green;
     }
-    _descriptionController.text = widget.event.notes;
-    _titleController.text = widget.event.title;
-    _labelColor = Color(int.tryParse(widget.event.labelColor));
+    _descriptionController.text = widget.event!.notes!;
+    _titleController.text = widget.event!.title!;
+    _labelColor = Color(int.tryParse(widget.event!.labelColor!)!);
     super.initState();
   }
 
@@ -70,7 +70,7 @@ class _EditEventPageState extends State<EditEventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate('edit_event')),
+        title: Text(AppLocalizations.of(context)!.translate('edit_event')!),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
@@ -99,9 +99,9 @@ class _EditEventPageState extends State<EditEventPage> {
     final eventOriginal = widget.event;
 
     final DateTime _date = DateTime(
-      _selectedDate.year,
-      _selectedDate.month,
-      _selectedDate.day,
+      _selectedDate!.year,
+      _selectedDate!.month,
+      _selectedDate!.day,
       _timeOfDay.hour,
       _timeOfDay.minute,
     );
@@ -112,36 +112,36 @@ class _EditEventPageState extends State<EditEventPage> {
         isLocal: true,
         isFullDay: false,
         code: "",
-        begin: _date ?? eventOriginal.begin,
-        end: _date ?? eventOriginal.begin,
+        begin: _date ?? eventOriginal!.begin,
+        end: _date ?? eventOriginal!.begin,
         subjectName: _selectedSubject != null
-            ? _selectedSubject.name
-            : eventOriginal.subjectName,
+            ? _selectedSubject!.name
+            : eventOriginal!.subjectName,
         author: "",
         className: "",
-        id: eventOriginal.id,
+        id: eventOriginal!.id,
         notes: _descriptionController.text,
-        labelColor: _labelColor.value.toString(),
+        labelColor: _labelColor!.value.toString(),
         title: _titleController.text,
       );
     } else {
       event = AgendaEventDomainModel(
         subjectId: _selectedSubject != null
-            ? _selectedSubject.id
-            : eventOriginal.subjectId,
+            ? _selectedSubject!.id
+            : eventOriginal!.subjectId,
         isLocal: true,
         isFullDay: false,
         code: '',
-        begin: _date ?? eventOriginal.begin,
-        end: _date ?? eventOriginal.begin,
+        begin: _date ?? eventOriginal!.begin,
+        end: _date ?? eventOriginal!.begin,
         subjectName: _selectedSubject != null
-            ? _selectedSubject.name
-            : eventOriginal.subjectName,
+            ? _selectedSubject!.name
+            : eventOriginal!.subjectName,
         author: '',
         className: '',
-        id: eventOriginal.id,
+        id: eventOriginal!.id,
         notes: _descriptionController.text,
-        labelColor: _labelColor.value.toString(),
+        labelColor: _labelColor!.value.toString(),
         title: _titleController.text,
       );
     }
@@ -165,7 +165,7 @@ class _EditEventPageState extends State<EditEventPage> {
           maxLines: null,
           decoration: InputDecoration(
             border: InputBorder.none,
-            hintText: AppLocalizations.of(context).translate('add_description'),
+            hintText: AppLocalizations.of(context)!.translate('add_description'),
           ),
         ),
       ),
@@ -186,13 +186,13 @@ class _EditEventPageState extends State<EditEventPage> {
                 maxLines: null,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: AppLocalizations.of(context).translate('add_title'),
+                  hintText: AppLocalizations.of(context)!.translate('add_title'),
                 ),
               ),
             ),
             ListTile(
               leading: Icon(Icons.label),
-              title: Text(AppLocalizations.of(context).translate('label')),
+              title: Text(AppLocalizations.of(context)!.translate('label')!),
               trailing: ClipOval(
                 child: Container(
                   height: 20,
@@ -209,7 +209,7 @@ class _EditEventPageState extends State<EditEventPage> {
                       contentPadding: const EdgeInsets.all(0.0),
                       content: SingleChildScrollView(
                         child: MaterialPicker(
-                          pickerColor: _labelColor,
+                          pickerColor: _labelColor!,
                           onColorChanged: (color) {
                             if (color != null) {
                               setState(() {
@@ -228,10 +228,10 @@ class _EditEventPageState extends State<EditEventPage> {
             ),
             ListTile(
               leading: Icon(Icons.today),
-              title: Text(AppLocalizations.of(context).translate('date')),
+              title: Text(AppLocalizations.of(context)!.translate('date')!),
               trailing: Text(
-                SRDateUtils.getNewEventDateMessage(_selectedDate,
-                    AppLocalizations.of(context).locale.toString(), context),
+                SRDateUtils.getNewEventDateMessage(_selectedDate!,
+                    AppLocalizations.of(context)!.locale.toString(), context)!,
               ),
               onTap: () {
                 showDialog(
@@ -248,7 +248,7 @@ class _EditEventPageState extends State<EditEventPage> {
             ),
             ListTile(
               leading: Icon(Icons.access_time),
-              title: Text(AppLocalizations.of(context).translate('time')),
+              title: Text(AppLocalizations.of(context)!.translate('time')!),
               trailing: Text(_timeOfDay.format(context)),
               onTap: () {
                 showTimePicker(
@@ -278,8 +278,8 @@ class _EditEventPageState extends State<EditEventPage> {
         ),
         title: Text(
           _selectedSubject != null
-              ? _getReducedName(_selectedSubject.name)
-              : _getReducedName(_initialSubject),
+              ? _getReducedName(_selectedSubject!.name!)
+              : _getReducedName(_initialSubject!),
           style: TextStyle(
             color: _getColorForMissingSubject(),
           ),
@@ -314,7 +314,7 @@ class _EditEventPageState extends State<EditEventPage> {
   }
 
   Future onSelectNotification(String payload) async {
-    AppNavigator.instance.navToAgenda(context);
+    AppNavigator.instance!.navToAgenda(context);
   }
 
   Color _getColorForMissingSubject() {
@@ -325,7 +325,7 @@ class _EditEventPageState extends State<EditEventPage> {
     }
   }
 
-  Color _getIconColorForMissingSubject() {
+  Color? _getIconColorForMissingSubject() {
     if (_missingSubject) {
       return Colors.red;
     } else {

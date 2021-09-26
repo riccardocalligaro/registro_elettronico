@@ -12,12 +12,12 @@ part 'timetable_watcher_state.dart';
 
 class TimetableWatcherBloc
     extends Bloc<TimetableWatcherEvent, TimetableWatcherState> {
-  final TimetableRepository timetableRepository;
+  final TimetableRepository? timetableRepository;
 
-  StreamSubscription _timetableStreamSubscription;
+  StreamSubscription? _timetableStreamSubscription;
 
   TimetableWatcherBloc({
-    @required this.timetableRepository,
+    required this.timetableRepository,
   }) : super(TimetableWatcherInitial());
 
   @override
@@ -33,7 +33,7 @@ class TimetableWatcherBloc
         yield TimetableWatcherLoading();
       }
     } else if (event is TimetableRestartWatcher) {
-      await _timetableStreamSubscription.cancel();
+      await _timetableStreamSubscription!.cancel();
       _startStreamListener();
     } else if (event is TimetableStartWatcherIfNeeded) {
       if (_timetableStreamSubscription == null) {
@@ -44,14 +44,14 @@ class TimetableWatcherBloc
 
   void _startStreamListener() {
     _timetableStreamSubscription =
-        timetableRepository.watchTimetableData().listen((resource) {
+        timetableRepository!.watchTimetableData().listen((resource) {
       add(TimetableReceived(resource: resource));
     });
   }
 
   @override
   Future<void> close() {
-    _timetableStreamSubscription.cancel();
+    _timetableStreamSubscription!.cancel();
     return super.close();
   }
 }

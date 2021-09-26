@@ -10,8 +10,8 @@ class SRGradeCard extends StatelessWidget {
   final GradeDomainModel grade;
 
   const SRGradeCard({
-    Key key,
-    @required this.grade,
+    Key? key,
+    required this.grade,
   }) : super(key: key);
 
   @override
@@ -46,7 +46,7 @@ class SRGradeCard extends StatelessWidget {
                     vertical: 19.0,
                   ),
                   child: Text(
-                    grade.displayValue,
+                    grade.displayValue!,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.black,
@@ -68,7 +68,7 @@ class SRGradeCard extends StatelessWidget {
                   Text(
                     SRDateUtils.convertDateLocale(
                       grade.eventDate,
-                      AppLocalizations.of(context).locale.toString(),
+                      AppLocalizations.of(context)!.locale.toString(),
                     ),
                     style: const TextStyle(color: Colors.white),
                     maxLines: 1,
@@ -83,8 +83,8 @@ class SRGradeCard extends StatelessWidget {
   }
 
   Widget _buildGradeTitle(GradeDomainModel grade) {
-    final subjectName = grade.subjectDesc.length > 20
-        ? GlobalUtils.reduceSubjectTitle(grade.subjectDesc)
+    final subjectName = grade.subjectDesc!.length > 20
+        ? GlobalUtils.reduceSubjectTitle(grade.subjectDesc!)
         : grade.subjectDesc;
 
     String text = '$subjectName - ${grade.componentDesc}';
@@ -104,7 +104,7 @@ class SRGradeCard extends StatelessWidget {
   }
 
   Widget _buildLessonArgument(GradeDomainModel grade) {
-    String text = grade.notesForFamily;
+    String text = grade.notesForFamily!;
     if (text.isNotEmpty) {
       if (text.length > 30) {
         text = text.substring(0, 30);
@@ -122,15 +122,15 @@ class SRGradeCard extends StatelessWidget {
   void _showGradeInfoDialog(BuildContext context) {
     final trans = AppLocalizations.of(context);
     String valueRow;
-    if (grade.localllyCancelled) {
+    if (grade.localllyCancelled!) {
       valueRow = 'Valore: ${grade.decimalValue} (voto cancellato localmente)';
-    } else if (grade.cancelled) {
+    } else if (grade.cancelled!) {
       valueRow = 'Valore: voto cancellato';
     } else if (grade.decimalValue == -1) {
       valueRow = 'Valore che non fa media (voto in blu): ${grade.displayValue}';
     } else {
       valueRow =
-          '${trans.translate('decimal_value')}: ${grade.decimalValue.toString()}';
+          '${trans!.translate('decimal_value')}: ${grade.decimalValue.toString()}';
     }
     showDialog(
       context: context,
@@ -143,7 +143,7 @@ class SRGradeCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "${trans.translate('notes')}: ${grade.notesForFamily.isNotEmpty ? grade.notesForFamily : trans.translate('not_presents').toLowerCase()}",
+                  "${trans!.translate('notes')}: ${grade.notesForFamily!.isNotEmpty ? grade.notesForFamily : trans.translate('not_presents')!.toLowerCase()}",
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(
@@ -164,7 +164,7 @@ class SRGradeCard extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  '${trans.translate('term')}: ${grade.periodPos}° ${grade.periodDesc.toLowerCase()}',
+                  '${trans.translate('term')}: ${grade.periodPos}° ${grade.periodDesc!.toLowerCase()}',
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(
@@ -190,15 +190,15 @@ class SRGradeCard extends StatelessWidget {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text(grade.localllyCancelled
-              ? AppLocalizations.of(context)
-                  .translate('delete_grade_title_restore')
-              : AppLocalizations.of(context)
-                  .translate('delete_grade_title_cancel')),
+          title: Text(grade.localllyCancelled!
+              ? AppLocalizations.of(context)!
+                  .translate('delete_grade_title_restore')!
+              : AppLocalizations.of(context)!
+                  .translate('delete_grade_title_cancel')!),
           actions: <Widget>[
             TextButton(
               child: Text(
-                AppLocalizations.of(context).translate('no').toUpperCase(),
+                AppLocalizations.of(context)!.translate('no')!.toUpperCase(),
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -206,7 +206,7 @@ class SRGradeCard extends StatelessWidget {
             ),
             TextButton(
               child: Text(
-                  AppLocalizations.of(context).translate('yes').toUpperCase()),
+                  AppLocalizations.of(context)!.translate('yes')!.toUpperCase()),
               onPressed: () async {
                 BlocProvider.of<GradesOperationsBloc>(context).add(
                   ToggleGradeLocallyCancelledState(gradeDomainModel: grade),

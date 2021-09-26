@@ -8,15 +8,15 @@ class AgendaWatcherInitial extends AgendaWatcherState {}
 class AgendaWatcherLoading extends AgendaWatcherState {}
 
 class AgendaWatcherLoadSuccess extends AgendaWatcherState {
-  final AgendaDataDomainModel agendaDataDomainModel;
+  final AgendaDataDomainModel? agendaDataDomainModel;
 
   AgendaWatcherLoadSuccess({
-    @required this.agendaDataDomainModel,
+    required this.agendaDataDomainModel,
   });
 }
 
 class AgendaWatcherFailure extends AgendaWatcherState {
-  final Failure failure;
+  final Failure? failure;
 
-  AgendaWatcherFailure({@required this.failure});
+  AgendaWatcherFailure({required this.failure});
 }

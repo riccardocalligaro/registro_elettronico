@@ -7,7 +7,7 @@ class ToggleGradeLocallyCancelledState extends GradesOperationsEvent {
   final GradeDomainModel gradeDomainModel;
 
   ToggleGradeLocallyCancelledState({
-    @required this.gradeDomainModel,
+    required this.gradeDomainModel,
   });
 }
 
@@ -16,7 +16,7 @@ class ChangeSubjectObjective extends GradesOperationsEvent {
   final int newValue;
 
   ChangeSubjectObjective({
-    @required this.newValue,
-    @required this.subject,
+    required this.newValue,
+    required this.subject,
   });
 }

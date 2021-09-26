@@ -10,7 +10,7 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class HomeHeader extends StatelessWidget {
-  const HomeHeader({Key key}) : super(key: key);
+  const HomeHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class HomeHeader extends StatelessWidget {
               Text(
                 SRDateUtils.convertDateLocale(
                   DateTime.now(),
-                  AppLocalizations.of(context).locale.toString(),
+                  AppLocalizations.of(context)!.locale.toString(),
                 ),
                 style: TextStyle(
                   color: Colors.white,
@@ -73,7 +73,7 @@ class HomeHeader extends StatelessWidget {
 }
 
 class _WeekEventsChart extends StatelessWidget {
-  const _WeekEventsChart({Key key}) : super(key: key);
+  const _WeekEventsChart({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,7 @@ class _WeekEventsChart extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.fromLTRB(1, 0, 24, 0),
                 child: WeekSummaryChart(
-                  events: state.agendaDataDomainModel.eventsSpots,
+                  events: state.agendaDataDomainModel!.eventsSpots,
                 ),
               );
             }
@@ -105,7 +105,7 @@ class _WeekEventsChart extends StatelessWidget {
 }
 
 class _BackgroundGradient extends StatelessWidget {
-  const _BackgroundGradient({Key key}) : super(key: key);
+  const _BackgroundGradient({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +116,7 @@ class _BackgroundGradient extends StatelessWidget {
           stops: [0.4, 1],
           colors: ColorUtils.getGradientForColor(
             Theme.of(context).accentColor,
-          ),
+          ) as List<Color>,
           begin: Alignment(-1.0, -2.0),
           end: Alignment(1.0, 2.0),
         ),

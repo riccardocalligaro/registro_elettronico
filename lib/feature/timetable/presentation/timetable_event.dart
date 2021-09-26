@@ -11,7 +11,7 @@ import 'model/timetable_entry_presentation_model.dart';
 class TimetableEventWidget extends StatelessWidget {
   const TimetableEventWidget(
     this.event, {
-    Key key,
+    Key? key,
   })  : assert(event != null),
         super(key: key);
 
@@ -44,7 +44,7 @@ class TimetableEventWidget extends StatelessWidget {
                     title: Text(
                       SRDateUtils.convertSingleDayForDisplay(
                         event.start,
-                        AppLocalizations.of(context).locale.toString(),
+                        AppLocalizations.of(context)!.locale.toString(),
                       ),
                     ),
                   ),
@@ -59,7 +59,7 @@ class TimetableEventWidget extends StatelessWidget {
               actions: <Widget>[
                 TextButton(
                   onPressed: () async {
-                    final TimetableRepository timetableRepository = sl();
+                    final TimetableRepository? timetableRepository = sl();
 
                     // TODO: delete event
                     // await timetableRepository.deleteTimetableEntry(
@@ -68,16 +68,16 @@ class TimetableEventWidget extends StatelessWidget {
 
                     Navigator.pop(context);
                   },
-                  child: Text(AppLocalizations.of(context)
-                      .translate('delete')
+                  child: Text(AppLocalizations.of(context)!
+                      .translate('delete')!
                       .toUpperCase()),
                 ),
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(AppLocalizations.of(context)
-                      .translate('ok')
+                  child: Text(AppLocalizations.of(context)!
+                      .translate('ok')!
                       .toUpperCase()),
                 )
               ],

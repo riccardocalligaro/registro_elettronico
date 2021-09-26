@@ -19,7 +19,7 @@ class AttachmentFile extends GenericAttachment {
 }
 
 class AttachmentText extends GenericAttachment {
-  final String text;
+  final String? text;
 
   AttachmentText(this.text);
 

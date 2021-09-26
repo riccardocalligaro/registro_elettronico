@@ -22,7 +22,7 @@ import 'charts/grades_bar_chart.dart';
 import 'charts/grades_pie_chart.dart';
 
 class StatsPage extends StatefulWidget {
-  StatsPage({Key key}) : super(key: key);
+  StatsPage({Key? key}) : super(key: key);
 
   @override
   _StatsPageState createState() => _StatsPageState();
@@ -30,7 +30,7 @@ class StatsPage extends StatefulWidget {
 
 class _StatsPageState extends State<StatsPage> {
   ScreenshotController screenshotController = ScreenshotController();
-  int objective;
+  int? objective;
 
   @override
   void initState() {
@@ -44,15 +44,15 @@ class _StatsPageState extends State<StatsPage> {
       appBar: AppBar(
         brightness: Theme.of(context).brightness,
         title: Text(
-          AppLocalizations.of(context).translate('statistics'),
+          AppLocalizations.of(context)!.translate('statistics')!,
         ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.share),
             onPressed: () async {
               final directory = (await getApplicationDocumentsDirectory()).path;
-              String fileName = AppLocalizations.of(context)
-                      .translate('statistics')
+              String fileName = AppLocalizations.of(context)!
+                      .translate('statistics')!
                       .toLowerCase() +
                   DateTime.now().toIso8601String();
 
@@ -99,10 +99,10 @@ class _StatsPageState extends State<StatsPage> {
 
   Widget _buildErrorState() {
     return CustomPlaceHolder(
-      text: AppLocalizations.of(context).translate('stats_error'),
+      text: AppLocalizations.of(context)!.translate('stats_error'),
       icon: Icons.pie_chart,
       showUpdate: true,
-      updateMessage: AppLocalizations.of(context).translate('send_report'),
+      updateMessage: AppLocalizations.of(context)!.translate('send_report'),
       onTap: () {
         ReportManager.sendEmail(context);
       },
@@ -142,7 +142,7 @@ class _StatsPageState extends State<StatsPage> {
     );
   }
 
-  Widget _buildOverallStatsCard({@required StudentReport report}) {
+  Widget _buildOverallStatsCard({required StudentReport report}) {
     final insufficientiTotal = report.insufficientiSubjectsCount +
         report.nearlySufficientiSubjectsCount;
 
@@ -157,41 +157,41 @@ class _StatsPageState extends State<StatsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(AppLocalizations.of(context)
-                      .translate('general_average')
+                  Text(AppLocalizations.of(context)!
+                      .translate('general_average')!
                       .replaceAll(
                           '{average}', report.average.toStringAsFixed(2))),
                   const SizedBox(
                     height: 4,
                   ),
                   Text(
-                    AppLocalizations.of(context).translate('credits').replaceAll(
+                    AppLocalizations.of(context)!.translate('credits')!.replaceAll(
                         '{credits}',
                         report.schoolCredits > 0
                             ? '${report.schoolCredits}-${report.schoolCredits + 1}'
-                            : AppLocalizations.of(context)
-                                .translate('no_credits')),
+                            : AppLocalizations.of(context)!
+                                .translate('no_credits')!),
                   ),
                   const SizedBox(
                     height: 4,
                   ),
-                  Text(AppLocalizations.of(context)
-                      .translate('best_subject')
+                  Text(AppLocalizations.of(context)!
+                      .translate('best_subject')!
                       .replaceAll(
-                          '{subject}', report.bestSubject.name.toLowerCase())),
+                          '{subject}', report.bestSubject!.name!.toLowerCase())),
                   const SizedBox(
                     height: 4,
                   ),
-                  Text(AppLocalizations.of(context)
-                      .translate('worst_subject')
+                  Text(AppLocalizations.of(context)!
+                      .translate('worst_subject')!
                       .replaceAll(
-                          '{subject}', report.worstSubject.name.toLowerCase())),
+                          '{subject}', report.worstSubject!.name!.toLowerCase())),
                   const SizedBox(
                     height: 4,
                   ),
                   AutoSizeText(
-                    AppLocalizations.of(context)
-                        .translate('days_to_school_end')
+                    AppLocalizations.of(context)!
+                        .translate('days_to_school_end')!
                         .replaceAll(
                             '{days}',
                             report.timeRemainingToSchoolFinish.inDays
@@ -202,8 +202,8 @@ class _StatsPageState extends State<StatsPage> {
                     height: 4,
                   ),
                   AutoSizeText(
-                    AppLocalizations.of(context)
-                        .translate('sufficienti_subjects')
+                    AppLocalizations.of(context)!
+                        .translate('sufficienti_subjects')!
                         .replaceAll('{number}',
                             report.sufficientiSubjectsCount.toString()),
                     maxLines: 1,
@@ -212,24 +212,24 @@ class _StatsPageState extends State<StatsPage> {
                     height: 4,
                   ),
                   AutoSizeText(
-                    AppLocalizations.of(context)
-                        .translate('insufficient_subjects')
+                    AppLocalizations.of(context)!
+                        .translate('insufficient_subjects')!
                         .replaceAll('{number}', insufficientiTotal.toString()),
                     maxLines: 1,
                   ),
                   const SizedBox(
                     height: 4,
                   ),
-                  Text(AppLocalizations.of(context)
-                      .translate('best_term')
+                  Text(AppLocalizations.of(context)!
+                      .translate('best_term')!
                       .replaceAll('{number}',
-                          '${report.mostProfitablePeriod.position}° ${AppLocalizations.of(context).translate('term')}')),
+                          '${report.mostProfitablePeriod.position}° ${AppLocalizations.of(context)!.translate('term')}')),
                   const SizedBox(
                     height: 4,
                   ),
                   AutoSizeText(
-                    AppLocalizations.of(context)
-                        .translate('skipped_tests')
+                    AppLocalizations.of(context)!
+                        .translate('skipped_tests')!
                         .replaceAll(
                           '{number}',
                           report.skippedTestsForAbsences.toString(),
@@ -254,13 +254,13 @@ class _StatsPageState extends State<StatsPage> {
                     builder: (context) {
                       return AlertDialog(
                         title: Text(
-                            '${AppLocalizations.of(context).translate('score')}: ${report.score.toStringAsFixed(2)}'),
-                        content: Text(AppLocalizations.of(context)
-                            .translate('score_description')),
+                            '${AppLocalizations.of(context)!.translate('score')}: ${report.score.toStringAsFixed(2)}'),
+                        content: Text(AppLocalizations.of(context)!
+                            .translate('score_description')!),
                         actions: <Widget>[
                           TextButton(
                             child: Text(
-                              AppLocalizations.of(context).translate('ok'),
+                              AppLocalizations.of(context)!.translate('ok')!,
                             ),
                             onPressed: () {
                               Navigator.pop(context);
@@ -281,8 +281,8 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildAverageChart({
-    @required List<GradeDomainModel> grades,
-    int objective,
+    required List<GradeDomainModel> grades,
+    int? objective,
   }) {
     return Card(
       child: Padding(
@@ -291,8 +291,8 @@ class _StatsPageState extends State<StatsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              AppLocalizations.of(context)
-                  .translate('stats_timeline_graph_average'),
+              AppLocalizations.of(context)!
+                  .translate('stats_timeline_graph_average')!,
             ),
             StatsGradesChart(
               showAverageFirst: true,
@@ -306,7 +306,7 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildSecondRowGraphs({
-    @required StudentReport report,
+    required StudentReport report,
   }) {
     return Container(
       height: 315,
@@ -330,7 +330,7 @@ class _StatsPageState extends State<StatsPage> {
                 child: Column(
                   children: <Widget>[
                     AutoSizeText(
-                      AppLocalizations.of(context).translate('averages'),
+                      AppLocalizations.of(context)!.translate('averages')!,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -415,7 +415,7 @@ class _StatsPageState extends State<StatsPage> {
                                 ? '-'
                                 : report.average.toStringAsFixed(2)),
                             Text(
-                              AppLocalizations.of(context).translate('year'),
+                              AppLocalizations.of(context)!.translate('year')!,
                               style: TextStyle(fontSize: 12),
                             ),
                           ],
@@ -436,10 +436,10 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildThirdRowCard({
-    @required StudentReport report,
+    required StudentReport report,
   }) {
     return GradesBarChart(
-      grades: report.grades..sort((a, b) => a.eventDate.compareTo(b.eventDate)),
+      grades: report.grades..sort((a, b) => a.eventDate!.compareTo(b.eventDate!)),
     );
   }
 }

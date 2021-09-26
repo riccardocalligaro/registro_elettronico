@@ -9,10 +9,10 @@ import 'package:registro_elettronico/feature/authentication/domain/repository/au
 import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
 
 class ScrutiniRepositoryImpl implements ScrutiniRepository {
-  final WebSpaggiariClient webSpaggiariClient;
-  final AuthenticationRepository authenticationRepository;
-  final FlutterSecureStorage flutterSecureStorage;
-  final NetworkInfo networkInfo;
+  final WebSpaggiariClient? webSpaggiariClient;
+  final AuthenticationRepository? authenticationRepository;
+  final FlutterSecureStorage? flutterSecureStorage;
+  final NetworkInfo? networkInfo;
 
   ScrutiniRepositoryImpl(
     this.webSpaggiariClient,
@@ -23,14 +23,14 @@ class ScrutiniRepositoryImpl implements ScrutiniRepository {
 
   @override
   Future<Either<Failure, String>> getLoginToken({
-    bool lastYear,
+    bool? lastYear,
   }) async {
-    if (await networkInfo.isConnected) {
-      final profile = await authenticationRepository.getProfile();
-      final password = await flutterSecureStorage.read(key: profile.ident);
+    if (await networkInfo!.isConnected) {
+      final profile = await (authenticationRepository!.getProfile() as FutureOr<ProfileDomainModel>);
+      final password = await flutterSecureStorage!.read(key: profile.ident!);
 
       try {
-        final resToken = await webSpaggiariClient.getPHPToken(
+        final resToken = await webSpaggiariClient!.getPHPToken(
           username: profile.ident,
           password: password,
           lastYear: lastYear ?? false,

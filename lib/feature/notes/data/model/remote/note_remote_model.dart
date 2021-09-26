@@ -1,8 +1,8 @@
 class NotesResponse {
-  List<NoteRemoteModel> notesNTTE;
-  List<NoteRemoteModel> notesNTCL;
-  List<NoteRemoteModel> notesNTWN;
-  List<NoteRemoteModel> notesNTST;
+  List<NoteRemoteModel>? notesNTTE;
+  List<NoteRemoteModel>? notesNTCL;
+  List<NoteRemoteModel>? notesNTWN;
+  List<NoteRemoteModel>? notesNTST;
 
   NotesResponse({
     this.notesNTTE,
@@ -15,25 +15,25 @@ class NotesResponse {
     if (json['NTTE'] != null) {
       notesNTTE = <NoteRemoteModel>[];
       json['NTTE'].forEach((v) {
-        notesNTTE.add(NoteRemoteModel.fromJson(v));
+        notesNTTE!.add(NoteRemoteModel.fromJson(v));
       });
     }
     if (json['NTCL'] != null) {
       notesNTCL = <NoteRemoteModel>[];
       json['NTCL'].forEach((v) {
-        notesNTCL.add(NoteRemoteModel.fromJson(v));
+        notesNTCL!.add(NoteRemoteModel.fromJson(v));
       });
     }
     if (json['NTWN'] != null) {
       notesNTWN = <NoteRemoteModel>[];
       json['NTWN'].forEach((v) {
-        notesNTWN.add(NoteRemoteModel.fromJson(v));
+        notesNTWN!.add(NoteRemoteModel.fromJson(v));
       });
     }
     if (json['NTST'] != null) {
       notesNTST = <NoteRemoteModel>[];
       json['NTST'].forEach((v) {
-        notesNTST.add(NoteRemoteModel.fromJson(v));
+        notesNTST!.add(NoteRemoteModel.fromJson(v));
       });
     }
   }
@@ -41,28 +41,28 @@ class NotesResponse {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.notesNTTE != null) {
-      data['NTTE'] = this.notesNTTE.map((v) => v.toJson()).toList();
+      data['NTTE'] = this.notesNTTE!.map((v) => v.toJson()).toList();
     }
     if (this.notesNTCL != null) {
-      data['NTCL'] = this.notesNTCL.map((v) => v.toJson()).toList();
+      data['NTCL'] = this.notesNTCL!.map((v) => v.toJson()).toList();
     }
     if (this.notesNTWN != null) {
-      data['NTWN'] = this.notesNTWN.map((v) => v.toJson()).toList();
+      data['NTWN'] = this.notesNTWN!.map((v) => v.toJson()).toList();
     }
     if (this.notesNTST != null) {
-      data['NTST'] = this.notesNTST.map((v) => v.toJson()).toList();
+      data['NTST'] = this.notesNTST!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class NoteRemoteModel {
-  String authorName;
-  String evtDate;
-  int evtId;
-  bool readStatus;
-  String extText;
-  String warningType;
+  String? authorName;
+  String? evtDate;
+  int? evtId;
+  bool? readStatus;
+  String? extText;
+  String? warningType;
 
   NoteRemoteModel(
       {this.authorName,

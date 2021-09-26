@@ -7,6 +7,6 @@ class NoticeboardDataReceived extends NoticeboardWatcherEvent {
   final Resource<List<NoticeDomainModel>> resource;
 
   NoticeboardDataReceived({
-    @required this.resource,
+    required this.resource,
   });
 }

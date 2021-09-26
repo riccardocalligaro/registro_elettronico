@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DonateDialog extends StatefulWidget {
-  DonateDialog({Key key}) : super(key: key);
+  DonateDialog({Key? key}) : super(key: key);
 
   @override
   _DonateDialogState createState() => _DonateDialogState();

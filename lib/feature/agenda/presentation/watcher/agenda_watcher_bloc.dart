@@ -13,10 +13,10 @@ part 'agenda_watcher_state.dart';
 class AgendaWatcherBloc extends Bloc<AgendaWatcherEvent, AgendaWatcherState> {
   final AgendaRepository agendaRepository;
 
-  StreamSubscription _agendaStreamSubscription;
+  late StreamSubscription _agendaStreamSubscription;
 
   AgendaWatcherBloc({
-    @required this.agendaRepository,
+    required this.agendaRepository,
   }) : super(AgendaWatcherInitial()) {
     _agendaStreamSubscription =
         agendaRepository.watchAgendaData().listen((resource) {

@@ -27,7 +27,7 @@ class AbsencesLoaded extends AbsencesState {
   final List<Absence> absences;
 
   const AbsencesLoaded({
-    @required this.absences,
+    required this.absences,
   });
 }
 

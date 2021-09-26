@@ -8,15 +8,15 @@ import 'package:registro_elettronico/utils/string_utils.dart';
 import 'package:share/share.dart';
 
 class LessonCard extends StatelessWidget {
-  final LessonDomainModel lesson;
+  final LessonDomainModel? lesson;
   final int position;
   final int duration;
 
   const LessonCard({
-    Key key,
-    @required this.lesson,
-    @required this.position,
-    @required this.duration,
+    Key? key,
+    required this.lesson,
+    required this.position,
+    required this.duration,
   }) : super(key: key);
 
   @override
@@ -30,15 +30,15 @@ class LessonCard extends StatelessWidget {
       padding: EdgeInsets.only(left: _paddingLeft, right: 8.0),
       child: InkWell(
         onLongPress: () {
-          final trans = AppLocalizations.of(context);
+          final trans = AppLocalizations.of(context)!;
 
           String message = '';
 
           message +=
-              '${trans.translate('author')}: ${StringUtils.titleCase(lesson.author)}';
+              '${trans.translate('author')}: ${StringUtils.titleCase(lesson!.author!)}';
           message +=
-              '\n${trans.translate('date')}: ${SRDateUtils.convertDateForLessons(lesson.date)}';
-          message += '\n${lesson.lessonArgoment}';
+              '\n${trans.translate('date')}: ${SRDateUtils.convertDateForLessons(lesson!.date)}';
+          message += '\n${lesson!.lessonArgoment}';
 
           Share.share(message);
         },
@@ -47,7 +47,7 @@ class LessonCard extends StatelessWidget {
             context: context,
             builder: (bCtx) => AlertDialog(
               title: Text(
-                lesson.subjectDescription,
+                lesson!.subjectDescription!,
                 style: TextStyle(fontSize: 15),
               ),
               content: Column(
@@ -55,15 +55,15 @@ class LessonCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SelectableText(
-                      """${trans.translate('author')}: ${StringUtils.titleCase(lesson.author)}
-                      \n${trans.translate('argument')}: ${lesson.lessonArgoment}
-                      \n${trans.translate('date')}: ${SRDateUtils.convertDateLocale(lesson.date, AppLocalizations.of(context).locale.toString())}
-                      \n${trans.translate('type')}: ${lesson.lessonType}"""),
+                      """${trans!.translate('author')}: ${StringUtils.titleCase(lesson!.author!)}
+                      \n${trans.translate('argument')}: ${lesson!.lessonArgoment}
+                      \n${trans.translate('date')}: ${SRDateUtils.convertDateLocale(lesson!.date, AppLocalizations.of(context)!.locale.toString())}
+                      \n${trans.translate('type')}: ${lesson!.lessonType}"""),
                 ],
               ),
               actions: <Widget>[
                 TextButton(
-                  child: Text(AppLocalizations.of(context).translate('ok')),
+                  child: Text(AppLocalizations.of(context)!.translate('ok')!),
                   onPressed: () => Navigator.of(bCtx).pop(),
                 )
               ],
@@ -93,7 +93,7 @@ class LessonCard extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           decoration: BoxDecoration(color: Colors.white),
                           child: GlobalUtils.getIconFromSubject(
-                              lesson.subjectDescription)),
+                              lesson!.subjectDescription!)),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,7 +103,7 @@ class LessonCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 7.0, vertical: 4.0),
                           decoration: BoxDecoration(
-                              color: Colors.grey[200].withOpacity(0.4),
+                              color: Colors.grey[200]!.withOpacity(0.4),
                               borderRadius: BorderRadius.circular(8)),
                           child: Opacity(
                             opacity: 0.85,
@@ -124,21 +124,21 @@ class LessonCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: Text(
-                        lesson.subjectDescription.length > 20
+                        lesson!.subjectDescription!.length > 20
                             ? GlobalUtils.reduceSubjectTitle(
-                                lesson.subjectDescription)
-                            : lesson.subjectDescription,
+                                lesson!.subjectDescription!)
+                            : lesson!.subjectDescription!,
                         style: Theme.of(context)
                             .textTheme
-                            .headline5
+                            .headline5!
                             .copyWith(fontSize: 12, color: Colors.white),
                       ),
                     ),
                     Text(
-                      lesson.lessonArgoment.length > 25
+                      lesson!.lessonArgoment!.length > 25
                           ? GlobalUtils.reduceLessonArgument(
-                              lesson.lessonArgoment)
-                          : lesson.lessonArgoment,
+                              lesson!.lessonArgoment!)
+                          : lesson!.lessonArgoment!,
                       style: TextStyle(fontSize: 10, color: Colors.white),
                     )
                   ],

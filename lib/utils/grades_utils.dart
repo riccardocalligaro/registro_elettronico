@@ -7,8 +7,8 @@ import 'constants/registro_constants.dart';
 
 class GradesUtils {
   static double getDifferencePercentage({
-    @required double oldAverage,
-    @required double newAverage,
+    required double oldAverage,
+    required double newAverage,
   }) {
     if (newAverage > 0 && oldAverage > 0) {
       return (newAverage - oldAverage) / oldAverage * 10;
@@ -16,7 +16,7 @@ class GradesUtils {
     return 0.0;
   }
 
-  static double getAverage(int subjectId, List<GradeDomainModel> grades) {
+  static double getAverage(int? subjectId, List<GradeDomainModel> grades) {
     double sum = 0;
     int count = 0;
 
@@ -27,7 +27,7 @@ class GradesUtils {
       }
 
       if (grade.subjectId == subjectId && isValidGrade(grade)) {
-        sum += grade.decimalValue;
+        sum += grade.decimalValue!;
         count++;
       }
     });
@@ -77,7 +77,7 @@ class GradesUtils {
     grades.forEach((grade) {
       if (grade.decimalValue != -1.00 &&
           grade.componentDesc == RegistroConstants.ORALE) {
-        sum += grade.decimalValue;
+        sum += grade.decimalValue!;
         count++;
       }
     });

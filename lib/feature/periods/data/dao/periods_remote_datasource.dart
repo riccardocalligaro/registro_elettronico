@@ -3,14 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/feature/periods/data/model/period_remote_model.dart';
 
 class PeriodsRemoteDatasource {
-  final Dio dio;
+  final Dio? dio;
 
   PeriodsRemoteDatasource({
-    @required this.dio,
+    required this.dio,
   });
 
   Future<List<PeriodRemoteModel>> getPeriods() async {
-    final response = await dio.get('/students/{studentId}/periods');
+    final response = await dio!.get('/students/{studentId}/periods');
 
     List<PeriodRemoteModel> periods = List<PeriodRemoteModel>.from(
       response.data['periods'].map(

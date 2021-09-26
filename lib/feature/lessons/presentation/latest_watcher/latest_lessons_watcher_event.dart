@@ -7,6 +7,6 @@ class LatestLessonsReceived extends LatestLessonsWatcherEvent {
   final Resource<List<LessonWithDurationDomainModel>> resource;
 
   LatestLessonsReceived({
-    @required this.resource,
+    required this.resource,
   });
 }

@@ -1,18 +1,18 @@
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 class LessonRemoteModel {
-  int evtId;
-  String evtDate;
-  String evtCode;
-  int evtHPos;
-  int evtDuration;
-  String classDesc;
-  String authorName;
-  int subjectId;
-  String subjectCode;
-  String subjectDesc;
-  String lessonType;
-  String lessonArg;
+  int? evtId;
+  String? evtDate;
+  String? evtCode;
+  int? evtHPos;
+  int? evtDuration;
+  String? classDesc;
+  String? authorName;
+  int? subjectId;
+  String? subjectCode;
+  String? subjectDesc;
+  String? lessonType;
+  String? lessonArg;
 
   LessonRemoteModel({
     this.evtId,
@@ -44,7 +44,7 @@ class LessonRemoteModel {
     lessonArg = json['lessonArg'];
   }
 
-  int _safeInt(dynamic value) {
+  int? _safeInt(dynamic value) {
     if (value is int) {
       return value;
     } else if (value is double) {
@@ -74,7 +74,7 @@ class LessonRemoteModel {
   LessonLocalModel toLocalModel() {
     return LessonLocalModel(
       eventId: this.evtId ?? -1,
-      date: DateTime.tryParse(this.evtDate) ??
+      date: DateTime.tryParse(this.evtDate!) ??
           DateTime.fromMillisecondsSinceEpoch(0),
       code: this.evtCode ?? '',
       position: this.evtHPos ?? -1,

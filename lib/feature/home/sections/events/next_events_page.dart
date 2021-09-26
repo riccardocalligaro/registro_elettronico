@@ -11,8 +11,8 @@ import 'package:registro_elettronico/utils/update_manager.dart';
 class NextEventsPage extends StatelessWidget {
   final List<AgendaEventDomainModel> events;
   const NextEventsPage({
-    Key key,
-    @required this.events,
+    Key? key,
+    required this.events,
   }) : super(key: key);
 
   @override
@@ -24,11 +24,11 @@ class NextEventsPage extends StatelessWidget {
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            AppLocalizations.of(context).translate('next_events'),
+            AppLocalizations.of(context)!.translate('next_events')!,
           ),
         ),
         body: CustomPlaceHolder(
-          text: AppLocalizations.of(context).translate('no_events'),
+          text: AppLocalizations.of(context)!.translate('no_events'),
           icon: Icons.event,
           showUpdate: true,
           onTap: () {
@@ -42,7 +42,7 @@ class NextEventsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context).translate('next_events'),
+          AppLocalizations.of(context)!.translate('next_events')!,
         ),
       ),
       body: ListView.builder(
@@ -51,17 +51,17 @@ class NextEventsPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final event = events[index];
 
-          if (event.begin.month != currentMonth) {
+          if (event.begin!.month != currentMonth) {
             showMonth = true;
           } else {
             showMonth = false;
           }
 
-          currentMonth = event.begin.month;
+          currentMonth = event.begin!.month;
 
           if (showMonth) {
             var convertMonthLocale = SRDateUtils.convertMonthLocale(
-                event.begin, AppLocalizations.of(context).locale.toString());
+                event.begin, AppLocalizations.of(context)!.locale.toString());
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -87,7 +87,7 @@ class NextEventsPage extends StatelessWidget {
   }
 
   Widget _buildEventCard(AgendaEventDomainModel e, BuildContext context) {
-    if (e.isLocal) {
+    if (e.isLocal!) {
       return Card(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -106,7 +106,7 @@ class NextEventsPage extends StatelessWidget {
                     height: 2.5,
                   ),
                 Text(
-                  '${e.notes} - ${GlobalUtils.getEventDateMessage(context, e.begin, e.isFullDay)}',
+                  '${e.notes} - ${GlobalUtils.getEventDateMessage(context, e.begin!, e.isFullDay)}',
                   style: TextStyle(fontSize: e.title != '' ? 12.0 : 15),
                 ),
               ],
@@ -133,7 +133,7 @@ class NextEventsPage extends StatelessWidget {
                   height: 2.5,
                 ),
               Text(
-                '${StringUtils.titleCase(e.author)} - ${GlobalUtils.getEventDateMessage(context, e.begin, e.isFullDay)}',
+                '${StringUtils.titleCase(e.author!)} - ${GlobalUtils.getEventDateMessage(context, e.begin!, e.isFullDay)}',
                 style: TextStyle(fontSize: e.title != '' ? 12.0 : 15),
               ),
               if (e.notes != '')

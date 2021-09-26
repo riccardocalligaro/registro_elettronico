@@ -7,7 +7,7 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 class LocalGradeCard extends StatelessWidget {
   final LocalGrade localGrade;
 
-  const LocalGradeCard({Key key, @required this.localGrade}) : super(key: key);
+  const LocalGradeCard({Key? key, required this.localGrade}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class LocalGradeCard extends StatelessWidget {
                 color: Colors.white,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 9.0),
-                child: Text(localGrade.displayValue,
+                child: Text(localGrade.displayValue!,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.black,
@@ -44,7 +44,7 @@ class LocalGradeCard extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     SRDateUtils.convertDateLocale(localGrade.eventDate,
-                        AppLocalizations.of(context).locale.toString()),
+                        AppLocalizations.of(context)!.locale.toString()),
                     style: TextStyle(color: Colors.white),
                   )
                 ],

@@ -9,7 +9,7 @@ import 'package:registro_elettronico/feature/agenda/presentation/watcher/agenda_
 import 'package:registro_elettronico/utils/update_manager.dart';
 
 class AgendaPage extends StatefulWidget {
-  AgendaPage({Key key}) : super(key: key);
+  AgendaPage({Key? key}) : super(key: key);
 
   @override
   _AgendaPageState createState() => _AgendaPageState();
@@ -22,14 +22,14 @@ class _AgendaPageState extends State<AgendaPage> {
       builder: (context, state) {
         if (state is AgendaWatcherLoadSuccess) {
           if (state.agendaDataDomainModel == null ||
-              state.agendaDataDomainModel.allEvents.isEmpty) {
+              state.agendaDataDomainModel!.allEvents.isEmpty) {
             return Scaffold(
               appBar: AppBar(
-                title: Text(AppLocalizations.of(context).translate('agenda')),
+                title: Text(AppLocalizations.of(context)!.translate('agenda')!),
                 brightness: Theme.of(context).brightness,
               ),
               body: CustomPlaceHolder(
-                text: AppLocalizations.of(context).translate('no_events'),
+                text: AppLocalizations.of(context)!.translate('no_events'),
                 icon: Icons.event,
                 showUpdate: true,
                 onTap: () {
@@ -53,13 +53,13 @@ class _AgendaPageState extends State<AgendaPage> {
 }
 
 class _AgendaLoading extends StatelessWidget {
-  const _AgendaLoading({Key key}) : super(key: key);
+  const _AgendaLoading({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate('agenda')),
+        title: Text(AppLocalizations.of(context)!.translate('agenda')!),
         brightness: Theme.of(context).brightness,
       ),
       body: Center(
@@ -70,22 +70,22 @@ class _AgendaLoading extends StatelessWidget {
 }
 
 class _AgendaFailure extends StatelessWidget {
-  final Failure failure;
+  final Failure? failure;
 
   const _AgendaFailure({
-    Key key,
-    @required this.failure,
+    Key? key,
+    required this.failure,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate('agenda')),
+        title: Text(AppLocalizations.of(context)!.translate('agenda')!),
         brightness: Theme.of(context).brightness,
       ),
       body: CustomPlaceHolder(
-        text: failure.localizedDescription(context),
+        text: failure!.localizedDescription(context),
         icon: Icons.error,
         showUpdate: true,
         onTap: () {

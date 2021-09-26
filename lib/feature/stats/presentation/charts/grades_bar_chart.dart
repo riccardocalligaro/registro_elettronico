@@ -10,8 +10,8 @@ class GradesBarChart extends StatefulWidget {
   final List<GradeDomainModel> grades;
 
   const GradesBarChart({
-    Key key,
-    @required this.grades,
+    Key? key,
+    required this.grades,
   }) : super(key: key);
 
   @override
@@ -22,7 +22,7 @@ class GradesBarChartState extends State<GradesBarChart> {
   final Color barBackgroundColor = const Color(0xff72d8bf);
   final Duration animDuration = Duration(milliseconds: 250);
   int currentIndex = 0;
-  int touchedIndex;
+  int? touchedIndex;
 
   bool isPlaying = false;
 
@@ -41,21 +41,21 @@ class GradesBarChartState extends State<GradesBarChart> {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Text(
-                    AppLocalizations.of(context).translate('grades'),
+                    AppLocalizations.of(context)!.translate('grades')!,
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
                     height: 4,
                   ),
                   Text(
-                    AppLocalizations.of(context).translate('bar_chart_message'),
+                    AppLocalizations.of(context)!.translate('bar_chart_message')!,
                     style: TextStyle(fontSize: 13),
                   ),
                   const SizedBox(
                     height: 18,
                   ),
-                  Text(AppLocalizations.of(context)
-                      .translate('y_axis_chart')
+                  Text(AppLocalizations.of(context)!
+                      .translate('y_axis_chart')!
                       .toLowerCase()),
                   const SizedBox(
                     height: 18,
@@ -116,10 +116,10 @@ class GradesBarChartState extends State<GradesBarChart> {
             }),
         touchCallback: (event, barTouchResponse) {
           setState(() {
-            if (barTouchResponse.spot != null &&
+            if (barTouchResponse!.spot != null &&
                 event is! FlPanEndEvent &&
                 event is! FlLongPressEnd) {
-              touchedIndex = barTouchResponse.spot.touchedBarGroupIndex;
+              touchedIndex = barTouchResponse.spot!.touchedBarGroupIndex;
             } else {
               touchedIndex = -1;
             }
@@ -166,7 +166,7 @@ class GradesBarChartState extends State<GradesBarChart> {
         return makeGroupData(
             i,
             widget.grades
-                .where((g) => g.decimalValue >= i + 3 && g.decimalValue < i + 4)
+                .where((g) => g.decimalValue! >= i + 3 && g.decimalValue! < i + 4)
                 .length
                 .toDouble(),
             isTouched: i == touchedIndex);
@@ -185,7 +185,7 @@ class GradesBarChartState extends State<GradesBarChart> {
       barRods: [
         BarChartRodData(
           y: y,
-          colors: [GlobalUtils.getColorFromAverage(x + 3.toDouble())],
+          colors: [GlobalUtils.getColorFromAverage(x + 3.toDouble())!],
           width: 22,
           backDrawRodData: BackgroundBarChartRodData(
             show: false,
@@ -208,10 +208,10 @@ class GradesBarChartState extends State<GradesBarChart> {
               }),
           touchCallback: (event, response) {
             setState(() {
-              if (response.spot != null &&
+              if (response!.spot != null &&
                   event is! FlPanEndEvent &&
                   event is! FlLongPressEnd) {
-                touchedIndex = response.spot.touchedBarGroupIndex;
+                touchedIndex = response.spot!.touchedBarGroupIndex;
               } else {
                 touchedIndex = -1;
               }
@@ -254,7 +254,7 @@ class GradesBarChartState extends State<GradesBarChart> {
               widget.grades
                   .getRange(0, currentIndex)
                   .where(
-                      (g) => g.decimalValue >= i + 3 && g.decimalValue < i + 4)
+                      (g) => g.decimalValue! >= i + 3 && g.decimalValue! < i + 4)
                   .length
                   .toDouble(),
               isTouched: i == touchedIndex);

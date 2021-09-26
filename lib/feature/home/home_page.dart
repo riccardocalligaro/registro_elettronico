@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
   final bool fromLogin;
 
   const HomePage({
-    Key key,
+    Key? key,
     this.fromLogin = false,
   }) : super(key: key);
 
@@ -26,11 +26,11 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     if (widget.fromLogin) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              AppLocalizations.of(context).translate('updating_home_data'),
+              AppLocalizations.of(context)!.translate('updating_home_data')!,
             ),
             behavior: SnackBarBehavior.floating,
           ),

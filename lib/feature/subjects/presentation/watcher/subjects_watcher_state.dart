@@ -8,15 +8,15 @@ class SubjectsWatcherInitial extends SubjectsWatcherState {}
 class SubjectsWatcherLoading extends SubjectsWatcherState {}
 
 class SubjectsWatcherLoadSuccess extends SubjectsWatcherState {
-  final List<SubjectDomainModel> subjects;
+  final List<SubjectDomainModel>? subjects;
 
   SubjectsWatcherLoadSuccess({
-    @required this.subjects,
+    required this.subjects,
   });
 }
 
 class SubjectsWatcherFailure extends SubjectsWatcherState {
-  final Failure failure;
+  final Failure? failure;
 
-  SubjectsWatcherFailure({@required this.failure});
+  SubjectsWatcherFailure({required this.failure});
 }

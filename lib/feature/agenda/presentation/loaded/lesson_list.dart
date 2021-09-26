@@ -7,16 +7,16 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class LessonsList extends StatelessWidget {
-  final List<LessonDomainModel> lessons;
+  final List<LessonDomainModel>? lessons;
 
   const LessonsList({
-    Key key,
-    @required this.lessons,
+    Key? key,
+    required this.lessons,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (lessons == null || lessons.isEmpty) {
+    if (lessons == null || lessons!.isEmpty) {
       return _EmptyList();
     }
 
@@ -24,9 +24,9 @@ class LessonsList extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       padding: EdgeInsets.only(bottom: 24.0),
       shrinkWrap: true,
-      itemCount: lessons.length,
+      itemCount: lessons!.length,
       itemBuilder: (ctx, index) {
-        final lesson = lessons[index];
+        final lesson = lessons![index];
         return Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 6.0, 16.0, 0.0),
             child: AgendaLessonCard(
@@ -41,8 +41,8 @@ class AgendaLessonCard extends StatelessWidget {
   final LessonDomainModel lesson;
 
   const AgendaLessonCard({
-    Key key,
-    @required this.lesson,
+    Key? key,
+    required this.lesson,
   }) : super(key: key);
 
   @override
@@ -54,7 +54,7 @@ class AgendaLessonCard extends StatelessWidget {
           child: Text(
             PresentationConstants.isForPresentation
                 ? GlobalUtils.getMockupName()
-                : StringUtils.titleCase(lesson.author),
+                : StringUtils.titleCase(lesson.author!),
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
         ),
@@ -62,8 +62,8 @@ class AgendaLessonCard extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
           child: Text(
             lesson.lessonArgoment != ""
-                ? lesson.lessonArgoment
-                : lesson.lessonType,
+                ? lesson.lessonArgoment!
+                : lesson.lessonType!,
           ),
         ),
       ),
@@ -72,7 +72,7 @@ class AgendaLessonCard extends StatelessWidget {
 }
 
 class _EmptyList extends StatelessWidget {
-  const _EmptyList({Key key}) : super(key: key);
+  const _EmptyList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,7 @@ class _EmptyList extends StatelessWidget {
       padding: const EdgeInsets.only(top: 38.0, bottom: 38),
       child: CustomPlaceHolder(
         icon: Icons.subject,
-        text: AppLocalizations.of(context).translate('empty_lessons'),
+        text: AppLocalizations.of(context)!.translate('empty_lessons'),
         showUpdate: false,
       ),
     );

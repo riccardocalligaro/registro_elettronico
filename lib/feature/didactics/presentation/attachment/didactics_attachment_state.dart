@@ -6,37 +6,37 @@ abstract class DidacticsAttachmentState {}
 class DidacticsAttachmentInitial extends DidacticsAttachmentState {}
 
 class DidacticsAttachmentDownloadInProgress extends DidacticsAttachmentState {
-  final double percentage;
+  final double? percentage;
 
   DidacticsAttachmentDownloadInProgress({
-    @required this.percentage,
+    required this.percentage,
   });
 }
 
 class DidacticsAttachmentFileDownloadSuccess extends DidacticsAttachmentState {
-  final DidacticsFile didacticsFile;
+  final DidacticsFile? didacticsFile;
 
-  DidacticsAttachmentFileDownloadSuccess({@required this.didacticsFile});
+  DidacticsAttachmentFileDownloadSuccess({required this.didacticsFile});
 }
 
 class DidacticsAttachmentURLDownloadSuccess extends DidacticsAttachmentState {
   final URLContentRemoteModel urlContentRemoteModel;
 
-  DidacticsAttachmentURLDownloadSuccess({@required this.urlContentRemoteModel});
+  DidacticsAttachmentURLDownloadSuccess({required this.urlContentRemoteModel});
 }
 
 class DidacticsAttachmentTextDownloadSuccess extends DidacticsAttachmentState {
   final TextContentRemoteModel textContentRemoteModel;
 
   DidacticsAttachmentTextDownloadSuccess({
-    @required this.textContentRemoteModel,
+    required this.textContentRemoteModel,
   });
 }
 
 class DidacticsAttachmentDownloadFailure extends DidacticsAttachmentState {
-  final Failure failure;
+  final Failure? failure;
 
   DidacticsAttachmentDownloadFailure({
-    @required this.failure,
+    required this.failure,
   });
 }

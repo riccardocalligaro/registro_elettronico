@@ -12,12 +12,12 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 
 class PeriodGradeCard extends StatelessWidget {
   final PeriodGradeDomainModel subjectData;
-  final int periodPos;
+  final int? periodPos;
 
   const PeriodGradeCard({
-    Key key,
-    @required this.subjectData,
-    @required this.periodPos,
+    Key? key,
+    required this.subjectData,
+    required this.periodPos,
   }) : super(key: key);
 
   @override
@@ -75,10 +75,10 @@ class PeriodGradeCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    subjectData.subject.name.length < 20
-                        ? subjectData.subject.name
+                    subjectData.subject.name!.length < 20
+                        ? subjectData.subject.name!
                         : GlobalUtils.reduceSubjectTitle(
-                            subjectData.subject.name),
+                            subjectData.subject.name!),
                     maxLines: 1,
                   ),
                   Text(
@@ -86,10 +86,10 @@ class PeriodGradeCard extends StatelessWidget {
                       gradeNeededForObjective:
                           subjectData.gradeNeededForObjective,
                       context: context,
-                    ),
+                    )!,
                     style: Theme.of(context)
                         .primaryTextTheme
-                        .bodyText2
+                        .bodyText2!
                         .copyWith(fontSize: 12),
                   )
                 ],
@@ -127,24 +127,24 @@ class PeriodGradeCard extends StatelessWidget {
     );
   }
 
-  String _getGradeNeededMessage({
-    @required GradeNeededDomainModel gradeNeededForObjective,
-    @required BuildContext context,
+  String? _getGradeNeededMessage({
+    required GradeNeededDomainModel gradeNeededForObjective,
+    required BuildContext context,
   }) {
     if (gradeNeededForObjective.message == GradeNeededMessage.dont_worry) {
-      return AppLocalizations.of(context).translate('dont_worry');
+      return AppLocalizations.of(context)!.translate('dont_worry');
     } else if (gradeNeededForObjective.message ==
         GradeNeededMessage.unreachable) {
-      return AppLocalizations.of(context).translate('objective_unreacheable');
+      return AppLocalizations.of(context)!.translate('objective_unreacheable');
     } else if (gradeNeededForObjective.message ==
         GradeNeededMessage.not_less_then) {
-      return "${AppLocalizations.of(context).translate('dont_get_less_than')} ${gradeNeededForObjective.value}";
+      return "${AppLocalizations.of(context)!.translate('dont_get_less_than')} ${gradeNeededForObjective.value}";
     } else if (gradeNeededForObjective.message ==
         GradeNeededMessage.get_at_lest) {
-      return "${AppLocalizations.of(context).translate('get_at_least')} ${gradeNeededForObjective.value}";
+      return "${AppLocalizations.of(context)!.translate('get_at_least')} ${gradeNeededForObjective.value}";
     }
 
-    return AppLocalizations.of(context).translate('calculation_error');
+    return AppLocalizations.of(context)!.translate('calculation_error');
   }
 
   double _getPercentAverage(double average) {
@@ -152,7 +152,7 @@ class PeriodGradeCard extends StatelessWidget {
     return average / 10;
   }
 
-  Color _getColorFromAverage(double value) {
+  Color? _getColorFromAverage(double value) {
     if (value == -1.00) {
       return Colors.white;
     } else if (value == 0.00) {

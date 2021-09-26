@@ -5,12 +5,12 @@ import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_mo
 
 class StatsGradesChart extends StatefulWidget {
   final List<GradeDomainModel> grades;
-  final int objective;
-  final bool showAverageFirst;
+  final int? objective;
+  final bool? showAverageFirst;
 
   const StatsGradesChart({
-    Key key,
-    @required this.grades,
+    Key? key,
+    required this.grades,
     this.objective,
     this.showAverageFirst,
   }) : super(key: key);
@@ -40,7 +40,7 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
     // we take the grades from the state
     final grades = widget.grades;
 
-    grades.sort((a, b) => a.eventDate.compareTo(b.eventDate));
+    grades.sort((a, b) => a.eventDate!.compareTo(b.eventDate!));
     // spots for the graph
     List<FlSpot> spots = <FlSpot>[];
 
@@ -54,12 +54,12 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
       // good old for, rare these days
       for (int i = 0; i < grades.length; i++) {
         if (grades[i].decimalValue != -1.00) {
-          sum += grades[i].decimalValue;
+          sum += grades[i].decimalValue!;
           count++;
           average = sum / count;
           // with num.parse(average.toStringAsFixed(2)) we cut the decimal digits
           spots.add(FlSpot(
-              i.toDouble(), num.tryParse(average.toStringAsFixed(2) ?? 0)));
+              i.toDouble(), num.tryParse(average.toStringAsFixed(2) ?? 0 as String) as double));
         }
         if (spots.length == 1) {
           spots.add(FlSpot(spots[0].x + 1, spots[0].y));
@@ -69,7 +69,7 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
       // if we don't want to see the average we want to see the single grades during that time
       for (int i = 0; i < grades.length; i++) {
         if (grades[i].decimalValue != -1.00) {
-          spots.add(FlSpot(i.toDouble(), grades[i].decimalValue));
+          spots.add(FlSpot(i.toDouble(), grades[i].decimalValue!));
         }
       }
 
@@ -113,16 +113,16 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
                 });
               },
               child: Text(
-                AppLocalizations.of(context).translate('avg'),
+                AppLocalizations.of(context)!.translate('avg')!,
                 style: TextStyle(
                   fontSize: 8,
                   color: showAvg
                       ? Theme.of(context)
                           .primaryTextTheme
-                          .headline5
-                          .color
+                          .headline5!
+                          .color!
                           .withOpacity(0.5)
-                      : Theme.of(context).primaryTextTheme.headline5.color,
+                      : Theme.of(context).primaryTextTheme.headline5!.color,
                 ),
               ),
             ),
@@ -139,7 +139,7 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
     BuildContext context,
   ) {
     double cutOffYValue =
-        widget.objective != null ? widget.objective.toDouble() : 6.0;
+        widget.objective != null ? widget.objective!.toDouble() : 6.0;
 
     return LineChartData(
       // The grid behind the graph
@@ -241,7 +241,7 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
           belowBarData: BarAreaData(
             show: true,
             colors: _getGradients(context)
-                .map((color) => color.withOpacity(0.4))
+                .map((color) => color!.withOpacity(0.4))
                 .toList(),
             gradientColorStops: [0.5, 1.0],
             gradientFrom: const Offset(0, 0),
@@ -251,7 +251,7 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
           // Cut off for showing how much you need for the minmium mark
           aboveBarData: BarAreaData(
             show: true,
-            colors: [Colors.grey[500].withOpacity(0.6)],
+            colors: [Colors.grey[500]!.withOpacity(0.6)],
             cutOffY: cutOffYValue,
             applyCutOffY: true,
           ),
@@ -260,7 +260,7 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
     );
   }
 
-  List<Color> _getGradients(BuildContext context) {
+  List<Color?> _getGradients(BuildContext context) {
     return [
       Theme.of(context).accentColor,
       Theme.of(context).brightness == Brightness.dark

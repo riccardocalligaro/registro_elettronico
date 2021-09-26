@@ -11,7 +11,7 @@ class SubjectGradesPagesetLoaded extends SubjectGradesPagesetState {
   final SubjectDataDomainModel subjectDataDomainModel;
 
   SubjectGradesPagesetLoaded({
-    @required this.subjectDataDomainModel,
+    required this.subjectDataDomainModel,
   });
 }
 
@@ -19,6 +19,6 @@ class SubjectGradesPagesetFailure extends SubjectGradesPagesetState {
   final Failure failure;
 
   SubjectGradesPagesetFailure({
-    @required this.failure,
+    required this.failure,
   });
 }

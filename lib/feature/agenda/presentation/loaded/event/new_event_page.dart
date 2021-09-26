@@ -18,11 +18,11 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class NewEventPage extends StatefulWidget {
-  final EventType eventType;
-  final DateTime initialDate;
+  final EventType? eventType;
+  final DateTime? initialDate;
 
   NewEventPage({
-    Key key,
+    Key? key,
     this.eventType,
     this.initialDate,
   }) : super(key: key);
@@ -35,13 +35,13 @@ class _NewEventPageState extends State<NewEventPage> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
-  Color _labelColor;
-  DateTime _selectedDate;
+  Color? _labelColor;
+  DateTime? _selectedDate;
 
   TimeOfDay _timeOfDay = TimeOfDay(hour: 9, minute: 0);
   // Duration _repeat = Duration(milliseconds: 0);
 
-  SubjectDomainModel _selectedSubject;
+  SubjectDomainModel? _selectedSubject;
 
   bool _notifyEvent = false;
   Duration _beforeNotify = Duration(minutes: 30);
@@ -51,7 +51,7 @@ class _NewEventPageState extends State<NewEventPage> {
   @override
   void initState() {
     _selectedDate = widget.initialDate;
-    if (SRDateUtils.areSameDay(_selectedDate, DateTime.now())) {
+    if (SRDateUtils.areSameDay(_selectedDate!, DateTime.now())) {
       final addedHour = DateTime.now().add(Duration(hours: 2));
       _timeOfDay = TimeOfDay(hour: addedHour.hour, minute: 0);
     }
@@ -69,7 +69,7 @@ class _NewEventPageState extends State<NewEventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate('new_event')),
+        title: Text(AppLocalizations.of(context)!.translate('new_event')!),
         brightness: Theme.of(context).brightness,
         actions: <Widget>[
           IconButton(
@@ -107,9 +107,9 @@ class _NewEventPageState extends State<NewEventPage> {
     Logger.info('Set new event id to $id');
 
     final DateTime _date = DateTime(
-      _selectedDate.year,
-      _selectedDate.month,
-      _selectedDate.day,
+      _selectedDate!.year,
+      _selectedDate!.month,
+      _selectedDate!.day,
       _timeOfDay.hour,
       _timeOfDay.minute,
     );
@@ -130,24 +130,24 @@ class _NewEventPageState extends State<NewEventPage> {
         className: '',
         id: id,
         notes: _descriptionController.text,
-        labelColor: _labelColor.value.toString(),
+        labelColor: _labelColor!.value.toString(),
         title: _titleController.text,
       );
     } else {
       if (_selectedSubject != null) {
         event = AgendaEventDomainModel(
-          subjectId: _selectedSubject.id,
+          subjectId: _selectedSubject!.id,
           isLocal: true,
           isFullDay: false,
           code: '',
           begin: _date,
           end: _date,
-          subjectName: _selectedSubject.name,
+          subjectName: _selectedSubject!.name,
           author: '',
           className: '',
           id: id,
           notes: _descriptionController.text,
-          labelColor: _labelColor.value.toString(),
+          labelColor: _labelColor!.value.toString(),
           title: _titleController.text,
         );
       } else {
@@ -172,7 +172,7 @@ class _NewEventPageState extends State<NewEventPage> {
           LocalNotification(onSelectNotification);
 
       await localNotification.scheduleNotification(
-        title: AppLocalizations.of(context).translate('new_event') ?? '',
+        title: AppLocalizations.of(context)!.translate('new_event') ?? '',
         message: _titleController.text ?? '',
         scheduledTime: _date.subtract(_beforeNotify) ??
             DateTime.now().add(Duration(hours: 1)),
@@ -192,7 +192,7 @@ class _NewEventPageState extends State<NewEventPage> {
           maxLines: null,
           decoration: InputDecoration(
             border: InputBorder.none,
-            hintText: AppLocalizations.of(context).translate('add_description'),
+            hintText: AppLocalizations.of(context)!.translate('add_description'),
           ),
         ),
       ),
@@ -205,7 +205,7 @@ class _NewEventPageState extends State<NewEventPage> {
         children: <Widget>[
           SwitchListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-            title: Text(AppLocalizations.of(context).translate('notify_event')),
+            title: Text(AppLocalizations.of(context)!.translate('notify_event')!),
             value: _notifyEvent,
             onChanged: (bool value) {
               if (value != null) {
@@ -243,7 +243,7 @@ class _NewEventPageState extends State<NewEventPage> {
                 width: 30.0,
               ),
               Text(SRDateUtils.getBeforeNotifyTimeMessage(
-                  _beforeNotify, context)),
+                  _beforeNotify, context)!),
             ],
           ),
         ),
@@ -270,7 +270,7 @@ class _NewEventPageState extends State<NewEventPage> {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(71, 8, 16, 16),
               child: Text(
-                  AppLocalizations.of(context).translate('add_notification')),
+                  AppLocalizations.of(context)!.translate('add_notification')!),
             ),
           ),
         ),
@@ -292,7 +292,7 @@ class _NewEventPageState extends State<NewEventPage> {
                 maxLines: null,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: AppLocalizations.of(context).translate('add_title'),
+                  hintText: AppLocalizations.of(context)!.translate('add_title'),
                 ),
               ),
             ),
@@ -306,7 +306,7 @@ class _NewEventPageState extends State<NewEventPage> {
                       contentPadding: const EdgeInsets.all(0.0),
                       content: SingleChildScrollView(
                         child: MaterialPicker(
-                          pickerColor: _labelColor,
+                          pickerColor: _labelColor!,
                           onColorChanged: (color) {
                             if (color != null) {
                               setState(() {
@@ -326,7 +326,7 @@ class _NewEventPageState extends State<NewEventPage> {
                 Icons.label,
               ),
               title: Text(
-                AppLocalizations.of(context).translate('label'),
+                AppLocalizations.of(context)!.translate('label')!,
               ),
               trailing: ClipOval(
                 child: Container(
@@ -338,12 +338,12 @@ class _NewEventPageState extends State<NewEventPage> {
             ),
             ListTile(
               leading: Icon(Icons.today),
-              title: Text(AppLocalizations.of(context).translate('date')),
+              title: Text(AppLocalizations.of(context)!.translate('date')!),
               trailing: Text(SRDateUtils.getNewEventDateMessage(
-                _selectedDate,
-                AppLocalizations.of(context).locale.toString(),
+                _selectedDate!,
+                AppLocalizations.of(context)!.locale.toString(),
                 context,
-              )),
+              )!),
               onTap: () {
                 showDialog(
                   context: context,
@@ -360,7 +360,7 @@ class _NewEventPageState extends State<NewEventPage> {
             ListTile(
               leading: Icon(Icons.access_time),
               title: Text(
-                AppLocalizations.of(context).translate('time'),
+                AppLocalizations.of(context)!.translate('time')!,
               ),
               trailing: Text(_timeOfDay.format(context)),
               onTap: () {
@@ -391,8 +391,8 @@ class _NewEventPageState extends State<NewEventPage> {
         ),
         title: Text(
           _selectedSubject != null
-              ? _getReducedName(_selectedSubject.name)
-              : AppLocalizations.of(context).translate('choose_subject'),
+              ? _getReducedName(_selectedSubject!.name!)
+              : AppLocalizations.of(context)!.translate('choose_subject')!,
           style: TextStyle(
             color: _getColorForMissingSubject(),
           ),
@@ -426,7 +426,7 @@ class _NewEventPageState extends State<NewEventPage> {
     }
   }
 
-  Future onSelectNotification(String payload) async {
+  Future onSelectNotification(String? payload) async {
     if (payload != null) {
       debugPrint('notification payload: ' + payload);
     }
@@ -444,7 +444,7 @@ class _NewEventPageState extends State<NewEventPage> {
     }
   }
 
-  Color _getIconColorForMissingSubject() {
+  Color? _getIconColorForMissingSubject() {
     if (_missingSubject) {
       return Colors.red;
     } else {

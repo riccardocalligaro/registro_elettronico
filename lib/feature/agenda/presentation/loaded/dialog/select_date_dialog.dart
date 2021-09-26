@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 
 class SelectDateDialog extends StatefulWidget {
-  SelectDateDialog({Key key}) : super(key: key);
+  SelectDateDialog({Key? key}) : super(key: key);
 
   @override
   _SelectDateDialogState createState() => _SelectDateDialogState();
@@ -12,7 +12,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).translate('select_a_date')),
+      title: Text(AppLocalizations.of(context)!.translate('select_a_date')!),
       content: Container(
         height: 240,
         child: SingleChildScrollView(
@@ -20,7 +20,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.today),
-                title: Text(AppLocalizations.of(context).translate('today')),
+                title: Text(AppLocalizations.of(context)!.translate('today')!),
                 onTap: () {
                   Navigator.pop(
                     context,
@@ -32,7 +32,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
               ),
               ListTile(
                 leading: Icon(Icons.arrow_forward),
-                title: Text(AppLocalizations.of(context).translate('tomorrow')),
+                title: Text(AppLocalizations.of(context)!.translate('tomorrow')!),
                 onTap: () {
                   Navigator.pop(
                     context,
@@ -45,7 +45,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
               ListTile(
                 leading: Icon(Icons.next_week),
                 title:
-                    Text(AppLocalizations.of(context).translate('next_week')),
+                    Text(AppLocalizations.of(context)!.translate('next_week')!),
                 onTap: () {
                   Navigator.pop(
                     context,
@@ -58,7 +58,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
               ListTile(
                 leading: Icon(Icons.date_range),
                 title:
-                    Text(AppLocalizations.of(context).translate('select_date')),
+                    Text(AppLocalizations.of(context)!.translate('select_date')!),
                 onTap: () async {
                   await showDatePicker(
                     context: context,

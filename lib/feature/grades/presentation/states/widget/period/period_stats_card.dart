@@ -9,8 +9,8 @@ class PeriodStatsCard extends StatelessWidget {
   final PeriodWithGradesDomainModel periodWithGradesDomainModel;
 
   const PeriodStatsCard({
-    Key key,
-    @required this.periodWithGradesDomainModel,
+    Key? key,
+    required this.periodWithGradesDomainModel,
   }) : super(key: key);
 
   @override
@@ -49,7 +49,7 @@ class PeriodStatsCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
-                      AppLocalizations.of(context).translate('average'),
+                      AppLocalizations.of(context)!.translate('average')!,
                     ),
                   )
                 ],

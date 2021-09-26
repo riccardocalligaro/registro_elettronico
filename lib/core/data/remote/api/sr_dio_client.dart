@@ -12,14 +12,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 final GlobalKey<NavigatorState> navigator = GlobalKey();
 
 class SRDioClient {
-  final AuthenticationRepository authenticationRepository;
-  final FlutterSecureStorage flutterSecureStorage;
-  final SharedPreferences sharedPreferences;
+  final AuthenticationRepository? authenticationRepository;
+  final FlutterSecureStorage? flutterSecureStorage;
+  final SharedPreferences? sharedPreferences;
 
   SRDioClient({
-    @required this.authenticationRepository,
-    @required this.flutterSecureStorage,
-    @required this.sharedPreferences,
+    required this.authenticationRepository,
+    required this.flutterSecureStorage,
+    required this.sharedPreferences,
   });
 
   Dio createDio() {
@@ -37,11 +37,11 @@ class SRDioClient {
           // Replace the student id with the current profile student id
           if (requestOptions.path.contains('{studentId}')) {
             final studentId =
-                await authenticationRepository.getCurrentStudentId();
+                await authenticationRepository!.getCurrentStudentId();
 
             final replaced = requestOptions.path.replaceAll(
               '{studentId}',
-              studentId,
+              studentId!,
             );
             requestOptions.path = replaced;
           }
@@ -50,19 +50,19 @@ class SRDioClient {
             _dio.lock();
 
             // get the profile from the database
-            final profile = await authenticationRepository.getProfile();
+            final profile = await authenticationRepository!.getProfile();
 
             //? This checks if the profile exires before now, so if this  results true the token is expired
-            if (profile.expire.isBefore(DateTime.now()) ||
-                profile == null ||
-                profile.token.isEmpty) {
+            if (profile == null ||
+                profile.expire!.isBefore(DateTime.now()) ||
+                profile.token!.isEmpty) {
               Logger.info(
-                '🔒 [DioINTERCEPTOR] Need to request new token - ${profile.expire.toString()}',
+                '🔒 [DioINTERCEPTOR] Need to request new token - ${profile?.expire.toString()}',
               );
 
               // Read the password from the secure storage
-              final password = await flutterSecureStorage.read(
-                key: profile.ident,
+              final password = await flutterSecureStorage!.read(
+                key: profile.ident!,
               );
 
               final _tokenDio = Dio();
@@ -78,10 +78,10 @@ class SRDioClient {
                 InterceptorsWrapper(
                   onError: (error, handler) async {
                     if (error.response != null &&
-                        error.response.statusCode == 422) {
-                      await authenticationRepository.logoutCurrentUser();
+                        error.response!.statusCode == 422) {
+                      await authenticationRepository!.logoutCurrentUser();
 
-                      unawaited(navigator.currentState.pushReplacement(
+                      unawaited(navigator.currentState!.pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => LoginPage(),
                         ),
@@ -107,7 +107,7 @@ class SRDioClient {
               );
 
               // Update the profile with the new login response
-              await authenticationRepository.updateProfile(
+              await authenticationRepository!.updateProfile(
                 responseRemoteModel: loginResponse,
                 profileDomainModel: profile,
               );
@@ -144,7 +144,7 @@ class SRDioClient {
             Logger.streamError(error.toString());
           } else {
             Logger.networkError(
-              '🤮 [DioERROR] ${error.type} Url: [${error.requestOptions.baseUrl}${error.requestOptions.path}] status:${error.response.statusCode} type:${error.type} Data: ${error.response.data} message: ${error.message}',
+              '🤮 [DioERROR] ${error.type} Url: [${error.requestOptions.baseUrl}${error.requestOptions.path}] status:${error.response!.statusCode} type:${error.type} Data: ${error.response!.data} message: ${error.message}',
             );
           }
           return handler.next(error);

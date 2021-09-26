@@ -20,34 +20,34 @@ import 'package:rxdart/rxdart.dart';
 class SubjectsRepositoryImpl implements SubjectsRepository {
   static const String lastUpdateKey = 'subjectsLastUpdate';
 
-  final SubjectsLocalDatasource subjectsLocalDatasource;
-  final SubjectsRemoteDatasource subjectsRemoteDatasource;
-  final SharedPreferences sharedPreferences;
+  final SubjectsLocalDatasource? subjectsLocalDatasource;
+  final SubjectsRemoteDatasource? subjectsRemoteDatasource;
+  final SharedPreferences? sharedPreferences;
 
-  final ProfessorLocalDatasource professorLocalDatasource;
-  final LessonsLocalDatasource lessonsLocalDatasource;
+  final ProfessorLocalDatasource? professorLocalDatasource;
+  final LessonsLocalDatasource? lessonsLocalDatasource;
 
   SubjectsRepositoryImpl({
-    @required this.subjectsLocalDatasource,
-    @required this.subjectsRemoteDatasource,
-    @required this.sharedPreferences,
-    @required this.professorLocalDatasource,
-    @required this.lessonsLocalDatasource,
+    required this.subjectsLocalDatasource,
+    required this.subjectsRemoteDatasource,
+    required this.sharedPreferences,
+    required this.professorLocalDatasource,
+    required this.lessonsLocalDatasource,
   });
 
   @override
   Future<Either<Failure, Success>> updateSubjects({
-    bool ifNeeded,
+    required bool ifNeeded,
   }) async {
     try {
       if (!ifNeeded |
-          (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
-        final remoteSubjects = await subjectsRemoteDatasource.getSubjects();
+          (ifNeeded && needUpdate(sharedPreferences!.getInt(lastUpdateKey)))) {
+        final remoteSubjects = await subjectsRemoteDatasource!.getSubjects();
 
         // we also need to insert the teachers
         List<ProfessorLocalModel> professors = [];
         for (final subject in remoteSubjects) {
-          professors.addAll(subject.professors
+          professors.addAll(subject.professors!
               .map((e) => e.toLocalModel(subject.id))
               .toList());
         }
@@ -57,13 +57,13 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
         }).toList();
 
         // delete the subjects that were removed from the remote source
-        await subjectsLocalDatasource.deleteAllSubjects();
-        await professorLocalDatasource.deleteAllProfessors();
+        await subjectsLocalDatasource!.deleteAllSubjects();
+        await professorLocalDatasource!.deleteAllProfessors();
 
-        await subjectsLocalDatasource.insertSubjects(insertableSubjects);
-        await professorLocalDatasource.insertProfessors(professors);
+        await subjectsLocalDatasource!.insertSubjects(insertableSubjects);
+        await professorLocalDatasource!.insertProfessors(professors);
 
-        await sharedPreferences.setInt(
+        await sharedPreferences!.setInt(
             lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
 
         return Right(SuccessWithUpdate());
@@ -78,9 +78,9 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
   @override
   Stream<Resource<List<SubjectDomainModel>>> watchAllSubjects() {
     return Rx.combineLatest3(
-      professorLocalDatasource.watchAllProfessors(),
-      subjectsLocalDatasource.watchAllSubjects(),
-      lessonsLocalDatasource.watchAllLessons(),
+      professorLocalDatasource!.watchAllProfessors(),
+      subjectsLocalDatasource!.watchAllSubjects(),
+      lessonsLocalDatasource!.watchAllLessons(),
       (
         List<ProfessorLocalModel> professors,
         List<SubjectLocalModel> subjects,
@@ -90,25 +90,25 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
             .map((l) => ProfessorDomainModel.fromLocalModel(l))
             .toList();
 
-        final subjectProfessors = groupBy<ProfessorDomainModel, int>(
+        final subjectProfessors = groupBy<ProfessorDomainModel, int?>(
           domainProfessors,
           (e) => e.subjectId,
         );
 
-        Map<int, Set<String>> additionalProfessors = Map();
+        Map<int?, Set<String?>> additionalProfessors = Map();
 
         final lastLessons = lessons
             .where((l) =>
-                l.date.isAfter(DateTime.now().subtract(Duration(days: 45))))
+                l.date!.isAfter(DateTime.now().subtract(Duration(days: 45))))
             .toList();
         for (final lesson in lastLessons) {
           final list = additionalProfessors[lesson.subjectId];
           if (lesson.author != null) {
             if (list != null) {
-              additionalProfessors[lesson.subjectId].add(lesson.author);
+              additionalProfessors[lesson.subjectId]!.add(lesson.author);
             } else {
               additionalProfessors[lesson.subjectId] = Set();
-              additionalProfessors[lesson.subjectId].add(lesson.author);
+              additionalProfessors[lesson.subjectId]!.add(lesson.author);
             }
           }
         }
@@ -133,7 +133,7 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
   @override
   Future<Either<Failure, bool>> needToUpdateSubjects() async {
     try {
-      final subjects = await subjectsLocalDatasource.getAllSubjects();
+      final subjects = await subjectsLocalDatasource!.getAllSubjects();
       return Right(subjects.isEmpty);
     } catch (e, s) {
       return Left(handleError(e, s));

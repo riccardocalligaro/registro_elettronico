@@ -3,14 +3,14 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:registro_elettronico/utils/color_utils.dart';
 
 class CustomRefresher extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
 
-  final VoidCallback onRefresh;
+  final VoidCallback? onRefresh;
 
-  final RefreshController controller;
+  final RefreshController? controller;
 
   const CustomRefresher({
-    Key key,
+    Key? key,
     this.child,
     this.onRefresh,
     this.controller,

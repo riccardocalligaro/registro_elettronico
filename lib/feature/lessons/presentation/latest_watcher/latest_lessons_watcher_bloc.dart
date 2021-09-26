@@ -14,10 +14,10 @@ class LatestLessonsWatcherBloc
     extends Bloc<LatestLessonsWatcherEvent, LatestLessonsWatcherState> {
   final LessonsRepository lessonsRepository;
 
-  StreamSubscription _latestLessonsSubscription;
+  late StreamSubscription _latestLessonsSubscription;
 
   LatestLessonsWatcherBloc({
-    @required this.lessonsRepository,
+    required this.lessonsRepository,
   }) : super(LatestLessonsWatcherInitial()) {
     _latestLessonsSubscription =
         lessonsRepository.watchLatestLessonsWithDuration().listen((resource) {

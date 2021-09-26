@@ -8,15 +8,15 @@ class LessonsWatcherInitial extends LessonsWatcherState {}
 class LessonsWatcherLoading extends LessonsWatcherState {}
 
 class LessonsWatcherLoadSuccess extends LessonsWatcherState {
-  final List<LessonDomainModel> lessons;
+  final List<LessonDomainModel>? lessons;
 
   LessonsWatcherLoadSuccess({
-    @required this.lessons,
+    required this.lessons,
   });
 }
 
 class LessonsWatcherFailure extends LessonsWatcherState {
-  final Failure failure;
+  final Failure? failure;
 
-  LessonsWatcherFailure({@required this.failure});
+  LessonsWatcherFailure({required this.failure});
 }

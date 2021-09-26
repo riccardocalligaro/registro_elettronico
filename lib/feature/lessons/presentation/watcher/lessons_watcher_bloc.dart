@@ -12,12 +12,12 @@ part 'lessons_watcher_state.dart';
 
 class LessonsWatcherBloc
     extends Bloc<LessonsWatcherEvent, LessonsWatcherState> {
-  final LessonsRepository lessonsRepository;
+  final LessonsRepository? lessonsRepository;
 
-  StreamSubscription _lessonsStreamSubscription;
+  late StreamSubscription _lessonsStreamSubscription;
 
   LessonsWatcherBloc({
-    @required this.lessonsRepository,
+    required this.lessonsRepository,
   }) : super(LessonsWatcherInitial());
 
   @override
@@ -40,8 +40,8 @@ class LessonsWatcherBloc
     }
   }
 
-  void _startListening(int subjectId) {
-    _lessonsStreamSubscription = lessonsRepository
+  void _startListening(int? subjectId) {
+    _lessonsStreamSubscription = lessonsRepository!
         .watchLessonsForSubjectId(subjectId: subjectId)
         .listen((resource) {
       add(LessonsReceived(resource: resource));

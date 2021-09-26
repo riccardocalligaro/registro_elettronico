@@ -10,8 +10,8 @@ class GradesTab extends StatelessWidget {
   final List<GradeDomainModel> grades;
 
   const GradesTab({
-    Key key,
-    @required this.grades,
+    Key? key,
+    required this.grades,
   }) : super(key: key);
 
   @override
@@ -37,7 +37,7 @@ class GradesTab extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
         itemCount: grades.length,
         itemBuilder: (context, index) {
-          if (index == 0 && !grades[0].hasSeenIt) {
+          if (index == 0 && !grades[0].hasSeenIt!) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Column(
@@ -46,8 +46,8 @@ class GradesTab extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Text(
-                      AppLocalizations.of(context)
-                          .translate('not_seen_grades')
+                      AppLocalizations.of(context)!
+                          .translate('not_seen_grades')!
                           .toUpperCase(),
                       style: TextStyle(
                         color: Theme.of(context).accentColor,
@@ -62,10 +62,10 @@ class GradesTab extends StatelessWidget {
             );
           }
 
-          if (!grades[0].hasSeenIt &&
+          if (!grades[0].hasSeenIt! &&
               index >= 1 &&
-              !grades[index - 1].hasSeenIt &&
-              grades[index].hasSeenIt) {
+              !grades[index - 1].hasSeenIt! &&
+              grades[index].hasSeenIt!) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Column(
@@ -74,8 +74,8 @@ class GradesTab extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Text(
-                      AppLocalizations.of(context)
-                          .translate('seen_grades')
+                      AppLocalizations.of(context)!
+                          .translate('seen_grades')!
                           .toUpperCase(),
                       style: TextStyle(
                         color: Theme.of(context).accentColor,

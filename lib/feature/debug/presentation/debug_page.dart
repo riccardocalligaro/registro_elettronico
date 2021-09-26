@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'logs_page.dart';
 
 class DebugPage extends StatefulWidget {
-  DebugPage({Key key}) : super(key: key);
+  DebugPage({Key? key}) : super(key: key);
 
   @override
   _DebugPageState createState() => _DebugPageState();
@@ -26,7 +26,7 @@ class _DebugPageState extends State<DebugPage> {
   static const platform =
       MethodChannel('com.riccardocalligaro.registro_elettronico/multi-account');
 
-  String dbName = '';
+  String? dbName = '';
   String profiles = '';
 
   @override
@@ -67,7 +67,7 @@ class _DebugPageState extends State<DebugPage> {
             title: 'Cancel token',
             onTap: () async {
               final AuthenticationRepository authenticationRepository = sl();
-              final profile = await authenticationRepository.getProfile();
+              final profile = await (authenticationRepository.getProfile() as FutureOr<ProfileDomainModel>);
 
               await authenticationRepository.updateProfile(
                 responseRemoteModel: DefaultLoginResponseRemoteModel(
@@ -90,9 +90,9 @@ class _DebugPageState extends State<DebugPage> {
           DebugButton(
             title: 'Open DB',
             onTap: () {
-              final SRDatabase db = sl();
+              final SRDatabase? db = sl();
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => MoorDbViewer(db)));
+                  MaterialPageRoute(builder: (context) => MoorDbViewer(db!)));
             },
           ),
           DebugButton(
@@ -207,18 +207,18 @@ class _DebugPageState extends State<DebugPage> {
 }
 
 class DebugButton extends ListTile {
-  final BuildContext context;
+  final BuildContext? context;
   final bool dangerous;
 
   DebugButton({
-    @required String title,
-    String subtitle,
-    @required VoidCallback onTap,
+    required String title,
+    String? subtitle,
+    required VoidCallback onTap,
     this.context,
     this.dangerous = false,
   })  : assert(!dangerous || context != null),
         super(
-          onTap: (dangerous) ? () => safe(context, onTap) : onTap,
+          onTap: (dangerous) ? () => safe(context!, onTap) : onTap,
           title: Text(title),
           subtitle: subtitle != null ? Text(subtitle) : null,
         );
@@ -258,12 +258,12 @@ class DebugButton extends ListTile {
 
 class SectionDivider extends StatelessWidget {
   final String text;
-  final Color color;
-  final Color textColor;
+  final Color? color;
+  final Color? textColor;
 
   const SectionDivider({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
     this.color,
     this.textColor,
   }) : super(key: key);

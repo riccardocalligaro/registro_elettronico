@@ -3,11 +3,11 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/didactics/domain/model/content_domain_model.dart';
 
 class FolderDomainModel {
-  int id;
-  String teacherId;
-  String name;
-  DateTime lastShareDate;
-  List<ContentDomainModel> contents;
+  int? id;
+  String? teacherId;
+  String? name;
+  DateTime? lastShareDate;
+  List<ContentDomainModel>? contents;
 
   FolderDomainModel({
     this.id,
@@ -18,8 +18,8 @@ class FolderDomainModel {
   });
 
   FolderDomainModel.fromLocalModel({
-    @required FolderLocalModel l,
-    @required List<ContentDomainModel> contents,
+    required FolderLocalModel l,
+    required List<ContentDomainModel>? contents,
   }) {
     this.id = l.id;
     this.teacherId = l.teacherId;

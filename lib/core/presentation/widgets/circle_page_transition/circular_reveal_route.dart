@@ -6,8 +6,8 @@ import 'circular_reveal_clipper.dart';
 
 class CircularRevealRoute extends PageRouteBuilder {
   final Widget page;
-  final AlignmentGeometry centerAlignment;
-  final Offset centerOffset;
+  final AlignmentGeometry? centerAlignment;
+  final Offset? centerOffset;
   final double minRadius;
   final double maxRadius;
 
@@ -19,9 +19,9 @@ class CircularRevealRoute extends PageRouteBuilder {
   /// The transition doesn't affect the entry screen so we will only touch
   /// the target screen.
   CircularRevealRoute({
-    @required this.page,
+    required this.page,
     this.minRadius = 0,
-    @required this.maxRadius,
+    required this.maxRadius,
     this.centerAlignment,
     this.centerOffset,
   })  : assert(centerOffset != null || centerAlignment != null),
@@ -47,7 +47,7 @@ class CircularRevealRoute extends PageRouteBuilder {
     return ClipPath(
       clipper: CircularRevealClipper(
         fraction: animation.value,
-        centerAlignment: centerAlignment,
+        centerAlignment: centerAlignment as Alignment?,
         centerOffset: centerOffset,
         minRadius: minRadius,
         maxRadius: maxRadius,

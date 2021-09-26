@@ -8,9 +8,9 @@ class DocumentAttachmentInitial extends DocumentAttachmentState {}
 class DocumentLoadInProgress extends DocumentAttachmentState {}
 
 class DocumentLoadedLocally extends DocumentAttachmentState {
-  final String path;
+  final String? path;
 
-  DocumentLoadedLocally({@required this.path});
+  DocumentLoadedLocally({required this.path});
 }
 
 class DocumentNotAvailable extends DocumentAttachmentState {}
@@ -20,7 +20,7 @@ class DocumentLoadNotConnected extends DocumentAttachmentState {}
 class DocumentLoadSuccess extends DocumentAttachmentState {
   final String path;
 
-  DocumentLoadSuccess({@required this.path});
+  DocumentLoadSuccess({required this.path});
 }
 
 class DocumentAttachmentError extends DocumentAttachmentState {}

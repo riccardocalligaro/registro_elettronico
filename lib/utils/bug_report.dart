@@ -11,12 +11,12 @@ import 'package:registro_elettronico/utils/constants/preferences_constants.dart'
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class ReportManager {
-  static void sendEmail(
+  static Future<void> sendEmail(
     BuildContext context, {
-    Failure failure,
+    Failure? failure,
   }) async {
     await FLog.exportLogs();
-    final path = await _localPath + "/" + PrefsConstants.DIRECTORY_NAME;
+    final path = (await _localPath)! + "/" + PrefsConstants.DIRECTORY_NAME;
 
     final random = GlobalUtils.getRandomNumber();
     final subject = 'Bug report #$random - ${DateTime.now().toString()}';
@@ -24,7 +24,7 @@ class ReportManager {
 
     if (failure != null) {
       userMessage += failure.e.toString();
-      userMessage += failure.localizedDescription(context);
+      userMessage += failure.localizedDescription(context)!;
     }
 
     final packageInfo = await PackageInfo.fromPlatform();
@@ -33,7 +33,7 @@ class ReportManager {
 
     userMessage += "\nPiattaforma: ${Platform.operatingSystem}\n";
     userMessage +=
-        '${AppLocalizations.of(context).translate("email_message")}\n  -';
+        '${AppLocalizations.of(context)!.translate("email_message")}\n  -';
 
     final Email reportEmail = Email(
       body: userMessage,
@@ -45,7 +45,7 @@ class ReportManager {
     await FlutterEmailSender.send(reportEmail);
   }
 
-  static Future<String> get _localPath async {
+  static Future<String?> get _localPath async {
     var directory;
 
     if (Platform.isIOS) {

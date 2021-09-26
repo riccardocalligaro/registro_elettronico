@@ -7,10 +7,10 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 
 /// Single absence card that shows the event type, date
 class AbsenceCard extends StatelessWidget {
-  final Absence absence;
-  final int days;
+  final Absence? absence;
+  final int? days;
 
-  const AbsenceCard({Key key, @required this.absence, @required this.days})
+  const AbsenceCard({Key? key, required this.absence, required this.days})
       : super(key: key);
 
   @override
@@ -18,7 +18,7 @@ class AbsenceCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4.0),
-        color: ColorUtils.getColorFromCode(absence.evtCode),
+        color: ColorUtils.getColorFromCode(absence!.evtCode),
       ),
       child: Material(
         child: InkWell(
@@ -42,7 +42,7 @@ class AbsenceCard extends StatelessWidget {
                           horizontal: 8.0, vertical: 15.0),
                       child: AutoSizeText(
                         GlobalUtils.getAbsenceLetterFromCode(
-                            context, absence.evtCode),
+                            context, absence!.evtCode)!,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.black,
@@ -60,11 +60,11 @@ class AbsenceCard extends StatelessWidget {
                         children: <Widget>[
                           Text(
                             GlobalUtils.getDateOfAbsence(
-                                context, days, absence),
+                                context, days!, absence),
                             style: TextStyle(color: Colors.white),
                           ),
                           Text(
-                            GlobalUtils.getAbsenceMessage(context, absence),
+                            GlobalUtils.getAbsenceMessage(context, absence!)!,
                             style: TextStyle(color: Colors.white),
                           )
                         ],
@@ -82,7 +82,7 @@ class AbsenceCard extends StatelessWidget {
   }
 
   void _showAbsenceDialog(BuildContext context) {
-    if (absence.isJustified) {
+    if (absence!.isJustified!) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -93,22 +93,22 @@ class AbsenceCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(AppLocalizations.of(context)
-                    .translate('justified_singular')),
+                Text(AppLocalizations.of(context)!
+                    .translate('justified_singular')!),
                 Text(
-                  AppLocalizations.of(context)
-                      .translate('justify_code')
+                  AppLocalizations.of(context)!
+                      .translate('justify_code')!
                       .replaceAll(
                         '{code}',
-                        absence.justifiedReasonCode,
+                        absence!.justifiedReasonCode!,
                       ),
                 ),
                 Text(
-                  AppLocalizations.of(context)
-                      .translate('justify_description')
+                  AppLocalizations.of(context)!
+                      .translate('justify_description')!
                       .replaceAll(
                         '{desc}',
-                        absence.justifReasonDesc,
+                        absence!.justifReasonDesc!,
                       ),
                 ),
                 const SizedBox(
@@ -131,8 +131,8 @@ class AbsenceCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  AppLocalizations.of(context)
-                      .translate('not_justified_singular'),
+                  AppLocalizations.of(context)!
+                      .translate('not_justified_singular')!,
                 ),
                 const SizedBox(
                   height: 5,

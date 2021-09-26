@@ -32,7 +32,7 @@ class Logger {
       if (inDebugMode) {
         FlutterError.dumpErrorToConsole(details);
       }
-      Zone.current.handleUncaughtError(details.exception, details.stack);
+      Zone.current.handleUncaughtError(details.exception, details.stack!);
     };
   }
 
@@ -56,8 +56,8 @@ class Logger {
   }) {
     if (e.response != null) {
       FLog.error(
-        text: '⛔ ${e.response.data}',
-        exception: Exception(e.response.statusCode),
+        text: '⛔ ${e.response!.data}',
+        exception: Exception(e.response!.statusCode),
         dataLogType: type.toString(),
       );
     } else {
@@ -101,11 +101,11 @@ class Logger {
 
   static void networkError(
     String text, {
-    Object exception,
-    StackTrace trace,
+    Object? exception,
+    StackTrace? trace,
     DataLogType type = DataLogType.DEFAULT,
-    String className,
-    String methodName,
+    String? className,
+    String? methodName,
   }) {
     FLog.error(
       text: '⛔️ $text',
@@ -120,12 +120,12 @@ class Logger {
   }
 
   static void e({
-    String text,
-    Object exception,
-    StackTrace stacktrace,
+    String? text,
+    Object? exception,
+    required StackTrace stacktrace,
     DataLogType type = DataLogType.ERRORS,
-    String className,
-    String methodName,
+    String? className,
+    String? methodName,
   }) {
     if (!kDebugMode) {
       FirebaseCrashlytics.instance.recordError(
@@ -162,8 +162,8 @@ class Logger {
     Object error,
     StackTrace trace, {
     DataLogType type = DataLogType.DEFAULT,
-    String className,
-    String methodName,
+    String? className,
+    String? methodName,
   }) {
     if (!kDebugMode) {
       FirebaseCrashlytics.instance.recordError(
@@ -209,10 +209,10 @@ class Logger {
     FLog.clearLogs();
   }
 
-  static Future<File> getLogsFile() async {
+  static Future<File?> getLogsFile() async {
     await FLog.exportLogs();
 
-    Directory directory = await _getLogsDirectory();
+    Directory? directory = await _getLogsDirectory();
 
     if (directory == null) {
       print('Can not find directory for logs file');
@@ -241,8 +241,8 @@ class Logger {
     }
   }
 
-  static Future<Directory> _getLogsDirectory() async {
-    Directory directory;
+  static Future<Directory?> _getLogsDirectory() async {
+    Directory? directory;
     if (Platform.isIOS) {
       directory = await getApplicationDocumentsDirectory();
     } else {

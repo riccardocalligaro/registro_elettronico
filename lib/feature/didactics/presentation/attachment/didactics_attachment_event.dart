@@ -7,30 +7,30 @@ class DownloadContentAttachment extends DidacticsAttachmentEvent {
   final ContentDomainModel contentDomainModel;
 
   DownloadContentAttachment({
-    @required this.contentDomainModel,
+    required this.contentDomainModel,
   });
 }
 
 class DidacticsAttachmentProgressTickedEvent extends DidacticsAttachmentEvent {
-  final double value;
+  final double? value;
 
   DidacticsAttachmentProgressTickedEvent({
-    @required this.value,
+    required this.value,
   });
 }
 
 class DidacticsAttachmentErrorEvent extends DidacticsAttachmentEvent {
-  final Failure failure;
+  final Failure? failure;
 
   DidacticsAttachmentErrorEvent({
-    @required this.failure,
+    required this.failure,
   });
 }
 
 class DidacticsAttachmentFinishedEvent extends DidacticsAttachmentEvent {
-  final DidacticsFile file;
+  final DidacticsFile? file;
 
   DidacticsAttachmentFinishedEvent({
-    @required this.file,
+    required this.file,
   });
 }

@@ -8,15 +8,15 @@ class LocalGradesWatcherInitial extends LocalGradesWatcherState {}
 class LocalGradesWatcherLoading extends LocalGradesWatcherState {}
 
 class LocalGradesWatcherLoadSuccess extends LocalGradesWatcherState {
-  final List<GradeDomainModel> grades;
+  final List<GradeDomainModel>? grades;
 
   LocalGradesWatcherLoadSuccess({
-    @required this.grades,
+    required this.grades,
   });
 }
 
 class LocalGradesWatcherFailure extends LocalGradesWatcherState {
-  final Failure failure;
+  final Failure? failure;
 
-  LocalGradesWatcherFailure({@required this.failure});
+  LocalGradesWatcherFailure({required this.failure});
 }

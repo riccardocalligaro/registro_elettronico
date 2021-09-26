@@ -12,8 +12,8 @@ class DocumentsLoadSuccess extends DocumentsState {
   final List<Document> documents;
 
   DocumentsLoadSuccess({
-    @required this.schoolReports,
-    @required this.documents,
+    required this.schoolReports,
+    required this.documents,
   });
 }
 

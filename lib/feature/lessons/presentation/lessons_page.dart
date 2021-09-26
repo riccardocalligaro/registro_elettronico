@@ -12,13 +12,13 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class LessonsPage extends StatefulWidget {
-  final int subjectId;
-  final String subjectName;
+  final int? subjectId;
+  final String? subjectName;
 
   LessonsPage({
-    Key key,
-    @required this.subjectId,
-    @required this.subjectName,
+    Key? key,
+    required this.subjectId,
+    required this.subjectName,
   }) : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class LessonsPage extends StatefulWidget {
 }
 
 class _LessonsPageState extends State<LessonsPage> {
-  SearchBar _searchBar;
+  late SearchBar _searchBar;
   String _searchQuery = '';
 
   @override
@@ -60,9 +60,9 @@ class _LessonsPageState extends State<LessonsPage> {
       body: BlocBuilder<LessonsWatcherBloc, LessonsWatcherState>(
         builder: (context, state) {
           if (state is LessonsWatcherLoadSuccess) {
-            if (state.lessons.isEmpty) {
+            if (state.lessons!.isEmpty) {
               return CustomPlaceHolder(
-                text: AppLocalizations.of(context).translate('no_lessons'),
+                text: AppLocalizations.of(context)!.translate('no_lessons'),
                 icon: Icons.subject,
                 showUpdate: true,
               );
@@ -83,7 +83,7 @@ class _LessonsPageState extends State<LessonsPage> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      title: Text(widget.subjectName),
+      title: Text(widget.subjectName!),
       actions: [
         _searchBar.getSearchAction(context),
       ],
@@ -92,13 +92,13 @@ class _LessonsPageState extends State<LessonsPage> {
 }
 
 class _LessonsLoaded extends StatelessWidget {
-  final List<LessonDomainModel> lessons;
+  final List<LessonDomainModel>? lessons;
   final String query;
 
   const _LessonsLoaded({
-    Key key,
-    @required this.lessons,
-    @required this.query,
+    Key? key,
+    required this.lessons,
+    required this.query,
   }) : super(key: key);
 
   @override
@@ -106,15 +106,15 @@ class _LessonsLoaded extends StatelessWidget {
     int currentMonth = -1;
     bool showMonth;
 
-    List<LessonDomainModel> lessonsToShow;
+    List<LessonDomainModel>? lessonsToShow;
 
     if (query.isNotEmpty) {
-      lessonsToShow = lessons.where((l) => _showResult(query, l)).toList();
+      lessonsToShow = lessons!.where((l) => _showResult(query, l)).toList();
     } else {
       lessonsToShow = lessons;
     }
 
-    if (lessonsToShow.isEmpty) {
+    if (lessonsToShow!.isEmpty) {
       return SrSearchEmptyView();
     }
 
@@ -122,19 +122,19 @@ class _LessonsLoaded extends StatelessWidget {
       itemCount: lessonsToShow.length,
       padding: const EdgeInsets.all(12),
       itemBuilder: (context, index) {
-        final lesson = lessons[index];
+        final lesson = lessons![index];
 
-        if (lesson.date.month != currentMonth) {
+        if (lesson.date!.month != currentMonth) {
           showMonth = true;
         } else {
           showMonth = false;
         }
 
-        currentMonth = lesson.date.month;
+        currentMonth = lesson.date!.month;
 
         if (showMonth) {
           var convertMonthLocale = SRDateUtils.convertMonthLocale(
-              lesson.date, AppLocalizations.of(context).locale.toString());
+              lesson.date, AppLocalizations.of(context)!.locale.toString());
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -169,14 +169,14 @@ class _LessonsLoaded extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                lesson.lessonArgoment,
+                lesson.lessonArgoment!,
                 style: TextStyle(fontSize: 15),
               ),
               const SizedBox(
                 height: 8,
               ),
               Text(
-                '${StringUtils.titleCase(lesson.author)} - ${lesson.lessonType} - ${lesson.duration} H',
+                '${StringUtils.titleCase(lesson.author!)} - ${lesson.lessonType} - ${lesson.duration} H',
                 style: TextStyle(fontSize: 11),
               ),
             ],
@@ -188,8 +188,8 @@ class _LessonsLoaded extends StatelessWidget {
 
   bool _showResult(String query, LessonDomainModel lesson) {
     final lQuery = query.toLowerCase().replaceAll(' ', '');
-    return lesson.author.toLowerCase().replaceAll(' ', '').contains(lQuery) ||
-        lesson.lessonArgoment
+    return lesson.author!.toLowerCase().replaceAll(' ', '').contains(lQuery) ||
+        lesson.lessonArgoment!
             .toLowerCase()
             .replaceAll(' ', '')
             .contains(lQuery);

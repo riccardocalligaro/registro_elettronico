@@ -11,10 +11,10 @@ class GradesPagesDomainModel {
   List<PeriodWithGradesDomainModel> periodsWithGrades;
 
   GradesPagesDomainModel({
-    @required this.grades,
-    @required this.periodsWithGrades,
-    @required this.periods,
-    @required this.newNotSeenGrades,
+    required this.grades,
+    required this.periodsWithGrades,
+    required this.periods,
+    required this.newNotSeenGrades,
   });
 }
 
@@ -38,14 +38,14 @@ class PeriodWithGradesDomainModel {
   List<FlSpot> normalSpots;
 
   PeriodWithGradesDomainModel({
-    @required this.grades,
-    @required this.period,
-    @required this.average,
-    @required this.gradesForList,
-    @required this.averageSpots,
-    @required this.normalSpots,
-    @required this.overallObjective,
-    @required this.filteredGrades,
+    required this.grades,
+    required this.period,
+    required this.average,
+    required this.gradesForList,
+    required this.averageSpots,
+    required this.normalSpots,
+    required this.overallObjective,
+    required this.filteredGrades,
   });
 }
 
@@ -54,14 +54,14 @@ class PeriodGradeDomainModel {
   double average;
   GradeNeededDomainModel gradeNeededForObjective;
   List<GradeDomainModel> grades;
-  int objective;
+  int? objective;
 
   PeriodGradeDomainModel({
-    @required this.subject,
-    @required this.average,
-    @required this.gradeNeededForObjective,
-    @required this.objective,
-    @required this.grades,
+    required this.subject,
+    required this.average,
+    required this.gradeNeededForObjective,
+    required this.objective,
+    required this.grades,
   });
 }
 
@@ -75,10 +75,10 @@ enum GradeNeededMessage {
 
 class GradeNeededDomainModel {
   GradeNeededMessage message;
-  String value;
+  String? value;
 
   GradeNeededDomainModel({
-    @required this.message,
+    required this.message,
     this.value,
   });
 }

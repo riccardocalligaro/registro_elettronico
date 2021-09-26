@@ -13,7 +13,7 @@ import 'widgets/absence_card.dart';
 
 class AbsencesList extends StatelessWidget {
   const AbsencesList({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class AbsencesList extends StatelessWidget {
         if (state is AbsencesLoaded) {
           final List<Absence> absences = state.absences ?? [];
           final map = getAbsencesMap(
-              absences..sort((b, a) => a.evtDate.compareTo(b.evtDate)));
+              absences..sort((b, a) => a.evtDate!.compareTo(b.evtDate!)));
 
           return CustomRefresher(
             onRefresh: () => _updateAbsences(context),
@@ -53,7 +53,7 @@ class AbsencesList extends StatelessWidget {
 
         if (state is AbsencesError) {
           return CustomPlaceHolder(
-            text: AppLocalizations.of(context)
+            text: AppLocalizations.of(context)!
                 .translate('unexcepted_error_single'),
             icon: Icons.error,
             onTap: () {
@@ -72,10 +72,10 @@ class AbsencesList extends StatelessWidget {
 
   /// Overall stat that contains all the [circles] and the [graph]
   Widget _buildOverallStats(List<Absence> absences, BuildContext context) {
-    final Map<int, List<Absence>> absencesMonthMap = Map.fromIterable(absences,
+    final Map<int?, List<Absence>> absencesMonthMap = Map.fromIterable(absences,
         key: (e) => e.evtDate.month,
         value: (e) => absences
-            .where((event) => e.evtDate.month == event.evtDate.month)
+            .where((event) => e.evtDate.month == event.evtDate!.month)
             .toList());
 
     int numberOfAbsences = 0;
@@ -89,7 +89,7 @@ class AbsencesList extends StatelessWidget {
       if (absence.evtCode == RegistroConstants.USCITA) numberOfUscite++;
     });
 
-    final trans = AppLocalizations.of(context);
+    final trans = AppLocalizations.of(context)!;
     return Card(
       margin: EdgeInsets.zero,
       elevation: 1,
@@ -103,15 +103,15 @@ class AbsencesList extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   _buildStatsCircle(
-                    trans.translate('absences'),
+                    trans.translate('absences')!,
                     numberOfAbsences,
                     Colors.red,
                     true,
                     numberOfAbsences / 50,
                   ),
-                  _buildStatsCircle(trans.translate('early_exits'),
+                  _buildStatsCircle(trans.translate('early_exits')!,
                       numberOfUscite, Colors.yellow[700], false, 1.0),
-                  _buildStatsCircle(trans.translate('delay'), numberOfRitardi,
+                  _buildStatsCircle(trans.translate('delay')!, numberOfRitardi,
                       Colors.blue, false, 1.0)
                 ],
               ),
@@ -125,7 +125,7 @@ class AbsencesList extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsCircle(String typeOfEvent, int numberOfEvent, Color color,
+  Widget _buildStatsCircle(String typeOfEvent, int numberOfEvent, Color? color,
       bool withAnimation, double percent) {
     return Column(
       children: <Widget>[
@@ -157,7 +157,7 @@ class AbsencesList extends StatelessWidget {
   /// The list of absences that are not justified
   Widget _buildNotJustifiedAbsences(
       Map<Absence, int> absences, BuildContext context) {
-    final Map<Absence, int> notJustifiedAbsences = Map.fromIterable(
+    final Map<Absence?, int?> notJustifiedAbsences = Map.fromIterable(
         absences.keys.where((absence) => absence.isJustified == false),
         key: (k) => k,
         value: (k) => absences[k]);
@@ -168,7 +168,7 @@ class AbsencesList extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child:
-                Text(AppLocalizations.of(context).translate('not_justified')),
+                Text(AppLocalizations.of(context)!.translate('not_justified')!),
           ),
           Column(
             children: List.generate(
@@ -195,7 +195,7 @@ class AbsencesList extends StatelessWidget {
 
   Widget _buildJustifiedAbsences(
       Map<Absence, int> absences, BuildContext context) {
-    final Map<Absence, int> justifiedAbsences = Map.fromIterable(
+    final Map<Absence?, int?> justifiedAbsences = Map.fromIterable(
         absences.keys.where((absence) => absence.isJustified == true),
         key: (k) => k,
         value: (k) => absences[k]);
@@ -207,7 +207,7 @@ class AbsencesList extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
-              AppLocalizations.of(context).translate('justified'),
+              AppLocalizations.of(context)!.translate('justified')!,
             ),
           ),
           Column(
@@ -238,7 +238,7 @@ class AbsencesList extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 32.0),
         child: CustomPlaceHolder(
-          text: AppLocalizations.of(context).translate('no_absences'),
+          text: AppLocalizations.of(context)!.translate('no_absences'),
           icon: Icons.assessment,
           onTap: () {
             BlocProvider.of<AbsencesBloc>(context).add(FetchAbsences());
@@ -252,15 +252,15 @@ class AbsencesList extends StatelessWidget {
 
   Map<Absence, int> getAbsencesMap(List<Absence> absences) {
     Map<Absence, int> map = Map();
-    Absence start;
+    Absence? start;
     int days = 1;
     if (absences.length == 1) {
       map[absences[0]] = 1;
       return map;
     }
 
-    DateTime current = DateTime.now();
-    DateTime next = DateTime.now();
+    DateTime? current = DateTime.now();
+    DateTime? next = DateTime.now();
 
     for (int i = 0; i < absences.length; i++) {
       if (absences[i].evtDate == DateTime.fromMillisecondsSinceEpoch(0)) {
@@ -281,7 +281,7 @@ class AbsencesList extends StatelessWidget {
           next = absences[i + 1].evtDate;
         }
 
-        delta = (next.millisecondsSinceEpoch - current.millisecondsSinceEpoch) /
+        delta = (next!.millisecondsSinceEpoch - current!.millisecondsSinceEpoch) /
             3600000;
       }
 
@@ -289,16 +289,16 @@ class AbsencesList extends StatelessWidget {
         map[start] = days;
         start = null;
       } else if (delta == -72) {
-        if (current.weekday == DateTime.monday &&
-            next.weekday == DateTime.friday) {
+        if (current!.weekday == DateTime.monday &&
+            next!.weekday == DateTime.friday) {
           days++;
         } else {
           map[start] = days;
           start = null;
         }
       } else if (delta == -48) {
-        if (current.weekday == DateTime.monday &&
-            next.weekday == DateTime.saturday) {
+        if (current!.weekday == DateTime.monday &&
+            next!.weekday == DateTime.saturday) {
           days++;
         } else {
           map[start] = days;

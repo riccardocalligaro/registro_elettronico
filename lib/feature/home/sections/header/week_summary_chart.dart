@@ -8,8 +8,8 @@ class WeekSummaryChart extends StatelessWidget {
   final List<FlSpot> events;
 
   const WeekSummaryChart({
-    Key key,
-    @required this.events,
+    Key? key,
+    required this.events,
   }) : super(key: key);
 
   @override
@@ -41,7 +41,7 @@ class WeekSummaryChart extends StatelessWidget {
   }
 
   LineChartData mainData({
-    @required BuildContext context,
+    required BuildContext context,
   }) {
     return LineChartData(
       lineTouchData: LineTouchData(
@@ -50,19 +50,19 @@ class WeekSummaryChart extends StatelessWidget {
           tooltipMargin: 23,
           tooltipBgColor: Theme.of(context).brightness == Brightness.dark
               ? Colors.white
-              : Colors.grey[900].withOpacity(0.9),
+              : Colors.grey[900]!.withOpacity(0.9),
           getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
             return touchedBarSpots.map((barSpot) {
               final flSpot = barSpot;
-              String text;
+              String? text;
               // This also checks if the event is only one and in case changes the text to singular
               if (flSpot.barIndex == 0) {
-                text = AppLocalizations.of(context)
-                    .translate('events')
+                text = AppLocalizations.of(context)!
+                    .translate('events')!
                     .toLowerCase();
                 if (flSpot.y == 1) {
-                  text = AppLocalizations.of(context)
-                      .translate('event')
+                  text = AppLocalizations.of(context)!
+                      .translate('event')!
                       .toLowerCase();
                 }
               }
@@ -94,12 +94,12 @@ class WeekSummaryChart extends StatelessWidget {
           getTextStyles: (context, value) {
             return TextStyle(
               fontSize: 12,
-              color: Theme.of(context).textTheme.headline6.color,
+              color: Theme.of(context).textTheme.headline6!.color,
             );
           },
           getTitles: (value) {
             if (value <= 7) {
-              final locale = AppLocalizations.of(context).locale.toString();
+              final locale = AppLocalizations.of(context)!.locale.toString();
               return SRDateUtils.convertSingleDayShortForDisplay(
                       DateTime.utc(2019, 9, value.toInt() + 1), locale)
                   .toUpperCase();
@@ -133,7 +133,7 @@ class WeekSummaryChart extends StatelessWidget {
           spots: events,
           isCurved: true,
           colors: [
-            ColorUtils.getLessonCardColor(context),
+            ColorUtils.getLessonCardColor(context)!,
           ],
           preventCurveOverShooting: true,
           barWidth: 1,
@@ -157,7 +157,7 @@ class WeekSummaryChart extends StatelessWidget {
           belowBarData: BarAreaData(
             show: true,
             colors: _getGradients(context)
-                .map((color) => color.withOpacity(0.6))
+                .map((color) => color!.withOpacity(0.6))
                 .toList(),
             gradientColorStops: [
               0.5,
@@ -202,7 +202,7 @@ class WeekSummaryChart extends StatelessWidget {
   //   return spots;
   // }
 
-  List<Color> _getGradients(BuildContext context) {
+  List<Color?> _getGradients(BuildContext context) {
     return [
       ColorUtils.getLessonCardColor(context),
       Theme.of(context).brightness == Brightness.dark

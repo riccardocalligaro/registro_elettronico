@@ -23,7 +23,7 @@ class DocumentsDao extends DatabaseAccessor<SRDatabase>
   Future<List<DownloadedDocument>> getAllDownloadedDocuments() =>
       select(downloadedDocuments).get();
 
-  Future<DownloadedDocument> getDownloadedDocument(String hash) {
+  Future<DownloadedDocument> getDownloadedDocument(String? hash) {
     return (select(downloadedDocuments)..where((d) => d.hash.equals(hash)))
         .getSingle();
   }
@@ -52,7 +52,7 @@ class DocumentsDao extends DatabaseAccessor<SRDatabase>
     });
   }
 
-  Future<DownloadedDocument> getDownloadedDocumentFromHash(String hash) {
+  Future<DownloadedDocument> getDownloadedDocumentFromHash(String? hash) {
     return (select(downloadedDocuments)..where((g) => g.hash.equals(hash)))
         .getSingle();
   }

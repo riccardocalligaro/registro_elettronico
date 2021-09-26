@@ -3,23 +3,23 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/didactics/domain/model/folder_domain_model.dart';
 
 class DidacticsTeacherDomainModel {
-  String id;
-  String name;
-  String firstName;
-  String lastName;
-  List<FolderDomainModel> folders;
+  String? id;
+  String? name;
+  String? firstName;
+  String? lastName;
+  List<FolderDomainModel>? folders;
 
   DidacticsTeacherDomainModel({
-    @required this.id,
-    @required this.name,
-    @required this.firstName,
-    @required this.lastName,
-    @required this.folders,
+    required this.id,
+    required this.name,
+    required this.firstName,
+    required this.lastName,
+    required this.folders,
   });
 
   DidacticsTeacherDomainModel.fromLocalModel({
-    @required TeacherLocalModel localModel,
-    @required List<FolderDomainModel> folders,
+    required TeacherLocalModel localModel,
+    required List<FolderDomainModel> folders,
   }) {
     this.id = localModel.id;
     this.name = localModel.name;
@@ -29,11 +29,11 @@ class DidacticsTeacherDomainModel {
   }
 
   DidacticsTeacherDomainModel copyWith({
-    String id,
-    String name,
-    String firstName,
-    String lastName,
-    List<FolderDomainModel> folders,
+    String? id,
+    String? name,
+    String? firstName,
+    String? lastName,
+    List<FolderDomainModel>? folders,
   }) {
     return DidacticsTeacherDomainModel(
       id: id ?? this.id,

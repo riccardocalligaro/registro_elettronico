@@ -8,29 +8,29 @@ enum Status { loading, success, failed }
 
 class Resource<T> {
   final Status status;
-  final T data;
-  final String message;
-  final Failure failure;
-  final double progress;
+  final T? data;
+  final String? message;
+  final Failure? failure;
+  final double? progress;
 
   const Resource({
     this.data,
-    @required this.status,
+    required this.status,
     this.message,
     this.failure,
     this.progress,
   });
 
-  static Resource<T> loading<T>({T data, double progress}) =>
+  static Resource<T> loading<T>({T? data, double? progress}) =>
       Resource<T>(data: data, status: Status.loading, progress: progress);
 
-  static Resource<T> failed<T>({Failure error, T data}) => Resource<T>(
+  static Resource<T> failed<T>({Failure? error, T? data}) => Resource<T>(
         failure: error,
         data: data,
         status: Status.failed,
       );
 
-  static Resource<T> success<T>({T data}) =>
+  static Resource<T> success<T>({T? data}) =>
       Resource<T>(data: data, status: Status.success);
 
   static FutureOr<Resource<T>> asFuture<T>(FutureOr<T> Function() req) async {

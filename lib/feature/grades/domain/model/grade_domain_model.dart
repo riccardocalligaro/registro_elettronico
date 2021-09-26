@@ -3,26 +3,26 @@ import 'dart:convert';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 class GradeDomainModel {
-  int subjectId;
-  String subjectDesc;
-  int evtId;
-  String evtCode;
-  DateTime eventDate;
-  double decimalValue;
-  String displayValue;
-  int displayPos;
-  String notesForFamily;
-  bool cancelled;
-  bool underlined;
-  int periodPos;
-  String periodDesc;
-  int componentPos;
-  String componentDesc;
-  int weightFactor;
-  int skillId;
-  int gradeMasterId;
-  bool localllyCancelled;
-  bool hasSeenIt;
+  int? subjectId;
+  String? subjectDesc;
+  int? evtId;
+  String? evtCode;
+  DateTime? eventDate;
+  double? decimalValue;
+  String? displayValue;
+  int? displayPos;
+  String? notesForFamily;
+  bool? cancelled;
+  bool? underlined;
+  int? periodPos;
+  String? periodDesc;
+  int? componentPos;
+  String? componentDesc;
+  int? weightFactor;
+  int? skillId;
+  int? gradeMasterId;
+  bool? localllyCancelled;
+  bool? hasSeenIt;
 
   GradeDomainModel({
     this.subjectId,
@@ -81,7 +81,7 @@ class GradeDomainModel {
 
   LocalGrade toLocalGrade() {
     return LocalGrade(
-      subjectId: this.subjectId ?? .1,
+      subjectId: this.subjectId ?? .1 as int?,
       id: this.evtId,
       eventDate: this.eventDate ?? DateTime.fromMillisecondsSinceEpoch(0),
       decimalValue: this.decimalValue ?? -1,
@@ -100,14 +100,14 @@ class GradeDomainModel {
       evtCode: this.evtCode ?? '',
       eventDate: this.eventDate ?? DateTime.fromMillisecondsSinceEpoch(0),
       decimalValue: this.decimalValue ?? -1,
-      displayValue: this.displayValue ?? -1,
+      displayValue: this.displayValue ?? -1 as String?,
       displayPos: this.displayPos ?? -1,
       notesForFamily: this.notesForFamily ?? '',
       cancelled: this.cancelled ?? false,
       underlined: this.underlined ?? false,
       periodPos: this.periodPos ?? -1,
       periodDesc: this.periodDesc ?? '',
-      componentPos: this.componentPos ?? '',
+      componentPos: this.componentPos ?? '' as int?,
       componentDesc: this.componentDesc ?? '',
       weightFactor: this.weightFactor ?? -1,
       skillId: this.skillId ?? -1,
@@ -118,25 +118,25 @@ class GradeDomainModel {
   }
 
   GradeDomainModel copyWith({
-    int subjectId,
-    String subjectDesc,
-    int evtId,
-    String evtCode,
-    DateTime eventDate,
-    double decimalValue,
-    String displayValue,
-    int displayPos,
-    String notesForFamily,
-    bool cancelled,
-    bool underlined,
-    int periodPos,
-    String periodDesc,
-    int componentPos,
-    String componentDesc,
-    int weightFactor,
-    int skillId,
-    int gradeMasterId,
-    bool localllyCancelled,
+    int? subjectId,
+    String? subjectDesc,
+    int? evtId,
+    String? evtCode,
+    DateTime? eventDate,
+    double? decimalValue,
+    String? displayValue,
+    int? displayPos,
+    String? notesForFamily,
+    bool? cancelled,
+    bool? underlined,
+    int? periodPos,
+    String? periodDesc,
+    int? componentPos,
+    String? componentDesc,
+    int? weightFactor,
+    int? skillId,
+    int? gradeMasterId,
+    bool? localllyCancelled,
   }) {
     return GradeDomainModel(
       subjectId: subjectId ?? this.subjectId,
@@ -185,7 +185,7 @@ class GradeDomainModel {
     };
   }
 
-  factory GradeDomainModel.fromMap(Map<String, dynamic> map) {
+  factory GradeDomainModel.fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return GradeDomainModel(

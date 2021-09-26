@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AgendaTimeline extends StatelessWidget {
   const AgendaTimeline({
-    @required this.children,
+    required this.children,
     this.indicators,
     this.isLeftAligned = true,
     this.itemGap = 12.0,
@@ -29,12 +29,12 @@ class AgendaTimeline extends StatelessWidget {
   final List<Widget> children;
   final double itemGap;
   final double gutterSpacing;
-  final List<Widget> indicators;
+  final List<Widget>? indicators;
   final bool isLeftAligned;
   final EdgeInsets padding;
-  final ScrollController controller;
-  final int itemCount;
-  final ScrollPhysics physics;
+  final ScrollController? controller;
+  final int? itemCount;
+  final ScrollPhysics? physics;
   final bool shrinkWrap;
   final bool primary;
   final bool reverse;
@@ -55,20 +55,20 @@ class AgendaTimeline extends StatelessWidget {
       separatorBuilder: (_, __) => SizedBox(height: itemGap),
       physics: physics,
       shrinkWrap: shrinkWrap,
-      itemCount: itemCount,
+      itemCount: itemCount!,
       controller: controller,
       reverse: reverse,
       primary: primary,
       itemBuilder: (context, index) {
         final child = children[index];
 
-        Widget indicator;
+        Widget? indicator;
         if (indicators != null) {
-          indicator = indicators[index];
+          indicator = indicators![index];
         }
 
         final isFirst = index == 0;
-        final isLast = index == itemCount - 1;
+        final isLast = index == itemCount! - 1;
 
         final timelineTile = <Widget>[
           CustomPaint(
@@ -110,18 +110,18 @@ class AgendaTimeline extends StatelessWidget {
 
 class _TimelinePainter extends CustomPainter {
   _TimelinePainter({
-    @required this.hideDefaultIndicator,
-    @required this.indicatorColor,
-    @required this.indicatorStyle,
-    @required this.indicatorSize,
-    @required this.lineGap,
-    @required this.strokeCap,
-    @required this.strokeWidth,
-    @required this.style,
-    @required this.lineColor,
-    @required this.isFirst,
-    @required this.isLast,
-    @required this.itemGap,
+    required this.hideDefaultIndicator,
+    required this.indicatorColor,
+    required this.indicatorStyle,
+    required this.indicatorSize,
+    required this.lineGap,
+    required this.strokeCap,
+    required this.strokeWidth,
+    required this.style,
+    required this.lineColor,
+    required this.isFirst,
+    required this.isLast,
+    required this.itemGap,
   })  : linePaint = Paint()
           ..color = lineColor
           ..strokeCap = strokeCap

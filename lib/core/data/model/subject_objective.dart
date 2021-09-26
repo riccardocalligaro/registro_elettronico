@@ -5,7 +5,7 @@ class SubjectObjective {
   final int objective;
 
   SubjectObjective({
-    @required this.subjectId,
-    @required this.objective,
+    required this.subjectId,
+    required this.objective,
   });
 }

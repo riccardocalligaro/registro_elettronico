@@ -4,23 +4,23 @@ import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class NoticeRemoteModel {
-  int pubId;
-  String pubDT;
-  bool readStatus;
-  String evtCode;
-  int cntId;
-  String cntValidFrom;
-  String cntValidTo;
-  bool cntValidInRange;
-  String cntStatus;
-  String cntTitle;
-  String cntCategory;
-  bool cntHasChanged;
-  bool cntHasAttach;
-  bool needJoin;
-  bool needReply;
-  bool needFile;
-  List<AttachmentRemoteModel> attachments;
+  int? pubId;
+  String? pubDT;
+  bool? readStatus;
+  String? evtCode;
+  int? cntId;
+  String? cntValidFrom;
+  String? cntValidTo;
+  bool? cntValidInRange;
+  String? cntStatus;
+  String? cntTitle;
+  String? cntCategory;
+  bool? cntHasChanged;
+  bool? cntHasAttach;
+  bool? needJoin;
+  bool? needReply;
+  bool? needFile;
+  List<AttachmentRemoteModel>? attachments;
 
   NoticeRemoteModel({
     this.pubId,
@@ -45,7 +45,7 @@ class NoticeRemoteModel {
   NoticeLocalModel toLocalModel() {
     return NoticeLocalModel(
       pubId: this.pubId ?? GlobalUtils.getRandomNumber(),
-      pubDate: DateTime.tryParse(this.pubDT) ?? DateTime.now(),
+      pubDate: DateTime.tryParse(this.pubDT!) ?? DateTime.now(),
       readStatus: this.readStatus ?? false,
       eventCode: this.evtCode ?? "CF",
       contentId: this.cntId ?? GlobalUtils.getRandomNumber(),
@@ -86,7 +86,7 @@ class NoticeRemoteModel {
     if (json['attachments'] != null) {
       attachments = <AttachmentRemoteModel>[];
       json['attachments'].forEach((v) {
-        attachments.add(AttachmentRemoteModel.fromJson(v));
+        attachments!.add(AttachmentRemoteModel.fromJson(v));
       });
     }
   }
@@ -111,7 +111,7 @@ class NoticeRemoteModel {
     data['needFile'] = this.needFile;
     //data['evento_id'] = this.eventoId;
     if (this.attachments != null) {
-      data['attachments'] = this.attachments.map((v) => v.toJson()).toList();
+      data['attachments'] = this.attachments!.map((v) => v.toJson()).toList();
     }
     return data;
   }

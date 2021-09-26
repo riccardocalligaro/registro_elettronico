@@ -7,7 +7,7 @@ class GetLoginTokenForSchoolReport extends TokenEvent {
   final SchoolReport schoolReport;
 
   GetLoginTokenForSchoolReport({
-    @required this.schoolReport,
+    required this.schoolReport,
   });
 }
 

@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 
 class LocalizationsState extends Equatable {
   final Locale locale;
-  const LocalizationsState({@required this.locale});
+  const LocalizationsState({required this.locale});
 
   @override
-  List<Object> get props => [locale.countryCode, locale.languageCode];
+  List<Object?> get props => [locale.countryCode, locale.languageCode];
 }

@@ -24,32 +24,32 @@ import 'constants/preferences_constants.dart';
 
 /// Class that manages all the updates
 class SRUpdateManager {
-  final SharedPreferences sharedPreferences;
-  final AbsencesRepository absencesRepository;
-  final AgendaRepository agendaRepository;
-  final DidacticsRepository didacticsRepository;
-  final GradesRepository gradesRepository;
-  final LessonsRepository lessonsRepository;
-  final NoticeboardRepository noticesRepository;
-  final PeriodsRepository periodsRepository;
-  final SubjectsRepository subjectsRepository;
-  final DocumentsRepository documentsRepository;
-  final NotesRepository notesRepository;
-  final TimetableRepository timetableRepository;
+  final SharedPreferences? sharedPreferences;
+  final AbsencesRepository? absencesRepository;
+  final AgendaRepository? agendaRepository;
+  final DidacticsRepository? didacticsRepository;
+  final GradesRepository? gradesRepository;
+  final LessonsRepository? lessonsRepository;
+  final NoticeboardRepository? noticesRepository;
+  final PeriodsRepository? periodsRepository;
+  final SubjectsRepository? subjectsRepository;
+  final DocumentsRepository? documentsRepository;
+  final NotesRepository? notesRepository;
+  final TimetableRepository? timetableRepository;
 
   SRUpdateManager({
-    @required this.sharedPreferences,
-    @required this.absencesRepository,
-    @required this.agendaRepository,
-    @required this.didacticsRepository,
-    @required this.gradesRepository,
-    @required this.lessonsRepository,
-    @required this.noticesRepository,
-    @required this.periodsRepository,
-    @required this.subjectsRepository,
-    @required this.documentsRepository,
-    @required this.notesRepository,
-    @required this.timetableRepository,
+    required this.sharedPreferences,
+    required this.absencesRepository,
+    required this.agendaRepository,
+    required this.didacticsRepository,
+    required this.gradesRepository,
+    required this.lessonsRepository,
+    required this.noticesRepository,
+    required this.periodsRepository,
+    required this.subjectsRepository,
+    required this.documentsRepository,
+    required this.notesRepository,
+    required this.timetableRepository,
   });
 
   Future<void> checkForUpdates() async {
@@ -57,8 +57,8 @@ class SRUpdateManager {
       return;
     }
 
-    final String databaseName =
-        sharedPreferences.getString(PrefsConstants.databaseName);
+    final String? databaseName =
+        sharedPreferences!.getString(PrefsConstants.databaseName);
 
     Logger.info('🔄 [UpdateMANAGER] Checking for db: $databaseName');
 
@@ -70,7 +70,7 @@ class SRUpdateManager {
       await updateAllData(databaseName);
 
       // We also need to rigenerate the timetable
-      await timetableRepository.regenerateTimetable();
+      await timetableRepository!.regenerateTimetable();
     } else {
       // se mancano dei dati essenziali
       final needToUpdateVitalData = await _needUpdateVitalData(
@@ -80,7 +80,7 @@ class SRUpdateManager {
       if (needToUpdateVitalData) {
         Logger.info('🔄 [UpdateMANAGER] Update vital data');
 
-        await sharedPreferences.setInt(PrefsConstants.lastUpdateVitalData,
+        await sharedPreferences!.setInt(PrefsConstants.lastUpdateVitalData,
             DateTime.now().millisecondsSinceEpoch);
 
         final PeriodsRepository periodsRepository = sl();
@@ -94,29 +94,29 @@ class SRUpdateManager {
 
       // update all the basic data
       await Future.wait([
-        gradesRepository.updateGrades(ifNeeded: false),
-        agendaRepository.updateAllAgenda(ifNeeded: false),
-        lessonsRepository.updateAllLessons(ifNeeded: false),
+        gradesRepository!.updateGrades(ifNeeded: false),
+        agendaRepository!.updateAllAgenda(ifNeeded: false),
+        lessonsRepository!.updateAllLessons(ifNeeded: false),
       ]);
 
-      await noticesRepository.updateNotices(ifNeeded: false);
+      await noticesRepository!.updateNotices(ifNeeded: false);
     }
   }
 
   Future<void> updateVitalData(BuildContext context) async {
-    final update1 = await periodsRepository.updatePeriods(ifNeeded: false);
-    final update2 = await subjectsRepository.updateSubjects(ifNeeded: false);
-    final update3 = await lessonsRepository.updateAllLessons(ifNeeded: false);
+    final update1 = await periodsRepository!.updatePeriods(ifNeeded: false);
+    final update2 = await subjectsRepository!.updateSubjects(ifNeeded: false);
+    final update3 = await lessonsRepository!.updateAllLessons(ifNeeded: false);
     final updates = [update1, update2, update3];
 
     _updateMultipleData(context: context, updates: updates);
   }
 
   Future<void> updateHomeData(BuildContext context) async {
-    final update1 = await gradesRepository.updateGrades(ifNeeded: false);
-    final update2 = await agendaRepository.updateAllAgenda(ifNeeded: false);
+    final update1 = await gradesRepository!.updateGrades(ifNeeded: false);
+    final update2 = await agendaRepository!.updateAllAgenda(ifNeeded: false);
     final update3 =
-        await lessonsRepository.updateTodaysLessons(ifNeeded: false);
+        await lessonsRepository!.updateTodaysLessons(ifNeeded: false);
 
     final updates = [update1, update2, update3];
 
@@ -124,50 +124,50 @@ class SRUpdateManager {
   }
 
   Future<void> updateDidacticsData(BuildContext context) async {
-    final update1 = await didacticsRepository.updateMaterials(ifNeeded: false);
+    final update1 = await didacticsRepository!.updateMaterials(ifNeeded: false);
     final updates = [update1];
     _updateMultipleData(context: context, updates: updates);
   }
 
   Future<void> updateNoticeboardData(BuildContext context) async {
-    final update1 = await noticesRepository.updateNotices(ifNeeded: false);
+    final update1 = await noticesRepository!.updateNotices(ifNeeded: false);
     final updates = [update1];
     _updateMultipleData(context: context, updates: updates);
   }
 
   Future<void> updateAgendaData(BuildContext context) async {
-    final update1 = await agendaRepository.updateAllAgenda(ifNeeded: false);
-    final update2 = await lessonsRepository.updateAllLessons(ifNeeded: false);
+    final update1 = await agendaRepository!.updateAllAgenda(ifNeeded: false);
+    final update2 = await lessonsRepository!.updateAllLessons(ifNeeded: false);
 
     final updates = [update1, update2];
     _updateMultipleData(context: context, updates: updates);
   }
 
   Future<void> updateSubjects(BuildContext context) async {
-    final update1 = await subjectsRepository.updateSubjects(ifNeeded: false);
-    final update2 = await lessonsRepository.updateAllLessons(ifNeeded: false);
+    final update1 = await subjectsRepository!.updateSubjects(ifNeeded: false);
+    final update2 = await lessonsRepository!.updateAllLessons(ifNeeded: false);
 
     final updates = [update1, update2];
     _updateMultipleData(context: context, updates: updates);
   }
 
   Future<void> updateGradesData({
-    @required BuildContext context,
-    @required GradesPagesDomainModel gradesSections,
+    required BuildContext context,
+    required GradesPagesDomainModel? gradesSections,
   }) async {
     if (gradesSections == null ||
         gradesSections.grades.isEmpty ||
         gradesSections.periodsWithGrades.isEmpty ||
         gradesSections.periodsWithGrades.first.gradesForList.isEmpty) {
-      final update1 = await gradesRepository.updateGrades(ifNeeded: false);
-      final update2 = await periodsRepository.updatePeriods(ifNeeded: false);
-      final update3 = await subjectsRepository.updateSubjects(ifNeeded: false);
+      final update1 = await gradesRepository!.updateGrades(ifNeeded: false);
+      final update2 = await periodsRepository!.updatePeriods(ifNeeded: false);
+      final update3 = await subjectsRepository!.updateSubjects(ifNeeded: false);
 
       final updates = [update1, update2, update3];
 
       _updateMultipleData(context: context, updates: updates);
     } else {
-      final update1 = await gradesRepository.updateGrades(ifNeeded: false);
+      final update1 = await gradesRepository!.updateGrades(ifNeeded: false);
       final updates = [update1];
 
       _updateMultipleData(context: context, updates: updates);
@@ -175,8 +175,8 @@ class SRUpdateManager {
   }
 
   void _updateMultipleData({
-    @required List<Either<Failure, Success>> updates,
-    @required BuildContext context,
+    required List<Either<Failure, Success>> updates,
+    required BuildContext context,
   }) {
     for (final update in updates) {
       if (update.isLeft()) {
@@ -191,38 +191,38 @@ class SRUpdateManager {
     }
   }
 
-  void _showErrorSnackbar(BuildContext context, String failure) {
+  void _showErrorSnackbar(BuildContext context, String? failure) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           failure ??
-              AppLocalizations.of(context).translate('update_error_snackbar'),
+              AppLocalizations.of(context)!.translate('update_error_snackbar')!,
         ),
       ),
     );
   }
 
   Future<void> updateAllData(
-    String databaseName,
+    String? databaseName,
   ) async {
     Logger.info('🔄 [UpdateMANAGER] Updating periods and subjects');
 
     await Future.wait([
-      agendaRepository.updateAllAgenda(ifNeeded: false),
-      lessonsRepository.updateAllLessons(ifNeeded: false),
-      gradesRepository.updateGrades(ifNeeded: false),
+      agendaRepository!.updateAllAgenda(ifNeeded: false),
+      lessonsRepository!.updateAllLessons(ifNeeded: false),
+      gradesRepository!.updateGrades(ifNeeded: false),
     ]);
 
     await Future.wait([
-      periodsRepository.updatePeriods(ifNeeded: false),
-      subjectsRepository.updateSubjects(ifNeeded: false),
+      periodsRepository!.updatePeriods(ifNeeded: false),
+      subjectsRepository!.updateSubjects(ifNeeded: false),
     ]);
 
     Logger.info(
       '🔄 [UpdateMANAGER] Setting lastUpdateAllData & lastUpdateVitalData to now',
     );
 
-    await sharedPreferences.setInt(
+    await sharedPreferences!.setInt(
       _getAccountBasedPreferenceName(
         name: PrefsConstants.lastUpdateAllData,
         databaseName: databaseName,
@@ -230,7 +230,7 @@ class SRUpdateManager {
       DateTime.now().millisecondsSinceEpoch,
     );
 
-    await sharedPreferences.setInt(
+    await sharedPreferences!.setInt(
       _getAccountBasedPreferenceName(
         name: PrefsConstants.lastUpdateVitalData,
         databaseName: databaseName,
@@ -239,18 +239,18 @@ class SRUpdateManager {
     );
 
     return Future.wait([
-      absencesRepository.updateAbsences(),
-      noticesRepository.updateNotices(ifNeeded: false),
-      notesRepository.updateNotes(),
-      didacticsRepository.updateMaterials(ifNeeded: false),
-      documentsRepository.updateDocuments(),
+      absencesRepository!.updateAbsences(),
+      noticesRepository!.updateNotices(ifNeeded: false),
+      notesRepository!.updateNotes(),
+      didacticsRepository!.updateMaterials(ifNeeded: false),
+      documentsRepository!.updateDocuments(),
     ]);
   }
 
   bool _needToUpdateAllData({
-    @required String databaseName,
+    required String? databaseName,
   }) {
-    final lastUpdate = sharedPreferences.getInt(
+    final lastUpdate = sharedPreferences!.getInt(
       _getAccountBasedPreferenceName(
         name: PrefsConstants.lastUpdateAllData,
         databaseName: databaseName,
@@ -267,7 +267,7 @@ class SRUpdateManager {
     if (lastUpdate == null) {
       return true;
       // se sono passati 15 giorni ed è settembre
-    } else if (date.isBefore(fiftyDaysAgo) && _isSemptember(now)) {
+    } else if (date!.isBefore(fiftyDaysAgo) && _isSemptember(now)) {
       return true;
     } else if (date.isBefore(hundredEightyDaysAgo)) {
       return true;
@@ -277,9 +277,9 @@ class SRUpdateManager {
   }
 
   Future<bool> _needUpdateVitalData({
-    @required String databaseName,
+    required String? databaseName,
   }) async {
-    final lastUpdate = sharedPreferences.getInt(
+    final lastUpdate = sharedPreferences!.getInt(
       _getAccountBasedPreferenceName(
         name: PrefsConstants.lastUpdateVitalData,
         databaseName: databaseName,
@@ -293,11 +293,11 @@ class SRUpdateManager {
 
     final thirtyDaysAgo = DateTime.now().subtract(Duration(days: 15));
 
-    if (_date(lastUpdate).isBefore(thirtyDaysAgo)) {
+    if (_date(lastUpdate)!.isBefore(thirtyDaysAgo)) {
       return true;
     } else {
       // controlliamo e i periodi sono vuoti o è presente una data vecchia
-      final needToUpdatePeriods = await periodsRepository.needToUpdatePeriods();
+      final needToUpdatePeriods = await periodsRepository!.needToUpdatePeriods();
 
       final needToUpdateResponse = needToUpdatePeriods.fold(
         (failure) => false,
@@ -309,7 +309,7 @@ class SRUpdateManager {
       }
 
       final _needToUpdateSubjects =
-          await subjectsRepository.needToUpdateSubjects();
+          await subjectsRepository!.needToUpdateSubjects();
       final needToUpdateSubjects = _needToUpdateSubjects.fold(
         (failure) => false,
         (r) => r,
@@ -329,16 +329,16 @@ class SRUpdateManager {
     return date.month == DateTime.september;
   }
 
-  DateTime _date(
-    int milliseconds,
+  DateTime? _date(
+    int? milliseconds,
   ) {
     if (milliseconds == null) return null;
     return DateTime.fromMillisecondsSinceEpoch(milliseconds);
   }
 
   String _getAccountBasedPreferenceName({
-    @required String name,
-    @required String databaseName,
+    required String name,
+    required String? databaseName,
   }) {
     if (databaseName == PrefsConstants.databaseNameBeforeMigration) {
       return name;

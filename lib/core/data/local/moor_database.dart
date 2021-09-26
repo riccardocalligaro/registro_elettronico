@@ -44,7 +44,7 @@ LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     final SharedPreferences sharedPreferences = sl();
-    String dbName = sharedPreferences.getString(PrefsConstants.databaseName);
+    String? dbName = sharedPreferences.getString(PrefsConstants.databaseName);
 
     if (dbName == null ||
         dbName == PrefsConstants.databaseNameBeforeMigration) {

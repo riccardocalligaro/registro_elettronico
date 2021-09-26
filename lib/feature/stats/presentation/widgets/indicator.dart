@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class Indicator extends StatelessWidget {
-  final Color color;
-  final String text;
-  final bool isSquare;
+  final Color? color;
+  final String? text;
+  final bool? isSquare;
   final double size;
-  final Color textColor;
+  final Color? textColor;
 
   const Indicator({
-    Key key,
+    Key? key,
     this.color,
     this.text,
     this.isSquare,
@@ -24,7 +24,7 @@ class Indicator extends StatelessWidget {
           width: size,
           height: size,
           decoration: BoxDecoration(
-            shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
+            shape: isSquare! ? BoxShape.rectangle : BoxShape.circle,
             color: color,
           ),
         ),
@@ -33,7 +33,7 @@ class Indicator extends StatelessWidget {
         ),
         Flexible(
           child: Text(
-            text,
+            text!,
             style: TextStyle(fontSize: 12),
           ),
         )

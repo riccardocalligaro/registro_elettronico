@@ -16,9 +16,9 @@ import 'bloc.dart';
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   //static const String DARK_THEME = "ThemeBloc_DARK_THEME";
 
-  static ThemeBloc _instance;
+  static ThemeBloc? _instance;
 
-  SharedPreferences prefs;
+  SharedPreferences? prefs;
 
   ThemeBloc()
       : super(ThemeState(
@@ -27,7 +27,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     _loadSettings();
   }
 
-  static ThemeBloc get instance {
+  static ThemeBloc? get instance {
     if (_instance == null) {
       _instance = ThemeBloc();
     }
@@ -39,11 +39,11 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     ThemeEvent event,
   ) async* {
     if (event is ThemeChanged) {
-      ThemeType _themeType;
+      ThemeType? _themeType;
 
       if (event.type == null) {
         _themeType = _typeFromString(
-            prefs.getString(PrefsConstants.themeType) ??
+            prefs!.getString(PrefsConstants.themeType) ??
                 ThemeType.dark.toString());
       } else {
         _themeType = event.type;
@@ -71,7 +71,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
       final MaterialColor color = event.color ??
           ColorUtils.createMaterialColor(Color(
-              prefs.getInt(PrefsConstants.themeColor) ?? Colors.red.value));
+              prefs!.getInt(PrefsConstants.themeColor) ?? Colors.red.value));
 
       await _saveSettings(_themeType, color);
 
@@ -84,11 +84,11 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     }
   }
 
-  ThemeData _getThemeData(ThemeType themeType, Color color) {
+  ThemeData _getThemeData(ThemeType? themeType, Color color) {
     if (themeType == ThemeType.dark) {
-      return DarkTheme.getThemeData(color);
+      return DarkTheme.getThemeData(color as MaterialColor);
     } else if (themeType == ThemeType.black) {
-      return BlackTheme.getThemeData(color);
+      return BlackTheme.getThemeData(color as MaterialColor);
     } else {
       return LightTheme.getThemeData(color);
     }
@@ -98,23 +98,23 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
 
     ThemeType _themeType = _typeFromString(
-      prefs.getString(PrefsConstants.themeType) ?? ThemeType.dark.toString(),
+      prefs!.getString(PrefsConstants.themeType) ?? ThemeType.dark.toString(),
     );
 
     Color _themeColor = ColorUtils.createMaterialColor(
-        Color(prefs.getInt(PrefsConstants.themeColor) ?? Colors.red.value));
+        Color(prefs!.getInt(PrefsConstants.themeColor) ?? Colors.red.value));
 
     add(ThemeChanged(
       type: _themeType,
-      color: _themeColor,
+      color: _themeColor as MaterialColor?,
     ));
   }
 
-  Future<void> _saveSettings(ThemeType themeType, MaterialColor color) async {
+  Future<void> _saveSettings(ThemeType? themeType, MaterialColor color) async {
     if (prefs == null) prefs = await SharedPreferences.getInstance();
-    await prefs.setString(PrefsConstants.themeType, themeType.toString());
+    await prefs!.setString(PrefsConstants.themeType, themeType.toString());
 
-    await prefs.setInt(PrefsConstants.themeColor, color.shade500.value);
+    await prefs!.setInt(PrefsConstants.themeColor, color.shade500.value);
   }
 
   ThemeType _typeFromString(String type) {

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/utils/color_utils.dart';
 
 class GradientRedButton extends StatefulWidget {
-  final Widget center;
-  final double height;
-  final double width;
-  final GestureTapCallback onTap;
+  final Widget? center;
+  final double? height;
+  final double? width;
+  final GestureTapCallback? onTap;
 
   GradientRedButton({
-    Key key,
+    Key? key,
     this.center,
     this.width,
     this.height,
@@ -39,7 +39,7 @@ class _GradientRedButtonState extends State<GradientRedButton> {
             stops: [0.6, 1],
             colors: ColorUtils.getGradientForColor(
                 Theme.of(context).accentColor,
-                button: true),
+                button: true) as List<Color>,
           ),
           borderRadius: BorderRadius.all(
             Radius.circular(80.0),

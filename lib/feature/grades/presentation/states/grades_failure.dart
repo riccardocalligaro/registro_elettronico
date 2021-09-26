@@ -7,11 +7,11 @@ import 'package:registro_elettronico/feature/periods/domain/repository/periods_r
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 
 class GradesFailure extends StatelessWidget {
-  final Failure failure;
+  final Failure? failure;
 
   const GradesFailure({
-    Key key,
-    @required this.failure,
+    Key? key,
+    required this.failure,
   }) : super(key: key);
 
   @override

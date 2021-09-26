@@ -17,12 +17,12 @@ class PreferencesRepositoryImpl implements PreferencesRepository {
   }
 
   @override
-  bool getBool(String key) {
+  bool? getBool(String key) {
     return sharedPreferences.getBool(key);
   }
 
   @override
-  int getInt(String key) {
+  int? getInt(String key) {
     return sharedPreferences.getInt(key);
   }
 }

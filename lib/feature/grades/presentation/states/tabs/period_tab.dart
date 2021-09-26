@@ -8,8 +8,8 @@ class PeriodTab extends StatelessWidget {
   final PeriodWithGradesDomainModel periodWithGradesDomainModel;
 
   const PeriodTab({
-    Key key,
-    @required this.periodWithGradesDomainModel,
+    Key? key,
+    required this.periodWithGradesDomainModel,
   }) : super(key: key);
 
   @override

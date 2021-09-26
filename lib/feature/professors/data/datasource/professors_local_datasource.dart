@@ -11,7 +11,7 @@ class ProfessorLocalDatasource extends DatabaseAccessor<SRDatabase>
 
   ProfessorLocalDatasource(this.db) : super(db);
 
-  Future<List<ProfessorLocalModel>> getProfessorsForSubject(int id) {
+  Future<List<ProfessorLocalModel>> getProfessorsForSubject(int? id) {
     return (select(professors)..where((p) => p.subjectId.equals(id))).get();
   }
 

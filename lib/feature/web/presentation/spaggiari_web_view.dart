@@ -5,13 +5,13 @@ import 'package:registro_elettronico/feature/authentication/domain/repository/au
 
 class SpaggiariWebView extends StatefulWidget {
   final String url;
-  final String appBarTitle;
-  final String email;
+  final String? appBarTitle;
+  final String? email;
 
   const SpaggiariWebView({
-    Key key,
-    @required this.url,
-    @required this.appBarTitle,
+    Key? key,
+    required this.url,
+    required this.appBarTitle,
     this.email,
   }) : super(key: key);
 
@@ -21,7 +21,7 @@ class SpaggiariWebView extends StatefulWidget {
 
 class _SpaggiariWebViewState extends State<SpaggiariWebView> {
   final flutterWebviewPlugin = FlutterWebviewPlugin();
-  Map<String, String> headers;
+  Map<String, String>? headers;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey _scaffoldkey;
+    GlobalKey? _scaffoldkey;
 
     return WebviewScaffold(
       debuggingEnabled: false,

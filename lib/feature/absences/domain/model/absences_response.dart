@@ -1,12 +1,12 @@
 class AbsenceRemoteModel {
-  int evtId;
-  String evtCode;
-  String evtDate;
-  int evtHPos;
-  int evtValue;
-  bool isJustified;
-  String justifReasonCode;
-  String justifReasonDesc;
+  int? evtId;
+  String? evtCode;
+  String? evtDate;
+  int? evtHPos;
+  int? evtValue;
+  bool? isJustified;
+  String? justifReasonCode;
+  String? justifReasonDesc;
 
   AbsenceRemoteModel({
     this.evtId,

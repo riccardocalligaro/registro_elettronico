@@ -12,12 +12,12 @@ part 'didactics_watcher_state.dart';
 
 class DidacticsWatcherBloc
     extends Bloc<DidacticsWatcherEvent, DidacticsWatcherState> {
-  final DidacticsRepository didacticsRepository;
+  final DidacticsRepository? didacticsRepository;
 
-  StreamSubscription _didacticsStreamSubscription;
+  StreamSubscription? _didacticsStreamSubscription;
 
   DidacticsWatcherBloc({
-    @required this.didacticsRepository,
+    required this.didacticsRepository,
   }) : super(DidacticsWatcherInitial());
 
   @override
@@ -36,10 +36,10 @@ class DidacticsWatcherBloc
       }
     } else if (event is DidacticsWatchAllStarted) {
       if (_didacticsStreamSubscription != null) {
-        await _didacticsStreamSubscription.cancel();
+        await _didacticsStreamSubscription!.cancel();
       }
       _didacticsStreamSubscription =
-          didacticsRepository.watchTeachersMaterials().listen((event) {
+          didacticsRepository!.watchTeachersMaterials().listen((event) {
         add(DidacticsDataReceived(resource: event));
       });
     }
@@ -47,7 +47,7 @@ class DidacticsWatcherBloc
 
   @override
   Future<void> close() {
-    _didacticsStreamSubscription.cancel();
+    _didacticsStreamSubscription!.cancel();
     return super.close();
   }
 }

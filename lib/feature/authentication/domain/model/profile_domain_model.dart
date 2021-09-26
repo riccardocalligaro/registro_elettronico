@@ -6,32 +6,32 @@ import 'package:registro_elettronico/utils/constants/preferences_constants.dart'
 import 'package:registro_elettronico/utils/profile_utils.dart';
 
 class ProfileDomainModel {
-  String ident;
-  String firstName;
-  String lastName;
-  String token;
-  DateTime release;
-  DateTime expire;
-  String studentId;
-  bool currentlyLoggedIn;
-  String dbName;
+  String? ident;
+  String? firstName;
+  String? lastName;
+  String? token;
+  DateTime? release;
+  DateTime? expire;
+  String? studentId;
+  bool? currentlyLoggedIn;
+  String? dbName;
 
   ProfileDomainModel({
-    @required this.ident,
-    @required this.firstName,
-    @required this.lastName,
-    @required this.token,
-    @required this.release,
-    @required this.expire,
-    @required this.studentId,
-    @required this.currentlyLoggedIn,
-    @required this.dbName,
+    required this.ident,
+    required this.firstName,
+    required this.lastName,
+    required this.token,
+    required this.release,
+    required this.expire,
+    required this.studentId,
+    required this.currentlyLoggedIn,
+    required this.dbName,
   });
 
   ProfileLocalModel toLocalModel() {
     return ProfileLocalModel(
       ident: this.ident,
-      studentId: ProfileUtils.getIdFromIdent(this.ident),
+      studentId: ProfileUtils.getIdFromIdent(this.ident!),
       firstName: this.firstName ?? "",
       lastName: this.lastName ?? "",
       token: this.token ?? "",
@@ -55,15 +55,15 @@ class ProfileDomainModel {
   }
 
   ProfileDomainModel copyWith({
-    String ident,
-    String firstName,
-    String lastName,
-    String token,
-    DateTime release,
-    DateTime expire,
-    String studentId,
-    bool currentlyLoggedIn,
-    String dbName,
+    String? ident,
+    String? firstName,
+    String? lastName,
+    String? token,
+    DateTime? release,
+    DateTime? expire,
+    String? studentId,
+    bool? currentlyLoggedIn,
+    String? dbName,
   }) {
     return ProfileDomainModel(
       ident: ident ?? this.ident,
@@ -92,7 +92,7 @@ class ProfileDomainModel {
     };
   }
 
-  factory ProfileDomainModel.fromMap(Map<String, dynamic> map) {
+  factory ProfileDomainModel.fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return ProfileDomainModel(

@@ -1,14 +1,14 @@
 class AgendaEventRemoteModel {
-  int evtId;
-  String evtCode;
-  String evtDatetimeBegin;
-  String evtDatetimeEnd;
-  bool isFullDay;
-  String notes;
-  String authorName;
-  String classDesc;
-  int subjectId;
-  String subjectDesc;
+  int? evtId;
+  String? evtCode;
+  String? evtDatetimeBegin;
+  String? evtDatetimeEnd;
+  bool? isFullDay;
+  String? notes;
+  String? authorName;
+  String? classDesc;
+  int? subjectId;
+  String? subjectDesc;
 
   AgendaEventRemoteModel({
     this.evtId,

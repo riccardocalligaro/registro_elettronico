@@ -12,10 +12,10 @@ part 'document_attachment_state.dart';
 
 class DocumentAttachmentBloc
     extends Bloc<DocumentAttachmentEvent, DocumentAttachmentState> {
-  final DocumentsRepository documentsRepository;
+  final DocumentsRepository? documentsRepository;
 
   DocumentAttachmentBloc({
-    @required this.documentsRepository,
+    required this.documentsRepository,
   }) : super(DocumentAttachmentInitial());
 
   @override
@@ -26,15 +26,15 @@ class DocumentAttachmentBloc
       yield DocumentLoadInProgress();
 
       try {
-        final fileDb = await documentsRepository
+        final fileDb = await documentsRepository!
             .getDownloadedDocument(event.document.hash);
 
         if (fileDb != null) {
           Logger.info('Got file in database ${fileDb.hash}');
           yield DocumentLoadedLocally(path: fileDb.path);
         } else {
-          final available = await documentsRepository.checkDocument(
-            event.document.hash,
+          final available = await documentsRepository!.checkDocument(
+            event.document.hash!,
           );
 
           Logger.info('File available: ${available.toString()}');
@@ -45,8 +45,8 @@ class DocumentAttachmentBloc
           }, (available) async* {
             if (available) {
               Logger.info('Reading document from repository');
-              final path = await documentsRepository.readDocument(
-                event.document.hash,
+              final path = await documentsRepository!.readDocument(
+                event.document.hash!,
               );
               yield path.fold(
                 (failure) => DocumentAttachmentError(),
@@ -62,11 +62,11 @@ class DocumentAttachmentBloc
       }
     } else if (event is DeleteDocumentAttachment) {
       try {
-        await documentsRepository.deleteDownloadedDocument(event.document.hash);
+        await documentsRepository!.deleteDownloadedDocument(event.document.hash);
         Logger.info('Deleted file hash: ${event.document.hash}');
         yield DocumentAttachmentDeleteSuccess();
       } catch (e) {
-        await documentsRepository.deleteAllDownloadedDocuments();
+        await documentsRepository!.deleteAllDownloadedDocuments();
         yield DocumentAttachmentDeleteError();
       }
     }

@@ -5,10 +5,10 @@ import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class SubjectRemoteModel {
-  int id;
-  String description;
-  int order;
-  List<ProfessorRemoteModel> professors;
+  int? id;
+  String? description;
+  int? order;
+  List<ProfessorRemoteModel>? professors;
 
   SubjectRemoteModel({
     this.id,
@@ -24,7 +24,7 @@ class SubjectRemoteModel {
     if (json['teachers'] != null) {
       professors = [];
       json['teachers'].forEach((v) {
-        professors.add(ProfessorRemoteModel.fromJson(v));
+        professors!.add(ProfessorRemoteModel.fromJson(v));
       });
     }
   }
@@ -35,7 +35,7 @@ class SubjectRemoteModel {
     data['description'] = this.description;
     data['order'] = this.order;
     if (this.professors != null) {
-      data['teachers'] = this.professors.map((v) => v.toJson()).toList();
+      data['teachers'] = this.professors!.map((v) => v.toJson()).toList();
     }
     return data;
   }

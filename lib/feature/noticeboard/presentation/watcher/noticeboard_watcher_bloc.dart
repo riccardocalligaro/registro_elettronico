@@ -14,10 +14,10 @@ class NoticeboardWatcherBloc
     extends Bloc<NoticeboardWatcherEvent, NoticeboardWatcherState> {
   final NoticeboardRepository noticeboardRepository;
 
-  StreamSubscription _noticesStreamSubscription;
+  late StreamSubscription _noticesStreamSubscription;
 
   NoticeboardWatcherBloc({
-    @required this.noticeboardRepository,
+    required this.noticeboardRepository,
   }) : super(NoticeboardWatcherInitial()) {
     _noticesStreamSubscription =
         noticeboardRepository.watchAllNotices().listen((resource) {

@@ -11,11 +11,11 @@ abstract class NoticeboardRepository {
   Stream<Resource<List<NoticeDomainModel>>> watchAllNotices();
 
   Stream<Resource<GenericAttachment>> downloadFile({
-    @required NoticeDomainModel notice,
-    @required AttachmentDomainModel attachment,
+    required NoticeDomainModel notice,
+    required AttachmentDomainModel? attachment,
   });
 
   Future<Either<Failure, Success>> updateNotices({
-    @required bool ifNeeded,
+    required bool ifNeeded,
   });
 }

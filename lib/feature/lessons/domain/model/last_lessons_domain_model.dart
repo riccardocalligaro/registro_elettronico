@@ -3,21 +3,21 @@ import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_
 
 class LessonWithDurationDomainModel {
   int duration;
-  LessonDomainModel lesson;
+  LessonDomainModel? lesson;
 
   LessonWithDurationDomainModel({
-    @required this.duration,
-    @required this.lesson,
+    required this.duration,
+    required this.lesson,
   });
 }
 
 class UniqueLessionDomainModel {
-  int subjectId;
-  String argoment;
+  int? subjectId;
+  String? argoment;
 
   UniqueLessionDomainModel({
-    @required this.subjectId,
-    @required this.argoment,
+    required this.subjectId,
+    required this.argoment,
   });
 
   @override

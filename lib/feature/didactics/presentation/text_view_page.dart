@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class TextViewPage extends StatelessWidget {
-  final String text;
+  final String? text;
   const TextViewPage({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
   }) : super(key: key);
 
   @override

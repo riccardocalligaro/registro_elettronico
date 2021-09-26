@@ -10,13 +10,13 @@ import 'package:registro_elettronico/feature/settings/widgets/header_text.dart';
 import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view.dart';
 
 class MorePage extends StatelessWidget {
-  const MorePage({Key key}) : super(key: key);
+  const MorePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate('more_page')),
+        title: Text(AppLocalizations.of(context)!.translate('more_page')!),
         brightness: Theme.of(context).brightness,
       ),
       body: ListView(
@@ -24,7 +24,7 @@ class MorePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 16.0, left: 16.0),
             child: HeaderText(
-              text: AppLocalizations.of(context).translate('general'),
+              text: AppLocalizations.of(context)!.translate('general'),
             ),
           ),
           if (kDebugMode)
@@ -40,70 +40,70 @@ class MorePage extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.library_books),
             title: Text(
-              AppLocalizations.of(context).translate('lessons'),
+              AppLocalizations.of(context)!.translate('lessons')!,
             ),
             onTap: () {
-              AppNavigator.instance.navToLessons(context);
+              AppNavigator.instance!.navToLessons(context);
             },
           ),
           ListTile(
             leading: Icon(Icons.folder),
             title: Text(
-              AppLocalizations.of(context).translate('school_material'),
+              AppLocalizations.of(context)!.translate('school_material')!,
             ),
             onTap: () {
-              AppNavigator.instance.navToSchoolMaterial(context);
+              AppNavigator.instance!.navToSchoolMaterial(context);
             },
           ),
           ListTile(
             leading: Icon(Icons.assessment),
             title: Text(
-              AppLocalizations.of(context).translate('absences'),
+              AppLocalizations.of(context)!.translate('absences')!,
             ),
             onTap: () {
-              AppNavigator.instance.navToAbsences(context);
+              AppNavigator.instance!.navToAbsences(context);
             },
           ),
           ListTile(
             leading: Icon(Icons.info),
             title: Text(
-              AppLocalizations.of(context).translate('notes'),
+              AppLocalizations.of(context)!.translate('notes')!,
             ),
             onTap: () {
-              AppNavigator.instance.navToNotes(context);
+              AppNavigator.instance!.navToNotes(context);
             },
           ),
           ListTile(
             leading: Icon(Icons.access_time),
             title: Text(
-              AppLocalizations.of(context).translate('timetable'),
+              AppLocalizations.of(context)!.translate('timetable')!,
             ),
             onTap: () {
-              AppNavigator.instance.navToTimetable(context);
+              AppNavigator.instance!.navToTimetable(context);
             },
           ),
           ListTile(
             leading: Icon(Icons.import_contacts),
             title: Text(
-              AppLocalizations.of(context).translate('scrutini'),
+              AppLocalizations.of(context)!.translate('scrutini')!,
             ),
             onTap: () {
-              AppNavigator.instance.navToScrutini(context);
+              AppNavigator.instance!.navToScrutini(context);
             },
           ),
           ListTile(
             leading: Icon(Icons.pie_chart),
             title: Text(
-              AppLocalizations.of(context).translate('statistics'),
+              AppLocalizations.of(context)!.translate('statistics')!,
             ),
             onTap: () {
-              AppNavigator.instance.navToStats(context);
+              AppNavigator.instance!.navToStats(context);
             },
           ),
           ListTile(
             leading: Icon(Icons.web),
             title: Text(
-              AppLocalizations.of(context).translate('web'),
+              AppLocalizations.of(context)!.translate('web')!,
             ),
             onTap: () {
               final url =
@@ -111,7 +111,7 @@ class MorePage extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => SpaggiariWebView(
-                    appBarTitle: AppLocalizations.of(context).translate('web'),
+                    appBarTitle: AppLocalizations.of(context)!.translate('web'),
                     url: url,
                   ),
                 ),
@@ -121,22 +121,22 @@ class MorePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 16.0, left: 16.0),
             child: HeaderText(
-              text: AppLocalizations.of(context).translate('other_section'),
+              text: AppLocalizations.of(context)!.translate('other_section'),
             ),
           ),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text(
-              AppLocalizations.of(context).translate('settings'),
+              AppLocalizations.of(context)!.translate('settings')!,
             ),
             onTap: () {
-              AppNavigator.instance.navToSettings(context);
+              AppNavigator.instance!.navToSettings(context);
             },
           ),
           ListTile(
             leading: Icon(Icons.supervisor_account),
             title: Text(
-              AppLocalizations.of(context).translate('change_account'),
+              AppLocalizations.of(context)!.translate('change_account')!,
             ),
             onTap: () {
               showDialog(
@@ -148,7 +148,7 @@ class MorePage extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.logout),
             title: Text(
-              AppLocalizations.of(context).translate('logout'),
+              AppLocalizations.of(context)!.translate('logout')!,
             ),
             onTap: () {
               showDialog(
@@ -164,26 +164,26 @@ class MorePage extends StatelessWidget {
 }
 
 class _LogoutDialog extends StatelessWidget {
-  const _LogoutDialog({Key key}) : super(key: key);
+  const _LogoutDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        AppLocalizations.of(context).translate('logout_message_title'),
+        AppLocalizations.of(context)!.translate('logout_message_title')!,
       ),
       content: Text(
-        AppLocalizations.of(context).translate('logout_message'),
+        AppLocalizations.of(context)!.translate('logout_message')!,
       ),
       actions: [
         TextButton(
-          child: Text(AppLocalizations.of(context).translate('no')),
+          child: Text(AppLocalizations.of(context)!.translate('no')!),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         TextButton(
-          child: Text(AppLocalizations.of(context).translate('yes')),
+          child: Text(AppLocalizations.of(context)!.translate('yes')!),
           onPressed: () async {
             Navigator.pop(context);
 

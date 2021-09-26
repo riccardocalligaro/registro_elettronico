@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class CustomCard extends StatelessWidget {
   final String title;
   final String subtitle;
-  final GestureTapCallback onTap;
-  final Color color;
+  final GestureTapCallback? onTap;
+  final Color? color;
 
   const CustomCard({
-    Key key,
-    @required this.title,
-    @required this.subtitle,
+    Key? key,
+    required this.title,
+    required this.subtitle,
     this.color,
     this.onTap,
   }) : super(key: key);

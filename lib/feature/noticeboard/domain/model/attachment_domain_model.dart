@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 class AttachmentDomainModel {
-  int id;
-  int pubId;
-  String fileName;
-  int attachNumber;
+  int? id;
+  int? pubId;
+  String? fileName;
+  int? attachNumber;
 
   AttachmentDomainModel({
-    @required this.id,
-    @required this.pubId,
-    @required this.fileName,
-    @required this.attachNumber,
+    required this.id,
+    required this.pubId,
+    required this.fileName,
+    required this.attachNumber,
   });
 
   AttachmentDomainModel.fromLocalModel(NoticeAttachmentLocalModel l) {
@@ -25,10 +25,10 @@ class AttachmentDomainModel {
   }
 
   AttachmentDomainModel copyWith({
-    int id,
-    int pubId,
-    String fileName,
-    int attachNumber,
+    int? id,
+    int? pubId,
+    String? fileName,
+    int? attachNumber,
   }) {
     return AttachmentDomainModel(
       id: id ?? this.id,
@@ -47,7 +47,7 @@ class AttachmentDomainModel {
     };
   }
 
-  factory AttachmentDomainModel.fromMap(Map<String, dynamic> map) {
+  factory AttachmentDomainModel.fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return AttachmentDomainModel(

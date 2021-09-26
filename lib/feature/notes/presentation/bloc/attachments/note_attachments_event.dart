@@ -4,11 +4,11 @@ part of 'note_attachments_bloc.dart';
 abstract class NoteAttachmentsEvent {}
 
 class ReadNote extends NoteAttachmentsEvent {
-  final String type;
-  final int eventId;
+  final String? type;
+  final int? eventId;
 
   ReadNote({
-    @required this.type,
-    @required this.eventId,
+    required this.type,
+    required this.eventId,
   });
 }

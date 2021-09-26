@@ -7,14 +7,14 @@ class GradesChart extends StatefulWidget {
   final List<GradeDomainModel> grades;
   final List<FlSpot> averageSpots;
   final List<FlSpot> normalSpots;
-  final int overallObjective;
+  final int? overallObjective;
 
   const GradesChart({
-    Key key,
-    @required this.averageSpots,
-    @required this.normalSpots,
-    @required this.overallObjective,
-    @required this.grades,
+    Key? key,
+    required this.averageSpots,
+    required this.normalSpots,
+    required this.overallObjective,
+    required this.grades,
   }) : super(key: key);
 
   @override
@@ -50,14 +50,14 @@ class _GradesChartState extends State<GradesChart> {
                           spots: widget.averageSpots,
                           grades: widget.grades,
                           cutOffYValue: widget.overallObjective != null
-                              ? widget.overallObjective.toDouble()
+                              ? widget.overallObjective!.toDouble()
                               : 6.0,
                         )
                       : GradesLineChart(
                           spots: widget.normalSpots,
                           grades: widget.grades,
                           cutOffYValue: widget.overallObjective != null
-                              ? widget.overallObjective.toDouble()
+                              ? widget.overallObjective!.toDouble()
                               : 6.0,
                         ),
                 ),
@@ -74,16 +74,16 @@ class _GradesChartState extends State<GradesChart> {
                 });
               },
               child: Text(
-                AppLocalizations.of(context).translate('avg'),
+                AppLocalizations.of(context)!.translate('avg')!,
                 style: TextStyle(
                   fontSize: 8,
                   color: showAvg
                       ? Theme.of(context)
                           .primaryTextTheme
-                          .headline5
-                          .color
+                          .headline5!
+                          .color!
                           .withOpacity(0.5)
-                      : Theme.of(context).primaryTextTheme.headline5.color,
+                      : Theme.of(context).primaryTextTheme.headline5!.color,
                 ),
               ),
             ),
@@ -101,10 +101,10 @@ class GradesLineChart extends StatelessWidget {
   final double cutOffYValue;
 
   const GradesLineChart({
-    Key key,
-    @required this.grades,
-    @required this.spots,
-    @required this.cutOffYValue,
+    Key? key,
+    required this.grades,
+    required this.spots,
+    required this.cutOffYValue,
   }) : super(key: key);
 
   @override
@@ -197,7 +197,7 @@ class GradesLineChart extends StatelessWidget {
             belowBarData: BarAreaData(
               show: true,
               colors: _getGradients(context)
-                  .map((color) => color.withOpacity(0.4))
+                  .map((color) => color!.withOpacity(0.4))
                   .toList(),
               gradientColorStops: [0.5, 1.0],
               gradientFrom: const Offset(0, 0),
@@ -207,7 +207,7 @@ class GradesLineChart extends StatelessWidget {
             // Cut off for showing how much you need for the minmium mark
             aboveBarData: BarAreaData(
               show: true,
-              colors: [Colors.grey[500].withOpacity(0.6)],
+              colors: [Colors.grey[500]!.withOpacity(0.6)],
               cutOffY: cutOffYValue,
               applyCutOffY: true,
             ),
@@ -217,7 +217,7 @@ class GradesLineChart extends StatelessWidget {
     );
   }
 
-  List<Color> _getGradients(BuildContext context) {
+  List<Color?> _getGradients(BuildContext context) {
     return [
       Theme.of(context).accentColor,
       Theme.of(context).brightness == Brightness.dark

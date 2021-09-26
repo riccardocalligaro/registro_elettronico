@@ -8,15 +8,15 @@ class NoticeboardWatcherInitial extends NoticeboardWatcherState {}
 class NoticeboardWatcherLoading extends NoticeboardWatcherState {}
 
 class NoticeboardWatcherLoadSuccess extends NoticeboardWatcherState {
-  final List<NoticeDomainModel> notices;
+  final List<NoticeDomainModel>? notices;
 
   NoticeboardWatcherLoadSuccess({
-    @required this.notices,
+    required this.notices,
   });
 }
 
 class NoticeboardWatcherFailure extends NoticeboardWatcherState {
-  final Failure failure;
+  final Failure? failure;
 
-  NoticeboardWatcherFailure({@required this.failure});
+  NoticeboardWatcherFailure({required this.failure});
 }

@@ -14,12 +14,12 @@ part 'attachment_download_state.dart';
 
 class AttachmentDownloadBloc
     extends Bloc<AttachmentDownloadEvent, AttachmentDownloadState> {
-  final NoticeboardRepository noticeboardRepository;
+  final NoticeboardRepository? noticeboardRepository;
 
-  StreamSubscription _downloadSubscription;
+  late StreamSubscription _downloadSubscription;
 
   AttachmentDownloadBloc({
-    @required this.noticeboardRepository,
+    required this.noticeboardRepository,
   }) : super(AttachmentDownloadInitial());
 
   @override
@@ -33,7 +33,7 @@ class AttachmentDownloadBloc
     } else if (event is AttachmentDownloadProgressTickedEvent) {
       yield AttachmentDownloadInProgress(percentage: event.value);
     } else if (event is DownloadAttachment) {
-      _downloadSubscription = noticeboardRepository
+      _downloadSubscription = noticeboardRepository!
           .downloadFile(notice: event.notice, attachment: event.attachment)
           .listen(
         (resource) {

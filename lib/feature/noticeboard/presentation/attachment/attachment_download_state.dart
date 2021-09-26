@@ -6,18 +6,18 @@ abstract class AttachmentDownloadState {}
 class AttachmentDownloadInitial extends AttachmentDownloadState {}
 
 class AttachmentDownloadInProgress extends AttachmentDownloadState {
-  final double percentage;
+  final double? percentage;
 
   AttachmentDownloadInProgress({
-    @required this.percentage,
+    required this.percentage,
   });
 }
 
 class AttachmentDownloadSuccess extends AttachmentDownloadState {
-  final GenericAttachment downloadedAttachment;
+  final GenericAttachment? downloadedAttachment;
 
   AttachmentDownloadSuccess({
-    @required this.downloadedAttachment,
+    required this.downloadedAttachment,
   });
 
   @override
@@ -33,9 +33,9 @@ class AttachmentDownloadSuccess extends AttachmentDownloadState {
 }
 
 class AttachmentDownloadFailure extends AttachmentDownloadState {
-  final Failure failure;
+  final Failure? failure;
 
   AttachmentDownloadFailure({
-    @required this.failure,
+    required this.failure,
   });
 }

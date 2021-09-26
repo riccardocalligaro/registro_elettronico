@@ -6,11 +6,11 @@ import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 
 class AbsencesChartLines extends StatefulWidget {
-  final Map<int, List<Absence>> absences;
+  final Map<int?, List<Absence>> absences;
 
   const AbsencesChartLines({
-    Key key,
-    @required this.absences,
+    Key? key,
+    required this.absences,
   }) : super(key: key);
 
   @override
@@ -18,7 +18,7 @@ class AbsencesChartLines extends StatefulWidget {
 }
 
 class AbsencesChartLinesState extends State<AbsencesChartLines> {
-  bool isShowingMainData;
+  bool? isShowingMainData;
 
   @override
   void initState() {
@@ -65,40 +65,40 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
         touchTooltipData: LineTouchTooltipData(
             tooltipBgColor: Theme.of(context).brightness == Brightness.dark
                 ? Colors.white
-                : Colors.grey[900].withOpacity(0.9),
+                : Colors.grey[900]!.withOpacity(0.9),
             getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
               return touchedBarSpots.map((barSpot) {
                 final flSpot = barSpot;
-                String text;
+                String? text;
                 // This also checks if the event is only one and in case changes the text to singular
                 if (flSpot.barIndex == 0) {
-                  text = AppLocalizations.of(context)
-                      .translate('absences')
+                  text = AppLocalizations.of(context)!
+                      .translate('absences')!
                       .toLowerCase();
                   if (flSpot.y == 1) {
-                    text = AppLocalizations.of(context)
-                        .translate('absence')
+                    text = AppLocalizations.of(context)!
+                        .translate('absence')!
                         .toLowerCase();
                   }
                 }
                 if (flSpot.barIndex == 1) {
-                  text = AppLocalizations.of(context)
-                      .translate('delay')
+                  text = AppLocalizations.of(context)!
+                      .translate('delay')!
                       .toLowerCase();
                   if (flSpot.y == 1) {
-                    text = AppLocalizations.of(context)
-                        .translate('late')
+                    text = AppLocalizations.of(context)!
+                        .translate('late')!
                         .toLowerCase();
                   }
                 }
 
                 if (flSpot.barIndex == 2) {
-                  text = AppLocalizations.of(context)
-                      .translate('early_exits')
+                  text = AppLocalizations.of(context)!
+                      .translate('early_exits')!
                       .toLowerCase();
                   if (flSpot.y == 1) {
-                    text = AppLocalizations.of(context)
-                        .translate('early_exit')
+                    text = AppLocalizations.of(context)!
+                        .translate('early_exit')!
                         .toLowerCase();
                   }
                 }
@@ -129,7 +129,7 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
           },
           margin: 10,
           getTitles: (value) {
-            final locale = AppLocalizations.of(context).locale.toString();
+            final locale = AppLocalizations.of(context)!.locale.toString();
             switch (value.toInt()) {
               case 1:
                 return SRDateUtils.convertMonthForDisplay(
@@ -222,7 +222,7 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
       isCurved: true,
       preventCurveOverShooting: true,
       colors: [
-        Colors.yellow[600],
+        Colors.yellow[600]!,
       ],
       barWidth: 6,
       isStrokeCapRound: true,
@@ -240,8 +240,8 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
     ];
   }
 
-  FlSpot _getSpotForMonth(double month, String code, {String code2}) {
-    final absences = widget.absences[month];
+  FlSpot _getSpotForMonth(double month, String code, {String? code2}) {
+    final absences = widget.absences[month as int?];
     double monthGraph;
     if (month >= 9.0 && month <= 12.0) {
       monthGraph = month - 8;
@@ -254,8 +254,8 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
         monthGraph,
         absences
             .where((absence) =>
-                (absence.evtCode == code || absence.evtCode == code2 ?? '') &&
-                absence.evtDate.month == month.toInt())
+                (absence.evtCode == code || absence.evtCode == code2 ?? '' as bool) &&
+                absence.evtDate!.month == month.toInt())
             .length
             .toDouble(),
       );

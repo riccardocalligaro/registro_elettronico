@@ -8,15 +8,15 @@ class GradesWatcherInitial extends GradesWatcherState {}
 class GradesWatcherLoading extends GradesWatcherState {}
 
 class GradesWatcherLoadSuccess extends GradesWatcherState {
-  final GradesPagesDomainModel gradesSections;
+  final GradesPagesDomainModel? gradesSections;
 
   GradesWatcherLoadSuccess({
-    @required this.gradesSections,
+    required this.gradesSections,
   });
 }
 
 class GradesWatcherFailure extends GradesWatcherState {
-  final Failure failure;
+  final Failure? failure;
 
-  GradesWatcherFailure({@required this.failure});
+  GradesWatcherFailure({required this.failure});
 }

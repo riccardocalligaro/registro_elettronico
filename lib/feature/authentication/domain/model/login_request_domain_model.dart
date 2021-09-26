@@ -3,20 +3,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class LoginRequestDomainModel {
-  String ident;
-  String pass;
-  String uid;
+  String? ident;
+  String? pass;
+  String? uid;
 
   LoginRequestDomainModel({
-    @required this.ident,
-    @required this.pass,
-    @required this.uid,
+    required this.ident,
+    required this.pass,
+    required this.uid,
   });
 
   LoginRequestDomainModel copyWith({
-    String ident,
-    String pass,
-    String uid,
+    String? ident,
+    String? pass,
+    String? uid,
   }) {
     return LoginRequestDomainModel(
       ident: ident ?? this.ident,
@@ -33,7 +33,7 @@ class LoginRequestDomainModel {
     };
   }
 
-  factory LoginRequestDomainModel.fromMap(Map<String, dynamic> map) {
+  factory LoginRequestDomainModel.fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return LoginRequestDomainModel(

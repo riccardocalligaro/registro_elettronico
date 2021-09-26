@@ -5,7 +5,7 @@ import 'package:registro_elettronico/core/infrastructure/theme/theme_data/themes
 import 'package:registro_elettronico/core/infrastructure/theme/ui/theme_item.dart';
 
 class CustomizationSettingsThemeDialog extends StatelessWidget {
-  const CustomizationSettingsThemeDialog({Key key}) : super(key: key);
+  const CustomizationSettingsThemeDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class CustomizationSettingsThemeDialog extends StatelessWidget {
         itemCount: ThemeType.values.length,
         itemBuilder: (ctx, index) {
           final theme = ThemeType.values.elementAt(index);
-          Color color;
+          Color? color;
 
           if (theme == ThemeType.dark) {
             color = Colors.grey[900];

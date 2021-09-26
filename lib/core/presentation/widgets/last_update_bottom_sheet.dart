@@ -6,21 +6,21 @@ class LastUpdateBottomSheet extends StatelessWidget {
   final int millisecondsSinceEpoch;
 
   const LastUpdateBottomSheet({
-    Key key,
-    @required this.millisecondsSinceEpoch,
+    Key? key,
+    required this.millisecondsSinceEpoch,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     String message;
-    AppLocalizations trans = AppLocalizations.of(context);
+    AppLocalizations? trans = AppLocalizations.of(context);
 
     if (millisecondsSinceEpoch == null) {
       message =
-          '${trans.translate('last_update')}: ${trans.translate('never')}';
+          '${trans!.translate('last_update')}: ${trans.translate('never')}';
     } else {
       message =
-          '${trans.translate('last_update')}: ${GlobalUtils.getLastUpdateMessage(context, DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch))}';
+          '${trans!.translate('last_update')}: ${GlobalUtils.getLastUpdateMessage(context, DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch))}';
     }
     return Container(
       // height: 20,
@@ -28,8 +28,8 @@ class LastUpdateBottomSheet extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           top: Theme.of(context).brightness == Brightness.dark
-              ? BorderSide(color: Colors.grey[800])
-              : BorderSide(color: Colors.grey[100]),
+              ? BorderSide(color: Colors.grey[800]!)
+              : BorderSide(color: Colors.grey[100]!),
         ),
       ),
       child: Padding(

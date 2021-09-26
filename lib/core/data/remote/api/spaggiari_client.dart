@@ -23,12 +23,12 @@ abstract class LegacySpaggiariClient {
     String body,
   );
 
-  Future<DocumentsResponse> getDocuments(String studentId);
+  Future<DocumentsResponse> getDocuments(String? studentId);
 
-  Future<bool> checkDocumentAvailability(String studentId, String documentHash);
+  Future<bool> checkDocumentAvailability(String? studentId, String documentHash);
 
-  Future<Tuple2<List<int>, String>> readDocument(
-    String studentId,
+  Future<Tuple2<List<int>, String?>> readDocument(
+    String? studentId,
     String documentHash,
   );
 }
@@ -41,7 +41,7 @@ class _SpaggiariClient implements LegacySpaggiariClient {
 
   final Dio _dio;
 
-  String baseUrl;
+  String? baseUrl;
 
   @override
   getNotes(studentId) async {
@@ -58,7 +58,7 @@ class _SpaggiariClient implements LegacySpaggiariClient {
             //     extra: _extra,
             //     baseUrl: baseUrl),
             data: _data);
-    final value = NotesResponse.fromJson(_result.data);
+    final value = NotesResponse.fromJson(_result.data!);
     return Future.value(value);
   }
 
@@ -80,12 +80,12 @@ class _SpaggiariClient implements LegacySpaggiariClient {
             //     extra: _extra,
             //     baseUrl: baseUrl),
             data: _data);
-    final value = NotesReadResponse.fromJson(_result.data);
+    final value = NotesReadResponse.fromJson(_result.data!);
     return Future.value(value);
   }
 
   @override
-  Future<DocumentsResponse> getDocuments(String studentId) async {
+  Future<DocumentsResponse> getDocuments(String? studentId) async {
     ArgumentError.checkNotNull(studentId, 'studentId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -100,13 +100,13 @@ class _SpaggiariClient implements LegacySpaggiariClient {
       //     baseUrl: baseUrl),
       data: _data,
     );
-    final value = DocumentsResponse.fromJson(_result.data);
+    final value = DocumentsResponse.fromJson(_result.data!);
     return Future.value(value);
   }
 
   @override
   Future<bool> checkDocumentAvailability(
-      String studentId, String documentHash) async {
+      String? studentId, String documentHash) async {
     ArgumentError.checkNotNull(studentId, 'studentId');
     ArgumentError.checkNotNull(documentHash, 'documentHash');
     const _extra = <String, dynamic>{};
@@ -124,13 +124,13 @@ class _SpaggiariClient implements LegacySpaggiariClient {
       data: _data,
     );
 
-    final bool avaliable = _result.data['document']['available'];
+    final bool? avaliable = _result.data!['document']['available'];
     return Future.value(avaliable);
   }
 
   @override
-  Future<Tuple2<List<int>, String>> readDocument(
-    String studentId,
+  Future<Tuple2<List<int>, String?>> readDocument(
+    String? studentId,
     String documentHash,
   ) async {
     ArgumentError.checkNotNull(studentId, 'studentId');
@@ -150,9 +150,9 @@ class _SpaggiariClient implements LegacySpaggiariClient {
       // ),
       data: _data,
     );
-    final bytes = _result.data.cast<int>();
+    final bytes = _result.data!.cast<int>();
 
-    String filename = _result.headers.value('content-disposition');
+    String? filename = _result.headers.value('content-disposition');
 
     return Tuple2(bytes, filename);
   }

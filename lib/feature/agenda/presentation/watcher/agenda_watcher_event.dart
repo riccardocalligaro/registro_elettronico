@@ -9,6 +9,6 @@ class AgendaDataReceived extends AgendaWatcherEvent {
   final Resource<AgendaDataDomainModel> resource;
 
   AgendaDataReceived({
-    @required this.resource,
+    required this.resource,
   });
 }

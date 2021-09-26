@@ -14,10 +14,10 @@ import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
 import 'package:share/share.dart';
 
 class AppDrawer extends StatefulWidget {
-  final int position;
+  final int? position;
 
   AppDrawer({
-    Key key,
+    Key? key,
     this.position,
   }) : super(key: key);
 
@@ -33,7 +33,7 @@ class _AppDrawerState extends State<AppDrawer>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    selectedList[widget.position] = true;
+    selectedList[widget.position!] = true;
     return Drawer(
       child: Column(
         children: <Widget>[
@@ -52,9 +52,9 @@ class _AppDrawerState extends State<AppDrawer>
       // todo: need to fix null
       future: _getUsername(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        var ident = " ";
-        var firstName = " ";
-        var lastName = " ";
+        String? ident = " ";
+        String? firstName = " ";
+        String? lastName = " ";
 
         if (snapshot.data != null) {
           ident = snapshot.data.ident;
@@ -64,14 +64,14 @@ class _AppDrawerState extends State<AppDrawer>
 
         return UserAccountsDrawerHeader(
           margin: EdgeInsets.zero,
-          accountEmail: Text(ident,
+          accountEmail: Text(ident!,
               style: Theme.of(context)
                   .primaryTextTheme
-                  .bodyText2
+                  .bodyText2!
                   .copyWith(color: Colors.white)),
           accountName: Text('$firstName $lastName'),
           currentAccountPicture: CircleAvatar(
-            child: Text(firstName[0] + lastName[0]),
+            child: Text(firstName![0] + lastName![0]),
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
           ),
@@ -84,7 +84,7 @@ class _AppDrawerState extends State<AppDrawer>
             gradient: LinearGradient(
               stops: [0.4, 1],
               colors:
-                  ColorUtils.getGradientForColor(Theme.of(context).accentColor),
+                  ColorUtils.getGradientForColor(Theme.of(context).accentColor) as List<Color>,
               begin: Alignment(-1.0, -2.0),
               end: Alignment(1.0, 2.0),
             ),
@@ -113,33 +113,33 @@ class _AppDrawerState extends State<AppDrawer>
             ),
             _createDrawerItem(
               icon: Icons.exit_to_app,
-              text: AppLocalizations.of(context).translate('logout'),
+              text: AppLocalizations.of(context)!.translate('logout')!,
               onTap: () {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
                     title: Text(
-                      AppLocalizations.of(context).translate('reset_db_alert'),
+                      AppLocalizations.of(context)!.translate('reset_db_alert')!,
                     ),
-                    content: Text(AppLocalizations.of(context)
-                        .translate('logout_message')),
+                    content: Text(AppLocalizations.of(context)!
+                        .translate('logout_message')!),
                     actions: <Widget>[
                       TextButton(
                         child:
-                            Text(AppLocalizations.of(context).translate('no')),
+                            Text(AppLocalizations.of(context)!.translate('no')!),
                         onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
                       TextButton(
                         child:
-                            Text(AppLocalizations.of(context).translate('yes')),
+                            Text(AppLocalizations.of(context)!.translate('yes')!),
                         onPressed: () {
                           Navigator.pop(context);
                           BlocProvider.of<AuthenticationBloc>(context)
                               .add(SignOut());
 
-                          AppNavigator.instance.navToLogin(context);
+                          AppNavigator.instance!.navToLogin(context);
                         },
                       ),
                     ],
@@ -156,7 +156,7 @@ class _AppDrawerState extends State<AppDrawer>
   }
 
   Widget _createMenuList() {
-    final trans = AppLocalizations.of(context);
+    final trans = AppLocalizations.of(context)!;
     return Container(
       child: ScrollConfiguration(
         behavior: NoGlowBehavior(),
@@ -176,32 +176,32 @@ class _AppDrawerState extends State<AppDrawer>
                 : Container(),
             _createDrawerItem(
               icon: Icons.home,
-              text: trans.translate("home"),
+              text: trans.translate("home")!,
               pos: DrawerConstants.HOME,
               onTap: () {
                 //Navigator.pop(context);
                 //Navigator.pushReplacementNamed(context, Routes.HOME);
-                AppNavigator.instance.navToHome(context);
+                AppNavigator.instance!.navToHome(context);
               },
             ),
             _createDrawerItem(
               icon: Icons.library_books,
-              text: trans.translate("lessons"),
+              text: trans.translate("lessons")!,
               pos: DrawerConstants.LESSONS,
               onTap: () {
                 Navigator.pop(context);
-                AppNavigator.instance.navToLessons(context);
+                AppNavigator.instance!.navToLessons(context);
                 // Navigator.pushNamedAndRemoveUntil(
                 //     context, Routes.LESSONS, (Route<dynamic> route) => false);
               },
             ),
             _createDrawerItem(
               icon: Icons.timeline,
-              text: trans.translate("grades"),
+              text: trans.translate("grades")!,
               pos: DrawerConstants.GRADES,
               onTap: () {
                 Navigator.pop(context);
-                AppNavigator.instance.navToGrades(context);
+                AppNavigator.instance!.navToGrades(context);
 
                 // Navigator.pushNamedAndRemoveUntil(
                 //     context, Routes.GRADES, ((Route<dynamic> route) => false));
@@ -209,81 +209,81 @@ class _AppDrawerState extends State<AppDrawer>
             ),
             _createDrawerItem(
               icon: Icons.event,
-              text: trans.translate("agenda"),
+              text: trans.translate("agenda")!,
               pos: DrawerConstants.AGENDA,
               onTap: () {
                 Navigator.pop(context);
-                AppNavigator.instance.navToAgenda(context);
+                AppNavigator.instance!.navToAgenda(context);
               },
             ),
             _createDrawerItem(
               icon: Icons.assessment,
-              text: trans.translate("absences"),
+              text: trans.translate("absences")!,
               pos: DrawerConstants.ABSENCES,
               onTap: () {
                 Navigator.pop(context);
 
-                AppNavigator.instance.navToAbsences(context);
+                AppNavigator.instance!.navToAbsences(context);
               },
             ),
             _createDrawerItem(
               icon: Icons.folder,
-              text: trans.translate("school_material"),
+              text: trans.translate("school_material")!,
               pos: DrawerConstants.SCHOOL_MATERIAL,
               onTap: () {
                 Navigator.pop(context);
-                AppNavigator.instance.navToSchoolMaterial(context);
+                AppNavigator.instance!.navToSchoolMaterial(context);
               },
             ),
             _createDrawerItem(
               icon: Icons.info,
-              text: trans.translate("notes"),
+              text: trans.translate("notes")!,
               pos: DrawerConstants.NOTES,
               onTap: () {
                 Navigator.pop(context);
-                AppNavigator.instance.navToNotes(context);
+                AppNavigator.instance!.navToNotes(context);
               },
             ),
             _createDrawerItem(
               icon: Icons.assignment,
-              text: trans.translate("notice_board"),
+              text: trans.translate("notice_board")!,
               pos: DrawerConstants.NOTICE_BOARD,
               onTap: () {
                 Navigator.pop(context);
-                AppNavigator.instance.navToNoticeboard(context);
+                AppNavigator.instance!.navToNoticeboard(context);
               },
             ),
             _createDrawerItem(
               icon: Icons.access_time,
-              text: AppLocalizations.of(context).translate('timetable'),
+              text: AppLocalizations.of(context)!.translate('timetable')!,
               pos: DrawerConstants.TIMETABLE,
               onTap: () {
                 Navigator.pop(context);
-                AppNavigator.instance.navToTimetable(context);
+                AppNavigator.instance!.navToTimetable(context);
               },
             ),
             _createDrawerItem(
               icon: Icons.import_contacts,
-              text: AppLocalizations.of(context).translate('scrutini'),
+              text: AppLocalizations.of(context)!.translate('scrutini')!,
               pos: DrawerConstants.SCRUTINI,
               onTap: () {
                 Navigator.pop(context);
-                AppNavigator.instance.navToScrutini(context);
+                AppNavigator.instance!.navToScrutini(context);
               },
             ),
             _createDrawerItem(
               icon: Icons.pie_chart,
-              text: AppLocalizations.of(context).translate('statistics'),
+              text: AppLocalizations.of(context)!.translate('statistics')!,
               pos: DrawerConstants.STATS,
               onTap: () {
                 Navigator.pop(context);
-                AppNavigator.instance.navToStats(context);
+                AppNavigator.instance!.navToStats(context);
               },
             ),
             Divider(),
             _createDrawerItem(
               icon: Icons.web,
-              text: trans.translate('web'),
+              text: trans.translate('web')!,
               pos: 12,
               onTap: () {
                 final url =
@@ -301,20 +301,20 @@ class _AppDrawerState extends State<AppDrawer>
             Divider(),
             _createDrawerItem(
               icon: Icons.settings,
-              text: trans.translate("settings"),
+              text: trans.translate("settings")!,
               pos: DrawerConstants.SETTINGS,
               onTap: () {
                 Navigator.pop(context);
-                AppNavigator.instance.navToSettings(context);
+                AppNavigator.instance!.navToSettings(context);
               },
             ),
             _createDrawerItem(
               icon: Icons.share,
-              text: trans.translate("share"),
+              text: trans.translate("share")!,
               pos: DrawerConstants.SHARE,
               onTap: () {
                 Share.share(
-                  trans.translate('share_message').replaceAll('{download_url}',
+                  trans.translate('share_message')!.replaceAll('{download_url}',
                       'https://play.google.com/store/apps/details?id=com.riccardocalligaro.registro_elettronico'),
                 );
               },
@@ -326,11 +326,11 @@ class _AppDrawerState extends State<AppDrawer>
   }
 
   Widget _createDrawerItem({
-    IconData icon,
-    String text,
-    GestureTapCallback onTap,
-    int pos,
-    bool isAccount,
+    IconData? icon,
+    required String text,
+    GestureTapCallback? onTap,
+    required int pos,
+    bool? isAccount,
   }) {
     return ListTile(
       title: Row(
@@ -352,16 +352,16 @@ class _AppDrawerState extends State<AppDrawer>
     );
   }
 
-  Future<ProfileDomainModel> _getUsername() async {
+  Future<ProfileDomainModel?> _getUsername() async {
     final profile =
         await RepositoryProvider.of<AuthenticationRepository>(context)
             .getProfile();
     return await profile;
   }
 
-  Color _getColor(bool isAccount) {
+  Color? _getColor(bool? isAccount) {
     if (isAccount ?? false) {
-      return Theme.of(context).textTheme.bodyText2.color;
+      return Theme.of(context).textTheme.bodyText2!.color;
     } else {
       return null;
     }

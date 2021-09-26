@@ -5,16 +5,16 @@ import 'package:registro_elettronico/feature/authentication/domain/model/profile
 
 class CredentialsDomainModel {
   ProfileDomainModel profile;
-  String password;
+  String? password;
 
   CredentialsDomainModel({
-    @required this.profile,
-    @required this.password,
+    required this.profile,
+    required this.password,
   });
 
   CredentialsDomainModel copyWith({
-    ProfileDomainModel profile,
-    String password,
+    ProfileDomainModel? profile,
+    String? password,
   }) {
     return CredentialsDomainModel(
       profile: profile ?? this.profile,
@@ -29,7 +29,7 @@ class CredentialsDomainModel {
     };
   }
 
-  factory CredentialsDomainModel.fromMap(Map<String, dynamic> map) {
+  factory CredentialsDomainModel.fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return CredentialsDomainModel(

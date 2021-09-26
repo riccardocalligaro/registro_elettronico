@@ -14,7 +14,7 @@ import 'package:registro_elettronico/utils/update_manager.dart';
 final GlobalKey<RefreshIndicatorState> gradesRefresherKey = GlobalKey();
 
 class GradesPage extends StatefulWidget {
-  GradesPage({Key key}) : super(key: key);
+  GradesPage({Key? key}) : super(key: key);
 
   @override
   _GradesPageState createState() => _GradesPageState();
@@ -28,26 +28,26 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context).translate('grades'),
+          AppLocalizations.of(context)!.translate('grades')!,
         ),
         brightness: Theme.of(context).brightness,
       ),
       body: BlocBuilder<GradesWatcherBloc, GradesWatcherState>(
         builder: (context, state) {
           if (state is GradesWatcherLoadSuccess) {
-            List<StatelessWidget> widgets;
+            late List<StatelessWidget> widgets;
 
             if (state.gradesSections != null) {
               widgets = [
                 GradesTab(
-                  grades: state.gradesSections.grades,
+                  grades: state.gradesSections!.grades,
                 ),
                 ...List.generate(
-                  state.gradesSections.periods,
+                  state.gradesSections!.periods,
                   (index) {
                     return PeriodTab(
                       periodWithGradesDomainModel:
-                          state.gradesSections.periodsWithGrades[index],
+                          state.gradesSections!.periodsWithGrades[index],
                     );
                   },
                 ),
@@ -62,7 +62,7 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
               child: state.gradesSections == null
                   ? _EmptyGrades(
                       onTap: () {
-                        gradesRefresherKey.currentState.show();
+                        gradesRefresherKey.currentState!.show();
                       },
                     )
                   : ListView(
@@ -77,8 +77,8 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: ActionChip(
-                                    label: Text(AppLocalizations.of(context)
-                                        .translate('last_grades')),
+                                    label: Text(AppLocalizations.of(context)!
+                                        .translate('last_grades')!),
                                     onPressed: () {
                                       setState(() {
                                         _currentPage = 0;
@@ -87,18 +87,18 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
                                     backgroundColor: _chipBackgroundColor(0),
                                   ),
                                 ),
-                                ...List.generate(state.gradesSections.periods,
+                                ...List.generate(state.gradesSections!.periods,
                                     (index) {
                                   final position = index + 1;
                                   return Padding(
                                     padding: const EdgeInsets.only(right: 8.0),
                                     child: ActionChip(
                                       label: Text(position ==
-                                              state.gradesSections.periods
-                                          ? AppLocalizations.of(context)
-                                              .translate('general')
-                                          : AppLocalizations.of(context)
-                                              .translate('term_chip')
+                                              state.gradesSections!.periods
+                                          ? AppLocalizations.of(context)!
+                                              .translate('general')!
+                                          : AppLocalizations.of(context)!
+                                              .translate('term_chip')!
                                               .replaceAll('{number}',
                                                   position.toString())),
                                       onPressed: () {
@@ -129,7 +129,7 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
     );
   }
 
-  Future<void> _refreshData(GradesPagesDomainModel gradesSections) {
+  Future<void> _refreshData(GradesPagesDomainModel? gradesSections) {
     final SRUpdateManager srUpdateManager = sl();
     return srUpdateManager.updateGradesData(
       gradesSections: gradesSections,
@@ -137,7 +137,7 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
     );
   }
 
-  Color _chipBackgroundColor(int index) {
+  Color? _chipBackgroundColor(int index) {
     if (index == _currentPage) {
       return Theme.of(context).accentColor;
     }
@@ -148,7 +148,7 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
 class _EmptyGrades extends StatelessWidget {
   final Function() onTap;
 
-  const _EmptyGrades({Key key, @required this.onTap}) : super(key: key);
+  const _EmptyGrades({Key? key, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +157,7 @@ class _EmptyGrades extends StatelessWidget {
         icon: Icons.timeline,
         showUpdate: true,
         onTap: onTap,
-        text: AppLocalizations.of(context).translate('no_grades'),
+        text: AppLocalizations.of(context)!.translate('no_grades'),
       ),
     );
   }

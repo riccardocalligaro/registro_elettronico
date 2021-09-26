@@ -8,7 +8,7 @@ import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_
 
 abstract class LessonsRepository {
   Stream<Resource<List<LessonDomainModel>>> watchLessonsForSubjectId({
-    @required int subjectId,
+    required int? subjectId,
   });
 
   Stream<Resource<List<LessonDomainModel>>> watchAllLessons();
@@ -17,10 +17,10 @@ abstract class LessonsRepository {
       watchLatestLessonsWithDuration();
 
   Future<Either<Failure, Success>> updateAllLessons({
-    @required bool ifNeeded,
+    required bool ifNeeded,
   });
 
   Future<Either<Failure, Success>> updateTodaysLessons({
-    @required bool ifNeeded,
+    required bool ifNeeded,
   });
 }

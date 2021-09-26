@@ -13,12 +13,12 @@ class NoteAttachmentsLoadSuccess extends NoteAttachmentsState {
   final NotesAttachment attachment;
 
   NoteAttachmentsLoadSuccess({
-    @required this.attachment,
+    required this.attachment,
   });
 }
 
 class NoteAttachmentsLoadError extends NoteAttachmentsState {
   final String error;
 
-  NoteAttachmentsLoadError({@required this.error});
+  NoteAttachmentsLoadError({required this.error});
 }

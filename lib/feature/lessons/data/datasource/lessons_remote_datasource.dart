@@ -3,14 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_remote_model.dart';
 
 class LessonsRemoteDatasource {
-  final Dio dio;
+  final Dio? dio;
 
   LessonsRemoteDatasource({
-    @required this.dio,
+    required this.dio,
   });
 
   Future<List<LessonRemoteModel>> getTodayLessons() async {
-    final response = await dio.get('/students/{studentId}/lessons/today');
+    final response = await dio!.get('/students/{studentId}/lessons/today');
 
     List<LessonRemoteModel> lessons = List<LessonRemoteModel>.from(
       response.data['lessons'].map(
@@ -25,7 +25,7 @@ class LessonsRemoteDatasource {
     String start,
     String end,
   ) async {
-    final response = await dio.get('/students/{studentId}/lessons/$start/$end');
+    final response = await dio!.get('/students/{studentId}/lessons/$start/$end');
 
     List<LessonRemoteModel> lessons = List<LessonRemoteModel>.from(
       response.data['lessons'].map(

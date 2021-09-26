@@ -8,15 +8,15 @@ class TimetableWatcherInitial extends TimetableWatcherState {}
 class TimetableWatcherLoading extends TimetableWatcherState {}
 
 class TimetableWatcherLoadSuccess extends TimetableWatcherState {
-  final TimetableDataDomainModel timetableData;
+  final TimetableDataDomainModel? timetableData;
 
   TimetableWatcherLoadSuccess({
-    @required this.timetableData,
+    required this.timetableData,
   });
 }
 
 class TimetableWatcherFailure extends TimetableWatcherState {
-  final Failure failure;
+  final Failure? failure;
 
-  TimetableWatcherFailure({@required this.failure});
+  TimetableWatcherFailure({required this.failure});
 }

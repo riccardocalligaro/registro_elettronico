@@ -7,15 +7,15 @@ import 'package:url_launcher/url_launcher.dart';
 class AboutAppDialog extends StatelessWidget {
   final PackageInfo packageInfo;
   const AboutAppDialog({
-    Key key,
-    @required this.packageInfo,
+    Key? key,
+    required this.packageInfo,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AboutDialog(
       applicationIcon: Icon(Icons.school),
-      applicationName: AppLocalizations.of(context).translate('app_name'),
+      applicationName: AppLocalizations.of(context)!.translate('app_name'),
       applicationVersion: packageInfo.version,
       children: <Widget>[
         GestureDetector(
@@ -34,7 +34,7 @@ class AboutAppDialog extends StatelessWidget {
                   style: TextStyle(
                     color: Theme.of(context).accentColor,
                   ),
-                  text: AppLocalizations.of(context).translate('about_site'),
+                  text: AppLocalizations.of(context)!.translate('about_site'),
                 ),
               ],
             ),
@@ -59,7 +59,7 @@ class AboutAppDialog extends StatelessWidget {
                   style: TextStyle(
                     color: Theme.of(context).accentColor,
                   ),
-                  text: AppLocalizations.of(context).translate('about_github'),
+                  text: AppLocalizations.of(context)!.translate('about_github'),
                 ),
               ],
             ),

@@ -5,11 +5,11 @@ import 'package:registro_elettronico/utils/constants/registro_constants.dart';
 /// client is a code different thatn 200, it converts the generic
 /// dio error to a "spaggiari" error response
 class ServerException implements Exception {
-  int statusCode;
-  String error;
-  String info;
-  String message;
-  int messageCode;
+  int? statusCode;
+  String? error;
+  String? info;
+  String? message;
+  int? messageCode;
 
   ServerException({
     this.statusCode,
@@ -37,7 +37,7 @@ class ServerException implements Exception {
     return data;
   }
 
-  int _tryToConvertMessageToConstant(int code, String message) {
+  int _tryToConvertMessageToConstant(int? code, String message) {
     Logger.info(code.toString() + " :" + message);
     if (code == 422 && message.trim() == "username and password does't match") {
       return RegistroConstants.USERNAME_PASSWORD_NOT_MATCHING;

@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';
 
 class AbsencesRemoteDatasource {
-  final Dio dio;
+  final Dio? dio;
 
   AbsencesRemoteDatasource({
-    @required this.dio,
+    required this.dio,
   });
 
   Future<List<AbsenceRemoteModel>> getAbsences() async {
-    final response = await dio.get(
+    final response = await dio!.get(
       '/students/{studentId}/absences/details',
     );
 

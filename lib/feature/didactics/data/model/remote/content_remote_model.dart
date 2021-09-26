@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 class ContentRemoteModel {
-  int contentId;
-  String contentName;
-  int objectId;
-  String objectType;
-  String shareDT;
+  int? contentId;
+  String? contentName;
+  int? objectId;
+  String? objectType;
+  String? shareDT;
 
   ContentRemoteModel({
     this.contentId,
@@ -16,14 +16,14 @@ class ContentRemoteModel {
     this.shareDT,
   });
 
-  ContentLocalModel toLocalModel({@required int folderId}) {
+  ContentLocalModel toLocalModel({required int? folderId}) {
     return ContentLocalModel(
       folderId: folderId ?? -1,
       id: this.contentId ?? -1,
       name: this.contentName ?? '',
-      objectId: this.objectId - 1,
-      type: this.objectType ?? -1,
-      date: DateTime.tryParse(this.shareDT) ??
+      objectId: this.objectId! - 1,
+      type: this.objectType ?? -1 as String?,
+      date: DateTime.tryParse(this.shareDT!) ??
           DateTime.fromMillisecondsSinceEpoch(0),
     );
   }

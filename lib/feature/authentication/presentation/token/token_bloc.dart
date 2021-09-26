@@ -14,14 +14,14 @@ part 'token_event.dart';
 part 'token_state.dart';
 
 class TokenBloc extends Bloc<TokenEvent, TokenState> {
-  final ScrutiniRepository scrutiniRepository;
+  final ScrutiniRepository? scrutiniRepository;
 
   TokenBloc({
-    @required this.scrutiniRepository,
+    required this.scrutiniRepository,
   }) : super(TokenInitial());
 
-  LoginToken loginToken;
-  LastYearToken lastYearToken;
+  LoginToken? loginToken;
+  LastYearToken? lastYearToken;
 
   @override
   Stream<TokenState> mapEventToState(
@@ -33,12 +33,12 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
       if (loginToken != null) {
         Logger.info('Got token from singleton');
         yield TokenSchoolReportLoadSuccess(
-          token: loginToken.token.split(';')[0],
+          token: loginToken!.token.split(';')[0],
           schoolReport: event.schoolReport,
         );
       } else {
         try {
-          final res = await scrutiniRepository.getLoginToken();
+          final res = await scrutiniRepository!.getLoginToken();
           Logger.info('Got token from Spaggiari');
 
           yield* res.fold((failure) async* {
@@ -62,10 +62,10 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
         if (lastYearToken != null) {
           Logger.info('Got token from singleton');
           yield TokenLoadSuccess(
-            token: loginToken.token.split(';')[0],
+            token: loginToken!.token.split(';')[0],
           );
         } else {
-          final res = await scrutiniRepository.getLoginToken(lastYear: true);
+          final res = await scrutiniRepository!.getLoginToken(lastYear: true);
           Logger.info('Got token from Spaggiari');
           yield* res.fold((failure) async* {
             Logger.e(
@@ -85,10 +85,10 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
         if (loginToken != null) {
           Logger.info('Got token from singleton');
           yield TokenLoadSuccess(
-            token: loginToken.token.split(';')[0],
+            token: loginToken!.token.split(';')[0],
           );
         } else {
-          final res = await scrutiniRepository.getLoginToken();
+          final res = await scrutiniRepository!.getLoginToken();
           Logger.info('Got token from Spaggiari');
           yield* res.fold((failure) async* {
             Logger.e(

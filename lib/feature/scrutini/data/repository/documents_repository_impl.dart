@@ -15,11 +15,11 @@ import 'package:registro_elettronico/utils/constants/preferences_constants.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DocumentsRepositoryImpl implements DocumentsRepository {
-  final AuthenticationRepository authenticationRepository;
-  final LegacySpaggiariClient spaggiariClient;
-  final DocumentsDao documentsDao;
-  final NetworkInfo networkInfo;
-  final SharedPreferences sharedPreferences;
+  final AuthenticationRepository? authenticationRepository;
+  final LegacySpaggiariClient? spaggiariClient;
+  final DocumentsDao? documentsDao;
+  final NetworkInfo? networkInfo;
+  final SharedPreferences? sharedPreferences;
 
   DocumentsRepositoryImpl(
     this.spaggiariClient,
@@ -31,39 +31,39 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
 
   @override
   Future updateDocuments() async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
-      final documents = await spaggiariClient.getDocuments(studentId);
+    if (await networkInfo!.isConnected) {
+      final studentId = await authenticationRepository!.getCurrentStudentId();
+      final documents = await spaggiariClient!.getDocuments(studentId);
 
       List<Document> documentsList = [];
       List<SchoolReport> reportsList = [];
 
-      documents.documents.forEach((document) {
+      documents.documents!.forEach((document) {
         documentsList
             .add(DocumentMapper.convertApiDocumentToInsertable(document));
       });
 
-      documents.schoolReports.forEach((report) {
+      documents.schoolReports!.forEach((report) {
         reportsList
             .add(DocumentMapper.convertApiSchoolReportToInsertable(report));
       });
 
       Logger.info(
-        'Got ${documents.documents.length} documents from server, procceding to insert in database',
+        'Got ${documents.documents!.length} documents from server, procceding to insert in database',
       );
 
       Logger.info(
-        'Got ${documents.schoolReports.length} school reports from server, procceding to insert in database',
+        'Got ${documents.schoolReports!.length} school reports from server, procceding to insert in database',
       );
 
       // Delete the documents
-      await documentsDao.deeteAllDocuments();
-      await documentsDao.deeteAllSchoolReports();
+      await documentsDao!.deeteAllDocuments();
+      await documentsDao!.deeteAllSchoolReports();
 
-      await documentsDao.insertDocuments(documentsList);
-      await documentsDao.insertSchoolReports(reportsList);
+      await documentsDao!.insertDocuments(documentsList);
+      await documentsDao!.insertSchoolReports(reportsList);
 
-      await sharedPreferences.setInt(
+      await sharedPreferences!.setInt(
         PrefsConstants.lastUpdateScrutini,
         DateTime.now().millisecondsSinceEpoch,
       );
@@ -75,18 +75,18 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   @override
   Future<Tuple2<List<SchoolReport>, List<Document>>>
       getDocumentsAndSchoolReports() async {
-    final List<SchoolReport> reports = await documentsDao.getAllSchoolReports();
-    final List<Document> documents = await documentsDao.getAllDocuments();
+    final List<SchoolReport> reports = await documentsDao!.getAllSchoolReports();
+    final List<Document> documents = await documentsDao!.getAllDocuments();
     return Tuple2(reports, documents);
   }
 
   @override
   Future<Either<Failure, bool>> checkDocument(String documentHash) async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
+    if (await networkInfo!.isConnected) {
+      final studentId = await authenticationRepository!.getCurrentStudentId();
 
       try {
-        final available = await spaggiariClient.checkDocumentAvailability(
+        final available = await spaggiariClient!.checkDocumentAvailability(
           studentId,
           documentHash,
         );
@@ -102,16 +102,16 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
 
   @override
   Future<Either<Failure, String>> readDocument(String documentHash) async {
-    if (await networkInfo.isConnected) {
+    if (await networkInfo!.isConnected) {
       try {
-        final studentId = await authenticationRepository.getCurrentStudentId();
+        final studentId = await authenticationRepository!.getCurrentStudentId();
         Logger.info('Got profile');
 
-        final document = await spaggiariClient.readDocument(
+        final document = await spaggiariClient!.readDocument(
           studentId,
           documentHash,
         );
-        String filename = document.value2;
+        String filename = document.value2!;
         filename = filename.replaceAll('attachment; filename=', '');
         filename = filename.replaceAll(RegExp('\"'), '');
         filename = filename.trim();
@@ -124,7 +124,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
         raf.writeFromSync(document.value1);
         await raf.close();
 
-        await documentsDao.insertDownloadedDocument(DownloadedDocument(
+        await documentsDao!.insertDownloadedDocument(DownloadedDocument(
           path: filePath,
           filename: filename,
           hash: documentHash,
@@ -146,27 +146,27 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
 
   @override
   Future deleteAllDownloadedDocuments() {
-    return documentsDao.deleteAllDownloadedDocuments();
+    return documentsDao!.deleteAllDownloadedDocuments();
   }
 
   @override
-  Future deleteDownloadedDocument(String hash) async {
+  Future deleteDownloadedDocument(String? hash) async {
     Logger.info('Checking downloaded with hash');
-    final fileDb = await documentsDao.getDownloadedDocumentFromHash(hash);
+    final fileDb = await documentsDao!.getDownloadedDocumentFromHash(hash);
     if (fileDb != null) {
-      File file = File(fileDb.path);
+      File file = File(fileDb.path!);
       file.deleteSync();
-      await documentsDao.deleteDownloadedDocument(fileDb);
+      await documentsDao!.deleteDownloadedDocument(fileDb);
     }
   }
 
   @override
   Future<List<DownloadedDocument>> getAllDownloadedDocuments() {
-    return documentsDao.getAllDownloadedDocuments();
+    return documentsDao!.getAllDownloadedDocuments();
   }
 
   @override
-  Future<DownloadedDocument> getDownloadedDocument(String hash) {
-    return documentsDao.getDownloadedDocument(hash);
+  Future<DownloadedDocument> getDownloadedDocument(String? hash) {
+    return documentsDao!.getDownloadedDocument(hash);
   }
 }

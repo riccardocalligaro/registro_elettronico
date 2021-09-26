@@ -19,12 +19,12 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 
 class SubjectGradesPage extends StatefulWidget {
   final PeriodGradeDomainModel periodGradeDomainModel;
-  final int periodPos;
+  final int? periodPos;
 
   SubjectGradesPage({
-    Key key,
-    @required this.periodGradeDomainModel,
-    @required this.periodPos,
+    Key? key,
+    required this.periodGradeDomainModel,
+    required this.periodPos,
   }) : super(key: key);
 
   @override
@@ -54,7 +54,7 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.periodGradeDomainModel.subject.name),
+        title: Text(widget.periodGradeDomainModel.subject.name!),
       ),
       body: BlocBuilder<SubjectGradesPagesetBloc, SubjectGradesPagesetState>(
         builder: (context, state) {
@@ -76,12 +76,12 @@ class _SubjectGradesPageState extends State<SubjectGradesPage> {
 
 class _SubjectGradesPage extends StatelessWidget {
   final SubjectDataDomainModel data;
-  final int periodPos;
+  final int? periodPos;
 
   const _SubjectGradesPage(
     this.data, {
-    Key key,
-    @required this.periodPos,
+    Key? key,
+    required this.periodPos,
   }) : super(key: key);
 
   @override
@@ -129,8 +129,8 @@ class _ProfessorsCard extends StatelessWidget {
   final String professors;
 
   const _ProfessorsCard({
-    Key key,
-    @required this.professors,
+    Key? key,
+    required this.professors,
   }) : super(key: key);
 
   @override
@@ -152,8 +152,8 @@ class _AveragesCard extends StatelessWidget {
   final SubjectAveragesDomainModel subjectAveragesDomainModel;
 
   const _AveragesCard({
-    Key key,
-    @required this.subjectAveragesDomainModel,
+    Key? key,
+    required this.subjectAveragesDomainModel,
   }) : super(key: key);
 
   @override
@@ -172,7 +172,7 @@ class _AveragesCard extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(AppLocalizations.of(context).translate('written')),
+                  Text(AppLocalizations.of(context)!.translate('written')!),
                 ],
               ),
               Column(
@@ -181,7 +181,7 @@ class _AveragesCard extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(AppLocalizations.of(context).translate('oral')),
+                  Text(AppLocalizations.of(context)!.translate('oral')!),
                 ],
               ),
               Column(
@@ -190,7 +190,7 @@ class _AveragesCard extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(AppLocalizations.of(context).translate('pratico')),
+                  Text(AppLocalizations.of(context)!.translate('pratico')!),
                 ],
               ),
             ],
@@ -222,8 +222,8 @@ class _GradesChart extends StatelessWidget {
   final SubjectDataDomainModel data;
 
   const _GradesChart({
-    Key key,
-    @required this.data,
+    Key? key,
+    required this.data,
   }) : super(key: key);
 
   @override
@@ -245,12 +245,12 @@ class _GradesChart extends StatelessWidget {
 
 class _ProgressBarCard extends StatelessWidget {
   final SubjectAveragesDomainModel averages;
-  final int objective;
+  final int? objective;
 
   const _ProgressBarCard({
-    Key key,
-    @required this.averages,
-    @required this.objective,
+    Key? key,
+    required this.averages,
+    required this.objective,
   }) : super(key: key);
 
   @override
@@ -258,10 +258,10 @@ class _ProgressBarCard extends StatelessWidget {
     double percent;
     if (averages.average.isNaN) {
       percent = 0.0;
-    } else if (averages.average / objective > 1) {
+    } else if (averages.average / objective! > 1) {
       percent = 1.0;
     } else {
-      percent = (averages.average / objective);
+      percent = (averages.average / objective!);
     }
 
     return Card(
@@ -287,11 +287,11 @@ class _ProgressBarCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    '${AppLocalizations.of(context).translate('your_objective')}: $objective',
+                    '${AppLocalizations.of(context)!.translate('your_objective')}: $objective',
                     textScaleFactor: 1.0,
                   ),
                   Text(
-                    '${AppLocalizations.of(context).translate('your_average')}: ${averages.averageValue}',
+                    '${AppLocalizations.of(context)!.translate('your_average')}: ${averages.averageValue}',
                     textScaleFactor: 1.0,
                   ),
                 ],
@@ -307,15 +307,15 @@ class _ProgressBarCard extends StatelessWidget {
 class _LocalGrades extends StatelessWidget {
   final List<GradeDomainModel> grades;
   final double oldAverage;
-  final int peridodPos;
-  final int subjectId;
+  final int? peridodPos;
+  final int? subjectId;
 
   const _LocalGrades({
-    Key key,
-    @required this.grades,
-    @required this.oldAverage,
-    @required this.peridodPos,
-    @required this.subjectId,
+    Key? key,
+    required this.grades,
+    required this.oldAverage,
+    required this.peridodPos,
+    required this.subjectId,
   }) : super(key: key);
 
   @override
@@ -325,7 +325,7 @@ class _LocalGrades extends StatelessWidget {
         if (state is LocalGradesWatcherLoadSuccess) {
           final newAverage = _getNewAverage(
             grades: grades,
-            localGrades: state.grades,
+            localGrades: state.grades!,
           );
 
           final difference = _averagesDifference(
@@ -333,7 +333,7 @@ class _LocalGrades extends StatelessWidget {
             newAverage: newAverage,
           );
 
-          final localGrades = state.grades;
+          final localGrades = state.grades!;
 
           return Card(
             margin: EdgeInsets.zero,
@@ -373,15 +373,15 @@ class _LocalGrades extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: state.grades.length,
+                    itemCount: state.grades!.length,
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: _iconFromChange(
-                          localGrades[index].decimalValue - oldAverage,
+                          localGrades[index].decimalValue! - oldAverage,
                           context,
                         ),
                         title: Text(
-                          localGrades[index].displayValue,
+                          localGrades[index].displayValue!,
                         ),
                         onTap: () {
                           showDialog(
@@ -389,18 +389,18 @@ class _LocalGrades extends StatelessWidget {
                             builder: (context) {
                               return AlertDialog(
                                 title: Text(
-                                  AppLocalizations.of(context)
-                                      .translate('sure_to_delete_it'),
+                                  AppLocalizations.of(context)!
+                                      .translate('sure_to_delete_it')!,
                                 ),
                                 content: Text(
-                                  AppLocalizations.of(context)
-                                      .translate('local_grade_will_be_removed'),
+                                  AppLocalizations.of(context)!
+                                      .translate('local_grade_will_be_removed')!,
                                 ),
                                 actions: <Widget>[
                                   TextButton(
                                     child: Text(
-                                      AppLocalizations.of(context)
-                                          .translate('cancel')
+                                      AppLocalizations.of(context)!
+                                          .translate('cancel')!
                                           .toUpperCase(),
                                     ),
                                     onPressed: () {
@@ -409,8 +409,8 @@ class _LocalGrades extends StatelessWidget {
                                   ),
                                   TextButton(
                                     child: Text(
-                                      AppLocalizations.of(context)
-                                          .translate('delete')
+                                      AppLocalizations.of(context)!
+                                          .translate('delete')!
                                           .toUpperCase(),
                                     ),
                                     onPressed: () async {
@@ -426,8 +426,8 @@ class _LocalGrades extends StatelessWidget {
                                             .showSnackBar(
                                           SnackBar(
                                             content: Text(
-                                              AppLocalizations.of(context)
-                                                  .translate('error_emoji'),
+                                              AppLocalizations.of(context)!
+                                                  .translate('error_emoji')!,
                                             ),
                                           ),
                                         );
@@ -451,9 +451,9 @@ class _LocalGrades extends StatelessWidget {
                       children: [
                         Icon(Icons.timeline, color: Colors.grey),
                         Text(
-                          AppLocalizations.of(context).translate('no_grades'),
+                          AppLocalizations.of(context)!.translate('no_grades')!,
                           style: TextStyle(
-                            color: Theme.of(context).textTheme.headline1.color,
+                            color: Theme.of(context).textTheme.headline1!.color,
                           ),
                         )
                       ],
@@ -464,8 +464,8 @@ class _LocalGrades extends StatelessWidget {
                   children: <Widget>[
                     TextButton(
                       child: Text(
-                        AppLocalizations.of(context)
-                            .translate('add')
+                        AppLocalizations.of(context)!
+                            .translate('add')!
                             .toUpperCase(),
                       ),
                       onPressed: () {
@@ -485,7 +485,7 @@ class _LocalGrades extends StatelessWidget {
                             //       .toUpperCase()),
                             //   initialDoubleValue: 6.0,
                             // );
-                          },
+                          } as Widget Function(BuildContext),
                         ).then(
                           (value) async {
                             if (value != null) {
@@ -507,8 +507,8 @@ class _LocalGrades extends StatelessWidget {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                      AppLocalizations.of(context)
-                                          .translate('error_emoji'),
+                                      AppLocalizations.of(context)!
+                                          .translate('error_emoji')!,
                                     ),
                                   ),
                                 );
@@ -530,21 +530,21 @@ class _LocalGrades extends StatelessWidget {
   }
 
   double _getNewAverage({
-    @required List<GradeDomainModel> grades,
-    @required List<GradeDomainModel> localGrades,
+    required List<GradeDomainModel> grades,
+    required List<GradeDomainModel> localGrades,
   }) {
     double sum = 0;
     int count = 0;
     grades.forEach((g) {
       if (g.decimalValue != -1.0) {
-        sum += g.decimalValue;
+        sum += g.decimalValue!;
         count++;
       }
     });
 
     localGrades.forEach((g) {
       if (g.decimalValue != -1.0) {
-        sum += g.decimalValue;
+        sum += g.decimalValue!;
         count++;
       }
     });
@@ -553,8 +553,8 @@ class _LocalGrades extends StatelessWidget {
   }
 
   double _averagesDifference({
-    @required double oldAverage,
-    @required double newAverage,
+    required double oldAverage,
+    required double newAverage,
   }) {
     if (newAverage > 0 && oldAverage > 0) {
       return (newAverage - oldAverage) / oldAverage * 10;
@@ -588,8 +588,8 @@ class _LastGrades extends StatelessWidget {
   final List<GradeDomainModel> grades;
 
   const _LastGrades({
-    Key key,
-    @required this.grades,
+    Key? key,
+    required this.grades,
   }) : super(key: key);
 
   @override

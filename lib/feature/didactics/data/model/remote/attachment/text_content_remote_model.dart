@@ -1,5 +1,5 @@
 class TextContentRemoteModel {
-  String text;
+  String? text;
 
   TextContentRemoteModel({this.text});
 

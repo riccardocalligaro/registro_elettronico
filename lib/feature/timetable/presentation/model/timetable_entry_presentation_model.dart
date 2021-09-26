@@ -5,18 +5,18 @@ import 'package:timetable/timetable.dart';
 
 class TimetableEntryPresentationModel extends Event {
   const TimetableEntryPresentationModel({
-    @required int id,
-    @required DateTime start,
-    @required DateTime end,
-    @required this.color,
-    @required this.subjectId,
-    @required this.subjectName,
+    required int? id,
+    required DateTime start,
+    required DateTime end,
+    required this.color,
+    required this.subjectId,
+    required this.subjectName,
   })  : assert(subjectName != null),
         super(start: start, end: end);
 
-  final Color color;
+  final Color? color;
 
-  final int subjectId;
+  final int? subjectId;
 
   final String subjectName;
 
@@ -31,8 +31,8 @@ class TimetableEntryPresentationModel extends Event {
   }
 
   static TimetableEntryPresentationModel fromDomainModel({
-    @required TimetableEntryDomainModel l,
-    @required Color color,
+    required TimetableEntryDomainModel l,
+    required Color? color,
   }) {
     // abbiamo il numero del giorno
     // dobbiamo trovare il giorno della settimana più vicino a quella data
@@ -40,12 +40,12 @@ class TimetableEntryPresentationModel extends Event {
     final _firstDayOfWeek = _findFirstDateOfTheWeek(DateTime.now());
 
     final day = DateTime(_firstDayOfWeek.year, _firstDayOfWeek.month,
-        _firstDayOfWeek.day + l.dayOfWeek, 8);
+        _firstDayOfWeek.day + l.dayOfWeek!, 8);
 
-    day.add(Duration(hours: l.start));
+    day.add(Duration(hours: l.start!));
 
-    final start = day.add(Duration(hours: (l.start)));
-    final end = start.add(Duration(hours: (l.end - l.start) + 1));
+    final start = day.add(Duration(hours: l.start!));
+    final end = start.add(Duration(hours: (l.end! - l.start!) + 1));
 
     return TimetableEntryPresentationModel(
       id: l.id,
@@ -53,7 +53,7 @@ class TimetableEntryPresentationModel extends Event {
       end: end,
       color: color,
       subjectId: l.subject,
-      subjectName: l.subjectName,
+      subjectName: l.subjectName!,
     );
   }
 
@@ -62,7 +62,7 @@ class TimetableEntryPresentationModel extends Event {
   }
 
   @override
-  bool operator ==(Object o) {
+  bool operator ==(Object? o) {
     if (identical(this, o)) return true;
 
     return o is TimetableEntryPresentationModel &&

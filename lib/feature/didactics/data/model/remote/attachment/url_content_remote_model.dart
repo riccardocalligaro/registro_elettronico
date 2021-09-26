@@ -1,5 +1,5 @@
 class URLContentRemoteModel {
-  URLItem item;
+  URLItem? item;
 
   URLContentRemoteModel({this.item});
 
@@ -10,14 +10,14 @@ class URLContentRemoteModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.item != null) {
-      data['item'] = this.item.toJson();
+      data['item'] = this.item!.toJson();
     }
     return data;
   }
 }
 
 class URLItem {
-  String link;
+  String? link;
 
   URLItem({this.link});
 

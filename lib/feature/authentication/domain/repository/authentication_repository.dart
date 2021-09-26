@@ -12,28 +12,28 @@ abstract class AuthenticationRepository {
   /// Returns true if the user is logged in
   Future<bool> isLoggedIn();
 
-  Future<ProfileDomainModel> getProfile();
+  Future<ProfileDomainModel?> getProfile();
 
   /// Get the current student id, for making API Calls
-  Future<String> getCurrentStudentId();
+  Future<String?> getCurrentStudentId();
 
   Future<CredentialsDomainModel> getCredentials();
 
   Future<Either<Failure, List<ProfileDomainModel>>> getNonActiveAccounts();
 
   Future<Either<Failure, GenericLoginResponse>> loginUser({
-    @required LoginRequestDomainModel loginRequestDomainModel,
+    required LoginRequestDomainModel? loginRequestDomainModel,
     bool markCurrentAsInactive = false,
   });
 
   Future updateProfile({
-    @required DefaultLoginResponseRemoteModel responseRemoteModel,
-    @required ProfileDomainModel profileDomainModel,
+    required DefaultLoginResponseRemoteModel responseRemoteModel,
+    required ProfileDomainModel profileDomainModel,
   });
 
   Future<Either<Failure, Success>> logoutCurrentUser();
 
   Future<Either<Failure, Success>> switchToAccount({
-    @required ProfileDomainModel profileDomainModel,
+    required ProfileDomainModel profileDomainModel,
   });
 }

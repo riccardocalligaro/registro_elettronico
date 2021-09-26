@@ -9,7 +9,7 @@ class GradesReceived extends GradesWatcherEvent {
   final Resource<GradesPagesDomainModel> resource;
 
   GradesReceived({
-    @required this.resource,
+    required this.resource,
   });
 }
 

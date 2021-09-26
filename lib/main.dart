@@ -19,7 +19,7 @@ import 'core/infrastructure/log/logger_bloc.dart';
 import 'core/infrastructure/notification/fcm_service.dart';
 import 'core/infrastructure/routes.dart';
 
-FlutterLocalNotificationsPlugin globalLocalNotifications;
+FlutterLocalNotificationsPlugin? globalLocalNotifications;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,7 +64,7 @@ class SrApp extends StatelessWidget {
           theme: initData.materialThemeData,
           supportedLocales: initData.supportedLocales,
           localizationsDelegates: initData.localizationsDelegates,
-          localeResolutionCallback: initData.localeResolutionCallback,
+          localeResolutionCallback: initData.localeResolutionCallback as Locale? Function(Locale?, Iterable<Locale>)?,
           // debugShowCheckedModeBanner: false,
           builder: (context, child) => ResponsiveWrapper.builder(
             child,

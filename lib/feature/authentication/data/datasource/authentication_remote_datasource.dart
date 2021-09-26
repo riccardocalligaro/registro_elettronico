@@ -13,13 +13,13 @@ class AuthenticationRemoteDatasource {
   final Dio dio;
 
   AuthenticationRemoteDatasource({
-    @required this.dio,
+    required this.dio,
   });
 
   Future<
       Either<ParentLoginResponseRemoteModel,
           DefaultLoginResponseRemoteModel>> loginUser({
-    @required LoginRequestDomainModel loginRequestDomainModel,
+    required LoginRequestDomainModel loginRequestDomainModel,
   }) async {
     final response = await dio.post(
       '/auth/login',

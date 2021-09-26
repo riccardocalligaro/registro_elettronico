@@ -7,7 +7,7 @@ class SubjectsReceived extends SubjectsWatcherEvent {
   final Resource<List<SubjectDomainModel>> resource;
 
   SubjectsReceived({
-    @required this.resource,
+    required this.resource,
   });
 }
 

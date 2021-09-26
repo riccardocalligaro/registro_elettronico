@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class GradePainer extends CustomPainter {
-  Color lineColor;
-  Color completeColor;
-  double completePercent;
-  double width;
+  Color? lineColor;
+  Color? completeColor;
+  double? completePercent;
+  double? width;
   GradePainer({
     this.lineColor,
     this.completeColor,
@@ -16,19 +16,19 @@ class GradePainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint line = Paint()
-      ..color = lineColor
+      ..color = lineColor!
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
-      ..strokeWidth = width;
+      ..strokeWidth = width!;
     Paint complete = Paint()
-      ..color = completeColor
+      ..color = completeColor!
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
-      ..strokeWidth = width;
+      ..strokeWidth = width!;
     Offset center = Offset(size.width / 2, size.height / 2);
     double radius = min(size.width / 2, size.height / 2);
     canvas.drawCircle(center, radius, line);
-    double arcAngle = 2 * pi * (completePercent / 100);
+    double arcAngle = 2 * pi * (completePercent! / 100);
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -pi / 2,
         arcAngle, false, complete);
   }

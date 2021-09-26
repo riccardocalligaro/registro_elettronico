@@ -63,8 +63,8 @@ class PushNotificationService {
 
       await flutterLocalNotificationsPlugin.show(
         _randomId(),
-        message.notification.title,
-        message.notification.body,
+        message.notification!.title,
+        message.notification!.body,
         platformChannelSpecifics,
       );
     });

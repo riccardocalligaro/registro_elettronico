@@ -3,18 +3,18 @@ import 'dart:convert';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 class LessonDomainModel {
-  int id;
-  DateTime date;
-  String code;
-  int position;
-  int duration;
-  String classDescription;
-  String author;
-  int subjectId;
-  String subjectCode;
-  String subjectDescription;
-  String lessonType;
-  String lessonArgoment;
+  int? id;
+  DateTime? date;
+  String? code;
+  int? position;
+  int? duration;
+  String? classDescription;
+  String? author;
+  int? subjectId;
+  String? subjectCode;
+  String? subjectDescription;
+  String? lessonType;
+  String? lessonArgoment;
 
   LessonDomainModel({
     this.id,
@@ -47,18 +47,18 @@ class LessonDomainModel {
   }
 
   LessonDomainModel copyWith({
-    int id,
-    DateTime date,
-    String code,
-    int position,
-    int duration,
-    String classDescription,
-    String author,
-    int subjectId,
-    String subjectCode,
-    String subjectDescription,
-    String lessonType,
-    String lessonArgoment,
+    int? id,
+    DateTime? date,
+    String? code,
+    int? position,
+    int? duration,
+    String? classDescription,
+    String? author,
+    int? subjectId,
+    String? subjectCode,
+    String? subjectDescription,
+    String? lessonType,
+    String? lessonArgoment,
   }) {
     return LessonDomainModel(
       id: id ?? this.id,
@@ -93,7 +93,7 @@ class LessonDomainModel {
     };
   }
 
-  factory LessonDomainModel.fromMap(Map<String, dynamic> map) {
+  factory LessonDomainModel.fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return LessonDomainModel(

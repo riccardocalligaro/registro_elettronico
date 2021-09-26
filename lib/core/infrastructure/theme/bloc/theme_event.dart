@@ -12,11 +12,11 @@ abstract class ThemeEvent extends Equatable {
 }
 
 class ThemeChanged extends ThemeEvent {
-  final ThemeType type;
-  final MaterialColor color;
+  final ThemeType? type;
+  final MaterialColor? color;
 
   ThemeChanged({
-    @required this.type,
-    @required this.color,
+    required this.type,
+    required this.color,
   });
 }

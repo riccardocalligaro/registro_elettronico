@@ -12,14 +12,14 @@ abstract class TimetableRepository {
   Future<Either<Failure, Success>> regenerateTimetable();
 
   Future<Either<Failure, Success>> deleteTimetableEntry({
-    @required int id,
+    required int id,
   });
 
   Future<Either<Failure, Success>> insertTimetableEntry({
-    @required TimetableEntryDomainModel entry,
+    required TimetableEntryDomainModel entry,
   });
 
   Future<Either<Failure, Success>> updateTimetableEntry({
-    @required TimetableEntryDomainModel entry,
+    required TimetableEntryDomainModel entry,
   });
 }

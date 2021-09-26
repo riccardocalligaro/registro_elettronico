@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SRLoadingView extends StatelessWidget {
-  const SRLoadingView({Key key}) : super(key: key);
+  const SRLoadingView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

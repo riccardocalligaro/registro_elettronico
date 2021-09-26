@@ -6,8 +6,8 @@ class PeriodGradesList extends StatelessWidget {
   final PeriodWithGradesDomainModel periodWithGradesDomainModel;
 
   const PeriodGradesList({
-    Key key,
-    @required this.periodWithGradesDomainModel,
+    Key? key,
+    required this.periodWithGradesDomainModel,
   }) : super(key: key);
 
   @override

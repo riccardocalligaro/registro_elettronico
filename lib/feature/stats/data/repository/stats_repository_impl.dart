@@ -24,13 +24,13 @@ import 'package:registro_elettronico/utils/grades_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StatsRepositoryImpl implements StatsRepository {
-  final GradesLocalDatasource gradeDao;
-  final AbsenceDao absenceDao;
-  final SubjectsLocalDatasource subjectsLocalDatasource;
-  final PeriodsLocalDatasource periodsLocalDatasource;
-  final NoteDao noteDao;
-  final AgendaLocalDatasource agendaDao;
-  final SharedPreferences sharedPreferences;
+  final GradesLocalDatasource? gradeDao;
+  final AbsenceDao? absenceDao;
+  final SubjectsLocalDatasource? subjectsLocalDatasource;
+  final PeriodsLocalDatasource? periodsLocalDatasource;
+  final NoteDao? noteDao;
+  final AgendaLocalDatasource? agendaDao;
+  final SharedPreferences? sharedPreferences;
 
   StatsRepositoryImpl(
     this.gradeDao,
@@ -46,14 +46,14 @@ class StatsRepositoryImpl implements StatsRepository {
   Future<Either<Failure, StudentReport>> getStudentReport() async {
     try {
       // We get the data that we need to get the stats
-      final grades = await gradeDao.getGrades();
+      final grades = await gradeDao!.getGrades();
 
       final domainGrades =
           grades.map((l) => GradeDomainModel.fromLocalModel(l)).toList();
 
-      final absences = await absenceDao.getAllAbsences();
+      final absences = await absenceDao!.getAllAbsences();
 
-      final localSubjects = await subjectsLocalDatasource.getAllSubjects();
+      final localSubjects = await subjectsLocalDatasource!.getAllSubjects();
       final subjects = localSubjects
           .map(
             (l) => SubjectDomainModel.fromLocalModel(
@@ -64,20 +64,20 @@ class StatsRepositoryImpl implements StatsRepository {
           )
           .toList();
 
-      final localPeriods = await periodsLocalDatasource.getPeriods();
+      final localPeriods = await periodsLocalDatasource!.getPeriods();
       final periods = localPeriods
           .map(
             (l) => PeriodDomainModel.fromLocalModel(l),
           )
           .toList();
 
-      final notes = await noteDao.getAllNotes();
-      final localEvents = await agendaDao.getAllEvents();
+      final notes = await noteDao!.getAllNotes();
+      final localEvents = await agendaDao!.getAllEvents();
       final events = localEvents
           .map((e) => AgendaEventDomainModel.fromLocalModel(e))
           .toList();
 
-      final year = sharedPreferences.getInt(PrefsConstants.STUDENT_YEAR) ?? 3;
+      final year = sharedPreferences!.getInt(PrefsConstants.STUDENT_YEAR) ?? 3;
 
       if (periods.length >= 2) {
         double average = 0;
@@ -91,8 +91,8 @@ class StatsRepositoryImpl implements StatsRepository {
         PeriodDomainModel mostProfitablePeriod;
 
         // We get the best and worst subject
-        SubjectDomainModel bestSubject;
-        SubjectDomainModel worstSubject;
+        SubjectDomainModel? bestSubject;
+        SubjectDomainModel? worstSubject;
         double subjectAverage = 0.0;
         double maxAverage = -1.0;
         double minAverage = 11.0;
@@ -138,22 +138,22 @@ class StatsRepositoryImpl implements StatsRepository {
         domainGrades.forEach((grade) {
           if (GradesUtils.isValidGrade(grade)) {
             if (true) {
-              average += grade.decimalValue;
+              average += grade.decimalValue!;
               gradesCount++;
 
               if (grade.periodPos == periods.elementAt(0).position) {
-                firstTermAverage += grade.decimalValue;
+                firstTermAverage += grade.decimalValue!;
                 firstTermGradesCount++;
               } else if (grade.periodPos == periods.elementAt(1).position) {
-                secondTermAverage += grade.decimalValue;
+                secondTermAverage += grade.decimalValue!;
                 secondTermGradesCount++;
               }
 
-              if (grade.decimalValue >= 6) {
+              if (grade.decimalValue! >= 6) {
                 sufficienzeCount++;
-              } else if (grade.decimalValue >= 5.5 && grade.decimalValue < 6) {
+              } else if (grade.decimalValue! >= 5.5 && grade.decimalValue! < 6) {
                 insufficienzeLieviCount++;
-              } else if (grade.decimalValue >= 4.5) {
+              } else if (grade.decimalValue! >= 4.5) {
                 insufficienzeCount++;
               } else {
                 insufficienzeGraviCount++;
@@ -182,11 +182,11 @@ class StatsRepositoryImpl implements StatsRepository {
         );
 
         final daysRemaining =
-            periods.elementAt(1).end.difference(DateTime.now());
+            periods.elementAt(1).end!.difference(DateTime.now());
 
         int schoolCredits;
 
-        if (periods.elementAt(0).end.isAfter(DateTime.now())) {
+        if (periods.elementAt(0).end!.isAfter(DateTime.now())) {
           schoolCredits =
               GradesUtils.getMinSchoolCredits(firstTermAverage, year);
         } else {
@@ -194,7 +194,7 @@ class StatsRepositoryImpl implements StatsRepository {
               GradesUtils.getMinSchoolCredits(secondTermAverage, year);
         }
 
-        double score;
+        double? score;
         try {
           score = _getUserScore(
             absences: absences,
@@ -259,20 +259,20 @@ class StatsRepositoryImpl implements StatsRepository {
   }
 
   double _getUserScore({
-    @required List<GradeDomainModel> grades,
-    @required List<Absence> absences,
-    @required List<Note> notes,
-    @required int skippedTests,
-    @required List<AgendaEventDomainModel> events,
-    @required int nearlySufficientSubjects,
-    @required int insufficientSubjects,
-    @required double average,
-    @required int sufficientGrades,
-    @required int nearlySufficientGrades,
-    @required int insufficientGrades,
-    @required int gravementeInsufficientGrades,
-    @required int totalGrades,
-    @required int gravementeInsufficientSubjects,
+    required List<GradeDomainModel> grades,
+    required List<Absence> absences,
+    required List<Note> notes,
+    required int skippedTests,
+    required List<AgendaEventDomainModel> events,
+    required int nearlySufficientSubjects,
+    required int insufficientSubjects,
+    required double average,
+    required int sufficientGrades,
+    required int nearlySufficientGrades,
+    required int insufficientGrades,
+    required int gravementeInsufficientGrades,
+    required int totalGrades,
+    required int gravementeInsufficientSubjects,
   }) {
     double initialScore = sufficientGrades / totalGrades * 100.0;
 
@@ -296,7 +296,7 @@ class StatsRepositoryImpl implements StatsRepository {
 
     absences.forEach((e) {
       if (e.evtCode == RegistroConstants.RITARDO_BREVE) initialScore -= 0.25;
-      if (!e.isJustified) {
+      if (!e.isJustified!) {
         initialScore -= 3.00;
       }
     });
@@ -305,27 +305,27 @@ class StatsRepositoryImpl implements StatsRepository {
   }
 
   int _getSkippedTests({
-    @required List<AgendaEventDomainModel> events,
-    @required List<Absence> absences,
+    required List<AgendaEventDomainModel> events,
+    required List<Absence> absences,
   }) {
     int days = 0;
 
     absences.forEach((absence) {
       final absenceDayEvents = events
-          .where((e) => SRDateUtils.areSameDay(e.begin, absence.evtDate))
+          .where((e) => SRDateUtils.areSameDay(e.begin!, absence.evtDate!))
           .toList();
 
       // If there are events in the day of the event
       absenceDayEvents.forEach((dayEvent) {
-        if (GlobalUtils.isVerificaOrInterrogazione(dayEvent.notes)) {
+        if (GlobalUtils.isVerificaOrInterrogazione(dayEvent.notes!)) {
           if (absence.evtCode == RegistroConstants.ASSENZA) {
             days++;
           } else if (absence.evtCode == RegistroConstants.RITARDO) {
-            if (absence.evtHPos > dayEvent.begin.hour - 8) {
+            if (absence.evtHPos! > dayEvent.begin!.hour - 8) {
               days++;
             }
           } else if (absence.evtCode == RegistroConstants.USCITA) {
-            if (absence.evtHPos < dayEvent.begin.hour - 8) {
+            if (absence.evtHPos! < dayEvent.begin!.hour - 8) {
               days++;
             }
           }

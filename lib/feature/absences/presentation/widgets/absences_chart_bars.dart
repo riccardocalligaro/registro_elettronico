@@ -6,7 +6,7 @@ import 'package:registro_elettronico/utils/color_utils.dart';
 class AbsencesChartBars extends StatefulWidget {
   final Map<int, List<Absence>> absences;
 
-  const AbsencesChartBars({Key key, @required this.absences}) : super(key: key);
+  const AbsencesChartBars({Key? key, required this.absences}) : super(key: key);
   @override
   State<StatefulWidget> createState() => AbsencesChartBarsState();
 }
@@ -130,21 +130,21 @@ class AbsencesChartBarsState extends State<AbsencesChartBars> {
   }
 
   List<BarChartRodStackItem> _getEventsForMonth(int month) {
-    List<Absence> events = widget.absences[month];
+    List<Absence>? events = widget.absences[month];
     if (events == null) {
       return [
         BarChartRodStackItem(0, 0, Colors.transparent),
       ];
     }
     // Sort by code so a its first
-    events.sort((a, b) => a.evtCode.compareTo(b.evtCode));
+    events.sort((a, b) => a.evtCode!.compareTo(b.evtCode!));
 
     List<BarChartRodStackItem> items = [];
     double count = 1;
     events.forEach((event) {
       // print("x" + (count - 1).toString() + " y " + count.toString());
       items.add(BarChartRodStackItem(count - 1.1, count + 0.1,
-          ColorUtils.getColorFromCode(event.evtCode)));
+          ColorUtils.getColorFromCode(event.evtCode)!));
       count += 1;
     });
 

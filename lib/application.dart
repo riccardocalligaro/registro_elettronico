@@ -11,12 +11,12 @@ import 'core/infrastructure/theme/ui/theme_bloc_builder.dart';
 class Application extends StatelessWidget {
   final Widget Function(BuildContext context, InitData initData) builder;
 
-  Application({@required this.builder});
+  Application({required this.builder});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: AppBlocDelegate.instance(context).blocProviders,
+      providers: AppBlocDelegate.instance(context)!.blocProviders!,
       child: LocaleBlocBuilder(
         builder: (lBBContext, locale, supportedLocales, localizationsDelegates,
             localeResolutionCallback) {
@@ -24,10 +24,10 @@ class Application extends StatelessWidget {
             builder: (tBBContext, materialThemeData, cupertinoThemeData) {
               InitData initData = InitData(
                 materialThemeData,
-                cupertinoThemeData,
+                cupertinoThemeData!,
                 locale,
-                supportedLocales,
-                localizationsDelegates,
+                supportedLocales!,
+                localizationsDelegates!,
                 localeResolutionCallback,
                 _getOverlayStile(materialThemeData.brightness),
               );

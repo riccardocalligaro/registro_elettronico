@@ -11,9 +11,9 @@ import 'package:registro_elettronico/feature/scrutini/presentation/bloc/document
 import 'package:registro_elettronico/feature/stats/presentation/bloc/stats_bloc.dart';
 
 class AppBlocDelegate {
-  static AppBlocDelegate _instance;
+  static AppBlocDelegate? _instance;
 
-  List<BlocProvider> _blocProviders;
+  List<BlocProvider>? _blocProviders;
 
   AppBlocDelegate._(BuildContext context) {
     _blocProviders = [
@@ -52,12 +52,12 @@ class AppBlocDelegate {
     ];
   }
 
-  static AppBlocDelegate instance(BuildContext context) {
+  static AppBlocDelegate? instance(BuildContext context) {
     if (_instance == null) {
       _instance = AppBlocDelegate._(context);
     }
     return _instance;
   }
 
-  List<BlocProvider> get blocProviders => _blocProviders;
+  List<BlocProvider>? get blocProviders => _blocProviders;
 }

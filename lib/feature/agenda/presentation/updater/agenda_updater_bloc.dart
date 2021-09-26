@@ -11,10 +11,10 @@ part 'agenda_updater_event.dart';
 part 'agenda_updater_state.dart';
 
 class AgendaUpdaterBloc extends Bloc<AgendaUpdaterEvent, AgendaUpdaterState> {
-  final AgendaRepository agendaRepository;
+  final AgendaRepository? agendaRepository;
 
   AgendaUpdaterBloc({
-    @required this.agendaRepository,
+    required this.agendaRepository,
   }) : super(AgendaUpdaterInitial());
 
   @override
@@ -27,9 +27,9 @@ class AgendaUpdaterBloc extends Bloc<AgendaUpdaterEvent, AgendaUpdaterState> {
       Either<Failure, Success> update;
 
       if (event.onlyLastDays) {
-        update = await agendaRepository.updateAgendaLatestDays(ifNeeded: true);
+        update = await agendaRepository!.updateAgendaLatestDays(ifNeeded: true);
       } else {
-        update = await agendaRepository.updateAllAgenda(ifNeeded: true);
+        update = await agendaRepository!.updateAllAgenda(ifNeeded: true);
       }
 
       yield* update.fold((failure) async* {
@@ -43,9 +43,9 @@ class AgendaUpdaterBloc extends Bloc<AgendaUpdaterEvent, AgendaUpdaterState> {
       Either<Failure, Success> update;
 
       if (event.onlyLastDays) {
-        update = await agendaRepository.updateAgendaLatestDays(ifNeeded: true);
+        update = await agendaRepository!.updateAgendaLatestDays(ifNeeded: true);
       } else {
-        update = await agendaRepository.updateAllAgenda(ifNeeded: true);
+        update = await agendaRepository!.updateAllAgenda(ifNeeded: true);
       }
 
       yield* update.fold((failure) async* {

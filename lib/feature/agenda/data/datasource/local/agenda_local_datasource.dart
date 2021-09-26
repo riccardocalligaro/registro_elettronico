@@ -31,7 +31,7 @@ class AgendaLocalDatasource extends DatabaseAccessor<SRDatabase>
 
   Future<void> deleteAllEvents() => delete(agendaEventsTable).go();
 
-  Future deleteEventWithId(int id) {
+  Future deleteEventWithId(int? id) {
     return (delete(agendaEventsTable)..where((t) => t.evtId.equals(id))).go();
   }
 

@@ -8,7 +8,7 @@ class ThemeState extends Equatable {
   final ThemeData materialThemeData;
 
   ThemeState({
-    @required this.materialThemeData,
+    required this.materialThemeData,
   });
 
   @override

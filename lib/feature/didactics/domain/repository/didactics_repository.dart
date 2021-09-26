@@ -10,19 +10,19 @@ import 'package:registro_elettronico/feature/didactics/domain/model/didactics_fi
 import 'package:registro_elettronico/feature/didactics/domain/model/teacher_domain_model.dart';
 
 abstract class DidacticsRepository {
-  Stream<Resource<List<DidacticsTeacherDomainModel>>> watchTeachersMaterials();
+  Stream<Resource<List<DidacticsTeacherDomainModel?>>> watchTeachersMaterials();
 
-  Future<Either<Failure, Success>> updateMaterials({@required bool ifNeeded});
+  Future<Either<Failure, Success>> updateMaterials({required bool ifNeeded});
 
   Stream<Resource<DidacticsFile>> downloadFile({
-    @required ContentDomainModel contentDomainModel,
+    required ContentDomainModel contentDomainModel,
   });
 
   Future<Either<Failure, TextContentRemoteModel>> downloadText({
-    @required ContentDomainModel contentDomainModel,
+    required ContentDomainModel contentDomainModel,
   });
 
   Future<Either<Failure, URLContentRemoteModel>> downloadURL({
-    @required ContentDomainModel contentDomainModel,
+    required ContentDomainModel contentDomainModel,
   });
 }

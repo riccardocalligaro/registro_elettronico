@@ -10,11 +10,11 @@ class GradesUpdaterLoading extends GradesUpdaterState {}
 class GradesUpdaterSuccess extends GradesUpdaterState {
   final Success success;
 
-  GradesUpdaterSuccess({@required this.success});
+  GradesUpdaterSuccess({required this.success});
 }
 
 class GradesUpdaterFailure extends GradesUpdaterState {
   final Failure failure;
 
-  GradesUpdaterFailure({@required this.failure});
+  GradesUpdaterFailure({required this.failure});
 }

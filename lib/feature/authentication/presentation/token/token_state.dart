@@ -12,8 +12,8 @@ class TokenSchoolReportLoadSuccess extends TokenState {
   final SchoolReport schoolReport;
 
   TokenSchoolReportLoadSuccess({
-    @required this.token,
-    @required this.schoolReport,
+    required this.token,
+    required this.schoolReport,
   });
 }
 
@@ -21,7 +21,7 @@ class TokenLoadSuccess extends TokenState {
   final String token;
 
   TokenLoadSuccess({
-    @required this.token,
+    required this.token,
   });
 }
 

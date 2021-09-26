@@ -6,7 +6,7 @@ import 'package:registro_elettronico/feature/authentication/presentation/login_p
 import 'package:registro_elettronico/feature/navigator/navigator_page.dart';
 
 class SplashScreen extends StatefulWidget {
-  SplashScreen({Key key}) : super(key: key);
+  SplashScreen({Key? key}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();

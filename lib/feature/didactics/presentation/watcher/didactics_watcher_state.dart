@@ -8,15 +8,15 @@ class DidacticsWatcherInitial extends DidacticsWatcherState {}
 class DidacticsWatcherLoading extends DidacticsWatcherState {}
 
 class DidacticsWatcherLoadSuccess extends DidacticsWatcherState {
-  final List<DidacticsTeacherDomainModel> teachers;
+  final List<DidacticsTeacherDomainModel?>? teachers;
 
   DidacticsWatcherLoadSuccess({
-    @required this.teachers,
+    required this.teachers,
   });
 }
 
 class DidacticsWatcherFailure extends DidacticsWatcherState {
-  final Failure failure;
+  final Failure? failure;
 
-  DidacticsWatcherFailure({@required this.failure});
+  DidacticsWatcherFailure({required this.failure});
 }

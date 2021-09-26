@@ -6,8 +6,8 @@ class LessonCard extends StatelessWidget {
   final LessonWithDurationDomainModel lesson;
 
   const LessonCard({
-    Key key,
-    @required this.lesson,
+    Key? key,
+    required this.lesson,
   }) : super(key: key);
 
   @override
@@ -51,7 +51,7 @@ class LessonCard extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      lesson.lesson.subjectDescription.toString(),
+                      lesson.lesson!.subjectDescription.toString(),
                       style: TextStyle(
                         fontSize: 15,
                       ),
@@ -63,7 +63,7 @@ class LessonCard extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        lesson.lesson.lessonArgoment,
+                        lesson.lesson!.lessonArgoment!,
                         style: TextStyle(
                           fontSize: 12,
                         ),

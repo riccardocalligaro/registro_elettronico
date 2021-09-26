@@ -10,10 +10,10 @@ part 'stats_event.dart';
 part 'stats_state.dart';
 
 class StatsBloc extends Bloc<StatsEvent, StatsState> {
-  final StatsRepository statsRepository;
+  final StatsRepository? statsRepository;
 
   StatsBloc({
-    @required this.statsRepository,
+    required this.statsRepository,
   }) : super(StatsInitial());
 
   @override
@@ -32,7 +32,7 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
   Stream<StatsState> _mapGetStudentsStatsEventToState() async* {
     yield StatsLoadInProgress();
     try {
-      final stats = await statsRepository.getStudentReport();
+      final stats = await statsRepository!.getStudentReport();
       yield stats.fold(
         (failure) {
           Logger.e(text: 'Error getting student report');

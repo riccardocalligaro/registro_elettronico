@@ -1,5 +1,5 @@
 class LoginToken {
-  String token;
+  late String token;
 
   static final LoginToken _inst = LoginToken._internal();
 

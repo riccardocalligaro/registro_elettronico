@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 class DidacticsFile {
-  int contentId;
-  String name;
-  File file;
+  int? contentId;
+  String? name;
+  File? file;
 
   DidacticsFile({
     this.contentId,
@@ -16,13 +16,13 @@ class DidacticsFile {
   DidacticsFile.fromLocalModel(DidacticsDownloadedFileLocalModel l) {
     this.contentId = l.contentId;
     this.name = l.name;
-    this.file = File(l.path);
+    this.file = File(l.path!);
   }
 
   DidacticsFile copyWith({
-    int contentId,
-    String name,
-    File file,
+    int? contentId,
+    String? name,
+    File? file,
   }) {
     return DidacticsFile(
       contentId: contentId ?? this.contentId,

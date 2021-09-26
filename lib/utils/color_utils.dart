@@ -8,7 +8,7 @@ class ColorUtils {
   /// Returns a color by checking the event [code]
   ///
   /// [Red] for Absence, [Blue] for delay and [yellow] for early exit
-  static Color getColorFromCode(String code) {
+  static Color? getColorFromCode(String? code) {
     if (code == RegistroConstants.ASSENZA) {
       return Colors.red;
     } else if (code == RegistroConstants.RITARDO) {
@@ -22,7 +22,7 @@ class ColorUtils {
     }
   }
 
-  static Color getLessonCardColor(BuildContext context) {
+  static Color? getLessonCardColor(BuildContext context) {
     final themeColor = Theme.of(context).accentColor;
 
     if (themeColor == Colors.red || themeColor.value == 4294198070) {
@@ -32,8 +32,8 @@ class ColorUtils {
     return themeColor;
   }
 
-  static List<Color> getCardsColors(int length) {
-    List<Color> _colors = [
+  static List<Color?> getCardsColors(int length) {
+    List<Color?> _colors = [
       Colors.pink,
       Colors.purple,
       Colors.deepPurple,
@@ -62,7 +62,7 @@ class ColorUtils {
     return _colors;
   }
 
-  static Color getDropHeaderColor(BuildContext context) {
+  static Color? getDropHeaderColor(BuildContext context) {
     if (Theme.of(context).brightness == Brightness.light) {
       return Colors.white;
     } else if (Theme.of(context).scaffoldBackgroundColor == Colors.black) {
@@ -71,7 +71,7 @@ class ColorUtils {
     return Colors.grey[900];
   }
 
-  static List<Color> getGradientForColor(
+  static List<Color?> getGradientForColor(
     Color color, {
     bool button = false,
   }) {
@@ -97,7 +97,7 @@ class ColorUtils {
 
   static MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
-    Map swatch = <int, Color>{};
+    Map swatch = <int?, Color>{};
     final int r = color.red, g = color.green, b = color.blue;
     for (int i = 1; i < 10; i++) {
       strengths.add(0.1 * i);
@@ -111,7 +111,7 @@ class ColorUtils {
         1,
       );
     });
-    return MaterialColor(color.value, swatch);
+    return MaterialColor(color.value, swatch as Map<int, Color>);
   }
 
   static String getColorNameFromColor(
@@ -153,13 +153,13 @@ class ColorUtils {
   //   return Colors.red;
   // }
 
-  static Color getRandomMaterialColor() {
+  static Color? getRandomMaterialColor() {
     Random random = Random();
     int randomNumber = random.nextInt(5);
     return getColorFromIndex(randomNumber);
   }
 
-  static Color getColorFromIndex(int index) {
+  static Color? getColorFromIndex(int index) {
     if (index > 16) {
       try {
         Random random = Random();

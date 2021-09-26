@@ -13,10 +13,10 @@ part 'note_attachments_state.dart';
 
 class NoteAttachmentsBloc
     extends Bloc<NoteAttachmentsEvent, NoteAttachmentsState> {
-  final NotesRepository notesRepository;
+  final NotesRepository? notesRepository;
 
   NoteAttachmentsBloc({
-    @required this.notesRepository,
+    required this.notesRepository,
   }) : super(NoteAttachmentsInitial());
 
   @override
@@ -28,10 +28,10 @@ class NoteAttachmentsBloc
     }
   }
 
-  Stream<NoteAttachmentsState> _mapReadNoteToState(String type, int id) async* {
+  Stream<NoteAttachmentsState> _mapReadNoteToState(String? type, int? id) async* {
     yield NoteAttachmentsLoadInProgress();
     try {
-      final attachment = await notesRepository.getAttachmentForNote(type, id);
+      final attachment = await notesRepository!.getAttachmentForNote(type, id);
       Logger.info('Got attachment ${attachment.id}');
       yield NoteAttachmentsLoadSuccess(attachment: attachment);
     } on NotConntectedException {

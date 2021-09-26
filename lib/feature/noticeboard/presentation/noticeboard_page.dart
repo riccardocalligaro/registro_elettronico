@@ -20,14 +20,14 @@ import 'notice_card.dart';
 final GlobalKey<RefreshIndicatorState> noticeboardRefresherKey = GlobalKey();
 
 class NoticeboardPage extends StatefulWidget {
-  const NoticeboardPage({Key key}) : super(key: key);
+  const NoticeboardPage({Key? key}) : super(key: key);
 
   @override
   _NoticeboardPageState createState() => _NoticeboardPageState();
 }
 
 class _NoticeboardPageState extends State<NoticeboardPage> {
-  SearchBar _searchBar;
+  late SearchBar _searchBar;
   String _searchQuery = '';
 
   @override
@@ -64,7 +64,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
         child: BlocBuilder<NoticeboardWatcherBloc, NoticeboardWatcherState>(
           builder: (context, state) {
             if (state is NoticeboardWatcherLoadSuccess) {
-              if (state.notices.isEmpty) {
+              if (state.notices!.isEmpty) {
                 return _NoticesEmpty();
               }
 
@@ -87,7 +87,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
     return AppBar(
       brightness: Theme.of(context).brightness,
       title: Text(
-        AppLocalizations.of(context).translate('notice_board'),
+        AppLocalizations.of(context)!.translate('notice_board')!,
       ),
       actions: [
         _searchBar.getSearchAction(context),
@@ -97,7 +97,7 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
 }
 
 class _NoticesEmpty extends StatelessWidget {
-  const _NoticesEmpty({Key key}) : super(key: key);
+  const _NoticesEmpty({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -105,34 +105,34 @@ class _NoticesEmpty extends StatelessWidget {
       icon: Icons.email,
       showUpdate: true,
       onTap: () {
-        noticeboardRefresherKey.currentState.show();
+        noticeboardRefresherKey.currentState!.show();
       },
-      text: AppLocalizations.of(context).translate('no_notices'),
+      text: AppLocalizations.of(context)!.translate('no_notices'),
     );
   }
 }
 
 class _NoticesLoaded extends StatelessWidget {
-  final List<NoticeDomainModel> notices;
+  final List<NoticeDomainModel>? notices;
   final String query;
 
   const _NoticesLoaded({
-    Key key,
-    @required this.notices,
-    @required this.query,
+    Key? key,
+    required this.notices,
+    required this.query,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<NoticeDomainModel> noticesToShow;
+    List<NoticeDomainModel>? noticesToShow;
 
     if (query.isNotEmpty && query.length >= 2) {
-      noticesToShow = notices.where((l) => _showResult(query, l)).toList();
+      noticesToShow = notices!.where((l) => _showResult(query, l)).toList();
     } else {
       noticesToShow = notices;
     }
 
-    if (noticesToShow.isEmpty) {
+    if (noticesToShow!.isEmpty) {
       return SrSearchEmptyView();
     }
 
@@ -141,7 +141,7 @@ class _NoticesLoaded extends StatelessWidget {
       padding: const EdgeInsets.all(12.0),
       itemBuilder: (context, index) {
         return NoticeCard(
-          notice: noticesToShow[index],
+          notice: noticesToShow![index],
           showDownloadSnackbar: () {
             final snackBar = SnackBar(
               content: _DownloadAttachmentSnackbar(),
@@ -160,7 +160,7 @@ class _NoticesLoaded extends StatelessWidget {
 
   bool _showResult(String query, NoticeDomainModel notice) {
     final lQuery = query.toLowerCase().replaceAll(' ', '');
-    return notice.contentTitle
+    return notice.contentTitle!
             .toLowerCase()
             .replaceAll(' ', '')
             .contains(lQuery) ||
@@ -173,7 +173,7 @@ class _NoticesLoaded extends StatelessWidget {
 }
 
 class _DownloadAttachmentSnackbar extends StatelessWidget {
-  const _DownloadAttachmentSnackbar({Key key}) : super(key: key);
+  const _DownloadAttachmentSnackbar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -193,12 +193,12 @@ class _DownloadAttachmentSnackbar extends StatelessWidget {
             final file = state.downloadedAttachment as AttachmentFile;
             OpenFile.open(file.file.path);
           } else if (state.downloadedAttachment is AttachmentText) {
-            final text = state.downloadedAttachment as AttachmentText;
+            final text = state.downloadedAttachment as AttachmentText?;
 
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => TextViewPage(
-                  text: text.text,
+                  text: text!.text,
                 ),
               ),
             );
@@ -207,16 +207,16 @@ class _DownloadAttachmentSnackbar extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is AttachmentDownloadSuccess) {
-          return Text(AppLocalizations.of(context)
-              .translate('file_downloaded_success'));
+          return Text(AppLocalizations.of(context)!
+              .translate('file_downloaded_success')!);
         } else if (state is AttachmentDownloadFailure) {
-          return Text(AppLocalizations.of(context).translate('error_download'));
+          return Text(AppLocalizations.of(context)!.translate('error_download')!);
         } else if (state is AttachmentDownloadInProgress) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                AppLocalizations.of(context).translate('downloading'),
+                AppLocalizations.of(context)!.translate('downloading')!,
               ),
               Container(
                 height: 20,

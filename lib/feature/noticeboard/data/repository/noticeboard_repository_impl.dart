@@ -25,31 +25,31 @@ import 'package:shared_preferences/shared_preferences.dart';
 class NoticeboardRepositoryImpl implements NoticeboardRepository {
   static const String lastUpdateKey = 'noticeboardLastUpdate';
 
-  final NoticeboardLocalDatasource noticeboardLocalDatasource;
-  final NoticeboardRemoteDatasource noticeboardRemoteDatasource;
+  final NoticeboardLocalDatasource? noticeboardLocalDatasource;
+  final NoticeboardRemoteDatasource? noticeboardRemoteDatasource;
 
-  final SharedPreferences sharedPreferences;
+  final SharedPreferences? sharedPreferences;
 
   NoticeboardRepositoryImpl({
-    @required this.noticeboardLocalDatasource,
-    @required this.noticeboardRemoteDatasource,
-    @required this.sharedPreferences,
+    required this.noticeboardLocalDatasource,
+    required this.noticeboardRemoteDatasource,
+    required this.sharedPreferences,
   });
 
   @override
-  Future<Either<Failure, Success>> updateNotices({bool ifNeeded}) async {
+  Future<Either<Failure, Success>> updateNotices({required bool ifNeeded}) async {
     try {
       if (!ifNeeded |
-          (ifNeeded && needUpdate(sharedPreferences.getInt(lastUpdateKey)))) {
-        final localNotices = await noticeboardLocalDatasource.getAllNotices();
+          (ifNeeded && needUpdate(sharedPreferences!.getInt(lastUpdateKey)))) {
+        final localNotices = await noticeboardLocalDatasource!.getAllNotices();
 
         final remoteNotices =
-            await noticeboardRemoteDatasource.getNoticeboard();
+            await noticeboardRemoteDatasource!.getNoticeboard();
 
         List<NoticeAttachmentLocalModel> mappedRemoteAttachments = [];
 
         for (final notice in remoteNotices) {
-          final localAttachments = notice.attachments
+          final localAttachments = notice.attachments!
               .map((e) => e.toLocalModel(notice.pubId))
               .toList();
           mappedRemoteAttachments.addAll(localAttachments);
@@ -65,7 +65,7 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
           }
         }
 
-        await noticeboardLocalDatasource.insertNotices(
+        await noticeboardLocalDatasource!.insertNotices(
           remoteNotices
               .map(
                 (e) => e.toLocalModel(),
@@ -73,15 +73,15 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
               .toList(),
         );
 
-        await noticeboardLocalDatasource.deleteAllAttachments();
+        await noticeboardLocalDatasource!.deleteAllAttachments();
 
-        await noticeboardLocalDatasource
+        await noticeboardLocalDatasource!
             .insertAttachments(mappedRemoteAttachments);
 
         // delete the noticeboard that were removed from the remote source
-        await noticeboardLocalDatasource.deleteNotices(noticesToDelete);
+        await noticeboardLocalDatasource!.deleteNotices(noticesToDelete);
 
-        await sharedPreferences.setInt(
+        await sharedPreferences!.setInt(
             lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
 
         return Right(SuccessWithUpdate());
@@ -96,8 +96,8 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
   @override
   Stream<Resource<List<NoticeDomainModel>>> watchAllNotices() {
     return Rx.combineLatest2(
-      noticeboardLocalDatasource.watchAllNotices(),
-      noticeboardLocalDatasource.watchAllAttachments(),
+      noticeboardLocalDatasource!.watchAllNotices(),
+      noticeboardLocalDatasource!.watchAllAttachments(),
       (
         List<NoticeLocalModel> localNotices,
         List<NoticeAttachmentLocalModel> localAttachments,
@@ -106,7 +106,7 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
             .map((l) => AttachmentDomainModel.fromLocalModel(l))
             .toList();
 
-        final mappedAttachments = groupBy<AttachmentDomainModel, int>(
+        final mappedAttachments = groupBy<AttachmentDomainModel, int?>(
           domainAttachments,
           (e) => e.pubId,
         );
@@ -120,7 +120,7 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
             )
             .toList();
 
-        domainNotices.sort((b, a) => a.date.compareTo(b.date));
+        domainNotices.sort((b, a) => a.date!.compareTo(b.date!));
 
         return Resource.success(data: domainNotices);
       },
@@ -135,8 +135,8 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
 
   @override
   Stream<Resource<GenericAttachment>> downloadFile({
-    NoticeDomainModel notice,
-    AttachmentDomainModel attachment,
+    NoticeDomainModel? notice,
+    AttachmentDomainModel? attachment,
   }) async* {
     StreamController<Resource<GenericAttachment>> resourceStreamController =
         StreamController();
@@ -146,7 +146,7 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
         resourceStreamController.add(Resource.loading(progress: 0));
 
         unawaited(
-          _readNoticeAndGetContent(notice: notice)
+          _readNoticeAndGetContent(notice: notice!)
               .then(
                 (textContent) async {
                   resourceStreamController.add(
@@ -175,9 +175,9 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
       try {
         resourceStreamController.add(Resource.loading(progress: 0));
         unawaited(
-          _readNoticeAndGetPath(attachment: attachment, notice: notice).then(
+          _readNoticeAndGetPath(attachment: attachment, notice: notice!).then(
             (filePath) {
-              noticeboardRemoteDatasource
+              noticeboardRemoteDatasource!
                   .downloadNotice(
                     notice: notice,
                     attachment: attachment,
@@ -192,7 +192,7 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
                     (_) async {
                       final localModel = notice.toLocalModel();
 
-                      await noticeboardLocalDatasource
+                      await noticeboardLocalDatasource!
                           .updateNotice(localModel.copyWith(readStatus: true));
 
                       File file = File(filePath);
@@ -223,24 +223,24 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
     }
   }
 
-  Future<String> _readNoticeAndGetContent({
-    @required NoticeDomainModel notice,
+  Future<String?> _readNoticeAndGetContent({
+    required NoticeDomainModel notice,
   }) async {
     final page =
-        await noticeboardRemoteDatasource.readNotice(notice.code, notice.id);
+        await noticeboardRemoteDatasource!.readNotice(notice.code, notice.id);
 
     return page.data['item']['text'];
   }
 
   Future<String> _readNoticeAndGetPath({
-    @required NoticeDomainModel notice,
-    @required AttachmentDomainModel attachment,
+    required NoticeDomainModel notice,
+    required AttachmentDomainModel attachment,
   }) async {
-    await noticeboardRemoteDatasource.readNotice(notice.code, notice.id);
+    await noticeboardRemoteDatasource!.readNotice(notice.code, notice.id);
     final directory = await getApplicationDocumentsDirectory();
-    final ext = attachment.fileName.split('.').last;
+    final ext = attachment.fileName!.split('.').last;
     final filePath =
-        '${directory.path}/${notice.contentTitle.replaceAll('/', '').replaceAll(' ', '_')}-${attachment.pubId}${attachment.attachNumber}.$ext';
+        '${directory.path}/${notice.contentTitle!.replaceAll('/', '').replaceAll(' ', '_')}-${attachment.pubId}${attachment.attachNumber}.$ext';
     return filePath;
   }
 }

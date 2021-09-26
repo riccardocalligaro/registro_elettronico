@@ -3,8 +3,8 @@ import 'package:registro_elettronico/feature/subjects/domain/model/subject_domai
 import 'package:registro_elettronico/feature/timetable/presentation/model/timetable_entry_presentation_model.dart';
 
 class TimetableDataDomainModel {
-  List<TimetableEntryPresentationModel> entries;
-  List<SubjectDomainModel> subjects;
+  List<TimetableEntryPresentationModel>? entries;
+  List<SubjectDomainModel>? subjects;
 
   TimetableDataDomainModel({
     this.entries,
@@ -12,8 +12,8 @@ class TimetableDataDomainModel {
   });
 
   TimetableDataDomainModel copyWith({
-    List<TimetableEntryPresentationModel> entries,
-    List<SubjectDomainModel> subjects,
+    List<TimetableEntryPresentationModel>? entries,
+    List<SubjectDomainModel>? subjects,
   }) {
     return TimetableDataDomainModel(
       entries: entries ?? this.entries,

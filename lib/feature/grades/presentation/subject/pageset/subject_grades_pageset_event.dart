@@ -7,6 +7,6 @@ class GetSubjectGradesPageset extends SubjectGradesPagesetEvent {
   final PeriodGradeDomainModel periodGradeDomainModel;
 
   GetSubjectGradesPageset({
-    @required this.periodGradeDomainModel,
+    required this.periodGradeDomainModel,
   });
 }

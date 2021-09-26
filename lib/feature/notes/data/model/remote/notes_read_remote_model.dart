@@ -1,5 +1,5 @@
 class NotesReadResponse {
-  NoteEvent event;
+  NoteEvent? event;
 
   NotesReadResponse({this.event});
 
@@ -10,16 +10,16 @@ class NotesReadResponse {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.event != null) {
-      data['event'] = this.event.toJson();
+      data['event'] = this.event!.toJson();
     }
     return data;
   }
 }
 
 class NoteEvent {
-  String evtCode;
-  int evtId;
-  String evtText;
+  String? evtCode;
+  int? evtId;
+  String? evtText;
 
   NoteEvent({this.evtCode, this.evtId, this.evtText});
 

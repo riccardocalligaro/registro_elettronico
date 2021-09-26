@@ -6,23 +6,23 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class SubjectDomainModel {
-  int id;
-  String name;
-  int order;
-  List<ProfessorDomainModel> professors;
-  Set<String> professorsSet;
+  int? id;
+  String? name;
+  int? order;
+  List<ProfessorDomainModel>? professors;
+  Set<String?>? professorsSet;
 
   SubjectDomainModel({
-    @required this.id,
-    @required this.name,
-    @required this.order,
-    @required this.professors,
+    required this.id,
+    required this.name,
+    required this.order,
+    required this.professors,
   });
 
   SubjectDomainModel.fromLocalModel({
-    @required List<ProfessorDomainModel> professorsList,
-    @required Set<String> professorsSet,
-    @required SubjectLocalModel l,
+    required List<ProfessorDomainModel>? professorsList,
+    required Set<String?>? professorsSet,
+    required SubjectLocalModel l,
   }) {
     this.id = l.id;
     this.name = l.name;
@@ -41,8 +41,8 @@ class SubjectDomainModel {
       if (this.professorsSet == null) {
         return '';
       }
-      this.professorsSet.forEach((prof) {
-        String name = StringUtils.titleCase(prof);
+      this.professorsSet!.forEach((prof) {
+        String name = StringUtils.titleCase(prof!);
         if (!professorsText.contains(name)) {
           professorsText += "${StringUtils.titleCase(prof)}, ";
         }

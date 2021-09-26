@@ -13,28 +13,28 @@ import 'package:registro_elettronico/utils/constants/preferences_constants.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AbsencesRepositoryImpl implements AbsencesRepository {
-  final AbsenceDao absenceDao;
-  final ProfilesLocalDatasource profilesLocalDatasource;
-  final NetworkInfo networkInfo;
-  final SharedPreferences sharedPreferences;
-  final AuthenticationRepository authenticationRepository;
-  final AbsencesRemoteDatasource absencesRemoteDatasource;
+  final AbsenceDao? absenceDao;
+  final ProfilesLocalDatasource? profilesLocalDatasource;
+  final NetworkInfo? networkInfo;
+  final SharedPreferences? sharedPreferences;
+  final AuthenticationRepository? authenticationRepository;
+  final AbsencesRemoteDatasource? absencesRemoteDatasource;
 
   AbsencesRepositoryImpl({
-    @required this.absencesRemoteDatasource,
-    @required this.absenceDao,
-    @required this.profilesLocalDatasource,
-    @required this.networkInfo,
-    @required this.sharedPreferences,
-    @required this.authenticationRepository,
+    required this.absencesRemoteDatasource,
+    required this.absenceDao,
+    required this.profilesLocalDatasource,
+    required this.networkInfo,
+    required this.sharedPreferences,
+    required this.authenticationRepository,
   });
 
   @override
   Future updateAbsences() async {
-    if (await networkInfo.isConnected) {
+    if (await networkInfo!.isConnected) {
       Logger.info('Updating absences');
 
-      final absences = await absencesRemoteDatasource.getAbsences();
+      final absences = await absencesRemoteDatasource!.getAbsences();
       List<Absence> absencesList = [];
       absences.forEach((event) {
         absencesList.add(AbsenceMapper.convertEventEntityToInsertable(event));
@@ -43,11 +43,11 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
         'Got ${absences.length} events from server, procceding to insert in database',
       );
 
-      await absenceDao.deleteAllAbsences();
+      await absenceDao!.deleteAllAbsences();
 
-      await absenceDao.insertEvents(absencesList);
+      await absenceDao!.insertEvents(absencesList);
 
-      await sharedPreferences.setInt(
+      await sharedPreferences!.setInt(
         PrefsConstants.lastUpdateAbsences,
         DateTime.now().millisecondsSinceEpoch,
       );
@@ -58,21 +58,21 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
 
   @override
   Future insertEvent(Absence absence) {
-    return absenceDao.insertEvent(absence);
+    return absenceDao!.insertEvent(absence);
   }
 
   @override
   Stream<List<Absence>> watchAllAbsences() {
-    return absenceDao.watchAllAbsences();
+    return absenceDao!.watchAllAbsences();
   }
 
   @override
   Future<List<Absence>> getAllAbsences() {
-    return absenceDao.getAllAbsences();
+    return absenceDao!.getAllAbsences();
   }
 
   @override
   Future deleteAllAbsences() {
-    return absenceDao.deleteAllAbsences();
+    return absenceDao!.deleteAllAbsences();
   }
 }

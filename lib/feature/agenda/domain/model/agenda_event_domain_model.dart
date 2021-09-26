@@ -3,19 +3,19 @@ import 'dart:convert';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 class AgendaEventDomainModel {
-  int id;
-  String code;
-  DateTime begin;
-  DateTime end;
-  bool isFullDay;
-  String notes;
-  String author;
-  String className;
-  int subjectId;
-  String subjectName;
-  bool isLocal;
-  String labelColor;
-  String title;
+  int? id;
+  String? code;
+  DateTime? begin;
+  DateTime? end;
+  bool? isFullDay;
+  String? notes;
+  String? author;
+  String? className;
+  int? subjectId;
+  String? subjectName;
+  bool? isLocal;
+  String? labelColor;
+  String? title;
 
   AgendaEventDomainModel({
     this.id,
@@ -68,19 +68,19 @@ class AgendaEventDomainModel {
   }
 
   AgendaEventDomainModel copyWith({
-    int id,
-    String code,
-    DateTime begin,
-    DateTime end,
-    bool isFullDay,
-    String notes,
-    String author,
-    String className,
-    int subjectId,
-    String subjectName,
-    bool isLocal,
-    String labelColor,
-    String title,
+    int? id,
+    String? code,
+    DateTime? begin,
+    DateTime? end,
+    bool? isFullDay,
+    String? notes,
+    String? author,
+    String? className,
+    int? subjectId,
+    String? subjectName,
+    bool? isLocal,
+    String? labelColor,
+    String? title,
   }) {
     return AgendaEventDomainModel(
       id: id ?? this.id,
@@ -117,7 +117,7 @@ class AgendaEventDomainModel {
     };
   }
 
-  factory AgendaEventDomainModel.fromMap(Map<String, dynamic> map) {
+  factory AgendaEventDomainModel.fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return AgendaEventDomainModel(

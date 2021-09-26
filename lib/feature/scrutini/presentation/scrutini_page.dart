@@ -14,7 +14,7 @@ import 'bloc/document_attachment/document_attachment_bloc.dart';
 import 'bloc/documents_bloc.dart';
 
 class ScrutiniPage extends StatefulWidget {
-  const ScrutiniPage({Key key}) : super(key: key);
+  const ScrutiniPage({Key? key}) : super(key: key);
 
   @override
   _ScrutiniPageState createState() => _ScrutiniPageState();
@@ -32,7 +32,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
     return Scaffold(
         appBar: AppBar(
           brightness: Theme.of(context).brightness,
-          title: Text(AppLocalizations.of(context).translate('scrutini')),
+          title: Text(AppLocalizations.of(context)!.translate('scrutini')!),
         ),
         body: MultiBlocListener(
           listeners: [
@@ -45,8 +45,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                       content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(AppLocalizations.of(context)
-                              .translate('loading')),
+                          Text(AppLocalizations.of(context)!
+                              .translate('loading')!),
                           Container(
                             height: 20,
                             width: 20,
@@ -77,8 +77,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                     SnackBar(
                       behavior: SnackBarBehavior.floating,
                       content: Text(
-                        AppLocalizations.of(context)
-                            .translate('unexcepted_error_single'),
+                        AppLocalizations.of(context)!
+                            .translate('unexcepted_error_single')!,
                       ),
                     ),
                   );
@@ -86,7 +86,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                   ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(
-                        AppNavigator.instance.getNetworkErrorSnackBar(context));
+                        AppNavigator.instance!.getNetworkErrorSnackBar(context));
                 }
               },
             ),
@@ -102,7 +102,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              AppLocalizations.of(context).translate('loading'),
+                              AppLocalizations.of(context)!.translate('loading')!,
                             ),
                             Container(
                               height: 20,
@@ -122,8 +122,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                     ..showSnackBar(
                       SnackBar(
                         behavior: SnackBarBehavior.floating,
-                        content: Text(AppLocalizations.of(context)
-                            .translate('document_not_available')),
+                        content: Text(AppLocalizations.of(context)!
+                            .translate('document_not_available')!),
                       ),
                     );
                 } else if (state is DocumentLoadSuccess) {
@@ -134,13 +134,13 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                       SnackBar(
                         behavior: SnackBarBehavior.floating,
                         content: Text(
-                          AppLocalizations.of(context)
-                              .translate('download_of_file_completed')
+                          AppLocalizations.of(context)!
+                              .translate('download_of_file_completed')!
                               .replaceAll('{fileName}', state.path),
                         ),
                         action: SnackBarAction(
-                          label: AppLocalizations.of(context)
-                              .translate('open')
+                          label: AppLocalizations.of(context)!
+                              .translate('open')!
                               .toUpperCase(),
                           onPressed: () {
                             OpenFile.open(state.path);
@@ -157,8 +157,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                     ..showSnackBar(
                       SnackBar(
                         behavior: SnackBarBehavior.floating,
-                        content: Text(AppLocalizations.of(context)
-                            .translate('deleted_success')),
+                        content: Text(AppLocalizations.of(context)!
+                            .translate('deleted_success')!),
                       ),
                     );
                 } else if (state is DocumentAttachmentError) {
@@ -167,15 +167,15 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                     ..showSnackBar(
                       SnackBar(
                         behavior: SnackBarBehavior.floating,
-                        content: Text(AppLocalizations.of(context)
-                            .translate('error_emoji')),
+                        content: Text(AppLocalizations.of(context)!
+                            .translate('error_emoji')!),
                       ),
                     );
                 } else if (state is DocumentLoadNotConnected) {
                   ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(
-                        AppNavigator.instance.getNetworkErrorSnackBar(context));
+                        AppNavigator.instance!.getNetworkErrorSnackBar(context));
                 }
               },
               child: Container(),
@@ -186,7 +186,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                   ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(
-                        AppNavigator.instance.getNetworkErrorSnackBar(context));
+                        AppNavigator.instance!.getNetworkErrorSnackBar(context));
                 }
               },
             )
@@ -198,7 +198,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                   return CustomPlaceHolder(
                     icon: Icons.import_contacts,
                     showUpdate: true,
-                    text: AppLocalizations.of(context)
+                    text: AppLocalizations.of(context)!
                         .translate('no_final_grades'),
                     onTap: () {
                       BlocProvider.of<DocumentsBloc>(context)
@@ -230,7 +230,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                   state is DocumentsLoadError) {
                 return CustomPlaceHolder(
                   icon: Icons.error,
-                  text: AppLocalizations.of(context)
+                  text: AppLocalizations.of(context)!
                       .translate('unexcepted_error'),
                   showUpdate: true,
                   onTap: () {
@@ -249,14 +249,14 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
   }
 
   Widget _buildDocumentsList({
-    @required List<SchoolReport> schoolReports,
-    @required List<Document> documents,
+    required List<SchoolReport> schoolReports,
+    required List<Document> documents,
   }) {
     return Column(
       children: <Widget>[
         ListTile(
           title: Text(
-            AppLocalizations.of(context).translate('scrutini_documents'),
+            AppLocalizations.of(context)!.translate('scrutini_documents')!,
             style: TextStyle(color: Theme.of(context).accentColor),
           ),
         ),
@@ -268,7 +268,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
           itemBuilder: (context, index) {
             final report = schoolReports[index];
             return ListTile(
-              title: Text(report.description),
+              title: Text(report.description!),
               onTap: () {
                 BlocProvider.of<TokenBloc>(context)
                     .add(GetLoginTokenForSchoolReport(
@@ -280,7 +280,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
         ),
         ListTile(
           title: Text(
-            AppLocalizations.of(context).translate('scrutini_school_reports'),
+            AppLocalizations.of(context)!.translate('scrutini_school_reports')!,
             style: TextStyle(color: Theme.of(context).accentColor),
           ),
         ),
@@ -292,7 +292,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
           itemBuilder: (context, index) {
             final document = documents[index];
             return ListTile(
-              title: Text(document.description),
+              title: Text(document.description!),
               onTap: () {
                 BlocProvider.of<DocumentAttachmentBloc>(context).add(
                   GetDocumentAttachment(document: document),
@@ -303,15 +303,15 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: Text(AppLocalizations.of(context)
-                          .translate('sure_to_delete_it')),
-                      content: Text(AppLocalizations.of(context)
-                          .translate('the_file_will_be_deleted')),
+                      title: Text(AppLocalizations.of(context)!
+                          .translate('sure_to_delete_it')!),
+                      content: Text(AppLocalizations.of(context)!
+                          .translate('the_file_will_be_deleted')!),
                       actions: <Widget>[
                         TextButton(
                           child: Text(
-                            AppLocalizations.of(context)
-                                .translate('cancel')
+                            AppLocalizations.of(context)!
+                                .translate('cancel')!
                                 .toUpperCase(),
                           ),
                           onPressed: () {
@@ -320,8 +320,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                         ),
                         TextButton(
                           child: Text(
-                            AppLocalizations.of(context)
-                                .translate('delete')
+                            AppLocalizations.of(context)!
+                                .translate('delete')!
                                 .toUpperCase(),
                           ),
                           onPressed: () {

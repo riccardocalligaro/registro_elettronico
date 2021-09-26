@@ -10,7 +10,7 @@ part 'grades_updater_event.dart';
 part 'grades_updater_state.dart';
 
 class GradesUpdaterBloc extends Bloc<GradesUpdaterEvent, GradesUpdaterState> {
-  final GradesRepository gradesRepository;
+  final GradesRepository? gradesRepository;
 
   GradesUpdaterBloc({
     this.gradesRepository,
@@ -23,7 +23,7 @@ class GradesUpdaterBloc extends Bloc<GradesUpdaterEvent, GradesUpdaterState> {
     if (event is UpdateGradesIfNeeded) {
       yield GradesUpdaterLoading();
 
-      final update = await gradesRepository.updateGrades(ifNeeded: true);
+      final update = await gradesRepository!.updateGrades(ifNeeded: true);
 
       yield* update.fold((failure) async* {
         yield GradesUpdaterFailure(failure: failure);
@@ -33,7 +33,7 @@ class GradesUpdaterBloc extends Bloc<GradesUpdaterEvent, GradesUpdaterState> {
     } else if (event is UpdateGrades) {
       yield GradesUpdaterLoading();
 
-      final update = await gradesRepository.updateGrades(ifNeeded: false);
+      final update = await gradesRepository!.updateGrades(ifNeeded: false);
 
       yield* update.fold((failure) async* {
         yield GradesUpdaterFailure(failure: failure);

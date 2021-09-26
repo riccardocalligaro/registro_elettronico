@@ -15,14 +15,14 @@ import 'package:registro_elettronico/utils/update_manager.dart';
 final GlobalKey<ScaffoldState> didacticsScaffold = GlobalKey();
 
 class DidacticsPage extends StatefulWidget {
-  DidacticsPage({Key key}) : super(key: key);
+  DidacticsPage({Key? key}) : super(key: key);
 
   @override
   _DidacticsPageState createState() => _DidacticsPageState();
 }
 
 class _DidacticsPageState extends State<DidacticsPage> {
-  SearchBar _searchBar;
+  late SearchBar _searchBar;
   String _searchQuery = '';
 
   @override
@@ -78,7 +78,7 @@ class _DidacticsPageState extends State<DidacticsPage> {
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
       title: Text(
-        AppLocalizations.of(context).translate('school_material'),
+        AppLocalizations.of(context)!.translate('school_material')!,
       ),
       actions: [
         _searchBar.getSearchAction(context),
@@ -88,22 +88,22 @@ class _DidacticsPageState extends State<DidacticsPage> {
 }
 
 class _DidacticsLoaded extends StatelessWidget {
-  final List<DidacticsTeacherDomainModel> teachers;
+  final List<DidacticsTeacherDomainModel?>? teachers;
   final String query;
 
   const _DidacticsLoaded({
-    Key key,
-    @required this.teachers,
-    @required this.query,
+    Key? key,
+    required this.teachers,
+    required this.query,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<DidacticsTeacherDomainModel> teachersToShow;
+    List<DidacticsTeacherDomainModel?>? teachersToShow;
 
-    if (teachers.isEmpty) {
+    if (teachers!.isEmpty) {
       return CustomPlaceHolder(
-        text: AppLocalizations.of(context).translate('no_materials'),
+        text: AppLocalizations.of(context)!.translate('no_materials'),
         icon: Icons.folder,
         showUpdate: true,
         onTap: () {
@@ -114,21 +114,21 @@ class _DidacticsLoaded extends StatelessWidget {
     }
 
     if (query.isNotEmpty && query.length >= 2) {
-      teachersToShow = teachers.where((l) => _showResult(query, l)).toList();
+      teachersToShow = teachers!.where((l) => _showResult(query, l!)).toList();
     } else {
       teachersToShow = teachers;
     }
 
-    if (teachersToShow.isEmpty) {
+    if (teachersToShow!.isEmpty) {
       return SrSearchEmptyView();
     }
 
     return ListView.builder(
       itemCount: teachersToShow.length,
       itemBuilder: (context, index) {
-        final teacher = teachersToShow[index];
+        final teacher = teachersToShow![index]!;
 
-        if (teacher.folders.isEmpty) {
+        if (teacher.folders!.isEmpty) {
           return Container();
         }
 
@@ -140,9 +140,9 @@ class _DidacticsLoaded extends StatelessWidget {
   bool _showResult(String query, DidacticsTeacherDomainModel teacher) {
     final lQuery = query.toLowerCase().replaceAll(' ', '');
 
-    return teacher.name.toLowerCase().replaceAll(' ', '').contains(lQuery) ||
-        teacher.firstName.toLowerCase().replaceAll(' ', '').contains(lQuery) ||
-        teacher.lastName.toLowerCase().replaceAll(' ', '').contains(lQuery) ||
+    return teacher.name!.toLowerCase().replaceAll(' ', '').contains(lQuery) ||
+        teacher.firstName!.toLowerCase().replaceAll(' ', '').contains(lQuery) ||
+        teacher.lastName!.toLowerCase().replaceAll(' ', '').contains(lQuery) ||
         teacher.folders
             .toString()
             .toLowerCase()

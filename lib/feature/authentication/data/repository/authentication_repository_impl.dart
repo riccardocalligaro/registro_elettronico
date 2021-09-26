@@ -27,18 +27,18 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   static const platform =
       MethodChannel('com.riccardocalligaro.registro_elettronico/multi-account');
 
-  final AuthenticationRemoteDatasource authenticationRemoteDatasource;
-  final ProfilesLocalDatasource profilesLocalDatasource;
-  final FlutterSecureStorage flutterSecureStorage;
-  final SharedPreferences sharedPreferences;
-  final SRDatabase srDatabase;
+  final AuthenticationRemoteDatasource? authenticationRemoteDatasource;
+  final ProfilesLocalDatasource? profilesLocalDatasource;
+  final FlutterSecureStorage? flutterSecureStorage;
+  final SharedPreferences? sharedPreferences;
+  final SRDatabase? srDatabase;
 
   AuthenticationRepositoryImpl({
-    @required this.profilesLocalDatasource,
-    @required this.flutterSecureStorage,
-    @required this.sharedPreferences,
-    @required this.authenticationRemoteDatasource,
-    @required this.srDatabase,
+    required this.profilesLocalDatasource,
+    required this.flutterSecureStorage,
+    required this.sharedPreferences,
+    required this.authenticationRemoteDatasource,
+    required this.srDatabase,
   });
 
   @override
@@ -48,52 +48,52 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<ProfileDomainModel> getProfile() async {
+  Future<ProfileDomainModel?> getProfile() async {
     final profile = await _getProfile();
     return profile;
   }
 
   @override
   Future<CredentialsDomainModel> getCredentials() async {
-    final profile = await _getProfile();
-    final password = await flutterSecureStorage.read(key: profile.ident);
+    final profile = await (_getProfile() as FutureOr<ProfileDomainModel>);
+    final password = await flutterSecureStorage!.read(key: profile.ident!);
     return CredentialsDomainModel(profile: profile, password: password);
   }
 
   @override
-  Future<String> getCurrentStudentId() async {
-    final profile = await _getProfile();
+  Future<String?> getCurrentStudentId() async {
+    final profile = await (_getProfile() as FutureOr<ProfileDomainModel>);
     return profile.studentId;
   }
 
-  Future<ProfileDomainModel> _getProfile() async {
+  Future<ProfileDomainModel?> _getProfile() async {
     final profileSingleton = _ProfileSingleton.instance;
 
     if (profileSingleton.profile != null) {
       return profileSingleton.profile;
     } else {
-      final localProfiles = await profilesLocalDatasource.getLoggedInUser();
+      final localProfiles = await profilesLocalDatasource!.getLoggedInUser();
 
       if (localProfiles == null || localProfiles.isEmpty) {
         // check for legacy profile
         final legacyProfile =
-            sharedPreferences.getString(PrefsConstants.profile);
+            sharedPreferences!.getString(PrefsConstants.profile);
 
         if (legacyProfile != null && legacyProfile.isNotEmpty) {
           // parse it
           final domainProfile = ProfileDomainModel.fromJson(legacyProfile);
 
-          await profilesLocalDatasource
+          await profilesLocalDatasource!
               .insertProfile(domainProfile.toLocalModel());
 
-          await sharedPreferences.setString(
+          await sharedPreferences!.setString(
             PrefsConstants.databaseName,
             PrefsConstants.databaseNameBeforeMigration,
           );
 
           profileSingleton.profile = domainProfile;
 
-          await sharedPreferences.remove(PrefsConstants.profile);
+          await sharedPreferences!.remove(PrefsConstants.profile);
           return domainProfile;
         }
         return null;
@@ -107,15 +107,15 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<Either<Failure, GenericLoginResponse>> loginUser({
-    LoginRequestDomainModel loginRequestDomainModel,
+    LoginRequestDomainModel? loginRequestDomainModel,
     bool markCurrentAsInactive = false,
   }) async {
     try {
-      final users = await profilesLocalDatasource.getAllProfiles();
+      final users = await profilesLocalDatasource!.getAllProfiles();
       final loggedInIds = users.map((e) => e.studentId);
 
-      final response = await authenticationRemoteDatasource.loginUser(
-        loginRequestDomainModel: loginRequestDomainModel,
+      final response = await authenticationRemoteDatasource!.loginUser(
+        loginRequestDomainModel: loginRequestDomainModel!,
       );
 
       return response.fold(
@@ -127,7 +127,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         (loginResponse) async {
           // here we are logged in
           // we need to insert the profile in the database
-          final otherAccounts = await profilesLocalDatasource.getOtherUsers(
+          final otherAccounts = await profilesLocalDatasource!.getOtherUsers(
             loginResponse.ident,
           );
 
@@ -136,7 +136,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
           if (otherAccounts.isEmpty) {
             dbName = PrefsConstants.databaseNameBeforeMigration;
           } else {
-            dbName = ProfileUtils.dbNameFromIdent(loginResponse.ident);
+            dbName = ProfileUtils.dbNameFromIdent(loginResponse.ident!);
           }
 
           final localModel = loginResponse.toLocalModelFromLogin(
@@ -149,29 +149,29 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
           }
 
           for (final user in otherAccounts) {
-            if (user.currentlyLoggedIn) {
-              await profilesLocalDatasource.updateProfile(
+            if (user.currentlyLoggedIn!) {
+              await profilesLocalDatasource!.updateProfile(
                 user.copyWith(currentlyLoggedIn: false),
               );
             }
           }
 
-          await profilesLocalDatasource.insertProfile(localModel);
+          await profilesLocalDatasource!.insertProfile(localModel);
 
           final domainModel = ProfileDomainModel.fromLocalModel(localModel);
 
           // we set the ingleton that we use for authentication
           _ProfileSingleton.instance.profile = domainModel;
 
-          await flutterSecureStorage.write(
-            key: domainModel.ident,
+          await flutterSecureStorage!.write(
+            key: domainModel.ident!,
             value: loginRequestDomainModel.pass,
           );
 
           // se non ci sono altri account possiamo impostare il nome
           // del db di default e evitiamo di riavviare l'app
           if (otherAccounts.isEmpty) {
-            await sharedPreferences.setString(
+            await sharedPreferences!.setString(
               PrefsConstants.databaseName,
               PrefsConstants.databaseNameBeforeMigration,
             );
@@ -179,7 +179,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
             // se ci sono altri account allora significa che attualmente stiamo
             // su un altro db
             // dobbiamo impostare il nuovo db nelle shared preferences e riavviare l'app
-            await sharedPreferences.setString(
+            await sharedPreferences!.setString(
               PrefsConstants.databaseName,
               dbName,
             );
@@ -201,11 +201,11 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future updateProfile({
-    DefaultLoginResponseRemoteModel responseRemoteModel,
-    ProfileDomainModel profileDomainModel,
+    required DefaultLoginResponseRemoteModel responseRemoteModel,
+    required ProfileDomainModel profileDomainModel,
   }) async {
     final localModel = responseRemoteModel.toLocalModel(profileDomainModel);
-    await profilesLocalDatasource.updateProfile(localModel);
+    await profilesLocalDatasource!.updateProfile(localModel);
     final domainModel = ProfileDomainModel.fromLocalModel(localModel);
     // we update the singleton
     _ProfileSingleton.instance.profile = domainModel;
@@ -215,20 +215,20 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<Either<Failure, Success>> logoutCurrentUser() async {
     try {
       // delete the user from the database
-      final profile = await _getProfile();
+      final profile = await (_getProfile() as FutureOr<ProfileDomainModel>);
 
-      await profilesLocalDatasource.deleteWithIdent(profile.ident);
+      await profilesLocalDatasource!.deleteWithIdent(profile.ident);
 
-      await srDatabase.resetDb();
+      await srDatabase!.resetDb();
 
-      final otherAccounts = await profilesLocalDatasource.getInactiveUsers();
+      final otherAccounts = await profilesLocalDatasource!.getInactiveUsers();
 
       if (otherAccounts.isNotEmpty) {
         // se ci sono presenti altri account nel database
 
         final newAccount = otherAccounts.first;
 
-        await profilesLocalDatasource.updateProfile(
+        await profilesLocalDatasource!.updateProfile(
           newAccount.copyWith(currentlyLoggedIn: true),
         );
 
@@ -236,25 +236,25 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         _ProfileSingleton.instance.profile = account;
 
         // set the db name in the shared preferences
-        await sharedPreferences.setString(
+        await sharedPreferences!.setString(
           PrefsConstants.databaseName,
-          newAccount.dbName,
+          newAccount.dbName!,
         );
 
         // chiama il metodo per riavviare l'app
         await _restartApp();
       } else {
         // se non sono presenti altri account nel database
-        await sharedPreferences.setString(
+        await sharedPreferences!.setString(
           PrefsConstants.databaseName,
           PrefsConstants.databaseNameBeforeMigration,
         );
 
         _ProfileSingleton.instance.profile = null;
 
-        await flutterSecureStorage.write(key: profile.ident, value: '');
+        await flutterSecureStorage!.write(key: profile.ident!, value: '');
 
-        await navigator.currentState.push(
+        await navigator.currentState!.push(
           MaterialPageRoute(builder: (context) => LoginPage()),
         );
       }
@@ -269,7 +269,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<Either<Failure, List<ProfileDomainModel>>>
       getNonActiveAccounts() async {
     try {
-      final otherAccounts = await profilesLocalDatasource.getInactiveUsers();
+      final otherAccounts = await profilesLocalDatasource!.getInactiveUsers();
 
       final domainAccounts = otherAccounts
           .map((e) => ProfileDomainModel.fromLocalModel(e))
@@ -281,7 +281,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     }
   }
 
-  Future<void> _restartApp() {
+  Future<void>? _restartApp() {
     if (!kDebugMode) {
       return platform.invokeMethod('restartApp');
     }
@@ -291,32 +291,32 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<Either<Failure, Success>> switchToAccount({
-    ProfileDomainModel profileDomainModel,
+    required ProfileDomainModel profileDomainModel,
   }) async {
     try {
       // set the other profiles to not logged in
       // just for safety we do this for all of them
-      final otherAccounts = await profilesLocalDatasource.getOtherUsers(
+      final otherAccounts = await profilesLocalDatasource!.getOtherUsers(
         profileDomainModel.ident,
       );
 
       for (final user in otherAccounts) {
-        if (user.currentlyLoggedIn) {
-          await profilesLocalDatasource
+        if (user.currentlyLoggedIn!) {
+          await profilesLocalDatasource!
               .updateProfile(user.copyWith(currentlyLoggedIn: false));
         }
       }
 
       final localModel = profileDomainModel.toLocalModel();
       // we set the current one to active
-      await profilesLocalDatasource
+      await profilesLocalDatasource!
           .updateProfile(localModel.copyWith(currentlyLoggedIn: true));
 
       // we have to set also the shared preferences
-      if (profileDomainModel.dbName.isNotEmpty) {
-        await sharedPreferences.setString(
+      if (profileDomainModel.dbName!.isNotEmpty) {
+        await sharedPreferences!.setString(
           PrefsConstants.databaseName,
-          profileDomainModel.dbName,
+          profileDomainModel.dbName!,
         );
       } else {
         return Left(FatalSwitchFailure());
@@ -340,13 +340,13 @@ class _ProfileSingleton {
   _ProfileSingleton._internal();
   static _ProfileSingleton get instance => _singleton;
 
-  ProfileDomainModel profile;
+  ProfileDomainModel? profile;
 }
 
 class AlreadyLoggedInFailure extends Failure {
   @override
-  String localizedDescription(BuildContext context) {
-    return AppLocalizations.of(context).translate('already_logged_in');
+  String? localizedDescription(BuildContext context) {
+    return AppLocalizations.of(context)!.translate('already_logged_in');
   }
 }
 
@@ -355,18 +355,18 @@ class FatalSwitchFailure extends Failure {}
 class LoginFailure extends Failure {
   DioError dioError;
 
-  LoginFailure({@required this.dioError});
+  LoginFailure({required this.dioError});
 
   @override
-  String localizedDescription(BuildContext context) {
+  String? localizedDescription(BuildContext context) {
     if (dioError.response != null) {
-      if (dioError.response.statusCode == 422) {
-        return AppLocalizations.of(context)
+      if (dioError.response!.statusCode == 422) {
+        return AppLocalizations.of(context)!
             .translate('username_password_doesent_match');
-      } else if (dioError.response.statusCode >= 500) {
-        return AppLocalizations.of(context)
-            .translate('server_login')
-            .replaceAll('{code}', dioError.response.statusCode.toString());
+      } else if (dioError.response!.statusCode! >= 500) {
+        return AppLocalizations.of(context)!
+            .translate('server_login')!
+            .replaceAll('{code}', dioError.response!.statusCode.toString());
       }
     }
 

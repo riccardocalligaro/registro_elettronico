@@ -11,6 +11,6 @@ abstract class SubjectsRepository {
   Stream<Resource<List<SubjectDomainModel>>> watchAllSubjects();
 
   Future<Either<Failure, Success>> updateSubjects({
-    @required bool ifNeeded,
+    required bool ifNeeded,
   });
 }

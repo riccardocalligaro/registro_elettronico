@@ -2,13 +2,13 @@ import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 
 class PeriodRemoteModel {
-  String periodCode;
-  int periodPos;
-  String periodDesc;
-  bool isFinal;
-  String dateStart;
-  String dateEnd;
-  String miurDivisionCode;
+  String? periodCode;
+  int? periodPos;
+  String? periodDesc;
+  bool? isFinal;
+  String? dateStart;
+  String? dateEnd;
+  String? miurDivisionCode;
 
   PeriodRemoteModel({
     this.periodCode,
@@ -47,7 +47,7 @@ class PeriodRemoteModel {
       code: this.periodCode ?? '',
       position: this.periodPos ?? -1,
       description: this.periodDesc ?? '',
-      isFinal: this.isFinal ?? '',
+      isFinal: this.isFinal ?? '' as bool?,
       start: SRDateUtils.getDateFromApiString(this.dateStart),
       end: SRDateUtils.getDateFromApiString(this.dateEnd),
       miurDivisionCode: this.miurDivisionCode ?? "",

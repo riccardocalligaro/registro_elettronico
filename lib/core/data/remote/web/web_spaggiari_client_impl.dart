@@ -10,9 +10,9 @@ class WebSpaggiariClientImpl implements WebSpaggiariClient {
 
   @override
   Future<String> getPHPToken({
-    String username,
-    String password,
-    bool lastYear,
+    String? username,
+    String? password,
+    bool? lastYear,
   }) async {
     Logger.info('Requesting new PHP Token');
 
@@ -25,7 +25,7 @@ class WebSpaggiariClientImpl implements WebSpaggiariClient {
           'https://web.spaggiari.eu/auth-p7/app/default/AuthApi4.php?a=aLoginPwd';
     }
 
-    Map<String, String> bodyParams = Map();
+    Map<String, String?> bodyParams = Map();
     bodyParams["uid"] = username;
     bodyParams["pwd"] = password;
 
@@ -41,7 +41,7 @@ class WebSpaggiariClientImpl implements WebSpaggiariClient {
     if (_result.headers.map.containsKey('set-cookie')) {
       final key =
           _result.headers.map.keys.where((k) => k == 'set-cookie').single;
-      final ssid = _result.headers.map[key].elementAt(1);
+      final ssid = _result.headers.map[key]!.elementAt(1);
 
       return ssid;
     } else {

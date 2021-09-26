@@ -12,10 +12,10 @@ part 'subject_grades_pageset_state.dart';
 
 class SubjectGradesPagesetBloc
     extends Bloc<SubjectGradesPagesetEvent, SubjectGradesPagesetState> {
-  final GradesRepository gradesRepository;
+  final GradesRepository? gradesRepository;
 
   SubjectGradesPagesetBloc({
-    @required this.gradesRepository,
+    required this.gradesRepository,
   }) : super(SubjectGradesPagesetInitial());
 
   @override
@@ -25,7 +25,7 @@ class SubjectGradesPagesetBloc
     if (event is GetSubjectGradesPageset) {
       yield SubjectGradesPagesetLoading();
 
-      final pageset = await gradesRepository.getSubjectData(
+      final pageset = await gradesRepository!.getSubjectData(
         periodGradeDomainModel: event.periodGradeDomainModel,
       );
 

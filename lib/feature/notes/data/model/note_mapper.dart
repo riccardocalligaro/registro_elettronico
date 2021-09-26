@@ -31,9 +31,9 @@ class NoteMapper {
     NotesReadResponse res,
   ) {
     return db.NotesAttachment(
-      id: res.event.evtId ?? -1,
-      type: res.event.evtCode ?? '',
-      description: res.event.evtText ?? '',
+      id: res.event!.evtId ?? -1,
+      type: res.event!.evtCode ?? '',
+      description: res.event!.evtText ?? '',
     );
   }
 }

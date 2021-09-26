@@ -8,15 +8,15 @@ class LatestLessonsWatcherInitial extends LatestLessonsWatcherState {}
 class LatestLessonsWatcherLoading extends LatestLessonsWatcherState {}
 
 class LatestLessonsWatcherLoadSuccess extends LatestLessonsWatcherState {
-  final List<LessonWithDurationDomainModel> lessons;
+  final List<LessonWithDurationDomainModel>? lessons;
 
   LatestLessonsWatcherLoadSuccess({
-    @required this.lessons,
+    required this.lessons,
   });
 }
 
 class LatestLessonsWatcherFailure extends LatestLessonsWatcherState {
-  final Failure failure;
+  final Failure? failure;
 
-  LatestLessonsWatcherFailure({@required this.failure});
+  LatestLessonsWatcherFailure({required this.failure});
 }

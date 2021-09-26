@@ -5,34 +5,34 @@ import 'package:registro_elettronico/utils/profile_utils.dart';
 import '../profile_local_model.dart';
 
 class DefaultLoginResponseRemoteModel {
-  String ident;
-  String firstName;
-  String lastName;
-  String token;
-  String release;
-  String expire;
+  String? ident;
+  String? firstName;
+  String? lastName;
+  String? token;
+  String? release;
+  String? expire;
 
   DefaultLoginResponseRemoteModel({
-    @required this.ident,
-    @required this.firstName,
-    @required this.lastName,
-    @required this.token,
-    @required this.release,
-    @required this.expire,
+    required this.ident,
+    required this.firstName,
+    required this.lastName,
+    required this.token,
+    required this.release,
+    required this.expire,
   });
 
   ProfileLocalModel toLocalModelFromLogin({
-    bool currentlyLoggedIn,
-    String dbName,
+    bool? currentlyLoggedIn,
+    String? dbName,
   }) {
     return ProfileLocalModel(
       ident: this.ident,
-      studentId: ProfileUtils.getIdFromIdent(this.ident),
+      studentId: ProfileUtils.getIdFromIdent(this.ident!),
       firstName: this.firstName ?? "",
       lastName: this.lastName ?? "",
       token: this.token ?? "",
-      release: DateTime.tryParse(this.release) ?? DateTime.now(),
-      expire: DateTime.tryParse(this.expire) ??
+      release: DateTime.tryParse(this.release!) ?? DateTime.now(),
+      expire: DateTime.tryParse(this.expire!) ??
           DateTime.fromMillisecondsSinceEpoch(0),
       currentlyLoggedIn: currentlyLoggedIn,
       dbName: dbName,
@@ -42,12 +42,12 @@ class DefaultLoginResponseRemoteModel {
   ProfileLocalModel toLocalModel(ProfileDomainModel d) {
     return ProfileLocalModel(
       ident: this.ident,
-      studentId: ProfileUtils.getIdFromIdent(this.ident),
+      studentId: ProfileUtils.getIdFromIdent(this.ident!),
       firstName: this.firstName ?? "",
       lastName: this.lastName ?? "",
       token: this.token ?? "",
-      release: DateTime.tryParse(this.release) ?? DateTime.now(),
-      expire: DateTime.tryParse(this.expire) ??
+      release: DateTime.tryParse(this.release!) ?? DateTime.now(),
+      expire: DateTime.tryParse(this.expire!) ??
           DateTime.fromMillisecondsSinceEpoch(0),
       currentlyLoggedIn: d.currentlyLoggedIn,
       dbName: d.dbName,

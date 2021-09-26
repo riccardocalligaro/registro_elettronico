@@ -20,11 +20,11 @@ import 'event/new_event_page.dart';
 import 'lesson_list.dart';
 
 class AgendaLoaded extends StatefulWidget {
-  final AgendaDataDomainModel data;
+  final AgendaDataDomainModel? data;
 
   const AgendaLoaded({
-    Key key,
-    @required this.data,
+    Key? key,
+    required this.data,
   }) : super(key: key);
 
   @override
@@ -38,7 +38,7 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
 
   DateTime _selectedDay = DateTime.now();
 
-  SearchBar _searchBar;
+  late SearchBar _searchBar;
   String _searchQuery = '';
 
   @override
@@ -80,7 +80,7 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
           child: _searchQuery.isNotEmpty && _searchQuery.length >= 2
               ? _AgendaResultsList(
                   query: _searchQuery,
-                  events: widget.data.allEvents,
+                  events: widget.data!.allEvents,
                 )
               : ListView(
                   children: [
@@ -138,11 +138,11 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
                     ),
                     AgendaEventsList(
                       events: widget
-                          .data.eventsMapString[_convertDate(_selectedDay)],
+                          .data!.eventsMapString[_convertDate(_selectedDay)],
                     ),
                     LessonsList(
                       lessons:
-                          widget.data.lessonsMap[_convertDate(_selectedDay)],
+                          widget.data!.lessonsMap[_convertDate(_selectedDay)],
                     ),
                   ],
                 ),
@@ -155,7 +155,7 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
     return AppBar(
       brightness: Theme.of(context).brightness,
       title: Text(
-        AppLocalizations.of(context).translate('agenda'),
+        AppLocalizations.of(context)!.translate('agenda')!,
       ),
       actions: [
         IconButton(
@@ -193,9 +193,9 @@ class _AgendaResultsList extends StatelessWidget {
   final List<AgendaEventDomainModel> events;
 
   const _AgendaResultsList({
-    Key key,
-    @required this.query,
-    @required this.events,
+    Key? key,
+    required this.query,
+    required this.events,
   }) : super(key: key);
 
   @override
@@ -231,8 +231,8 @@ class _MultiActionsButton extends StatelessWidget {
   final DateTime dateTime;
 
   const _MultiActionsButton({
-    Key key,
-    @required this.dateTime,
+    Key? key,
+    required this.dateTime,
   }) : super(key: key);
 
   @override
@@ -246,7 +246,7 @@ class _MultiActionsButton extends StatelessWidget {
         UnicornButton(
           hasLabel: true,
           labelFontSize: 12,
-          labelText: AppLocalizations.of(context).translate('memo'),
+          labelText: AppLocalizations.of(context)!.translate('memo'),
           labelHasShadow: false,
           labelColor:
               GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
@@ -276,7 +276,7 @@ class _MultiActionsButton extends StatelessWidget {
         UnicornButton(
           hasLabel: true,
           labelFontSize: 12,
-          labelText: AppLocalizations.of(context).translate('test'),
+          labelText: AppLocalizations.of(context)!.translate('test'),
           labelHasShadow: false,
           labelColor:
               GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
@@ -306,7 +306,7 @@ class _MultiActionsButton extends StatelessWidget {
         UnicornButton(
           hasLabel: true,
           labelFontSize: 12,
-          labelText: AppLocalizations.of(context).translate('homework'),
+          labelText: AppLocalizations.of(context)!.translate('homework'),
           labelHasShadow: false,
           labelColor:
               GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,

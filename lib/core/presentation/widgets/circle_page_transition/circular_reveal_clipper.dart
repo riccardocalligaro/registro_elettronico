@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 @immutable
 class CircularRevealClipper extends CustomClipper<Path> {
   final double fraction;
-  final Alignment centerAlignment;
-  final Offset centerOffset;
-  final double minRadius;
-  final double maxRadius;
+  final Alignment? centerAlignment;
+  final Offset? centerOffset;
+  final double? minRadius;
+  final double? maxRadius;
 
   CircularRevealClipper({
-    @required this.fraction,
+    required this.fraction,
     this.centerAlignment,
     this.centerOffset,
     this.minRadius,
@@ -31,7 +31,7 @@ class CircularRevealClipper extends CustomClipper<Path> {
       ..addOval(
         Rect.fromCircle(
           center: center,
-          radius: lerpDouble(minRadius, maxRadius, fraction),
+          radius: lerpDouble(minRadius, maxRadius, fraction)!,
         ),
       );
   }

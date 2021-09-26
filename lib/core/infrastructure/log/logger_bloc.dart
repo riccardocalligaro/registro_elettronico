@@ -11,7 +11,7 @@ class LoggerBlocDelegate extends BlocObserver {
   }
 
   @override
-  void onEvent(Bloc bloc, Object event) {
+  void onEvent(Bloc bloc, Object? event) {
     Logger.info('📟 [BLOC] $bloc Event: $event');
     super.onEvent(bloc, event);
   }
@@ -30,7 +30,7 @@ class LoggerBlocDelegate extends BlocObserver {
 
   @override
   void onError(BlocBase bloc, Object e, StackTrace s) {
-    Object ex;
+    Object? ex;
     if (e is Exception) {
     } else {
       ex = Exception(e.toString());

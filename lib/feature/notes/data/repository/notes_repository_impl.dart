@@ -11,11 +11,11 @@ import 'package:registro_elettronico/feature/notes/domain/repository/notes_repos
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 
 class NotesRepositoryImpl implements NotesRepository {
-  final NoteDao noteDao;
-  final LegacySpaggiariClient spaggiariClient;
-  final ProfilesLocalDatasource profilesLocalDatasource;
-  final NetworkInfo networkInfo;
-  final AuthenticationRepository authenticationRepository;
+  final NoteDao? noteDao;
+  final LegacySpaggiariClient? spaggiariClient;
+  final ProfilesLocalDatasource? profilesLocalDatasource;
+  final NetworkInfo? networkInfo;
+  final AuthenticationRepository? authenticationRepository;
 
   NotesRepositoryImpl(
     this.noteDao,
@@ -27,52 +27,52 @@ class NotesRepositoryImpl implements NotesRepository {
 
   @override
   Future deleteAllNotes() {
-    return noteDao.deleteAllNotes();
+    return noteDao!.deleteAllNotes();
   }
 
   @override
   Future<List<Note>> getAllNotes() {
-    return noteDao.getAllNotes();
+    return noteDao!.getAllNotes();
   }
 
   @override
   Future insertNote(Note note) {
-    return noteDao.insertNote(note);
+    return noteDao!.insertNote(note);
   }
 
   @override
   Future updateNotes() async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
+    if (await networkInfo!.isConnected) {
+      final studentId = await (authenticationRepository!.getCurrentStudentId() as FutureOr<String>);
 
-      final notesResponse = await spaggiariClient.getNotes(studentId);
+      final notesResponse = await spaggiariClient!.getNotes(studentId);
 
       List<Note> notes = [];
-      notesResponse.notesNTCL.forEach((note) =>
+      notesResponse.notesNTCL!.forEach((note) =>
           notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTCL')));
-      notesResponse.notesNTWN.forEach((note) =>
+      notesResponse.notesNTWN!.forEach((note) =>
           notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTWN')));
-      notesResponse.notesNTTE.forEach((note) =>
+      notesResponse.notesNTTE!.forEach((note) =>
           notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTTE')));
-      notesResponse.notesNTST.forEach((note) =>
+      notesResponse.notesNTST!.forEach((note) =>
           notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTST')));
 
       Logger.info(
-        'Got ${notesResponse.notesNTCL.length} notesNTCL from server, procceding to insert in database',
+        'Got ${notesResponse.notesNTCL!.length} notesNTCL from server, procceding to insert in database',
       );
       Logger.info(
-        'Got ${notesResponse.notesNTWN.length} notesNTWN from server, procceding to insert in database',
+        'Got ${notesResponse.notesNTWN!.length} notesNTWN from server, procceding to insert in database',
       );
       Logger.info(
-        'Got ${notesResponse.notesNTTE.length} notesNTTE from server, procceding to insert in database',
+        'Got ${notesResponse.notesNTTE!.length} notesNTTE from server, procceding to insert in database',
       );
       Logger.info(
-        'Got ${notesResponse.notesNTST.length} notesNTST from server, procceding to insert in database',
+        'Got ${notesResponse.notesNTST!.length} notesNTST from server, procceding to insert in database',
       );
-      await noteDao.deleteAllAttachments();
-      await noteDao.deleteAllNotes();
+      await noteDao!.deleteAllAttachments();
+      await noteDao!.deleteAllNotes();
 
-      await noteDao.insertNotes(notes);
+      await noteDao!.insertNotes(notes);
     } else {
       throw NotConntectedException();
     }
@@ -80,10 +80,10 @@ class NotesRepositoryImpl implements NotesRepository {
 
   @override
   Future<NotesReadResponse> readNote(String type, int eventId) async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
+    if (await networkInfo!.isConnected) {
+      final studentId = await (authenticationRepository!.getCurrentStudentId() as FutureOr<String>);
 
-      final res = await spaggiariClient.markNote(studentId, type, eventId, "");
+      final res = await spaggiariClient!.markNote(studentId, type, eventId, "");
       return res;
     } else {
       throw NotConntectedException();
@@ -92,25 +92,25 @@ class NotesRepositoryImpl implements NotesRepository {
 
   @override
   Future deleteAllAttachments() {
-    return noteDao.deleteAllAttachments();
+    return noteDao!.deleteAllAttachments();
   }
 
   @override
-  Future<NotesAttachment> getAttachmentForNote(String type, int eventId) async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
-      final attachments = await noteDao.getAllAttachments();
+  Future<NotesAttachment> getAttachmentForNote(String? type, int? eventId) async {
+    if (await networkInfo!.isConnected) {
+      final studentId = await authenticationRepository!.getCurrentStudentId();
+      final attachments = await noteDao!.getAllAttachments();
 
       for (var attachment in attachments) {
         if (attachment.id == eventId) return attachment;
       }
 
-      final res = await spaggiariClient.markNote(studentId, type, eventId, "");
+      final res = await spaggiariClient!.markNote(studentId!, type!, eventId!, "");
       final insertable =
           NoteMapper.convertNoteAttachmentResponseToInsertable(res);
 
-      await noteDao.deleteAllAttachments();
-      await noteDao.insertAttachment(insertable);
+      await noteDao!.deleteAllAttachments();
+      await noteDao!.insertAttachment(insertable);
 
       return insertable;
     } else {

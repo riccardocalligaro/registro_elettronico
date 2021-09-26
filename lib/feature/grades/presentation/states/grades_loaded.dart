@@ -8,9 +8,9 @@ class GradesLoaded extends StatelessWidget {
   final GradesPagesDomainModel gradesPagesDomainModel;
 
   const GradesLoaded({
-    Key key,
-    @required this.gradesPagesDomainModel,
-    @required this.index,
+    Key? key,
+    required this.gradesPagesDomainModel,
+    required this.index,
   }) : super(key: key);
 
   @override

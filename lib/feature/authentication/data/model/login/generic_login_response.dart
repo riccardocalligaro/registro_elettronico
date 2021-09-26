@@ -7,5 +7,5 @@ class GenericLoginResponse {
   Either<ParentLoginResponseRemoteModel, DefaultLoginResponseRemoteModel>
       response;
 
-  GenericLoginResponse({@required this.response});
+  GenericLoginResponse({required this.response});
 }

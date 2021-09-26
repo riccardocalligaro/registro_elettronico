@@ -4,35 +4,35 @@ part of 'attachment_download_bloc.dart';
 abstract class AttachmentDownloadEvent {}
 
 class AttachmentDownloadProgressTickedEvent extends AttachmentDownloadEvent {
-  final double value;
+  final double? value;
 
   AttachmentDownloadProgressTickedEvent({
-    @required this.value,
+    required this.value,
   });
 }
 
 class AttachmentDownloadErrorEvent extends AttachmentDownloadEvent {
-  final Failure failure;
+  final Failure? failure;
 
   AttachmentDownloadErrorEvent({
-    @required this.failure,
+    required this.failure,
   });
 }
 
 class AttachmentDownloadFinishedEvent extends AttachmentDownloadEvent {
-  final GenericAttachment file;
+  final GenericAttachment? file;
 
   AttachmentDownloadFinishedEvent({
-    @required this.file,
+    required this.file,
   });
 }
 
 class DownloadAttachment extends AttachmentDownloadEvent {
-  final AttachmentDomainModel attachment;
+  final AttachmentDomainModel? attachment;
   final NoticeDomainModel notice;
 
   DownloadAttachment({
-    @required this.attachment,
-    @required this.notice,
+    required this.attachment,
+    required this.notice,
   });
 }

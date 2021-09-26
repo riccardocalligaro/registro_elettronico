@@ -1,7 +1,7 @@
 abstract class PreferencesRepository {
-  int getInt(String key);
+  int? getInt(String key);
 
-  bool getBool(String key);
+  bool? getBool(String key);
 
   Future<bool> setInt(String key, int value);
 

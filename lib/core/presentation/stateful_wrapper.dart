@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class StatefulWrapper extends StatefulWidget {
   final Function onInit;
   final Widget child;
-  const StatefulWrapper({@required this.onInit, @required this.child});
+  const StatefulWrapper({required this.onInit, required this.child});
   @override
   _StatefulWrapperState createState() => _StatefulWrapperState();
 }

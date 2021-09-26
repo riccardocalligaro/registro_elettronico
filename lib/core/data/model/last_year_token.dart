@@ -1,5 +1,5 @@
 class LastYearToken {
-  String token;
+  String? token;
 
   static final LastYearToken _inst = LastYearToken._internal();
 

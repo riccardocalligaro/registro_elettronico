@@ -10,7 +10,7 @@ import 'failures_v2.dart';
 
 Failure handleStreamError(
   dynamic e, [
-  StackTrace s,
+  StackTrace? s,
 ]) {
   if (e is Exception) {
   } else {
@@ -38,9 +38,9 @@ Failure _handleError(dynamic e) {
   if (e is DioError) {
     if (e is TimeoutException || e is SocketException || e.response == null) {
       return NetworkFailure(dioError: e);
-    } else if (e.response.statusCode >= 500) {
+    } else if (e.response!.statusCode! >= 500) {
       return ServerFailure(e);
-    } else if (e.response.statusCode == 404) {
+    } else if (e.response!.statusCode == 404) {
       return FunctionNotActivatedFailure();
     } else {
       return NetworkFailure(dioError: e);

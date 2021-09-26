@@ -31,7 +31,7 @@ class StringUtils {
     }
   }
 
-  static String _getPascalCase({List<String> input, String separator}) {
+  static String _getPascalCase({required List<String> input, required String separator}) {
     List<String> words = input.map(_upperCaseFirstLetter).toList();
     return words.join(separator);
   }

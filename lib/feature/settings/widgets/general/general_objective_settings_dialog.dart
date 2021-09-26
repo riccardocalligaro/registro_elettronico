@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 
 class GeneralObjectiveSettingsDialog extends StatefulWidget {
-  final int objective;
+  final int? objective;
   GeneralObjectiveSettingsDialog({
-    Key key,
+    Key? key,
     this.objective,
   }) : super(key: key);
 
@@ -15,7 +15,7 @@ class GeneralObjectiveSettingsDialog extends StatefulWidget {
 
 class _GeneralObjectiveSettingsDialogState
     extends State<GeneralObjectiveSettingsDialog> {
-  int _objective;
+  int? _objective;
   @override
   void initState() {
     _objective = widget.objective;
@@ -28,9 +28,9 @@ class _GeneralObjectiveSettingsDialogState
       child: Column(
         children: <Widget>[
           Text(
-              '${AppLocalizations.of(context).translate('objective')}: ${_objective.toString()}'),
+              '${AppLocalizations.of(context)!.translate('objective')}: ${_objective.toString()}'),
           Slider(
-            value: _objective.toDouble(),
+            value: _objective!.toDouble(),
             max: 10,
             divisions: 7,
             min: 3,
@@ -41,7 +41,7 @@ class _GeneralObjectiveSettingsDialogState
             },
           ),
           TextButton(
-            child: Text(AppLocalizations.of(context).translate('ok')),
+            child: Text(AppLocalizations.of(context)!.translate('ok')!),
             onPressed: () {
               Navigator.pop(context, _objective);
             },
