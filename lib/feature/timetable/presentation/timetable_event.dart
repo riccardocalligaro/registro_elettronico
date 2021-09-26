@@ -43,7 +43,7 @@ class TimetableEventWidget extends StatelessWidget {
                     leading: Icon(Icons.calendar_today),
                     title: Text(
                       SRDateUtils.convertSingleDayForDisplay(
-                        event.start.toDateTimeLocal(),
+                        event.start,
                         AppLocalizations.of(context).locale.toString(),
                       ),
                     ),
@@ -51,7 +51,7 @@ class TimetableEventWidget extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.access_time),
                     title: Text(
-                      '${event.start.hourOfDay}:00-${event.end.hourOfDay}:00',
+                      '${event.start.hour}:00-${event.end.hour}:00',
                     ),
                   )
                 ],
@@ -60,9 +60,11 @@ class TimetableEventWidget extends StatelessWidget {
                 TextButton(
                   onPressed: () async {
                     final TimetableRepository timetableRepository = sl();
-                    await timetableRepository.deleteTimetableEntry(
-                      id: event.id,
-                    );
+
+                    // TODO: delete event
+                    // await timetableRepository.deleteTimetableEntry(
+                    //   id: event.id,
+                    // );
 
                     Navigator.pop(context);
                   },

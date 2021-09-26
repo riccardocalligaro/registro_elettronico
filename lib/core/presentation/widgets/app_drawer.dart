@@ -1,4 +1,3 @@
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +11,7 @@ import 'package:registro_elettronico/feature/settings/widgets/account/account_se
 import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view.dart';
 import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/constants/drawer_constants.dart';
+import 'package:share/share.dart';
 
 class AppDrawer extends StatefulWidget {
   final int position;
@@ -313,12 +313,10 @@ class _AppDrawerState extends State<AppDrawer>
               text: trans.translate("share"),
               pos: DrawerConstants.SHARE,
               onTap: () {
-                Share.text(
-                    trans.translate('share'),
-                    trans.translate('share_message').replaceAll(
-                        '{download_url}',
-                        'https://play.google.com/store/apps/details?id=com.riccardocalligaro.registro_elettronico'),
-                    'text/plain');
+                Share.share(
+                  trans.translate('share_message').replaceAll('{download_url}',
+                      'https://play.google.com/store/apps/details?id=com.riccardocalligaro.registro_elettronico'),
+                );
               },
             ),
           ],

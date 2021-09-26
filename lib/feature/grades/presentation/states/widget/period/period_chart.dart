@@ -134,7 +134,7 @@ class GradesLineChart extends StatelessWidget {
           bottomTitles: SideTitles(
             showTitles: true,
             reservedSize: 22,
-            getTextStyles: (value) {
+            getTextStyles: (context, value) {
               return TextStyle(
                 color: const Color(0xff68737d),
                 fontWeight: FontWeight.w500,
@@ -148,7 +148,7 @@ class GradesLineChart extends StatelessWidget {
           ),
           leftTitles: SideTitles(
             showTitles: true,
-            getTextStyles: (value) {
+            getTextStyles: (context, value) {
               return TextStyle(
                 color: const Color(0xff67727d),
                 fontWeight: FontWeight.w300,

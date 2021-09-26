@@ -150,16 +150,17 @@ class _GeneralSettingsState extends State<GeneralSettings> {
             showDialog(
               context: context,
               builder: (context) {
-                return NumberPickerDialog.integer(
-                  initialIntegerValue: _class,
-                  minValue: 1,
-                  maxValue: 5,
-                  title: Text(
-                      AppLocalizations.of(context).translate('class_title')),
-                  cancelWidget: Text(AppLocalizations.of(context)
-                      .translate('cancel')
-                      .toUpperCase()),
-                );
+                // TODO: number picker migration
+                // return NumberPickerDialog.integer(
+                //   initialIntegerValue: _class,
+                //   minValue: 1,
+                //   maxValue: 5,
+                //   title: Text(
+                //       AppLocalizations.of(context).translate('class_title')),
+                //   cancelWidget: Text(AppLocalizations.of(context)
+                //       .translate('cancel')
+                //       .toUpperCase()),
+                // );
               },
             ).then((value) {
               if (value != null) {

@@ -33,20 +33,20 @@ class SRDioClient {
 
     _dio.interceptors.add(
       InterceptorsWrapper(
-        onRequest: (RequestOptions options) async {
+        onRequest: (requestOptions, handler) async {
           // Replace the student id with the current profile student id
-          if (options.path.contains('{studentId}')) {
+          if (requestOptions.path.contains('{studentId}')) {
             final studentId =
                 await authenticationRepository.getCurrentStudentId();
 
-            final replaced = options.path.replaceAll(
+            final replaced = requestOptions.path.replaceAll(
               '{studentId}',
               studentId,
             );
-            options.path = replaced;
+            requestOptions.path = replaced;
           }
 
-          if (options.path != SRApiConfig.loginPath) {
+          if (requestOptions.path != SRApiConfig.loginPath) {
             _dio.lock();
 
             // get the profile from the database
@@ -76,7 +76,7 @@ class SRDioClient {
 
               _tokenDio.interceptors.add(
                 InterceptorsWrapper(
-                  onError: (DioError error) async {
+                  onError: (error, handler) async {
                     if (error.response != null &&
                         error.response.statusCode == 422) {
                       await authenticationRepository.logoutCurrentUser();
@@ -89,6 +89,8 @@ class SRDioClient {
                       return null;
                     }
                     Logger.e(text: error.toString());
+
+                    return handler.next(error);
                   },
                 ),
               );
@@ -115,37 +117,37 @@ class SRDioClient {
               );
 
               // this sets the token as the new one we just got from the api
-              options.headers["Z-Auth-Token"] = loginResponse.token;
+              requestOptions.headers["Z-Auth-Token"] = loginResponse.token;
             } else {
               Logger.info(
                 '🆓 [DioINTERCEPTOR] No need for token - proceeding with request',
               );
 
               // If the token is still vaid we just use the one we got from the database
-              options.headers["Z-Auth-Token"] = profile.token;
+              requestOptions.headers["Z-Auth-Token"] = profile.token;
             }
             // unlock and proceed
             _dio.unlock();
           }
 
-          return options;
+          return handler.next(requestOptions);
         },
-        onResponse: (Response response) {
+        onResponse: (response, handler) {
           Logger.info(
-            '🌐 [DioEND] -> Response -> ${response.statusCode} [${response.request.path}] ${response.request.method}  ${response.request.responseType}',
+            '🌐 [DioEND] -> Response -> ${response.statusCode} [${response.requestOptions.path}] ${response.requestOptions.method}  ${response.requestOptions.responseType}',
           );
 
-          return response; // continue
+          return handler.next(response); // continue
         },
-        onError: (DioError error) async {
+        onError: (error, handler) async {
           if (error.response == null) {
             Logger.streamError(error.toString());
           } else {
             Logger.networkError(
-              '🤮 [DioERROR] ${error.type} Url: [${error.request.baseUrl}${error.request.path}] status:${error.response.statusCode} type:${error.type} Data: ${error.response.data} message: ${error.message}',
+              '🤮 [DioERROR] ${error.type} Url: [${error.requestOptions.baseUrl}${error.requestOptions.path}] status:${error.response.statusCode} type:${error.type} Data: ${error.response.data} message: ${error.message}',
             );
           }
-          return error;
+          return handler.next(error);
         },
       ),
     );

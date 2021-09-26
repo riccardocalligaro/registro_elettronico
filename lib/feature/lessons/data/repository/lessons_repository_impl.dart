@@ -87,9 +87,9 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
         return Resource.success(data: lessonDomainModels);
       },
-    ).onErrorReturnWith((error) {
+    ).onErrorReturnWith((error, s) {
       Logger.streamError(error.toString());
-      return Resource.failed(error: handleError(error));
+      return Resource.failed(error: handleError(error, s));
     });
   }
 
@@ -107,9 +107,9 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
         return Resource.success(data: lessonDomainModels);
       },
-    ).onErrorReturnWith((error) {
+    ).onErrorReturnWith((error, s) {
       Logger.streamError(error.toString());
-      return Resource.failed(error: handleError(error));
+      return Resource.failed(error: handleError(error, s));
     });
   }
 
@@ -189,9 +189,9 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
         return Resource.success(data: lessonsWithDurations);
       },
-    ).onErrorReturnWith((error) {
+    ).onErrorReturnWith((error, s) {
       Logger.streamError(error.toString());
-      return Resource.failed(error: handleError(error));
+      return Resource.failed(error: handleError(error, s));
     });
   }
 

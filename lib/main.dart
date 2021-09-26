@@ -12,7 +12,6 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/core_container.dart';
 import 'package:registro_elettronico/feature/splash/presentation/splash_screen.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
-import 'package:time_machine/time_machine.dart';
 
 import 'core/data/remote/api/sr_dio_client.dart';
 import 'core/infrastructure/log/logger.dart';
@@ -24,9 +23,6 @@ FlutterLocalNotificationsPlugin globalLocalNotifications;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize time machine for the timetable library
-  await TimeMachine.initialize({'rootBundle': rootBundle});
 
   await Firebase.initializeApp();
 

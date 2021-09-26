@@ -38,32 +38,30 @@ class LessonLocalModel extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final stringType = db.typeSystem.forDartType<String>();
     return LessonLocalModel(
-      eventId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}event_id']),
-      date:
-          dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}date']),
-      code: stringType.mapFromDatabaseResponse(data['${effectivePrefix}code']),
-      position:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}position']),
-      duration:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}duration']),
-      classe:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}classe']),
-      author:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}author']),
-      subjectId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
-      subjectCode: stringType
+      eventId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}event_id']),
+      date: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}date']),
+      code: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}code']),
+      position: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}position']),
+      duration: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}duration']),
+      classe: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}classe']),
+      author: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}author']),
+      subjectId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
+      subjectCode: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}subject_code']),
-      subjectDescription: stringType.mapFromDatabaseResponse(
+      subjectDescription: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}subject_description']),
-      lessonType: stringType
+      lessonType: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}lesson_type']),
-      lessonArg: stringType
+      lessonArg: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}lesson_arg']),
     );
   }
@@ -252,7 +250,7 @@ class LessonLocalModel extends DataClass
                                           $mrjc(lessonType.hashCode,
                                               lessonArg.hashCode))))))))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is LessonLocalModel &&
           other.eventId == this.eventId &&
@@ -447,153 +445,79 @@ class $LessonsTable extends Lessons
   final String _alias;
   $LessonsTable(this._db, [this._alias]);
   final VerificationMeta _eventIdMeta = const VerificationMeta('eventId');
-  GeneratedIntColumn _eventId;
+  GeneratedColumn<int> _eventId;
   @override
-  GeneratedIntColumn get eventId => _eventId ??= _constructEventId();
-  GeneratedIntColumn _constructEventId() {
-    return GeneratedIntColumn(
-      'event_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get eventId =>
+      _eventId ??= GeneratedColumn<int>('event_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _dateMeta = const VerificationMeta('date');
-  GeneratedDateTimeColumn _date;
+  GeneratedColumn<DateTime> _date;
   @override
-  GeneratedDateTimeColumn get date => _date ??= _constructDate();
-  GeneratedDateTimeColumn _constructDate() {
-    return GeneratedDateTimeColumn(
-      'date',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get date =>
+      _date ??= GeneratedColumn<DateTime>('date', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _codeMeta = const VerificationMeta('code');
-  GeneratedTextColumn _code;
+  GeneratedColumn<String> _code;
   @override
-  GeneratedTextColumn get code => _code ??= _constructCode();
-  GeneratedTextColumn _constructCode() {
-    return GeneratedTextColumn(
-      'code',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get code =>
+      _code ??= GeneratedColumn<String>('code', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _positionMeta = const VerificationMeta('position');
-  GeneratedIntColumn _position;
+  GeneratedColumn<int> _position;
   @override
-  GeneratedIntColumn get position => _position ??= _constructPosition();
-  GeneratedIntColumn _constructPosition() {
-    return GeneratedIntColumn(
-      'position',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get position =>
+      _position ??= GeneratedColumn<int>('position', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _durationMeta = const VerificationMeta('duration');
-  GeneratedIntColumn _duration;
+  GeneratedColumn<int> _duration;
   @override
-  GeneratedIntColumn get duration => _duration ??= _constructDuration();
-  GeneratedIntColumn _constructDuration() {
-    return GeneratedIntColumn(
-      'duration',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get duration =>
+      _duration ??= GeneratedColumn<int>('duration', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _classeMeta = const VerificationMeta('classe');
-  GeneratedTextColumn _classe;
+  GeneratedColumn<String> _classe;
   @override
-  GeneratedTextColumn get classe => _classe ??= _constructClasse();
-  GeneratedTextColumn _constructClasse() {
-    return GeneratedTextColumn(
-      'classe',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get classe =>
+      _classe ??= GeneratedColumn<String>('classe', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _authorMeta = const VerificationMeta('author');
-  GeneratedTextColumn _author;
+  GeneratedColumn<String> _author;
   @override
-  GeneratedTextColumn get author => _author ??= _constructAuthor();
-  GeneratedTextColumn _constructAuthor() {
-    return GeneratedTextColumn(
-      'author',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get author =>
+      _author ??= GeneratedColumn<String>('author', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _subjectIdMeta = const VerificationMeta('subjectId');
-  GeneratedIntColumn _subjectId;
+  GeneratedColumn<int> _subjectId;
   @override
-  GeneratedIntColumn get subjectId => _subjectId ??= _constructSubjectId();
-  GeneratedIntColumn _constructSubjectId() {
-    return GeneratedIntColumn(
-      'subject_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get subjectId =>
+      _subjectId ??= GeneratedColumn<int>('subject_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _subjectCodeMeta =
       const VerificationMeta('subjectCode');
-  GeneratedTextColumn _subjectCode;
+  GeneratedColumn<String> _subjectCode;
   @override
-  GeneratedTextColumn get subjectCode =>
-      _subjectCode ??= _constructSubjectCode();
-  GeneratedTextColumn _constructSubjectCode() {
-    return GeneratedTextColumn(
-      'subject_code',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get subjectCode => _subjectCode ??=
+      GeneratedColumn<String>('subject_code', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _subjectDescriptionMeta =
       const VerificationMeta('subjectDescription');
-  GeneratedTextColumn _subjectDescription;
+  GeneratedColumn<String> _subjectDescription;
   @override
-  GeneratedTextColumn get subjectDescription =>
-      _subjectDescription ??= _constructSubjectDescription();
-  GeneratedTextColumn _constructSubjectDescription() {
-    return GeneratedTextColumn(
-      'subject_description',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get subjectDescription => _subjectDescription ??=
+      GeneratedColumn<String>('subject_description', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _lessonTypeMeta = const VerificationMeta('lessonType');
-  GeneratedTextColumn _lessonType;
+  GeneratedColumn<String> _lessonType;
   @override
-  GeneratedTextColumn get lessonType => _lessonType ??= _constructLessonType();
-  GeneratedTextColumn _constructLessonType() {
-    return GeneratedTextColumn(
-      'lesson_type',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get lessonType =>
+      _lessonType ??= GeneratedColumn<String>('lesson_type', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _lessonArgMeta = const VerificationMeta('lessonArg');
-  GeneratedTextColumn _lessonArg;
+  GeneratedColumn<String> _lessonArg;
   @override
-  GeneratedTextColumn get lessonArg => _lessonArg ??= _constructLessonArg();
-  GeneratedTextColumn _constructLessonArg() {
-    return GeneratedTextColumn(
-      'lesson_arg',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get lessonArg =>
+      _lessonArg ??= GeneratedColumn<String>('lesson_arg', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         eventId,
@@ -610,11 +534,9 @@ class $LessonsTable extends Lessons
         lessonArg
       ];
   @override
-  $LessonsTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'lessons';
   @override
-  String get $tableName => _alias ?? 'lessons';
-  @override
-  final String actualTableName = 'lessons';
+  String get actualTableName => 'lessons';
   @override
   VerificationContext validateIntegrity(Insertable<LessonLocalModel> instance,
       {bool isInserting = false}) {
@@ -703,8 +625,8 @@ class $LessonsTable extends Lessons
   Set<GeneratedColumn> get $primaryKey => {eventId};
   @override
   LessonLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return LessonLocalModel.fromData(data, _db, prefix: effectivePrefix);
+    return LessonLocalModel.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -728,15 +650,14 @@ class SubjectLocalModel extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return SubjectLocalModel(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      orderNumber: intType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      orderNumber: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}order_number']),
-      color:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}color']),
+      color: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}color']),
     );
   }
   @override
@@ -813,7 +734,7 @@ class SubjectLocalModel extends DataClass
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(name.hashCode, $mrjc(orderNumber.hashCode, color.hashCode))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SubjectLocalModel &&
           other.id == this.id &&
@@ -904,63 +825,36 @@ class $SubjectsTable extends Subjects
   final String _alias;
   $SubjectsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedColumn<int> _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn(
-      'id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get id =>
+      _id ??= GeneratedColumn<int>('id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedTextColumn _name;
+  GeneratedColumn<String> _name;
   @override
-  GeneratedTextColumn get name => _name ??= _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn(
-      'name',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get name =>
+      _name ??= GeneratedColumn<String>('name', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _orderNumberMeta =
       const VerificationMeta('orderNumber');
-  GeneratedIntColumn _orderNumber;
+  GeneratedColumn<int> _orderNumber;
   @override
-  GeneratedIntColumn get orderNumber =>
-      _orderNumber ??= _constructOrderNumber();
-  GeneratedIntColumn _constructOrderNumber() {
-    return GeneratedIntColumn(
-      'order_number',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get orderNumber =>
+      _orderNumber ??= GeneratedColumn<int>('order_number', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _colorMeta = const VerificationMeta('color');
-  GeneratedTextColumn _color;
+  GeneratedColumn<String> _color;
   @override
-  GeneratedTextColumn get color => _color ??= _constructColor();
-  GeneratedTextColumn _constructColor() {
-    return GeneratedTextColumn(
-      'color',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get color =>
+      _color ??= GeneratedColumn<String>('color', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, name, orderNumber, color];
   @override
-  $SubjectsTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'subjects';
   @override
-  String get $tableName => _alias ?? 'subjects';
-  @override
-  final String actualTableName = 'subjects';
+  String get actualTableName => 'subjects';
   @override
   VerificationContext validateIntegrity(Insertable<SubjectLocalModel> instance,
       {bool isInserting = false}) {
@@ -996,8 +890,8 @@ class $SubjectsTable extends Subjects
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   SubjectLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return SubjectLocalModel.fromData(data, _db, prefix: effectivePrefix);
+    return SubjectLocalModel.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -1017,13 +911,13 @@ class ProfessorLocalModel extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final stringType = db.typeSystem.forDartType<String>();
-    final intType = db.typeSystem.forDartType<int>();
     return ProfessorLocalModel(
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      subjectId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      subjectId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
     );
   }
   @override
@@ -1090,7 +984,7 @@ class ProfessorLocalModel extends DataClass
   int get hashCode =>
       $mrjf($mrjc(id.hashCode, $mrjc(subjectId.hashCode, name.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ProfessorLocalModel &&
           other.id == this.id &&
@@ -1167,49 +1061,29 @@ class $ProfessorsTable extends Professors
   final String _alias;
   $ProfessorsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn _id;
+  GeneratedColumn<String> _id;
   @override
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn(
-      'id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get id =>
+      _id ??= GeneratedColumn<String>('id', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _subjectIdMeta = const VerificationMeta('subjectId');
-  GeneratedIntColumn _subjectId;
+  GeneratedColumn<int> _subjectId;
   @override
-  GeneratedIntColumn get subjectId => _subjectId ??= _constructSubjectId();
-  GeneratedIntColumn _constructSubjectId() {
-    return GeneratedIntColumn(
-      'subject_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get subjectId =>
+      _subjectId ??= GeneratedColumn<int>('subject_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedTextColumn _name;
+  GeneratedColumn<String> _name;
   @override
-  GeneratedTextColumn get name => _name ??= _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn(
-      'name',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get name =>
+      _name ??= GeneratedColumn<String>('name', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, subjectId, name];
   @override
-  $ProfessorsTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'professors';
   @override
-  String get $tableName => _alias ?? 'professors';
-  @override
-  final String actualTableName = 'professors';
+  String get actualTableName => 'professors';
   @override
   VerificationContext validateIntegrity(
       Insertable<ProfessorLocalModel> instance,
@@ -1240,8 +1114,8 @@ class $ProfessorsTable extends Professors
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   ProfessorLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return ProfessorLocalModel.fromData(data, _db, prefix: effectivePrefix);
+    return ProfessorLocalModel.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -1296,50 +1170,46 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final doubleType = db.typeSystem.forDartType<double>();
-    final boolType = db.typeSystem.forDartType<bool>();
     return GradeLocalModel(
-      subjectId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
-      subjectDesc: stringType
+      subjectId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
+      subjectDesc: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}subject_desc']),
-      evtId: intType.mapFromDatabaseResponse(data['${effectivePrefix}evt_id']),
-      evtCode: stringType
+      evtId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}evt_id']),
+      evtCode: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}evt_code']),
-      eventDate: dateTimeType
+      eventDate: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}event_date']),
-      decimalValue: doubleType
+      decimalValue: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}decimal_value']),
-      displayValue: stringType
+      displayValue: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}display_value']),
-      displayPos: intType
+      displayPos: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}display_pos']),
-      notesForFamily: stringType
+      notesForFamily: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}notes_for_family']),
-      cancelled:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}cancelled']),
-      underlined: boolType
+      cancelled: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}cancelled']),
+      underlined: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}underlined']),
-      periodPos:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}period_pos']),
-      periodDesc: stringType
+      periodPos: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}period_pos']),
+      periodDesc: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}period_desc']),
-      componentPos: intType
+      componentPos: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}component_pos']),
-      componentDesc: stringType
+      componentDesc: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}component_desc']),
-      weightFactor: intType
+      weightFactor: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}weight_factor']),
-      skillId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}skill_id']),
-      gradeMasterId: intType
+      skillId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}skill_id']),
+      gradeMasterId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}grade_master_id']),
-      localllyCancelled: boolType.mapFromDatabaseResponse(
+      localllyCancelled: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}locallly_cancelled']),
-      hasSeenIt: boolType
+      hasSeenIt: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}has_seen_it']),
     );
   }
@@ -1641,7 +1511,7 @@ class GradeLocalModel extends DataClass implements Insertable<GradeLocalModel> {
                                                                               localllyCancelled.hashCode,
                                                                               hasSeenIt.hashCode))))))))))))))))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is GradeLocalModel &&
           other.subjectId == this.subjectId &&
@@ -1939,260 +1809,143 @@ class $GradesTable extends Grades
   final String _alias;
   $GradesTable(this._db, [this._alias]);
   final VerificationMeta _subjectIdMeta = const VerificationMeta('subjectId');
-  GeneratedIntColumn _subjectId;
+  GeneratedColumn<int> _subjectId;
   @override
-  GeneratedIntColumn get subjectId => _subjectId ??= _constructSubjectId();
-  GeneratedIntColumn _constructSubjectId() {
-    return GeneratedIntColumn(
-      'subject_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get subjectId =>
+      _subjectId ??= GeneratedColumn<int>('subject_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _subjectDescMeta =
       const VerificationMeta('subjectDesc');
-  GeneratedTextColumn _subjectDesc;
+  GeneratedColumn<String> _subjectDesc;
   @override
-  GeneratedTextColumn get subjectDesc =>
-      _subjectDesc ??= _constructSubjectDesc();
-  GeneratedTextColumn _constructSubjectDesc() {
-    return GeneratedTextColumn(
-      'subject_desc',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get subjectDesc => _subjectDesc ??=
+      GeneratedColumn<String>('subject_desc', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _evtIdMeta = const VerificationMeta('evtId');
-  GeneratedIntColumn _evtId;
+  GeneratedColumn<int> _evtId;
   @override
-  GeneratedIntColumn get evtId => _evtId ??= _constructEvtId();
-  GeneratedIntColumn _constructEvtId() {
-    return GeneratedIntColumn(
-      'evt_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get evtId =>
+      _evtId ??= GeneratedColumn<int>('evt_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _evtCodeMeta = const VerificationMeta('evtCode');
-  GeneratedTextColumn _evtCode;
+  GeneratedColumn<String> _evtCode;
   @override
-  GeneratedTextColumn get evtCode => _evtCode ??= _constructEvtCode();
-  GeneratedTextColumn _constructEvtCode() {
-    return GeneratedTextColumn(
-      'evt_code',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get evtCode =>
+      _evtCode ??= GeneratedColumn<String>('evt_code', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _eventDateMeta = const VerificationMeta('eventDate');
-  GeneratedDateTimeColumn _eventDate;
+  GeneratedColumn<DateTime> _eventDate;
   @override
-  GeneratedDateTimeColumn get eventDate => _eventDate ??= _constructEventDate();
-  GeneratedDateTimeColumn _constructEventDate() {
-    return GeneratedDateTimeColumn(
-      'event_date',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get eventDate =>
+      _eventDate ??= GeneratedColumn<DateTime>('event_date', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _decimalValueMeta =
       const VerificationMeta('decimalValue');
-  GeneratedRealColumn _decimalValue;
+  GeneratedColumn<double> _decimalValue;
   @override
-  GeneratedRealColumn get decimalValue =>
-      _decimalValue ??= _constructDecimalValue();
-  GeneratedRealColumn _constructDecimalValue() {
-    return GeneratedRealColumn(
-      'decimal_value',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<double> get decimalValue => _decimalValue ??=
+      GeneratedColumn<double>('decimal_value', aliasedName, false,
+          typeName: 'REAL', requiredDuringInsert: true);
   final VerificationMeta _displayValueMeta =
       const VerificationMeta('displayValue');
-  GeneratedTextColumn _displayValue;
+  GeneratedColumn<String> _displayValue;
   @override
-  GeneratedTextColumn get displayValue =>
-      _displayValue ??= _constructDisplayValue();
-  GeneratedTextColumn _constructDisplayValue() {
-    return GeneratedTextColumn(
-      'display_value',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get displayValue => _displayValue ??=
+      GeneratedColumn<String>('display_value', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _displayPosMeta = const VerificationMeta('displayPos');
-  GeneratedIntColumn _displayPos;
+  GeneratedColumn<int> _displayPos;
   @override
-  GeneratedIntColumn get displayPos => _displayPos ??= _constructDisplayPos();
-  GeneratedIntColumn _constructDisplayPos() {
-    return GeneratedIntColumn(
-      'display_pos',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get displayPos =>
+      _displayPos ??= GeneratedColumn<int>('display_pos', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _notesForFamilyMeta =
       const VerificationMeta('notesForFamily');
-  GeneratedTextColumn _notesForFamily;
+  GeneratedColumn<String> _notesForFamily;
   @override
-  GeneratedTextColumn get notesForFamily =>
-      _notesForFamily ??= _constructNotesForFamily();
-  GeneratedTextColumn _constructNotesForFamily() {
-    return GeneratedTextColumn(
-      'notes_for_family',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get notesForFamily => _notesForFamily ??=
+      GeneratedColumn<String>('notes_for_family', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _cancelledMeta = const VerificationMeta('cancelled');
-  GeneratedBoolColumn _cancelled;
+  GeneratedColumn<bool> _cancelled;
   @override
-  GeneratedBoolColumn get cancelled => _cancelled ??= _constructCancelled();
-  GeneratedBoolColumn _constructCancelled() {
-    return GeneratedBoolColumn(
-      'cancelled',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get cancelled =>
+      _cancelled ??= GeneratedColumn<bool>('cancelled', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (cancelled IN (0, 1))');
   final VerificationMeta _underlinedMeta = const VerificationMeta('underlined');
-  GeneratedBoolColumn _underlined;
+  GeneratedColumn<bool> _underlined;
   @override
-  GeneratedBoolColumn get underlined => _underlined ??= _constructUnderlined();
-  GeneratedBoolColumn _constructUnderlined() {
-    return GeneratedBoolColumn(
-      'underlined',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get underlined =>
+      _underlined ??= GeneratedColumn<bool>('underlined', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (underlined IN (0, 1))');
   final VerificationMeta _periodPosMeta = const VerificationMeta('periodPos');
-  GeneratedIntColumn _periodPos;
+  GeneratedColumn<int> _periodPos;
   @override
-  GeneratedIntColumn get periodPos => _periodPos ??= _constructPeriodPos();
-  GeneratedIntColumn _constructPeriodPos() {
-    return GeneratedIntColumn(
-      'period_pos',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get periodPos =>
+      _periodPos ??= GeneratedColumn<int>('period_pos', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _periodDescMeta = const VerificationMeta('periodDesc');
-  GeneratedTextColumn _periodDesc;
+  GeneratedColumn<String> _periodDesc;
   @override
-  GeneratedTextColumn get periodDesc => _periodDesc ??= _constructPeriodDesc();
-  GeneratedTextColumn _constructPeriodDesc() {
-    return GeneratedTextColumn(
-      'period_desc',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get periodDesc =>
+      _periodDesc ??= GeneratedColumn<String>('period_desc', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _componentPosMeta =
       const VerificationMeta('componentPos');
-  GeneratedIntColumn _componentPos;
+  GeneratedColumn<int> _componentPos;
   @override
-  GeneratedIntColumn get componentPos =>
-      _componentPos ??= _constructComponentPos();
-  GeneratedIntColumn _constructComponentPos() {
-    return GeneratedIntColumn(
-      'component_pos',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get componentPos => _componentPos ??=
+      GeneratedColumn<int>('component_pos', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _componentDescMeta =
       const VerificationMeta('componentDesc');
-  GeneratedTextColumn _componentDesc;
+  GeneratedColumn<String> _componentDesc;
   @override
-  GeneratedTextColumn get componentDesc =>
-      _componentDesc ??= _constructComponentDesc();
-  GeneratedTextColumn _constructComponentDesc() {
-    return GeneratedTextColumn(
-      'component_desc',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get componentDesc => _componentDesc ??=
+      GeneratedColumn<String>('component_desc', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _weightFactorMeta =
       const VerificationMeta('weightFactor');
-  GeneratedIntColumn _weightFactor;
+  GeneratedColumn<int> _weightFactor;
   @override
-  GeneratedIntColumn get weightFactor =>
-      _weightFactor ??= _constructWeightFactor();
-  GeneratedIntColumn _constructWeightFactor() {
-    return GeneratedIntColumn(
-      'weight_factor',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get weightFactor => _weightFactor ??=
+      GeneratedColumn<int>('weight_factor', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _skillIdMeta = const VerificationMeta('skillId');
-  GeneratedIntColumn _skillId;
+  GeneratedColumn<int> _skillId;
   @override
-  GeneratedIntColumn get skillId => _skillId ??= _constructSkillId();
-  GeneratedIntColumn _constructSkillId() {
-    return GeneratedIntColumn(
-      'skill_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get skillId =>
+      _skillId ??= GeneratedColumn<int>('skill_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _gradeMasterIdMeta =
       const VerificationMeta('gradeMasterId');
-  GeneratedIntColumn _gradeMasterId;
+  GeneratedColumn<int> _gradeMasterId;
   @override
-  GeneratedIntColumn get gradeMasterId =>
-      _gradeMasterId ??= _constructGradeMasterId();
-  GeneratedIntColumn _constructGradeMasterId() {
-    return GeneratedIntColumn(
-      'grade_master_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get gradeMasterId => _gradeMasterId ??=
+      GeneratedColumn<int>('grade_master_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _localllyCancelledMeta =
       const VerificationMeta('localllyCancelled');
-  GeneratedBoolColumn _localllyCancelled;
+  GeneratedColumn<bool> _localllyCancelled;
   @override
-  GeneratedBoolColumn get localllyCancelled =>
-      _localllyCancelled ??= _constructLocalllyCancelled();
-  GeneratedBoolColumn _constructLocalllyCancelled() {
-    return GeneratedBoolColumn(
-      'locallly_cancelled',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get localllyCancelled => _localllyCancelled ??=
+      GeneratedColumn<bool>('locallly_cancelled', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (locallly_cancelled IN (0, 1))');
   final VerificationMeta _hasSeenItMeta = const VerificationMeta('hasSeenIt');
-  GeneratedBoolColumn _hasSeenIt;
+  GeneratedColumn<bool> _hasSeenIt;
   @override
-  GeneratedBoolColumn get hasSeenIt => _hasSeenIt ??= _constructHasSeenIt();
-  GeneratedBoolColumn _constructHasSeenIt() {
-    return GeneratedBoolColumn('has_seen_it', $tableName, false,
-        defaultValue: const Constant(true));
-  }
-
+  GeneratedColumn<bool> get hasSeenIt =>
+      _hasSeenIt ??= GeneratedColumn<bool>('has_seen_it', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: false,
+          defaultConstraints: 'CHECK (has_seen_it IN (0, 1))',
+          defaultValue: const Constant(true));
   @override
   List<GeneratedColumn> get $columns => [
         subjectId,
@@ -2217,11 +1970,9 @@ class $GradesTable extends Grades
         hasSeenIt
       ];
   @override
-  $GradesTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'grades';
   @override
-  String get $tableName => _alias ?? 'grades';
-  @override
-  final String actualTableName = 'grades';
+  String get actualTableName => 'grades';
   @override
   VerificationContext validateIntegrity(Insertable<GradeLocalModel> instance,
       {bool isInserting = false}) {
@@ -2374,8 +2125,8 @@ class $GradesTable extends Grades
   Set<GeneratedColumn> get $primaryKey => {evtId};
   @override
   GradeLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return GradeLocalModel.fromData(data, _db, prefix: effectivePrefix);
+    return GradeLocalModel.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -2417,35 +2168,33 @@ class AgendaEventLocalModel extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final boolType = db.typeSystem.forDartType<bool>();
     return AgendaEventLocalModel(
-      evtId: intType.mapFromDatabaseResponse(data['${effectivePrefix}evt_id']),
-      evtCode: stringType
+      evtId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}evt_id']),
+      evtCode: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}evt_code']),
-      begin:
-          dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}begin']),
-      end: dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}end']),
-      isFullDay: boolType
+      begin: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}begin']),
+      end: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}end']),
+      isFullDay: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}is_full_day']),
-      notes:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}notes']),
-      authorName: stringType
+      notes: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}notes']),
+      authorName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}author_name']),
-      classDesc: stringType
+      classDesc: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}class_desc']),
-      subjectId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
-      subjectDesc: stringType
+      subjectId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
+      subjectDesc: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}subject_desc']),
-      isLocal:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}is_local']),
-      labelColor: stringType
+      isLocal: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}is_local']),
+      labelColor: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}label_color']),
-      title:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}title']),
+      title: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}title']),
     );
   }
   @override
@@ -2645,7 +2394,7 @@ class AgendaEventLocalModel extends DataClass
                                               $mrjc(labelColor.hashCode,
                                                   title.hashCode)))))))))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AgendaEventLocalModel &&
           other.evtId == this.evtId &&
@@ -2854,163 +2603,88 @@ class $AgendaEventsTableTable extends AgendaEventsTable
   final String _alias;
   $AgendaEventsTableTable(this._db, [this._alias]);
   final VerificationMeta _evtIdMeta = const VerificationMeta('evtId');
-  GeneratedIntColumn _evtId;
+  GeneratedColumn<int> _evtId;
   @override
-  GeneratedIntColumn get evtId => _evtId ??= _constructEvtId();
-  GeneratedIntColumn _constructEvtId() {
-    return GeneratedIntColumn(
-      'evt_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get evtId =>
+      _evtId ??= GeneratedColumn<int>('evt_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _evtCodeMeta = const VerificationMeta('evtCode');
-  GeneratedTextColumn _evtCode;
+  GeneratedColumn<String> _evtCode;
   @override
-  GeneratedTextColumn get evtCode => _evtCode ??= _constructEvtCode();
-  GeneratedTextColumn _constructEvtCode() {
-    return GeneratedTextColumn(
-      'evt_code',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get evtCode =>
+      _evtCode ??= GeneratedColumn<String>('evt_code', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _beginMeta = const VerificationMeta('begin');
-  GeneratedDateTimeColumn _begin;
+  GeneratedColumn<DateTime> _begin;
   @override
-  GeneratedDateTimeColumn get begin => _begin ??= _constructBegin();
-  GeneratedDateTimeColumn _constructBegin() {
-    return GeneratedDateTimeColumn(
-      'begin',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get begin =>
+      _begin ??= GeneratedColumn<DateTime>('begin', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _endMeta = const VerificationMeta('end');
-  GeneratedDateTimeColumn _end;
+  GeneratedColumn<DateTime> _end;
   @override
-  GeneratedDateTimeColumn get end => _end ??= _constructEnd();
-  GeneratedDateTimeColumn _constructEnd() {
-    return GeneratedDateTimeColumn(
-      'end',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get end =>
+      _end ??= GeneratedColumn<DateTime>('end', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _isFullDayMeta = const VerificationMeta('isFullDay');
-  GeneratedBoolColumn _isFullDay;
+  GeneratedColumn<bool> _isFullDay;
   @override
-  GeneratedBoolColumn get isFullDay => _isFullDay ??= _constructIsFullDay();
-  GeneratedBoolColumn _constructIsFullDay() {
-    return GeneratedBoolColumn(
-      'is_full_day',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get isFullDay =>
+      _isFullDay ??= GeneratedColumn<bool>('is_full_day', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (is_full_day IN (0, 1))');
   final VerificationMeta _notesMeta = const VerificationMeta('notes');
-  GeneratedTextColumn _notes;
+  GeneratedColumn<String> _notes;
   @override
-  GeneratedTextColumn get notes => _notes ??= _constructNotes();
-  GeneratedTextColumn _constructNotes() {
-    return GeneratedTextColumn(
-      'notes',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get notes =>
+      _notes ??= GeneratedColumn<String>('notes', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _authorNameMeta = const VerificationMeta('authorName');
-  GeneratedTextColumn _authorName;
+  GeneratedColumn<String> _authorName;
   @override
-  GeneratedTextColumn get authorName => _authorName ??= _constructAuthorName();
-  GeneratedTextColumn _constructAuthorName() {
-    return GeneratedTextColumn(
-      'author_name',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get authorName =>
+      _authorName ??= GeneratedColumn<String>('author_name', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _classDescMeta = const VerificationMeta('classDesc');
-  GeneratedTextColumn _classDesc;
+  GeneratedColumn<String> _classDesc;
   @override
-  GeneratedTextColumn get classDesc => _classDesc ??= _constructClassDesc();
-  GeneratedTextColumn _constructClassDesc() {
-    return GeneratedTextColumn(
-      'class_desc',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get classDesc =>
+      _classDesc ??= GeneratedColumn<String>('class_desc', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _subjectIdMeta = const VerificationMeta('subjectId');
-  GeneratedIntColumn _subjectId;
+  GeneratedColumn<int> _subjectId;
   @override
-  GeneratedIntColumn get subjectId => _subjectId ??= _constructSubjectId();
-  GeneratedIntColumn _constructSubjectId() {
-    return GeneratedIntColumn(
-      'subject_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get subjectId =>
+      _subjectId ??= GeneratedColumn<int>('subject_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _subjectDescMeta =
       const VerificationMeta('subjectDesc');
-  GeneratedTextColumn _subjectDesc;
+  GeneratedColumn<String> _subjectDesc;
   @override
-  GeneratedTextColumn get subjectDesc =>
-      _subjectDesc ??= _constructSubjectDesc();
-  GeneratedTextColumn _constructSubjectDesc() {
-    return GeneratedTextColumn(
-      'subject_desc',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get subjectDesc => _subjectDesc ??=
+      GeneratedColumn<String>('subject_desc', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _isLocalMeta = const VerificationMeta('isLocal');
-  GeneratedBoolColumn _isLocal;
+  GeneratedColumn<bool> _isLocal;
   @override
-  GeneratedBoolColumn get isLocal => _isLocal ??= _constructIsLocal();
-  GeneratedBoolColumn _constructIsLocal() {
-    return GeneratedBoolColumn(
-      'is_local',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get isLocal =>
+      _isLocal ??= GeneratedColumn<bool>('is_local', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (is_local IN (0, 1))');
   final VerificationMeta _labelColorMeta = const VerificationMeta('labelColor');
-  GeneratedTextColumn _labelColor;
+  GeneratedColumn<String> _labelColor;
   @override
-  GeneratedTextColumn get labelColor => _labelColor ??= _constructLabelColor();
-  GeneratedTextColumn _constructLabelColor() {
-    return GeneratedTextColumn(
-      'label_color',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get labelColor =>
+      _labelColor ??= GeneratedColumn<String>('label_color', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _titleMeta = const VerificationMeta('title');
-  GeneratedTextColumn _title;
+  GeneratedColumn<String> _title;
   @override
-  GeneratedTextColumn get title => _title ??= _constructTitle();
-  GeneratedTextColumn _constructTitle() {
-    return GeneratedTextColumn(
-      'title',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get title =>
+      _title ??= GeneratedColumn<String>('title', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         evtId,
@@ -3028,11 +2702,9 @@ class $AgendaEventsTableTable extends AgendaEventsTable
         title
       ];
   @override
-  $AgendaEventsTableTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'agenda_events';
   @override
-  String get $tableName => _alias ?? 'agenda_events';
-  @override
-  final String actualTableName = 'agenda_events';
+  String get actualTableName => 'agenda_events';
   @override
   VerificationContext validateIntegrity(
       Insertable<AgendaEventLocalModel> instance,
@@ -3128,8 +2800,8 @@ class $AgendaEventsTableTable extends AgendaEventsTable
   Set<GeneratedColumn> get $primaryKey => {evtId};
   @override
   AgendaEventLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return AgendaEventLocalModel.fromData(data, _db, prefix: effectivePrefix);
+    return AgendaEventLocalModel.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -3159,25 +2831,22 @@ class Absence extends DataClass implements Insertable<Absence> {
   factory Absence.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final boolType = db.typeSystem.forDartType<bool>();
     return Absence(
-      evtId: intType.mapFromDatabaseResponse(data['${effectivePrefix}evt_id']),
-      evtCode: stringType
+      evtId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}evt_id']),
+      evtCode: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}evt_code']),
-      evtDate: dateTimeType
+      evtDate: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}evt_date']),
-      evtHPos:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}evt_h_pos']),
-      evtValue:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}evt_value']),
-      isJustified: boolType
+      evtHPos: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}evt_h_pos']),
+      evtValue: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}evt_value']),
+      isJustified: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}is_justified']),
-      justifiedReasonCode: stringType.mapFromDatabaseResponse(
+      justifiedReasonCode: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}justified_reason_code']),
-      justifReasonDesc: stringType.mapFromDatabaseResponse(
+      justifReasonDesc: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}justif_reason_desc']),
     );
   }
@@ -3319,7 +2988,7 @@ class Absence extends DataClass implements Insertable<Absence> {
                           $mrjc(justifiedReasonCode.hashCode,
                               justifReasonDesc.hashCode))))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Absence &&
           other.evtId == this.evtId &&
@@ -3463,107 +3132,58 @@ class $AbsencesTable extends Absences with TableInfo<$AbsencesTable, Absence> {
   final String _alias;
   $AbsencesTable(this._db, [this._alias]);
   final VerificationMeta _evtIdMeta = const VerificationMeta('evtId');
-  GeneratedIntColumn _evtId;
+  GeneratedColumn<int> _evtId;
   @override
-  GeneratedIntColumn get evtId => _evtId ??= _constructEvtId();
-  GeneratedIntColumn _constructEvtId() {
-    return GeneratedIntColumn(
-      'evt_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get evtId =>
+      _evtId ??= GeneratedColumn<int>('evt_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _evtCodeMeta = const VerificationMeta('evtCode');
-  GeneratedTextColumn _evtCode;
+  GeneratedColumn<String> _evtCode;
   @override
-  GeneratedTextColumn get evtCode => _evtCode ??= _constructEvtCode();
-  GeneratedTextColumn _constructEvtCode() {
-    return GeneratedTextColumn(
-      'evt_code',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get evtCode =>
+      _evtCode ??= GeneratedColumn<String>('evt_code', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _evtDateMeta = const VerificationMeta('evtDate');
-  GeneratedDateTimeColumn _evtDate;
+  GeneratedColumn<DateTime> _evtDate;
   @override
-  GeneratedDateTimeColumn get evtDate => _evtDate ??= _constructEvtDate();
-  GeneratedDateTimeColumn _constructEvtDate() {
-    return GeneratedDateTimeColumn(
-      'evt_date',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get evtDate =>
+      _evtDate ??= GeneratedColumn<DateTime>('evt_date', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _evtHPosMeta = const VerificationMeta('evtHPos');
-  GeneratedIntColumn _evtHPos;
+  GeneratedColumn<int> _evtHPos;
   @override
-  GeneratedIntColumn get evtHPos => _evtHPos ??= _constructEvtHPos();
-  GeneratedIntColumn _constructEvtHPos() {
-    return GeneratedIntColumn(
-      'evt_h_pos',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get evtHPos =>
+      _evtHPos ??= GeneratedColumn<int>('evt_h_pos', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _evtValueMeta = const VerificationMeta('evtValue');
-  GeneratedIntColumn _evtValue;
+  GeneratedColumn<int> _evtValue;
   @override
-  GeneratedIntColumn get evtValue => _evtValue ??= _constructEvtValue();
-  GeneratedIntColumn _constructEvtValue() {
-    return GeneratedIntColumn(
-      'evt_value',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get evtValue =>
+      _evtValue ??= GeneratedColumn<int>('evt_value', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _isJustifiedMeta =
       const VerificationMeta('isJustified');
-  GeneratedBoolColumn _isJustified;
+  GeneratedColumn<bool> _isJustified;
   @override
-  GeneratedBoolColumn get isJustified =>
-      _isJustified ??= _constructIsJustified();
-  GeneratedBoolColumn _constructIsJustified() {
-    return GeneratedBoolColumn(
-      'is_justified',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get isJustified =>
+      _isJustified ??= GeneratedColumn<bool>('is_justified', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (is_justified IN (0, 1))');
   final VerificationMeta _justifiedReasonCodeMeta =
       const VerificationMeta('justifiedReasonCode');
-  GeneratedTextColumn _justifiedReasonCode;
+  GeneratedColumn<String> _justifiedReasonCode;
   @override
-  GeneratedTextColumn get justifiedReasonCode =>
-      _justifiedReasonCode ??= _constructJustifiedReasonCode();
-  GeneratedTextColumn _constructJustifiedReasonCode() {
-    return GeneratedTextColumn(
-      'justified_reason_code',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get justifiedReasonCode => _justifiedReasonCode ??=
+      GeneratedColumn<String>('justified_reason_code', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _justifReasonDescMeta =
       const VerificationMeta('justifReasonDesc');
-  GeneratedTextColumn _justifReasonDesc;
+  GeneratedColumn<String> _justifReasonDesc;
   @override
-  GeneratedTextColumn get justifReasonDesc =>
-      _justifReasonDesc ??= _constructJustifReasonDesc();
-  GeneratedTextColumn _constructJustifReasonDesc() {
-    return GeneratedTextColumn(
-      'justif_reason_desc',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get justifReasonDesc => _justifReasonDesc ??=
+      GeneratedColumn<String>('justif_reason_desc', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         evtId,
@@ -3576,11 +3196,9 @@ class $AbsencesTable extends Absences with TableInfo<$AbsencesTable, Absence> {
         justifReasonDesc
       ];
   @override
-  $AbsencesTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'absences';
   @override
-  String get $tableName => _alias ?? 'absences';
-  @override
-  final String actualTableName = 'absences';
+  String get actualTableName => 'absences';
   @override
   VerificationContext validateIntegrity(Insertable<Absence> instance,
       {bool isInserting = false}) {
@@ -3645,8 +3263,8 @@ class $AbsencesTable extends Absences with TableInfo<$AbsencesTable, Absence> {
   Set<GeneratedColumn> get $primaryKey => {evtId};
   @override
   Absence map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Absence.fromData(data, _db, prefix: effectivePrefix);
+    return Absence.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -3678,24 +3296,22 @@ class PeriodLocalModel extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final stringType = db.typeSystem.forDartType<String>();
-    final intType = db.typeSystem.forDartType<int>();
-    final boolType = db.typeSystem.forDartType<bool>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return PeriodLocalModel(
-      code: stringType.mapFromDatabaseResponse(data['${effectivePrefix}code']),
-      position:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}position']),
-      description: stringType
+      code: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}code']),
+      position: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}position']),
+      description: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}description']),
-      isFinal:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}is_final']),
-      start:
-          dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}start']),
-      end: dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}end']),
-      miurDivisionCode: stringType.mapFromDatabaseResponse(
+      isFinal: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}is_final']),
+      start: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}start']),
+      end: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}end']),
+      miurDivisionCode: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}miur_division_code']),
-      periodIndex: intType
+      periodIndex: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}period_index']),
     );
   }
@@ -3832,7 +3448,7 @@ class PeriodLocalModel extends DataClass
                           $mrjc(miurDivisionCode.hashCode,
                               periodIndex.hashCode))))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is PeriodLocalModel &&
           other.code == this.code &&
@@ -3976,107 +3592,58 @@ class $PeriodsTable extends Periods
   final String _alias;
   $PeriodsTable(this._db, [this._alias]);
   final VerificationMeta _codeMeta = const VerificationMeta('code');
-  GeneratedTextColumn _code;
+  GeneratedColumn<String> _code;
   @override
-  GeneratedTextColumn get code => _code ??= _constructCode();
-  GeneratedTextColumn _constructCode() {
-    return GeneratedTextColumn(
-      'code',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get code =>
+      _code ??= GeneratedColumn<String>('code', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _positionMeta = const VerificationMeta('position');
-  GeneratedIntColumn _position;
+  GeneratedColumn<int> _position;
   @override
-  GeneratedIntColumn get position => _position ??= _constructPosition();
-  GeneratedIntColumn _constructPosition() {
-    return GeneratedIntColumn(
-      'position',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get position =>
+      _position ??= GeneratedColumn<int>('position', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
-  GeneratedTextColumn _description;
+  GeneratedColumn<String> _description;
   @override
-  GeneratedTextColumn get description =>
-      _description ??= _constructDescription();
-  GeneratedTextColumn _constructDescription() {
-    return GeneratedTextColumn(
-      'description',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get description => _description ??=
+      GeneratedColumn<String>('description', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _isFinalMeta = const VerificationMeta('isFinal');
-  GeneratedBoolColumn _isFinal;
+  GeneratedColumn<bool> _isFinal;
   @override
-  GeneratedBoolColumn get isFinal => _isFinal ??= _constructIsFinal();
-  GeneratedBoolColumn _constructIsFinal() {
-    return GeneratedBoolColumn(
-      'is_final',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get isFinal =>
+      _isFinal ??= GeneratedColumn<bool>('is_final', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (is_final IN (0, 1))');
   final VerificationMeta _startMeta = const VerificationMeta('start');
-  GeneratedDateTimeColumn _start;
+  GeneratedColumn<DateTime> _start;
   @override
-  GeneratedDateTimeColumn get start => _start ??= _constructStart();
-  GeneratedDateTimeColumn _constructStart() {
-    return GeneratedDateTimeColumn(
-      'start',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get start =>
+      _start ??= GeneratedColumn<DateTime>('start', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _endMeta = const VerificationMeta('end');
-  GeneratedDateTimeColumn _end;
+  GeneratedColumn<DateTime> _end;
   @override
-  GeneratedDateTimeColumn get end => _end ??= _constructEnd();
-  GeneratedDateTimeColumn _constructEnd() {
-    return GeneratedDateTimeColumn(
-      'end',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get end =>
+      _end ??= GeneratedColumn<DateTime>('end', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _miurDivisionCodeMeta =
       const VerificationMeta('miurDivisionCode');
-  GeneratedTextColumn _miurDivisionCode;
+  GeneratedColumn<String> _miurDivisionCode;
   @override
-  GeneratedTextColumn get miurDivisionCode =>
-      _miurDivisionCode ??= _constructMiurDivisionCode();
-  GeneratedTextColumn _constructMiurDivisionCode() {
-    return GeneratedTextColumn(
-      'miur_division_code',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get miurDivisionCode => _miurDivisionCode ??=
+      GeneratedColumn<String>('miur_division_code', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _periodIndexMeta =
       const VerificationMeta('periodIndex');
-  GeneratedIntColumn _periodIndex;
+  GeneratedColumn<int> _periodIndex;
   @override
-  GeneratedIntColumn get periodIndex =>
-      _periodIndex ??= _constructPeriodIndex();
-  GeneratedIntColumn _constructPeriodIndex() {
-    return GeneratedIntColumn(
-      'period_index',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get periodIndex =>
+      _periodIndex ??= GeneratedColumn<int>('period_index', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         code,
@@ -4089,11 +3656,9 @@ class $PeriodsTable extends Periods
         periodIndex
       ];
   @override
-  $PeriodsTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'periods';
   @override
-  String get $tableName => _alias ?? 'periods';
-  @override
-  final String actualTableName = 'periods';
+  String get actualTableName => 'periods';
   @override
   VerificationContext validateIntegrity(Insertable<PeriodLocalModel> instance,
       {bool isInserting = false}) {
@@ -4160,8 +3725,8 @@ class $PeriodsTable extends Periods
   Set<GeneratedColumn> get $primaryKey => {start, end};
   @override
   PeriodLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return PeriodLocalModel.fromData(data, _db, prefix: effectivePrefix);
+    return PeriodLocalModel.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -4209,42 +3774,39 @@ class NoticeLocalModel extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final boolType = db.typeSystem.forDartType<bool>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NoticeLocalModel(
-      pubId: intType.mapFromDatabaseResponse(data['${effectivePrefix}pub_id']),
-      pubDate: dateTimeType
+      pubId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pub_id']),
+      pubDate: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}pub_date']),
-      readStatus: boolType
+      readStatus: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}read_status']),
-      eventCode: stringType
+      eventCode: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}event_code']),
-      contentId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}content_id']),
-      contentValidFrom: dateTimeType.mapFromDatabaseResponse(
+      contentId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}content_id']),
+      contentValidFrom: const DateTimeType().mapFromDatabaseResponse(
           data['${effectivePrefix}content_valid_from']),
-      contentValidTo: dateTimeType
+      contentValidTo: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}content_valid_to']),
-      contentValidInRange: boolType.mapFromDatabaseResponse(
+      contentValidInRange: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}content_valid_in_range']),
-      contentStatus: stringType
+      contentStatus: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}content_status']),
-      contentTitle: stringType
+      contentTitle: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}content_title']),
-      contentCategory: stringType
+      contentCategory: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}content_category']),
-      contentHasChanged: boolType.mapFromDatabaseResponse(
+      contentHasChanged: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}content_has_changed']),
-      contentHasAttach: boolType.mapFromDatabaseResponse(
+      contentHasAttach: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}content_has_attach']),
-      needJoin:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}need_join']),
-      needReply: boolType
+      needJoin: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}need_join']),
+      needReply: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}need_reply']),
-      needFile:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}need_file']),
+      needFile: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}need_file']),
     );
   }
   @override
@@ -4492,7 +4054,7 @@ class NoticeLocalModel extends DataClass
                                                               needFile
                                                                   .hashCode))))))))))))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NoticeLocalModel &&
           other.pubId == this.pubId &&
@@ -4740,213 +4302,123 @@ class $NoticesTable extends Notices
   final String _alias;
   $NoticesTable(this._db, [this._alias]);
   final VerificationMeta _pubIdMeta = const VerificationMeta('pubId');
-  GeneratedIntColumn _pubId;
+  GeneratedColumn<int> _pubId;
   @override
-  GeneratedIntColumn get pubId => _pubId ??= _constructPubId();
-  GeneratedIntColumn _constructPubId() {
-    return GeneratedIntColumn(
-      'pub_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get pubId =>
+      _pubId ??= GeneratedColumn<int>('pub_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _pubDateMeta = const VerificationMeta('pubDate');
-  GeneratedDateTimeColumn _pubDate;
+  GeneratedColumn<DateTime> _pubDate;
   @override
-  GeneratedDateTimeColumn get pubDate => _pubDate ??= _constructPubDate();
-  GeneratedDateTimeColumn _constructPubDate() {
-    return GeneratedDateTimeColumn(
-      'pub_date',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get pubDate =>
+      _pubDate ??= GeneratedColumn<DateTime>('pub_date', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _readStatusMeta = const VerificationMeta('readStatus');
-  GeneratedBoolColumn _readStatus;
+  GeneratedColumn<bool> _readStatus;
   @override
-  GeneratedBoolColumn get readStatus => _readStatus ??= _constructReadStatus();
-  GeneratedBoolColumn _constructReadStatus() {
-    return GeneratedBoolColumn(
-      'read_status',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get readStatus =>
+      _readStatus ??= GeneratedColumn<bool>('read_status', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (read_status IN (0, 1))');
   final VerificationMeta _eventCodeMeta = const VerificationMeta('eventCode');
-  GeneratedTextColumn _eventCode;
+  GeneratedColumn<String> _eventCode;
   @override
-  GeneratedTextColumn get eventCode => _eventCode ??= _constructEventCode();
-  GeneratedTextColumn _constructEventCode() {
-    return GeneratedTextColumn(
-      'event_code',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get eventCode =>
+      _eventCode ??= GeneratedColumn<String>('event_code', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _contentIdMeta = const VerificationMeta('contentId');
-  GeneratedIntColumn _contentId;
+  GeneratedColumn<int> _contentId;
   @override
-  GeneratedIntColumn get contentId => _contentId ??= _constructContentId();
-  GeneratedIntColumn _constructContentId() {
-    return GeneratedIntColumn(
-      'content_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get contentId =>
+      _contentId ??= GeneratedColumn<int>('content_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _contentValidFromMeta =
       const VerificationMeta('contentValidFrom');
-  GeneratedDateTimeColumn _contentValidFrom;
+  GeneratedColumn<DateTime> _contentValidFrom;
   @override
-  GeneratedDateTimeColumn get contentValidFrom =>
-      _contentValidFrom ??= _constructContentValidFrom();
-  GeneratedDateTimeColumn _constructContentValidFrom() {
-    return GeneratedDateTimeColumn(
-      'content_valid_from',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get contentValidFrom => _contentValidFrom ??=
+      GeneratedColumn<DateTime>('content_valid_from', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _contentValidToMeta =
       const VerificationMeta('contentValidTo');
-  GeneratedDateTimeColumn _contentValidTo;
+  GeneratedColumn<DateTime> _contentValidTo;
   @override
-  GeneratedDateTimeColumn get contentValidTo =>
-      _contentValidTo ??= _constructContentValidTo();
-  GeneratedDateTimeColumn _constructContentValidTo() {
-    return GeneratedDateTimeColumn(
-      'content_valid_to',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get contentValidTo => _contentValidTo ??=
+      GeneratedColumn<DateTime>('content_valid_to', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _contentValidInRangeMeta =
       const VerificationMeta('contentValidInRange');
-  GeneratedBoolColumn _contentValidInRange;
+  GeneratedColumn<bool> _contentValidInRange;
   @override
-  GeneratedBoolColumn get contentValidInRange =>
-      _contentValidInRange ??= _constructContentValidInRange();
-  GeneratedBoolColumn _constructContentValidInRange() {
-    return GeneratedBoolColumn(
-      'content_valid_in_range',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get contentValidInRange => _contentValidInRange ??=
+      GeneratedColumn<bool>('content_valid_in_range', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (content_valid_in_range IN (0, 1))');
   final VerificationMeta _contentStatusMeta =
       const VerificationMeta('contentStatus');
-  GeneratedTextColumn _contentStatus;
+  GeneratedColumn<String> _contentStatus;
   @override
-  GeneratedTextColumn get contentStatus =>
-      _contentStatus ??= _constructContentStatus();
-  GeneratedTextColumn _constructContentStatus() {
-    return GeneratedTextColumn(
-      'content_status',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get contentStatus => _contentStatus ??=
+      GeneratedColumn<String>('content_status', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _contentTitleMeta =
       const VerificationMeta('contentTitle');
-  GeneratedTextColumn _contentTitle;
+  GeneratedColumn<String> _contentTitle;
   @override
-  GeneratedTextColumn get contentTitle =>
-      _contentTitle ??= _constructContentTitle();
-  GeneratedTextColumn _constructContentTitle() {
-    return GeneratedTextColumn(
-      'content_title',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get contentTitle => _contentTitle ??=
+      GeneratedColumn<String>('content_title', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _contentCategoryMeta =
       const VerificationMeta('contentCategory');
-  GeneratedTextColumn _contentCategory;
+  GeneratedColumn<String> _contentCategory;
   @override
-  GeneratedTextColumn get contentCategory =>
-      _contentCategory ??= _constructContentCategory();
-  GeneratedTextColumn _constructContentCategory() {
-    return GeneratedTextColumn(
-      'content_category',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get contentCategory => _contentCategory ??=
+      GeneratedColumn<String>('content_category', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _contentHasChangedMeta =
       const VerificationMeta('contentHasChanged');
-  GeneratedBoolColumn _contentHasChanged;
+  GeneratedColumn<bool> _contentHasChanged;
   @override
-  GeneratedBoolColumn get contentHasChanged =>
-      _contentHasChanged ??= _constructContentHasChanged();
-  GeneratedBoolColumn _constructContentHasChanged() {
-    return GeneratedBoolColumn(
-      'content_has_changed',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get contentHasChanged => _contentHasChanged ??=
+      GeneratedColumn<bool>('content_has_changed', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (content_has_changed IN (0, 1))');
   final VerificationMeta _contentHasAttachMeta =
       const VerificationMeta('contentHasAttach');
-  GeneratedBoolColumn _contentHasAttach;
+  GeneratedColumn<bool> _contentHasAttach;
   @override
-  GeneratedBoolColumn get contentHasAttach =>
-      _contentHasAttach ??= _constructContentHasAttach();
-  GeneratedBoolColumn _constructContentHasAttach() {
-    return GeneratedBoolColumn(
-      'content_has_attach',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get contentHasAttach => _contentHasAttach ??=
+      GeneratedColumn<bool>('content_has_attach', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (content_has_attach IN (0, 1))');
   final VerificationMeta _needJoinMeta = const VerificationMeta('needJoin');
-  GeneratedBoolColumn _needJoin;
+  GeneratedColumn<bool> _needJoin;
   @override
-  GeneratedBoolColumn get needJoin => _needJoin ??= _constructNeedJoin();
-  GeneratedBoolColumn _constructNeedJoin() {
-    return GeneratedBoolColumn(
-      'need_join',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get needJoin =>
+      _needJoin ??= GeneratedColumn<bool>('need_join', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (need_join IN (0, 1))');
   final VerificationMeta _needReplyMeta = const VerificationMeta('needReply');
-  GeneratedBoolColumn _needReply;
+  GeneratedColumn<bool> _needReply;
   @override
-  GeneratedBoolColumn get needReply => _needReply ??= _constructNeedReply();
-  GeneratedBoolColumn _constructNeedReply() {
-    return GeneratedBoolColumn(
-      'need_reply',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get needReply =>
+      _needReply ??= GeneratedColumn<bool>('need_reply', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (need_reply IN (0, 1))');
   final VerificationMeta _needFileMeta = const VerificationMeta('needFile');
-  GeneratedBoolColumn _needFile;
+  GeneratedColumn<bool> _needFile;
   @override
-  GeneratedBoolColumn get needFile => _needFile ??= _constructNeedFile();
-  GeneratedBoolColumn _constructNeedFile() {
-    return GeneratedBoolColumn(
-      'need_file',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get needFile =>
+      _needFile ??= GeneratedColumn<bool>('need_file', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (need_file IN (0, 1))');
   @override
   List<GeneratedColumn> get $columns => [
         pubId,
@@ -4967,11 +4439,9 @@ class $NoticesTable extends Notices
         needFile
       ];
   @override
-  $NoticesTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'notices';
   @override
-  String get $tableName => _alias ?? 'notices';
-  @override
-  final String actualTableName = 'notices';
+  String get actualTableName => 'notices';
   @override
   VerificationContext validateIntegrity(Insertable<NoticeLocalModel> instance,
       {bool isInserting = false}) {
@@ -5096,8 +4566,8 @@ class $NoticesTable extends Notices
   Set<GeneratedColumn> get $primaryKey => {pubId};
   @override
   NoticeLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NoticeLocalModel.fromData(data, _db, prefix: effectivePrefix);
+    return NoticeLocalModel.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -5121,14 +4591,13 @@ class NoticeAttachmentLocalModel extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NoticeAttachmentLocalModel(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      pubId: intType.mapFromDatabaseResponse(data['${effectivePrefix}pub_id']),
-      fileName: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      pubId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pub_id']),
+      fileName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}file_name']),
-      attachNumber: intType
+      attachNumber: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}attach_number']),
     );
   }
@@ -5208,7 +4677,7 @@ class NoticeAttachmentLocalModel extends DataClass
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(pubId.hashCode, $mrjc(fileName.hashCode, attachNumber.hashCode))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NoticeAttachmentLocalModel &&
           other.id == this.id &&
@@ -5299,60 +4768,38 @@ class $AttachmentsTable extends Attachments
   final String _alias;
   $AttachmentsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedColumn<int> _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
+  GeneratedColumn<int> get id =>
+      _id ??= GeneratedColumn<int>('id', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: false,
+          defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _pubIdMeta = const VerificationMeta('pubId');
-  GeneratedIntColumn _pubId;
+  GeneratedColumn<int> _pubId;
   @override
-  GeneratedIntColumn get pubId => _pubId ??= _constructPubId();
-  GeneratedIntColumn _constructPubId() {
-    return GeneratedIntColumn(
-      'pub_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get pubId =>
+      _pubId ??= GeneratedColumn<int>('pub_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _fileNameMeta = const VerificationMeta('fileName');
-  GeneratedTextColumn _fileName;
+  GeneratedColumn<String> _fileName;
   @override
-  GeneratedTextColumn get fileName => _fileName ??= _constructFileName();
-  GeneratedTextColumn _constructFileName() {
-    return GeneratedTextColumn(
-      'file_name',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get fileName =>
+      _fileName ??= GeneratedColumn<String>('file_name', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _attachNumberMeta =
       const VerificationMeta('attachNumber');
-  GeneratedIntColumn _attachNumber;
+  GeneratedColumn<int> _attachNumber;
   @override
-  GeneratedIntColumn get attachNumber =>
-      _attachNumber ??= _constructAttachNumber();
-  GeneratedIntColumn _constructAttachNumber() {
-    return GeneratedIntColumn(
-      'attach_number',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get attachNumber => _attachNumber ??=
+      GeneratedColumn<int>('attach_number', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, pubId, fileName, attachNumber];
   @override
-  $AttachmentsTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'attachments';
   @override
-  String get $tableName => _alias ?? 'attachments';
-  @override
-  final String actualTableName = 'attachments';
+  String get actualTableName => 'attachments';
   @override
   VerificationContext validateIntegrity(
       Insertable<NoticeAttachmentLocalModel> instance,
@@ -5390,9 +4837,8 @@ class $AttachmentsTable extends Attachments
   @override
   NoticeAttachmentLocalModel map(Map<String, dynamic> data,
       {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return NoticeAttachmentLocalModel.fromData(data, _db,
-        prefix: effectivePrefix);
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -5420,23 +4866,20 @@ class Note extends DataClass implements Insertable<Note> {
   factory Note.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final intType = db.typeSystem.forDartType<int>();
-    final boolType = db.typeSystem.forDartType<bool>();
     return Note(
-      author:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}author']),
-      date:
-          dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}date']),
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      status:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}status']),
-      description: stringType
+      author: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}author']),
+      date: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}date']),
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      status: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}status']),
+      description: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}description']),
-      warning:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}warning']),
-      type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
+      warning: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}warning']),
+      type: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type']),
     );
   }
   @override
@@ -5554,7 +4997,7 @@ class Note extends DataClass implements Insertable<Note> {
                   $mrjc(description.hashCode,
                       $mrjc(warning.hashCode, type.hashCode)))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Note &&
           other.author == this.author &&
@@ -5683,100 +5126,57 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
   final String _alias;
   $NotesTable(this._db, [this._alias]);
   final VerificationMeta _authorMeta = const VerificationMeta('author');
-  GeneratedTextColumn _author;
+  GeneratedColumn<String> _author;
   @override
-  GeneratedTextColumn get author => _author ??= _constructAuthor();
-  GeneratedTextColumn _constructAuthor() {
-    return GeneratedTextColumn(
-      'author',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get author =>
+      _author ??= GeneratedColumn<String>('author', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _dateMeta = const VerificationMeta('date');
-  GeneratedDateTimeColumn _date;
+  GeneratedColumn<DateTime> _date;
   @override
-  GeneratedDateTimeColumn get date => _date ??= _constructDate();
-  GeneratedDateTimeColumn _constructDate() {
-    return GeneratedDateTimeColumn(
-      'date',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get date =>
+      _date ??= GeneratedColumn<DateTime>('date', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedColumn<int> _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn(
-      'id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get id =>
+      _id ??= GeneratedColumn<int>('id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _statusMeta = const VerificationMeta('status');
-  GeneratedBoolColumn _status;
+  GeneratedColumn<bool> _status;
   @override
-  GeneratedBoolColumn get status => _status ??= _constructStatus();
-  GeneratedBoolColumn _constructStatus() {
-    return GeneratedBoolColumn(
-      'status',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get status =>
+      _status ??= GeneratedColumn<bool>('status', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (status IN (0, 1))');
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
-  GeneratedTextColumn _description;
+  GeneratedColumn<String> _description;
   @override
-  GeneratedTextColumn get description =>
-      _description ??= _constructDescription();
-  GeneratedTextColumn _constructDescription() {
-    return GeneratedTextColumn(
-      'description',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get description => _description ??=
+      GeneratedColumn<String>('description', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _warningMeta = const VerificationMeta('warning');
-  GeneratedTextColumn _warning;
+  GeneratedColumn<String> _warning;
   @override
-  GeneratedTextColumn get warning => _warning ??= _constructWarning();
-  GeneratedTextColumn _constructWarning() {
-    return GeneratedTextColumn(
-      'warning',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get warning =>
+      _warning ??= GeneratedColumn<String>('warning', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _typeMeta = const VerificationMeta('type');
-  GeneratedTextColumn _type;
+  GeneratedColumn<String> _type;
   @override
-  GeneratedTextColumn get type => _type ??= _constructType();
-  GeneratedTextColumn _constructType() {
-    return GeneratedTextColumn(
-      'type',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get type =>
+      _type ??= GeneratedColumn<String>('type', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [author, date, id, status, description, warning, type];
   @override
-  $NotesTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'notes';
   @override
-  String get $tableName => _alias ?? 'notes';
-  @override
-  final String actualTableName = 'notes';
+  String get actualTableName => 'notes';
   @override
   VerificationContext validateIntegrity(Insertable<Note> instance,
       {bool isInserting = false}) {
@@ -5830,8 +5230,8 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Note map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Note.fromData(data, _db, prefix: effectivePrefix);
+    return Note.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -5850,12 +5250,11 @@ class NotesAttachment extends DataClass implements Insertable<NotesAttachment> {
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NotesAttachment(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
-      description: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      type: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type']),
+      description: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}description']),
     );
   }
@@ -5923,7 +5322,7 @@ class NotesAttachment extends DataClass implements Insertable<NotesAttachment> {
   int get hashCode =>
       $mrjf($mrjc(id.hashCode, $mrjc(type.hashCode, description.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NotesAttachment &&
           other.id == this.id &&
@@ -5999,51 +5398,30 @@ class $NotesAttachmentsTable extends NotesAttachments
   final String _alias;
   $NotesAttachmentsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedColumn<int> _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn(
-      'id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get id =>
+      _id ??= GeneratedColumn<int>('id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _typeMeta = const VerificationMeta('type');
-  GeneratedTextColumn _type;
+  GeneratedColumn<String> _type;
   @override
-  GeneratedTextColumn get type => _type ??= _constructType();
-  GeneratedTextColumn _constructType() {
-    return GeneratedTextColumn(
-      'type',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get type =>
+      _type ??= GeneratedColumn<String>('type', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
-  GeneratedTextColumn _description;
+  GeneratedColumn<String> _description;
   @override
-  GeneratedTextColumn get description =>
-      _description ??= _constructDescription();
-  GeneratedTextColumn _constructDescription() {
-    return GeneratedTextColumn(
-      'description',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get description => _description ??=
+      GeneratedColumn<String>('description', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, type, description];
   @override
-  $NotesAttachmentsTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'notes_attachments';
   @override
-  String get $tableName => _alias ?? 'notes_attachments';
-  @override
-  final String actualTableName = 'notes_attachments';
+  String get actualTableName => 'notes_attachments';
   @override
   VerificationContext validateIntegrity(Insertable<NotesAttachment> instance,
       {bool isInserting = false}) {
@@ -6073,8 +5451,8 @@ class $NotesAttachmentsTable extends NotesAttachments
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   NotesAttachment map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NotesAttachment.fromData(data, _db, prefix: effectivePrefix);
+    return NotesAttachment.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -6098,13 +5476,14 @@ class TeacherLocalModel extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final stringType = db.typeSystem.forDartType<String>();
     return TeacherLocalModel(
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      firstName: stringType
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      firstName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}first_name']),
-      lastName: stringType
+      lastName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}last_name']),
     );
   }
@@ -6183,7 +5562,7 @@ class TeacherLocalModel extends DataClass
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(name.hashCode, $mrjc(firstName.hashCode, lastName.hashCode))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is TeacherLocalModel &&
           other.id == this.id &&
@@ -6275,61 +5654,35 @@ class $DidacticsTeachersTable extends DidacticsTeachers
   final String _alias;
   $DidacticsTeachersTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn _id;
+  GeneratedColumn<String> _id;
   @override
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn(
-      'id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get id =>
+      _id ??= GeneratedColumn<String>('id', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedTextColumn _name;
+  GeneratedColumn<String> _name;
   @override
-  GeneratedTextColumn get name => _name ??= _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn(
-      'name',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get name =>
+      _name ??= GeneratedColumn<String>('name', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _firstNameMeta = const VerificationMeta('firstName');
-  GeneratedTextColumn _firstName;
+  GeneratedColumn<String> _firstName;
   @override
-  GeneratedTextColumn get firstName => _firstName ??= _constructFirstName();
-  GeneratedTextColumn _constructFirstName() {
-    return GeneratedTextColumn(
-      'first_name',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get firstName =>
+      _firstName ??= GeneratedColumn<String>('first_name', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _lastNameMeta = const VerificationMeta('lastName');
-  GeneratedTextColumn _lastName;
+  GeneratedColumn<String> _lastName;
   @override
-  GeneratedTextColumn get lastName => _lastName ??= _constructLastName();
-  GeneratedTextColumn _constructLastName() {
-    return GeneratedTextColumn(
-      'last_name',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get lastName =>
+      _lastName ??= GeneratedColumn<String>('last_name', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, name, firstName, lastName];
   @override
-  $DidacticsTeachersTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'didactics_teachers';
   @override
-  String get $tableName => _alias ?? 'didactics_teachers';
-  @override
-  final String actualTableName = 'didactics_teachers';
+  String get actualTableName => 'didactics_teachers';
   @override
   VerificationContext validateIntegrity(Insertable<TeacherLocalModel> instance,
       {bool isInserting = false}) {
@@ -6365,8 +5718,8 @@ class $DidacticsTeachersTable extends DidacticsTeachers
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   TeacherLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return TeacherLocalModel.fromData(data, _db, prefix: effectivePrefix);
+    return TeacherLocalModel.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -6390,15 +5743,13 @@ class FolderLocalModel extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final stringType = db.typeSystem.forDartType<String>();
-    final intType = db.typeSystem.forDartType<int>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return FolderLocalModel(
-      teacherId: stringType
+      teacherId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}teacher_id']),
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      lastShare: dateTimeType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      lastShare: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}last_share']),
     );
   }
@@ -6477,7 +5828,7 @@ class FolderLocalModel extends DataClass
   int get hashCode => $mrjf($mrjc(teacherId.hashCode,
       $mrjc(id.hashCode, $mrjc(name.hashCode, lastShare.hashCode))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is FolderLocalModel &&
           other.teacherId == this.teacherId &&
@@ -6568,61 +5919,35 @@ class $DidacticsFoldersTable extends DidacticsFolders
   final String _alias;
   $DidacticsFoldersTable(this._db, [this._alias]);
   final VerificationMeta _teacherIdMeta = const VerificationMeta('teacherId');
-  GeneratedTextColumn _teacherId;
+  GeneratedColumn<String> _teacherId;
   @override
-  GeneratedTextColumn get teacherId => _teacherId ??= _constructTeacherId();
-  GeneratedTextColumn _constructTeacherId() {
-    return GeneratedTextColumn(
-      'teacher_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get teacherId =>
+      _teacherId ??= GeneratedColumn<String>('teacher_id', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedColumn<int> _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn(
-      'id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get id =>
+      _id ??= GeneratedColumn<int>('id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedTextColumn _name;
+  GeneratedColumn<String> _name;
   @override
-  GeneratedTextColumn get name => _name ??= _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn(
-      'name',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get name =>
+      _name ??= GeneratedColumn<String>('name', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _lastShareMeta = const VerificationMeta('lastShare');
-  GeneratedDateTimeColumn _lastShare;
+  GeneratedColumn<DateTime> _lastShare;
   @override
-  GeneratedDateTimeColumn get lastShare => _lastShare ??= _constructLastShare();
-  GeneratedDateTimeColumn _constructLastShare() {
-    return GeneratedDateTimeColumn(
-      'last_share',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get lastShare =>
+      _lastShare ??= GeneratedColumn<DateTime>('last_share', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [teacherId, id, name, lastShare];
   @override
-  $DidacticsFoldersTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'didactics_folders';
   @override
-  String get $tableName => _alias ?? 'didactics_folders';
-  @override
-  final String actualTableName = 'didactics_folders';
+  String get actualTableName => 'didactics_folders';
   @override
   VerificationContext validateIntegrity(Insertable<FolderLocalModel> instance,
       {bool isInserting = false}) {
@@ -6656,8 +5981,8 @@ class $DidacticsFoldersTable extends DidacticsFolders
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   FolderLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return FolderLocalModel.fromData(data, _db, prefix: effectivePrefix);
+    return FolderLocalModel.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -6685,19 +6010,18 @@ class ContentLocalModel extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return ContentLocalModel(
-      folderId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}folder_id']),
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      objectId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}object_id']),
-      type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
-      date:
-          dateTimeType.mapFromDatabaseResponse(data['${effectivePrefix}date']),
+      folderId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}folder_id']),
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      objectId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}object_id']),
+      type: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type']),
+      date: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}date']),
     );
   }
   @override
@@ -6800,7 +6124,7 @@ class ContentLocalModel extends DataClass
           $mrjc(name.hashCode,
               $mrjc(objectId.hashCode, $mrjc(type.hashCode, date.hashCode))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ContentLocalModel &&
           other.folderId == this.folderId &&
@@ -6917,86 +6241,48 @@ class $DidacticsContentsTable extends DidacticsContents
   final String _alias;
   $DidacticsContentsTable(this._db, [this._alias]);
   final VerificationMeta _folderIdMeta = const VerificationMeta('folderId');
-  GeneratedIntColumn _folderId;
+  GeneratedColumn<int> _folderId;
   @override
-  GeneratedIntColumn get folderId => _folderId ??= _constructFolderId();
-  GeneratedIntColumn _constructFolderId() {
-    return GeneratedIntColumn(
-      'folder_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get folderId =>
+      _folderId ??= GeneratedColumn<int>('folder_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedColumn<int> _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn(
-      'id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get id =>
+      _id ??= GeneratedColumn<int>('id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedTextColumn _name;
+  GeneratedColumn<String> _name;
   @override
-  GeneratedTextColumn get name => _name ??= _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn(
-      'name',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get name =>
+      _name ??= GeneratedColumn<String>('name', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _objectIdMeta = const VerificationMeta('objectId');
-  GeneratedIntColumn _objectId;
+  GeneratedColumn<int> _objectId;
   @override
-  GeneratedIntColumn get objectId => _objectId ??= _constructObjectId();
-  GeneratedIntColumn _constructObjectId() {
-    return GeneratedIntColumn(
-      'object_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get objectId =>
+      _objectId ??= GeneratedColumn<int>('object_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _typeMeta = const VerificationMeta('type');
-  GeneratedTextColumn _type;
+  GeneratedColumn<String> _type;
   @override
-  GeneratedTextColumn get type => _type ??= _constructType();
-  GeneratedTextColumn _constructType() {
-    return GeneratedTextColumn(
-      'type',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get type =>
+      _type ??= GeneratedColumn<String>('type', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _dateMeta = const VerificationMeta('date');
-  GeneratedDateTimeColumn _date;
+  GeneratedColumn<DateTime> _date;
   @override
-  GeneratedDateTimeColumn get date => _date ??= _constructDate();
-  GeneratedDateTimeColumn _constructDate() {
-    return GeneratedDateTimeColumn(
-      'date',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get date =>
+      _date ??= GeneratedColumn<DateTime>('date', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [folderId, id, name, objectId, type, date];
   @override
-  $DidacticsContentsTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'didactics_contents';
   @override
-  String get $tableName => _alias ?? 'didactics_contents';
-  @override
-  final String actualTableName = 'didactics_contents';
+  String get actualTableName => 'didactics_contents';
   @override
   VerificationContext validateIntegrity(Insertable<ContentLocalModel> instance,
       {bool isInserting = false}) {
@@ -7042,8 +6328,8 @@ class $DidacticsContentsTable extends DidacticsContents
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   ContentLocalModel map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return ContentLocalModel.fromData(data, _db, prefix: effectivePrefix);
+    return ContentLocalModel.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -7063,13 +6349,13 @@ class DidacticsDownloadedFileLocalModel extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final stringType = db.typeSystem.forDartType<String>();
-    final intType = db.typeSystem.forDartType<int>();
     return DidacticsDownloadedFileLocalModel(
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      path: stringType.mapFromDatabaseResponse(data['${effectivePrefix}path']),
-      contentId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}content_id']),
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      path: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}path']),
+      contentId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}content_id']),
     );
   }
   @override
@@ -7137,7 +6423,7 @@ class DidacticsDownloadedFileLocalModel extends DataClass
   int get hashCode =>
       $mrjf($mrjc(name.hashCode, $mrjc(path.hashCode, contentId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DidacticsDownloadedFileLocalModel &&
           other.name == this.name &&
@@ -7216,49 +6502,29 @@ class $DidacticsDownloadedFilesTable extends DidacticsDownloadedFiles
   final String _alias;
   $DidacticsDownloadedFilesTable(this._db, [this._alias]);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedTextColumn _name;
+  GeneratedColumn<String> _name;
   @override
-  GeneratedTextColumn get name => _name ??= _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn(
-      'name',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get name =>
+      _name ??= GeneratedColumn<String>('name', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _pathMeta = const VerificationMeta('path');
-  GeneratedTextColumn _path;
+  GeneratedColumn<String> _path;
   @override
-  GeneratedTextColumn get path => _path ??= _constructPath();
-  GeneratedTextColumn _constructPath() {
-    return GeneratedTextColumn(
-      'path',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get path =>
+      _path ??= GeneratedColumn<String>('path', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _contentIdMeta = const VerificationMeta('contentId');
-  GeneratedIntColumn _contentId;
+  GeneratedColumn<int> _contentId;
   @override
-  GeneratedIntColumn get contentId => _contentId ??= _constructContentId();
-  GeneratedIntColumn _constructContentId() {
-    return GeneratedIntColumn(
-      'content_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get contentId =>
+      _contentId ??= GeneratedColumn<int>('content_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [name, path, contentId];
   @override
-  $DidacticsDownloadedFilesTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'didactics_downloaded_files';
   @override
-  String get $tableName => _alias ?? 'didactics_downloaded_files';
-  @override
-  final String actualTableName = 'didactics_downloaded_files';
+  String get actualTableName => 'didactics_downloaded_files';
   @override
   VerificationContext validateIntegrity(
       Insertable<DidacticsDownloadedFileLocalModel> instance,
@@ -7289,9 +6555,8 @@ class $DidacticsDownloadedFilesTable extends DidacticsDownloadedFiles
   @override
   DidacticsDownloadedFileLocalModel map(Map<String, dynamic> data,
       {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DidacticsDownloadedFileLocalModel.fromData(data, _db,
-        prefix: effectivePrefix);
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -7321,27 +6586,22 @@ class LocalGrade extends DataClass implements Insertable<LocalGrade> {
   factory LocalGrade.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final doubleType = db.typeSystem.forDartType<double>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final boolType = db.typeSystem.forDartType<bool>();
     return LocalGrade(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      subjectId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
-      eventDate: dateTimeType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      subjectId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
+      eventDate: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}event_date']),
-      decimalValue: doubleType
+      decimalValue: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}decimal_value']),
-      displayValue: stringType
+      displayValue: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}display_value']),
-      cancelled:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}cancelled']),
-      underlined: boolType
+      cancelled: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}cancelled']),
+      underlined: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}underlined']),
-      periodPos:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}period_pos']),
+      periodPos: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}period_pos']),
     );
   }
   @override
@@ -7478,7 +6738,7 @@ class LocalGrade extends DataClass implements Insertable<LocalGrade> {
                       $mrjc(cancelled.hashCode,
                           $mrjc(underlined.hashCode, periodPos.hashCode))))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is LocalGrade &&
           other.id == this.id &&
@@ -7621,102 +6881,61 @@ class $LocalGradesTable extends LocalGrades
   final String _alias;
   $LocalGradesTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedColumn<int> _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
+  GeneratedColumn<int> get id =>
+      _id ??= GeneratedColumn<int>('id', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: false,
+          defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _subjectIdMeta = const VerificationMeta('subjectId');
-  GeneratedIntColumn _subjectId;
+  GeneratedColumn<int> _subjectId;
   @override
-  GeneratedIntColumn get subjectId => _subjectId ??= _constructSubjectId();
-  GeneratedIntColumn _constructSubjectId() {
-    return GeneratedIntColumn(
-      'subject_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get subjectId =>
+      _subjectId ??= GeneratedColumn<int>('subject_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _eventDateMeta = const VerificationMeta('eventDate');
-  GeneratedDateTimeColumn _eventDate;
+  GeneratedColumn<DateTime> _eventDate;
   @override
-  GeneratedDateTimeColumn get eventDate => _eventDate ??= _constructEventDate();
-  GeneratedDateTimeColumn _constructEventDate() {
-    return GeneratedDateTimeColumn(
-      'event_date',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<DateTime> get eventDate =>
+      _eventDate ??= GeneratedColumn<DateTime>('event_date', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _decimalValueMeta =
       const VerificationMeta('decimalValue');
-  GeneratedRealColumn _decimalValue;
+  GeneratedColumn<double> _decimalValue;
   @override
-  GeneratedRealColumn get decimalValue =>
-      _decimalValue ??= _constructDecimalValue();
-  GeneratedRealColumn _constructDecimalValue() {
-    return GeneratedRealColumn(
-      'decimal_value',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<double> get decimalValue => _decimalValue ??=
+      GeneratedColumn<double>('decimal_value', aliasedName, false,
+          typeName: 'REAL', requiredDuringInsert: true);
   final VerificationMeta _displayValueMeta =
       const VerificationMeta('displayValue');
-  GeneratedTextColumn _displayValue;
+  GeneratedColumn<String> _displayValue;
   @override
-  GeneratedTextColumn get displayValue =>
-      _displayValue ??= _constructDisplayValue();
-  GeneratedTextColumn _constructDisplayValue() {
-    return GeneratedTextColumn(
-      'display_value',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get displayValue => _displayValue ??=
+      GeneratedColumn<String>('display_value', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _cancelledMeta = const VerificationMeta('cancelled');
-  GeneratedBoolColumn _cancelled;
+  GeneratedColumn<bool> _cancelled;
   @override
-  GeneratedBoolColumn get cancelled => _cancelled ??= _constructCancelled();
-  GeneratedBoolColumn _constructCancelled() {
-    return GeneratedBoolColumn(
-      'cancelled',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get cancelled =>
+      _cancelled ??= GeneratedColumn<bool>('cancelled', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (cancelled IN (0, 1))');
   final VerificationMeta _underlinedMeta = const VerificationMeta('underlined');
-  GeneratedBoolColumn _underlined;
+  GeneratedColumn<bool> _underlined;
   @override
-  GeneratedBoolColumn get underlined => _underlined ??= _constructUnderlined();
-  GeneratedBoolColumn _constructUnderlined() {
-    return GeneratedBoolColumn(
-      'underlined',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<bool> get underlined =>
+      _underlined ??= GeneratedColumn<bool>('underlined', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: true,
+          defaultConstraints: 'CHECK (underlined IN (0, 1))');
   final VerificationMeta _periodPosMeta = const VerificationMeta('periodPos');
-  GeneratedIntColumn _periodPos;
+  GeneratedColumn<int> _periodPos;
   @override
-  GeneratedIntColumn get periodPos => _periodPos ??= _constructPeriodPos();
-  GeneratedIntColumn _constructPeriodPos() {
-    return GeneratedIntColumn(
-      'period_pos',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get periodPos =>
+      _periodPos ??= GeneratedColumn<int>('period_pos', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -7729,11 +6948,9 @@ class $LocalGradesTable extends LocalGrades
         periodPos
       ];
   @override
-  $LocalGradesTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'local_grades';
   @override
-  String get $tableName => _alias ?? 'local_grades';
-  @override
-  final String actualTableName = 'local_grades';
+  String get actualTableName => 'local_grades';
   @override
   VerificationContext validateIntegrity(Insertable<LocalGrade> instance,
       {bool isInserting = false}) {
@@ -7797,8 +7014,8 @@ class $LocalGradesTable extends LocalGrades
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   LocalGrade map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return LocalGrade.fromData(data, _db, prefix: effectivePrefix);
+    return LocalGrade.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -7826,17 +7043,17 @@ class TimetableEntryLocalModel extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return TimetableEntryLocalModel(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      start: intType.mapFromDatabaseResponse(data['${effectivePrefix}start']),
-      end: intType.mapFromDatabaseResponse(data['${effectivePrefix}end']),
-      dayOfWeek: intType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      start: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}start']),
+      end: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}end']),
+      dayOfWeek: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}day_of_week']),
-      subject:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}subject']),
-      subjectName: stringType
+      subject: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}subject']),
+      subjectName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}subject_name']),
     );
   }
@@ -7945,7 +7162,7 @@ class TimetableEntryLocalModel extends DataClass
               $mrjc(dayOfWeek.hashCode,
                   $mrjc(subject.hashCode, subjectName.hashCode))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is TimetableEntryLocalModel &&
           other.id == this.id &&
@@ -8063,85 +7280,51 @@ class $TimetableEntriesTable extends TimetableEntries
   final String _alias;
   $TimetableEntriesTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedColumn<int> _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, true,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
+  GeneratedColumn<int> get id =>
+      _id ??= GeneratedColumn<int>('id', aliasedName, true,
+          typeName: 'INTEGER',
+          requiredDuringInsert: false,
+          defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _startMeta = const VerificationMeta('start');
-  GeneratedIntColumn _start;
+  GeneratedColumn<int> _start;
   @override
-  GeneratedIntColumn get start => _start ??= _constructStart();
-  GeneratedIntColumn _constructStart() {
-    return GeneratedIntColumn(
-      'start',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get start =>
+      _start ??= GeneratedColumn<int>('start', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _endMeta = const VerificationMeta('end');
-  GeneratedIntColumn _end;
+  GeneratedColumn<int> _end;
   @override
-  GeneratedIntColumn get end => _end ??= _constructEnd();
-  GeneratedIntColumn _constructEnd() {
-    return GeneratedIntColumn(
-      'end',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get end =>
+      _end ??= GeneratedColumn<int>('end', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _dayOfWeekMeta = const VerificationMeta('dayOfWeek');
-  GeneratedIntColumn _dayOfWeek;
+  GeneratedColumn<int> _dayOfWeek;
   @override
-  GeneratedIntColumn get dayOfWeek => _dayOfWeek ??= _constructDayOfWeek();
-  GeneratedIntColumn _constructDayOfWeek() {
-    return GeneratedIntColumn(
-      'day_of_week',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get dayOfWeek =>
+      _dayOfWeek ??= GeneratedColumn<int>('day_of_week', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _subjectMeta = const VerificationMeta('subject');
-  GeneratedIntColumn _subject;
+  GeneratedColumn<int> _subject;
   @override
-  GeneratedIntColumn get subject => _subject ??= _constructSubject();
-  GeneratedIntColumn _constructSubject() {
-    return GeneratedIntColumn(
-      'subject',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get subject =>
+      _subject ??= GeneratedColumn<int>('subject', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _subjectNameMeta =
       const VerificationMeta('subjectName');
-  GeneratedTextColumn _subjectName;
+  GeneratedColumn<String> _subjectName;
   @override
-  GeneratedTextColumn get subjectName =>
-      _subjectName ??= _constructSubjectName();
-  GeneratedTextColumn _constructSubjectName() {
-    return GeneratedTextColumn(
-      'subject_name',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get subjectName => _subjectName ??=
+      GeneratedColumn<String>('subject_name', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [id, start, end, dayOfWeek, subject, subjectName];
   @override
-  $TimetableEntriesTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'timetable_entries';
   @override
-  String get $tableName => _alias ?? 'timetable_entries';
-  @override
-  final String actualTableName = 'timetable_entries';
+  String get actualTableName => 'timetable_entries';
   @override
   VerificationContext validateIntegrity(
       Insertable<TimetableEntryLocalModel> instance,
@@ -8191,9 +7374,8 @@ class $TimetableEntriesTable extends TimetableEntries
   @override
   TimetableEntryLocalModel map(Map<String, dynamic> data,
       {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return TimetableEntryLocalModel.fromData(data, _db,
-        prefix: effectivePrefix);
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -8209,10 +7391,10 @@ class Document extends DataClass implements Insertable<Document> {
   factory Document.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final stringType = db.typeSystem.forDartType<String>();
     return Document(
-      hash: stringType.mapFromDatabaseResponse(data['${effectivePrefix}hash']),
-      description: stringType
+      hash: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}hash']),
+      description: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}description']),
     );
   }
@@ -8270,7 +7452,7 @@ class Document extends DataClass implements Insertable<Document> {
   @override
   int get hashCode => $mrjf($mrjc(hash.hashCode, description.hashCode));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Document &&
           other.hash == this.hash &&
@@ -8334,39 +7516,24 @@ class $DocumentsTable extends Documents
   final String _alias;
   $DocumentsTable(this._db, [this._alias]);
   final VerificationMeta _hashMeta = const VerificationMeta('hash');
-  GeneratedTextColumn _hash;
+  GeneratedColumn<String> _hash;
   @override
-  GeneratedTextColumn get hash => _hash ??= _constructHash();
-  GeneratedTextColumn _constructHash() {
-    return GeneratedTextColumn(
-      'hash',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get hash =>
+      _hash ??= GeneratedColumn<String>('hash', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
-  GeneratedTextColumn _description;
+  GeneratedColumn<String> _description;
   @override
-  GeneratedTextColumn get description =>
-      _description ??= _constructDescription();
-  GeneratedTextColumn _constructDescription() {
-    return GeneratedTextColumn(
-      'description',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get description => _description ??=
+      GeneratedColumn<String>('description', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [hash, description];
   @override
-  $DocumentsTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'documents';
   @override
-  String get $tableName => _alias ?? 'documents';
-  @override
-  final String actualTableName = 'documents';
+  String get actualTableName => 'documents';
   @override
   VerificationContext validateIntegrity(Insertable<Document> instance,
       {bool isInserting = false}) {
@@ -8393,8 +7560,8 @@ class $DocumentsTable extends Documents
   Set<GeneratedColumn> get $primaryKey => {hash};
   @override
   Document map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Document.fromData(data, _db, prefix: effectivePrefix);
+    return Document.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -8414,13 +7581,12 @@ class SchoolReport extends DataClass implements Insertable<SchoolReport> {
   factory SchoolReport.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final stringType = db.typeSystem.forDartType<String>();
     return SchoolReport(
-      description: stringType
+      description: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}description']),
-      confirmLink: stringType
+      confirmLink: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}confirm_link']),
-      viewLink: stringType
+      viewLink: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}view_link']),
     );
   }
@@ -8493,7 +7659,7 @@ class SchoolReport extends DataClass implements Insertable<SchoolReport> {
   int get hashCode => $mrjf($mrjc(
       description.hashCode, $mrjc(confirmLink.hashCode, viewLink.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SchoolReport &&
           other.description == this.description &&
@@ -8573,52 +7739,30 @@ class $SchoolReportsTable extends SchoolReports
   $SchoolReportsTable(this._db, [this._alias]);
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
-  GeneratedTextColumn _description;
+  GeneratedColumn<String> _description;
   @override
-  GeneratedTextColumn get description =>
-      _description ??= _constructDescription();
-  GeneratedTextColumn _constructDescription() {
-    return GeneratedTextColumn(
-      'description',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get description => _description ??=
+      GeneratedColumn<String>('description', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _confirmLinkMeta =
       const VerificationMeta('confirmLink');
-  GeneratedTextColumn _confirmLink;
+  GeneratedColumn<String> _confirmLink;
   @override
-  GeneratedTextColumn get confirmLink =>
-      _confirmLink ??= _constructConfirmLink();
-  GeneratedTextColumn _constructConfirmLink() {
-    return GeneratedTextColumn(
-      'confirm_link',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get confirmLink => _confirmLink ??=
+      GeneratedColumn<String>('confirm_link', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _viewLinkMeta = const VerificationMeta('viewLink');
-  GeneratedTextColumn _viewLink;
+  GeneratedColumn<String> _viewLink;
   @override
-  GeneratedTextColumn get viewLink => _viewLink ??= _constructViewLink();
-  GeneratedTextColumn _constructViewLink() {
-    return GeneratedTextColumn(
-      'view_link',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get viewLink =>
+      _viewLink ??= GeneratedColumn<String>('view_link', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [description, confirmLink, viewLink];
   @override
-  $SchoolReportsTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'school_reports';
   @override
-  String get $tableName => _alias ?? 'school_reports';
-  @override
-  final String actualTableName = 'school_reports';
+  String get actualTableName => 'school_reports';
   @override
   VerificationContext validateIntegrity(Insertable<SchoolReport> instance,
       {bool isInserting = false}) {
@@ -8653,8 +7797,8 @@ class $SchoolReportsTable extends SchoolReports
   Set<GeneratedColumn> get $primaryKey => {viewLink};
   @override
   SchoolReport map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return SchoolReport.fromData(data, _db, prefix: effectivePrefix);
+    return SchoolReport.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -8674,11 +7818,12 @@ class DownloadedDocument extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final stringType = db.typeSystem.forDartType<String>();
     return DownloadedDocument(
-      hash: stringType.mapFromDatabaseResponse(data['${effectivePrefix}hash']),
-      path: stringType.mapFromDatabaseResponse(data['${effectivePrefix}path']),
-      filename: stringType
+      hash: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}hash']),
+      path: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}path']),
+      filename: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}filename']),
     );
   }
@@ -8746,7 +7891,7 @@ class DownloadedDocument extends DataClass
   int get hashCode =>
       $mrjf($mrjc(hash.hashCode, $mrjc(path.hashCode, filename.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DownloadedDocument &&
           other.hash == this.hash &&
@@ -8823,49 +7968,29 @@ class $DownloadedDocumentsTable extends DownloadedDocuments
   final String _alias;
   $DownloadedDocumentsTable(this._db, [this._alias]);
   final VerificationMeta _hashMeta = const VerificationMeta('hash');
-  GeneratedTextColumn _hash;
+  GeneratedColumn<String> _hash;
   @override
-  GeneratedTextColumn get hash => _hash ??= _constructHash();
-  GeneratedTextColumn _constructHash() {
-    return GeneratedTextColumn(
-      'hash',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get hash =>
+      _hash ??= GeneratedColumn<String>('hash', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _pathMeta = const VerificationMeta('path');
-  GeneratedTextColumn _path;
+  GeneratedColumn<String> _path;
   @override
-  GeneratedTextColumn get path => _path ??= _constructPath();
-  GeneratedTextColumn _constructPath() {
-    return GeneratedTextColumn(
-      'path',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get path =>
+      _path ??= GeneratedColumn<String>('path', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _filenameMeta = const VerificationMeta('filename');
-  GeneratedTextColumn _filename;
+  GeneratedColumn<String> _filename;
   @override
-  GeneratedTextColumn get filename => _filename ??= _constructFilename();
-  GeneratedTextColumn _constructFilename() {
-    return GeneratedTextColumn(
-      'filename',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get filename =>
+      _filename ??= GeneratedColumn<String>('filename', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [hash, path, filename];
   @override
-  $DownloadedDocumentsTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'downloaded_documents';
   @override
-  String get $tableName => _alias ?? 'downloaded_documents';
-  @override
-  final String actualTableName = 'downloaded_documents';
+  String get actualTableName => 'downloaded_documents';
   @override
   VerificationContext validateIntegrity(Insertable<DownloadedDocument> instance,
       {bool isInserting = false}) {
@@ -8896,8 +8021,8 @@ class $DownloadedDocumentsTable extends DownloadedDocuments
   Set<GeneratedColumn> get $primaryKey => {hash};
   @override
   DownloadedDocument map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return DownloadedDocument.fromData(data, _db, prefix: effectivePrefix);
+    return DownloadedDocument.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override

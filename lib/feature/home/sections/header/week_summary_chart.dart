@@ -46,7 +46,8 @@ class WeekSummaryChart extends StatelessWidget {
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
-          tooltipBottomMargin: 23,
+          // TODO: check if bottom is the same
+          tooltipMargin: 23,
           tooltipBgColor: Theme.of(context).brightness == Brightness.dark
               ? Colors.white
               : Colors.grey[900].withOpacity(0.9),
@@ -90,7 +91,7 @@ class WeekSummaryChart extends StatelessWidget {
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (value) {
+          getTextStyles: (context, value) {
             return TextStyle(
               fontSize: 12,
               color: Theme.of(context).textTheme.headline6.color,
@@ -110,7 +111,7 @@ class WeekSummaryChart extends StatelessWidget {
         ),
         leftTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (value) {
+          getTextStyles: (context, value) {
             return TextStyle(
               fontSize: 11,
             );

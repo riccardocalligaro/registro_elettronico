@@ -32,7 +32,7 @@ class AgendaLoaded extends StatefulWidget {
 }
 
 class _AgendaLoadedState extends State<AgendaLoaded> {
-  final CalendarController _calendarController = CalendarController();
+  //final CalendarController _calendarController = CalendarController();
 
   final DateTime _initialDay = DateTime.now();
 
@@ -84,55 +84,55 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
                 )
               : ListView(
                   children: [
-                    TableCalendar(
-                      calendarController: _calendarController,
-                      events: widget.data.eventsMap,
-                      initialSelectedDay: _initialDay,
-                      onDaySelected: _onDaySelected,
-                      startingDayOfWeek: StartingDayOfWeek.monday,
-                      locale: AppLocalizations.of(context).locale.toString(),
-                      weekendDays: const [DateTime.sunday],
-                      calendarStyle: CalendarStyle(
-                        selectedColor:
-                            Theme.of(context).accentColor.withOpacity(0.7),
-                        todayColor:
-                            Theme.of(context).accentColor.withAlpha(140),
-                        markersColor: Colors.red[700],
-                        outsideDaysVisible: false,
-                        outsideStyle: TextStyle(color: Colors.grey[300]),
-                        outsideWeekendStyle: TextStyle(
-                          color: Theme.of(context).accentColor.withOpacity(0.7),
-                        ),
-                        weekendStyle:
-                            TextStyle(color: Theme.of(context).accentColor),
-                      ),
-                      daysOfWeekStyle: DaysOfWeekStyle(
-                        weekendStyle:
-                            TextStyle(color: Theme.of(context).accentColor),
-                      ),
-                      headerStyle: HeaderStyle(
-                        formatButtonTextStyle: const TextStyle()
-                            .copyWith(color: Colors.white, fontSize: 15.0),
-                        formatButtonDecoration: BoxDecoration(
-                          color: Colors.deepOrange[400],
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        formatButtonVisible: false,
-                      ),
-                      // onDaySelected: _onDaySelected,
-                      builders: CalendarBuilders(
-                        singleMarkerBuilder: (context, date, event) {
-                          Color cor = _getLabelColor(event.labelColor);
-                          return Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: cor),
-                            width: 7.0,
-                            height: 7.0,
-                            margin: const EdgeInsets.symmetric(horizontal: 1.5),
-                          );
-                        },
-                      ),
-                    ),
+                    // TableCalendar(
+                    //   calendarController: _calendarController,
+                    //   events: widget.data.eventsMap,
+                    //   initialSelectedDay: _initialDay,
+                    //   onDaySelected: _onDaySelected,
+                    //   startingDayOfWeek: StartingDayOfWeek.monday,
+                    //   locale: AppLocalizations.of(context).locale.toString(),
+                    //   weekendDays: const [DateTime.sunday],
+                    //   calendarStyle: CalendarStyle(
+                    //     selectedColor:
+                    //         Theme.of(context).accentColor.withOpacity(0.7),
+                    //     todayColor:
+                    //         Theme.of(context).accentColor.withAlpha(140),
+                    //     markersColor: Colors.red[700],
+                    //     outsideDaysVisible: false,
+                    //     outsideStyle: TextStyle(color: Colors.grey[300]),
+                    //     outsideWeekendStyle: TextStyle(
+                    //       color: Theme.of(context).accentColor.withOpacity(0.7),
+                    //     ),
+                    //     weekendStyle:
+                    //         TextStyle(color: Theme.of(context).accentColor),
+                    //   ),
+                    //   daysOfWeekStyle: DaysOfWeekStyle(
+                    //     weekendStyle:
+                    //         TextStyle(color: Theme.of(context).accentColor),
+                    //   ),
+                    //   headerStyle: HeaderStyle(
+                    //     formatButtonTextStyle: const TextStyle()
+                    //         .copyWith(color: Colors.white, fontSize: 15.0),
+                    //     formatButtonDecoration: BoxDecoration(
+                    //       color: Colors.deepOrange[400],
+                    //       borderRadius: BorderRadius.circular(16.0),
+                    //     ),
+                    //     formatButtonVisible: false,
+                    //   ),
+                    //   // onDaySelected: _onDaySelected,
+                    //   builders: CalendarBuilders(
+                    //     singleMarkerBuilder: (context, date, event) {
+                    //       Color cor = _getLabelColor(event.labelColor);
+                    //       return Container(
+                    //         decoration: BoxDecoration(
+                    //             shape: BoxShape.circle, color: cor),
+                    //         width: 7.0,
+                    //         height: 7.0,
+                    //         margin: const EdgeInsets.symmetric(horizontal: 1.5),
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                     const SizedBox(
                       height: 16,
                     ),

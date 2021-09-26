@@ -38,7 +38,7 @@ class AbsencesChartBarsState extends State<AbsencesChartBars> {
             show: true,
             bottomTitles: SideTitles(
               showTitles: true,
-              getTextStyles: (value) {
+              getTextStyles: (context, value) {
                 return TextStyle(color: Colors.black, fontSize: 10);
               },
               margin: 10,
@@ -65,7 +65,7 @@ class AbsencesChartBarsState extends State<AbsencesChartBars> {
             ),
             leftTitles: SideTitles(
               showTitles: true,
-              getTextStyles: (value) {
+              getTextStyles: (context, value) {
                 return TextStyle(color: Colors.white, fontSize: 10);
               },
               rotateAngle: 45,
@@ -81,7 +81,7 @@ class AbsencesChartBarsState extends State<AbsencesChartBars> {
             ),
             rightTitles: SideTitles(
               showTitles: true,
-              getTextStyles: (value) {
+              getTextStyles: (context, value) {
                 return TextStyle(color: Colors.white, fontSize: 10);
               },
               rotateAngle: 90,

@@ -155,7 +155,8 @@ class TimetableRepositoryImpl implements TimetableRepository {
 
         return Resource.success(data: timetableData);
       },
-    ).onErrorReturnWith((e) => Resource.failed(error: handleStreamError(e)));
+    ).onErrorReturnWith(
+        (e, s) => Resource.failed(error: handleStreamError(e, s)));
   }
 
   List<TimetableEntryDomainModel> _convertTimetableEntries({

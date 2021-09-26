@@ -472,18 +472,19 @@ class _LocalGrades extends StatelessWidget {
                         showDialog<double>(
                           context: context,
                           builder: (BuildContext context) {
-                            return NumberPickerDialog.decimal(
-                              minValue: 1,
-                              maxValue: 10,
-                              title: Text(
-                                AppLocalizations.of(context)
-                                    .translate('pick_a_grade'),
-                              ),
-                              cancelWidget: Text(AppLocalizations.of(context)
-                                  .translate('cancel')
-                                  .toUpperCase()),
-                              initialDoubleValue: 6.0,
-                            );
+                            // TODO: number picker dialog
+                            // return NumberPickerDialog.decimal(
+                            //   minValue: 1,
+                            //   maxValue: 10,
+                            //   title: Text(
+                            //     AppLocalizations.of(context)
+                            //         .translate('pick_a_grade'),
+                            //   ),
+                            //   cancelWidget: Text(AppLocalizations.of(context)
+                            //       .translate('cancel')
+                            //       .toUpperCase()),
+                            //   initialDoubleValue: 6.0,
+                            // );
                           },
                         ).then(
                           (value) async {

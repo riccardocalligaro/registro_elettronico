@@ -71,14 +71,15 @@ class _GradesPieChartState extends State<GradesPieChart> {
                   aspectRatio: 1,
                   child: PieChart(
                     PieChartData(
-                      pieTouchData:
-                          PieTouchData(touchCallback: (pieTouchResponse) {
+                      pieTouchData: PieTouchData(
+                          touchCallback: (event, pieTouchResponse) {
                         setState(() {
-                          if (pieTouchResponse.touchInput is FlLongPressEnd ||
-                              pieTouchResponse.touchInput is FlPanEnd) {
+                          if (event is FlLongPressEnd ||
+                              event is FlPanEndEvent) {
                             touchedIndex = -1;
                           } else {
-                            touchedIndex = pieTouchResponse.touchedSectionIndex;
+                            touchedIndex = pieTouchResponse
+                                .touchedSection.touchedSectionIndex;
                           }
                         });
                       }),

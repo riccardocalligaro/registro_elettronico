@@ -1,4 +1,3 @@
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:registro_elettronico/core/data/model/event_type.dart';
@@ -11,6 +10,7 @@ import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_rep
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
+import 'package:share/share.dart';
 
 import 'event/edit_event_page.dart';
 
@@ -242,8 +242,7 @@ class EventCard extends StatelessWidget {
                 }
                 Navigator.pop(context);
 
-                Share.text(AppLocalizations.of(context).translate('share'),
-                    message, 'text/plain');
+                Share.share(message);
               },
               leading: Icon(Icons.share),
               title: Text(AppLocalizations.of(context).translate('share')),

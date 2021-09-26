@@ -127,8 +127,8 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
     ).handleError((e, s) {
       Logger.e(exception: e, stacktrace: s);
     }).onErrorReturnWith(
-      (e) {
-        return Resource.failed(error: handleStreamError(e));
+      (e, s) {
+        return Resource.failed(error: handleStreamError(e, s));
       },
     );
   }

@@ -178,8 +178,8 @@ class AgendaRepositoryImpl implements AgendaRepository {
           ),
         );
       },
-    ).onErrorReturnWith((e) {
-      return Resource.failed(error: handleStreamError(e));
+    ).onErrorReturnWith((e, s) {
+      return Resource.failed(error: handleStreamError(e, s));
     });
   }
 

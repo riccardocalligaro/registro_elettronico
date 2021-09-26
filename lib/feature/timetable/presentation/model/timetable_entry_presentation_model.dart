@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/timetable/domain/model/timetable_entry_domain_model.dart';
-import 'package:time_machine/time_machine.dart';
 import 'package:timetable/timetable.dart';
 
 class TimetableEntryPresentationModel extends Event {
   const TimetableEntryPresentationModel({
     @required int id,
-    @required LocalDateTime start,
-    @required LocalDateTime end,
+    @required DateTime start,
+    @required DateTime end,
     @required this.color,
     @required this.subjectId,
     @required this.subjectName,
   })  : assert(subjectName != null),
-        super(id: id, start: start, end: end);
+        super(start: start, end: end);
 
   final Color color;
 
@@ -23,9 +22,9 @@ class TimetableEntryPresentationModel extends Event {
 
   TimetableEntryLocalModel toLocalModel() {
     return TimetableEntryLocalModel(
-      start: this.start.hourOfDay,
-      end: this.end.hourOfDay,
-      dayOfWeek: this.start.dayOfWeek.value,
+      start: this.start.hour,
+      end: this.end.hour,
+      dayOfWeek: this.start.weekday,
       subject: this.subjectId,
       subjectName: this.subjectName,
     );
@@ -43,11 +42,10 @@ class TimetableEntryPresentationModel extends Event {
     final day = DateTime(_firstDayOfWeek.year, _firstDayOfWeek.month,
         _firstDayOfWeek.day + l.dayOfWeek, 8);
 
-    final localTime = LocalDateTime.dateTime(day);
-    localTime.addHours(l.start);
+    day.add(Duration(hours: l.start));
 
-    final start = localTime.addHours(l.start);
-    final end = start.addHours((l.end - l.start) + 1);
+    final start = day.add(Duration(hours: (l.start)));
+    final end = start.add(Duration(hours: (l.end - l.start) + 1));
 
     return TimetableEntryPresentationModel(
       id: l.id,
@@ -76,8 +74,4 @@ class TimetableEntryPresentationModel extends Event {
   @override
   int get hashCode =>
       color.hashCode ^ subjectId.hashCode ^ subjectName.hashCode;
-
-  @override
-  String toString() =>
-      'TimetableEntryPresentationModel(color: $color, subjectId: $subjectId, subjectName: $subjectName)';
 }

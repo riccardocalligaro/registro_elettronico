@@ -125,8 +125,8 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
 
         return Resource.success(data: domainSubjects);
       },
-    )..onErrorReturnWith((e) {
-        return Resource.failed(error: handleStreamError(e));
+    )..onErrorReturnWith((e, s) {
+        return Resource.failed(error: handleStreamError(e, s));
       });
   }
 

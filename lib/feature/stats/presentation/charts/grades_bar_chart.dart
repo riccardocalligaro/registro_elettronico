@@ -114,11 +114,11 @@ class GradesBarChartState extends State<GradesBarChart> {
                         : Colors.white),
               );
             }),
-        touchCallback: (barTouchResponse) {
+        touchCallback: (event, barTouchResponse) {
           setState(() {
             if (barTouchResponse.spot != null &&
-                barTouchResponse.touchInput is! FlPanEnd &&
-                barTouchResponse.touchInput is! FlLongPressEnd) {
+                event is! FlPanEndEvent &&
+                event is! FlLongPressEnd) {
               touchedIndex = barTouchResponse.spot.touchedBarGroupIndex;
             } else {
               touchedIndex = -1;
@@ -130,7 +130,7 @@ class GradesBarChartState extends State<GradesBarChart> {
         show: true,
         bottomTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (_) {
+          getTextStyles: (context, __) {
             return TextStyle(
               fontSize: 14,
               color: Theme.of(context).brightness == Brightness.dark
@@ -147,7 +147,7 @@ class GradesBarChartState extends State<GradesBarChart> {
         leftTitles: SideTitles(
             margin: 16.0,
             showTitles: true,
-            getTextStyles: (_) => TextStyle(
+            getTextStyles: (context, __) => TextStyle(
                 color: Theme.of(context).brightness == Brightness.dark
                     ? Colors.white
                     : Colors.black),
@@ -206,12 +206,12 @@ class GradesBarChartState extends State<GradesBarChart> {
                   TextStyle(color: Colors.black),
                 );
               }),
-          touchCallback: (barTouchResponse) {
+          touchCallback: (event, response) {
             setState(() {
-              if (barTouchResponse.spot != null &&
-                  barTouchResponse.touchInput is! FlPanEnd &&
-                  barTouchResponse.touchInput is! FlLongPressEnd) {
-                touchedIndex = barTouchResponse.spot.touchedBarGroupIndex;
+              if (response.spot != null &&
+                  event is! FlPanEndEvent &&
+                  event is! FlLongPressEnd) {
+                touchedIndex = response.spot.touchedBarGroupIndex;
               } else {
                 touchedIndex = -1;
               }
@@ -222,7 +222,7 @@ class GradesBarChartState extends State<GradesBarChart> {
           show: true,
           bottomTitles: SideTitles(
             showTitles: true,
-            getTextStyles: (_) => TextStyle(
+            getTextStyles: (context, _) => TextStyle(
                 fontSize: 14,
                 color: Theme.of(context).brightness == Brightness.dark
                     ? Colors.white
@@ -236,7 +236,7 @@ class GradesBarChartState extends State<GradesBarChart> {
           leftTitles: SideTitles(
             margin: 8.0,
             showTitles: true,
-            getTextStyles: (_) => TextStyle(
+            getTextStyles: (context, _) => TextStyle(
                 color: Theme.of(context).brightness == Brightness.dark
                     ? Colors.white
                     : Colors.black),

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -59,24 +58,25 @@ class _StatsPageState extends State<StatsPage> {
 
               var path = '$directory/$fileName.png';
 
-              await screenshotController
-                  .capture(
-                path: path,
-                pixelRatio: 2,
-              )
-                  .then((File image) async {
-                var bytes = await image.readAsBytes();
-                await Share.file(
-                  AppLocalizations.of(context).translate('statistics'),
-                  '$fileName.png',
-                  bytes.buffer.asUint8List(),
-                  'image/png',
-                  text:
-                      '${AppLocalizations.of(context).translate('statistics')} ${SRDateUtils.convertDateLocaleDashboard(DateTime.now(), AppLocalizations.of(context).locale.toString())}',
-                );
-              }).catchError((onError) {
-                Logger.info('Coudlnt create stats image file for sharing');
-              });
+              // TODO: share
+              // await screenshotController
+              //     .capture(
+              //   //path: path,
+              //   pixelRatio: 2,
+              // )
+              //     .then((bytes) async {
+              //   await Share.file(
+              //     AppLocalizations.of(context).translate('statistics'),
+              //     '$fileName.png',
+              //     bytes.buffer.asUint8List(),
+              //     'image/png',
+              //     text:
+              //         '${AppLocalizations.of(context).translate('statistics')} ${SRDateUtils.convertDateLocaleDashboard(DateTime.now(), AppLocalizations.of(context).locale.toString())}',
+              //   );
+
+              // }).catchError((onError) {
+              //   Logger.info('Coudlnt create stats image file for sharing');
+              // });
             },
           )
         ],

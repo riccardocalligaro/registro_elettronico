@@ -49,15 +49,15 @@ class _SpaggiariClient implements LegacySpaggiariClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/notes/all/',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
+    final Response<Map<String, dynamic>> _result =
+        await _dio.request('/students/$studentId/notes/all/',
+            queryParameters: queryParameters,
+            // options: RequestOptions(
+            //     method: 'GET',
+            //     headers: <String, dynamic>{},
+            //     extra: _extra,
+            //     baseUrl: baseUrl),
+            data: _data);
     final value = NotesResponse.fromJson(_result.data);
     return Future.value(value);
   }
@@ -71,15 +71,15 @@ class _SpaggiariClient implements LegacySpaggiariClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = body;
-    final Response<Map<String, dynamic>> _result = await _dio.request(
-        '/students/$studentId/notes/$type/read/$note',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'POST',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
+    final Response<Map<String, dynamic>> _result =
+        await _dio.request('/students/$studentId/notes/$type/read/$note',
+            queryParameters: queryParameters,
+            // options: RequestOptions(
+            //     method: 'POST',
+            //     headers: <String, dynamic>{},
+            //     extra: _extra,
+            //     baseUrl: baseUrl),
+            data: _data);
     final value = NotesReadResponse.fromJson(_result.data);
     return Future.value(value);
   }
@@ -93,11 +93,11 @@ class _SpaggiariClient implements LegacySpaggiariClient {
     final Response<Map<String, dynamic>> _result = await _dio.request(
       '/students/$studentId/documents',
       queryParameters: queryParameters,
-      options: RequestOptions(
-          method: 'POST',
-          headers: <String, dynamic>{},
-          extra: _extra,
-          baseUrl: baseUrl),
+      // options: RequestOptions(
+      //     method: 'POST',
+      //     headers: <String, dynamic>{},
+      //     extra: _extra,
+      //     baseUrl: baseUrl),
       data: _data,
     );
     final value = DocumentsResponse.fromJson(_result.data);
@@ -115,12 +115,12 @@ class _SpaggiariClient implements LegacySpaggiariClient {
     final Response<Map<String, dynamic>> _result = await _dio.request(
       '/students/$studentId/documents/check/$documentHash',
       queryParameters: queryParameters,
-      options: RequestOptions(
-        method: 'POST',
-        headers: <String, dynamic>{},
-        extra: _extra,
-        baseUrl: baseUrl,
-      ),
+      // options: RequestOptions(
+      //   method: 'POST',
+      //   headers: <String, dynamic>{},
+      //   extra: _extra,
+      //   baseUrl: baseUrl,
+      // ),
       data: _data,
     );
 
@@ -141,13 +141,13 @@ class _SpaggiariClient implements LegacySpaggiariClient {
     final Response<List<dynamic>> _result = await _dio.request(
       '/students/$studentId/documents/read/$documentHash',
       queryParameters: queryParameters,
-      options: RequestOptions(
-        method: 'POST',
-        headers: <String, dynamic>{},
-        extra: _extra,
-        baseUrl: baseUrl,
-        responseType: ResponseType.bytes,
-      ),
+      // options: RequestOptions(
+      //   method: 'POST',
+      //   headers: <String, dynamic>{},
+      //   extra: _extra,
+      //   baseUrl: baseUrl,
+      //   responseType: ResponseType.bytes,
+      // ),
       data: _data,
     );
     final bytes = _result.data.cast<int>();

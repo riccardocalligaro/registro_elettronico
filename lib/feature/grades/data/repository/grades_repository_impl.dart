@@ -136,7 +136,7 @@ class GradesRepositoryImpl extends GradesRepository {
               .map((localModel) => GradeDomainModel.fromLocalModel(localModel))
               .toList());
     }).onErrorReturnWith(
-      (e) {
+      (e, s) {
         Logger.e(text: e.toString());
         return Resource.failed(error: e);
       },
@@ -357,8 +357,8 @@ class GradesRepositoryImpl extends GradesRepository {
     ).handleError((e, s) {
       Logger.e(exception: e, stacktrace: s);
     }).onErrorReturnWith(
-      (e) {
-        return Resource.failed(error: handleStreamError(e));
+      (e, s) {
+        return Resource.failed(error: handleStreamError(e, s));
       },
     );
   }
@@ -727,7 +727,7 @@ class GradesRepositoryImpl extends GradesRepository {
               .map((localModel) => GradeDomainModel.fromLocalGrade(localModel))
               .toList());
     }).onErrorReturnWith(
-      (e) {
+      (e, s) {
         Logger.e(text: e.toString());
         return Resource.failed(error: e);
       },

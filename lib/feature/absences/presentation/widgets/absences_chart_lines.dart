@@ -121,7 +121,7 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (value) {
+          getTextStyles: (context, value) {
             return TextStyle(
               color: Colors.white,
               fontSize: 12,

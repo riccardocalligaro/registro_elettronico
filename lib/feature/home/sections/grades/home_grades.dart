@@ -1,4 +1,3 @@
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
@@ -11,6 +10,7 @@ import 'package:registro_elettronico/feature/home/home_page.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
+import 'package:share/share.dart';
 
 class HomeGrades extends StatelessWidget {
   const HomeGrades({Key key}) : super(key: key);
@@ -136,8 +136,7 @@ class _LastGradesLoaded extends StatelessWidget {
         message += "\n${trans.translate('date')}: $date";
         message += '\n${grade.displayValue}';
 
-        Share.text(AppLocalizations.of(context).translate('share'), message,
-            'text/plain');
+        Share.share(message);
       },
       child: Card(
         margin: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
