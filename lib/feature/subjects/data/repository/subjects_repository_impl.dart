@@ -11,7 +11,7 @@ import 'package:registro_elettronico/feature/subjects/data/datasource/subject_re
 import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,15 +63,16 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
         await subjectsLocalDatasource!.insertSubjects(insertableSubjects);
         await professorLocalDatasource!.insertProfessors(professors);
 
-        await sharedPreferences!.setInt(
-            lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
+        await sharedPreferences!
+            .setInt(lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
 
         return Right(SuccessWithUpdate());
       } else {
         return Right(Success());
       }
     } catch (e, s) {
-      return Left(handleStreamError(e, s));
+      return Left((handleError(
+          '[SubjectsRepository] Error while updating subjects', e, s)));
     }
   }
 
@@ -126,7 +127,11 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
         return Resource.success(data: domainSubjects);
       },
     )..onErrorReturnWith((e, s) {
-        return Resource.failed(error: handleStreamError(e, s));
+        return Resource.failed(
+            error: handleError(
+                '[SubjectsRepository] Error while updating watching subjects',
+                e,
+                s));
       });
   }
 
@@ -136,7 +141,10 @@ class SubjectsRepositoryImpl implements SubjectsRepository {
       final subjects = await subjectsLocalDatasource!.getAllSubjects();
       return Right(subjects.isEmpty);
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left((handleError(
+          '[SubjectsRepository] Error while checking if needing to update subjects',
+          e,
+          s)));
     }
   }
 }

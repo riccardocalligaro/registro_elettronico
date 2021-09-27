@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fimber/fimber.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -34,10 +35,7 @@ void main() async {
   runZonedGuarded(() {
     runApp(SrApp());
   }, (e, s) {
-    Logger.e(exception: e, stacktrace: s);
-    if (!kDebugMode) {
-      FirebaseCrashlytics.instance.recordError(e, s);
-    }
+    Fimber.e('Error while running in zone guarded', ex: e, stacktrace: s);
   });
 }
 
@@ -64,7 +62,8 @@ class SrApp extends StatelessWidget {
           theme: initData.materialThemeData,
           supportedLocales: initData.supportedLocales,
           localizationsDelegates: initData.localizationsDelegates,
-          localeResolutionCallback: initData.localeResolutionCallback as Locale? Function(Locale?, Iterable<Locale>)?,
+          localeResolutionCallback: initData.localeResolutionCallback as Locale?
+              Function(Locale?, Iterable<Locale>)?,
           // debugShowCheckedModeBanner: false,
           builder: (context, child) => ResponsiveWrapper.builder(
             child,

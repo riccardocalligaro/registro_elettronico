@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
@@ -34,10 +34,12 @@ class TimetableRepositoryImpl implements TimetableRepository {
     required TimetableEntryDomainModel entry,
   }) async {
     try {
-      await timetableLocalDatasource!.insertTimetableEntry(entry.toLocalModel());
+      await timetableLocalDatasource!
+          .insertTimetableEntry(entry.toLocalModel());
       return Right(Success());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError(
+          '[TimetableRepository] Error while inserting timetable entry', e, s));
     }
   }
 
@@ -84,7 +86,8 @@ class TimetableRepositoryImpl implements TimetableRepository {
 
       return Right(Success());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError(
+          '[TimetableRepository] Error while regenerating timetable', e, s));
     }
   }
 
@@ -93,10 +96,15 @@ class TimetableRepositoryImpl implements TimetableRepository {
     required TimetableEntryDomainModel entry,
   }) async {
     try {
-      await timetableLocalDatasource!.updateTimetableEntry(entry.toLocalModel());
+      await timetableLocalDatasource!
+          .updateTimetableEntry(entry.toLocalModel());
       return Right(Success());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError(
+        '[TimetableRepository] Error while updating timetable entry $entry',
+        e,
+        s,
+      ));
     }
   }
 
@@ -113,7 +121,8 @@ class TimetableRepositoryImpl implements TimetableRepository {
           localSubjects,
           key: (e) => e.id,
           value: (e) => Color(
-            int.tryParse(e.color ?? Colors.red.value as String) ?? Colors.red.value,
+            int.tryParse(e.color ?? Colors.red.value as String) ??
+                Colors.red.value,
           ),
         );
 
@@ -156,7 +165,11 @@ class TimetableRepositoryImpl implements TimetableRepository {
         return Resource.success(data: timetableData);
       },
     ).onErrorReturnWith(
-        (e, s) => Resource.failed(error: handleStreamError(e, s)));
+      (e, s) => Resource.failed(
+        error: handleError(
+            '[TimetableRepository] Error while watching timetable data', e, s),
+      ),
+    );
   }
 
   List<TimetableEntryDomainModel> _convertTimetableEntries({
@@ -203,7 +216,11 @@ class TimetableRepositoryImpl implements TimetableRepository {
       await timetableLocalDatasource!.deleteEntryWithId(id);
       return Right(Success());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError(
+        '[TimetableRepository] Error while deleting timetable entry $id',
+        e,
+        s,
+      ));
     }
   }
 }

@@ -60,7 +60,7 @@ class TeacherCard extends StatelessWidget {
             iconColor: Theme.of(context).iconTheme.color,
           ),
           child: ExpandablePanel(
-            collapsed: null,
+            collapsed: Container(),
             theme: ExpandableThemeData(
               tapHeaderToExpand: true,
               hasIcon: true,
@@ -239,7 +239,8 @@ class _DownloadAttachmentSnackbar extends StatelessWidget {
           return Text(AppLocalizations.of(context)!
               .translate('file_downloaded_success')!);
         } else if (state is DidacticsAttachmentDownloadFailure) {
-          return Text(AppLocalizations.of(context)!.translate('error_download')!);
+          return Text(
+              AppLocalizations.of(context)!.translate('error_download')!);
         } else if (state is DidacticsAttachmentDownloadInProgress) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

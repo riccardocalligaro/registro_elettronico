@@ -118,7 +118,7 @@ class AgendaEventDomainModel {
   }
 
   factory AgendaEventDomainModel.fromMap(Map<String, dynamic>? map) {
-    if (map == null) return null;
+    if (map == null) return AgendaEventDomainModel();
 
     return AgendaEventDomainModel(
       id: map['id'],

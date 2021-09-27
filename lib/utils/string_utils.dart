@@ -1,3 +1,4 @@
+import 'package:fimber/fimber.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 
 class StringUtils {

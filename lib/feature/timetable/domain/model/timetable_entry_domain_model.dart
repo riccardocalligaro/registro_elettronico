@@ -68,7 +68,7 @@ class TimetableEntryDomainModel {
     };
   }
 
-  factory TimetableEntryDomainModel.fromMap(Map<String, dynamic>? map) {
+  static TimetableEntryDomainModel? fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return TimetableEntryDomainModel(
@@ -83,7 +83,7 @@ class TimetableEntryDomainModel {
 
   String toJson() => json.encode(toMap());
 
-  factory TimetableEntryDomainModel.fromJson(String source) =>
+  static TimetableEntryDomainModel? fromJson(String source) =>
       TimetableEntryDomainModel.fromMap(json.decode(source));
 
   @override

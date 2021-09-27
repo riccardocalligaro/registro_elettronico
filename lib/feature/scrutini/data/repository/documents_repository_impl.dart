@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:fimber/fimber.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
@@ -94,7 +95,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
 
         return Right(available);
       } catch (e) {
-        return Left(ServerFailure());
+        return Left(Failure());
       }
     } else {
       throw NotConntectedException();
@@ -133,7 +134,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
 
         return Right(filePath);
       } catch (e) {
-        return Left(ServerFailure());
+        return Left(Failure());
       }
     } else {
       throw NotConntectedException();

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
-import 'package:registro_elettronico/core/data/model/event_type.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_search_empty_view.dart';
-import 'package:registro_elettronico/core/presentation/widgets/unicorn_dialer.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/events_list.dart';
@@ -84,6 +83,7 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
                 )
               : ListView(
                   children: [
+                    // TODO: update table calendar
                     // TableCalendar(
                     //   calendarController: _calendarController,
                     //   events: widget.data.eventsMap,
@@ -153,14 +153,15 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      brightness: Theme.of(context).brightness,
+      // TODO: check brightness
+      // systemOverlayStyle: Theme.of(context).brightness,
       title: Text(
         AppLocalizations.of(context)!.translate('agenda')!,
       ),
       actions: [
         IconButton(
           icon: Icon(Icons.refresh),
-          onPressed: () {
+          onPressed: () async {
             final SRUpdateManager srUpdateManager = sl();
             return srUpdateManager.updateAgendaData(context);
           },
@@ -237,103 +238,104 @@ class _MultiActionsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UnicornDialer(
-      parentButtonBackground: Theme.of(context).accentColor,
-      orientation: UnicornOrientation.VERTICAL,
-      parentButton: Icon(Icons.add),
-      hasBackground: false,
-      childButtons: [
-        UnicornButton(
-          hasLabel: true,
-          labelFontSize: 12,
-          labelText: AppLocalizations.of(context)!.translate('memo'),
-          labelHasShadow: false,
-          labelColor:
-              GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
-          labelBackgroundColor:
-              GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
-          currentButton: FloatingActionButton(
-            heroTag: "memo_fab",
-            backgroundColor: Colors.white,
-            mini: true,
-            child: Icon(
-              Icons.notifications,
-              color: Colors.grey[700],
-              size: 17,
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => NewEventPage(
-                    eventType: AgendaEventType.memo,
-                    initialDate: dateTime ?? DateTime.now(),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        UnicornButton(
-          hasLabel: true,
-          labelFontSize: 12,
-          labelText: AppLocalizations.of(context)!.translate('test'),
-          labelHasShadow: false,
-          labelColor:
-              GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
-          labelBackgroundColor:
-              GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
-          currentButton: FloatingActionButton(
-            heroTag: "test_fab",
-            backgroundColor: Colors.white,
-            mini: true,
-            child: Icon(
-              Icons.assignment,
-              color: Colors.grey[700],
-              size: 17,
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => NewEventPage(
-                    eventType: AgendaEventType.test,
-                    initialDate: dateTime ?? DateTime.now(),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        UnicornButton(
-          hasLabel: true,
-          labelFontSize: 12,
-          labelText: AppLocalizations.of(context)!.translate('homework'),
-          labelHasShadow: false,
-          labelColor:
-              GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
-          labelBackgroundColor:
-              GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
-          currentButton: FloatingActionButton(
-            heroTag: "assignment_fab",
-            backgroundColor: Colors.white,
-            mini: true,
-            child: Icon(
-              Icons.import_contacts,
-              color: Colors.grey[700],
-              size: 17,
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => NewEventPage(
-                    eventType: AgendaEventType.assigment,
-                    initialDate: dateTime ?? DateTime.now(),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
+    return Scaffold();
+    // return SpeedDial(
+    //   parentButtonBackground: Theme.of(context).accentColor,
+    //   orientation: UnicornOrientation.VERTICAL,
+    //   parentButton: Icon(Icons.add),
+    //   hasBackground: false,
+    //   children: [
+    //     UnicornButton(
+    //       hasLabel: true,
+    //       labelFontSize: 12,
+    //       labelText: AppLocalizations.of(context)!.translate('memo'),
+    //       labelHasShadow: false,
+    //       labelColor:
+    //           GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
+    //       labelBackgroundColor:
+    //           GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
+    //       currentButton: FloatingActionButton(
+    //         heroTag: "memo_fab",
+    //         backgroundColor: Colors.white,
+    //         mini: true,
+    //         child: Icon(
+    //           Icons.notifications,
+    //           color: Colors.grey[700],
+    //           size: 17,
+    //         ),
+    //         onPressed: () {
+    //           Navigator.of(context).push(
+    //             MaterialPageRoute(
+    //               builder: (context) => NewEventPage(
+    //                 eventType: AgendaEventType.memo,
+    //                 initialDate: dateTime ?? DateTime.now(),
+    //               ),
+    //             ),
+    //           );
+    //         },
+    //       ),
+    //     ),
+    //     UnicornButton(
+    //       hasLabel: true,
+    //       labelFontSize: 12,
+    //       labelText: AppLocalizations.of(context)!.translate('test'),
+    //       labelHasShadow: false,
+    //       labelColor:
+    //           GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
+    //       labelBackgroundColor:
+    //           GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
+    //       currentButton: FloatingActionButton(
+    //         heroTag: "test_fab",
+    //         backgroundColor: Colors.white,
+    //         mini: true,
+    //         child: Icon(
+    //           Icons.assignment,
+    //           color: Colors.grey[700],
+    //           size: 17,
+    //         ),
+    //         onPressed: () {
+    //           Navigator.of(context).push(
+    //             MaterialPageRoute(
+    //               builder: (context) => NewEventPage(
+    //                 eventType: AgendaEventType.test,
+    //                 initialDate: dateTime ?? DateTime.now(),
+    //               ),
+    //             ),
+    //           );
+    //         },
+    //       ),
+    //     ),
+    //     UnicornButton(
+    //       hasLabel: true,
+    //       labelFontSize: 12,
+    //       labelText: AppLocalizations.of(context)!.translate('homework'),
+    //       labelHasShadow: false,
+    //       labelColor:
+    //           GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
+    //       labelBackgroundColor:
+    //           GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
+    //       currentButton: FloatingActionButton(
+    //         heroTag: "assignment_fab",
+    //         backgroundColor: Colors.white,
+    //         mini: true,
+    //         child: Icon(
+    //           Icons.import_contacts,
+    //           color: Colors.grey[700],
+    //           size: 17,
+    //         ),
+    //         onPressed: () {
+    //           Navigator.of(context).push(
+    //             MaterialPageRoute(
+    //               builder: (context) => NewEventPage(
+    //                 eventType: AgendaEventType.assigment,
+    //                 initialDate: dateTime ?? DateTime.now(),
+    //               ),
+    //             ),
+    //           );
+    //         },
+    //       ),
+    //     ),
+    //   ],
+    // );
   }
 }

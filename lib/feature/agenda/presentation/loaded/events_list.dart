@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:registro_elettronico/core/data/model/event_type.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/presentation_constants.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
+import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -131,10 +131,20 @@ class EventCard extends StatelessWidget {
         );
       }
 
+      final colorCode = int.tryParse(event.labelColor ?? '-1');
+      Color color;
+
+      // we check if the conversion has worked
+      if (colorCode != null) {
+        color = Color(colorCode);
+      } else {
+        color = Colors.red;
+      }
+
       return Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 6.0),
         child: Card(
-          color: Color(int.tryParse(event.labelColor!)!) ?? Colors.red,
+          color: color,
           child: ListTile(
             onTap: () async {
               await _showBottomSheet(

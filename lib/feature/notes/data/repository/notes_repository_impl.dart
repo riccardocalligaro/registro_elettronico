@@ -1,3 +1,4 @@
+import 'package:fimber/fimber.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
@@ -43,8 +44,8 @@ class NotesRepositoryImpl implements NotesRepository {
   @override
   Future updateNotes() async {
     if (await networkInfo!.isConnected) {
-      final studentId = await (authenticationRepository!.getCurrentStudentId()
-          as FutureOr<String>);
+      final studentId =
+          (await authenticationRepository!.getCurrentStudentId())!;
 
       final notesResponse = await spaggiariClient!.getNotes(studentId);
 
@@ -70,6 +71,7 @@ class NotesRepositoryImpl implements NotesRepository {
       Fimber.i(
         'Got ${notesResponse.notesNTST!.length} notesNTST from server, procceding to insert in database',
       );
+
       await noteDao!.deleteAllAttachments();
       await noteDao!.deleteAllNotes();
 
@@ -82,8 +84,7 @@ class NotesRepositoryImpl implements NotesRepository {
   @override
   Future<NotesReadResponse> readNote(String type, int eventId) async {
     if (await networkInfo!.isConnected) {
-      final studentId = await (authenticationRepository!.getCurrentStudentId()
-          as FutureOr<String>);
+      final studentId = (await authenticationRepository!.getCurrentStudentId());
 
       final res = await spaggiariClient!.markNote(studentId, type, eventId, "");
       return res;
@@ -109,7 +110,7 @@ class NotesRepositoryImpl implements NotesRepository {
       }
 
       final res =
-          await spaggiariClient!.markNote(studentId!, type!, eventId!, "");
+          await spaggiariClient!.markNote(studentId, type!, eventId!, "");
       final insertable =
           NoteMapper.convertNoteAttachmentResponseToInsertable(res);
 

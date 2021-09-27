@@ -6,8 +6,8 @@ import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/data/model/last_year_token.dart';
-import 'package:registro_elettronico/core/data/model/login_token.dart';
+import 'package:registro_elettronico/feature/authentication/domain/model/last_year_token.dart';
+import 'package:registro_elettronico/feature/authentication/domain/model/login_token.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
 
@@ -69,11 +69,10 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
           final res = await scrutiniRepository!.getLoginToken(lastYear: true);
           Fimber.i('Got token from Spaggiari');
           yield* res.fold((failure) async* {
-            Logger.e(
-              text: 'Error getting token from spaggiari',
+            Fimber.e(
+              'Error getting token from spaggiari',
             );
-            await FirebaseCrashlytics.instance
-                .log('Error getting token from spaggiari');
+
             yield TokenLoadError();
           }, (token) async* {
             loginToken = LoginToken(token);
@@ -92,12 +91,9 @@ class TokenBloc extends Bloc<TokenEvent, TokenState> {
           final res = await scrutiniRepository!.getLoginToken();
           Fimber.i('Got token from Spaggiari');
           yield* res.fold((failure) async* {
-            Logger.e(
-              text: 'Error getting token from spaggiari',
+            Fimber.e(
+              'Error getting token from spaggiari',
             );
-            await FirebaseCrashlytics.instance
-                .log('Error getting token from spaggiari');
-            yield TokenLoadError();
           }, (token) async* {
             loginToken = LoginToken(token);
             yield TokenLoadSuccess(

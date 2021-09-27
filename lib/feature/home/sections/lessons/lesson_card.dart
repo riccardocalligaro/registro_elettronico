@@ -126,7 +126,8 @@ class LessonCard extends StatelessWidget {
                       child: Text(
                         lesson!.subjectDescription!.length > 20
                             ? GlobalUtils.reduceSubjectTitle(
-                                lesson!.subjectDescription!)
+                                    lesson!.subjectDescription!) ??
+                                ''
                             : lesson!.subjectDescription!,
                         style: Theme.of(context)
                             .textTheme

@@ -93,7 +93,7 @@ class LessonDomainModel {
     };
   }
 
-  factory LessonDomainModel.fromMap(Map<String, dynamic>? map) {
+  static LessonDomainModel? fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return LessonDomainModel(
@@ -114,7 +114,7 @@ class LessonDomainModel {
 
   String toJson() => json.encode(toMap());
 
-  factory LessonDomainModel.fromJson(String source) =>
+  static LessonDomainModel? fromJson(String source) =>
       LessonDomainModel.fromMap(json.decode(source));
 
   @override

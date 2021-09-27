@@ -92,7 +92,7 @@ class ProfileDomainModel {
     };
   }
 
-  factory ProfileDomainModel.fromMap(Map<String, dynamic>? map) {
+  static ProfileDomainModel? fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return ProfileDomainModel(
@@ -110,7 +110,7 @@ class ProfileDomainModel {
 
   String toJson() => json.encode(toMap());
 
-  factory ProfileDomainModel.fromJson(String source) =>
+  static ProfileDomainModel? fromJson(String source) =>
       ProfileDomainModel.fromMap(json.decode(source));
 
   @override

@@ -65,7 +65,7 @@ class PeriodDomainModel {
     };
   }
 
-  factory PeriodDomainModel.fromMap(Map<String, dynamic>? map) {
+  static PeriodDomainModel? fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return PeriodDomainModel(
@@ -81,7 +81,7 @@ class PeriodDomainModel {
 
   String toJson() => json.encode(toMap());
 
-  factory PeriodDomainModel.fromJson(String source) =>
+  static PeriodDomainModel? fromJson(String source) =>
       PeriodDomainModel.fromMap(json.decode(source));
 
   @override

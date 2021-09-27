@@ -150,7 +150,7 @@ class NoticeDomainModel {
     };
   }
 
-  factory NoticeDomainModel.fromMap(Map<String, dynamic>? map) {
+  static NoticeDomainModel? fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return NoticeDomainModel(
@@ -177,7 +177,7 @@ class NoticeDomainModel {
 
   String toJson() => json.encode(toMap());
 
-  factory NoticeDomainModel.fromJson(String source) =>
+  static NoticeDomainModel? fromJson(String source) =>
       NoticeDomainModel.fromMap(json.decode(source));
 
   @override

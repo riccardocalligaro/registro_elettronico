@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
@@ -24,7 +24,8 @@ class PeriodsRepositoryImpl implements PeriodsRepository {
   });
 
   @override
-  Future<Either<Failure, Success>> updatePeriods({required bool ifNeeded}) async {
+  Future<Either<Failure, Success>> updatePeriods(
+      {required bool ifNeeded}) async {
     try {
       if (!ifNeeded |
           (ifNeeded && needUpdate(sharedPreferences!.getInt(lastUpdateKey)))) {
@@ -40,14 +41,15 @@ class PeriodsRepositoryImpl implements PeriodsRepository {
 
         await periodsLocalDatasource!.insertPeriods(remoteConvertedPeriods);
 
-        await sharedPreferences!.setInt(
-            lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
+        await sharedPreferences!
+            .setInt(lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
 
         return Right(SuccessWithUpdate());
       }
       return Right(SuccessWithoutUpdate());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError(
+          '[PeriodsRepository] Error while updating periods', e, s));
     }
   }
 
@@ -71,7 +73,13 @@ class PeriodsRepositoryImpl implements PeriodsRepository {
 
       return Right(false);
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(
+        (handleError(
+          '[NoticeboardRepository] Error while checking if needing to update periods',
+          e,
+          s,
+        )),
+      );
     }
   }
 }

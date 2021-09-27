@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
 
 part 'documents_event.dart';
@@ -43,11 +44,6 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
         documents: data.value2,
       );
     } catch (e, s) {
-      Logger.e(
-          text: 'Got error while getting documents',
-          exception: e,
-          stacktrace: s);
-      await FirebaseCrashlytics.instance.recordError(e, s);
       yield DocumentsLoadError();
     }
   }
@@ -62,9 +58,6 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
     } on NotConntectedException {
       yield DocumentsLoadNotConnected();
     } catch (e, s) {
-      Logger.e(
-          text: 'Got erorr updating documents', exception: e, stacktrace: s);
-      await FirebaseCrashlytics.instance.recordError(e, s);
       yield DocumentsUpdateLoadError();
     }
   }

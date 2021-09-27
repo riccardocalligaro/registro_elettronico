@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 
 part 'notes_event.dart';
@@ -52,11 +53,6 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       Fimber.i('BloC -> Loaded ${notes.length} notes');
       yield NotesLoaded(notes);
     } on Exception catch (e, s) {
-      Logger.e(
-        text: 'Error loading notes',
-        exception: e,
-        stacktrace: s,
-      );
       await FirebaseCrashlytics.instance.recordError(e, s);
       yield NotesError(e.toString());
     }

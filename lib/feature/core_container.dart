@@ -63,6 +63,7 @@ class CoreContainer {
     _sl.registerLazySingleton(() => Dio(), instanceName: 'WebSpaggiariDio');
 
     _sl.registerLazySingleton(() => LegacySpaggiariClient(_sl()));
+
     _sl.registerLazySingleton<WebSpaggiariClient>(() =>
         WebSpaggiariClientImpl(_sl.get<Dio>(instanceName: 'WebSpaggiariDio')));
 

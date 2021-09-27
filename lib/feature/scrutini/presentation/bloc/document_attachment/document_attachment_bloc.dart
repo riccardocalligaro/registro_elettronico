@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
 
 part 'document_attachment_event.dart';

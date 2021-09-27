@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
@@ -49,7 +49,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
       await agendaLocalDatasource!.deleteEventWithId(event.id);
       return Right(Success());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError('[AgendaRepository] Delete event error', e, s));
     }
   }
 
@@ -61,7 +61,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
       await agendaLocalDatasource!.insertEvent(event.toLocalModel());
       return Right(Success());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError('[AgendaRepository] Insert event error', e, s));
     }
   }
 
@@ -82,7 +82,8 @@ class AgendaRepositoryImpl implements AgendaRepository {
         return Right(SuccessWithoutUpdate());
       }
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(
+          handleError('[AgendaRepository] Update latest days error', e, s));
     }
   }
 
@@ -105,7 +106,8 @@ class AgendaRepositoryImpl implements AgendaRepository {
         return Right(SuccessWithoutUpdate());
       }
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(
+          handleError('[AgendaRepository] Update all agenda error', e, s));
     }
   }
 
@@ -117,7 +119,7 @@ class AgendaRepositoryImpl implements AgendaRepository {
       await agendaLocalDatasource!.updateEvent(event.toLocalModel());
       return Right(Success());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError('[AgendaRepository] Update event error', e, s));
     }
   }
 
@@ -179,7 +181,8 @@ class AgendaRepositoryImpl implements AgendaRepository {
         );
       },
     ).onErrorReturnWith((e, s) {
-      return Resource.failed(error: handleStreamError(e, s));
+      return Resource.failed(
+          error: handleError('[AgendaRepository] Agenda stream error', e, s));
     });
   }
 
@@ -285,8 +288,8 @@ class AgendaRepositoryImpl implements AgendaRepository {
     // delete the agendas that were removed from the remote source
     await agendaLocalDatasource!.deleteEvents(agendasToDelete);
 
-    await sharedPreferences!.setInt(
-        lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
+    await sharedPreferences!
+        .setInt(lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
 
     return SuccessWithUpdate();
   }
@@ -306,6 +309,5 @@ class _DateTimeInterval {
   DateTime begin;
   DateTime end;
 
-  _DateTimeInterval({required this.begin, required this.end})
-      : assert(begin != null && end != null);
+  _DateTimeInterval({required this.begin, required this.end});
 }

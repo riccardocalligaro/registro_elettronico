@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 
 part 'note_attachments_event.dart';
@@ -38,11 +39,6 @@ class NoteAttachmentsBloc
     } on NotConntectedException {
       yield NoteAttachmentsLoadNotConnected();
     } catch (e, s) {
-      Logger.e(
-        text: 'Error reading note',
-        exception: e,
-        stacktrace: s,
-      );
       await FirebaseCrashlytics.instance.recordError(e, s);
       yield NoteAttachmentsLoadError(error: e.toString());
     }

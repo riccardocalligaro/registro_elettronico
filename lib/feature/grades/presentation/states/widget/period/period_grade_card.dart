@@ -78,7 +78,8 @@ class PeriodGradeCard extends StatelessWidget {
                     subjectData.subject.name!.length < 20
                         ? subjectData.subject.name!
                         : GlobalUtils.reduceSubjectTitle(
-                            subjectData.subject.name!),
+                                subjectData.subject.name!) ??
+                            subjectData.subject.name!,
                     maxLines: 1,
                   ),
                   Text(

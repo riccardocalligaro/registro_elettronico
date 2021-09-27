@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 
-enum AgendaAgendaEventType { memo, test, assigment }
+enum AgendaEventType { memo, test, assigment }
 
 class AgendaDataDomainModel {
   Map<DateTime?, List<AgendaEventDomainModel>> eventsMap;

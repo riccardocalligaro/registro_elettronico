@@ -33,7 +33,7 @@ class LoginRequestDomainModel {
     };
   }
 
-  factory LoginRequestDomainModel.fromMap(Map<String, dynamic>? map) {
+  static LoginRequestDomainModel? fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return LoginRequestDomainModel(
@@ -45,7 +45,7 @@ class LoginRequestDomainModel {
 
   String toJson() => json.encode(toMap());
 
-  factory LoginRequestDomainModel.fromJson(String source) =>
+  static LoginRequestDomainModel? fromJson(String source) =>
       LoginRequestDomainModel.fromMap(json.decode(source));
 
   @override

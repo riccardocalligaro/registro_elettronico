@@ -291,7 +291,7 @@ class GlobalUtils {
     }
   }
 
-  static String reduceSubjectTitle(String subjectTitle) {
+  static String? reduceSubjectTitle(String subjectTitle) {
     try {
       String reducedName;
       final subjId = getSubjectConstFromName(subjectTitle);

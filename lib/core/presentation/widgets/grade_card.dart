@@ -67,15 +67,19 @@ class GradeCard extends StatelessWidget {
                           AutoSizeText(
                             grade.subjectDesc!.length > 20
                                 ? GlobalUtils.reduceSubjectTitle(
-                                    grade.subjectDesc!)
+                                        grade.subjectDesc!) ??
+                                    ''
                                 : grade.subjectDesc!,
                             style: TextStyle(color: Colors.white),
                             maxLines: 1,
                           ),
                           _buildLessonArgument(grade),
                           AutoSizeText(
-                            SRDateUtils.convertDateLocale(grade.eventDate,
-                                AppLocalizations.of(context)!.locale.toString()),
+                            SRDateUtils.convertDateLocale(
+                                grade.eventDate,
+                                AppLocalizations.of(context)!
+                                    .locale
+                                    .toString()),
                             style: TextStyle(color: Colors.white),
                             maxLines: 1,
                           )
@@ -173,8 +177,9 @@ class GradeCard extends StatelessWidget {
               },
             ),
             TextButton(
-              child: Text(
-                  AppLocalizations.of(context)!.translate('yes')!.toUpperCase()),
+              child: Text(AppLocalizations.of(context)!
+                  .translate('yes')!
+                  .toUpperCase()),
               onPressed: () async {
                 Navigator.pop(context);
               },

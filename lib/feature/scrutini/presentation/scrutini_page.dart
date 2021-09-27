@@ -128,7 +128,6 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                       ),
                     );
                 } else if (state is DocumentLoadSuccess) {
-                  Fimber.i(state.path);
                   ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(

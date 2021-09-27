@@ -241,7 +241,7 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
   }
 
   FlSpot _getSpotForMonth(double month, String code, {String? code2}) {
-    final absences = widget.absences[month as int?];
+    final absences = widget.absences[month as int];
     double monthGraph;
     if (month >= 9.0 && month <= 12.0) {
       monthGraph = month - 8;
@@ -254,7 +254,7 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
         monthGraph,
         absences
             .where((absence) =>
-                (absence.evtCode == code || absence.evtCode == code2 ?? '' as bool) &&
+                (absence.evtCode == code || absence.evtCode == code2) &&
                 absence.evtDate!.month == month.toInt())
             .length
             .toDouble(),

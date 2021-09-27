@@ -31,7 +31,7 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
         final userInfo = await authenticationRepository.getCredentials();
 
         await flutterWebviewPlugin.evalJavascript(
-            '\$("#login").val("${widget.email ?? userInfo.profile.ident}");');
+            '\$("#login").val("${widget.email ?? userInfo.profile?.ident}");');
         await flutterWebviewPlugin
             .evalJavascript('\$("#password").val("${userInfo.password}");');
 

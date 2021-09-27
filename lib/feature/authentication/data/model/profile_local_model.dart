@@ -56,14 +56,14 @@ class ProfileLocalModel {
       'firstName': firstName,
       'lastName': lastName,
       'token': token,
-      'release': release?.millisecondsSinceEpoch,
-      'expire': expire?.millisecondsSinceEpoch,
+      'release': release.millisecondsSinceEpoch,
+      'expire': expire.millisecondsSinceEpoch,
       'currentlyLoggedIn': currentlyLoggedIn,
       'dbName': dbName,
     };
   }
 
-  factory ProfileLocalModel.fromMap(Map<String, dynamic>? map) {
+  static ProfileLocalModel? fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return ProfileLocalModel(
@@ -81,7 +81,7 @@ class ProfileLocalModel {
 
   String toJson() => json.encode(toMap());
 
-  factory ProfileLocalModel.fromJson(Map<String, dynamic>? source) =>
+  static ProfileLocalModel? fromJson(Map<String, dynamic>? source) =>
       ProfileLocalModel.fromMap(source);
 
   @override

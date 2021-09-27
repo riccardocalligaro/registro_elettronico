@@ -41,7 +41,7 @@ class ProfessorDomainModel {
     };
   }
 
-  factory ProfessorDomainModel.fromMap(Map<String, dynamic>? map) {
+  static ProfessorDomainModel? fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return ProfessorDomainModel(
@@ -53,7 +53,7 @@ class ProfessorDomainModel {
 
   String toJson() => json.encode(toMap());
 
-  factory ProfessorDomainModel.fromJson(String source) =>
+  static ProfessorDomainModel? fromJson(String source) =>
       ProfessorDomainModel.fromMap(json.decode(source));
 
   @override

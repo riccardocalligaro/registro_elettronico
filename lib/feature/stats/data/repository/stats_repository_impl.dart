@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
@@ -215,7 +215,8 @@ class StatsRepositoryImpl implements StatsRepository {
                 gravementeInsufficientiSubjectsCount,
           );
         } catch (e, s) {
-          handleError(e, s);
+          handleError(
+              '[StatsRepository] Error while getting student report', e, s);
         }
 
         return Right(
@@ -252,10 +253,8 @@ class StatsRepositoryImpl implements StatsRepository {
         return Left(GenericFailure());
       }
     } catch (e, s) {
-      Logger.e(
-          text: 'Error calculating student report ${e.toString()}',
-          stacktrace: s);
-      return Left(GenericFailure());
+      return Left(handleError(
+          '[StatsRepository] Error while getting student report', e, s));
     }
   }
 

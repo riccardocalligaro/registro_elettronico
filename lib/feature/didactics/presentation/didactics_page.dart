@@ -106,7 +106,7 @@ class _DidacticsLoaded extends StatelessWidget {
         text: AppLocalizations.of(context)!.translate('no_materials'),
         icon: Icons.folder,
         showUpdate: true,
-        onTap: () {
+        onTap: () async {
           SRUpdateManager srUpdateManager = sl();
           return srUpdateManager.updateDidacticsData(context);
         },

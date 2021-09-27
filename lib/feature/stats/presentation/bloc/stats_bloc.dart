@@ -35,13 +35,13 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
       final stats = await statsRepository!.getStudentReport();
       yield stats.fold(
         (failure) {
-          Logger.e(text: 'Error getting student report');
+          // Logger.e(text: 'Error getting student report');
           return StatsLoadError();
         },
         (report) => StatsLoadSuccess(studentReport: report),
       );
     } catch (e, s) {
-      Logger.e(exception: e, stacktrace: s, text: 'Error getting user stats');
+      // Logger.e(exception: e, stacktrace: s, text: 'Error getting user stats');
     }
   }
 }

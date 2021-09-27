@@ -1,3 +1,4 @@
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -12,8 +13,6 @@ import 'package:registro_elettronico/feature/authentication/domain/repository/au
 import 'package:registro_elettronico/utils/bug_report.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'logs_page.dart';
 
 class DebugPage extends StatefulWidget {
   DebugPage({Key? key}) : super(key: key);
@@ -54,21 +53,12 @@ class _DebugPageState extends State<DebugPage> {
               ReportManager.sendEmail(context);
             },
           ),
-          DebugButton(
-            title: 'View logs',
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => LogsPage(),
-              ));
-            },
-          ),
           SectionDivider(text: '🔒 Authentication'),
           DebugButton(
             title: 'Cancel token',
             onTap: () async {
               final AuthenticationRepository authenticationRepository = sl();
-              final profile = await (authenticationRepository.getProfile()
-                  as FutureOr<ProfileDomainModel>);
+              final profile = (await authenticationRepository.getProfile())!;
 
               await authenticationRepository.updateProfile(
                 responseRemoteModel: DefaultLoginResponseRemoteModel(

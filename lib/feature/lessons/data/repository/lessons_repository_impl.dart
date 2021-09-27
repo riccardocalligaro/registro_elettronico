@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
@@ -32,7 +32,8 @@ class LessonsRepositoryImpl implements LessonsRepository {
   });
 
   @override
-  Future<Either<Failure, Success>> updateAllLessons({required bool ifNeeded}) async {
+  Future<Either<Failure, Success>> updateAllLessons(
+      {required bool ifNeeded}) async {
     try {
       if (!ifNeeded |
           (ifNeeded && needUpdate(sharedPreferences!.getInt(lastUpdateKey)))) {
@@ -49,12 +50,14 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
       return Right(Success());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError(
+          '[LessonsRepository] Error while updating all lessons', e, s));
     }
   }
 
   @override
-  Future<Either<Failure, Success>> updateTodaysLessons({required bool ifNeeded}) async {
+  Future<Either<Failure, Success>> updateTodaysLessons(
+      {required bool ifNeeded}) async {
     try {
       if (!ifNeeded |
           (ifNeeded && needUpdate(sharedPreferences!.getInt(lastUpdateKey)))) {
@@ -71,7 +74,8 @@ class LessonsRepositoryImpl implements LessonsRepository {
         return Right(Success());
       }
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError(
+          '[LessonsRepository] Error while updating todays lessons', e, s));
     }
   }
 
@@ -87,9 +91,10 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
         return Resource.success(data: lessonDomainModels);
       },
-    ).onErrorReturnWith((error, s) {
-      Logger.streamError(error.toString());
-      return Resource.failed(error: handleError(error, s));
+    ).onErrorReturnWith((e, s) {
+      return Resource.failed(
+          error: handleError(
+              '[LessonsRepository] Error while watching all lessons', e, s));
     });
   }
 
@@ -107,9 +112,12 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
         return Resource.success(data: lessonDomainModels);
       },
-    ).onErrorReturnWith((error, s) {
-      Logger.streamError(error.toString());
-      return Resource.failed(error: handleError(error, s));
+    ).onErrorReturnWith((e, s) {
+      return Resource.failed(
+          error: handleError(
+              '[LessonsRepository] Error while updating watching lessons for subject',
+              e,
+              s));
     });
   }
 
@@ -139,8 +147,8 @@ class LessonsRepositoryImpl implements LessonsRepository {
     // delete the lessons that were removed from the remote source
     await lessonsLocalDatasource!.deleteLessons(lessonsToDelete);
 
-    await sharedPreferences!.setInt(
-        lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
+    await sharedPreferences!
+        .setInt(lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
 
     return SuccessWithUpdate();
   }
@@ -189,9 +197,13 @@ class LessonsRepositoryImpl implements LessonsRepository {
 
         return Resource.success(data: lessonsWithDurations);
       },
-    ).onErrorReturnWith((error, s) {
-      Logger.streamError(error.toString());
-      return Resource.failed(error: handleError(error, s));
+    ).onErrorReturnWith((e, s) {
+      return Resource.failed(
+        error: handleError(
+            '[LessonsRepository] Error while updating watching latest lessons with duration',
+            e,
+            s),
+      );
     });
   }
 

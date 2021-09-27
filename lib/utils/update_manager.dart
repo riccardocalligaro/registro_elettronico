@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
@@ -202,7 +203,7 @@ class SRUpdateManager {
     );
   }
 
-  Future<void> updateAllData(
+  Future<List<dynamic>> updateAllData(
     String? databaseName,
   ) async {
     Fimber.i('🔄 [UpdateMANAGER] Updating periods and subjects');

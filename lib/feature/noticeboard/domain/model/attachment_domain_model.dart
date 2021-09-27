@@ -47,7 +47,7 @@ class AttachmentDomainModel {
     };
   }
 
-  factory AttachmentDomainModel.fromMap(Map<String, dynamic>? map) {
+  static AttachmentDomainModel? fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return AttachmentDomainModel(
@@ -60,7 +60,7 @@ class AttachmentDomainModel {
 
   String toJson() => json.encode(toMap());
 
-  factory AttachmentDomainModel.fromJson(String source) =>
+  static AttachmentDomainModel? fromJson(String source) =>
       AttachmentDomainModel.fromMap(json.decode(source));
 
   @override

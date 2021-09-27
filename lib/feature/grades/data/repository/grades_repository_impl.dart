@@ -1,14 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';
 import 'package:registro_elettronico/feature/grades/data/datasource/local/local_grades_local_datasource.dart';
 import 'package:registro_elettronico/feature/grades/data/datasource/normal/grades_local_datasource.dart';
@@ -69,13 +67,15 @@ class GradesRepositoryImpl extends GradesRepository {
             (e) => GradeDomainModel.fromLocalModel(e),
           )
           .toList());
-    } catch (e) {
-      return Left(handleError(e));
+    } catch (e, s) {
+      return Left(handleError('[GradesRepository] Get grades error', e, s));
     }
   }
 
   @override
-  Future<Either<Failure, Success>> updateGrades({required bool ifNeeded}) async {
+  Future<Either<Failure, Success>> updateGrades({
+    required bool ifNeeded,
+  }) async {
     try {
       if (!ifNeeded |
           (ifNeeded && needUpdate(sharedPreferences!.getInt(lastUpdateKey)))) {
@@ -117,14 +117,14 @@ class GradesRepositoryImpl extends GradesRepository {
         // delete the grades that were removed from the remote source
         await gradesLocalDatasource!.deleteGrades(gradesToDelete);
 
-        await sharedPreferences!.setInt(
-            lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
+        await sharedPreferences!
+            .setInt(lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
 
         return Right(SuccessWithUpdate());
       }
       return Right(SuccessWithoutUpdate());
-    } catch (e) {
-      return Left(handleError(e));
+    } catch (e, s) {
+      return Left(handleError('[GradesRepository] Update grades error', e, s));
     }
   }
 
@@ -137,14 +137,15 @@ class GradesRepositoryImpl extends GradesRepository {
               .toList());
     }).onErrorReturnWith(
       (e, s) {
-        Logger.e(text: e.toString());
-        return Resource.failed(error: e as Failure?);
+        return Resource.failed(
+            error:
+                handleError('[GradesRepository] Watch all grade error', e, s));
       },
     );
   }
 
   @override
-  Stream<Resource<GradesPagesDomainModel>> watchAllGradesSections() {
+  Stream<Resource<GradesPagesDomainModel?>> watchAllGradesSections() {
     return Rx.combineLatest5(
       periodsLocalDatasource!.watchAllPeriods(),
       subjectsLocalDatasource!.watchAllSubjects(),
@@ -250,7 +251,8 @@ class GradesRepositoryImpl extends GradesRepository {
           for (final grade in grades) {
             if (grade.notesForFamily!.isEmpty) {
               // check events for that day
-              final eventsForThatDay = eventsMap[_convertDate(grade.eventDate!)];
+              final eventsForThatDay =
+                  eventsMap[_convertDate(grade.eventDate!)];
 
               if (eventsForThatDay == null) continue;
 
@@ -354,11 +356,11 @@ class GradesRepositoryImpl extends GradesRepository {
 
         return Resource.success(data: gradesPagesDomainModel);
       },
-    ).handleError((e, s) {
-      Logger.e(exception: e, stacktrace: s);
-    }).onErrorReturnWith(
+    ).onErrorReturnWith(
       (e, s) {
-        return Resource.failed(error: handleStreamError(e, s));
+        return Resource.failed(
+            error: handleError(
+                '[GradesRepository] Watch all grades section error', e, s));
       },
     );
   }
@@ -385,8 +387,8 @@ class GradesRepositoryImpl extends GradesRepository {
         count++;
         average = sum / count;
         // with num.parse(average.toStringAsFixed(2)) we cut the decimal digits
-        spots.add(FlSpot(
-            i.toDouble(), num.tryParse(average.toStringAsFixed(2) ?? 0 as String) as double));
+        spots.add(FlSpot(i.toDouble(),
+            num.tryParse(average.toStringAsFixed(2) ?? 0 as String) as double));
 
         if (spots.length == 1) {
           spots.add(FlSpot(spots[0].x + 1, spots[0].y));
@@ -599,7 +601,10 @@ class GradesRepositoryImpl extends GradesRepository {
 
       return Right(Success());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError(
+          '[GradesRepository] Toogle grade locally cancelled status error',
+          e,
+          s));
     }
   }
 
@@ -613,8 +618,9 @@ class GradesRepositoryImpl extends GradesRepository {
       print('${subject.id}_objective');
       print(newValue.toString());
       return Right(Success());
-    } catch (e) {
-      return Left(handleError(e));
+    } catch (e, s) {
+      return Left(handleError(
+          '[GradesRepository] Change subject objective error', e, s));
     }
   }
 
@@ -662,7 +668,8 @@ class GradesRepositoryImpl extends GradesRepository {
         ),
       );
     } catch (e, s) {
-      return Left(handleStreamError(e, s));
+      return Left(
+          handleError('[GradesRepository] Get subject data error', e, s));
     }
   }
 
@@ -728,8 +735,9 @@ class GradesRepositoryImpl extends GradesRepository {
               .toList());
     }).onErrorReturnWith(
       (e, s) {
-        Logger.e(text: e.toString());
-        return Resource.failed(error: e as Failure?);
+        return Resource.failed(
+            error: handleError(
+                '[GradesRepository] Watch local grades error', e, s));
       },
     );
   }
@@ -744,7 +752,8 @@ class GradesRepositoryImpl extends GradesRepository {
 
       return Right(Success());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(
+          handleError('[GradesRepository] Add local grade error', e, s));
     }
   }
 
@@ -758,7 +767,8 @@ class GradesRepositoryImpl extends GradesRepository {
 
       return Right(Success());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(
+          handleError('[GradesRepository] Delete local grade error', e, s));
     }
   }
 }

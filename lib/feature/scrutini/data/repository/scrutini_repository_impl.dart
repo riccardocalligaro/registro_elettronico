@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
@@ -26,26 +26,19 @@ class ScrutiniRepositoryImpl implements ScrutiniRepository {
     bool? lastYear,
   }) async {
     if (await networkInfo!.isConnected) {
-      final profile = await (authenticationRepository!.getProfile()
-          as FutureOr<ProfileDomainModel>);
+      final profile = (await authenticationRepository!.getProfile())!;
       final password = await flutterSecureStorage!.read(key: profile.ident!);
 
       try {
         final resToken = await webSpaggiariClient!.getPHPToken(
-          username: profile.ident,
-          password: password,
+          username: profile.ident!,
+          password: password!,
           lastYear: lastYear ?? false,
         );
 
         return Right(resToken);
       } catch (e, s) {
-        await FirebaseCrashlytics.instance.recordError(e, s);
-        Logger.e(
-          exception: Exception(e.toString()),
-          stacktrace: s,
-          text: 'Error getting login token',
-        );
-        return Left(ServerFailure());
+        return Left(GenericFailure());
       }
     } else {
       throw NotConntectedException();

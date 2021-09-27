@@ -12,9 +12,9 @@ class EmptyGradesPlaceholder extends StatelessWidget {
     return CustomPlaceHolder(
       icon: Icons.timeline,
       showUpdate: true,
-      onTap: () {
+      onTap: () async {
         final GradesRepository gradesRepository = sl();
-        return gradesRepository.updateGrades(ifNeeded: false);
+        await gradesRepository.updateGrades(ifNeeded: false);
       },
       text: AppLocalizations.of(context)!.translate('no_grades'),
     );

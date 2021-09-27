@@ -185,7 +185,7 @@ class GradeDomainModel {
     };
   }
 
-  factory GradeDomainModel.fromMap(Map<String, dynamic>? map) {
+  static GradeDomainModel? fromMap(Map<String, dynamic>? map) {
     if (map == null) return null;
 
     return GradeDomainModel(
@@ -213,7 +213,7 @@ class GradeDomainModel {
 
   String toJson() => json.encode(toMap());
 
-  factory GradeDomainModel.fromJson(String source) =>
+  static GradeDomainModel? fromJson(String source) =>
       GradeDomainModel.fromMap(json.decode(source));
 
   @override

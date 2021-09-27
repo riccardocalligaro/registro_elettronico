@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fimber/fimber.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
 
 part 'absences_event.dart';
@@ -31,14 +32,10 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
 
         yield AbsencesUpdateLoaded();
       } on DioError catch (e, s) {
-        await FirebaseCrashlytics.instance.recordError(e, s);
-        Logger.e(text: 'Updating asbences error ${e.toString()}');
         yield AbsencesUpdateError(e.response!.data.toString());
       } on NotConntectedException catch (_) {
         yield AbsencesLoadErrorNotConnected();
       } catch (e, s) {
-        await FirebaseCrashlytics.instance.recordError(e, s);
-        Logger.e(text: 'Updating absences error ${e.toString()}');
         yield AbsencesUpdateError(e.toString());
       }
     }
@@ -50,8 +47,6 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
         Fimber.i('BloC -> Got ${absences.length} absences');
         yield AbsencesLoaded(absences: absences);
       } catch (e, s) {
-        await FirebaseCrashlytics.instance.recordError(e, s);
-        Logger.e(text: 'Getting absences error ${e.toString()}');
         yield AbsencesError(e.toString());
       }
     }

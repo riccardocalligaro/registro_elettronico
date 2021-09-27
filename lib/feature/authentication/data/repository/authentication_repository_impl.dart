@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/remote/api/sr_dio_client.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
@@ -61,9 +61,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<String?> getCurrentStudentId() async {
+  Future<String> getCurrentStudentId() async {
     final profile = await _getProfile();
-    return profile?.studentId;
+    return (profile?.studentId)!;
   }
 
   Future<ProfileDomainModel?> _getProfile() async {
@@ -84,7 +84,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
           final domainProfile = ProfileDomainModel.fromJson(legacyProfile);
 
           await profilesLocalDatasource!
-              .insertProfile(domainProfile.toLocalModel());
+              .insertProfile(domainProfile!.toLocalModel());
 
           await sharedPreferences!.setString(
             PrefsConstants.databaseName,
@@ -195,7 +195,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on DioError catch (e) {
       return Left(LoginFailure(dioError: e));
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(
+          handleError('[AuthenticationRepository] Login user error', e, s));
     }
   }
 
@@ -261,7 +262,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
       return Right(Success());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError(
+          '[AuthenticationRepository] Logout current user error', e, s));
     }
   }
 
@@ -277,7 +279,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
       return Right(domainAccounts);
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError(
+          '[AuthenticationRepository] Get non active accounts error', e, s));
     }
   }
 
@@ -330,7 +333,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
       return Right(Success());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError(
+          '[AuthenticationRepository] Switch to account error', e, s));
     }
   }
 }

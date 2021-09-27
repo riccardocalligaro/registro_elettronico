@@ -41,9 +41,9 @@ class _SubjectsPageState extends State<SubjectsPage> {
                 text: AppLocalizations.of(context)!.translate('no_subjects'),
                 icon: Icons.subject,
                 showUpdate: true,
-                onTap: () {
+                onTap: () async {
                   SRUpdateManager srUpdateManager = sl();
-                  return srUpdateManager.updateVitalData(context);
+                  await srUpdateManager.updateVitalData(context);
                 },
               );
             }

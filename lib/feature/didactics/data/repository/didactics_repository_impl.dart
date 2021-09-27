@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
@@ -108,19 +108,21 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
         // cancelliamo i file non presenti remotamente
         await didacticsLocalDatasource!.deleteDownloadedFiles(filesToDelete);
 
-        await sharedPreferences!.setInt(
-            lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
+        await sharedPreferences!
+            .setInt(lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
 
         return Right(SuccessWithUpdate());
       }
       return Right(SuccessWithoutUpdate());
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(
+          handleError('[DidacticsRepository] Update materials error', e, s));
     }
   }
 
   @override
-  Stream<Resource<List<DidacticsTeacherDomainModel?>>> watchTeachersMaterials() {
+  Stream<Resource<List<DidacticsTeacherDomainModel?>>>
+      watchTeachersMaterials() {
     return Rx.combineLatest4(
       didacticsLocalDatasource!.watchAllTeachers(),
       didacticsLocalDatasource!.watchAllFolders(),
@@ -191,11 +193,12 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
 
         return Resource.success(data: convertedTeachers);
       },
-    ).handleError((e, s) {
-      Logger.e(exception: e, stacktrace: s);
-    }).onErrorReturnWith(
+    ).onErrorReturnWith(
       (e, s) {
-        return Resource.failed(error: handleStreamError(e, s));
+        return Resource.failed(
+          error:
+              handleError('[DidacticsRepository] Watch materials error', e, s),
+        );
       },
     );
   }
@@ -249,17 +252,19 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
 
           await resourceStreamController.close();
         });
-      }).catchError(
-        (e) => resourceStreamController.add(
-          Resource.failed(
-            error: handleStreamError(e),
-          ),
-        ),
-      ));
+      }).catchError((e, s) {
+        resourceStreamController.add(Resource.failed(
+          error: handleError('[DidacticsRepository] Download file error', e, s),
+        ));
+
+        return null;
+      }));
 
       yield* resourceStreamController.stream;
     } catch (e, s) {
-      yield Resource.failed(error: handleStreamError(e, s));
+      yield Resource.failed(
+          error:
+              handleError('[DidacticsRepository] Watch materials error', e, s));
       await resourceStreamController.close();
     }
   }
@@ -291,7 +296,8 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
 
       return Right(text);
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(
+          handleError('[DidacticsRepository] Download text error', e, s));
     }
   }
 
@@ -306,7 +312,8 @@ class DidacticsRepositoryImpl implements DidacticsRepository {
 
       return Right(url);
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(
+          handleError('[DidacticsRepository] Download URL error', e, s));
     }
   }
 }

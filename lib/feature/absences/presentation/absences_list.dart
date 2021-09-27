@@ -27,7 +27,8 @@ class AbsencesList extends StatelessWidget {
         }
 
         if (state is AbsencesLoaded) {
-          final List<Absence> absences = state.absences ?? [];
+          final List<Absence> absences = state.absences;
+
           final map = getAbsencesMap(
               absences..sort((b, a) => a.evtDate!.compareTo(b.evtDate!)));
 
@@ -281,8 +282,9 @@ class AbsencesList extends StatelessWidget {
           next = absences[i + 1].evtDate;
         }
 
-        delta = (next!.millisecondsSinceEpoch - current!.millisecondsSinceEpoch) /
-            3600000;
+        delta =
+            (next!.millisecondsSinceEpoch - current!.millisecondsSinceEpoch) /
+                3600000;
       }
 
       if (absences[i].evtCode != RegistroConstants.ASSENZA) {

@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
@@ -37,7 +37,8 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
   });
 
   @override
-  Future<Either<Failure, Success>> updateNotices({required bool ifNeeded}) async {
+  Future<Either<Failure, Success>> updateNotices(
+      {required bool ifNeeded}) async {
     try {
       if (!ifNeeded |
           (ifNeeded && needUpdate(sharedPreferences!.getInt(lastUpdateKey)))) {
@@ -81,15 +82,18 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
         // delete the noticeboard that were removed from the remote source
         await noticeboardLocalDatasource!.deleteNotices(noticesToDelete);
 
-        await sharedPreferences!.setInt(
-            lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
+        await sharedPreferences!
+            .setInt(lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
 
         return Right(SuccessWithUpdate());
       } else {
         return Right(Success());
       }
     } catch (e, s) {
-      return Left(handleError(e, s));
+      return Left(handleError(
+          '[NoticeboardRepository] Error while updating updating notices',
+          e,
+          s));
     }
   }
 
@@ -124,13 +128,14 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
 
         return Resource.success(data: domainNotices);
       },
-    ).handleError((e, s) {
-      Logger.e(exception: e, stacktrace: s);
-    }).onErrorReturnWith(
-      (e, s) {
-        return Resource.failed(error: handleStreamError(e, s));
-      },
-    );
+    ).onErrorReturnWith((e, s) {
+      return Resource.failed(
+        error: handleError(
+            '[NoticeboardRepository] Error while updating watching all notices',
+            e,
+            s),
+      );
+    });
   }
 
   @override
@@ -146,29 +151,35 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
         resourceStreamController.add(Resource.loading(progress: 0));
 
         unawaited(
-          _readNoticeAndGetContent(notice: notice!)
-              .then(
-                (textContent) async {
-                  resourceStreamController.add(
-                    Resource.success(
-                      data: AttachmentText(textContent),
-                    ),
-                  );
-                },
-              )
-              .catchError(
-                (e) => resourceStreamController.add(
-                  Resource.failed(
-                    error: handleStreamError(e),
-                  ),
+          _readNoticeAndGetContent(notice: notice!).then(
+            (textContent) async {
+              resourceStreamController.add(
+                Resource.success(
+                  data: AttachmentText(textContent),
                 ),
-              )
-              .whenComplete(() => resourceStreamController.close()),
+              );
+            },
+          ).catchError((e, s) {
+            resourceStreamController.add(
+              Resource.failed(
+                error: handleError(
+                    '[NoticeboardRepository] Error while downloading file $notice',
+                    e,
+                    s),
+              ),
+            );
+
+            return null;
+          }).whenComplete(() => resourceStreamController.close()),
         );
 
         yield* resourceStreamController.stream;
       } catch (e, s) {
-        yield Resource.failed(error: handleStreamError(e, s));
+        yield Resource.failed(
+            error: handleError(
+                '[NoticeboardRepository] Error while downloading file $notice',
+                e,
+                s));
         await resourceStreamController.close();
       }
     } else {
@@ -179,45 +190,50 @@ class NoticeboardRepositoryImpl implements NoticeboardRepository {
             (filePath) {
               noticeboardRemoteDatasource!
                   .downloadNotice(
-                    notice: notice,
-                    attachment: attachment,
-                    savePath: filePath,
-                    onProgress: (received, total) {
-                      resourceStreamController.add(
-                        Resource.loading(progress: received / total),
-                      );
-                    },
-                  )
+                notice: notice,
+                attachment: attachment,
+                savePath: filePath,
+                onProgress: (received, total) {
+                  resourceStreamController.add(
+                    Resource.loading(progress: received / total),
+                  );
+                },
+              )
                   .then(
-                    (_) async {
-                      final localModel = notice.toLocalModel();
+                (_) async {
+                  final localModel = notice.toLocalModel();
 
-                      await noticeboardLocalDatasource!
-                          .updateNotice(localModel.copyWith(readStatus: true));
+                  await noticeboardLocalDatasource!
+                      .updateNotice(localModel.copyWith(readStatus: true));
 
-                      File file = File(filePath);
-                      resourceStreamController.add(
-                        Resource.success(
-                          data: AttachmentFile(file),
-                        ),
-                      );
-                    },
-                  )
-                  .catchError(
-                    (e) => resourceStreamController.add(
-                      Resource.failed(
-                        error: handleStreamError(e),
-                      ),
+                  File file = File(filePath);
+                  resourceStreamController.add(
+                    Resource.success(
+                      data: AttachmentFile(file),
                     ),
-                  )
-                  .whenComplete(() => resourceStreamController.close());
+                  );
+                },
+              ).catchError((e, s) {
+                resourceStreamController.add(
+                  Resource.failed(
+                    error: handleError(
+                        '[NoticeboardRepository] Error while downloading notice attachment $attachment',
+                        e,
+                        s),
+                  ),
+                );
+              }).whenComplete(() => resourceStreamController.close());
             },
           ),
         );
 
         yield* resourceStreamController.stream;
       } catch (e, s) {
-        yield Resource.failed(error: handleStreamError(e, s));
+        yield Resource.failed(
+            error: handleError(
+                '[NoticeboardRepository] Error while downloading notice attachment $attachment',
+                e,
+                s));
         await resourceStreamController.close();
       }
     }
