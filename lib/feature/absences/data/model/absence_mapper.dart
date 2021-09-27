@@ -1,5 +1,5 @@
 import 'package:registro_elettronico/core/data/local/moor_database.dart' as db;
-import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';
+import 'package:registro_elettronico/feature/absences/domain/model/absence_remote_model.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 
 class AbsenceMapper {

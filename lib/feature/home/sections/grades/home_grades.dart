@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
@@ -126,8 +126,8 @@ class _LastGradesLoaded extends StatelessWidget {
         String message = "";
 
         final gradeSubject = grade.subjectDesc!.length > 35
-            ? StringUtils.titleCase(
-                GlobalUtils.reduceSubjectTitleWithLength(grade.subjectDesc!, 34))
+            ? StringUtils.titleCase(GlobalUtils.reduceSubjectTitleWithLength(
+                grade.subjectDesc!, 34))
             : StringUtils.titleCase(grade.subjectDesc!);
         final date = SRDateUtils.convertDateLocale(
             grade.eventDate, AppLocalizations.of(context)!.locale.toString());

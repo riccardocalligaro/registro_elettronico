@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/feature/absences/domain/model/absences_response.dart';
+import 'package:registro_elettronico/feature/absences/domain/model/absence_remote_model.dart';
 
 class AbsencesRemoteDatasource {
   final Dio? dio;

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart' show Either;
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/profile_domain_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
@@ -20,8 +20,8 @@ class _ChangeAccountDialogState extends State<ChangeAccountDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title:
-          Text(AppLocalizations.of(context)!.translate('change_profile_title')!),
+      title: Text(
+          AppLocalizations.of(context)!.translate('change_profile_title')!),
       content: FutureBuilder<Either<Failure, List<ProfileDomainModel>>>(
         future: authenticationRepository!.getNonActiveAccounts(),
         initialData: null,

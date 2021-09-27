@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/utils/bug_report.dart';
 
@@ -57,8 +57,8 @@ class SRFailureView extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child:
-                            Text(AppLocalizations.of(context)!.translate('ok')!),
+                        child: Text(
+                            AppLocalizations.of(context)!.translate('ok')!),
                       ),
                       TextButton(
                         onPressed: () async {

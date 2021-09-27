@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/remote/attachment/text_content_remote_model.dart';
 import 'package:registro_elettronico/feature/didactics/data/model/remote/attachment/url_content_remote_model.dart';

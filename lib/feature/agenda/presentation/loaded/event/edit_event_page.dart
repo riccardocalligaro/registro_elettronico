@@ -1,10 +1,10 @@
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:registro_elettronico/core/data/model/event_type.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
+import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/dialog/select_date_dialog.dart';
@@ -100,7 +100,7 @@ class _EditEventPageState extends State<EditEventPage> {
     AgendaEventDomainModel event;
     final eventOriginal = widget.event;
 
-    final DateTime _date = DateTime(
+    final DateTime? _date = DateTime(
       _selectedDate!.year,
       _selectedDate!.month,
       _selectedDate!.day,
