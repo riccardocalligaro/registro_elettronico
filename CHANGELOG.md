@@ -1,3 +1,6 @@
+3.0 Migration
+- [] core
+
 Versione 2.0.2+8
 
 * Aggiunto tema black

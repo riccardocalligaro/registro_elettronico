@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 
 enum Status { loading, success, failed }
@@ -37,8 +37,9 @@ class Resource<T> {
     try {
       final res = await req();
       return success<T>(data: res);
-    } on Exception catch (e) {
-      return Future.error(failed(error: handleError(e), data: null));
+    } on Exception catch (e, s) {
+      return Future.error(failed(
+          error: handleError('Error in Resource stream', e, s), data: null));
     }
   }
 

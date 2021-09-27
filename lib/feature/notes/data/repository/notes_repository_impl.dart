@@ -43,7 +43,8 @@ class NotesRepositoryImpl implements NotesRepository {
   @override
   Future updateNotes() async {
     if (await networkInfo!.isConnected) {
-      final studentId = await (authenticationRepository!.getCurrentStudentId() as FutureOr<String>);
+      final studentId = await (authenticationRepository!.getCurrentStudentId()
+          as FutureOr<String>);
 
       final notesResponse = await spaggiariClient!.getNotes(studentId);
 
@@ -57,16 +58,16 @@ class NotesRepositoryImpl implements NotesRepository {
       notesResponse.notesNTST!.forEach((note) =>
           notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTST')));
 
-      Logger.info(
+      Fimber.i(
         'Got ${notesResponse.notesNTCL!.length} notesNTCL from server, procceding to insert in database',
       );
-      Logger.info(
+      Fimber.i(
         'Got ${notesResponse.notesNTWN!.length} notesNTWN from server, procceding to insert in database',
       );
-      Logger.info(
+      Fimber.i(
         'Got ${notesResponse.notesNTTE!.length} notesNTTE from server, procceding to insert in database',
       );
-      Logger.info(
+      Fimber.i(
         'Got ${notesResponse.notesNTST!.length} notesNTST from server, procceding to insert in database',
       );
       await noteDao!.deleteAllAttachments();
@@ -81,7 +82,8 @@ class NotesRepositoryImpl implements NotesRepository {
   @override
   Future<NotesReadResponse> readNote(String type, int eventId) async {
     if (await networkInfo!.isConnected) {
-      final studentId = await (authenticationRepository!.getCurrentStudentId() as FutureOr<String>);
+      final studentId = await (authenticationRepository!.getCurrentStudentId()
+          as FutureOr<String>);
 
       final res = await spaggiariClient!.markNote(studentId, type, eventId, "");
       return res;
@@ -96,7 +98,8 @@ class NotesRepositoryImpl implements NotesRepository {
   }
 
   @override
-  Future<NotesAttachment> getAttachmentForNote(String? type, int? eventId) async {
+  Future<NotesAttachment> getAttachmentForNote(
+      String? type, int? eventId) async {
     if (await networkInfo!.isConnected) {
       final studentId = await authenticationRepository!.getCurrentStudentId();
       final attachments = await noteDao!.getAllAttachments();
@@ -105,7 +108,8 @@ class NotesRepositoryImpl implements NotesRepository {
         if (attachment.id == eventId) return attachment;
       }
 
-      final res = await spaggiariClient!.markNote(studentId!, type!, eventId!, "");
+      final res =
+          await spaggiariClient!.markNote(studentId!, type!, eventId!, "");
       final insertable =
           NoteMapper.convertNoteAttachmentResponseToInsertable(res);
 

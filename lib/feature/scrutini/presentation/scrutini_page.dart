@@ -85,8 +85,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                 } else if (state is TokenLoadNotConnected) {
                   ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
-                    ..showSnackBar(
-                        AppNavigator.instance!.getNetworkErrorSnackBar(context));
+                    ..showSnackBar(AppNavigator.instance!
+                        .getNetworkErrorSnackBar(context));
                 }
               },
             ),
@@ -102,7 +102,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              AppLocalizations.of(context)!.translate('loading')!,
+                              AppLocalizations.of(context)!
+                                  .translate('loading')!,
                             ),
                             Container(
                               height: 20,
@@ -127,7 +128,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                       ),
                     );
                 } else if (state is DocumentLoadSuccess) {
-                  Logger.info(state.path);
+                  Fimber.i(state.path);
                   ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
                     ..showSnackBar(
@@ -174,8 +175,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                 } else if (state is DocumentLoadNotConnected) {
                   ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
-                    ..showSnackBar(
-                        AppNavigator.instance!.getNetworkErrorSnackBar(context));
+                    ..showSnackBar(AppNavigator.instance!
+                        .getNetworkErrorSnackBar(context));
                 }
               },
               child: Container(),
@@ -185,8 +186,8 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                 if (state is DocumentsLoadNotConnected) {
                   ScaffoldMessenger.of(context)
                     ..removeCurrentSnackBar()
-                    ..showSnackBar(
-                        AppNavigator.instance!.getNetworkErrorSnackBar(context));
+                    ..showSnackBar(AppNavigator.instance!
+                        .getNetworkErrorSnackBar(context));
                 }
               },
             )

@@ -60,11 +60,11 @@ class SRUpdateManager {
     final String? databaseName =
         sharedPreferences!.getString(PrefsConstants.databaseName);
 
-    Logger.info('🔄 [UpdateMANAGER] Checking for db: $databaseName');
+    Fimber.i('🔄 [UpdateMANAGER] Checking for db: $databaseName');
 
     // download di tutti i dati, partenza da 0
     if (_needToUpdateAllData(databaseName: databaseName)) {
-      Logger.info('🔄 [UpdateMANAGER]: Update all data');
+      Fimber.i('🔄 [UpdateMANAGER]: Update all data');
 
       // update all the endpoints
       await updateAllData(databaseName);
@@ -78,7 +78,7 @@ class SRUpdateManager {
       );
 
       if (needToUpdateVitalData) {
-        Logger.info('🔄 [UpdateMANAGER] Update vital data');
+        Fimber.i('🔄 [UpdateMANAGER] Update vital data');
 
         await sharedPreferences!.setInt(PrefsConstants.lastUpdateVitalData,
             DateTime.now().millisecondsSinceEpoch);
@@ -90,7 +90,7 @@ class SRUpdateManager {
         await subjectsRepository.updateSubjects(ifNeeded: false);
       }
 
-      Logger.info('🔄 [UpdateMANAGER] Updating home screen data');
+      Fimber.i('🔄 [UpdateMANAGER] Updating home screen data');
 
       // update all the basic data
       await Future.wait([
@@ -205,7 +205,7 @@ class SRUpdateManager {
   Future<void> updateAllData(
     String? databaseName,
   ) async {
-    Logger.info('🔄 [UpdateMANAGER] Updating periods and subjects');
+    Fimber.i('🔄 [UpdateMANAGER] Updating periods and subjects');
 
     await Future.wait([
       agendaRepository!.updateAllAgenda(ifNeeded: false),
@@ -218,7 +218,7 @@ class SRUpdateManager {
       subjectsRepository!.updateSubjects(ifNeeded: false),
     ]);
 
-    Logger.info(
+    Fimber.i(
       '🔄 [UpdateMANAGER] Setting lastUpdateAllData & lastUpdateVitalData to now',
     );
 
@@ -297,7 +297,8 @@ class SRUpdateManager {
       return true;
     } else {
       // controlliamo e i periodi sono vuoti o è presente una data vecchia
-      final needToUpdatePeriods = await periodsRepository!.needToUpdatePeriods();
+      final needToUpdatePeriods =
+          await periodsRepository!.needToUpdatePeriods();
 
       final needToUpdateResponse = needToUpdatePeriods.fold(
         (failure) => false,

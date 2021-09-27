@@ -75,7 +75,7 @@ class _StatsPageState extends State<StatsPage> {
               //   );
 
               // }).catchError((onError) {
-              //   Logger.info('Coudlnt create stats image file for sharing');
+              //   Fimber.i('Coudlnt create stats image file for sharing');
               // });
             },
           )
@@ -177,15 +177,15 @@ class _StatsPageState extends State<StatsPage> {
                   ),
                   Text(AppLocalizations.of(context)!
                       .translate('best_subject')!
-                      .replaceAll(
-                          '{subject}', report.bestSubject!.name!.toLowerCase())),
+                      .replaceAll('{subject}',
+                          report.bestSubject!.name!.toLowerCase())),
                   const SizedBox(
                     height: 4,
                   ),
                   Text(AppLocalizations.of(context)!
                       .translate('worst_subject')!
-                      .replaceAll(
-                          '{subject}', report.worstSubject!.name!.toLowerCase())),
+                      .replaceAll('{subject}',
+                          report.worstSubject!.name!.toLowerCase())),
                   const SizedBox(
                     height: 4,
                   ),
@@ -439,7 +439,8 @@ class _StatsPageState extends State<StatsPage> {
     required StudentReport report,
   }) {
     return GradesBarChart(
-      grades: report.grades..sort((a, b) => a.eventDate!.compareTo(b.eventDate!)),
+      grades: report.grades
+        ..sort((a, b) => a.eventDate!.compareTo(b.eventDate!)),
     );
   }
 }

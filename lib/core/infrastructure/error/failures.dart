@@ -1,25 +1,87 @@
-import 'package:equatable/equatable.dart';
+import 'dart:async';
+import 'dart:io';
 
-abstract class Failure extends Equatable {
-  final List properties;
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 
-  Failure({this.properties = const <dynamic>[]});
-  @override
-  List<Object?> get props => [properties];
+class Failure {
+  const Failure({this.e, this.s});
+
+  final Exception? e;
+  final StackTrace? s;
+
+  String? localizedDescription(BuildContext context) {
+    return AppLocalizations.of(context)!.translate('generic_failure');
+  }
 }
 
-// General failures
-class ServerFailure extends Failure {
-  final int? statusCode;
-
-  ServerFailure({this.statusCode});
+class DatabaseFailure extends Failure {
   @override
-  List<Object?> get props => [statusCode];
+  String? localizedDescription(BuildContext context) {
+    return AppLocalizations.of(context)!.translate('database_failure');
+  }
 }
 
-class DatabaseFailure extends Failure {}
+class NetworkFailure extends Failure {
+  NetworkFailure({this.dioError});
 
-class GenericFailure extends Failure {}
+  final DioError? dioError;
+
+  @override
+  String? localizedDescription(BuildContext context) {
+    if (dioError is TimeoutException ||
+        dioError is SocketException ||
+        dioError!.response == null) {
+      return AppLocalizations.of(context)!.translate('network_failure');
+    }
+
+    return AppLocalizations.of(context)!.translate('network_failure_generic');
+  }
+}
+
+class FunctionNotActivatedFailure extends Failure {
+  FunctionNotActivatedFailure();
+
+  @override
+  String? localizedDescription(BuildContext context) {
+    return AppLocalizations.of(context)!.translate('function_not_activated');
+  }
+}
+
+class ServerFailure extends NetworkFailure {
+  ServerFailure(this.dioError) : super(dioError: dioError);
+
+  @override
+  final DioError dioError;
+
+  @override
+  String? localizedDescription(BuildContext context) {
+    if (dioError.response!.statusCode == 404) {
+      return AppLocalizations.of(context)!.translate('server_failure_404');
+    }
+
+    return AppLocalizations.of(context)!.translate('server_failure');
+  }
+}
+
+class NotConnectedFailure extends NetworkFailure {
+  @override
+  String? localizedDescription(BuildContext context) {
+    return AppLocalizations.of(context)!.translate('not_connected_failure');
+  }
+}
+
+class GenericFailureWithoutException extends GenericFailure {}
+
+class GenericFailure extends Failure {
+  GenericFailure({Exception? e}) : super(e: e);
+
+  @override
+  String? localizedDescription(BuildContext context) {
+    return AppLocalizations.of(context)!.translate('generic_failure');
+  }
+}
 
 class NotConntectedException implements Exception {
   String errorMessage() {

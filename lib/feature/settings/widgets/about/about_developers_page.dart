@@ -33,9 +33,10 @@ class AboutDevelopersPage extends StatelessWidget {
                 ),
                 backgroundColor: Colors.transparent,
               ),
-              title: Text(
-                  AppLocalizations.of(context)!.translate('riccardo_calligaro')!),
-              subtitle: Text(trans.translate('riccardo_calligaro_description')!),
+              title: Text(AppLocalizations.of(context)!
+                  .translate('riccardo_calligaro')!),
+              subtitle:
+                  Text(trans.translate('riccardo_calligaro_description')!),
               trailing: IconButton(
                 icon: Icon(Icons.send),
                 onPressed: () async {
@@ -43,7 +44,7 @@ class AboutDevelopersPage extends StatelessWidget {
                   if (await canLaunch(url)) {
                     await launch(url);
                   } else {
-                    Logger.info('Could not launch $url');
+                    Fimber.i('Could not launch $url');
                     throw 'Could not launch $url';
                   }
                 },
@@ -57,9 +58,10 @@ class AboutDevelopersPage extends StatelessWidget {
                 ),
                 backgroundColor: Colors.transparent,
               ),
-              title:
-                  Text(AppLocalizations.of(context)!.translate('filippo_veggo')!),
-              subtitle: Text(AppLocalizations.of(context)!.translate('design')!),
+              title: Text(
+                  AppLocalizations.of(context)!.translate('filippo_veggo')!),
+              subtitle:
+                  Text(AppLocalizations.of(context)!.translate('design')!),
               trailing: IconButton(
                 icon: Icon(Icons.send),
                 onPressed: () async {
@@ -85,7 +87,8 @@ class AboutDevelopersPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
               child: HeaderText(
-                text: AppLocalizations.of(context)!.translate('the_application'),
+                text:
+                    AppLocalizations.of(context)!.translate('the_application'),
               ),
             ),
             ListTile(

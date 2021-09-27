@@ -55,15 +55,15 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<CredentialsDomainModel> getCredentials() async {
-    final profile = await (_getProfile() as FutureOr<ProfileDomainModel>);
-    final password = await flutterSecureStorage!.read(key: profile.ident!);
+    final profile = await _getProfile();
+    final password = await flutterSecureStorage!.read(key: profile!.ident!);
     return CredentialsDomainModel(profile: profile, password: password);
   }
 
   @override
   Future<String?> getCurrentStudentId() async {
-    final profile = await (_getProfile() as FutureOr<ProfileDomainModel>);
-    return profile.studentId;
+    final profile = await _getProfile();
+    return profile?.studentId;
   }
 
   Future<ProfileDomainModel?> _getProfile() async {
@@ -74,7 +74,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } else {
       final localProfiles = await profilesLocalDatasource!.getLoggedInUser();
 
-      if (localProfiles == null || localProfiles.isEmpty) {
+      if (localProfiles.isEmpty) {
         // check for legacy profile
         final legacyProfile =
             sharedPreferences!.getString(PrefsConstants.profile);
@@ -215,9 +215,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<Either<Failure, Success>> logoutCurrentUser() async {
     try {
       // delete the user from the database
-      final profile = await (_getProfile() as FutureOr<ProfileDomainModel>);
+      final profile = await _getProfile();
 
-      await profilesLocalDatasource!.deleteWithIdent(profile.ident);
+      await profilesLocalDatasource!.deleteWithIdent(profile?.ident);
 
       await srDatabase!.resetDb();
 
@@ -252,7 +252,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
         _ProfileSingleton.instance.profile = null;
 
-        await flutterSecureStorage!.write(key: profile.ident!, value: '');
+        await flutterSecureStorage!.write(key: profile!.ident!, value: '');
 
         await navigator.currentState!.push(
           MaterialPageRoute(builder: (context) => LoginPage()),

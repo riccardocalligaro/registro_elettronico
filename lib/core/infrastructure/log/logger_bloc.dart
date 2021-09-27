@@ -1,4 +1,5 @@
 import 'package:f_logs/f_logs.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'logger.dart';
@@ -6,25 +7,25 @@ import 'logger.dart';
 class LoggerBlocDelegate extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
-    Logger.info('📟 [BLOC] $bloc Change: $change');
+    Fimber.i('📟 [BLOC] $bloc Change: $change');
     super.onChange(bloc, change);
   }
 
   @override
   void onEvent(Bloc bloc, Object? event) {
-    Logger.info('📟 [BLOC] $bloc Event: $event');
+    Fimber.i('📟 [BLOC] $bloc Event: $event');
     super.onEvent(bloc, event);
   }
 
   @override
   void onClose(BlocBase bloc) {
-    Logger.info('📟 Close BLOC $bloc');
+    Fimber.i('📟 Close BLOC $bloc');
     super.onClose(bloc);
   }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
-    Logger.info('📟 [BLOC] $bloc Transition: $transition');
+    Fimber.i('📟 [BLOC] $bloc Transition: $transition');
     super.onTransition(bloc, transition);
   }
 
@@ -36,13 +37,7 @@ class LoggerBlocDelegate extends BlocObserver {
       ex = Exception(e.toString());
     }
 
-    FLog.error(
-      text: '📟❌ [BLOC] $bloc',
-      exception: ex,
-      stacktrace: s,
-      methodName: '',
-      className: '',
-    );
+    Fimber.e('📟❌ [BLOC] $bloc', ex: ex, stacktrace: s);
 
     super.onError(bloc, e, s);
   }

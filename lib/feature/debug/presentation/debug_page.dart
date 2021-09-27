@@ -67,7 +67,8 @@ class _DebugPageState extends State<DebugPage> {
             title: 'Cancel token',
             onTap: () async {
               final AuthenticationRepository authenticationRepository = sl();
-              final profile = await (authenticationRepository.getProfile() as FutureOr<ProfileDomainModel>);
+              final profile = await (authenticationRepository.getProfile()
+                  as FutureOr<ProfileDomainModel>);
 
               await authenticationRepository.updateProfile(
                 responseRemoteModel: DefaultLoginResponseRemoteModel(
@@ -114,7 +115,7 @@ class _DebugPageState extends State<DebugPage> {
               setState(() {
                 profiles = _profiles.toString();
               });
-              Logger.info(profiles.toString());
+              Fimber.i(profiles.toString());
             },
           ),
           if (profiles.isNotEmpty)

@@ -265,7 +265,7 @@ class _MultiActionsButton extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => NewEventPage(
-                    eventType: EventType.memo,
+                    eventType: AgendaEventType.memo,
                     initialDate: dateTime ?? DateTime.now(),
                   ),
                 ),
@@ -295,7 +295,7 @@ class _MultiActionsButton extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => NewEventPage(
-                    eventType: EventType.test,
+                    eventType: AgendaEventType.test,
                     initialDate: dateTime ?? DateTime.now(),
                   ),
                 ),
@@ -325,7 +325,7 @@ class _MultiActionsButton extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => NewEventPage(
-                    eventType: EventType.assigment,
+                    eventType: AgendaEventType.assigment,
                     initialDate: dateTime ?? DateTime.now(),
                   ),
                 ),

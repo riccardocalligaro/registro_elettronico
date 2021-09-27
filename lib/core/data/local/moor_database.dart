@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fimber/fimber.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 import 'package:path/path.dart' as p;
@@ -100,7 +101,7 @@ class SRDatabase extends _$SRDatabase {
   @override
   MigrationStrategy get migration => MigrationStrategy(
         onUpgrade: (Migrator m, int from, int to) async {
-          Logger.info('🗄️ [MIGRATIONS] From $from to $to');
+          Fimber.i('🗄️ [MIGRATIONS] From $from to $to');
 
           if (from == 1) {
             await m.deleteTable(attachments.actualTableName);

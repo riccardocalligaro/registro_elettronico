@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
@@ -151,7 +151,8 @@ class StatsRepositoryImpl implements StatsRepository {
 
               if (grade.decimalValue! >= 6) {
                 sufficienzeCount++;
-              } else if (grade.decimalValue! >= 5.5 && grade.decimalValue! < 6) {
+              } else if (grade.decimalValue! >= 5.5 &&
+                  grade.decimalValue! < 6) {
                 insufficienzeLieviCount++;
               } else if (grade.decimalValue! >= 4.5) {
                 insufficienzeCount++;

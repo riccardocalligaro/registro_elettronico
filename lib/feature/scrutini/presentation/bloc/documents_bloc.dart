@@ -5,7 +5,7 @@ import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/documents_repository.dart';
 
 part 'documents_event.dart';
@@ -32,11 +32,11 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
   Stream<DocumentsState> _mapGetDocumentsToState() async* {
     yield DocumentsLoadInProgress();
     try {
-      Logger.info('Getting documents and school reports');
+      Fimber.i('Getting documents and school reports');
       final data = await documentsRepository!.getDocumentsAndSchoolReports();
-      Logger.info('Got documents and school reports');
-      Logger.info('BloC -> Got ${data.value1.length} school reports');
-      Logger.info('BloC -> Got ${data.value2.length} documents');
+      Fimber.i('Got documents and school reports');
+      Fimber.i('BloC -> Got ${data.value1.length} school reports');
+      Fimber.i('BloC -> Got ${data.value2.length} documents');
 
       yield DocumentsLoadSuccess(
         schoolReports: data.value1,
@@ -55,9 +55,9 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
   Stream<DocumentsState> _mapUpdateDocumentsToState() async* {
     yield DocumentsUpdateLoadInProgress();
     try {
-      Logger.info('Updating documents and school reports');
+      Fimber.i('Updating documents and school reports');
       await documentsRepository!.updateDocuments();
-      Logger.info('Successfully updated documents and school reports');
+      Fimber.i('Successfully updated documents and school reports');
       yield DocumentsUpdateLoadSuccess();
     } on NotConntectedException {
       yield DocumentsLoadNotConnected();

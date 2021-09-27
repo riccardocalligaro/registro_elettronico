@@ -47,7 +47,7 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
       yield AbsencesLoading();
       try {
         final absences = await absencesRepository!.getAllAbsences();
-        Logger.info('BloC -> Got ${absences.length} absences');
+        Fimber.i('BloC -> Got ${absences.length} absences');
         yield AbsencesLoaded(absences: absences);
       } catch (e, s) {
         await FirebaseCrashlytics.instance.recordError(e, s);

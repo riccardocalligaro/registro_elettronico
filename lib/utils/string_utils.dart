@@ -31,7 +31,8 @@ class StringUtils {
     }
   }
 
-  static String _getPascalCase({required List<String> input, required String separator}) {
+  static String _getPascalCase(
+      {required List<String> input, required String separator}) {
     List<String> words = input.map(_upperCaseFirstLetter).toList();
     return words.join(separator);
   }
@@ -81,7 +82,7 @@ class StringUtils {
         ret = string.substring(
             0, string.length > length ? length : string.length);
       } catch (e) {
-        Logger.info('Coldnt beatufiy string');
+        Fimber.i('Coldnt beatufiy string');
         String removedSpaces = string.replaceAll(' ', '');
         ret = string.substring(
             0, removedSpaces.length > length ? length : removedSpaces.length);

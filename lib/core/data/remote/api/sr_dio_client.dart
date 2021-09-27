@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pedantic/pedantic.dart';
@@ -52,12 +53,17 @@ class SRDioClient {
             // get the profile from the database
             final profile = await authenticationRepository!.getProfile();
 
+            // if the profile is null just proceed, it will log out automatically
+            // this shouldnt happen but is there just in case
+            if (profile == null) {
+              return handler.next(requestOptions);
+            }
+
             //? This checks if the profile exires before now, so if this  results true the token is expired
-            if (profile == null ||
-                profile.expire!.isBefore(DateTime.now()) ||
+            if (profile.expire!.isBefore(DateTime.now()) ||
                 profile.token!.isEmpty) {
-              Logger.info(
-                '🔒 [DioINTERCEPTOR] Need to request new token - ${profile?.expire.toString()}',
+              Fimber.i(
+                '🔒 [DioINTERCEPTOR] Need to request new token - ${profile.expire.toString()}',
               );
 
               // Read the password from the secure storage
@@ -88,7 +94,8 @@ class SRDioClient {
                       ));
                       return null;
                     }
-                    Logger.e(text: error.toString());
+
+                    Fimber.e('Error with token dio', ex: error);
 
                     return handler.next(error);
                   },
@@ -112,14 +119,14 @@ class SRDioClient {
                 profileDomainModel: profile,
               );
 
-              Logger.info(
+              Fimber.i(
                 '🔒 [DioINTERCEPTOR] Got a new token - proceeding with request',
               );
 
               // this sets the token as the new one we just got from the api
               requestOptions.headers["Z-Auth-Token"] = loginResponse.token;
             } else {
-              Logger.info(
+              Fimber.i(
                 '🆓 [DioINTERCEPTOR] No need for token - proceeding with request',
               );
 
@@ -133,7 +140,7 @@ class SRDioClient {
           return handler.next(requestOptions);
         },
         onResponse: (response, handler) {
-          Logger.info(
+          Fimber.i(
             '🌐 [DioEND] -> Response -> ${response.statusCode} [${response.requestOptions.path}] ${response.requestOptions.method}  ${response.requestOptions.responseType}',
           );
 
@@ -141,10 +148,11 @@ class SRDioClient {
         },
         onError: (error, handler) async {
           if (error.response == null) {
-            Logger.streamError(error.toString());
+            Fimber.i('DioError without a respoonse', ex: error);
           } else {
-            Logger.networkError(
+            Fimber.e(
               '🤮 [DioERROR] ${error.type} Url: [${error.requestOptions.baseUrl}${error.requestOptions.path}] status:${error.response!.statusCode} type:${error.type} Data: ${error.response!.data} message: ${error.message}',
+              ex: error,
             );
           }
           return handler.next(error);

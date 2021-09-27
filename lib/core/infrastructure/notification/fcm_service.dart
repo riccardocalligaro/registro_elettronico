@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:fimber/fimber.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -12,7 +13,7 @@ class PushNotificationService {
   static const channelDescription = 'Send and receive notifications';
 
   Future initialise() async {
-    Logger.info('🔔 [FCM] Called initialisation...');
+    Fimber.i('🔔 [FCM] Called initialisation...');
 
     if (Platform.isIOS) {
       await FirebaseMessaging.instance.requestPermission();
@@ -20,7 +21,7 @@ class PushNotificationService {
 
     if (kDebugMode) {
       final token = await FirebaseMessaging.instance.getToken();
-      Logger.info("🔔 [FCM] Got token $token");
+      Fimber.i("🔔 [FCM] Got token $token");
     }
 
     AndroidInitializationSettings androidInitializationSettings =
@@ -59,7 +60,7 @@ class PushNotificationService {
     );
 
     FirebaseMessaging.onMessage.listen((message) async {
-      Logger.info('🔔 [FCM] Got FCM Message $message');
+      Fimber.i('🔔 [FCM] Got FCM Message $message');
 
       await flutterLocalNotificationsPlugin.show(
         _randomId(),

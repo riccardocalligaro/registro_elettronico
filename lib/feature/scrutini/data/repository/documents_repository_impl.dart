@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
@@ -48,11 +48,11 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
             .add(DocumentMapper.convertApiSchoolReportToInsertable(report));
       });
 
-      Logger.info(
+      Fimber.i(
         'Got ${documents.documents!.length} documents from server, procceding to insert in database',
       );
 
-      Logger.info(
+      Fimber.i(
         'Got ${documents.schoolReports!.length} school reports from server, procceding to insert in database',
       );
 
@@ -75,7 +75,8 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   @override
   Future<Tuple2<List<SchoolReport>, List<Document>>>
       getDocumentsAndSchoolReports() async {
-    final List<SchoolReport> reports = await documentsDao!.getAllSchoolReports();
+    final List<SchoolReport> reports =
+        await documentsDao!.getAllSchoolReports();
     final List<Document> documents = await documentsDao!.getAllDocuments();
     return Tuple2(reports, documents);
   }
@@ -105,7 +106,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
     if (await networkInfo!.isConnected) {
       try {
         final studentId = await authenticationRepository!.getCurrentStudentId();
-        Logger.info('Got profile');
+        Fimber.i('Got profile');
 
         final document = await spaggiariClient!.readDocument(
           studentId,
@@ -116,7 +117,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
         filename = filename.replaceAll(RegExp('\"'), '');
         filename = filename.trim();
 
-        Logger.info('Filename -> $filename');
+        Fimber.i('Filename -> $filename');
         final path = await _localPath;
         String filePath = '$path/$filename';
         File file = File(filePath);
@@ -151,7 +152,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
 
   @override
   Future deleteDownloadedDocument(String? hash) async {
-    Logger.info('Checking downloaded with hash');
+    Fimber.i('Checking downloaded with hash');
     final fileDb = await documentsDao!.getDownloadedDocumentFromHash(hash);
     if (fileDb != null) {
       File file = File(fileDb.path!);

@@ -5,7 +5,7 @@ import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 
 part 'note_attachments_event.dart';
@@ -28,11 +28,12 @@ class NoteAttachmentsBloc
     }
   }
 
-  Stream<NoteAttachmentsState> _mapReadNoteToState(String? type, int? id) async* {
+  Stream<NoteAttachmentsState> _mapReadNoteToState(
+      String? type, int? id) async* {
     yield NoteAttachmentsLoadInProgress();
     try {
       final attachment = await notesRepository!.getAttachmentForNote(type, id);
-      Logger.info('Got attachment ${attachment.id}');
+      Fimber.i('Got attachment ${attachment.id}');
       yield NoteAttachmentsLoadSuccess(attachment: attachment);
     } on NotConntectedException {
       yield NoteAttachmentsLoadNotConnected();

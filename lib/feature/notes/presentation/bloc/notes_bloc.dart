@@ -5,7 +5,7 @@ import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures_v2.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
 
 part 'notes_event.dart';
@@ -31,11 +31,11 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
 
   Stream<NotesState> _mapUpdateNotesToState() async* {
     yield NotesUpdateLoading();
-    Logger.info('Updating notes');
+    Fimber.i('Updating notes');
     try {
       await notesRepository!.deleteAllNotes();
       await notesRepository!.updateNotes();
-      Logger.info('Updated notes');
+      Fimber.i('Updated notes');
     } on NotConntectedException {
       yield NotesLoadErrorNotConnected();
     } catch (e, s) {
@@ -49,7 +49,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     yield NotesLoading();
     try {
       final notes = await notesRepository!.getAllNotes();
-      Logger.info('BloC -> Loaded ${notes.length} notes');
+      Fimber.i('BloC -> Loaded ${notes.length} notes');
       yield NotesLoaded(notes);
     } on Exception catch (e, s) {
       Logger.e(

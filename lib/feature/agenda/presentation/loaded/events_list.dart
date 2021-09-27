@@ -75,7 +75,9 @@ class EventCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  AppLocalizations.of(context)!.translate('hour')!.toLowerCase(),
+                  AppLocalizations.of(context)!
+                      .translate('hour')!
+                      .toLowerCase(),
                   style: TextStyle(color: Colors.white),
                 ),
                 Text(
@@ -200,8 +202,8 @@ class EventCard extends StatelessWidget {
                       builder: (context) => EditEventPage(
                         event: event,
                         type: event.subjectId != -1
-                            ? EventType.assigment
-                            : EventType.memo,
+                            ? AgendaEventType.assigment
+                            : AgendaEventType.memo,
                       ),
                     ),
                   );

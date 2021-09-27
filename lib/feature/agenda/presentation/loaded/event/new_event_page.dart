@@ -18,7 +18,7 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
 class NewEventPage extends StatefulWidget {
-  final EventType? eventType;
+  final AgendaEventType? eventType;
   final DateTime? initialDate;
 
   NewEventPage({
@@ -55,9 +55,9 @@ class _NewEventPageState extends State<NewEventPage> {
       final addedHour = DateTime.now().add(Duration(hours: 2));
       _timeOfDay = TimeOfDay(hour: addedHour.hour, minute: 0);
     }
-    if (widget.eventType == EventType.test) {
+    if (widget.eventType == AgendaEventType.test) {
       _labelColor = Colors.orange;
-    } else if (widget.eventType == EventType.assigment) {
+    } else if (widget.eventType == AgendaEventType.assigment) {
       _labelColor = Colors.blue;
     } else {
       _labelColor = Colors.green;
@@ -75,9 +75,9 @@ class _NewEventPageState extends State<NewEventPage> {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () async {
-              Logger.info('Pressed the check button');
+              Fimber.i('Pressed the check button');
               _insertEventInDb();
-              Logger.info('Inserted the element, popping the navigator');
+              Fimber.i('Inserted the element, popping the navigator');
             },
           ),
         ],
@@ -88,7 +88,7 @@ class _NewEventPageState extends State<NewEventPage> {
           padding: const EdgeInsets.all(8.0),
           children: <Widget>[
             _buildTopCard(),
-            widget.eventType != EventType.memo
+            widget.eventType != AgendaEventType.memo
                 ? _buildSubjectCard()
                 : Container(),
             _buildNotificationCard(),
@@ -100,11 +100,11 @@ class _NewEventPageState extends State<NewEventPage> {
   }
 
   void _insertEventInDb() async {
-    Logger.info('Inside the insert event button');
+    Fimber.i('Inside the insert event button');
 
     final id = DateTime.now().millisecondsSinceEpoch.toSigned(32);
 
-    Logger.info('Set new event id to $id');
+    Fimber.i('Set new event id to $id');
 
     final DateTime _date = DateTime(
       _selectedDate!.year,
@@ -114,10 +114,10 @@ class _NewEventPageState extends State<NewEventPage> {
       _timeOfDay.minute,
     );
 
-    Logger.info('Date of the new event $_date');
+    Fimber.i('Date of the new event $_date');
 
     AgendaEventDomainModel event;
-    if (widget.eventType == EventType.memo) {
+    if (widget.eventType == AgendaEventType.memo) {
       event = AgendaEventDomainModel(
         subjectId: -1,
         isLocal: true,
@@ -163,10 +163,10 @@ class _NewEventPageState extends State<NewEventPage> {
 
     Navigator.pop(context, _selectedDate);
 
-    Logger.info('Added event');
+    Fimber.i('Added event');
 
     if (_notifyEvent) {
-      Logger.info('Setting up notifications');
+      Fimber.i('Setting up notifications');
 
       final LocalNotification localNotification =
           LocalNotification(onSelectNotification);
@@ -192,7 +192,8 @@ class _NewEventPageState extends State<NewEventPage> {
           maxLines: null,
           decoration: InputDecoration(
             border: InputBorder.none,
-            hintText: AppLocalizations.of(context)!.translate('add_description'),
+            hintText:
+                AppLocalizations.of(context)!.translate('add_description'),
           ),
         ),
       ),
@@ -205,7 +206,8 @@ class _NewEventPageState extends State<NewEventPage> {
         children: <Widget>[
           SwitchListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-            title: Text(AppLocalizations.of(context)!.translate('notify_event')!),
+            title:
+                Text(AppLocalizations.of(context)!.translate('notify_event')!),
             value: _notifyEvent,
             onChanged: (bool value) {
               if (value != null) {
@@ -292,7 +294,8 @@ class _NewEventPageState extends State<NewEventPage> {
                 maxLines: null,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: AppLocalizations.of(context)!.translate('add_title'),
+                  hintText:
+                      AppLocalizations.of(context)!.translate('add_title'),
                 ),
               ),
             ),

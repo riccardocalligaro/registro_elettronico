@@ -16,7 +16,7 @@ import 'package:registro_elettronico/utils/string_utils.dart';
 
 class EditEventPage extends StatefulWidget {
   final AgendaEventDomainModel? event;
-  final EventType? type;
+  final AgendaEventType? type;
 
   EditEventPage({
     Key? key,
@@ -53,9 +53,9 @@ class _EditEventPageState extends State<EditEventPage> {
       hour: _selectedDate!.hour,
       minute: _selectedDate!.minute,
     );
-    if (widget.type == EventType.test) {
+    if (widget.type == AgendaEventType.test) {
       _labelColor = Colors.orange;
-    } else if (widget.type == EventType.assigment) {
+    } else if (widget.type == AgendaEventType.assigment) {
       _labelColor = Colors.blue;
     } else {
       _labelColor = Colors.green;
@@ -85,7 +85,9 @@ class _EditEventPageState extends State<EditEventPage> {
         child: Column(
           children: <Widget>[
             _buildTopCard(),
-            widget.type != EventType.memo ? _buildSubjectCard() : Container(),
+            widget.type != AgendaEventType.memo
+                ? _buildSubjectCard()
+                : Container(),
             //_buildNotificationCard(),
             _buildDescriptionCard(),
           ],
@@ -106,7 +108,7 @@ class _EditEventPageState extends State<EditEventPage> {
       _timeOfDay.minute,
     );
 
-    if (widget.type == EventType.memo) {
+    if (widget.type == AgendaEventType.memo) {
       event = AgendaEventDomainModel(
         subjectId: -1,
         isLocal: true,
@@ -146,7 +148,7 @@ class _EditEventPageState extends State<EditEventPage> {
       );
     }
 
-    Logger.info('Updated events');
+    Fimber.i('Updated events');
 
     final AgendaRepository agendaRepository = sl();
     await agendaRepository.updateEvent(event: event);
@@ -165,7 +167,8 @@ class _EditEventPageState extends State<EditEventPage> {
           maxLines: null,
           decoration: InputDecoration(
             border: InputBorder.none,
-            hintText: AppLocalizations.of(context)!.translate('add_description'),
+            hintText:
+                AppLocalizations.of(context)!.translate('add_description'),
           ),
         ),
       ),
@@ -186,7 +189,8 @@ class _EditEventPageState extends State<EditEventPage> {
                 maxLines: null,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: AppLocalizations.of(context)!.translate('add_title'),
+                  hintText:
+                      AppLocalizations.of(context)!.translate('add_title'),
                 ),
               ),
             ),
