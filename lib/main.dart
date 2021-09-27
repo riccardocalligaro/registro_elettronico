@@ -62,8 +62,7 @@ class SrApp extends StatelessWidget {
           theme: initData.materialThemeData,
           supportedLocales: initData.supportedLocales,
           localizationsDelegates: initData.localizationsDelegates,
-          localeResolutionCallback: initData.localeResolutionCallback as Locale?
-              Function(Locale?, Iterable<Locale>)?,
+          localeResolutionCallback: initData.localeResolutionCallback,
           // debugShowCheckedModeBanner: false,
           builder: (context, child) => ResponsiveWrapper.builder(
             child,

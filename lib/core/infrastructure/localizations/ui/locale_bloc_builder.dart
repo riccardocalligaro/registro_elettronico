@@ -10,7 +10,7 @@ class LocaleBlocBuilder extends StatelessWidget {
     Locale locale,
     List<Locale>? supportedLocales,
     List<LocalizationsDelegate>? localizationsDelegates,
-    Function localeResolutionCallback,
+    Locale? Function(Locale?, Iterable<Locale>)? localeResolutionCallback,
   ) builder;
 
   LocaleBlocBuilder({required this.builder});

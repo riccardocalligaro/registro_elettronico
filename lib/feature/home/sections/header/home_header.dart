@@ -114,9 +114,11 @@ class _BackgroundGradient extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           stops: [0.4, 1],
-          colors: ColorUtils.getGradientForColor(
-            Theme.of(context).accentColor,
-          ) as List<Color>,
+          colors: [Colors.red],
+          // TODO: fix this
+          // colors: ColorUtils.getGradientForColor(
+          //   Theme.of(context).accentColor,
+          // ) as List<Color>,
           begin: Alignment(-1.0, -2.0),
           end: Alignment(1.0, 2.0),
         ),

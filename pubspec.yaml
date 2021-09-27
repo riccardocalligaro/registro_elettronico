@@ -37,7 +37,7 @@ dependencies:
   flutter_secure_storage: ^4.2.1
   flutter_speed_dial: ^4.4.0+1
   flutter_svg: ^0.22.0
-  flutter_webview_plugin: ^0.4.0
+  # flutter_webview_plugin: ^0.4.0
   get_it: ^7.2.0
   internet_connection_checker: ^0.0.1+2
   intl: ^0.17.0
@@ -78,8 +78,6 @@ flutter:
     - assets/icons/subjects/
     - lang/en.json
     - lang/it.json
-    - packages/time_machine/data/cultures/cultures.bin
-    - packages/time_machine/data/tzdb/tzdb.bin
 
   uses-material-design: true
   fonts:

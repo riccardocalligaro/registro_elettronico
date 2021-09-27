@@ -111,6 +111,7 @@ class ColorUtils {
         1,
       );
     });
+    // TODO: fix this
     return MaterialColor(color.value, swatch as Map<int, Color>);
   }
 

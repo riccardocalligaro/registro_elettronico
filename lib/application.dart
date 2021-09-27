@@ -24,7 +24,7 @@ class Application extends StatelessWidget {
             builder: (tBBContext, materialThemeData, cupertinoThemeData) {
               InitData initData = InitData(
                 materialThemeData,
-                cupertinoThemeData!,
+                cupertinoThemeData,
                 locale,
                 supportedLocales!,
                 localizationsDelegates!,
@@ -64,11 +64,11 @@ SystemUiOverlayStyle _getOverlayStile(Brightness brightness) {
 
 class InitData {
   ThemeData materialThemeData;
-  CupertinoThemeData cupertinoThemeData;
+  CupertinoThemeData? cupertinoThemeData;
   Locale locale;
   List<Locale> supportedLocales;
   List<LocalizationsDelegate> localizationsDelegates;
-  Function localeResolutionCallback;
+  Locale? Function(Locale?, Iterable<Locale>)? localeResolutionCallback;
   SystemUiOverlayStyle overlayStyle;
 
   InitData(

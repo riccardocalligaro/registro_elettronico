@@ -63,7 +63,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<String> getCurrentStudentId() async {
     final profile = await _getProfile();
-    return (profile?.studentId)!;
+    return profile!.studentId!;
   }
 
   Future<ProfileDomainModel?> _getProfile() async {
