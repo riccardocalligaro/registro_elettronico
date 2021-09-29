@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
-import 'package:registro_elettronico/feature/authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/profile_domain_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
+import 'package:registro_elettronico/feature/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:registro_elettronico/feature/debug/presentation/debug_page.dart';
 import 'package:registro_elettronico/feature/settings/widgets/account/account_settings.dart';
 import 'package:registro_elettronico/feature/web/presentation/spaggiari_web_view.dart';
 import 'package:registro_elettronico/utils/color_utils.dart';
@@ -83,8 +83,8 @@ class _AppDrawerState extends State<AppDrawer>
           decoration: BoxDecoration(
             gradient: LinearGradient(
               stops: [0.4, 1],
-              colors:
-                  ColorUtils.getGradientForColor(Theme.of(context).accentColor) as List<Color>,
+              colors: ColorUtils.getGradientForColor(
+                  Theme.of(context).colorScheme.secondary) as List<Color>,
               begin: Alignment(-1.0, -2.0),
               end: Alignment(1.0, 2.0),
             ),
@@ -119,21 +119,22 @@ class _AppDrawerState extends State<AppDrawer>
                   context: context,
                   builder: (context) => AlertDialog(
                     title: Text(
-                      AppLocalizations.of(context)!.translate('reset_db_alert')!,
+                      AppLocalizations.of(context)!
+                          .translate('reset_db_alert')!,
                     ),
                     content: Text(AppLocalizations.of(context)!
                         .translate('logout_message')!),
                     actions: <Widget>[
                       TextButton(
-                        child:
-                            Text(AppLocalizations.of(context)!.translate('no')!),
+                        child: Text(
+                            AppLocalizations.of(context)!.translate('no')!),
                         onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
                       TextButton(
-                        child:
-                            Text(AppLocalizations.of(context)!.translate('yes')!),
+                        child: Text(
+                            AppLocalizations.of(context)!.translate('yes')!),
                         onPressed: () {
                           Navigator.pop(context);
                           BlocProvider.of<AuthenticationBloc>(context)
@@ -338,7 +339,7 @@ class _AppDrawerState extends State<AppDrawer>
           Icon(
             icon,
             color: selectedList[pos] == true && (isAccount ?? false) == false
-                ? Theme.of(context).accentColor
+                ? Theme.of(context).colorScheme.secondary
                 : Theme.of(context).primaryIconTheme.color,
           ),
           Padding(

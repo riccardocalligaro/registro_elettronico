@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/model/attachment_domain_model.dart';
 
@@ -146,7 +145,7 @@ class NoticeDomainModel {
       'needJoin': needJoin,
       'needReply': needReply,
       'needFile': needFile,
-      'attachments': attachments?.map((x) => x?.toMap())?.toList(),
+      'attachments': attachments?.map((x) => x.toMap()).toList(),
     };
   }
 

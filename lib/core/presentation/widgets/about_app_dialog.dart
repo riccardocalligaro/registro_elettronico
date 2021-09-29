@@ -32,7 +32,7 @@ class AboutAppDialog extends StatelessWidget {
               children: <TextSpan>[
                 TextSpan(
                   style: TextStyle(
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                   text: AppLocalizations.of(context)!.translate('about_site'),
                 ),
@@ -57,7 +57,7 @@ class AboutAppDialog extends StatelessWidget {
               children: <TextSpan>[
                 TextSpan(
                   style: TextStyle(
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                   text: AppLocalizations.of(context)!.translate('about_github'),
                 ),

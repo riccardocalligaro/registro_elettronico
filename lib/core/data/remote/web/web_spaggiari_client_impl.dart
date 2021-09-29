@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:fimber/fimber.dart';
 import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 
 class WebSpaggiariClientImpl implements WebSpaggiariClient {
   Dio _dio;

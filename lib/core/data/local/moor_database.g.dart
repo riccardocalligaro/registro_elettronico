@@ -2115,8 +2115,10 @@ class $GradesTable extends Grades
       context.missing(_localllyCancelledMeta);
     }
     if (data.containsKey('has_seen_it')) {
-      context.handle(_hasSeenItMeta,
-          hasSeenIt.isAcceptableOrUnknown(data['has_seen_it']!, _hasSeenItMeta));
+      context.handle(
+          _hasSeenItMeta,
+          hasSeenIt.isAcceptableOrUnknown(
+              data['has_seen_it']!, _hasSeenItMeta));
     }
     return context;
   }
@@ -2734,8 +2736,10 @@ class $AgendaEventsTableTable extends AgendaEventsTable
       context.missing(_endMeta);
     }
     if (data.containsKey('is_full_day')) {
-      context.handle(_isFullDayMeta,
-          isFullDay.isAcceptableOrUnknown(data['is_full_day']!, _isFullDayMeta));
+      context.handle(
+          _isFullDayMeta,
+          isFullDay.isAcceptableOrUnknown(
+              data['is_full_day']!, _isFullDayMeta));
     } else if (isInserting) {
       context.missing(_isFullDayMeta);
     }
@@ -4243,7 +4247,8 @@ class NoticesCompanion extends UpdateCompanion<NoticeLocalModel> {
       map['content_valid_to'] = Variable<DateTime?>(contentValidTo.value);
     }
     if (contentValidInRange.present) {
-      map['content_valid_in_range'] = Variable<bool?>(contentValidInRange.value);
+      map['content_valid_in_range'] =
+          Variable<bool?>(contentValidInRange.value);
     }
     if (contentStatus.present) {
       map['content_status'] = Variable<String?>(contentStatus.value);
@@ -7347,8 +7352,10 @@ class $TimetableEntriesTable extends TimetableEntries
       context.missing(_endMeta);
     }
     if (data.containsKey('day_of_week')) {
-      context.handle(_dayOfWeekMeta,
-          dayOfWeek.isAcceptableOrUnknown(data['day_of_week']!, _dayOfWeekMeta));
+      context.handle(
+          _dayOfWeekMeta,
+          dayOfWeek.isAcceptableOrUnknown(
+              data['day_of_week']!, _dayOfWeekMeta));
     } else if (isInserting) {
       context.missing(_dayOfWeekMeta);
     }
@@ -7471,6 +7478,7 @@ class DocumentsCompanion extends UpdateCompanion<Document> {
     required String description,
   })  : hash = Value(hash),
         description = Value(description);
+
   static Insertable<Document> custom({
     Expression<String>? hash,
     Expression<String>? description,
@@ -7481,7 +7489,8 @@ class DocumentsCompanion extends UpdateCompanion<Document> {
     });
   }
 
-  DocumentsCompanion copyWith({Value<String>? hash, Value<String>? description}) {
+  DocumentsCompanion copyWith(
+      {Value<String>? hash, Value<String>? description}) {
     return DocumentsCompanion(
       hash: hash ?? this.hash,
       description: description ?? this.description,

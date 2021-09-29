@@ -14,7 +14,9 @@ import 'package:registro_elettronico/utils/global_utils.dart';
 
 class NoteMapper {
   static db.Note convertNotetEntityToInsertable(
-      NoteRemoteModel note, String type) {
+    NoteRemoteModel note,
+    String? type,
+  ) {
     return db.Note(
       author: note.authorName ?? '',
       date: SRDateUtils.getDateFromApiString(note.evtDate) ??

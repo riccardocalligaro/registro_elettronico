@@ -1,5 +1,4 @@
 import 'package:fimber/fimber.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 
 class StringUtils {
   // john doe => John Doe
@@ -11,14 +10,14 @@ class StringUtils {
     }
   }
 
-  static String removeLastChar(String str) {
+  static String removeLastChar(String? str) {
     try {
       if (str != null && str.isNotEmpty) {
         str = str.substring(0, str.length - 2);
       }
-      return str;
+      return str ?? '';
     } catch (_) {
-      return str;
+      return str ?? '';
     }
   }
 

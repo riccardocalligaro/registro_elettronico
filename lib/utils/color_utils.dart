@@ -23,7 +23,7 @@ class ColorUtils {
   }
 
   static Color? getLessonCardColor(BuildContext context) {
-    final themeColor = Theme.of(context).accentColor;
+    final themeColor = Theme.of(context).colorScheme.secondary;
 
     if (themeColor == Colors.red || themeColor.value == 4294198070) {
       return Colors.red[400];
@@ -97,7 +97,8 @@ class ColorUtils {
 
   static MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
-    Map swatch = <int?, Color>{};
+    Map<int, Color> swatch = <int, Color>{};
+
     final int r = color.red, g = color.green, b = color.blue;
     for (int i = 1; i < 10; i++) {
       strengths.add(0.1 * i);
@@ -112,7 +113,7 @@ class ColorUtils {
       );
     });
     // TODO: fix this
-    return MaterialColor(color.value, swatch as Map<int, Color>);
+    return MaterialColor(color.value, swatch);
   }
 
   static String getColorNameFromColor(
@@ -174,53 +175,38 @@ class ColorUtils {
     switch (index) {
       case 0:
         return Colors.red;
-        break;
       case 1:
         return Colors.pink;
-        break;
       case 2:
         return Colors.purple;
-        break;
       case 3:
         return Colors.deepPurple;
-        break;
       case 4:
         return Colors.indigo;
-        break;
       case 5:
         return Colors.blue;
-        break;
       case 6:
         return Colors.green;
-        break;
       case 7:
         return Colors.greenAccent;
-        break;
       case 8:
         return Colors.amber;
-        break;
       case 9:
         return Colors.orange;
-        break;
       case 10:
         return Colors.blue[900];
-        break;
       case 11:
         return Colors.lightGreen;
       case 12:
         return Colors.lightBlue;
       case 13:
         return Colors.yellow[700];
-        break;
       case 14:
         return Colors.teal;
-        break;
       case 15:
         return Colors.tealAccent;
-        break;
       case 16:
         return Colors.redAccent;
-        break;
       default:
         return Colors.red;
     }

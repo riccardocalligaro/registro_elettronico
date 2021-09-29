@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/profile_domain_model.dart';
 import 'package:registro_elettronico/utils/profile_utils.dart';
 

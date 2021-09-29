@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:registro_elettronico/feature/absences/domain/model/absence_remote_model.dart';
 
 class AbsencesRemoteDatasource {

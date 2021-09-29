@@ -1,7 +1,10 @@
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
+import 'package:dartz/dartz.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
+import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
+import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
 import 'package:registro_elettronico/feature/lessons/data/datasource/lessons_local_datasource.dart';
 import 'package:registro_elettronico/feature/professors/data/datasource/professors_local_datasource.dart';
@@ -9,13 +12,9 @@ import 'package:registro_elettronico/feature/professors/domain/model/professor_d
 import 'package:registro_elettronico/feature/subjects/data/datasource/subject_local_datasource.dart';
 import 'package:registro_elettronico/feature/subjects/data/datasource/subject_remote_datasource.dart';
 import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
-import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
-import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:dartz/dartz.dart';
 import 'package:registro_elettronico/feature/subjects/domain/repository/subjects_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SubjectsRepositoryImpl implements SubjectsRepository {
   static const String lastUpdateKey = 'subjectsLastUpdate';

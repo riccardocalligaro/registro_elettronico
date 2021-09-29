@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/feature/agenda/data/model/agenda_event_remote_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 

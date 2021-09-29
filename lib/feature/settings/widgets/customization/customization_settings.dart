@@ -26,8 +26,8 @@ class _CustomizationSettingsState extends State<CustomizationSettings> {
         ),
         ListTile(
           title: Text(AppLocalizations.of(context)!.translate('theme')!),
-          subtitle:
-              Text(AppLocalizations.of(context)!.translate('change_the_theme')!),
+          subtitle: Text(
+              AppLocalizations.of(context)!.translate('change_the_theme')!),
           onTap: () {
             showDialog(
               context: context,
@@ -40,8 +40,8 @@ class _CustomizationSettingsState extends State<CustomizationSettings> {
           },
         ),
         ListTile(
-          title:
-              Text(AppLocalizations.of(context)!.translate('theme_color_title')!),
+          title: Text(
+              AppLocalizations.of(context)!.translate('theme_color_title')!),
           subtitle: Text(
               AppLocalizations.of(context)!.translate('theme_color_subtitle')!),
           onTap: () {

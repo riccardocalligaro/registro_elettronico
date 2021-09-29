@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
@@ -393,8 +392,8 @@ class _LocalGrades extends StatelessWidget {
                                       .translate('sure_to_delete_it')!,
                                 ),
                                 content: Text(
-                                  AppLocalizations.of(context)!
-                                      .translate('local_grade_will_be_removed')!,
+                                  AppLocalizations.of(context)!.translate(
+                                      'local_grade_will_be_removed')!,
                                 ),
                                 actions: <Widget>[
                                   TextButton(

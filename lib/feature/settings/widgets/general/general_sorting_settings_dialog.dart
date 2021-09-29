@@ -26,11 +26,11 @@ class _GeneralSortingSettingsDialogState
     return Column(
       children: <Widget>[
         RadioListTile(
-          title:
-              Text(AppLocalizations.of(context)!.translate('average_ascending')!),
+          title: Text(
+              AppLocalizations.of(context)!.translate('average_ascending')!),
           value: true,
           groupValue: _ascending,
-          activeColor: Theme.of(context).accentColor,
+          activeColor: Theme.of(context).colorScheme.secondary,
           onChanged: (dynamic value) {
             setState(() {
               _ascending = value;
@@ -43,7 +43,7 @@ class _GeneralSortingSettingsDialogState
               AppLocalizations.of(context)!.translate('average_descending')!),
           value: false,
           groupValue: _ascending,
-          activeColor: Theme.of(context).accentColor,
+          activeColor: Theme.of(context).colorScheme.secondary,
           onChanged: (dynamic value) {
             setState(() {
               _ascending = value;

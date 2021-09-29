@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
-import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 
 class SpaggiariWebView extends StatefulWidget {
   final String url;

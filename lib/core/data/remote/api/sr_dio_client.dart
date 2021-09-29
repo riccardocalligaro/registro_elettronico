@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:registro_elettronico/core/data/remote/api/sr_api_config.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/login/login_response_remote_model.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/authentication/presentation/login_page.dart';
@@ -42,7 +41,7 @@ class SRDioClient {
 
             final replaced = requestOptions.path.replaceAll(
               '{studentId}',
-              studentId!,
+              studentId,
             );
             requestOptions.path = replaced;
           }

@@ -58,8 +58,8 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
           count++;
           average = sum / count;
           // with num.parse(average.toStringAsFixed(2)) we cut the decimal digits
-          spots.add(FlSpot(
-              i.toDouble(), num.tryParse(average.toStringAsFixed(2) ?? 0 as String) as double));
+          spots.add(FlSpot(i.toDouble(),
+              num.tryParse(average.toStringAsFixed(2)) as double));
         }
         if (spots.length == 1) {
           spots.add(FlSpot(spots[0].x + 1, spots[0].y));
@@ -158,7 +158,7 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
         horizontalLines: [
           HorizontalLine(
             y: cutOffYValue,
-            color: Theme.of(context).accentColor.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
             strokeWidth: 1.5,
           ),
         ],
@@ -231,7 +231,7 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
           isCurved: false,
           barWidth: 1.2,
           colors: [
-            Theme.of(context).accentColor,
+            Theme.of(context).colorScheme.secondary,
           ],
           isStrokeCapRound: true,
           dotData: FlDotData(
@@ -262,7 +262,7 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
 
   List<Color?> _getGradients(BuildContext context) {
     return [
-      Theme.of(context).accentColor,
+      Theme.of(context).colorScheme.secondary,
       Theme.of(context).brightness == Brightness.dark
           ? Colors.grey[900]
           : Colors.white

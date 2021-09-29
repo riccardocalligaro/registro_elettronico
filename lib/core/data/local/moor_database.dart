@@ -6,7 +6,6 @@ import 'package:moor/moor.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/absences/data/model/absence_local_model.dart';
 import 'package:registro_elettronico/feature/agenda/data/datasource/local/agenda_local_datasource.dart';

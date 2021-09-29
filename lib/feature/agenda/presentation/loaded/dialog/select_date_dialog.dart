@@ -32,7 +32,8 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
               ),
               ListTile(
                 leading: Icon(Icons.arrow_forward),
-                title: Text(AppLocalizations.of(context)!.translate('tomorrow')!),
+                title:
+                    Text(AppLocalizations.of(context)!.translate('tomorrow')!),
                 onTap: () {
                   Navigator.pop(
                     context,
@@ -57,8 +58,8 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
               ),
               ListTile(
                 leading: Icon(Icons.date_range),
-                title:
-                    Text(AppLocalizations.of(context)!.translate('select_date')!),
+                title: Text(
+                    AppLocalizations.of(context)!.translate('select_date')!),
                 onTap: () async {
                   await showDatePicker(
                     context: context,

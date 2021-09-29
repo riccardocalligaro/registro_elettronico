@@ -101,8 +101,8 @@ class _SettingsPageState extends State<SettingsPage> {
           },
         ),
         ListTile(
-          title:
-              Text(AppLocalizations.of(context)!.translate('report_bug_title')!),
+          title: Text(
+              AppLocalizations.of(context)!.translate('report_bug_title')!),
           subtitle: Text(
               AppLocalizations.of(context)!.translate('report_bug_message')!),
           onTap: () async {

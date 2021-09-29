@@ -26,7 +26,8 @@ class _AgendaPageState extends State<AgendaPage> {
             return Scaffold(
               appBar: AppBar(
                 title: Text(AppLocalizations.of(context)!.translate('agenda')!),
-                brightness: Theme.of(context).brightness,
+                // TODO: set brightness
+                // brightness: Theme.of(context).brightness,
               ),
               body: CustomPlaceHolder(
                 text: AppLocalizations.of(context)!.translate('no_events'),
@@ -60,6 +61,7 @@ class _AgendaLoading extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.translate('agenda')!),
+        // TODO: set brightness
         brightness: Theme.of(context).brightness,
       ),
       body: Center(
@@ -82,6 +84,7 @@ class _AgendaFailure extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.translate('agenda')!),
+        // TODO: set brightness
         brightness: Theme.of(context).brightness,
       ),
       body: CustomPlaceHolder(

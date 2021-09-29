@@ -6,7 +6,7 @@ class LightTheme {
   static ThemeData getThemeData(Color color) {
     return ThemeData(
       primarySwatch: color as MaterialColor?,
-      accentColor: color,
+      colorScheme: ColorScheme.light(secondary: color),
       brightness: Brightness.light,
       fontFamily: 'Manrope',
       //canvasColor: Colors.white,

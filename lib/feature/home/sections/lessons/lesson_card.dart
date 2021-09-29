@@ -10,7 +10,7 @@ import 'package:share/share.dart';
 class LessonCard extends StatelessWidget {
   final LessonDomainModel? lesson;
   final int position;
-  final int duration;
+  final int? duration;
 
   const LessonCard({
     Key? key,

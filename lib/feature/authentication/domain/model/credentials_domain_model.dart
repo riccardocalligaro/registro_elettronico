@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/profile_domain_model.dart';
 
 class CredentialsDomainModel {

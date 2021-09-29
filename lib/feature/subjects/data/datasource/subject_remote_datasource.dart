@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/feature/subjects/data/model/subject_remote_model.dart';
 
 class SubjectsRemoteDatasource {

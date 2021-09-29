@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
 import 'package:registro_elettronico/feature/stats/domain/repository/stats_repository.dart';

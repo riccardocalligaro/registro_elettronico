@@ -32,7 +32,7 @@ class TeacherCard extends StatelessWidget {
             PresentationConstants.isForPresentation
                 ? GlobalUtils.getMockupName().toUpperCase()
                 : teacher.name!,
-            style: TextStyle(color: Theme.of(context).accentColor),
+            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
           ),
         ),
         _buildFolderList(

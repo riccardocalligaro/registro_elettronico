@@ -46,9 +46,8 @@ class SubjectRemoteModel {
       name: this.description ?? '',
       orderNumber: this.order ?? -1,
       color: GlobalUtils.getColorCode(
-            ColorUtils.getColorFromIndex(index) ?? Colors.red,
-          ) ??
-          Colors.red.value.toString(),
+        ColorUtils.getColorFromIndex(index) ?? Colors.red,
+      ),
     );
   }
 }

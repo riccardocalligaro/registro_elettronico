@@ -17,9 +17,7 @@ class DoubleBackToCloseApp extends StatefulWidget {
     Key? key,
     required this.snackBar,
     required this.child,
-  })  : assert(snackBar != null),
-        assert(child != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   DoubleBackToCloseAppState createState() => DoubleBackToCloseAppState();
@@ -57,8 +55,6 @@ class DoubleBackToCloseAppState extends State<DoubleBackToCloseApp> {
 
   @override
   Widget build(BuildContext context) {
-    ensureThatContextContainsScaffold();
-
     if (isAndroid) {
       return WillPopScope(
         onWillPop: onWillPop,
@@ -77,15 +73,6 @@ class DoubleBackToCloseAppState extends State<DoubleBackToCloseApp> {
       lastTimeBackButtonWasTapped = DateTime.now();
       ScaffoldMessenger.of(context).showSnackBar(widget.snackBar);
       return false;
-    }
-  }
-
-  /// Throws a [StateError] if this widget was not wrapped in a [Scaffold].
-  void ensureThatContextContainsScaffold() {
-    if (ScaffoldMessenger.of(context) == null) {
-      throw StateError(
-        '`DoubleBackToCloseApp` must be wrapped in a `Scaffold`.',
-      );
     }
   }
 }

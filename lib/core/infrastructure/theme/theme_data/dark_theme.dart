@@ -1,19 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:registro_elettronico/core/infrastructure/theme/theme_data/text_styles.dart';
 
 class DarkTheme {
   static ThemeData getThemeData(MaterialColor color) {
     return ThemeData(
       primarySwatch: color,
-      accentColor: color,
+      colorScheme: ColorScheme.dark(
+        secondary: color,
+      ),
       // primaryColor: color,
       brightness: Brightness.dark,
       fontFamily: 'Manrope',
       appBarTheme: AppBarTheme(
         elevation: 0,
         color: Colors.grey[900],
-        brightness: Brightness.dark,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,

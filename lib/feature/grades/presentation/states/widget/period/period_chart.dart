@@ -124,7 +124,7 @@ class GradesLineChart extends StatelessWidget {
           horizontalLines: [
             HorizontalLine(
               y: cutOffYValue,
-              color: Theme.of(context).accentColor.withOpacity(0.3),
+              color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
               strokeWidth: 1.5,
             ),
           ],
@@ -187,7 +187,7 @@ class GradesLineChart extends StatelessWidget {
             isCurved: false,
             barWidth: 1.2,
             colors: [
-              Theme.of(context).accentColor,
+              Theme.of(context).colorScheme.secondary,
             ],
             isStrokeCapRound: true,
             dotData: FlDotData(
@@ -219,7 +219,7 @@ class GradesLineChart extends StatelessWidget {
 
   List<Color?> _getGradients(BuildContext context) {
     return [
-      Theme.of(context).accentColor,
+      Theme.of(context).colorScheme.secondary,
       Theme.of(context).brightness == Brightness.dark
           ? Colors.grey[900]
           : Colors.white

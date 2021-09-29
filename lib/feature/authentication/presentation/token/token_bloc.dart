@@ -2,13 +2,11 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
+import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/last_year_token.dart';
 import 'package:registro_elettronico/feature/authentication/domain/model/login_token.dart';
-import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
 
 part 'token_event.dart';

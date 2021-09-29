@@ -50,7 +50,7 @@ class GradesTab extends StatelessWidget {
                           .translate('not_seen_grades')!
                           .toUpperCase(),
                       style: TextStyle(
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                   ),
@@ -78,7 +78,7 @@ class GradesTab extends StatelessWidget {
                           .translate('seen_grades')!
                           .toUpperCase(),
                       style: TextStyle(
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                   ),

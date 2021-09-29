@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/core/presentation/widgets/custom_refresher.dart';
@@ -257,7 +256,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
         ListTile(
           title: Text(
             AppLocalizations.of(context)!.translate('scrutini_documents')!,
-            style: TextStyle(color: Theme.of(context).accentColor),
+            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
           ),
         ),
         ListView.builder(
@@ -281,7 +280,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
         ListTile(
           title: Text(
             AppLocalizations.of(context)!.translate('scrutini_school_reports')!,
-            style: TextStyle(color: Theme.of(context).accentColor),
+            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
           ),
         ),
         ListView.builder(

@@ -2,14 +2,13 @@ import 'package:fimber/fimber.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
+import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/notes/data/dao/note_dao.dart';
 import 'package:registro_elettronico/feature/notes/data/model/note_mapper.dart';
 import 'package:registro_elettronico/feature/notes/data/model/remote/notes_read_remote_model.dart';
 import 'package:registro_elettronico/feature/notes/domain/repository/notes_repository.dart';
-import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 
 class NotesRepositoryImpl implements NotesRepository {
   final NoteDao? noteDao;
@@ -44,8 +43,7 @@ class NotesRepositoryImpl implements NotesRepository {
   @override
   Future updateNotes() async {
     if (await networkInfo!.isConnected) {
-      final studentId =
-          (await authenticationRepository!.getCurrentStudentId())!;
+      final studentId = await authenticationRepository!.getCurrentStudentId();
 
       final notesResponse = await spaggiariClient!.getNotes(studentId);
 

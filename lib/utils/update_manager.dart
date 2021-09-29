@@ -6,7 +6,6 @@ import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/absences/domain/repository/absences_repository.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
 import 'package:registro_elettronico/feature/didactics/domain/repository/didactics_repository.dart';

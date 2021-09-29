@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/presentation_constants.dart';
 import 'package:registro_elettronico/feature/professors/domain/model/professor_domain_model.dart';

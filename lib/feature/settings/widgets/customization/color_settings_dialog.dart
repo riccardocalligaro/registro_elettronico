@@ -33,7 +33,7 @@ class ColorSettingsDialog extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: BlockPicker(
-        pickerColor: Theme.of(context).accentColor,
+        pickerColor: Theme.of(context).colorScheme.secondary,
         availableColors: _colors,
         onColorChanged: (color) {
           Navigator.of(context).pop();

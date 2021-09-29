@@ -205,8 +205,9 @@ class SRGradeCard extends StatelessWidget {
               },
             ),
             TextButton(
-              child: Text(
-                  AppLocalizations.of(context)!.translate('yes')!.toUpperCase()),
+              child: Text(AppLocalizations.of(context)!
+                  .translate('yes')!
+                  .toUpperCase()),
               onPressed: () async {
                 BlocProvider.of<GradesOperationsBloc>(context).add(
                   ToggleGradeLocallyCancelledState(gradeDomainModel: grade),

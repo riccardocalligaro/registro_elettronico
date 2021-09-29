@@ -210,7 +210,8 @@ class _DownloadAttachmentSnackbar extends StatelessWidget {
           return Text(AppLocalizations.of(context)!
               .translate('file_downloaded_success')!);
         } else if (state is AttachmentDownloadFailure) {
-          return Text(AppLocalizations.of(context)!.translate('error_download')!);
+          return Text(
+              AppLocalizations.of(context)!.translate('error_download')!);
         } else if (state is AttachmentDownloadInProgress) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class ParentLoginResponseRemoteModel {
   String? requestedAction;
   List<LoginChoiceRemoteModel>? choices;

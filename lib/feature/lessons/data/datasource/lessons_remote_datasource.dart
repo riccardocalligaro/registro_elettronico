@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/feature/lessons/data/model/lesson_remote_model.dart';
 
 class LessonsRemoteDatasource {
@@ -25,7 +24,8 @@ class LessonsRemoteDatasource {
     String start,
     String end,
   ) async {
-    final response = await dio!.get('/students/{studentId}/lessons/$start/$end');
+    final response =
+        await dio!.get('/students/{studentId}/lessons/$start/$end');
 
     List<LessonRemoteModel> lessons = List<LessonRemoteModel>.from(
       response.data['lessons'].map(

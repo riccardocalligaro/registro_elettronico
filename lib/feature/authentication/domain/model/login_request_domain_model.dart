@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 class LoginRequestDomainModel {
   String? ident;
   String? pass;

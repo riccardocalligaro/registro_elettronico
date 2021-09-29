@@ -1,8 +1,6 @@
 import 'package:fimber/fimber.dart';
-import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/absences/data/dao/absence_dao.dart';
 import 'package:registro_elettronico/feature/absences/data/datasource/absences_remote_datasource.dart';

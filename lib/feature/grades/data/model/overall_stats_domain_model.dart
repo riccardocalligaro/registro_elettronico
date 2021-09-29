@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 
 class OverallStatsDomainModel {

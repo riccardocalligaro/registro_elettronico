@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:registro_elettronico/utils/color_utils.dart';
 
 class GradientRedButton extends StatefulWidget {
   final Widget? center;
@@ -39,7 +38,7 @@ class _GradientRedButtonState extends State<GradientRedButton> {
             // TODO: fix this
             stops: [0.6, 1], colors: [Colors.red],
             // colors: ColorUtils.getGradientForColor(
-            //     Theme.of(context).accentColor,
+            //     Theme.of(context).colorScheme.secondary,
             //     button: true) as List<Color?>,
           ),
           borderRadius: BorderRadius.all(

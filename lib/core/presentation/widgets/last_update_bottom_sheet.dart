@@ -3,7 +3,7 @@ import 'package:registro_elettronico/core/infrastructure/localizations/app_local
 import 'package:registro_elettronico/utils/global_utils.dart';
 
 class LastUpdateBottomSheet extends StatelessWidget {
-  final int millisecondsSinceEpoch;
+  final int? millisecondsSinceEpoch;
 
   const LastUpdateBottomSheet({
     Key? key,
@@ -20,7 +20,7 @@ class LastUpdateBottomSheet extends StatelessWidget {
           '${trans!.translate('last_update')}: ${trans.translate('never')}';
     } else {
       message =
-          '${trans!.translate('last_update')}: ${GlobalUtils.getLastUpdateMessage(context, DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch))}';
+          '${trans!.translate('last_update')}: ${GlobalUtils.getLastUpdateMessage(context, DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch!))}';
     }
     return Container(
       // height: 20,

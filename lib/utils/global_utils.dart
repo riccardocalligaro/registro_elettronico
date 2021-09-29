@@ -226,40 +226,28 @@ class GlobalUtils {
     switch (subjectId) {
       case SubjectsConstants.MATEMATICA:
         return "MATEMATICA";
-        break;
       case SubjectsConstants.GINNASTICA:
         return "GINNASTICA";
-        break;
       case SubjectsConstants.TPSIT:
         return "TPSIT";
-        break;
       case SubjectsConstants.ITALIANO:
         return "ITALIANO";
-        break;
       case SubjectsConstants.RELIGIONE:
         return "RELIGIONE";
-        break;
       case SubjectsConstants.INGLESE:
         return "INGLESE";
-        break;
       case SubjectsConstants.TEDESCO:
         return "TEDESCO";
-        break;
       case SubjectsConstants.SPAGNOLO:
         return "SPAGNOLO";
-        break;
       case SubjectsConstants.FRANCESE:
         return "FRANCESE";
-        break;
       case SubjectsConstants.GPOI:
         return "GPOI";
-        break;
       case SubjectsConstants.CINESE:
         return "CINESE";
-        break;
       case SubjectsConstants.RUSSO:
         return "RUSSO";
-        break;
       default:
         return "";
     }
@@ -351,25 +339,18 @@ class GlobalUtils {
     switch (position) {
       case 0:
         return Colors.deepPurpleAccent;
-        break;
       case 1:
         return Colors.red;
-        break;
       case 2:
         return Colors.deepOrangeAccent;
-        break;
       case 3:
         return Colors.green;
-        break;
       case 4:
         return Colors.teal;
-        break;
       case 5:
         return Colors.deepOrange;
-        break;
       case 6:
         return Colors.indigo;
-        break;
       default:
         return Colors.red;
     }
@@ -386,75 +367,60 @@ class GlobalUtils {
         return SvgPicture.asset(
           "assets/icons/science-symbol.svg",
         );
-        break;
       case SubjectsConstants.ITALIANO:
         return SvgPicture.asset(
           "assets/icons/subjects/italiano.svg",
         );
-        break;
       case SubjectsConstants.TPSIT:
         return SvgPicture.asset(
           "assets/icons/subjects/informatica2.svg",
         );
-        break;
       case SubjectsConstants.ARTE:
         return SvgPicture.asset(
           "assets/icons/subjects/arte.svg",
         );
-        break;
       case SubjectsConstants.BIOLOGIA:
         return SvgPicture.asset(
           "assets/icons/subjects/biologia.svg",
         );
-        break;
       case SubjectsConstants.CHIMICA:
         return SvgPicture.asset(
           "assets/icons/subjects/chimica3.svg",
         );
-        break;
       case SubjectsConstants.TELECOMUNICAZIONI:
         return SvgPicture.asset(
           "assets/icons/subjects/telecomunicazioni.svg",
         );
-        break;
       case SubjectsConstants.GEOGRAFIA:
         return SvgPicture.asset(
           "assets/icons/subjects/geografia4.svg",
         );
-        break;
       case SubjectsConstants.ELETTRONICA:
         return SvgPicture.asset(
           "assets/icons/subjects/elettronica.svg",
         );
-        break;
       case SubjectsConstants.INFORMATICA:
         return SvgPicture.asset(
           "assets/icons/subjects/informatica.svg",
         );
-        break;
       case SubjectsConstants.INGLESE:
         return SvgPicture.asset(
           "assets/icons/subjects/inglese.svg",
         );
-        break;
       case SubjectsConstants.LINGUE:
         return SvgPicture.asset("assets/icons/subjects/lingue.svg");
-        break;
       case SubjectsConstants.DISEGNO_TECNICO:
         return SvgPicture.asset(
           "assets/icons/subjects/disegno_tecnico.svg",
         );
-        break;
       case SubjectsConstants.DIRITTO:
         return SvgPicture.asset(
           "assets/icons/subjects/diritto.svg",
         );
-        break;
       case SubjectsConstants.GINNASTICA:
         return SvgPicture.asset(
           "assets/icons/subjects/barbell.svg",
         );
-        break;
       default:
         return SvgPicture.asset(
           "assets/icons/book_red_lines.svg",

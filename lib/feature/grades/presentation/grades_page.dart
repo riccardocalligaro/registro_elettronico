@@ -139,7 +139,7 @@ class _GradesPageState extends State<GradesPage> with TickerProviderStateMixin {
 
   Color? _chipBackgroundColor(int index) {
     if (index == _currentPage) {
-      return Theme.of(context).accentColor;
+      return Theme.of(context).colorScheme.secondary;
     }
     return null;
   }

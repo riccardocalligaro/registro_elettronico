@@ -42,7 +42,7 @@ class PeriodRemoteModel {
     return data;
   }
 
-  PeriodLocalModel toLocalModel(int index) {
+  PeriodLocalModel toLocalModel(int? index) {
     return PeriodLocalModel(
       code: this.periodCode ?? '',
       position: this.periodPos ?? -1,

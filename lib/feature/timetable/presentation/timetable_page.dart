@@ -132,7 +132,7 @@ class TimetablePage extends StatelessWidget {
 //             ),
 //             style: TextStyle(
 //               color: date == LocalDate.today()
-//                   ? Theme.of(context).accentColor
+//                   ? Theme.of(context).colorScheme.secondary
 //                   : null,
 //             ),
 //             textAlign: TextAlign.center,
@@ -322,7 +322,7 @@ class TimetablePage extends StatelessWidget {
 //             widget.subjects.length,
 //             (int index) {
 //               return RadioListTile<SubjectDomainModel>(
-//                 activeColor: Theme.of(context).accentColor,
+//                 activeColor: Theme.of(context).colorScheme.secondary,
 //                 title: Text(
 //                   GlobalUtils.reduceSubjectTitle(widget.subjects[index].name),
 //                   style: TextStyle(fontSize: 13),

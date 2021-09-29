@@ -25,7 +25,8 @@ class _AbsencesPageState extends State<AbsencesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        brightness: Theme.of(context).brightness,
+        // TODO: set brightneess
+        // systemUi: Theme.of(context).brightness,
         title: Text(AppLocalizations.of(context)!.translate('absences')!),
       ),
       body: BlocListener<AbsencesBloc, AbsencesState>(

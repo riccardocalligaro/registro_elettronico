@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/profile_local_model.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,8 +48,8 @@ class ProfilesLocalDatasource {
   Future insertProfile(ProfileLocalModel profile) async {
     final profilesList = await getAllProfiles();
     profilesList.add(profile);
-    await sharedPreferences!.setString(
-        PrefsConstants.profilesList, jsonEncode(profilesList));
+    await sharedPreferences!
+        .setString(PrefsConstants.profilesList, jsonEncode(profilesList));
   }
 
   Future deleteWithIdent(String? ident) async {
@@ -68,13 +67,13 @@ class ProfilesLocalDatasource {
     final profilesList = await getAllProfiles();
     profilesList.removeWhere((element) => element.ident == profile.ident);
     profilesList.add(profile);
-    await sharedPreferences!.setString(
-        PrefsConstants.profilesList, jsonEncode(profilesList));
+    await sharedPreferences!
+        .setString(PrefsConstants.profilesList, jsonEncode(profilesList));
   }
 
   Future deleteAllProfiles() async {
-    await sharedPreferences!.setString(
-        PrefsConstants.profilesList, jsonEncode([]));
+    await sharedPreferences!
+        .setString(PrefsConstants.profilesList, jsonEncode([]));
   }
 
   Future<List<ProfileLocalModel>> getLoggedInUser() async {

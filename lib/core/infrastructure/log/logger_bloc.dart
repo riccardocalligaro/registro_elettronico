@@ -1,8 +1,5 @@
-import 'package:f_logs/f_logs.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'logger.dart';
 
 class LoggerBlocDelegate extends BlocObserver {
   @override

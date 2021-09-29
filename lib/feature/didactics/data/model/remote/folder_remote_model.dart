@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 
 import 'content_remote_model.dart';

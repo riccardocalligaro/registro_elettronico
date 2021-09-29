@@ -11,7 +11,7 @@ class HeaderText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text!,
-      style: TextStyle(color: Theme.of(context).accentColor),
+      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
     );
   }
 }

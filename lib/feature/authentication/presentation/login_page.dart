@@ -232,7 +232,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text(
                   'Open source.',
                   style: TextStyle(
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ),
@@ -278,7 +278,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         Container(
           child: Text('Classeviva',
-              style: TextStyle(color: Theme.of(context).accentColor)),
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         ),
       ],
     );

@@ -22,7 +22,7 @@ class CustomRefresher extends StatelessWidget {
       controller: controller ?? RefreshController(),
       header: WaterDropMaterialHeader(
         backgroundColor: ColorUtils.getDropHeaderColor(context),
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).colorScheme.secondary,
       ),
       onRefresh: onRefresh,
       child: child,

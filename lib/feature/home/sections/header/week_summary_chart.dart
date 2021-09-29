@@ -144,7 +144,7 @@ class WeekSummaryChart extends StatelessWidget {
               Color color = Colors.transparent;
 
               if (index == DateTime.now().weekday - 1) {
-                color = Theme.of(context).accentColor;
+                color = Theme.of(context).colorScheme.secondary;
               }
 
               return FlDotCirclePainter(

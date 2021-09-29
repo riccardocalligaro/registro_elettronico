@@ -1,7 +1,6 @@
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../header_text.dart';

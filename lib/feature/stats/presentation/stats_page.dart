@@ -1,19 +1,15 @@
-import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
 import 'package:registro_elettronico/feature/stats/presentation/charts/stats_grades_chart.dart';
 import 'package:registro_elettronico/utils/bug_report.dart';
-import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:screenshot/screenshot.dart';
 

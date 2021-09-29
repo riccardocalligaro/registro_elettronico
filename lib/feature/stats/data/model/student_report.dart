@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';

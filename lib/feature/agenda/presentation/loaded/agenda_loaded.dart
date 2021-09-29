@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
@@ -11,11 +10,8 @@ import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_do
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/events_list.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/updater/agenda_updater_bloc.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
-import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:registro_elettronico/utils/update_manager.dart';
-import 'package:table_calendar/table_calendar.dart';
 
-import 'event/new_event_page.dart';
 import 'lesson_list.dart';
 
 class AgendaLoaded extends StatefulWidget {
@@ -94,21 +90,21 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
                     //   weekendDays: const [DateTime.sunday],
                     //   calendarStyle: CalendarStyle(
                     //     selectedColor:
-                    //         Theme.of(context).accentColor.withOpacity(0.7),
+                    //         Theme.of(context).colorScheme.secondary.withOpacity(0.7),
                     //     todayColor:
-                    //         Theme.of(context).accentColor.withAlpha(140),
+                    //         Theme.of(context).colorScheme.secondary.withAlpha(140),
                     //     markersColor: Colors.red[700],
                     //     outsideDaysVisible: false,
                     //     outsideStyle: TextStyle(color: Colors.grey[300]),
                     //     outsideWeekendStyle: TextStyle(
-                    //       color: Theme.of(context).accentColor.withOpacity(0.7),
+                    //       color: Theme.of(context).colorScheme.secondary.withOpacity(0.7),
                     //     ),
                     //     weekendStyle:
-                    //         TextStyle(color: Theme.of(context).accentColor),
+                    //         TextStyle(color: Theme.of(context).colorScheme.secondary),
                     //   ),
                     //   daysOfWeekStyle: DaysOfWeekStyle(
                     //     weekendStyle:
-                    //         TextStyle(color: Theme.of(context).accentColor),
+                    //         TextStyle(color: Theme.of(context).colorScheme.secondary),
                     //   ),
                     //   headerStyle: HeaderStyle(
                     //     formatButtonTextStyle: const TextStyle()
@@ -240,7 +236,7 @@ class _MultiActionsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold();
     // return SpeedDial(
-    //   parentButtonBackground: Theme.of(context).accentColor,
+    //   parentButtonBackground: Theme.of(context).colorScheme.secondary,
     //   orientation: UnicornOrientation.VERTICAL,
     //   parentButton: Icon(Icons.add),
     //   hasBackground: false,

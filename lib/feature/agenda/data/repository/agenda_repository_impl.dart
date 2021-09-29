@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';

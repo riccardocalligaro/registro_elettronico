@@ -5,7 +5,6 @@ import 'package:registro_elettronico/core/infrastructure/localizations/app_local
 import 'package:registro_elettronico/feature/agenda/presentation/watcher/agenda_watcher_bloc.dart';
 import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
 import 'package:registro_elettronico/feature/home/sections/header/week_summary_chart.dart';
-import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
@@ -117,7 +116,7 @@ class _BackgroundGradient extends StatelessWidget {
           colors: [Colors.red],
           // TODO: fix this
           // colors: ColorUtils.getGradientForColor(
-          //   Theme.of(context).accentColor,
+          //   Theme.of(context).colorScheme.secondary,
           // ) as List<Color>,
           begin: Alignment(-1.0, -2.0),
           end: Alignment(1.0, 2.0),

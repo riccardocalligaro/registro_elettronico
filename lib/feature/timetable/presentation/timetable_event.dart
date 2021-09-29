@@ -12,8 +12,7 @@ class TimetableEventWidget extends StatelessWidget {
   const TimetableEventWidget(
     this.event, {
     Key? key,
-  })  : assert(event != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// The [BasicEvent] to be displayed.
   final TimetableEntryPresentationModel event;

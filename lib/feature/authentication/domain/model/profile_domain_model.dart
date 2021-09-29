@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:registro_elettronico/feature/authentication/data/model/profile_local_model.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/profile_utils.dart';

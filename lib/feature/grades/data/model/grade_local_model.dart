@@ -36,7 +36,7 @@ class GradeLocalModelConverter {
   static GradeLocalModel fromRemoteModel(
     GradeRemoteModel remoteModel,
     GradeLocalModel? localModel,
-    bool hasSeenIt,
+    bool? hasSeenIt,
   ) {
     return GradeLocalModel(
       subjectId: remoteModel.subjectId ?? -1,

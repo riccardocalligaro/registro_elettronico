@@ -1,5 +1,4 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
 import 'package:registro_elettronico/feature/professors/domain/model/professor_domain_model.dart';
 

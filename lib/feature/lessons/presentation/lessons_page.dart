@@ -145,7 +145,8 @@ class _LessonsLoaded extends StatelessWidget {
                 ),
                 child: Text(
                   convertMonthLocale,
-                  style: TextStyle(color: Theme.of(context).accentColor),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
                 ),
               ),
               _buildLessonCard(lesson)

@@ -48,7 +48,8 @@ class GradesBarChartState extends State<GradesBarChart> {
                     height: 4,
                   ),
                   Text(
-                    AppLocalizations.of(context)!.translate('bar_chart_message')!,
+                    AppLocalizations.of(context)!
+                        .translate('bar_chart_message')!,
                     style: TextStyle(fontSize: 13),
                   ),
                   const SizedBox(
@@ -166,7 +167,8 @@ class GradesBarChartState extends State<GradesBarChart> {
         return makeGroupData(
             i,
             widget.grades
-                .where((g) => g.decimalValue! >= i + 3 && g.decimalValue! < i + 4)
+                .where(
+                    (g) => g.decimalValue! >= i + 3 && g.decimalValue! < i + 4)
                 .length
                 .toDouble(),
             isTouched: i == touchedIndex);
@@ -253,8 +255,8 @@ class GradesBarChartState extends State<GradesBarChart> {
               i,
               widget.grades
                   .getRange(0, currentIndex)
-                  .where(
-                      (g) => g.decimalValue! >= i + 3 && g.decimalValue! < i + 4)
+                  .where((g) =>
+                      g.decimalValue! >= i + 3 && g.decimalValue! < i + 4)
                   .length
                   .toDouble(),
               isTouched: i == touchedIndex);
