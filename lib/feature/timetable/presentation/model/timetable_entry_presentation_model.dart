@@ -6,13 +6,15 @@ import 'package:registro_elettronico/feature/timetable/domain/model/timetable_en
 
 class TimetableEntryPresentationModel extends Event {
   const TimetableEntryPresentationModel({
-    required int id,
+    required this.id,
     required DateTime start,
     required DateTime end,
     required this.color,
     required this.subjectId,
     required this.subjectName,
   }) : super(start: start, end: end);
+
+  final int id;
 
   final Color? color;
 
@@ -59,5 +61,23 @@ class TimetableEntryPresentationModel extends Event {
 
   static DateTime _findFirstDateOfTheWeek(DateTime dateTime) {
     return dateTime.subtract(Duration(days: dateTime.weekday - 1));
+  }
+
+  TimetableEntryPresentationModel copyWith({
+    int? id,
+    Color? color,
+    int? subjectId,
+    String? subjectName,
+    DateTime? start,
+    DateTime? end,
+  }) {
+    return TimetableEntryPresentationModel(
+      id: id ?? this.id,
+      color: color ?? this.color,
+      subjectId: subjectId ?? this.subjectId,
+      subjectName: subjectName ?? this.subjectName,
+      start: start ?? this.start,
+      end: end ?? this.end,
+    );
   }
 }

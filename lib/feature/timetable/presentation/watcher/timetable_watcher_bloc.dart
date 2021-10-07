@@ -28,7 +28,7 @@ class TimetableWatcherBloc
       if (event.resource.status == Status.failed) {
         yield TimetableWatcherFailure(failure: event.resource.failure);
       } else if (event.resource.status == Status.success) {
-        yield TimetableWatcherLoadSuccess(timetableData: event.resource.data);
+        yield TimetableWatcherLoadSuccess(timetableData: event.resource.data!);
       } else if (event.resource.status == Status.loading) {
         yield TimetableWatcherLoading();
       }

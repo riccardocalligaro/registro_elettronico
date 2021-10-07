@@ -8,7 +8,7 @@ class TimetableWatcherInitial extends TimetableWatcherState {}
 class TimetableWatcherLoading extends TimetableWatcherState {}
 
 class TimetableWatcherLoadSuccess extends TimetableWatcherState {
-  final TimetableDataDomainModel? timetableData;
+  final TimetableDataDomainModel timetableData;
 
   TimetableWatcherLoadSuccess({
     required this.timetableData,

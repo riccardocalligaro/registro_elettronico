@@ -30,6 +30,7 @@ class TimetableEntryDomainModel {
 
   TimetableEntryLocalModel toLocalModel() {
     return TimetableEntryLocalModel(
+      id: this.id,
       start: this.start,
       end: this.end,
       dayOfWeek: this.dayOfWeek,

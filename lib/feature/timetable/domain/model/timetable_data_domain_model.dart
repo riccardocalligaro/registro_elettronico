@@ -1,25 +1,20 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
 import 'package:registro_elettronico/feature/timetable/presentation/model/timetable_entry_presentation_model.dart';
 
 class TimetableDataDomainModel {
-  List<TimetableEntryPresentationModel>? entries;
-  List<SubjectDomainModel>? subjects;
+  List<TimetableEntryPresentationModel> entries;
+  List<SubjectDomainModel> subjects;
+  Map<DateTime, List<TimetableEntryPresentationModel>> entriesMap;
+  Map<Tuple2, List<TimetableEntryPresentationModel>> entriesMapForDragging;
 
   TimetableDataDomainModel({
-    this.entries,
-    this.subjects,
+    required this.entries,
+    required this.subjects,
+    required this.entriesMap,
+    required this.entriesMapForDragging,
   });
-
-  TimetableDataDomainModel copyWith({
-    List<TimetableEntryPresentationModel>? entries,
-    List<SubjectDomainModel>? subjects,
-  }) {
-    return TimetableDataDomainModel(
-      entries: entries ?? this.entries,
-      subjects: subjects ?? this.subjects,
-    );
-  }
 
   @override
   String toString() =>

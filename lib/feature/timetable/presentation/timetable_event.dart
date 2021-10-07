@@ -58,13 +58,10 @@ class TimetableEventWidget extends StatelessWidget {
               actions: <Widget>[
                 TextButton(
                   onPressed: () async {
-                    final TimetableRepository? timetableRepository = sl();
-
-                    // TODO: delete event
-                    // await timetableRepository.deleteTimetableEntry(
-                    //   id: event.id,
-                    // );
-
+                    final TimetableRepository timetableRepository = sl();
+                    await timetableRepository.deleteTimetableEntry(
+                      id: event.id,
+                    );
                     Navigator.pop(context);
                   },
                   child: Text(AppLocalizations.of(context)!

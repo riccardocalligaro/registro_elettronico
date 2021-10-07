@@ -15,6 +15,7 @@ import 'package:registro_elettronico/feature/timetable/domain/model/timetable_da
 import 'package:registro_elettronico/feature/timetable/domain/model/timetable_entry_domain_model.dart';
 import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:registro_elettronico/feature/timetable/presentation/model/timetable_entry_presentation_model.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TimetableRepositoryImpl implements TimetableRepository {
@@ -156,9 +157,31 @@ class TimetableRepositoryImpl implements TimetableRepository {
             )
             .toList();
 
+        final entriesMap = Map.fromIterable(
+          presentationModels,
+          key: (e) => DateTime(e.start.year, e.start.month, e.start.day),
+          value: (e) => presentationModels
+              .where((event) => SRDateUtils.areSameDay(event.start, e.start))
+              .toList(),
+        );
+
+        // controlla se ci sono sovrapposizioni
+        final Map<Tuple2, List<TimetableEntryPresentationModel>>
+            entriesMapForDragging = Map.fromIterable(
+          presentationModels,
+          key: (e) => Tuple2(
+              DateTime(e.start.year, e.start.month, e.start.day, e.start.hour),
+              DateTime(e.end.year, e.end.month, e.end.day, e.end.hour)),
+          value: (e) => presentationModels
+              .where((event) => SRDateUtils.areSameDay(event.start, e.start))
+              .toList(),
+        );
+
         final timetableData = TimetableDataDomainModel(
           entries: presentationModels,
           subjects: domainSubjects,
+          entriesMap: entriesMap,
+          entriesMapForDragging: entriesMapForDragging,
         );
 
         return Resource.success(data: timetableData);
