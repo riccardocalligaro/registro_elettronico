@@ -40,6 +40,7 @@ class _AgendaPageState extends State<AgendaPage> {
               ),
             );
           }
+          //return Text('Agend aloaded');
           return AgendaLoaded(
             data: state.agendaDataDomainModel,
           );

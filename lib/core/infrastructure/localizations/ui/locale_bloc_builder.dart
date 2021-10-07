@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:timetable/timetable.dart';
 
 import '../bloc/bloc.dart';
 import '../localizations_delegates.dart';

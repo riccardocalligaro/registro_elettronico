@@ -132,11 +132,11 @@ class AgendaRepositoryImpl implements AgendaRepository {
         final domainEvents = events
             .map((l) => AgendaEventDomainModel.fromLocalModel(l))
             .toList();
-
+//events[0].begin.toUtc()
         final Map<DateTime?, List<AgendaEventDomainModel>> eventsMap =
             Map.fromIterable(
           events,
-          key: (e) => e.begin,
+          key: (e) => DateTime.utc(e.begin.year, e.begin.month, e.begin.day),
           value: (e) => domainEvents
               .where((event) => SRDateUtils.areSameDay(event.begin!, e.begin))
               .toList(),

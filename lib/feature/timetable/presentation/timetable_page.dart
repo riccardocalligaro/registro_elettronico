@@ -1,108 +1,117 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
+import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
+import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
+import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
+import 'package:registro_elettronico/feature/timetable/presentation/timetable_event.dart';
+import 'package:registro_elettronico/feature/timetable/presentation/watcher/timetable_watcher_bloc.dart';
+import 'package:timetable/timetable.dart';
 
-class TimetablePage extends StatelessWidget {
-  const TimetablePage({Key? key}) : super(key: key);
+import 'model/timetable_entry_presentation_model.dart';
+
+class TimetablePage extends StatefulWidget {
+  TimetablePage({Key? key}) : super(key: key);
+
+  @override
+  _TimetablePageState createState() => _TimetablePageState();
+}
+
+class _TimetablePageState extends State<TimetablePage> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<TimetableWatcherBloc>(context)
+        .add(TimetableStartWatcherIfNeeded());
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          AppLocalizations.of(context)!.translate('timetable')!,
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.sync),
+            onPressed: () {
+              TimetableRepository timetableRepository = sl();
+              timetableRepository.regenerateTimetable();
+            },
+          )
+        ],
+      ),
+      body: BlocBuilder<TimetableWatcherBloc, TimetableWatcherState>(
+        builder: (context, state) {
+          if (state is TimetableWatcherLoadSuccess) {
+            return TimetableConfig<TimetableEntryPresentationModel>(
+              // Required:
+              // dateController: _dateController,
+              eventBuilder: (context, event) => TimetableEventWidget(event),
+
+              child: RecurringMultiDateTimetable<
+                  TimetableEntryPresentationModel>(),
+              eventProvider: (interval) {
+                print(interval);
+
+                // final entries = state.timetableData!.entries!
+                //     .where((e) =>
+                //         e.start.isAfter(interval.start) &&
+                //         e.end.isBefore(interval.end))
+                //     .toList();
+
+                //print(state.timetableData!.entries!);
+                return [];
+              },
+
+              callbacks: TimetableCallbacks(),
+              theme: TimetableThemeData(
+                context,
+                startOfWeek: DateTime.monday,
+              ),
+            );
+            // final _timetableProvider =
+            //     EventProvider.list(state.timetableData.entries);
+
+            // _timetableController =
+            //     TimetableController<TimetableEntryPresentationModel>(
+            //   eventProvider: _timetableProvider,
+            //   initialTimeRange: InitialTimeRange.zoom(4),
+            //   initialDate: LocalDate.dateTime(_findFirstDateOfTheWeek(
+            //     DateTime.now(),
+            //   )),
+            //   visibleRange: VisibleRange.days(3),
+            //   firstDayOfWeek: DayOfWeek.monday,
+            // );
+
+            // return _TimetableLoaded(
+            //   entires: state.timetableData.entries,
+            //   timetableController: _timetableController,
+            //   subjects: state.timetableData.subjects,
+            // );
+          } else if (state is TimetableWatcherFailure) {
+            return SRFailureView(
+              failure: state.failure,
+              refresh: _refresh,
+            );
+          }
+          return SRLoadingView();
+        },
+      ),
+    );
+  }
+
+  DateTime _findFirstDateOfTheWeek(DateTime dateTime) {
+    return dateTime.subtract(Duration(days: dateTime.weekday - 1));
+  }
+
+  Future<void> _refresh() {
+    final TimetableRepository timetableRepository = sl();
+    return timetableRepository.regenerateTimetable();
   }
 }
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:numberpicker/numberpicker.dart';
-// import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
-// import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-// import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
-// import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
-// import 'package:registro_elettronico/feature/subjects/domain/model/subject_domain_model.dart';
-// import 'package:registro_elettronico/feature/timetable/domain/model/timetable_entry_domain_model.dart';
-// import 'package:registro_elettronico/feature/timetable/domain/repository/timetable_repository.dart';
-// import 'package:registro_elettronico/feature/timetable/presentation/timetable_event.dart';
-// import 'package:registro_elettronico/feature/timetable/presentation/watcher/timetable_watcher_bloc.dart';
-// import 'package:registro_elettronico/utils/date_utils.dart';
-// import 'package:registro_elettronico/utils/global_utils.dart';
-// import 'package:timetable/timetable.dart';
-
-// import 'model/timetable_entry_presentation_model.dart';
-
-// class TimetablePage extends StatefulWidget {
-//   TimetablePage({Key key}) : super(key: key);
-
-//   @override
-//   _TimetablePageState createState() => _TimetablePageState();
-// }
-
-// class _TimetablePageState extends State<TimetablePage> {
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     BlocProvider.of<TimetableWatcherBloc>(context)
-//         .add(TimetableStartWatcherIfNeeded());
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(
-//           AppLocalizations.of(context).translate('timetable'),
-//         ),
-//         actions: [
-//           IconButton(
-//             icon: Icon(Icons.sync),
-//             onPressed: () {
-//               TimetableRepository timetableRepository = sl();
-//               timetableRepository.regenerateTimetable();
-//             },
-//           )
-//         ],
-//       ),
-//       body: BlocBuilder<TimetableWatcherBloc, TimetableWatcherState>(
-//         builder: (context, state) {
-//           if (state is TimetableWatcherLoadSuccess) {
-//             final _timetableProvider =
-//                 EventProvider.list(state.timetableData.entries);
-
-//             _timetableController =
-//                 TimetableController<TimetableEntryPresentationModel>(
-//               eventProvider: _timetableProvider,
-//               initialTimeRange: InitialTimeRange.zoom(4),
-//               initialDate: LocalDate.dateTime(_findFirstDateOfTheWeek(
-//                 DateTime.now(),
-//               )),
-//               visibleRange: VisibleRange.days(3),
-//               firstDayOfWeek: DayOfWeek.monday,
-//             );
-
-//             return _TimetableLoaded(
-//               entires: state.timetableData.entries,
-//               timetableController: _timetableController,
-//               subjects: state.timetableData.subjects,
-//             );
-//           } else if (state is TimetableWatcherFailure) {
-//             return SRFailureView(
-//               failure: state.failure,
-//               refresh: _refresh,
-//             );
-//           }
-//           return SRLoadingView();
-//         },
-//       ),
-//     );
-//   }
-
-//   DateTime _findFirstDateOfTheWeek(DateTime dateTime) {
-//     return dateTime.subtract(Duration(days: dateTime.weekday - 1));
-//   }
-
-//   Future<void> _refresh() {
-//     final TimetableRepository timetableRepository = sl();
-//     return timetableRepository.regenerateTimetable();
-//   }
-// }
 
 // class _TimetableLoaded extends StatelessWidget {
 //   final List<TimetableEntryPresentationModel> entires;
@@ -344,4 +353,4 @@ class TimetablePage extends StatelessWidget {
 //   }
 // }
 
-// enum AddEntryStatus { start, duration, subject }
+enum AddEntryStatus { start, duration, subject }

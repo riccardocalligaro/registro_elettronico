@@ -9,9 +9,13 @@ import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_dom
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/events_list.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/updater/agenda_updater_bloc.dart';
+import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/update_manager.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'event/new_event_page.dart';
 import 'lesson_list.dart';
 
 class AgendaLoaded extends StatefulWidget {
@@ -27,17 +31,22 @@ class AgendaLoaded extends StatefulWidget {
 }
 
 class _AgendaLoadedState extends State<AgendaLoaded> {
-  //final CalendarController _calendarController = CalendarController();
-
-  final DateTime _initialDay = DateTime.now();
-
   DateTime _selectedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
+  CalendarFormat _calendarFormat = CalendarFormat.month;
 
   late SearchBar _searchBar;
   String _searchQuery = '';
 
   @override
   void initState() {
+    SharedPreferences sharedPreferences = sl();
+    final savedFormat =
+        sharedPreferences.getInt(PrefsConstants.preferredCalendarFormat);
+
+    setState(() {
+      _calendarFormat = CalendarFormat.values[savedFormat ?? 0];
+    });
     _searchBar = SearchBar(
       setState: setState,
       onChanged: (query) {
@@ -79,56 +88,101 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
                 )
               : ListView(
                   children: [
-                    // TODO: update table calendar
-                    // TableCalendar(
-                    //   calendarController: _calendarController,
-                    //   events: widget.data.eventsMap,
-                    //   initialSelectedDay: _initialDay,
-                    //   onDaySelected: _onDaySelected,
-                    //   startingDayOfWeek: StartingDayOfWeek.monday,
-                    //   locale: AppLocalizations.of(context).locale.toString(),
-                    //   weekendDays: const [DateTime.sunday],
-                    //   calendarStyle: CalendarStyle(
-                    //     selectedColor:
-                    //         Theme.of(context).colorScheme.secondary.withOpacity(0.7),
-                    //     todayColor:
-                    //         Theme.of(context).colorScheme.secondary.withAlpha(140),
-                    //     markersColor: Colors.red[700],
-                    //     outsideDaysVisible: false,
-                    //     outsideStyle: TextStyle(color: Colors.grey[300]),
-                    //     outsideWeekendStyle: TextStyle(
-                    //       color: Theme.of(context).colorScheme.secondary.withOpacity(0.7),
-                    //     ),
-                    //     weekendStyle:
-                    //         TextStyle(color: Theme.of(context).colorScheme.secondary),
-                    //   ),
-                    //   daysOfWeekStyle: DaysOfWeekStyle(
-                    //     weekendStyle:
-                    //         TextStyle(color: Theme.of(context).colorScheme.secondary),
-                    //   ),
-                    //   headerStyle: HeaderStyle(
-                    //     formatButtonTextStyle: const TextStyle()
-                    //         .copyWith(color: Colors.white, fontSize: 15.0),
-                    //     formatButtonDecoration: BoxDecoration(
-                    //       color: Colors.deepOrange[400],
-                    //       borderRadius: BorderRadius.circular(16.0),
-                    //     ),
-                    //     formatButtonVisible: false,
-                    //   ),
-                    //   // onDaySelected: _onDaySelected,
-                    //   builders: CalendarBuilders(
-                    //     singleMarkerBuilder: (context, date, event) {
-                    //       Color cor = _getLabelColor(event.labelColor);
-                    //       return Container(
-                    //         decoration: BoxDecoration(
-                    //             shape: BoxShape.circle, color: cor),
-                    //         width: 7.0,
-                    //         height: 7.0,
-                    //         margin: const EdgeInsets.symmetric(horizontal: 1.5),
-                    //       );
-                    //     },
-                    //   ),
-                    // ),
+                    TableCalendar(
+                      calendarFormat: _calendarFormat,
+                      startingDayOfWeek: StartingDayOfWeek.monday,
+                      weekendDays: const [DateTime.sunday],
+                      onDaySelected: (selectedDay, focusedDay) =>
+                          _onDaySelected(selectedDay),
+                      eventLoader: (date) => _getEventsForDay(date),
+                      focusedDay: _focusedDay,
+                      selectedDayPredicate: (day) {
+                        return isSameDay(_selectedDay, day);
+                      },
+                      firstDay: DateTime.now().subtract(Duration(days: 365)),
+                      lastDay: DateTime.now().add(Duration(days: 365)),
+                      calendarBuilders: CalendarBuilders(
+                        singleMarkerBuilder:
+                            (context, date, AgendaEventDomainModel event) {
+                          Color cor = _getLabelColor(event.labelColor ?? '');
+                          return Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: cor),
+                            width: 7.0,
+                            height: 7.0,
+                            margin: const EdgeInsets.symmetric(horizontal: 1.5),
+                          );
+                        },
+                      ),
+                      calendarStyle: CalendarStyle(
+                        // Ugly, I know, but this is needed if you want to set
+                        // the borderRadius of the decoration
+                        weekendDecoration:
+                            BoxDecoration(shape: BoxShape.rectangle),
+                        rangeEndDecoration:
+                            BoxDecoration(shape: BoxShape.rectangle),
+                        defaultDecoration:
+                            BoxDecoration(shape: BoxShape.rectangle),
+                        rowDecoration: BoxDecoration(shape: BoxShape.rectangle),
+                        markerDecoration:
+                            BoxDecoration(shape: BoxShape.rectangle),
+                        holidayDecoration:
+                            BoxDecoration(shape: BoxShape.rectangle),
+                        outsideDecoration:
+                            BoxDecoration(shape: BoxShape.rectangle),
+                        disabledDecoration:
+                            BoxDecoration(shape: BoxShape.rectangle),
+                        rangeStartDecoration:
+                            BoxDecoration(shape: BoxShape.rectangle),
+                        withinRangeDecoration:
+                            BoxDecoration(shape: BoxShape.rectangle),
+                        selectedDecoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        todayDecoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        outsideDaysVisible: false,
+                        outsideTextStyle: TextStyle(color: Colors.grey[300]),
+                        weekendTextStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                      daysOfWeekStyle: DaysOfWeekStyle(
+                        weekendStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary),
+                      ),
+                      headerStyle: HeaderStyle(
+                        formatButtonTextStyle: const TextStyle()
+                            .copyWith(color: Colors.white, fontSize: 15.0),
+                        formatButtonDecoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        formatButtonVisible: true,
+                      ),
+                      onFormatChanged: (format) {
+                        setState(() {
+                          _calendarFormat = format;
+                        });
+
+                        SharedPreferences sharedPreferences = sl();
+                        sharedPreferences.setInt(
+                          PrefsConstants.preferredCalendarFormat,
+                          format.index,
+                        );
+                      },
+                    ),
                     const SizedBox(
                       height: 16,
                     ),
@@ -147,10 +201,12 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
     );
   }
 
+  List<AgendaEventDomainModel> _getEventsForDay(DateTime day) {
+    return widget.data!.eventsMap[day] ?? [];
+  }
+
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      // TODO: check brightness
-      // systemOverlayStyle: Theme.of(context).brightness,
       title: Text(
         AppLocalizations.of(context)!.translate('agenda')!,
       ),
@@ -176,9 +232,10 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
     return Color(int.tryParse(eventColor) ?? Colors.red.value);
   }
 
-  void _onDaySelected(DateTime day, List events, List events2) {
+  void _onDaySelected(DateTime day) {
     setState(() {
       _selectedDay = day;
+      _focusedDay = day;
     });
   }
 
@@ -224,114 +281,116 @@ class _AgendaResultsList extends StatelessWidget {
   }
 }
 
-class _MultiActionsButton extends StatelessWidget {
-  final DateTime dateTime;
+class _MultiActionsButton extends StatefulWidget {
+  final DateTime? dateTime;
 
   const _MultiActionsButton({
     Key? key,
-    required this.dateTime,
+    this.dateTime,
   }) : super(key: key);
 
   @override
+  State<_MultiActionsButton> createState() => _MultiActionsButtonState();
+}
+
+class _MultiActionsButtonState extends State<_MultiActionsButton> {
+  var isDialOpen = ValueNotifier<bool>(false);
+  var extend = false;
+  var visible = true;
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold();
-    // return SpeedDial(
-    //   parentButtonBackground: Theme.of(context).colorScheme.secondary,
-    //   orientation: UnicornOrientation.VERTICAL,
-    //   parentButton: Icon(Icons.add),
-    //   hasBackground: false,
-    //   children: [
-    //     UnicornButton(
-    //       hasLabel: true,
-    //       labelFontSize: 12,
-    //       labelText: AppLocalizations.of(context)!.translate('memo'),
-    //       labelHasShadow: false,
-    //       labelColor:
-    //           GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
-    //       labelBackgroundColor:
-    //           GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
-    //       currentButton: FloatingActionButton(
-    //         heroTag: "memo_fab",
-    //         backgroundColor: Colors.white,
-    //         mini: true,
-    //         child: Icon(
-    //           Icons.notifications,
-    //           color: Colors.grey[700],
-    //           size: 17,
-    //         ),
-    //         onPressed: () {
-    //           Navigator.of(context).push(
-    //             MaterialPageRoute(
-    //               builder: (context) => NewEventPage(
-    //                 eventType: AgendaEventType.memo,
-    //                 initialDate: dateTime ?? DateTime.now(),
-    //               ),
-    //             ),
-    //           );
-    //         },
-    //       ),
-    //     ),
-    //     UnicornButton(
-    //       hasLabel: true,
-    //       labelFontSize: 12,
-    //       labelText: AppLocalizations.of(context)!.translate('test'),
-    //       labelHasShadow: false,
-    //       labelColor:
-    //           GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
-    //       labelBackgroundColor:
-    //           GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
-    //       currentButton: FloatingActionButton(
-    //         heroTag: "test_fab",
-    //         backgroundColor: Colors.white,
-    //         mini: true,
-    //         child: Icon(
-    //           Icons.assignment,
-    //           color: Colors.grey[700],
-    //           size: 17,
-    //         ),
-    //         onPressed: () {
-    //           Navigator.of(context).push(
-    //             MaterialPageRoute(
-    //               builder: (context) => NewEventPage(
-    //                 eventType: AgendaEventType.test,
-    //                 initialDate: dateTime ?? DateTime.now(),
-    //               ),
-    //             ),
-    //           );
-    //         },
-    //       ),
-    //     ),
-    //     UnicornButton(
-    //       hasLabel: true,
-    //       labelFontSize: 12,
-    //       labelText: AppLocalizations.of(context)!.translate('homework'),
-    //       labelHasShadow: false,
-    //       labelColor:
-    //           GlobalUtils.isDark(context) ? Colors.grey[800] : Colors.white,
-    //       labelBackgroundColor:
-    //           GlobalUtils.isDark(context) ? Colors.white : Colors.grey[800],
-    //       currentButton: FloatingActionButton(
-    //         heroTag: "assignment_fab",
-    //         backgroundColor: Colors.white,
-    //         mini: true,
-    //         child: Icon(
-    //           Icons.import_contacts,
-    //           color: Colors.grey[700],
-    //           size: 17,
-    //         ),
-    //         onPressed: () {
-    //           Navigator.of(context).push(
-    //             MaterialPageRoute(
-    //               builder: (context) => NewEventPage(
-    //                 eventType: AgendaEventType.assigment,
-    //                 initialDate: dateTime ?? DateTime.now(),
-    //               ),
-    //             ),
-    //           );
-    //         },
-    //       ),
-    //     ),
-    //   ],
-    // );
+    return SpeedDial(
+      // animatedIcon: AnimatedIcons.menu_close,
+      // animatedIconTheme: IconThemeData(size: 22.0),
+      // / This is ignored if animatedIcon is non null
+      // child: Text("open"),
+      // activeChild: Text("close"),
+      icon: Icons.add,
+      iconTheme: IconThemeData(color: Colors.white),
+      activeIcon: Icons.close,
+      spacing: 3,
+      openCloseDial: isDialOpen,
+      childPadding: const EdgeInsets.all(5),
+      spaceBetweenChildren: 4,
+
+      buttonSize: 56, // it's the SpeedDial size which defaults to 56 itself
+      // iconTheme: IconThemeData(size: 22),
+      label:
+          extend ? const Text("Open") : null, // The label of the main button.
+      /// The active label of the main button, Defaults to label if not specified.
+      activeLabel: extend ? const Text("Close") : null,
+
+      /// Transition Builder between label and activeLabel, defaults to FadeTransition.
+      // labelTransitionBuilder: (widget, animation) => ScaleTransition(scale: animation,child: widget),
+      /// The below button size defaults to 56 itself, its the SpeedDial childrens size
+      childrenButtonSize: 56.0,
+      visible: visible,
+
+      // overlayColor: Colors.black,
+      // overlayOpacity: 0.5,
+      onOpen: () => debugPrint('OPENING DIAL'),
+      onClose: () => debugPrint('DIAL CLOSED'),
+      tooltip: 'Open Speed Dial',
+      heroTag: 'speed-dial-hero-tag',
+      // foregroundColor: Colors.black,
+      // backgroundColor: Colors.white,
+      // activeForegroundColor: Colors.red,
+      // activeBackgroundColor: Colors.blue,
+      elevation: 10.0,
+      isOpenOnStart: false,
+      animationSpeed: 200,
+
+      children: [
+        SpeedDialChild(
+          child: const Icon(Icons.notifications),
+          backgroundColor: Colors.green[700],
+          foregroundColor: Colors.white,
+          label: 'Memo',
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NewEventPage(
+                  eventType: AgendaEventType.memo,
+                  initialDate: widget.dateTime ?? DateTime.now(),
+                ),
+              ),
+            );
+          },
+        ),
+        SpeedDialChild(
+          child: const Icon(Icons.assignment),
+          backgroundColor: Colors.deepOrange,
+          foregroundColor: Colors.white,
+          label: AppLocalizations.of(context)!.translate('test'),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NewEventPage(
+                  eventType: AgendaEventType.test,
+                  initialDate: widget.dateTime ?? DateTime.now(),
+                ),
+              ),
+            );
+          },
+        ),
+        SpeedDialChild(
+          child: const Icon(Icons.import_contacts),
+          backgroundColor: Colors.blue[700],
+          foregroundColor: Colors.white,
+          label: AppLocalizations.of(context)!.translate('homework'),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NewEventPage(
+                  eventType: AgendaEventType.assigment,
+                  initialDate: widget.dateTime ?? DateTime.now(),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
   }
 }

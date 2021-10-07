@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:timetable/timetable.dart';
 
 import 'app_localizations.dart';
 
@@ -25,6 +26,7 @@ class LocalizationsDelegates {
       // Built-in localization for text direction LTR/RTL
       GlobalWidgetsLocalizations.delegate,
       GlobalCupertinoLocalizations.delegate,
+      TimetableLocalizationsDelegate(),
     ];
   }
 
