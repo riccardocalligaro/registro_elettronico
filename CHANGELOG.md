@@ -1,5 +1,9 @@
 3.0 Migration
-- [] core
+- [] Logs
+- [] Colors
+- [x] Timetable
+- [] Agenda
+- [] API Calls
 
 Versione 2.0.2+8
 

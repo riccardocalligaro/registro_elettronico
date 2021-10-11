@@ -53,8 +53,6 @@ class _WebViewLoadingPageState extends State<WebViewLoadingPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          // TODO: set brightness
-          // brightness: Theme.of(context).brightness,
           title: Text(widget.title),
           // actions: <Widget>[
           //   IconButton(

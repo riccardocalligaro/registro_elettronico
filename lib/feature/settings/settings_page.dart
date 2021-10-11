@@ -46,7 +46,6 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        brightness: Theme.of(context).brightness,
         title: Text(
           AppLocalizations.of(context)!.translate('settings')!,
         ),

@@ -4,7 +4,7 @@ import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/core/presentation/custom/sr_search_empty_view.dart';
+import 'package:registro_elettronico/core/presentation/custom/states/sr_search_empty_view.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/loaded/events_list.dart';

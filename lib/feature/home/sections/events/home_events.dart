@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
+import 'package:registro_elettronico/core/presentation/custom/states/sr_failure_view.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/presentation/watcher/agenda_watcher_bloc.dart';

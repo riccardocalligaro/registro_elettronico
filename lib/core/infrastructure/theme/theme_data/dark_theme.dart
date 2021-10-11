@@ -6,17 +6,16 @@ import 'package:registro_elettronico/core/infrastructure/theme/theme_data/text_s
 class DarkTheme {
   static ThemeData getThemeData(MaterialColor color) {
     return ThemeData(
-      primarySwatch: color,
-      colorScheme: ColorScheme.dark(
+      colorScheme: ColorScheme.highContrastDark(
+        primary: color,
         secondary: color,
       ),
-      // primaryColor: color,
       brightness: Brightness.dark,
       fontFamily: 'Manrope',
       appBarTheme: AppBarTheme(
         elevation: 0,
         color: Colors.grey[900],
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
@@ -26,6 +25,7 @@ class DarkTheme {
         headline5: heaingSmall.copyWith(color: Colors.white),
         bodyText2: bodyStyle1.copyWith(color: Colors.white),
       ),
+      // A little darker cards
       cardTheme: CardTheme(color: Colors.grey[900]),
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: color,

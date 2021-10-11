@@ -71,22 +71,22 @@ class ColorUtils {
     return Colors.grey[900];
   }
 
-  static List<Color?> getGradientForColor(
+  static List<Color> getGradientForColor(
     Color color, {
     bool button = false,
   }) {
     if (color == Colors.yellow) {
-      return [Colors.yellow[700], Colors.yellow[900]];
+      return [Colors.yellow[700]!, Colors.yellow[900]!];
     } else if (color == Colors.green) {
-      return [Colors.green[500], Colors.green[800]];
+      return [Colors.green[500]!, Colors.green[800]!];
     } else if (color == Colors.red || color.value == 4294198070) {
       if (button) {
         return [
-          Colors.red[600],
-          Colors.red[800],
+          Colors.red[600]!,
+          Colors.red[800]!,
         ];
       }
-      return [Colors.red[400], Colors.red[800]];
+      return [Colors.red[400]!, Colors.red[800]!];
     }
 
     return [

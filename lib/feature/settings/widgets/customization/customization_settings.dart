@@ -49,6 +49,8 @@ class _CustomizationSettingsState extends State<CustomizationSettings> {
               context: context,
               builder: (ctx) {
                 return SimpleDialog(
+                  title: Text(AppLocalizations.of(context)!
+                      .translate('theme_color_subtitle')!),
                   children: <Widget>[ColorSettingsDialog()],
                 );
               },

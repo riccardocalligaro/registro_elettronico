@@ -28,7 +28,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       bottom: tabBar,
       // Open Drawer Button
       iconTheme: Theme.of(context).primaryIconTheme,
-      textTheme: Theme.of(context).primaryTextTheme,
       leading: IconButton(
         // We want a black Icon
         icon: Icon(

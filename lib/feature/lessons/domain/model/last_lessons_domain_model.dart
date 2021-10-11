@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/feature/lessons/domain/model/lesson_domain_model.dart';
 
 class LessonWithDurationDomainModel {

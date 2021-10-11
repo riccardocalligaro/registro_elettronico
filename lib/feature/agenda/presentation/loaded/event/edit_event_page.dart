@@ -215,11 +215,10 @@ class _EditEventPageState extends State<EditEventPage> {
                         child: MaterialPicker(
                           pickerColor: _labelColor!,
                           onColorChanged: (color) {
-                            if (color != null) {
-                              setState(() {
-                                _labelColor = color;
-                              });
-                            }
+                            setState(() {
+                              _labelColor = color;
+                            });
+
                             Navigator.pop(context);
                           },
                           enableLabel: true,

@@ -27,16 +27,11 @@ class AboutAppDialog extends StatelessWidget {
               throw 'Could not launch $url';
             }
           },
-          child: RichText(
-            text: TextSpan(
-              children: <TextSpan>[
-                TextSpan(
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  text: AppLocalizations.of(context)!.translate('about_site'),
-                ),
-              ],
+          child: Text(
+            AppLocalizations.of(context)!.translate('about_site')!,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -52,16 +47,11 @@ class AboutAppDialog extends StatelessWidget {
               throw 'Could not launch $url';
             }
           },
-          child: RichText(
-            text: TextSpan(
-              children: <TextSpan>[
-                TextSpan(
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  text: AppLocalizations.of(context)!.translate('about_github'),
-                ),
-              ],
+          child: Text(
+            AppLocalizations.of(context)!.translate('about_github')!,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary,
+              fontWeight: FontWeight.bold,
             ),
           ),
         )

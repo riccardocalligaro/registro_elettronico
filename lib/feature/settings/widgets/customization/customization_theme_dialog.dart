@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/theme/bloc/bloc.dart';
 import 'package:registro_elettronico/core/infrastructure/theme/theme_data/themes.dart';
 import 'package:registro_elettronico/core/infrastructure/theme/ui/theme_item.dart';
+import 'package:registro_elettronico/core/presentation/custom/no_glow_behavior.dart';
 
 class CustomizationSettingsThemeDialog extends StatelessWidget {
   const CustomizationSettingsThemeDialog({Key? key}) : super(key: key);
@@ -11,31 +12,34 @@ class CustomizationSettingsThemeDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 100,
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: ThemeType.values.length,
-        itemBuilder: (ctx, index) {
-          final theme = ThemeType.values.elementAt(index);
-          Color? color;
+      child: ScrollConfiguration(
+        behavior: NoGlowBehavior(),
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: ThemeType.values.length,
+          itemBuilder: (ctx, index) {
+            final theme = ThemeType.values.elementAt(index);
+            Color? color;
 
-          if (theme == ThemeType.dark) {
-            color = Colors.grey[900];
-          } else if (theme == ThemeType.black) {
-            color = Colors.black;
-          } else {
-            color = Colors.white;
-          }
-          return ThemeItem(
-            name: theme.toString(),
-            color: color,
-            onTap: () => BlocProvider.of<ThemeBloc>(context).add(
-              ThemeChanged(
-                type: theme,
-                color: null,
+            if (theme == ThemeType.dark) {
+              color = Colors.grey[900];
+            } else if (theme == ThemeType.black) {
+              color = Colors.black;
+            } else {
+              color = Colors.white;
+            }
+            return ThemeItem(
+              name: theme.toString(),
+              color: color!,
+              onTap: () => BlocProvider.of<ThemeBloc>(context).add(
+                ThemeChanged(
+                  type: theme,
+                  color: null,
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

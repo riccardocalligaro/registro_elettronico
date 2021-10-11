@@ -30,7 +30,6 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          brightness: Theme.of(context).brightness,
           title: Text(AppLocalizations.of(context)!.translate('scrutini')!),
         ),
         body: MultiBlocListener(

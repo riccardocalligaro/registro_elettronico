@@ -1,18 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:registro_elettronico/core/infrastructure/theme/theme_data/text_styles.dart';
 
 class LightTheme {
   static ThemeData getThemeData(Color color) {
     return ThemeData(
-      primarySwatch: color as MaterialColor?,
-      colorScheme: ColorScheme.light(secondary: color),
+      colorScheme: ColorScheme.light(
+        primary: color,
+        secondary: color,
+      ),
       brightness: Brightness.light,
       fontFamily: 'Manrope',
-      //canvasColor: Colors.white,
       appBarTheme: AppBarTheme(
         elevation: 1,
-        color: Colors.white,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,

@@ -4,9 +4,9 @@ import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:open_file/open_file.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
-import 'package:registro_elettronico/core/presentation/custom/sr_failure_view.dart';
-import 'package:registro_elettronico/core/presentation/custom/sr_loading_view.dart';
-import 'package:registro_elettronico/core/presentation/custom/sr_search_empty_view.dart';
+import 'package:registro_elettronico/core/presentation/custom/states/sr_failure_view.dart';
+import 'package:registro_elettronico/core/presentation/custom/states/sr_loading_view.dart';
+import 'package:registro_elettronico/core/presentation/custom/states/sr_search_empty_view.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/feature/didactics/presentation/text_view_page.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/attachment/attachment_file.dart';
@@ -85,7 +85,6 @@ class _NoticeboardPageState extends State<NoticeboardPage> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      brightness: Theme.of(context).brightness,
       title: Text(
         AppLocalizations.of(context)!.translate('notice_board')!,
       ),

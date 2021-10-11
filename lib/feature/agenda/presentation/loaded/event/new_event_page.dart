@@ -4,7 +4,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/notification/local_notification.dart';
-import 'package:registro_elettronico/core/presentation/widgets/app_drawer.dart';
+import 'package:registro_elettronico/core/presentation/custom/no_glow_behavior.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_data_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/model/agenda_event_domain_model.dart';
 import 'package:registro_elettronico/feature/agenda/domain/repository/agenda_repository.dart';
@@ -70,7 +70,6 @@ class _NewEventPageState extends State<NewEventPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.translate('new_event')!),
-        brightness: Theme.of(context).brightness,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
@@ -217,11 +216,9 @@ class _NewEventPageState extends State<NewEventPage> {
                 Text(AppLocalizations.of(context)!.translate('notify_event')!),
             value: _notifyEvent,
             onChanged: (bool value) {
-              if (value != null) {
-                setState(() {
-                  _notifyEvent = value;
-                });
-              }
+              setState(() {
+                _notifyEvent = value;
+              });
             },
           ),
           if (_notifyEvent)
@@ -318,11 +315,10 @@ class _NewEventPageState extends State<NewEventPage> {
                         child: MaterialPicker(
                           pickerColor: _labelColor!,
                           onColorChanged: (color) {
-                            if (color != null) {
-                              setState(() {
-                                _labelColor = color;
-                              });
-                            }
+                            setState(() {
+                              _labelColor = color;
+                            });
+
                             Navigator.pop(context);
                           },
                           enableLabel: true,

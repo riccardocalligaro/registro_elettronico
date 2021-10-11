@@ -59,5 +59,5 @@ class AppBlocDelegate {
     return _instance;
   }
 
-  List<BlocProvider>? get blocProviders => _blocProviders;
+  List<BlocProvider> get blocProviders => _blocProviders!;
 }

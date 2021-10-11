@@ -5,6 +5,7 @@ import 'package:registro_elettronico/core/infrastructure/localizations/app_local
 import 'package:registro_elettronico/feature/agenda/presentation/watcher/agenda_watcher_bloc.dart';
 import 'package:registro_elettronico/feature/authentication/data/datasource/profiles_shared_datasource.dart';
 import 'package:registro_elettronico/feature/home/sections/header/week_summary_chart.dart';
+import 'package:registro_elettronico/utils/color_utils.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/string_utils.dart';
 
@@ -50,18 +51,8 @@ class HomeHeader extends StatelessWidget {
     ProfilesLocalDatasource profilesLocalDatasource = sl();
     final profile = profilesLocalDatasource.getLoggedInUserSync();
 
-    if (profile != null) {
-      return Text(
-        '${SRDateUtils.localizedTimeMessage(context)}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 24,
-          fontWeight: FontWeight.w400,
-        ),
-      );
-    }
     return Text(
-      '${SRDateUtils.localizedTimeMessage(context)}.',
+      '${SRDateUtils.localizedTimeMessage(context)}, ${StringUtils.titleCase(profile.firstName ?? '')}.',
       style: TextStyle(
         color: Colors.white,
         fontSize: 24,
@@ -113,11 +104,9 @@ class _BackgroundGradient extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           stops: [0.4, 1],
-          colors: [Colors.red],
-          // TODO: fix this
-          // colors: ColorUtils.getGradientForColor(
-          //   Theme.of(context).colorScheme.secondary,
-          // ) as List<Color>,
+          colors: ColorUtils.getGradientForColor(
+            Theme.of(context).colorScheme.secondary,
+          ),
           begin: Alignment(-1.0, -2.0),
           end: Alignment(1.0, 2.0),
         ),

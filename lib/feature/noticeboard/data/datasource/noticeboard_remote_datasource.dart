@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/notice/notice_remote_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/model/attachment_domain_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/model/notice_domain_model.dart';

@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
@@ -12,7 +11,6 @@ import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/resource.dart';
 import 'package:registro_elettronico/core/infrastructure/generic/update.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/datasource/noticeboard_local_datasource.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/datasource/noticeboard_remote_datasource.dart';
 import 'package:registro_elettronico/feature/noticeboard/data/model/attachment/attachment_file.dart';

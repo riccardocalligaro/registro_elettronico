@@ -1,4 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
+import 'package:registro_elettronico/feature/grades/grades_container.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'dart:async';
 
 class SpaggiariWebView extends StatefulWidget {
   final String url;
@@ -19,9 +25,15 @@ class SpaggiariWebView extends StatefulWidget {
 class _SpaggiariWebViewState extends State<SpaggiariWebView> {
   // final flutterWebviewPlugin = FlutterWebviewPlugin();
   Map<String, String>? headers;
+  WebViewController? _controller;
 
   @override
   void initState() {
+    /// This is for hybrid composition
+    if (Platform.isAndroid) {
+      WebView.platform = SurfaceAndroidWebView();
+    }
+
     // flutterWebviewPlugin.onStateChanged.listen((state) async {
     //   if (state.type == WebViewState.finishLoad && state.url == widget.url) {
     //     final AuthenticationRepository authenticationRepository = sl();
@@ -42,8 +54,41 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
   @override
   Widget build(BuildContext context) {
     GlobalKey? _scaffoldkey;
-    return Scaffold();
-    // return WebviewScaffold(
+    return WebView(initialUrl: widget.url);
+    return Scaffold(
+      appBar: AppBar(),
+      body: WebView(
+        initialUrl: widget.url,
+        userAgent:
+            'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:37.0) Gecko/20100101 Firefox/37.0',
+        javascriptMode: JavascriptMode.unrestricted,
+        onWebViewCreated: (WebViewController webViewController) {
+          // setState(() {
+          //   _controller = webViewController;
+          // });
+        },
+        onProgress: (int progress) {
+          print("WebView is loading (progress : $progress%)");
+        },
+        javascriptChannels: <JavascriptChannel>{},
+        navigationDelegate: (NavigationRequest request) {
+          if (request.url.startsWith('https://www.youtube.com/')) {
+            print('blocking navigation to $request}');
+            return NavigationDecision.prevent;
+          }
+          print('allowing navigation to $request');
+          return NavigationDecision.navigate;
+        },
+        onPageStarted: (String url) {
+          print('Page started loading: $url');
+        },
+        onPageFinished: (String url) async {
+          print('Page finished loading: $url');
+        },
+        gestureNavigationEnabled: true,
+        key: _scaffoldkey,
+      ),
+    );
     //   debuggingEnabled: false,
     //   key: _scaffoldkey,
     //   userAgent:

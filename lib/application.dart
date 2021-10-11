@@ -16,10 +16,15 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: AppBlocDelegate.instance(context)!.blocProviders!,
+      providers: AppBlocDelegate.instance(context)!.blocProviders,
       child: LocaleBlocBuilder(
-        builder: (lBBContext, locale, supportedLocales, localizationsDelegates,
-            localeResolutionCallback) {
+        builder: (
+          lBBContext,
+          locale,
+          supportedLocales,
+          localizationsDelegates,
+          localeResolutionCallback,
+        ) {
           return ThemeBlocBuilder(
             builder: (tBBContext, materialThemeData, cupertinoThemeData) {
               InitData initData = InitData(

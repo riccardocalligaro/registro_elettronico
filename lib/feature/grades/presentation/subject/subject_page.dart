@@ -4,6 +4,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/widgets/dialogs.dart';
 import 'package:registro_elettronico/core/presentation/widgets/grade_card.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_model.dart';
 import 'package:registro_elettronico/feature/grades/domain/model/grades_section.dart';
@@ -468,53 +469,37 @@ class _LocalGrades extends StatelessWidget {
                             .toUpperCase(),
                       ),
                       onPressed: () {
-                        showDialog<double>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            // TODO: number picker dialog
-                            // return NumberPickerDialog.decimal(
-                            //   minValue: 1,
-                            //   maxValue: 10,
-                            //   title: Text(
-                            //     AppLocalizations.of(context)
-                            //         .translate('pick_a_grade'),
-                            //   ),
-                            //   cancelWidget: Text(AppLocalizations.of(context)
-                            //       .translate('cancel')
-                            //       .toUpperCase()),
-                            //   initialDoubleValue: 6.0,
-                            // );
-                          } as Widget Function(BuildContext),
-                        ).then(
-                          (value) async {
-                            if (value != null) {
-                              final gradeToInsert = GradeDomainModel(
-                                periodPos: peridodPos,
-                                subjectId: subjectId,
-                                eventDate: DateTime.now(),
-                                decimalValue: value,
-                                cancelled: false,
-                                displayValue: value.toString(),
-                                underlined: false,
-                                evtId: null,
-                              );
-                              final GradesRepository gradesRepository = sl();
-                              final res = await gradesRepository.addLocalGrade(
-                                  gradeDomainModel: gradeToInsert);
+                        showDecimalNumberPicker(
+                          context,
+                          initialValue: 6,
+                        ).then((value) async {
+                          if (value != null) {
+                            final gradeToInsert = GradeDomainModel(
+                              periodPos: peridodPos,
+                              subjectId: subjectId,
+                              eventDate: DateTime.now(),
+                              decimalValue: value,
+                              cancelled: false,
+                              displayValue: value.toString(),
+                              underlined: false,
+                              evtId: null,
+                            );
+                            final GradesRepository gradesRepository = sl();
+                            final res = await gradesRepository.addLocalGrade(
+                                gradeDomainModel: gradeToInsert);
 
-                              if (res.isLeft()) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      AppLocalizations.of(context)!
-                                          .translate('error_emoji')!,
-                                    ),
+                            if (res.isLeft()) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    AppLocalizations.of(context)!
+                                        .translate('error_emoji')!,
                                   ),
-                                );
-                              }
+                                ),
+                              );
                             }
-                          },
-                        );
+                          }
+                        });
                       },
                     ),
                   ],

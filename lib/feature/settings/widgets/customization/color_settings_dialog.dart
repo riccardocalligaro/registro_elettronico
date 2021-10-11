@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:registro_elettronico/core/infrastructure/theme/bloc/bloc.dart';
+import 'package:registro_elettronico/core/presentation/custom/no_glow_behavior.dart';
 
 class ColorSettingsDialog extends StatelessWidget {
   const ColorSettingsDialog({Key? key}) : super(key: key);
@@ -31,35 +32,38 @@ class ColorSettingsDialog extends StatelessWidget {
     ];
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: BlockPicker(
-        pickerColor: Theme.of(context).colorScheme.secondary,
-        availableColors: _colors,
-        onColorChanged: (color) {
-          Navigator.of(context).pop();
-          BlocProvider.of<ThemeBloc>(context)
-              .add(ThemeChanged(type: null, color: color as MaterialColor?));
-        },
-        itemBuilder: (color, isCurrentColor, changeColor) {
-          return Container(
-            margin: EdgeInsets.all(5.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50.0),
-              color: color,
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: changeColor,
-                borderRadius: BorderRadius.circular(50.0),
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 210),
-                  opacity: isCurrentColor ? 1.0 : 0.0,
+      padding: const EdgeInsets.all(24.0),
+      child: ScrollConfiguration(
+        behavior: NoGlowBehavior(),
+        child: BlockPicker(
+          pickerColor: Theme.of(context).colorScheme.secondary,
+          availableColors: _colors,
+          onColorChanged: (color) {
+            Navigator.of(context).pop();
+            BlocProvider.of<ThemeBloc>(context)
+                .add(ThemeChanged(type: null, color: color as MaterialColor?));
+          },
+          itemBuilder: (color, isCurrentColor, changeColor) {
+            return Container(
+              margin: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(35.0),
+                color: color,
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: changeColor,
+                  borderRadius: BorderRadius.circular(35.0),
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 210),
+                    opacity: isCurrentColor ? 1.0 : 0.0,
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
