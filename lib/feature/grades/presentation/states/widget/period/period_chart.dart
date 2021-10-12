@@ -111,6 +111,29 @@ class GradesLineChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return LineChart(
       LineChartData(
+        lineTouchData: LineTouchData(
+          touchTooltipData: LineTouchTooltipData(
+            tooltipMargin: 23,
+            tooltipBgColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.grey[900]!.withOpacity(0.9),
+            getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
+              return touchedBarSpots.map((barSpot) {
+                final flSpot = barSpot;
+
+                return LineTooltipItem(
+                  flSpot.y.toStringAsFixed(1),
+                  TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? flSpot.bar.colors.first
+                        : Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }).toList();
+            },
+          ),
+        ),
         gridData: FlGridData(
           show: true,
           getDrawingHorizontalLine: (value) {
@@ -131,21 +154,9 @@ class GradesLineChart extends StatelessWidget {
         ),
         titlesData: FlTitlesData(
           show: true,
-          bottomTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 22,
-            getTextStyles: (context, value) {
-              return TextStyle(
-                color: const Color(0xff68737d),
-                fontWeight: FontWeight.w500,
-                fontSize: 12,
-              );
-            },
-            getTitles: (vlue) {
-              return '';
-            },
-            margin: 8,
-          ),
+          bottomTitles: SideTitles(showTitles: false),
+          rightTitles: SideTitles(showTitles: false),
+          topTitles: SideTitles(showTitles: false),
           leftTitles: SideTitles(
             showTitles: true,
             getTextStyles: (context, value) {

@@ -6,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/data/remote/api/spaggiari_client.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/scrutini/data/dao/document_dao.dart';
@@ -168,7 +167,7 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
   }
 
   @override
-  Future<DownloadedDocument> getDownloadedDocument(String? hash) {
+  Future<DownloadedDocument?> getDownloadedDocument(String? hash) {
     return documentsDao!.getDownloadedDocument(hash);
   }
 }

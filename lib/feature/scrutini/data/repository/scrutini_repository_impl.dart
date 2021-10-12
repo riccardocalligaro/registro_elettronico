@@ -1,9 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:registro_elettronico/core/data/remote/web/web_spaggiari_client.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
+import 'package:registro_elettronico/core/infrastructure/error/handler.dart';
 import 'package:registro_elettronico/core/infrastructure/network/network_info.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
 import 'package:registro_elettronico/feature/scrutini/domain/repository/scrutini_repository.dart';
@@ -38,7 +37,7 @@ class ScrutiniRepositoryImpl implements ScrutiniRepository {
 
         return Right(resToken);
       } catch (e, s) {
-        return Left(GenericFailure());
+        return Left(handleError('[ScrutiniRepository]', e, s));
       }
     } else {
       throw NotConntectedException();

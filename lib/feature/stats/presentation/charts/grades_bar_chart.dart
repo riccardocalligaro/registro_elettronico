@@ -121,7 +121,7 @@ class GradesBarChartState extends State<GradesBarChart> {
                 event is! FlPanEndEvent &&
                 event is! FlLongPressEnd) {
               touchedIndex = barTouchResponse.spot!.touchedBarGroupIndex;
-            } else {
+            } else if (event is FlPanDownEvent) {
               touchedIndex = -1;
             }
           });
@@ -129,6 +129,8 @@ class GradesBarChartState extends State<GradesBarChart> {
       ),
       titlesData: FlTitlesData(
         show: true,
+        topTitles: SideTitles(showTitles: false),
+        rightTitles: SideTitles(showTitles: false),
         bottomTitles: SideTitles(
           showTitles: true,
           getTextStyles: (context, __) {
@@ -201,13 +203,14 @@ class GradesBarChartState extends State<GradesBarChart> {
     return BarChartData(
         barTouchData: BarTouchData(
           touchTooltipData: BarTouchTooltipData(
-              tooltipBgColor: Colors.white,
-              getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                return BarTooltipItem(
-                  rod.y.toStringAsFixed(0),
-                  TextStyle(color: Colors.black),
-                );
-              }),
+            tooltipBgColor: Colors.white,
+            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+              return BarTooltipItem(
+                rod.y.toStringAsFixed(0),
+                TextStyle(color: Colors.black),
+              );
+            },
+          ),
           touchCallback: (event, response) {
             setState(() {
               if (response!.spot != null &&

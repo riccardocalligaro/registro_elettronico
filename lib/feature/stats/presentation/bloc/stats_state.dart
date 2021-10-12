@@ -13,7 +13,7 @@ class StatsLoadInProgress extends StatsState {}
 ///   - subjects
 ///   - absences
 class StatsLoadSuccess extends StatsState {
-  final StudentReport studentReport;
+  final StudentReport? studentReport;
 
   StatsLoadSuccess({required this.studentReport});
 }

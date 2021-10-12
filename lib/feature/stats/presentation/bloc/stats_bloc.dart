@@ -39,7 +39,8 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
         },
         (report) => StatsLoadSuccess(studentReport: report),
       );
-    } catch (e, s) {
+    } catch (e) {
+      yield StatsLoadError();
       // Logger.e(exception: e, stacktrace: s, text: 'Error getting user stats');
     }
   }

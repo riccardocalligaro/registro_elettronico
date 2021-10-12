@@ -77,7 +77,7 @@ class _GradesPieChartState extends State<GradesPieChart> {
                           if (event is FlLongPressEnd ||
                               event is FlPanEndEvent) {
                             touchedIndex = -1;
-                          } else {
+                          } else if (event is FlTapDownEvent) {
                             touchedIndex = pieTouchResponse!
                                 .touchedSection!.touchedSectionIndex;
                           }
@@ -89,7 +89,7 @@ class _GradesPieChartState extends State<GradesPieChart> {
                       ),
                       sectionsSpace: 2.5,
                       centerSpaceRadius: 30,
-                      sections: showingSections() as List<PieChartSectionData>?,
+                      sections: showingSections(),
                     ),
                   ),
                 ),
@@ -101,7 +101,7 @@ class _GradesPieChartState extends State<GradesPieChart> {
     );
   }
 
-  List<PieChartSectionData?> showingSections() {
+  List<PieChartSectionData>? showingSections() {
     double insuffPercentage =
         ((widget.insufficientiCount / widget.totalGrades) * 100);
 
@@ -151,7 +151,7 @@ class _GradesPieChartState extends State<GradesPieChart> {
             );
 
           default:
-            return null;
+            return PieChartSectionData();
         }
       },
     );

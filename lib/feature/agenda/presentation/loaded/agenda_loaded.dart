@@ -88,100 +88,105 @@ class _AgendaLoadedState extends State<AgendaLoaded> {
                 )
               : ListView(
                   children: [
-                    TableCalendar(
-                      calendarFormat: _calendarFormat,
-                      startingDayOfWeek: StartingDayOfWeek.monday,
-                      weekendDays: const [DateTime.sunday],
-                      onDaySelected: (selectedDay, focusedDay) =>
-                          _onDaySelected(selectedDay),
-                      eventLoader: (date) => _getEventsForDay(date),
-                      focusedDay: _focusedDay,
-                      selectedDayPredicate: (day) {
-                        return isSameDay(_selectedDay, day);
-                      },
-                      firstDay: DateTime.now().subtract(Duration(days: 365)),
-                      lastDay: DateTime.now().add(Duration(days: 365)),
-                      calendarBuilders: CalendarBuilders(
-                        singleMarkerBuilder:
-                            (context, date, AgendaEventDomainModel event) {
-                          Color cor = _getLabelColor(event.labelColor ?? '');
-                          return Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: cor),
-                            width: 7.0,
-                            height: 7.0,
-                            margin: const EdgeInsets.symmetric(horizontal: 1.5),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                      child: TableCalendar(
+                        calendarFormat: _calendarFormat,
+                        startingDayOfWeek: StartingDayOfWeek.monday,
+                        weekendDays: const [DateTime.sunday],
+                        onDaySelected: (selectedDay, focusedDay) =>
+                            _onDaySelected(selectedDay),
+                        eventLoader: (date) => _getEventsForDay(date),
+                        focusedDay: _focusedDay,
+                        selectedDayPredicate: (day) {
+                          return isSameDay(_selectedDay, day);
+                        },
+                        firstDay: DateTime.now().subtract(Duration(days: 365)),
+                        lastDay: DateTime.now().add(Duration(days: 365)),
+                        calendarBuilders: CalendarBuilders(
+                          singleMarkerBuilder:
+                              (context, date, AgendaEventDomainModel event) {
+                            Color cor = _getLabelColor(event.labelColor ?? '');
+                            return Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle, color: cor),
+                              width: 7.0,
+                              height: 7.0,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 1.5),
+                            );
+                          },
+                        ),
+                        calendarStyle: CalendarStyle(
+                          // Ugly, I know, but this is needed if you want to set
+                          // the borderRadius of the decoration
+                          weekendDecoration:
+                              BoxDecoration(shape: BoxShape.rectangle),
+                          rangeEndDecoration:
+                              BoxDecoration(shape: BoxShape.rectangle),
+                          defaultDecoration:
+                              BoxDecoration(shape: BoxShape.rectangle),
+                          rowDecoration:
+                              BoxDecoration(shape: BoxShape.rectangle),
+                          markerDecoration:
+                              BoxDecoration(shape: BoxShape.rectangle),
+                          holidayDecoration:
+                              BoxDecoration(shape: BoxShape.rectangle),
+                          outsideDecoration:
+                              BoxDecoration(shape: BoxShape.rectangle),
+                          disabledDecoration:
+                              BoxDecoration(shape: BoxShape.rectangle),
+                          rangeStartDecoration:
+                              BoxDecoration(shape: BoxShape.rectangle),
+                          withinRangeDecoration:
+                              BoxDecoration(shape: BoxShape.rectangle),
+                          selectedDecoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          todayDecoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          outsideDaysVisible: false,
+                          outsideTextStyle: TextStyle(color: Colors.grey[300]),
+                          weekendTextStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        daysOfWeekStyle: DaysOfWeekStyle(
+                          weekendStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
+                        ),
+                        headerStyle: HeaderStyle(
+                          formatButtonTextStyle: const TextStyle()
+                              .copyWith(color: Colors.white, fontSize: 15.0),
+                          formatButtonDecoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary,
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          formatButtonVisible: true,
+                        ),
+                        onFormatChanged: (format) {
+                          setState(() {
+                            _calendarFormat = format;
+                          });
+
+                          SharedPreferences sharedPreferences = sl();
+                          sharedPreferences.setInt(
+                            PrefsConstants.preferredCalendarFormat,
+                            format.index,
                           );
                         },
                       ),
-                      calendarStyle: CalendarStyle(
-                        // Ugly, I know, but this is needed if you want to set
-                        // the borderRadius of the decoration
-                        weekendDecoration:
-                            BoxDecoration(shape: BoxShape.rectangle),
-                        rangeEndDecoration:
-                            BoxDecoration(shape: BoxShape.rectangle),
-                        defaultDecoration:
-                            BoxDecoration(shape: BoxShape.rectangle),
-                        rowDecoration: BoxDecoration(shape: BoxShape.rectangle),
-                        markerDecoration:
-                            BoxDecoration(shape: BoxShape.rectangle),
-                        holidayDecoration:
-                            BoxDecoration(shape: BoxShape.rectangle),
-                        outsideDecoration:
-                            BoxDecoration(shape: BoxShape.rectangle),
-                        disabledDecoration:
-                            BoxDecoration(shape: BoxShape.rectangle),
-                        rangeStartDecoration:
-                            BoxDecoration(shape: BoxShape.rectangle),
-                        withinRangeDecoration:
-                            BoxDecoration(shape: BoxShape.rectangle),
-                        selectedDecoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondary
-                              .withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        todayDecoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondary
-                              .withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        outsideDaysVisible: false,
-                        outsideTextStyle: TextStyle(color: Colors.grey[300]),
-                        weekendTextStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ),
-                      daysOfWeekStyle: DaysOfWeekStyle(
-                        weekendStyle: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary),
-                      ),
-                      headerStyle: HeaderStyle(
-                        formatButtonTextStyle: const TextStyle()
-                            .copyWith(color: Colors.white, fontSize: 15.0),
-                        formatButtonDecoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        formatButtonVisible: true,
-                      ),
-                      onFormatChanged: (format) {
-                        setState(() {
-                          _calendarFormat = format;
-                        });
-
-                        SharedPreferences sharedPreferences = sl();
-                        sharedPreferences.setInt(
-                          PrefsConstants.preferredCalendarFormat,
-                          format.index,
-                        );
-                      },
                     ),
                     const SizedBox(
                       height: 16,

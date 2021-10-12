@@ -615,8 +615,6 @@ class GradesRepositoryImpl extends GradesRepository {
   }) async {
     try {
       await sharedPreferences!.setInt('${subject.id}_objective', newValue);
-      print('${subject.id}_objective');
-      print(newValue.toString());
       return Right(Success());
     } catch (e, s) {
       return Left(handleError(

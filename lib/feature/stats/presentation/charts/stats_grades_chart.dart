@@ -36,7 +36,6 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
 
   /// Stream builder that takes data from the bloc stream
   Widget _buildChart(BuildContext context) {
-    print('build chart');
     // we take the grades from the state
     final grades = widget.grades;
 
@@ -143,6 +142,29 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
 
     return LineChartData(
       // The grid behind the graph
+      lineTouchData: LineTouchData(
+        touchTooltipData: LineTouchTooltipData(
+          tooltipMargin: 23,
+          tooltipBgColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.grey[900]!.withOpacity(0.9),
+          getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
+            return touchedBarSpots.map((barSpot) {
+              final flSpot = barSpot;
+
+              return LineTooltipItem(
+                flSpot.y.toStringAsFixed(1),
+                TextStyle(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? flSpot.bar.colors.first
+                      : Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              );
+            }).toList();
+          },
+        ),
+      ),
       gridData: FlGridData(
         show: true,
         getDrawingHorizontalLine: (value) {
@@ -165,9 +187,11 @@ class _StatsGradesChartState extends State<StatsGradesChart> {
       ),
 
       // All the titles
+
       titlesData: FlTitlesData(
         show: true,
-
+        rightTitles: SideTitles(showTitles: false),
+        topTitles: SideTitles(showTitles: false),
         // Some dates of the grades
         bottomTitles: SideTitles(
           showTitles: true,

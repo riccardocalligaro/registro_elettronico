@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';
 import 'package:registro_elettronico/core/infrastructure/error/successes.dart';
 

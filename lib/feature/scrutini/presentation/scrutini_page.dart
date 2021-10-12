@@ -4,6 +4,7 @@ import 'package:open_file/open_file.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
+import 'package:registro_elettronico/core/presentation/custom/states/sr_alternative_loading_view.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/core/presentation/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/feature/authentication/presentation/token/token_bloc.dart';
@@ -238,9 +239,7 @@ class _ScrutiniPageState extends State<ScrutiniPage> {
                 );
               }
 
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+              return SRAlternativeLoadingView();
             },
           ),
         ));

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/core/presentation/widgets/dialogs.dart';
 import 'package:registro_elettronico/feature/grades/presentation/watcher/grades_watcher_bloc.dart';
 import 'package:registro_elettronico/utils/constants/preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -147,21 +147,12 @@ class _GeneralSettingsState extends State<GeneralSettings> {
           subtitle:
               Text(AppLocalizations.of(context)!.translate('class_subtitle')!),
           onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                // TODO: number picker migration
-                // return NumberPickerDialog.integer(
-                //   initialIntegerValue: _class,
-                //   minValue: 1,
-                //   maxValue: 5,
-                //   title: Text(
-                //       AppLocalizations.of(context).translate('class_title')),
-                //   cancelWidget: Text(AppLocalizations.of(context)
-                //       .translate('cancel')
-                //       .toUpperCase()),
-                // );
-              } as Widget Function(BuildContext),
+            showNumberPicker(
+              context,
+              initialValue: _class,
+              minValue: 1,
+              maxValue: 5,
+              title: AppLocalizations.of(context)!.translate('class_title'),
             ).then((value) {
               if (value != null) {
                 setState(() {

@@ -27,7 +27,7 @@ class WeekSummaryChart extends StatelessWidget {
               right: 1.0,
               left: 0.0,
               top: 10,
-              bottom: 4,
+              bottom: 5,
             ),
             child: LineChart(
               mainData(
@@ -46,7 +46,6 @@ class WeekSummaryChart extends StatelessWidget {
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
-          // TODO: check if bottom is the same
           tooltipMargin: 23,
           tooltipBgColor: Theme.of(context).brightness == Brightness.dark
               ? Colors.white
@@ -85,9 +84,21 @@ class WeekSummaryChart extends StatelessWidget {
         show: true,
         drawVerticalLine: true,
         drawHorizontalLine: false,
+        getDrawingVerticalLine: (value) {
+          return FlLine(
+            color: const Color(0xff37434d),
+            strokeWidth: 1,
+          );
+        },
       ),
       titlesData: FlTitlesData(
         show: true,
+        topTitles: SideTitles(
+          showTitles: false,
+        ),
+        rightTitles: SideTitles(
+          showTitles: false,
+        ),
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
@@ -116,18 +127,23 @@ class WeekSummaryChart extends StatelessWidget {
               fontSize: 11,
             );
           },
+          interval: 1,
           getTitles: (value) {
             return value.toStringAsFixed(0);
           },
         ),
       ),
       borderData: FlBorderData(
-        show: false,
+        show: true,
+        border: Border(
+          right: BorderSide(
+            width: 1.0,
+            color: const Color(0xff37434d),
+          ),
+        ),
       ),
       minX: 1,
       maxX: 6,
-
-      // maxY: 10,
       lineBarsData: [
         LineChartBarData(
           spots: events,

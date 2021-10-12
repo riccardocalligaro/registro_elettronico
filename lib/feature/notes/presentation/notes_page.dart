@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
 import 'package:registro_elettronico/core/infrastructure/navigator.dart';
+import 'package:registro_elettronico/core/presentation/custom/states/sr_alternative_loading_view.dart';
 import 'package:registro_elettronico/core/presentation/widgets/cusotm_placeholder.dart';
 import 'package:registro_elettronico/core/presentation/widgets/custom_refresher.dart';
 import 'package:registro_elettronico/utils/date_utils.dart';
@@ -66,9 +67,7 @@ class _NotesPageState extends State<NotesPage> {
     return BlocBuilder<NotesBloc, NotesState>(
       builder: (context, state) {
         if (state is NotesLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return SRAlternativeLoadingView();
         }
 
         if (state is NotesLoaded) {
@@ -89,9 +88,7 @@ class _NotesPageState extends State<NotesPage> {
         }
 
         if (state is NotesUpdateLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return SRAlternativeLoadingView();
         }
         return Container();
       },

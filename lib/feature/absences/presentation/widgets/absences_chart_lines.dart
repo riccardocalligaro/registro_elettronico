@@ -118,6 +118,8 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
         show: false,
       ),
       titlesData: FlTitlesData(
+        topTitles: SideTitles(showTitles: false),
+        rightTitles: SideTitles(showTitles: false),
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
@@ -241,7 +243,7 @@ class AbsencesChartLinesState extends State<AbsencesChartLines> {
   }
 
   FlSpot _getSpotForMonth(double month, String code, {String? code2}) {
-    final absences = widget.absences[month as int];
+    final absences = widget.absences[month.toInt()];
     double monthGraph;
     if (month >= 9.0 && month <= 12.0) {
       monthGraph = month - 8;

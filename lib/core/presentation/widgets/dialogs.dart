@@ -61,6 +61,7 @@ Future<int?> showNumberPicker(
   int? minValue,
   int? maxValue,
   int? initialValue,
+  String? title,
 }) async {
   return showDialog<int>(
     barrierDismissible: true,
@@ -70,6 +71,7 @@ Future<int?> showNumberPicker(
 
       return StatefulBuilder(builder: (context, setState) {
         return AlertDialog(
+          title: title != null ? Text(title) : null,
           content: NumberPicker(
             minValue: minValue ?? 1,
             maxValue: maxValue ?? 10,

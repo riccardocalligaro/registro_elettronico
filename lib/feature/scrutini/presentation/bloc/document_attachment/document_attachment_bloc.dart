@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
-import 'package:registro_elettronico/core/infrastructure/log/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:registro_elettronico/core/data/local/moor_database.dart';
 import 'package:registro_elettronico/core/infrastructure/error/failures.dart';

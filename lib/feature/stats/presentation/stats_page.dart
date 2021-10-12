@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -10,8 +13,10 @@ import 'package:registro_elettronico/feature/grades/domain/model/grade_domain_mo
 import 'package:registro_elettronico/feature/stats/data/model/student_report.dart';
 import 'package:registro_elettronico/feature/stats/presentation/charts/stats_grades_chart.dart';
 import 'package:registro_elettronico/utils/bug_report.dart';
+import 'package:registro_elettronico/utils/date_utils.dart';
 import 'package:registro_elettronico/utils/global_utils.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:share/share.dart';
 
 import 'bloc/stats_bloc.dart';
 import 'charts/grades_bar_chart.dart';
@@ -51,27 +56,21 @@ class _StatsPageState extends State<StatsPage> {
                       .toLowerCase() +
                   DateTime.now().toIso8601String();
 
-              var path = '$directory/$fileName.png';
+              final file = File('$directory/$fileName.png');
 
-              // TODO: share
-              // await screenshotController
-              //     .capture(
-              //   //path: path,
-              //   pixelRatio: 2,
-              // )
-              //     .then((bytes) async {
-              //   await Share.file(
-              //     AppLocalizations.of(context).translate('statistics'),
-              //     '$fileName.png',
-              //     bytes.buffer.asUint8List(),
-              //     'image/png',
-              //     text:
-              //         '${AppLocalizations.of(context).translate('statistics')} ${SRDateUtils.convertDateLocaleDashboard(DateTime.now(), AppLocalizations.of(context).locale.toString())}',
-              //   );
+              await screenshotController
+                  .capture(
+                pixelRatio: 2,
+              )
+                  .then((bytes) async {
+                file.writeAsBytesSync(bytes!);
 
-              // }).catchError((onError) {
-              //   Fimber.i('Coudlnt create stats image file for sharing');
-              // });
+                await Share.shareFiles([file.path],
+                    text:
+                        '${AppLocalizations.of(context)!.translate('statistics')} ${SRDateUtils.convertDateLocaleDashboard(DateTime.now(), AppLocalizations.of(context)!.locale.toString())}');
+              }).catchError((onError) {
+                Fimber.i('Couldnt create stats image file for sharing');
+              });
             },
           )
         ],
@@ -104,7 +103,7 @@ class _StatsPageState extends State<StatsPage> {
     );
   }
 
-  Widget _buildSuccess(StudentReport studentReport) {
+  Widget _buildSuccess(StudentReport? studentReport) {
     if (studentReport == null) {
       return _buildErrorState();
     }

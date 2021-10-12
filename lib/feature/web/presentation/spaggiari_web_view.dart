@@ -1,10 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:registro_elettronico/core/infrastructure/app_injection.dart';
 import 'package:registro_elettronico/feature/authentication/domain/repository/authentication_repository.dart';
-import 'package:registro_elettronico/feature/grades/grades_container.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'dart:async';
 
 class SpaggiariWebView extends StatefulWidget {
   final String url;
@@ -54,7 +53,6 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
   @override
   Widget build(BuildContext context) {
     GlobalKey? _scaffoldkey;
-    return WebView(initialUrl: widget.url);
     return Scaffold(
       appBar: AppBar(),
       body: WebView(
@@ -63,9 +61,9 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
             'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:37.0) Gecko/20100101 Firefox/37.0',
         javascriptMode: JavascriptMode.unrestricted,
         onWebViewCreated: (WebViewController webViewController) {
-          // setState(() {
-          //   _controller = webViewController;
-          // });
+          setState(() {
+            _controller = webViewController;
+          });
         },
         onProgress: (int progress) {
           print("WebView is loading (progress : $progress%)");
@@ -84,30 +82,22 @@ class _SpaggiariWebViewState extends State<SpaggiariWebView> {
         },
         onPageFinished: (String url) async {
           print('Page finished loading: $url');
+
+          final AuthenticationRepository authenticationRepository = sl();
+          final userInfo = await authenticationRepository.getCredentials();
+
+          await _controller?.evaluateJavascript(
+              '\$("#login").val("${widget.email ?? userInfo.profile?.ident}");');
+          await _controller?.evaluateJavascript(
+              '\$("#password").val("${userInfo.password}");');
+          print(widget.email ?? userInfo.profile?.ident);
+          print(userInfo.password);
+          // await Future.delayed(Duration(seconds: 1));
+          await _controller?.evaluateJavascript('\$(".accedi").click()');
         },
         gestureNavigationEnabled: true,
         key: _scaffoldkey,
       ),
     );
-    //   debuggingEnabled: false,
-    //   key: _scaffoldkey,
-    //   userAgent:
-    //       'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:37.0) Gecko/20100101 Firefox/37.0',
-    //   withZoom: true,
-    //   displayZoomControls: true,
-    //   allowFileURLs: true,
-    //   clearCookies: true,
-    //   useWideViewPort: true,
-    //   withOverviewMode: true,
-    //   url: widget.url,
-    //   hidden: true,
-    //   headers: headers,
-    //   appBar: AppBar(
-    //     brightness: Theme.of(context).brightness,
-    //     title: Text(
-    //       widget.appBarTitle ?? '',
-    //     ),
-    //   ),
-    // );
   }
 }

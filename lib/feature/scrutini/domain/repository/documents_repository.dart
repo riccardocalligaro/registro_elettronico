@@ -14,7 +14,7 @@ abstract class DocumentsRepository {
   /// Returns the [path]
   Future<Either<Failure, String>> readDocument(String documentHash);
 
-  Future<DownloadedDocument> getDownloadedDocument(String? hash);
+  Future<DownloadedDocument?> getDownloadedDocument(String? hash);
 
   Future<List<DownloadedDocument>> getAllDownloadedDocuments();
 

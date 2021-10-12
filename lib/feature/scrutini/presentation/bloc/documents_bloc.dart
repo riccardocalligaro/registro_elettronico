@@ -41,7 +41,7 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
         schoolReports: data.value1,
         documents: data.value2,
       );
-    } catch (e, s) {
+    } catch (e) {
       yield DocumentsLoadError();
     }
   }
@@ -55,7 +55,7 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
       yield DocumentsUpdateLoadSuccess();
     } on NotConntectedException {
       yield DocumentsLoadNotConnected();
-    } catch (e, s) {
+    } catch (e) {
       yield DocumentsUpdateLoadError();
     }
   }
