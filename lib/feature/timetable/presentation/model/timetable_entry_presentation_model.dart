@@ -42,7 +42,7 @@ class TimetableEntryPresentationModel extends Event {
     final _firstDayOfWeek = _findFirstDateOfTheWeek(DateTime.now());
 
     final day = DateTime(_firstDayOfWeek.year, _firstDayOfWeek.month,
-        _firstDayOfWeek.day + l.dayOfWeek!, 8);
+        _firstDayOfWeek.day + l.dayOfWeek!, 7);
 
     day.add(Duration(hours: l.start!));
 
@@ -51,8 +51,8 @@ class TimetableEntryPresentationModel extends Event {
 
     return TimetableEntryPresentationModel(
       id: l.id!,
-      start: start.add(Duration(hours: 1)).toUtc(),
-      end: end.add(Duration(hours: 1)).toUtc(),
+      start: start.toUtc(),
+      end: end.toUtc(),
       color: color,
       subjectId: l.subject,
       subjectName: l.subjectName!,
