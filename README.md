@@ -29,7 +29,7 @@ Flutter client for eletronic school register (Classeviva) management using clean
 - Notifications when there is a new event (new grade, new event, etc..)
 - Data persistency
 - Final grades
-- Multi language support (Italian & English) and localizaiton
+- Multi language support (Italian & English) and localization
 
 Main technologies and libraries that I will use:
 
