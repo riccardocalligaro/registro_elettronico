@@ -3,10 +3,10 @@ description: Better and faster of the original.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 2.5.1+10
+version: 2.5.8+17
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.10.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -62,7 +62,7 @@ dependencies:
   rxdart: ^0.25.0
   screenshot: ^0.2.0
   shared_preferences: ^0.5.12+4
-  sqlite3_flutter_libs: null
+  sqlite3_flutter_libs: ^0.4.0
   table_calendar: ^2.3.3
   timetable: ^0.2.7
   tinycolor: ^1.0.3

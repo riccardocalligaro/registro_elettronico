@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+
     package="com.riccardocalligaro.registro_elettronico">
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -7,6 +9,8 @@
          FlutterApplication and put your custom class here. -->
 
     <!-- set up permissions -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" tools:node="remove" />
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -25,6 +29,7 @@
             android:resource="@drawable/app_icon" />
 
         <activity
+            android:exported="true"
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -58,5 +63,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <service android:name="io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService" android:exported="true"/>
+        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver" android:exported="true"/>
+
     </application>
 </manifest>
