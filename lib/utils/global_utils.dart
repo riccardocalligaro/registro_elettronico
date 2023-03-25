@@ -153,8 +153,24 @@ class GlobalUtils {
     if (stringToCompare.contains(RegExp(r'(RELIGIONE|ALTERNATIVA)'))) {
       return SubjectsConstants.RELIGIONE;
     }
-    if (stringToCompare.contains(RegExp(r'(INGLESE|STRANIERA)'))) {
+    if (stringToCompare.contains(RegExp(r'(INGLESE)'))) {
       return SubjectsConstants.INGLESE;
+    }
+
+    if (stringToCompare.contains(RegExp(r'(SPAGNOLO)'))) {
+      return SubjectsConstants.SPAGNOLO;
+    }
+    if (stringToCompare.contains(RegExp(r'(FRANCESE)'))) {
+      return SubjectsConstants.FRANCESE;
+    }
+    if (stringToCompare.contains(RegExp(r'(TEDESCO)'))) {
+      return SubjectsConstants.TEDESCO;
+    }
+    if (stringToCompare.contains(RegExp(r'(RUSSO)'))) {
+      return SubjectsConstants.RUSSO;
+    }
+    if (stringToCompare.contains(RegExp(r'(CINESE)'))) {
+      return SubjectsConstants.CINESE;
     }
     if (stringToCompare.contains(RegExp(r'(ITALIANA|ITALIANO)'))) {
       return SubjectsConstants.ITALIANO;
@@ -227,8 +243,23 @@ class GlobalUtils {
       case SubjectsConstants.INGLESE:
         return "INGLESE";
         break;
+      case SubjectsConstants.TEDESCO:
+        return "TEDESCO";
+        break;
+      case SubjectsConstants.SPAGNOLO:
+        return "SPAGNOLO";
+        break;
+      case SubjectsConstants.FRANCESE:
+        return "FRANCESE";
+        break;
       case SubjectsConstants.GPOI:
         return "GPOI";
+        break;
+      case SubjectsConstants.CINESE:
+        return "CINESE";
+        break;
+      case SubjectsConstants.RUSSO:
+        return "RUSSO";
         break;
       default:
         return "";

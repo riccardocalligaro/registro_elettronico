@@ -38,7 +38,7 @@ class ReportManager {
     final Email reportEmail = Email(
       body: userMessage,
       subject: subject,
-      recipients: ['registroelettronico.mobileapp@gmail.com'],
+      recipients: ['riccardocalligaro@gmail.com'],
       attachmentPaths: ['$path/flog.txt'],
       isHTML: false,
     );

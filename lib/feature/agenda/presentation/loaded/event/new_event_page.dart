@@ -91,7 +91,7 @@ class _NewEventPageState extends State<NewEventPage> {
             widget.eventType != EventType.memo
                 ? _buildSubjectCard()
                 : Container(),
-            _buildNotificationCard(),
+            // _buildNotificationCard(),
             _buildDescriptionCard(),
           ],
         ),

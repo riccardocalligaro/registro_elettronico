@@ -3,7 +3,7 @@ description: Better and faster of the original.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 2.5.8+17
+version: 2.6.0+18
 
 environment:
   sdk: ">=2.10.0 <3.0.0"
