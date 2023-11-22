@@ -42,52 +42,44 @@ class NotesRepositoryImpl implements NotesRepository {
 
   @override
   Future updateNotes() async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
+    final studentId = await authenticationRepository.getCurrentStudentId();
 
-      final notesResponse = await spaggiariClient.getNotes(studentId);
+    final notesResponse = await spaggiariClient.getNotes(studentId);
 
-      List<Note> notes = [];
-      notesResponse.notesNTCL.forEach((note) =>
-          notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTCL')));
-      notesResponse.notesNTWN.forEach((note) =>
-          notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTWN')));
-      notesResponse.notesNTTE.forEach((note) =>
-          notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTTE')));
-      notesResponse.notesNTST.forEach((note) =>
-          notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTST')));
+    List<Note> notes = [];
+    notesResponse.notesNTCL.forEach((note) =>
+        notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTCL')));
+    notesResponse.notesNTWN.forEach((note) =>
+        notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTWN')));
+    notesResponse.notesNTTE.forEach((note) =>
+        notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTTE')));
+    notesResponse.notesNTST.forEach((note) =>
+        notes.add(NoteMapper.convertNotetEntityToInsertable(note, 'NTST')));
 
-      Logger.info(
-        'Got ${notesResponse.notesNTCL.length} notesNTCL from server, procceding to insert in database',
-      );
-      Logger.info(
-        'Got ${notesResponse.notesNTWN.length} notesNTWN from server, procceding to insert in database',
-      );
-      Logger.info(
-        'Got ${notesResponse.notesNTTE.length} notesNTTE from server, procceding to insert in database',
-      );
-      Logger.info(
-        'Got ${notesResponse.notesNTST.length} notesNTST from server, procceding to insert in database',
-      );
-      await noteDao.deleteAllAttachments();
-      await noteDao.deleteAllNotes();
+    Logger.info(
+      'Got ${notesResponse.notesNTCL.length} notesNTCL from server, procceding to insert in database',
+    );
+    Logger.info(
+      'Got ${notesResponse.notesNTWN.length} notesNTWN from server, procceding to insert in database',
+    );
+    Logger.info(
+      'Got ${notesResponse.notesNTTE.length} notesNTTE from server, procceding to insert in database',
+    );
+    Logger.info(
+      'Got ${notesResponse.notesNTST.length} notesNTST from server, procceding to insert in database',
+    );
+    await noteDao.deleteAllAttachments();
+    await noteDao.deleteAllNotes();
 
-      await noteDao.insertNotes(notes);
-    } else {
-      throw NotConntectedException();
-    }
+    await noteDao.insertNotes(notes);
   }
 
   @override
   Future<NotesReadResponse> readNote(String type, int eventId) async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
+    final studentId = await authenticationRepository.getCurrentStudentId();
 
-      final res = await spaggiariClient.markNote(studentId, type, eventId, "");
-      return res;
-    } else {
-      throw NotConntectedException();
-    }
+    final res = await spaggiariClient.markNote(studentId, type, eventId, "");
+    return res;
   }
 
   @override
@@ -97,24 +89,20 @@ class NotesRepositoryImpl implements NotesRepository {
 
   @override
   Future<NotesAttachment> getAttachmentForNote(String type, int eventId) async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
-      final attachments = await noteDao.getAllAttachments();
+    final studentId = await authenticationRepository.getCurrentStudentId();
+    final attachments = await noteDao.getAllAttachments();
 
-      for (var attachment in attachments) {
-        if (attachment.id == eventId) return attachment;
-      }
-
-      final res = await spaggiariClient.markNote(studentId, type, eventId, "");
-      final insertable =
-          NoteMapper.convertNoteAttachmentResponseToInsertable(res);
-
-      await noteDao.deleteAllAttachments();
-      await noteDao.insertAttachment(insertable);
-
-      return insertable;
-    } else {
-      throw NotConntectedException();
+    for (var attachment in attachments) {
+      if (attachment.id == eventId) return attachment;
     }
+
+    final res = await spaggiariClient.markNote(studentId, type, eventId, "");
+    final insertable =
+        NoteMapper.convertNoteAttachmentResponseToInsertable(res);
+
+    await noteDao.deleteAllAttachments();
+    await noteDao.insertAttachment(insertable);
+
+    return insertable;
   }
 }

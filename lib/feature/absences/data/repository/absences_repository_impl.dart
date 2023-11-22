@@ -31,29 +31,25 @@ class AbsencesRepositoryImpl implements AbsencesRepository {
 
   @override
   Future updateAbsences() async {
-    if (await networkInfo.isConnected) {
-      Logger.info('Updating absences');
+    Logger.info('Updating absences');
 
-      final absences = await absencesRemoteDatasource.getAbsences();
-      List<Absence> absencesList = [];
-      absences.forEach((event) {
-        absencesList.add(AbsenceMapper.convertEventEntityToInsertable(event));
-      });
-      Logger.info(
-        'Got ${absences.length} events from server, procceding to insert in database',
-      );
+    final absences = await absencesRemoteDatasource.getAbsences();
+    List<Absence> absencesList = [];
+    absences.forEach((event) {
+      absencesList.add(AbsenceMapper.convertEventEntityToInsertable(event));
+    });
+    Logger.info(
+      'Got ${absences.length} events from server, procceding to insert in database',
+    );
 
-      await absenceDao.deleteAllAbsences();
+    await absenceDao.deleteAllAbsences();
 
-      await absenceDao.insertEvents(absencesList);
+    await absenceDao.insertEvents(absencesList);
 
-      await sharedPreferences.setInt(
-        PrefsConstants.lastUpdateAbsences,
-        DateTime.now().millisecondsSinceEpoch,
-      );
-    } else {
-      throw NotConntectedException();
-    }
+    await sharedPreferences.setInt(
+      PrefsConstants.lastUpdateAbsences,
+      DateTime.now().millisecondsSinceEpoch,
+    );
   }
 
   @override

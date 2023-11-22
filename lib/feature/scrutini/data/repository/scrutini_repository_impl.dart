@@ -25,29 +25,25 @@ class ScrutiniRepositoryImpl implements ScrutiniRepository {
   Future<Either<Failure, String>> getLoginToken({
     bool lastYear,
   }) async {
-    if (await networkInfo.isConnected) {
-      final profile = await authenticationRepository.getProfile();
-      final password = await flutterSecureStorage.read(key: profile.ident);
+    final profile = await authenticationRepository.getProfile();
+    final password = await flutterSecureStorage.read(key: profile.ident);
 
-      try {
-        final resToken = await webSpaggiariClient.getPHPToken(
-          username: profile.ident,
-          password: password,
-          lastYear: lastYear ?? false,
-        );
+    try {
+      final resToken = await webSpaggiariClient.getPHPToken(
+        username: profile.ident,
+        password: password,
+        lastYear: lastYear ?? false,
+      );
 
-        return Right(resToken);
-      } catch (e, s) {
-        await FirebaseCrashlytics.instance.recordError(e, s);
-        Logger.e(
-          exception: Exception(e.toString()),
-          stacktrace: s,
-          text: 'Error getting login token',
-        );
-        return Left(ServerFailure());
-      }
-    } else {
-      throw NotConntectedException();
+      return Right(resToken);
+    } catch (e, s) {
+      await FirebaseCrashlytics.instance.recordError(e, s);
+      Logger.e(
+        exception: Exception(e.toString()),
+        stacktrace: s,
+        text: 'Error getting login token',
+      );
+      return Left(ServerFailure());
     }
   }
 }

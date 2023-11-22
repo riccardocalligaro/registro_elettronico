@@ -31,45 +31,41 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
 
   @override
   Future updateDocuments() async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
-      final documents = await spaggiariClient.getDocuments(studentId);
+    final studentId = await authenticationRepository.getCurrentStudentId();
+    final documents = await spaggiariClient.getDocuments(studentId);
 
-      List<Document> documentsList = [];
-      List<SchoolReport> reportsList = [];
+    List<Document> documentsList = [];
+    List<SchoolReport> reportsList = [];
 
-      documents.documents.forEach((document) {
-        documentsList
-            .add(DocumentMapper.convertApiDocumentToInsertable(document));
-      });
+    documents.documents.forEach((document) {
+      documentsList
+          .add(DocumentMapper.convertApiDocumentToInsertable(document));
+    });
 
-      documents.schoolReports.forEach((report) {
-        reportsList
-            .add(DocumentMapper.convertApiSchoolReportToInsertable(report));
-      });
+    documents.schoolReports.forEach((report) {
+      reportsList
+          .add(DocumentMapper.convertApiSchoolReportToInsertable(report));
+    });
 
-      Logger.info(
-        'Got ${documents.documents.length} documents from server, procceding to insert in database',
-      );
+    Logger.info(
+      'Got ${documents.documents.length} documents from server, procceding to insert in database',
+    );
 
-      Logger.info(
-        'Got ${documents.schoolReports.length} school reports from server, procceding to insert in database',
-      );
+    Logger.info(
+      'Got ${documents.schoolReports.length} school reports from server, procceding to insert in database',
+    );
 
-      // Delete the documents
-      await documentsDao.deeteAllDocuments();
-      await documentsDao.deeteAllSchoolReports();
+    // Delete the documents
+    await documentsDao.deeteAllDocuments();
+    await documentsDao.deeteAllSchoolReports();
 
-      await documentsDao.insertDocuments(documentsList);
-      await documentsDao.insertSchoolReports(reportsList);
+    await documentsDao.insertDocuments(documentsList);
+    await documentsDao.insertSchoolReports(reportsList);
 
-      await sharedPreferences.setInt(
-        PrefsConstants.lastUpdateScrutini,
-        DateTime.now().millisecondsSinceEpoch,
-      );
-    } else {
-      throw NotConntectedException();
-    }
+    await sharedPreferences.setInt(
+      PrefsConstants.lastUpdateScrutini,
+      DateTime.now().millisecondsSinceEpoch,
+    );
   }
 
   @override
@@ -82,60 +78,52 @@ class DocumentsRepositoryImpl implements DocumentsRepository {
 
   @override
   Future<Either<Failure, bool>> checkDocument(String documentHash) async {
-    if (await networkInfo.isConnected) {
-      final studentId = await authenticationRepository.getCurrentStudentId();
+    final studentId = await authenticationRepository.getCurrentStudentId();
 
-      try {
-        final available = await spaggiariClient.checkDocumentAvailability(
-          studentId,
-          documentHash,
-        );
+    try {
+      final available = await spaggiariClient.checkDocumentAvailability(
+        studentId,
+        documentHash,
+      );
 
-        return Right(available);
-      } catch (e) {
-        return Left(ServerFailure());
-      }
-    } else {
-      throw NotConntectedException();
+      return Right(available);
+    } catch (e) {
+      return Left(ServerFailure());
     }
   }
 
   @override
   Future<Either<Failure, String>> readDocument(String documentHash) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final studentId = await authenticationRepository.getCurrentStudentId();
-        Logger.info('Got profile');
+    try {
+      final studentId = await authenticationRepository.getCurrentStudentId();
+      Logger.info('Got profile');
 
-        final document = await spaggiariClient.readDocument(
-          studentId,
-          documentHash,
-        );
-        String filename = document.value2;
-        filename = filename.replaceAll('attachment; filename=', '');
-        filename = filename.replaceAll(RegExp('\"'), '');
-        filename = filename.trim();
+      final document = await spaggiariClient.readDocument(
+        studentId,
+        documentHash,
+      );
+      String filename = document.value2;
+      filename = filename.replaceAll('attachment; filename=', '');
+      filename = filename.replaceAll(RegExp('\"'), '');
+      filename = filename.trim();
 
-        Logger.info('Filename -> $filename');
-        final path = await _localPath;
-        String filePath = '$path/$filename';
-        File file = File(filePath);
-        var raf = file.openSync(mode: FileMode.write);
-        raf.writeFromSync(document.value1);
-        await raf.close();
+      Logger.info('Filename -> $filename');
+      final path = await _localPath;
+      String filePath = '$path/$filename';
+      File file = File(filePath);
+      var raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(document.value1);
+      await raf.close();
 
-        await documentsDao.insertDownloadedDocument(DownloadedDocument(
-          path: filePath,
-          filename: filename,
-          hash: documentHash,
-        ));
+      await documentsDao.insertDownloadedDocument(DownloadedDocument(
+        path: filePath,
+        filename: filename,
+        hash: documentHash,
+      ));
 
-        return Right(filePath);
-      } catch (e) {
-        return Left(ServerFailure());
-      }
-    } else {
-      throw NotConntectedException();
+      return Right(filePath);
+    } catch (e) {
+      return Left(ServerFailure());
     }
   }
 
