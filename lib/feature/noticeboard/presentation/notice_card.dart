@@ -1,11 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart' hide OpenFile;
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:registro_elettronico/core/infrastructure/localizations/app_localizations.dart';
+import 'package:registro_elettronico/feature/grades/grades_container.dart';
+import 'package:registro_elettronico/feature/noticeboard/data/datasource/noticeboard_remote_datasource.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/model/attachment_domain_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/domain/model/notice_domain_model.dart';
 import 'package:registro_elettronico/feature/noticeboard/presentation/attachment/attachment_download_bloc.dart';
@@ -44,9 +48,12 @@ class NoticeCard extends StatelessWidget {
                   Icons.mail,
                   color: Colors.red,
                 ),
-          onTap: () {
-            if (notice.attachments != null) {
+          onTap: () async {
+            if (notice.hasAttach && notice.attachments != null) {
               _showDownloadDialog(context);
+            } else {
+              // non ha allegati, mostriamo dialogo con content
+              _showTextContentDialog(context);
             }
           },
           onLongPress: () {
@@ -61,6 +68,44 @@ class NoticeCard extends StatelessWidget {
               ));
           },
         ),
+      ),
+    );
+  }
+
+  void _showTextContentDialog(BuildContext context) {
+    final NoticeboardRemoteDatasource noticeboardRemoteDatasource = sl();
+
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Text(
+          notice.contentTitle,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            width: double.maxFinite,
+            child: FutureBuilder(
+              future: noticeboardRemoteDatasource.readNotice(
+                  notice.code, notice.id),
+              initialData: null,
+              builder:
+                  (BuildContext context, AsyncSnapshot<Response> snapshot) {
+                if (snapshot.data == null || !snapshot.hasData) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(32.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+
+                return Text(snapshot.data.data['item']['text']);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
