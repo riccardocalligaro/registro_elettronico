@@ -125,8 +125,8 @@ PODS:
     - Flutter
   - "permission_handler (4.4.0+hotfix.4)":
     - Flutter
-  - PromisesObjC (1.2.11)
-  - Protobuf (3.14.0)
+  - PromisesObjC (1.2.12)
+  - Protobuf (3.25.1)
   - shared_preferences (0.0.1):
     - Flutter
   - sqflite (0.0.2):
@@ -258,14 +258,14 @@ SPEC CHECKSUMS:
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: 8278954f2382902f63f00dd8828769c0bd6d511b
-  PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
-  Protobuf: 0cde852566359049847168e51bd1c690e0f70056
+  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  Protobuf: d94761c33f1239c0a43a0817ca1a5f7f7c900241
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   sqlite3: 8f7d2078ae27778699a622a94b853285793422a2
   sqlite3_flutter_libs: 5651f8ff48e3b44d910863c4ea5916085b1b245f
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: 9108a6b38c569b0373496462203891179deb6013
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.14.3
