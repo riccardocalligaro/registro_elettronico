@@ -3,7 +3,7 @@ description: Better and faster of the original.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 2.6.0+18
+version: 2.7.0+19
 
 environment:
   sdk: ">=2.10.0 <3.0.0"
@@ -102,17 +102,17 @@ flutter:
   fonts:
     - family: Manrope
       fonts:
-        - asset: assets/fonts/Gilroy-Regular.ttf
-        - asset: assets/fonts/Gilroy-Heavy.ttf
+        - asset: assets/fonts/GoogleSans-Regular.ttf
+        - asset: assets/fonts/GoogleSans-Bold.ttf
           weight: 900
-        - asset: assets/fonts/Gilroy-Bold.ttf
+        - asset: assets/fonts/GoogleSans-Bold.ttf
           weight: 700
-        - asset: assets/fonts/Gilroy-Light.ttf
-          weight: 200
-        - asset: assets/fonts/Gilroy-Regular.ttf
+        # - asset: assets/fonts/Gilroy-Light.ttf
+        #   weight: 200
+        - asset: assets/fonts/GoogleSans-Regular.ttf
           weight: 400
-        - asset: assets/fonts/Gilroy-Medium.ttf
-          weight: 300
+        - asset: assets/fonts/GoogleSans-Medium.ttf
+          weight: 600
     # - family: Montserrat
     #   fonts:
     #     - asset: assets/fonts/Montserrat-Regular.otf
