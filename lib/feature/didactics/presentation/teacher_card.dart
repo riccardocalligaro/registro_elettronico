@@ -114,24 +114,29 @@ class TeacherCard extends StatelessWidget {
                 : content.name,
           ),
           onTap: () async {
-            if (content.files != null &&
-                content.files.first.file != null &&
-                content.files.first.file.existsSync()) {
-              unawaited(OpenFile.open(content.files.first.file.path));
-            } else {
-              BlocProvider.of<DidacticsAttachmentBloc>(context).add(
-                DownloadContentAttachment(contentDomainModel: content),
-              );
+            if (content.type == ContentType.file) {
+              // si tratta di un file
+              if (content.files != null &&
+                  content.files.first.file != null &&
+                  content.files.first.file.existsSync()) {
+                unawaited(OpenFile.open(content.files.first.file.path));
+              } else {
+                BlocProvider.of<DidacticsAttachmentBloc>(context).add(
+                  DownloadContentAttachment(contentDomainModel: content),
+                );
 
-              final snackBar = SnackBar(
-                content: _DownloadAttachmentSnackbar(),
-                duration: Duration(minutes: 1),
-                behavior: SnackBarBehavior.floating,
-              );
+                final snackBar = SnackBar(
+                  content: _DownloadAttachmentSnackbar(),
+                  duration: Duration(minutes: 1),
+                  behavior: SnackBarBehavior.floating,
+                );
 
-              didacticsScaffold.currentState
-                ..removeCurrentSnackBar()
-                ..showSnackBar(snackBar);
+                didacticsScaffold.currentState
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(snackBar);
+              }
+            } else if (content.type == ContentType.url) {
+              // TODO: open other file contents
             }
           },
           onLongPress: () async {

@@ -57,7 +57,8 @@ class AbsencesList extends StatelessWidget {
                 .translate('unexcepted_error_single'),
             icon: Icons.error,
             onTap: () {
-              BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
+              _updateAbsences(context);
+              // BlocProvider.of<AbsencesBloc>(context).add(GetAbsences());
             },
             showUpdate: true,
           );
