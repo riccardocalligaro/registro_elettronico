@@ -216,7 +216,7 @@ In the Sign in parent we let the user choose wich one of the profiles to choose 
 {
   "ident": "**********",
   "firstName": "RICCARDO",
-  "lastName": "CALLIGARO",
+  "lastName": "",
   "token": "🤫",
   "release": "2019-12-20T13:14:23+02:00",
   "expire": "2019-12-20T13:14:23+02:00"
@@ -320,12 +320,12 @@ This endpoint provides the subjects of a student.
       "order": 8,
       "teachers": [
         {
-          "teacherId": "A3175375",
-          "teacherName": "CAZZIOLATO ALESSANDRO"
+          "teacherId": "*",
+          "teacherName": "* ALESSANDRO"
         },
         {
-          "teacherId": "A3270031",
-          "teacherName": "RONCHI GIANCARLO"
+          "teacherId": "*",
+          "teacherName": "* GIANCARLO"
         }
       ]
     }
@@ -351,10 +351,10 @@ This endpoint provides the didactic material of a student.
 
 ```json
 {
-  "teacherId": "A3175419",
-  "teacherName": "PANCIERA DONATELLA",
+  "teacherId": "*",
+  "teacherName": "* DONATELLA",
   "teacherFirstName": "DONATELLA",
-  "teacherLastName": "PANCIERA",
+  "teacherLastName": "*",
   "folders": [
     {
       "folderId": 15639335,
@@ -524,7 +524,7 @@ This endpoint provides user's today lessons.
       "evtHPos": 1,
       "evtDuration": 1,
       "classDesc": "4IA INFORMATICA",
-      "authorName": "CAPPELLAZZO DANIELE",
+      "authorName": "* DANIELE",
       "subjectId": 215880,
       "subjectCode": "",
       "subjectDesc": "SISTEMI E RETI",
@@ -559,7 +559,7 @@ This endpoint provides user's notes.
       "evtId": 8331568,
       "evtText": "prova per app \"Registro di classe\"",
       "evtDate": "2020-01-07",
-      "authorName": "CAZZIOLATO ALESSANDRO",
+      "authorName": "* ALESSANDRO",
       "readStatus": true
     }
   ],
