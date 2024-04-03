@@ -12,7 +12,7 @@ class LocalizationsDelegates {
   Map<String, String> _supportedLanguages;
 
   LocalizationsDelegates._() {
-    _supportedLanguages = {'en': 'EN', 'it': 'IT'};
+    _supportedLanguages = {'en': 'EN', 'it': 'IT', 'ru': 'RU'};
     _supportedLocales = [];
     _supportedLanguages.forEach((languageCode, countryCode) {
       _supportedLocales.add(Locale(languageCode, countryCode));
